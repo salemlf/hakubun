@@ -31,6 +31,7 @@ const TokenInput = () => {
         "An error occurred retrieving your info, make sure your API token is correct"
       );
     }
+
     isLoading(false);
   };
 
@@ -49,8 +50,8 @@ const TokenInput = () => {
       <IonContent className="ion-padding">
         <IonInput
           fill="outline"
+          label="WaniKani API Token"
           style={styles.input}
-          placeholder="Enter API token"
           onIonInput={onInput}
         ></IonInput>
         {authErr.length > 0 && <p style={styles.err}>{authErr}</p>}

@@ -1,13 +1,5 @@
-// import axios from "axios";
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  SetStateAction,
-} from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 
-// import * as SecureStore from "expo-secure-store";
 import { Storage } from "@ionic/storage";
 import { api } from "../api/ApiConfig";
 import { AuthData } from "../services/authService";
@@ -23,7 +15,6 @@ type AuthContextData = {
   removeAuth(): Promise<void>;
 };
 
-// const AuthContext = createContext({});
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider = ({ children }: Props) => {
@@ -37,8 +28,8 @@ const AuthProvider = ({ children }: Props) => {
   }, []);
 
   async function loadStorageData() {
+    console.log("Running loadStorageData...");
     try {
-      // !added
       const initStorage = async () => {
         let newStore = new Storage();
         let store = await newStore.create();
@@ -48,19 +39,23 @@ const AuthProvider = ({ children }: Props) => {
 
         if (authDataString) {
           let authData = JSON.parse(authDataString);
-          configureAxiosHeaders(authData);
+          configureAxiosHeaders(authData.token);
           setAuthState(authData);
         }
+
+        // let userInfoString = await store.get("userInfo");
+
+        // if (userInfoString) {
+        //   let { username, level } = JSON.parse(userInfoString);
+        //   setUserInfo((prevState) => ({
+        //     ...prevState,
+        //     username: username,
+        //     level: level,
+        //   }));
+        // }
       };
 
       initStorage();
-      // !added
-      //   let authDataString = await SecureStore.getItemAsync("auth");
-      //   if (authDataString) {
-      //     let authData = JSON.parse(authDataString);
-      //     configureAxiosHeaders(authData);
-      //     setAuthState(authData);
-      //   }
     } catch (error) {
     } finally {
       setLoading(false);
@@ -78,25 +73,44 @@ const AuthProvider = ({ children }: Props) => {
       .catch((err: any) => console.log("Error getting user: ", err));
   };
 
-  const setAuth = (auth: any) => {
-    // *testing
-    console.log("🚀 ~ file: AuthContext.tsx:82 ~ setAuth ~ auth:", auth);
-    // *testing
-
-    configureAxiosHeaders(auth);
+  const setAuth = (token: any) => {
+    configureAxiosHeaders(token);
 
     return getUser().then(async (res: any) => {
       if (res) {
-        setAuthState(auth);
-        // await SecureStore.setItemAsync("auth", JSON.stringify(auth));
+        let { username, level } = res.data;
 
-        await (store as any).set("auth", JSON.stringify(auth));
+        let authData = {
+          token,
+          username,
+          level,
+        };
+
+        console.log(
+          "🚀 ~ file: AuthContext.tsx:97 ~ returngetUser ~ authData:",
+          authData
+        );
+
+        setAuthState((prevState) => ({
+          ...prevState,
+          token: token,
+          username: username,
+          level: level,
+        }));
+
+        await (store as any).set("auth", JSON.stringify(authData));
         return true;
       } else {
+        // setUserInfo(undefined);
         setAuthState(undefined);
-        console.log("auth", auth);
-        // await SecureStore.setItemAsync("auth", JSON.stringify(auth));
-        await (store as any).set("auth", JSON.stringify(auth));
+
+        let authData = {
+          token: undefined,
+          username: undefined,
+          level: undefined,
+        };
+
+        await (store as any).set("auth", JSON.stringify(authData));
         return false;
       }
     });
@@ -104,7 +118,6 @@ const AuthProvider = ({ children }: Props) => {
 
   const removeAuth = async () => {
     setAuthState(undefined);
-    // await SecureStore.deleteItemAsync("auth");
     await (store as any).remove("auth");
   };
 

@@ -1,3 +1,5 @@
 export type AuthData = {
-  token: string;
+  token?: string;
+  username?: string;
+  level?: number;
 };
