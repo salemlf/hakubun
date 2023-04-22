@@ -18,17 +18,7 @@ import { AuthStack } from "./AuthStack";
 import { useAuth } from "../contexts/AuthContext";
 import { Loading } from "../components/Loading";
 
-// interface Props {
-//     auth: any;
-//     loading: boolean;
-//   }
-
-// interface Props {
-//   auth: any;
-//   loading: boolean;
-//   setAuth?: (arg0: string) => any;
-//   removeAuth?: () => any;
-// }
+// TODO: fix bug where showing as authorized when not
 
 const Router = () => {
   const { auth, loading } = useAuth();

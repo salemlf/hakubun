@@ -48,10 +48,9 @@ const Home = () => {
         <p>Testing Home!</p>
         <p>Reviews: {reviewNum}</p>
         {homeLoading && <IonSpinner name="dots"></IonSpinner>}
-        <IonButton
-          title="Remove authorization"
-          onClick={() => removeAuth()}
-        ></IonButton>
+        <IonButton title="Remove authorization" onClick={() => removeAuth()}>
+          Remove Auth
+        </IonButton>
       </IonContent>
     </>
   );

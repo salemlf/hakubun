@@ -79,6 +79,10 @@ const AuthProvider = ({ children }: Props) => {
   };
 
   const setAuth = (auth: any) => {
+    // *testing
+    console.log("🚀 ~ file: AuthContext.tsx:82 ~ setAuth ~ auth:", auth);
+    // *testing
+
     configureAxiosHeaders(auth);
 
     return getUser().then(async (res: any) => {

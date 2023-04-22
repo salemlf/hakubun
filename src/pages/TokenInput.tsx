@@ -1,16 +1,8 @@
-import React, { useState } from "react";
-// import {
-//   View,
-//   TextInput,
-//   ActivityIndicator,
-//   Text,
-//   StyleSheet,
-// } from "react-native";
+import { useState } from "react";
 
 import {
   IonInput,
   IonContent,
-  IonPage,
   IonSpinner,
   IonHeader,
   IonToolbar,
@@ -42,6 +34,11 @@ const TokenInput = () => {
     isLoading(false);
   };
 
+  const onInput = (ev: Event) => {
+    const value = (ev.target as HTMLIonInputElement).value as string;
+    setToken(value);
+  };
+
   return (
     <>
       <IonHeader>
@@ -51,20 +48,19 @@ const TokenInput = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         <IonInput
+          fill="outline"
           style={styles.input}
           placeholder="Enter API token"
-          onIonChange={(newToken: any) => setToken(newToken)}
+          onIonInput={onInput}
         ></IonInput>
         {authErr.length > 0 && <p style={styles.err}>{authErr}</p>}
-        {loading ? (
-          <IonSpinner name="dots"></IonSpinner>
-        ) : (
-          <BaseButton
-            handleClick={setAuth}
-            textEntered={token}
-            buttonText="Submit"
-          />
-        )}
+
+        {loading && <IonSpinner name="dots"></IonSpinner>}
+        <BaseButton
+          handleClick={setAuth}
+          textEntered={token}
+          buttonText="Submit"
+        />
       </IonContent>
     </>
   );
