@@ -14,10 +14,11 @@ import {
 } from "@ionic/react";
 
 const Home = () => {
-  const [reviewNum, setReviewNum] = useState("");
+  const [reviewNum, setReviewNum] = useState<number | undefined>();
+  const [lessonsNum, setLessonsNum] = useState<number | undefined>();
   const [reviewData, setReviewData] = useState([]);
+  const [lessonData, setLessonData] = useState([]);
   const [homeLoading, setHomeLoading] = useState(false);
-  // TODO: show user level and name
   const [level, setLevel] = useState<number | undefined>();
   const [username, setUsername] = useState<string | undefined>("");
 
@@ -26,7 +27,7 @@ const Home = () => {
   useEffect(() => {
     setHomeLoading(true);
     setUserDetails();
-    setReviews();
+    getLessonsAndReviews();
   }, [auth]);
 
   const removeAuth = () => {
@@ -41,15 +42,19 @@ const Home = () => {
     setLevel(level);
   };
 
-  // TODO: change name once getting reviews and lessons
-  const setReviews = () => {
+  const getLessonsAndReviews = () => {
     WaniKaniAPI.getReviews()
       .then((reviews: { total_count: any; data: any }) => {
-        setReviewNum(`${reviews.total_count}`);
+        setReviewNum(reviews.total_count);
         setReviewData(reviews.data);
         // TODO: use reviewData to show radicals kanji and kanji
 
-        // TODO: get lessons using api, maybe by chaining promises
+        return WaniKaniAPI.getLessons();
+      })
+      .then((lessons) => {
+        setLessonData(lessons.data);
+        setLessonsNum(lessons.total_count);
+        return;
       })
       .finally(() => {
         setHomeLoading(false);

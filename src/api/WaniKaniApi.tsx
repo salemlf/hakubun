@@ -26,7 +26,7 @@ export const WaniKaniAPI = {
         : undefined,
     });
 
-    return response;
+    return response.data;
   },
 };
 
