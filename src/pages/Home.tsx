@@ -9,6 +9,7 @@ import usePrevious from "../hooks/usePrevious";
 import Header from "../components/Header";
 import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";
+import { SubjectsCard } from "../components/SubjectsCard";
 
 const Home = () => {
   const [reviewNum, setReviewNum] = useState<number | undefined>();
@@ -38,6 +39,11 @@ const Home = () => {
     }
   }, [level]);
 
+  // called every time subjectData updates
+  useEffect(() => {
+    getRadicalsForLevel();
+  }, [JSON.stringify(subjectData)]);
+
   const removeAuth = () => {
     (auth as any).removeAuth();
   };
@@ -50,6 +56,17 @@ const Home = () => {
     setLevel(level);
   };
 
+  const goToLessons = () => {
+    // TODO: use lessonData
+    console.log("TODO: add lessons button action");
+  };
+
+  const goToReviews = () => {
+    // TODO: use reviewData
+    console.log("TODO: add reviews button action");
+  };
+
+  // TODO: below functions should be moved to their own file eventually
   const getAvailableLessons = () => {
     WaniKaniAPI.getLessons().then(
       (lessons: { total_count: any; data: any }) => {
@@ -70,18 +87,29 @@ const Home = () => {
 
   const getSubjectsForLevel = () => {
     WaniKaniAPI.getSubjectsByLevel(level).then((subjects) => {
+      // *testing
+      console.log(
+        "🚀 ~ file: Home.tsx:73 ~ WaniKaniAPI.getSubjectsByLevel ~ subjects:",
+        subjects
+      );
+      // *testing
+
       setSubjectData(subjects.data);
     });
   };
 
-  const goToLessons = () => {
-    // TODO: use lessonData
-    console.log("TODO: add lessons button action");
+  const getRadicalsForLevel = () => {
+    // TODO: filter by object attr, should be "radical"
+    // *testing
+    console.log("TODO: implement getRadicalsForLevel");
+    // *testing
   };
 
-  const goToReviews = () => {
-    // TODO: use reviewData
-    console.log("TODO: add reviews button action");
+  const getKanjiForLevel = () => {
+    // TODO: filter by object attr, should be "kanji"
+    // *testing
+    console.log("TODO: implement getKanjiForLevel");
+    // *testing
   };
 
   return (
@@ -104,12 +132,19 @@ const Home = () => {
             </IonCol>
           </IonRow>
           <IonRow>
-            <IonButton
-              title="Remove authorization"
-              onClick={() => removeAuth()}
-            >
-              Remove Auth
-            </IonButton>
+            <IonCol>
+              <SubjectsCard></SubjectsCard>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonButton
+                title="Remove authorization"
+                onClick={() => removeAuth()}
+              >
+                Remove Auth
+              </IonButton>
+            </IonCol>
           </IonRow>
         </IonGrid>
         {homeLoading && <IonSpinner name="dots"></IonSpinner>}
