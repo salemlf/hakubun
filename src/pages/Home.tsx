@@ -13,6 +13,7 @@ import { settings } from "ionicons/icons";
 
 import { useAuth } from "../contexts/AuthContext";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
+import Header from "../components/Header";
 import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";
 
@@ -50,7 +51,6 @@ const Home = () => {
       .then((reviews: { total_count: any; data: any }) => {
         setReviewNum(reviews.total_count);
         setReviewData(reviews.data);
-        // TODO: use reviewData to show radicals kanji and kanji
 
         return WaniKaniAPI.getLessons();
       })
@@ -65,36 +65,18 @@ const Home = () => {
   };
 
   const goToLessons = () => {
+    // TODO: use lessonData
     console.log("TODO: add lessons button action");
   };
 
   const goToReviews = () => {
+    // TODO: use reviewData
     console.log("TODO: add reviews button action");
   };
 
-  // TODO: move header into its own component
   return (
     <>
-      <IonHeader>
-        <IonToolbar>
-          <IonGrid>
-            <IonRow style={styles.row}>
-              <IonCol>
-                <IonItem>{username}</IonItem>
-                <IonItem>{level}</IonItem>
-              </IonCol>
-              <IonCol style={styles.rightCol}>
-                <IonIcon
-                  icon={settings}
-                  color="secondary"
-                  size="large"
-                  aria-hidden="true"
-                ></IonIcon>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonToolbar>
-      </IonHeader>
+      <Header username={username} level={level}></Header>
       <IonContent className="ion-padding">
         <IonGrid>
           <IonRow>
@@ -124,20 +106,6 @@ const Home = () => {
       </IonContent>
     </>
   );
-};
-
-let styles = {
-  row: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: "10px",
-  },
-  rightCol: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
 };
 
 export default Home;
