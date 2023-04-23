@@ -1,8 +1,4 @@
 import { useState, useEffect } from "react";
-import { IonButton, IonItem, IonSpinner } from "@ionic/react";
-import { settings } from "ionicons/icons";
-import { useAuth } from "../contexts/AuthContext";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
 import {
   IonContent,
   IonHeader,
@@ -12,10 +8,17 @@ import {
   IonRow,
   IonIcon,
 } from "@ionic/react";
+import { IonButton, IonItem, IonSpinner } from "@ionic/react";
+import { settings } from "ionicons/icons";
+
+import { useAuth } from "../contexts/AuthContext";
+import { WaniKaniAPI } from "../api/WaniKaniApi";
+import LessonsButton from "../components/LessonsButton";
+import ReviewsButton from "../components/ReviewsButton";
 
 const Home = () => {
   const [reviewNum, setReviewNum] = useState<number | undefined>();
-  const [lessonsNum, setLessonsNum] = useState<number | undefined>();
+  const [lessonNum, setLessonNum] = useState<number | undefined>();
   const [reviewData, setReviewData] = useState([]);
   const [lessonData, setLessonData] = useState([]);
   const [homeLoading, setHomeLoading] = useState(false);
@@ -53,12 +56,20 @@ const Home = () => {
       })
       .then((lessons) => {
         setLessonData(lessons.data);
-        setLessonsNum(lessons.total_count);
+        setLessonNum(lessons.total_count);
         return;
       })
       .finally(() => {
         setHomeLoading(false);
       });
+  };
+
+  const goToLessons = () => {
+    console.log("TODO: add lessons button action");
+  };
+
+  const goToReviews = () => {
+    console.log("TODO: add reviews button action");
   };
 
   // TODO: move header into its own component
@@ -87,9 +98,18 @@ const Home = () => {
       <IonContent className="ion-padding">
         <IonGrid>
           <IonRow>
-            <IonItem>
-              <IonCol>Reviews: {reviewNum}</IonCol>
-            </IonItem>
+            <IonCol>
+              <LessonsButton
+                handleClick={goToLessons}
+                numLessons={lessonNum}
+              ></LessonsButton>
+            </IonCol>
+            <IonCol>
+              <ReviewsButton
+                handleClick={goToReviews}
+                numReviews={reviewNum}
+              ></ReviewsButton>
+            </IonCol>
           </IonRow>
           <IonRow>
             <IonButton
