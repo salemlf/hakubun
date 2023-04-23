@@ -1,15 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  IonContent,
-  IonHeader,
-  IonToolbar,
-  IonGrid,
-  IonCol,
-  IonRow,
-  IonIcon,
-} from "@ionic/react";
+import { IonContent, IonGrid, IonCol, IonRow } from "@ionic/react";
 import { IonButton, IonItem, IonSpinner } from "@ionic/react";
-import { settings } from "ionicons/icons";
 
 import { useAuth } from "../contexts/AuthContext";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
@@ -22,7 +13,7 @@ const Home = () => {
   const [reviewData, setReviewData] = useState([]);
   const [lessonNum, setLessonNum] = useState<number | undefined>();
   const [lessonData, setLessonData] = useState([]);
-  const [subjectData, setSubjectData] = useState([]);
+  const [subjectData, setSubjectData] = useState<Array<any>>([]);
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number | undefined>();
   const [username, setUsername] = useState<string | undefined>("");
@@ -39,7 +30,7 @@ const Home = () => {
     (auth as any).removeAuth();
   };
 
-  // TODO: level isn't persisting across refresh, figure out why
+  // TODO: level isn't always persisting across refresh, figure out why
   const setUserDetails = () => {
     let username = auth.auth!.username;
     setUsername(username);
@@ -64,7 +55,9 @@ const Home = () => {
         return WaniKaniAPI.getSubjectsByLevel(level);
       })
       .then((subjects) => {
-        console.log("🚀 ~ file: Home.tsx:65 ~ .then ~ subjects:", subjects);
+        // *testing
+        // console.log("🚀 ~ file: Home.tsx:65 ~ .then ~ subjects:", subjects);
+        // *testing
 
         setSubjectData(subjects.data);
         return;

@@ -1,8 +1,12 @@
 import axios from "axios";
 
+export const baseUrl = "https://api.wanikani.com/v2/";
+
 export const api = axios.create({
-  baseURL: "https://api.wanikani.com/v2/",
+  baseURL: baseUrl,
 });
+
+export const pagingApi = axios.create();
 
 const errorHandler = (error: any) => {
   const statusCode = error.response?.status;
@@ -22,5 +26,9 @@ const errorHandler = (error: any) => {
 };
 
 api.interceptors.response.use(undefined, (error) => {
+  return errorHandler(error);
+});
+
+pagingApi.interceptors.response.use(undefined, (error) => {
   return errorHandler(error);
 });

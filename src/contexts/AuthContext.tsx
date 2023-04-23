@@ -1,7 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 
 import { Storage } from "@ionic/storage";
-import { api } from "../api/ApiConfig";
+import { api, pagingApi } from "../api/ApiConfig";
+
 import { AuthData } from "../services/authService";
 
 type Props = {
@@ -54,6 +55,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const configureAxiosHeaders = (newToken: any) => {
     api.defaults.headers["Authorization"] = `Bearer ${newToken}`;
+    pagingApi.defaults.headers["Authorization"] = `Bearer ${newToken}`;
   };
 
   const getUser = () => {
