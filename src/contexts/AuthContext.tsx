@@ -42,17 +42,6 @@ const AuthProvider = ({ children }: Props) => {
           configureAxiosHeaders(authData.token);
           setAuthState(authData);
         }
-
-        // let userInfoString = await store.get("userInfo");
-
-        // if (userInfoString) {
-        //   let { username, level } = JSON.parse(userInfoString);
-        //   setUserInfo((prevState) => ({
-        //     ...prevState,
-        //     username: username,
-        //     level: level,
-        //   }));
-        // }
       };
 
       initStorage();
@@ -86,10 +75,12 @@ const AuthProvider = ({ children }: Props) => {
           level,
         };
 
+        // *testing
         console.log(
           "🚀 ~ file: AuthContext.tsx:97 ~ returngetUser ~ authData:",
           authData
         );
+        // *testing
 
         setAuthState((prevState) => ({
           ...prevState,
@@ -101,7 +92,6 @@ const AuthProvider = ({ children }: Props) => {
         await (store as any).set("auth", JSON.stringify(authData));
         return true;
       } else {
-        // setUserInfo(undefined);
         setAuthState(undefined);
 
         let authData = {

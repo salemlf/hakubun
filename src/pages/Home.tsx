@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { IonButton, IonItem, IonSpinner } from "@ionic/react";
+import { settings } from "ionicons/icons";
 import { useAuth } from "../contexts/AuthContext";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import {
   IonContent,
   IonHeader,
-  IonTitle,
   IonToolbar,
-  IonText,
   IonGrid,
   IonCol,
   IonRow,
+  IonIcon,
 } from "@ionic/react";
 
 const Home = () => {
@@ -56,16 +56,25 @@ const Home = () => {
       });
   };
 
+  // TODO: move header into its own component
   return (
     <>
       <IonHeader>
         <IonToolbar>
           <IonGrid>
-            <IonRow>
-              <IonItem>
-                <IonCol>{username}</IonCol>
-                <IonCol>{level}</IonCol>
-              </IonItem>
+            <IonRow style={styles.row}>
+              <IonCol>
+                <IonItem>{username}</IonItem>
+                <IonItem>{level}</IonItem>
+              </IonCol>
+              <IonCol style={styles.rightCol}>
+                <IonIcon
+                  icon={settings}
+                  color="secondary"
+                  size="large"
+                  aria-hidden="true"
+                ></IonIcon>
+              </IonCol>
             </IonRow>
           </IonGrid>
         </IonToolbar>
@@ -90,6 +99,20 @@ const Home = () => {
       </IonContent>
     </>
   );
+};
+
+let styles = {
+  row: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    padding: "10px",
+  },
+  rightCol: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
 };
 
 export default Home;

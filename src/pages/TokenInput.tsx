@@ -10,8 +10,6 @@ import {
 } from "@ionic/react";
 
 import BaseButton from "../components/BaseButton";
-
-// TODO: export authErr from AuthContext?
 import { useAuth } from "../contexts/AuthContext";
 
 const TokenInput = () => {
