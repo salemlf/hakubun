@@ -4,6 +4,8 @@ import { IonButton, IonItem, IonSpinner } from "@ionic/react";
 
 import { useAuth } from "../contexts/AuthContext";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
+import usePrevious from "../hooks/usePrevious";
+
 import Header from "../components/Header";
 import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";
@@ -19,18 +21,27 @@ const Home = () => {
   const [username, setUsername] = useState<string | undefined>("");
 
   const auth = useAuth();
+  const prevLevel = usePrevious(level);
 
+  // TODO: change so loading displays until everything is loaded (including subjects)
   useEffect(() => {
     setHomeLoading(true);
     setUserDetails();
-    getLessonsAndReviews();
+    setHomeLoading(false);
   }, [auth]);
+
+  useEffect(() => {
+    if (!prevLevel && level) {
+      getAvailableLessons();
+      getAvailableReviews();
+      getSubjectsForLevel();
+    }
+  }, [level]);
 
   const removeAuth = () => {
     (auth as any).removeAuth();
   };
 
-  // TODO: level isn't always persisting across refresh, figure out why
   const setUserDetails = () => {
     let username = auth.auth!.username;
     setUsername(username);
@@ -39,32 +50,28 @@ const Home = () => {
     setLevel(level);
   };
 
-  const getLessonsAndReviews = () => {
-    WaniKaniAPI.getReviews()
-      .then((reviews: { total_count: any; data: any }) => {
+  const getAvailableLessons = () => {
+    WaniKaniAPI.getLessons().then(
+      (lessons: { total_count: any; data: any }) => {
+        setLessonNum(lessons.total_count);
+        setLessonData(lessons.data);
+      }
+    );
+  };
+
+  const getAvailableReviews = () => {
+    WaniKaniAPI.getReviews().then(
+      (reviews: { total_count: any; data: any }) => {
         setReviewNum(reviews.total_count);
         setReviewData(reviews.data);
+      }
+    );
+  };
 
-        return WaniKaniAPI.getLessons();
-      })
-      .then((lessons) => {
-        setLessonData(lessons.data);
-        setLessonNum(lessons.total_count);
-
-        console.log("level: ", level);
-        return WaniKaniAPI.getSubjectsByLevel(level);
-      })
-      .then((subjects) => {
-        // *testing
-        // console.log("🚀 ~ file: Home.tsx:65 ~ .then ~ subjects:", subjects);
-        // *testing
-
-        setSubjectData(subjects.data);
-        return;
-      })
-      .finally(() => {
-        setHomeLoading(false);
-      });
+  const getSubjectsForLevel = () => {
+    WaniKaniAPI.getSubjectsByLevel(level).then((subjects) => {
+      setSubjectData(subjects.data);
+    });
   };
 
   const goToLessons = () => {
