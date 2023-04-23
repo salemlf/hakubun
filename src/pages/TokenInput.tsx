@@ -7,9 +7,9 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
+  IonButton,
 } from "@ionic/react";
 
-import BaseButton from "../components/BaseButton";
 import { useAuth } from "../contexts/AuthContext";
 
 const TokenInput = () => {
@@ -38,6 +38,7 @@ const TokenInput = () => {
     setToken(value);
   };
 
+  // TODO: make spinner (loading thingy) larger and center of screen
   return (
     <>
       <IonHeader>
@@ -53,13 +54,10 @@ const TokenInput = () => {
           onIonInput={onInput}
         ></IonInput>
         {authErr.length > 0 && <p style={styles.err}>{authErr}</p>}
-
         {loading && <IonSpinner name="dots"></IonSpinner>}
-        <BaseButton
-          handleClick={setAuth}
-          textEntered={token}
-          buttonText="Submit"
-        />
+        <IonButton disabled={!token} title="Submit" onClick={setAuth}>
+          Submit
+        </IonButton>
       </IonContent>
     </>
   );
