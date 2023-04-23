@@ -15,6 +15,7 @@ interface Props {
   level?: number;
 }
 
+// TODO: increase size of settings icon
 const Header = ({ username, level }: Props) => {
   return (
     <IonHeader>

@@ -27,6 +27,7 @@ const AuthProvider = ({ children }: Props) => {
     loadStorageData();
   }, []);
 
+  // TODO: figure out why this is running twice
   async function loadStorageData() {
     console.log("Running loadStorageData...");
     try {

@@ -19,9 +19,10 @@ import ReviewsButton from "../components/ReviewsButton";
 
 const Home = () => {
   const [reviewNum, setReviewNum] = useState<number | undefined>();
-  const [lessonNum, setLessonNum] = useState<number | undefined>();
   const [reviewData, setReviewData] = useState([]);
+  const [lessonNum, setLessonNum] = useState<number | undefined>();
   const [lessonData, setLessonData] = useState([]);
+  const [subjectData, setSubjectData] = useState([]);
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number | undefined>();
   const [username, setUsername] = useState<string | undefined>("");
@@ -38,6 +39,7 @@ const Home = () => {
     (auth as any).removeAuth();
   };
 
+  // TODO: level isn't persisting across refresh, figure out why
   const setUserDetails = () => {
     let username = auth.auth!.username;
     setUsername(username);
@@ -57,6 +59,14 @@ const Home = () => {
       .then((lessons) => {
         setLessonData(lessons.data);
         setLessonNum(lessons.total_count);
+
+        console.log("level: ", level);
+        return WaniKaniAPI.getSubjectsByLevel(level);
+      })
+      .then((subjects) => {
+        console.log("🚀 ~ file: Home.tsx:65 ~ .then ~ subjects:", subjects);
+
+        setSubjectData(subjects.data);
         return;
       })
       .finally(() => {
