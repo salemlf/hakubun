@@ -133,7 +133,12 @@ const Home = () => {
           </IonRow>
           <IonRow>
             <IonCol>
-              <SubjectsCard></SubjectsCard>
+              <SubjectsCard cardTitle="Radicals"></SubjectsCard>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <SubjectsCard cardTitle="Kanji"></SubjectsCard>
             </IonCol>
           </IonRow>
           <IonRow>

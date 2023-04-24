@@ -93,6 +93,8 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-step-850: #dddbde;
     --ion-color-step-900: #e8e7e9;
     --ion-color-step-950: #f4f3f4;
+
+    --color: #ffffff;
   }
 
   body {

@@ -2,19 +2,21 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonCardSubtitle,
   IonCardContent,
 } from "@ionic/react";
 
-export const SubjectsCard = () => {
+interface Props {
+  cardTitle?: string;
+}
+
+export const SubjectsCard = ({ cardTitle }: Props) => {
   return (
     <IonCard style={styles.card}>
       <IonCardHeader>
-        <IonCardTitle>Card Title</IonCardTitle>
-        <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+        <IonCardTitle style={styles.cardText}>{cardTitle}</IonCardTitle>
       </IonCardHeader>
 
-      <IonCardContent>
+      <IonCardContent style={styles.cardText}>
         Here's a small text description for the card content. Nothing more,
         nothing less.
       </IonCardContent>
@@ -25,5 +27,8 @@ export const SubjectsCard = () => {
 const styles = {
   card: {
     margin: 0,
+  },
+  cardText: {
+    color: "white",
   },
 };
