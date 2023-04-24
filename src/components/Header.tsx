@@ -16,6 +16,7 @@ interface Props {
 }
 
 // TODO: increase size of settings icon
+// TODO: change settings icon into button w/ icon
 const Header = ({ username, level }: Props) => {
   return (
     <IonHeader>

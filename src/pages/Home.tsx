@@ -20,6 +20,8 @@ const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number | undefined>();
   const [username, setUsername] = useState<string | undefined>("");
+  const [radicalsCurrLevel, setRadicalsCurrLevel] = useState<Array<any>>([]);
+  const [kanjiCurrLevel, setKanjiCurrLevel] = useState<Array<any>>([]);
 
   const auth = useAuth();
   const prevLevel = usePrevious(level);
@@ -42,6 +44,7 @@ const Home = () => {
   // called every time subjectData updates
   useEffect(() => {
     getRadicalsForLevel();
+    getKanjiForLevel();
   }, [JSON.stringify(subjectData)]);
 
   const removeAuth = () => {
@@ -85,6 +88,7 @@ const Home = () => {
     );
   };
 
+  // TODO: move
   const getSubjectsForLevel = () => {
     WaniKaniAPI.getSubjectsByLevel(level).then((subjects) => {
       // *testing
@@ -98,18 +102,16 @@ const Home = () => {
     });
   };
 
+  // TODO: move to transformation file
   const getRadicalsForLevel = () => {
-    // TODO: filter by object attr, should be "radical"
-    // *testing
-    console.log("TODO: implement getRadicalsForLevel");
-    // *testing
+    let radicals = subjectData.filter((el) => el.object == "radical");
+    setRadicalsCurrLevel(radicals);
   };
 
+  // TODO: move to transformation file
   const getKanjiForLevel = () => {
-    // TODO: filter by object attr, should be "kanji"
-    // *testing
-    console.log("TODO: implement getKanjiForLevel");
-    // *testing
+    let kanji = subjectData.filter((el) => el.object == "kanji");
+    setKanjiCurrLevel(kanji);
   };
 
   return (
