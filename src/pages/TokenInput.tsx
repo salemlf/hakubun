@@ -13,6 +13,7 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 
 const TokenInput = () => {
+  // TODO: change token to useRef?
   const [token, setToken] = useState("");
   const [loading, isLoading] = useState(false);
   const [authErr, setAuthErr] = useState("");
@@ -55,7 +56,12 @@ const TokenInput = () => {
         ></IonInput>
         {authErr.length > 0 && <p style={styles.err}>{authErr}</p>}
         {loading && <IonSpinner name="dots"></IonSpinner>}
-        <IonButton disabled={!token} title="Submit" onClick={setAuth}>
+        <IonButton
+          color="tertiary"
+          disabled={!token}
+          title="Submit"
+          onClick={setAuth}
+        >
           Submit
         </IonButton>
       </IonContent>
@@ -66,6 +72,7 @@ const TokenInput = () => {
 export default TokenInput;
 
 const styles = {
+  // TODO: change this based on dark mode or light
   input: {
     borderColor: "gray",
     width: "100%",

@@ -1,27 +1,37 @@
 import { useState, useEffect } from "react";
-import { IonContent, IonGrid, IonCol, IonRow } from "@ionic/react";
-import { IonButton, IonItem, IonSpinner } from "@ionic/react";
+import {
+  IonContent,
+  IonGrid,
+  IonCol,
+  IonRow,
+  IonButton,
+  IonItem,
+  IonSpinner,
+  IonCard,
+} from "@ionic/react";
 
 import { useAuth } from "../contexts/AuthContext";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import usePrevious from "../hooks/usePrevious";
+import styles from "./Home.module.css";
 
 import Header from "../components/Header";
 import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";
-import { SubjectsCard } from "../components/SubjectsCard";
+import { SubjectContainer } from "../components/SubjectContainer";
+import { Subject, SubjectCharacterImage } from "../types/Subject";
 
 const Home = () => {
   const [reviewNum, setReviewNum] = useState<number | undefined>();
   const [reviewData, setReviewData] = useState([]);
   const [lessonNum, setLessonNum] = useState<number | undefined>();
   const [lessonData, setLessonData] = useState([]);
-  const [subjectData, setSubjectData] = useState<Array<any>>([]);
+  const [subjectData, setSubjectData] = useState<Subject[]>([]);
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number | undefined>();
   const [username, setUsername] = useState<string | undefined>("");
-  const [radicalsCurrLevel, setRadicalsCurrLevel] = useState<Array<any>>([]);
-  const [kanjiCurrLevel, setKanjiCurrLevel] = useState<Array<any>>([]);
+  const [radicalsCurrLevel, setRadicalsCurrLevel] = useState<Subject[]>([]);
+  const [kanjiCurrLevel, setKanjiCurrLevel] = useState<Subject[]>([]);
 
   const auth = useAuth();
   const prevLevel = usePrevious(level);
@@ -91,14 +101,16 @@ const Home = () => {
   // TODO: move
   const getSubjectsForLevel = () => {
     WaniKaniAPI.getSubjectsByLevel(level).then((subjects) => {
-      // *testing
-      console.log(
-        "🚀 ~ file: Home.tsx:73 ~ WaniKaniAPI.getSubjectsByLevel ~ subjects:",
-        subjects
-      );
-      // *testing
+      let subjectData = subjects.data;
 
-      setSubjectData(subjects.data);
+      // lowering nested data object down a level
+      let lifted = subjectData.map((elem) => {
+        elem = Object.assign({}, elem, elem.data);
+        delete elem.data;
+        return elem;
+      });
+
+      setSubjectData(lifted);
     });
   };
 
@@ -106,6 +118,19 @@ const Home = () => {
   const getRadicalsForLevel = () => {
     let radicals = subjectData.filter((el) => el.object == "radical");
     setRadicalsCurrLevel(radicals);
+
+    // TODO: this way is icky, create a component that checks urls and returns them instead
+    radicals = radicals.map((radical) => {
+      let availableImages =
+        radical.character_images
+          ?.filter((image) => image.content_type === "image/png")
+          .map((image) => image.url) || null;
+
+      radical.selectedImage = availableImages![0];
+      radical.fallbackImage = availableImages![1];
+
+      return radical;
+    });
   };
 
   // TODO: move to transformation file
@@ -133,16 +158,15 @@ const Home = () => {
               ></ReviewsButton>
             </IonCol>
           </IonRow>
-          <IonRow>
-            <IonCol>
-              <SubjectsCard cardTitle="Radicals"></SubjectsCard>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <SubjectsCard cardTitle="Kanji"></SubjectsCard>
-            </IonCol>
-          </IonRow>
+          {radicalsCurrLevel && (
+            <IonRow class="ion-justify-content-start">
+              <IonCol>
+                <SubjectContainer
+                  radicals={radicalsCurrLevel}
+                ></SubjectContainer>
+              </IonCol>
+            </IonRow>
+          )}
           <IonRow>
             <IonCol>
               <IonButton

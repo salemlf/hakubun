@@ -1,0 +1,34 @@
+.radicalCard {
+  margin: 0;
+  background-color: var(--grey-background-color);
+}
+
+.radicalDiv {
+  width: 100%;
+  border-radius: 12px;
+  background-color: var(--wanikani-blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+}
+
+.radicalDiv img {
+  width: 100%;
+}
+
+.cardContent {
+  padding-inline-start: 10px;
+  padding-inline-end: 10px;
+  padding-bottom: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .radicalDiv img {
+    filter: brightness(0) invert(1);
+  }
+
+  .radicalCardTitle {
+    color: white;
+  }
+}

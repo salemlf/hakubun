@@ -25,6 +25,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-tertiary-shade: #65cdaf;
   --ion-color-tertiary-tint: #81ebcd;
 
+  --grey-background-color: #423949;
+
+  --wanikani-purple: #aa00ff;
+  --wanikani-pink: #ff00aa;
+  --wanikani-blue: #00aaff;
+
   --ion-color-success: #2dd36f;
   --ion-color-success-rgb: 45, 211, 111;
   --ion-color-success-contrast: #000000;
