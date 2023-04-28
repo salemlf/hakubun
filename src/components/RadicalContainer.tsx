@@ -8,18 +8,13 @@ import {
 } from "@ionic/react";
 
 import { Subject } from "../types/Subject";
-import styles from "./SubjectContainer.module.css";
+import styles from "./RadicalContainer.module.css";
 
 interface Props {
   radicals?: Subject[];
 }
 
-export const SubjectContainer = ({ radicals }: Props) => {
-  console.log(
-    "🚀 ~ file: SubjectContainer.tsx:18 ~ SubjectContainer ~ radicals:",
-    radicals
-  );
-
+export const RadicalContainer = ({ radicals }: Props) => {
   return (
     <IonCard className={`${styles.radicalCard}`}>
       <IonCardHeader>

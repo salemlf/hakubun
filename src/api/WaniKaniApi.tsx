@@ -1,8 +1,6 @@
 import { api, baseUrl } from "./ApiConfig";
-import { defineCancelApiObject } from "./ApiCancellation";
 import { PagingAPI } from "./PagingApi";
 import { AxiosResponse } from "axios";
-import { Subject } from "../types/Subject";
 
 export const WaniKaniAPI = {
   pages: Array(),
@@ -14,7 +12,6 @@ export const WaniKaniAPI = {
       method: "GET",
     });
 
-    console.log("response.data: ", response.data);
     return response.data;
   },
   getLessons: async function () {
@@ -34,6 +31,22 @@ export const WaniKaniAPI = {
 
     return combined;
   },
-};
 
-// const cancelApiObject = defineCancelApiObject(WaniKaniAPI);
+  getRadicalsByLevel: async function (level: number) {
+    let url = `${baseUrl}subjects?levels=${level}&types=radical`;
+
+    let radicals = await PagingAPI.iterateOverPages(url, []);
+    let combined = PagingAPI.combinePages(radicals);
+
+    return combined;
+  },
+
+  getKanjiByLevel: async function (level: number) {
+    let url = `${baseUrl}subjects?levels=${level}&types=kanji`;
+
+    let kanji = await PagingAPI.iterateOverPages(url, []);
+    let combined = PagingAPI.combinePages(kanji);
+
+    return combined;
+  },
+};

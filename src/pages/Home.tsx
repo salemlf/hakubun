@@ -10,6 +10,8 @@ import {
 
 import { useAuth } from "../contexts/AuthContext";
 import { useSubjectsCurrLevel } from "../hooks/useSubjectsCurrLevel";
+import { useRadicalsCurrLevel } from "../hooks/useRadicalsCurrLvl";
+import { useKanjiCurrLevel } from "../hooks/useKanjiCurrLvl";
 import { useReviews } from "../hooks/useReviews";
 import { useLessons } from "../hooks/useLessons";
 import styles from "./Home.module.css";
@@ -17,15 +19,13 @@ import styles from "./Home.module.css";
 import Header from "../components/Header";
 import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";
-import { SubjectContainer } from "../components/SubjectContainer";
+import { RadicalContainer } from "../components/RadicalContainer";
 import { Subject } from "../types/Subject";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number | undefined>();
   const [username, setUsername] = useState<string | undefined>("");
-  const [radicalsCurrLevel, setRadicalsCurrLevel] = useState<Subject[]>([]);
-  const [kanjiCurrLevel, setKanjiCurrLevel] = useState<Subject[]>([]);
 
   const auth = useAuth();
 
@@ -33,7 +33,7 @@ const Home = () => {
   useEffect(() => {
     setHomeLoading(true);
     setUserDetails();
-    // setHomeLoading(false);
+    setHomeLoading(false);
   }, [auth]);
 
   const removeAuth = () => {
@@ -60,29 +60,23 @@ const Home = () => {
     error: availReviewsErr,
   } = useReviews(level);
 
-  const onSubjectsCurrLvlSuccess = (data: any) => {
-    console.log("onSubjectsCurrLvlSuccess called!");
-    if (data) {
-      getRadicalsForLevel();
-      getKanjiForLevel();
-    }
-    setHomeLoading(false);
-  };
+  const {
+    isLoading: radicalsCurrLvlLoading,
+    data: radicalsCurrLvlData,
+    error: radicalsCurrLvlErr,
+  } = useRadicalsCurrLevel(level);
 
-  // TODO see if I need to use this
-  const onSubjectsCurrLvlErr = (error: any) => {
-    console.log("🚀 ~ file: Home.tsx:92 ~ onLvlSubjectsErr ~ error:", error);
-  };
+  const {
+    isLoading: kanjiCurrLvlLoading,
+    data: kanjiCurrLvlData,
+    error: kanjiCurrLvlErr,
+  } = useKanjiCurrLevel(level);
 
   const {
     isLoading: subjectsCurrLvlLoading,
     data: subjectsCurrLvlData,
     error: subjectsCurrLvlErr,
-  } = useSubjectsCurrLevel(
-    level,
-    onSubjectsCurrLvlSuccess,
-    onSubjectsCurrLvlErr
-  );
+  } = useSubjectsCurrLevel(level);
 
   const goToLessons = () => {
     // TODO: use lessonData
@@ -92,41 +86,6 @@ const Home = () => {
   const goToReviews = () => {
     // TODO: use reviewData
     console.log("TODO: add reviews button action");
-  };
-
-  // TODO: move to transformation file
-  const getRadicalsForLevel = () => {
-    // TODO: wrapping in if statement to avoid subjectsCurrLvlData undefined error, figure out why undefined
-    if (subjectsCurrLvlData) {
-      let radicals = subjectsCurrLvlData.filter((el) => el.object == "radical");
-
-      // TODO: this way is icky, create a component that checks urls and returns them instead
-      radicals = radicals.map((radical) => {
-        let availableImages =
-          radical.character_images
-            ?.filter((image: any) => image.content_type === "image/png")
-            .map((image: any) => image.url) || null;
-
-        radical.selectedImage = availableImages![0];
-        radical.fallbackImage = availableImages![1];
-
-        return radical;
-      });
-
-      // TODO: fix, radicals in child component not updating cuz it doesn't recognize array changes due to lack of deep copy
-      let updatedRadicals = JSON.parse(JSON.stringify(radicals));
-
-      setRadicalsCurrLevel(updatedRadicals);
-    }
-  };
-
-  // TODO: move to transformation file
-  const getKanjiForLevel = () => {
-    // TODO: wrapping in if statement to avoid subjectsCurrLvlData undefined error, figure out why undefined
-    if (subjectsCurrLvlData) {
-      let kanji = subjectsCurrLvlData!.filter((el) => el.object == "kanji");
-      setKanjiCurrLevel(kanji);
-    }
   };
 
   return (
@@ -148,12 +107,12 @@ const Home = () => {
               ></ReviewsButton>
             </IonCol>
           </IonRow>
-          {radicalsCurrLevel && (
+          {radicalsCurrLvlData && (
             <IonRow class="ion-justify-content-start">
               <IonCol>
-                <SubjectContainer
-                  radicals={radicalsCurrLevel}
-                ></SubjectContainer>
+                <RadicalContainer
+                  radicals={radicalsCurrLvlData}
+                ></RadicalContainer>
               </IonCol>
             </IonRow>
           )}
