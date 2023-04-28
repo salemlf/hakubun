@@ -20,19 +20,29 @@ export const useRadicalsCurrLevel = (level: any) => {
           filtered: any,
           subject: any
         ) {
-          let availableImages =
-            subject.character_images
-              ?.filter((image: any) => image.content_type === "image/png")
-              .map((image: any) => image.url) || null;
+          // *testing
+          //   console.log("subject.characters: ", subject.characters);
+          // *testing
+          // TODO: use characters instead of image if that exists
+          if (subject.characters == null) {
+            let availableImages =
+              subject.character_images
+                ?.filter((image: any) => image.content_type === "image/png")
+                .map((image: any) => image.url) || null;
 
-          // TODO: omg ewew, please actually do this for realz
-          subject.selectedImage = availableImages![0];
-          subject.fallbackImage = availableImages![1];
+            // TODO: omg ewew, please actually do this for realz
+            subject.selectedImage = availableImages![0];
+            subject.fallbackImage = availableImages![1];
+          }
           filtered.push(subject);
 
           return filtered;
         },
         []);
+
+        // *testing
+        console.log("radsUpdated: ", radsUpdated);
+        // *testing
 
         return radsUpdated;
       },

@@ -27,16 +27,27 @@ export const RadicalContainer = ({ radicals }: Props) => {
           {(radicals as Subject[]).map((radical: any) => {
             return (
               <IonCol key={`col_${radical.id}`} size="2">
-                <div key={`${radical.id}`} className={`${styles.radicalDiv}`}>
-                  <img
-                    src={
-                      radical.selectedImage
-                        ? radical.selectedImage
-                        : radical.fallbackImage
-                    }
-                    alt="radical image"
-                  />
-                </div>
+                {radical.selectedImage ? (
+                  <div
+                    key={`${radical.id}`}
+                    className={`${styles.radicalDivWithImg}`}
+                  >
+                    <img
+                      src={
+                        radical.selectedImage
+                          ? radical.selectedImage
+                          : radical.fallbackImage
+                      }
+                      alt="radical image"
+                    />
+                  </div>
+                ) : (
+                  <div key={`${radical.id}`} className={`${styles.radicalDiv}`}>
+                    <p className={`${styles.radicalText}`}>
+                      {radical.characters}
+                    </p>
+                  </div>
+                )}
               </IonCol>
             );
           })}

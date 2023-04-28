@@ -20,6 +20,7 @@ import Header from "../components/Header";
 import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";
 import { RadicalContainer } from "../components/RadicalContainer";
+import { KanjiContainer } from "../components/KanjiContainer";
 import { Subject } from "../types/Subject";
 
 const Home = () => {
@@ -113,6 +114,13 @@ const Home = () => {
                 <RadicalContainer
                   radicals={radicalsCurrLvlData}
                 ></RadicalContainer>
+              </IonCol>
+            </IonRow>
+          )}
+          {kanjiCurrLvlData && (
+            <IonRow class="ion-justify-content-start">
+              <IonCol>
+                <KanjiContainer kanji={kanjiCurrLvlData}></KanjiContainer>
               </IonCol>
             </IonRow>
           )}
