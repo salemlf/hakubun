@@ -5,28 +5,22 @@ import {
   IonCol,
   IonRow,
   IonButton,
-  IonItem,
   IonSpinner,
-  IonCard,
 } from "@ionic/react";
 
 import { useAuth } from "../contexts/AuthContext";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import usePrevious from "../hooks/usePrevious";
+import { useSubjectsCurrLevel } from "../hooks/useSubjectsCurrLevel";
+import { useReviews } from "../hooks/useReviews";
+import { useLessons } from "../hooks/useLessons";
 import styles from "./Home.module.css";
 
 import Header from "../components/Header";
 import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";
 import { SubjectContainer } from "../components/SubjectContainer";
-import { Subject, SubjectCharacterImage } from "../types/Subject";
+import { Subject } from "../types/Subject";
 
 const Home = () => {
-  const [reviewNum, setReviewNum] = useState<number | undefined>();
-  const [reviewData, setReviewData] = useState([]);
-  const [lessonNum, setLessonNum] = useState<number | undefined>();
-  const [lessonData, setLessonData] = useState([]);
-  const [subjectData, setSubjectData] = useState<Subject[]>([]);
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number | undefined>();
   const [username, setUsername] = useState<string | undefined>("");
@@ -34,28 +28,13 @@ const Home = () => {
   const [kanjiCurrLevel, setKanjiCurrLevel] = useState<Subject[]>([]);
 
   const auth = useAuth();
-  const prevLevel = usePrevious(level);
 
   // TODO: change so loading displays until everything is loaded (including subjects)
   useEffect(() => {
     setHomeLoading(true);
     setUserDetails();
-    setHomeLoading(false);
+    // setHomeLoading(false);
   }, [auth]);
-
-  useEffect(() => {
-    if (!prevLevel && level) {
-      getAvailableLessons();
-      getAvailableReviews();
-      getSubjectsForLevel();
-    }
-  }, [level]);
-
-  // called every time subjectData updates
-  useEffect(() => {
-    getRadicalsForLevel();
-    getKanjiForLevel();
-  }, [JSON.stringify(subjectData)]);
 
   const removeAuth = () => {
     (auth as any).removeAuth();
@@ -69,6 +48,42 @@ const Home = () => {
     setLevel(level);
   };
 
+  const {
+    isLoading: lessonsLoading,
+    data: lessonData,
+    error: lessonErr,
+  } = useLessons(level);
+
+  const {
+    isLoading: availReviewsLoading,
+    data: availReviewsData,
+    error: availReviewsErr,
+  } = useReviews(level);
+
+  const onSubjectsCurrLvlSuccess = (data: any) => {
+    console.log("onSubjectsCurrLvlSuccess called!");
+    if (data) {
+      getRadicalsForLevel();
+      getKanjiForLevel();
+    }
+    setHomeLoading(false);
+  };
+
+  // TODO see if I need to use this
+  const onSubjectsCurrLvlErr = (error: any) => {
+    console.log("🚀 ~ file: Home.tsx:92 ~ onLvlSubjectsErr ~ error:", error);
+  };
+
+  const {
+    isLoading: subjectsCurrLvlLoading,
+    data: subjectsCurrLvlData,
+    error: subjectsCurrLvlErr,
+  } = useSubjectsCurrLevel(
+    level,
+    onSubjectsCurrLvlSuccess,
+    onSubjectsCurrLvlErr
+  );
+
   const goToLessons = () => {
     // TODO: use lessonData
     console.log("TODO: add lessons button action");
@@ -79,64 +94,39 @@ const Home = () => {
     console.log("TODO: add reviews button action");
   };
 
-  // TODO: below functions should be moved to their own file eventually
-  const getAvailableLessons = () => {
-    WaniKaniAPI.getLessons().then(
-      (lessons: { total_count: any; data: any }) => {
-        setLessonNum(lessons.total_count);
-        setLessonData(lessons.data);
-      }
-    );
-  };
-
-  const getAvailableReviews = () => {
-    WaniKaniAPI.getReviews().then(
-      (reviews: { total_count: any; data: any }) => {
-        setReviewNum(reviews.total_count);
-        setReviewData(reviews.data);
-      }
-    );
-  };
-
-  // TODO: move
-  const getSubjectsForLevel = () => {
-    WaniKaniAPI.getSubjectsByLevel(level).then((subjects) => {
-      let subjectData = subjects.data;
-
-      // lowering nested data object down a level
-      let lifted = subjectData.map((elem) => {
-        elem = Object.assign({}, elem, elem.data);
-        delete elem.data;
-        return elem;
-      });
-
-      setSubjectData(lifted);
-    });
-  };
-
   // TODO: move to transformation file
   const getRadicalsForLevel = () => {
-    let radicals = subjectData.filter((el) => el.object == "radical");
-    setRadicalsCurrLevel(radicals);
+    // TODO: wrapping in if statement to avoid subjectsCurrLvlData undefined error, figure out why undefined
+    if (subjectsCurrLvlData) {
+      let radicals = subjectsCurrLvlData.filter((el) => el.object == "radical");
 
-    // TODO: this way is icky, create a component that checks urls and returns them instead
-    radicals = radicals.map((radical) => {
-      let availableImages =
-        radical.character_images
-          ?.filter((image) => image.content_type === "image/png")
-          .map((image) => image.url) || null;
+      // TODO: this way is icky, create a component that checks urls and returns them instead
+      radicals = radicals.map((radical) => {
+        let availableImages =
+          radical.character_images
+            ?.filter((image: any) => image.content_type === "image/png")
+            .map((image: any) => image.url) || null;
 
-      radical.selectedImage = availableImages![0];
-      radical.fallbackImage = availableImages![1];
+        radical.selectedImage = availableImages![0];
+        radical.fallbackImage = availableImages![1];
 
-      return radical;
-    });
+        return radical;
+      });
+
+      // TODO: fix, radicals in child component not updating cuz it doesn't recognize array changes due to lack of deep copy
+      let updatedRadicals = JSON.parse(JSON.stringify(radicals));
+
+      setRadicalsCurrLevel(updatedRadicals);
+    }
   };
 
   // TODO: move to transformation file
   const getKanjiForLevel = () => {
-    let kanji = subjectData.filter((el) => el.object == "kanji");
-    setKanjiCurrLevel(kanji);
+    // TODO: wrapping in if statement to avoid subjectsCurrLvlData undefined error, figure out why undefined
+    if (subjectsCurrLvlData) {
+      let kanji = subjectsCurrLvlData!.filter((el) => el.object == "kanji");
+      setKanjiCurrLevel(kanji);
+    }
   };
 
   return (
@@ -148,13 +138,13 @@ const Home = () => {
             <IonCol>
               <LessonsButton
                 handleClick={goToLessons}
-                numLessons={lessonNum}
+                numLessons={lessonData?.length}
               ></LessonsButton>
             </IonCol>
             <IonCol>
               <ReviewsButton
                 handleClick={goToReviews}
-                numReviews={reviewNum}
+                numReviews={availReviewsData?.length}
               ></ReviewsButton>
             </IonCol>
           </IonRow>

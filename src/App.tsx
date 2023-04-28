@@ -1,5 +1,8 @@
 import { IonApp, setupIonicReact } from "@ionic/react";
 import { AuthProvider } from "./contexts/AuthContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import Router from "./navigation/Router";
 
 /* Core CSS required for Ionic components to work properly */
@@ -22,12 +25,16 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 setupIonicReact();
+const queryClient = new QueryClient();
 
 const App: React.FC = () => (
   <IonApp>
-    <AuthProvider>
-      <Router />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </IonApp>
 );
 

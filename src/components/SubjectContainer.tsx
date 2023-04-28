@@ -11,10 +11,15 @@ import { Subject } from "../types/Subject";
 import styles from "./SubjectContainer.module.css";
 
 interface Props {
-  radicals?: any;
+  radicals?: Subject[];
 }
 
 export const SubjectContainer = ({ radicals }: Props) => {
+  console.log(
+    "🚀 ~ file: SubjectContainer.tsx:18 ~ SubjectContainer ~ radicals:",
+    radicals
+  );
+
   return (
     <IonCard className={`${styles.radicalCard}`}>
       <IonCardHeader>
