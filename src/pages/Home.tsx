@@ -60,12 +60,14 @@ const Home = () => {
     error: availReviewsErr,
   } = useReviews(level);
 
+  // TODO: move to radical component?
   const {
     isLoading: radicalsCurrLvlLoading,
     data: radicalsCurrLvlData,
     error: radicalsCurrLvlErr,
   } = useRadicalsCurrLevel(level);
 
+  // TODO: move to kanji component
   const {
     isLoading: kanjiCurrLvlLoading,
     data: kanjiCurrLvlData,
@@ -106,7 +108,7 @@ const Home = () => {
           {radicalsCurrLvlData && (
             <IonRow>
               <IonCol>
-                <ProgressBar stage={2} subjects={radicalsCurrLvlData} />
+                <ProgressBar stage={3} />
               </IonCol>
             </IonRow>
           )}
