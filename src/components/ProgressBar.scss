@@ -1,0 +1,39 @@
+.container-styles {
+  height: 20;
+  width: 100%;
+  border-radius: 50;
+  margin: 50;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+
+  :first-child {
+    border-radius: 20px 0px 0px 20px;
+  }
+
+  :last-child {
+    border-radius: 0px 20px 20px 0px;
+  }
+
+  :not(:last-child) {
+    border-right: 3px solid var(--light-background-color);
+  }
+}
+
+.block {
+  height: 100%;
+  background-color: #cce0d4;
+  width: 5rem;
+}
+
+.done {
+  background-color: var(--ion-color-success);
+}
+
+@media (prefers-color-scheme: dark) {
+  .container-styles {
+    :not(:last-child) {
+      border-right: 3px solid #423949;
+    }
+  }
+}

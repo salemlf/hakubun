@@ -20,11 +20,8 @@ export const useRadicalsCurrLevel = (level: any) => {
           filtered: any,
           subject: any
         ) {
-          // *testing
-          //   console.log("subject.characters: ", subject.characters);
-          // *testing
-          // TODO: use characters instead of image if that exists
           if (subject.characters == null) {
+            // TODO: add image description
             let availableImages =
               subject.character_images
                 ?.filter((image: any) => image.content_type === "image/png")

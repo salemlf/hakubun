@@ -9,7 +9,6 @@ import {
 } from "@ionic/react";
 
 import { useAuth } from "../contexts/AuthContext";
-import { useSubjectsCurrLevel } from "../hooks/useSubjectsCurrLevel";
 import { useRadicalsCurrLevel } from "../hooks/useRadicalsCurrLvl";
 import { useKanjiCurrLevel } from "../hooks/useKanjiCurrLvl";
 import { useReviews } from "../hooks/useReviews";
@@ -21,7 +20,7 @@ import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";
 import { RadicalContainer } from "../components/RadicalContainer";
 import { KanjiContainer } from "../components/KanjiContainer";
-import { Subject } from "../types/Subject";
+import { ProgressBar } from "../components/ProgressBar";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
@@ -73,17 +72,13 @@ const Home = () => {
     error: kanjiCurrLvlErr,
   } = useKanjiCurrLevel(level);
 
-  const {
-    isLoading: subjectsCurrLvlLoading,
-    data: subjectsCurrLvlData,
-    error: subjectsCurrLvlErr,
-  } = useSubjectsCurrLevel(level);
-
+  // TODO: move to component
   const goToLessons = () => {
     // TODO: use lessonData
     console.log("TODO: add lessons button action");
   };
 
+  // TODO: move to component
   const goToReviews = () => {
     // TODO: use reviewData
     console.log("TODO: add reviews button action");
@@ -108,6 +103,14 @@ const Home = () => {
               ></ReviewsButton>
             </IonCol>
           </IonRow>
+          {radicalsCurrLvlData && (
+            <IonRow>
+              <IonCol>
+                <ProgressBar stage={2} subjects={radicalsCurrLvlData} />
+              </IonCol>
+            </IonRow>
+          )}
+
           {radicalsCurrLvlData && (
             <IonRow class="ion-justify-content-start">
               <IonCol>

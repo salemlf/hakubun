@@ -14,6 +14,7 @@ interface Props {
   radicals?: Subject[];
 }
 
+// TODO: use image description
 export const RadicalContainer = ({ radicals }: Props) => {
   return (
     <IonCard className={`${styles.radicalCard}`}>
