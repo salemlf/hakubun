@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
   IonRow,
   IonCard,
@@ -17,19 +19,42 @@ interface Props {
   level: number | undefined;
 }
 
+interface SrsLevels {
+  [key: string]: any;
+}
+
 export const KanjiContainer = ({ level }: Props) => {
+  const [srsStages, setSrsStages] = useState<SrsLevels>({});
   const {
     isLoading: kanjiSubLvlLoading,
     data: kanjiSubLvlData,
     error: kanjiSubLvlErr,
   } = useKanjiSubjectsForLvl(level);
 
-  // TODO: map two datasets together
   const {
     isLoading: kanjiAssignmentsLvlLoading,
     data: kanjiAssignmentsLvlData,
     error: kanjiAssignmentsLvlErr,
-  } = useKanjiAssignmentsForLvl(level);
+  } = useKanjiAssignmentsForLvl(level, kanjiSubLvlData);
+
+  useEffect(() => {
+    // TODO: change so if statement not needed?
+    if (kanjiSubLvlData) {
+      let mappedSrsLvls: SrsLevels = {};
+
+      kanjiSubLvlData.forEach((kanji: any) => {
+        const found = kanjiAssignmentsLvlData.find(
+          ({ subject_id }: any) => subject_id === kanji.id
+        );
+
+        if (found) {
+          mappedSrsLvls[kanji.id] = found.srs_stage;
+        }
+      });
+
+      setSrsStages(mappedSrsLvls);
+    }
+  }, [kanjiAssignmentsLvlData]);
 
   //   TODO: change to ternary where loading skeleton is displayed while no data
   return (
@@ -54,6 +79,7 @@ export const KanjiContainer = ({ level }: Props) => {
                         {kanjiItem.characters}
                       </p>
                     </div>
+                    <ProgressBar stage={srsStages[kanjiItem.id]}></ProgressBar>
                   </IonCol>
                 );
               })}
