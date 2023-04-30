@@ -5,7 +5,6 @@ interface Props {
   stage: number;
 }
 
-// TODO: subjects will be passed into the radical and kanji containers, where they'll both get stage for each item (need to use assignments endpoint)
 export const ProgressBar = ({ stage }: Props) => {
   const [stagesComplete, setStagesComplete] = useState(new Set());
 
@@ -27,10 +26,6 @@ export const ProgressBar = ({ stage }: Props) => {
   };
 
   useEffect(() => {
-    // *testing
-    console.log("calling fillProgressBar!");
-    console.log("stage in ProgressBar component: ", stage);
-    // *testing
     fillProgressBar(stage);
   }, [stage]);
 

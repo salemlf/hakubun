@@ -9,8 +9,7 @@ import {
 } from "@ionic/react";
 
 import { useAuth } from "../contexts/AuthContext";
-import { useRadicalsCurrLevel } from "../hooks/useRadicalsCurrLvl";
-import { useKanjiCurrLevel } from "../hooks/useKanjiCurrLvl";
+import { useKanjiSubjectsForLvl } from "../hooks/useKanjiSubjectsForLvl";
 import { useReviews } from "../hooks/useReviews";
 import { useLessons } from "../hooks/useLessons";
 import styles from "./Home.module.css";
@@ -60,20 +59,6 @@ const Home = () => {
     error: availReviewsErr,
   } = useReviews(level);
 
-  // TODO: move to radical component?
-  const {
-    isLoading: radicalsCurrLvlLoading,
-    data: radicalsCurrLvlData,
-    error: radicalsCurrLvlErr,
-  } = useRadicalsCurrLevel(level);
-
-  // TODO: move to kanji component
-  const {
-    isLoading: kanjiCurrLvlLoading,
-    data: kanjiCurrLvlData,
-    error: kanjiCurrLvlErr,
-  } = useKanjiCurrLevel(level);
-
   // TODO: move to component
   const goToLessons = () => {
     // TODO: use lessonData
@@ -105,30 +90,16 @@ const Home = () => {
               ></ReviewsButton>
             </IonCol>
           </IonRow>
-          {radicalsCurrLvlData && (
-            <IonRow>
-              <IonCol>
-                <ProgressBar stage={3} />
-              </IonCol>
-            </IonRow>
-          )}
-
-          {radicalsCurrLvlData && (
-            <IonRow class="ion-justify-content-start">
-              <IonCol>
-                <RadicalContainer
-                  radicals={radicalsCurrLvlData}
-                ></RadicalContainer>
-              </IonCol>
-            </IonRow>
-          )}
-          {kanjiCurrLvlData && (
-            <IonRow class="ion-justify-content-start">
-              <IonCol>
-                <KanjiContainer kanji={kanjiCurrLvlData}></KanjiContainer>
-              </IonCol>
-            </IonRow>
-          )}
+          <IonRow class="ion-justify-content-start">
+            <IonCol>
+              <RadicalContainer level={level}></RadicalContainer>
+            </IonCol>
+          </IonRow>
+          <IonRow class="ion-justify-content-start">
+            <IonCol>
+              <KanjiContainer level={level}></KanjiContainer>
+            </IonCol>
+          </IonRow>
           <IonRow>
             <IonCol>
               <IonButton

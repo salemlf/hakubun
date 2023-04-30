@@ -32,7 +32,7 @@ export const WaniKaniAPI = {
     return combined;
   },
 
-  getRadicalsByLevel: async function (level: number) {
+  getRadicalSubjectsByLevel: async function (level: number) {
     let url = `${baseUrl}subjects?levels=${level}&types=radical`;
 
     let radicals = await PagingAPI.iterateOverPages(url, []);
@@ -41,12 +41,31 @@ export const WaniKaniAPI = {
     return combined;
   },
 
-  getKanjiByLevel: async function (level: number) {
+  getKanjiSubjectsByLevel: async function (level: number) {
     let url = `${baseUrl}subjects?levels=${level}&types=kanji`;
 
     let kanji = await PagingAPI.iterateOverPages(url, []);
     let combined = PagingAPI.combinePages(kanji);
 
     return combined;
+  },
+
+  getRadicalAssignmentsByLvl: async function (level: number) {
+    let url = `${baseUrl}assignments?levels=${level}&types=radical`;
+
+    let radicals = await PagingAPI.iterateOverPages(url, []);
+    let radicalsOnLvl = PagingAPI.combinePages(radicals);
+
+    return radicalsOnLvl;
+  },
+
+  getKanjiAssignmentsByLvl: async function (level: number) {
+    let url = `${baseUrl}assignments?levels=${level}&types=kanji`;
+
+    let kanji = await PagingAPI.iterateOverPages(url, []);
+    let kanjiOnLvl = PagingAPI.combinePages(kanji);
+
+    console.log("kanjiOnLvl: ", kanjiOnLvl);
+    return kanjiOnLvl;
   },
 };

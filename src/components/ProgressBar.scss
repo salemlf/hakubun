@@ -3,9 +3,10 @@
   width: 100%;
   border-radius: 50;
   margin: 50;
-  height: 60px;
+  height: 0.75rem;
   display: flex;
   justify-content: center;
+  margin-top: 5px;
 
   :first-child {
     border-radius: 20px 0px 0px 20px;

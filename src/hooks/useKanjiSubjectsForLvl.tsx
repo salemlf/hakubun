@@ -3,10 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 
 // TODO: increase time to wait between data fetches
-export const useKanjiCurrLevel = (level: any) => {
+export const useKanjiSubjectsForLvl = (level: any) => {
   return useQuery({
-    queryKey: ["kanji-curr-lvl", level],
-    queryFn: () => WaniKaniAPI.getKanjiByLevel(level),
+    queryKey: ["kanji-subjects-for-lvl", level],
+    queryFn: () => WaniKaniAPI.getKanjiSubjectsByLevel(level),
     enabled: !!level,
     select: useCallback(
       (data: any) => {

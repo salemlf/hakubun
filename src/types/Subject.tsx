@@ -6,7 +6,7 @@ export interface Subject {
   id: number;
   url: string;
   object: SubjectType;
-  data_updated_at: Date;
+  data_updated_at: Date | null;
   amalgamation_subject_ids: number[];
   auxiliary_meanings: SubjectAuxiliaryMeaning[];
   characters: string;

@@ -3,10 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 
 // TODO: increase time to wait between data fetches
-export const useRadicalsCurrLevel = (level: any) => {
+export const useRadicalSubjectsForLvl = (level: any) => {
   return useQuery({
-    queryKey: ["radicals-curr-lvl", level],
-    queryFn: () => WaniKaniAPI.getRadicalsByLevel(level),
+    queryKey: ["radical-subjects-for-lvl", level],
+    queryFn: () => WaniKaniAPI.getRadicalSubjectsByLevel(level),
     enabled: !!level,
     select: useCallback(
       (data: any) => {
