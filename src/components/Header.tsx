@@ -6,54 +6,64 @@ import {
   IonItem,
   IonRow,
   IonIcon,
+  IonButton,
+  IonButtons,
+  IonBadge,
 } from "@ionic/react";
 
+import {
+  create,
+  ellipsisHorizontal,
+  ellipsisVertical,
+  helpCircle,
+  search,
+  personCircle,
+  star,
+} from "ionicons/icons";
+
 import { settings } from "ionicons/icons";
+
+import styles from "./Header.module.css";
+
+import settingsIcon from "../images/settings.svg";
 
 interface Props {
   username?: string;
   level?: number;
 }
 
-// TODO: increase size of settings icon
-// TODO: change settings icon into button w/ icon
+// TODO: add click event for settings button
 const Header = ({ username, level }: Props) => {
   return (
     <IonHeader>
       <IonToolbar>
         <IonGrid>
-          <IonRow style={styles.row}>
-            <IonCol>
-              <IonItem>{username}</IonItem>
-              <IonItem>{level}</IonItem>
+          <IonRow class="ion-justify-content-start">
+            <IonCol className={`${styles.userInfoCol}`}>
+              <IonItem>
+                <IonBadge slot="start" className={`${styles.lvlTxt}`}>
+                  {level}
+                </IonBadge>
+              </IonItem>
             </IonCol>
-            <IonCol style={styles.rightCol}>
-              <IonIcon
-                icon={settings}
-                color="secondary"
-                size="large"
-                aria-hidden="true"
-              ></IonIcon>
+            <IonCol className={`${styles.userInfoCol}`}>
+              <p>{username}</p>
             </IonCol>
           </IonRow>
         </IonGrid>
+        <IonButtons slot="primary">
+          <IonButton>
+            <img
+              src={settingsIcon}
+              width="50"
+              height="50"
+              alt="settings icon"
+            ></img>
+          </IonButton>
+        </IonButtons>
       </IonToolbar>
     </IonHeader>
   );
-};
-
-let styles = {
-  row: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: "10px",
-  },
-  rightCol: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
 };
 
 export default Header;

@@ -27,6 +27,14 @@
   font-size: 2rem;
 }
 
+.kanjiItemContainer {
+  margin-bottom: 10px;
+}
+
+.progressContainer {
+  margin-top: 5px;
+}
+
 @media (prefers-color-scheme: dark) {
   .kanjiCardTitle {
     color: white;

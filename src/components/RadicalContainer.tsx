@@ -63,7 +63,6 @@ export const RadicalContainer = ({ level }: Props) => {
   return (
     <>
       {radicalSubLvlData && radicalAssignmentLvlData && (
-        // <IonGrid>
         <IonRow>
           <IonCol>
             <IonCard className={`${styles.radicalCard}`}>
@@ -76,39 +75,51 @@ export const RadicalContainer = ({ level }: Props) => {
                 <IonRow class="ion-align-items-center ion-justify-content-start">
                   {(radicalSubLvlData as Subject[]).map((radical: any) => {
                     return (
-                      <IonCol key={`col_${radical.id}`} size="2">
+                      <IonCol
+                        key={`col_${radical.id}`}
+                        size="2"
+                        className={`${styles.radItemContainer}`}
+                      >
                         {radical.selectedImage ? (
                           <>
-                            <div
-                              key={`${radical.id}`}
-                              className={`${styles.radicalDivWithImg}`}
-                            >
-                              <img
-                                src={
-                                  radical.selectedImage
-                                    ? radical.selectedImage
-                                    : radical.fallbackImage
-                                }
-                                alt="radical image"
-                              />
-                            </div>
-                            <ProgressBar
-                              stage={srsStages[radical.id]}
-                            ></ProgressBar>
+                            <IonRow>
+                              <div
+                                key={`${radical.id}`}
+                                className={`${styles.radicalDivWithImg}`}
+                              >
+                                <img
+                                  src={
+                                    radical.selectedImage
+                                      ? radical.selectedImage
+                                      : radical.fallbackImage
+                                  }
+                                  alt="radical image"
+                                />
+                              </div>
+                            </IonRow>
+                            <IonRow className={`${styles.progressContainer}`}>
+                              <ProgressBar
+                                stage={srsStages[radical.id]}
+                              ></ProgressBar>
+                            </IonRow>
                           </>
                         ) : (
                           <>
-                            <div
-                              key={`${radical.id}`}
-                              className={`${styles.radicalDiv}`}
-                            >
-                              <p className={`${styles.radicalText}`}>
-                                {radical.characters}
-                              </p>
-                            </div>
-                            <ProgressBar
-                              stage={srsStages[radical.id]}
-                            ></ProgressBar>
+                            <IonRow>
+                              <div
+                                key={`${radical.id}`}
+                                className={`${styles.radicalDiv}`}
+                              >
+                                <p className={`${styles.radicalText}`}>
+                                  {radical.characters}
+                                </p>
+                              </div>
+                            </IonRow>
+                            <IonRow className={`${styles.progressContainer}`}>
+                              <ProgressBar
+                                stage={srsStages[radical.id]}
+                              ></ProgressBar>
+                            </IonRow>
                           </>
                         )}
                       </IonCol>
@@ -124,7 +135,6 @@ export const RadicalContainer = ({ level }: Props) => {
             </IonCard>
           </IonCol>
         </IonRow>
-        // </IonGrid>
       )}
     </>
   );

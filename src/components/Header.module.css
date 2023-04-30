@@ -1,0 +1,16 @@
+.userInfoCol {
+  flex-grow: 0;
+}
+
+.lvlTxt {
+  font-size: 1.75rem;
+  margin-right: 0;
+}
+
+.settingsIcon {
+  font-size: 4rem;
+}
+
+/* ion-icon {
+  font-size: 64px;
+} */

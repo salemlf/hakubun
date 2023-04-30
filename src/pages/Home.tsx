@@ -71,6 +71,10 @@ const Home = () => {
     console.log("TODO: add reviews button action");
   };
 
+  // TODO: add footer with credit for Icons8 icons
+  /* 
+  <a target="_blank" href="https://icons8.com/icon/67411/settings">Settings</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+  */
   return (
     <>
       <Header username={username} level={level}></Header>

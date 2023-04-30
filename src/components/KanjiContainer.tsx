@@ -70,16 +70,26 @@ export const KanjiContainer = ({ level }: Props) => {
             <IonRow class="ion-align-items-center ion-justify-content-start">
               {(kanjiSubLvlData as Subject[]).map((kanjiItem: any) => {
                 return (
-                  <IonCol key={`col_${kanjiItem.id}`} size="2">
-                    <div
-                      key={`${kanjiItem.id}`}
-                      className={`${styles.kanjiDiv}`}
-                    >
-                      <p className={`${styles.kanjiText}`}>
-                        {kanjiItem.characters}
-                      </p>
-                    </div>
-                    <ProgressBar stage={srsStages[kanjiItem.id]}></ProgressBar>
+                  <IonCol
+                    key={`col_${kanjiItem.id}`}
+                    size="2"
+                    className={`${styles.kanjiItemContainer}`}
+                  >
+                    <IonRow>
+                      <div
+                        key={`${kanjiItem.id}`}
+                        className={`${styles.kanjiDiv}`}
+                      >
+                        <p className={`${styles.kanjiText}`}>
+                          {kanjiItem.characters}
+                        </p>
+                      </div>
+                    </IonRow>
+                    <IonRow className={`${styles.progressContainer}`}>
+                      <ProgressBar
+                        stage={srsStages[kanjiItem.id]}
+                      ></ProgressBar>
+                    </IonRow>
                   </IonCol>
                 );
               })}
