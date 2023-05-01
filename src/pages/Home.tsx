@@ -19,7 +19,7 @@ import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";
 import { RadicalContainer } from "../components/RadicalContainer";
 import { KanjiContainer } from "../components/KanjiContainer";
-import { ProgressBar } from "../components/ProgressBar";
+import { Footer } from "../components/Footer";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
@@ -117,6 +117,7 @@ const Home = () => {
         </IonGrid>
         {homeLoading && <IonSpinner name="dots"></IonSpinner>}
       </IonContent>
+      <Footer></Footer>
     </>
   );
 };

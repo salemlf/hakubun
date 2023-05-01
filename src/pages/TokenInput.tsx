@@ -71,6 +71,7 @@ const TokenInput = () => {
 
 export default TokenInput;
 
+// TODO: change to use css file
 const styles = {
   // TODO: change this based on dark mode or light
   input: {
