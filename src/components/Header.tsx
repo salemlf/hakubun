@@ -38,7 +38,10 @@ const Header = ({ username, level }: Props) => {
     <IonHeader>
       <IonToolbar>
         <IonGrid>
-          <IonRow class="ion-justify-content-start">
+          <IonRow
+            class="ion-justify-content-start"
+            className={`${styles.userInfoRow}`}
+          >
             <IonCol className={`${styles.userInfoCol}`}>
               <IonItem>
                 <IonBadge slot="start" className={`${styles.lvlTxt}`}>

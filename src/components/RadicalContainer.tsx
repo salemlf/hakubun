@@ -63,78 +63,74 @@ export const RadicalContainer = ({ level }: Props) => {
   return (
     <>
       {radicalSubLvlData && radicalAssignmentLvlData && (
-        <IonRow>
-          <IonCol>
-            <IonCard className={`${styles.radicalCard}`}>
-              <IonCardHeader>
-                <IonCardTitle className={`${styles.radicalCardTitle}`}>
-                  Radicals
-                </IonCardTitle>
-              </IonCardHeader>
-              <IonCardContent className={`${styles.cardContent}`}>
-                <IonRow class="ion-align-items-center ion-justify-content-start">
-                  {(radicalSubLvlData as Subject[]).map((radical: any) => {
-                    return (
-                      <IonCol
-                        key={`col_${radical.id}`}
-                        size="2"
-                        className={`${styles.radItemContainer}`}
-                      >
-                        {radical.selectedImage ? (
-                          <>
-                            <IonRow>
-                              <div
-                                key={`${radical.id}`}
-                                className={`${styles.radicalDivWithImg}`}
-                              >
-                                <img
-                                  src={
-                                    radical.selectedImage
-                                      ? radical.selectedImage
-                                      : radical.fallbackImage
-                                  }
-                                  alt="radical image"
-                                />
-                              </div>
-                            </IonRow>
-                            <IonRow className={`${styles.progressContainer}`}>
-                              <ProgressBar
-                                stage={srsStages[radical.id]}
-                              ></ProgressBar>
-                            </IonRow>
-                          </>
-                        ) : (
-                          <>
-                            <IonRow>
-                              <div
-                                key={`${radical.id}`}
-                                className={`${styles.radicalDiv}`}
-                              >
-                                <p className={`${styles.radicalText}`}>
-                                  {radical.characters}
-                                </p>
-                              </div>
-                            </IonRow>
-                            <IonRow className={`${styles.progressContainer}`}>
-                              <ProgressBar
-                                stage={srsStages[radical.id]}
-                              ></ProgressBar>
-                            </IonRow>
-                          </>
-                        )}
-                      </IonCol>
-                    );
-                  })}
-                </IonRow>
-                {srsStages && (
-                  <IonRow>
-                    <IonCol></IonCol>
-                  </IonRow>
-                )}
-              </IonCardContent>
-            </IonCard>
-          </IonCol>
-        </IonRow>
+        <IonCard className={`${styles.radicalCard}`}>
+          <IonCardHeader>
+            <IonCardTitle className={`${styles.radicalCardTitle}`}>
+              Radicals
+            </IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent className={`${styles.cardContent}`}>
+            <IonRow class="ion-align-items-center ion-justify-content-start">
+              {(radicalSubLvlData as Subject[]).map((radical: any) => {
+                return (
+                  <IonCol
+                    key={`col_${radical.id}`}
+                    size="2"
+                    className={`${styles.radItemContainer}`}
+                  >
+                    {radical.selectedImage ? (
+                      <>
+                        <IonRow>
+                          <div
+                            key={`${radical.id}`}
+                            className={`${styles.radicalDivWithImg}`}
+                          >
+                            <img
+                              src={
+                                radical.selectedImage
+                                  ? radical.selectedImage
+                                  : radical.fallbackImage
+                              }
+                              alt="radical image"
+                            />
+                          </div>
+                        </IonRow>
+                        <IonRow className={`${styles.progressContainer}`}>
+                          <ProgressBar
+                            stage={srsStages[radical.id]}
+                          ></ProgressBar>
+                        </IonRow>
+                      </>
+                    ) : (
+                      <>
+                        <IonRow>
+                          <div
+                            key={`${radical.id}`}
+                            className={`${styles.radicalDiv}`}
+                          >
+                            <p className={`${styles.radicalText}`}>
+                              {radical.characters}
+                            </p>
+                          </div>
+                        </IonRow>
+                        <IonRow className={`${styles.progressContainer}`}>
+                          <ProgressBar
+                            stage={srsStages[radical.id]}
+                          ></ProgressBar>
+                        </IonRow>
+                      </>
+                    )}
+                  </IonCol>
+                );
+              })}
+            </IonRow>
+            {srsStages && (
+              <IonRow>
+                <IonCol></IonCol>
+              </IonRow>
+            )}
+          </IonCardContent>
+        </IonCard>
       )}
     </>
   );

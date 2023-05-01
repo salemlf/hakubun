@@ -11,6 +11,17 @@
   font-size: 4rem;
 }
 
-/* ion-icon {
-  font-size: 64px;
-} */
+.userInfoRow {
+  align-items: center;
+}
+
+.userInfoCol p {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .lvlTxt {
+    color: white;
+  }
+}
