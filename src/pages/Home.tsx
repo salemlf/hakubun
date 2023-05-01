@@ -60,12 +60,6 @@ const Home = () => {
   } = useReviews(level);
 
   // TODO: move to component
-  const goToLessons = () => {
-    // TODO: use lessonData
-    console.log("TODO: add lessons button action");
-  };
-
-  // TODO: move to component
   const goToReviews = () => {
     // TODO: use reviewData
     console.log("TODO: add reviews button action");
@@ -82,10 +76,7 @@ const Home = () => {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <LessonsButton
-                handleClick={goToLessons}
-                numLessons={lessonData?.length}
-              ></LessonsButton>
+              <LessonsButton numLessons={lessonData?.length}></LessonsButton>
             </IonCol>
             <IonCol>
               <ReviewsButton

@@ -1,0 +1,27 @@
+.lessonBtn {
+  height: 4rem;
+  position: relative;
+}
+
+ion-button.lessonBtn {
+  --background: var(--wanikani-pink);
+}
+
+.lessonBtnBgImg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.lessonBtnTxt {
+  position: absolute;
+  top: 2rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .lessonBtnTxt {
+    color: white;
+  }
+}
