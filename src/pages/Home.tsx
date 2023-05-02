@@ -9,10 +9,12 @@ import {
 } from "@ionic/react";
 
 import { useAuth } from "../contexts/AuthContext";
-import { useKanjiSubjectsForLvl } from "../hooks/useKanjiSubjectsForLvl";
 import { useReviews } from "../hooks/useReviews";
 import { useLessons } from "../hooks/useLessons";
-import styles from "./Home.module.css";
+
+// !temp
+import Testing from "../components/ImageFallback";
+// !temp
 
 import Header from "../components/Header";
 import LessonsButton from "../components/LessonsButton";
@@ -59,16 +61,6 @@ const Home = () => {
     error: availReviewsErr,
   } = useReviews(level);
 
-  // TODO: move to component
-  const goToReviews = () => {
-    // TODO: use reviewData
-    console.log("TODO: add reviews button action");
-  };
-
-  // TODO: add footer with credit for Icons8 icons
-  /* 
-  <a target="_blank" href="https://icons8.com/icon/67411/settings">Settings</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
-  */
   return (
     <>
       <Header username={username} level={level}></Header>
@@ -80,10 +72,12 @@ const Home = () => {
             </IonCol>
             <IonCol>
               <ReviewsButton
-                handleClick={goToReviews}
                 numReviews={availReviewsData?.length}
               ></ReviewsButton>
             </IonCol>
+          </IonRow>
+          <IonRow class="ion-justify-content-start">
+            <IonCol>{/* <Testing></Testing> */}</IonCol>
           </IonRow>
           <IonRow class="ion-justify-content-start">
             <IonCol>

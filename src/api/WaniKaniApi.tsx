@@ -7,65 +7,64 @@ export const WaniKaniAPI = {
   subjects: [],
 
   getReviews: async function () {
-    const response = await api.request({
-      url: "assignments?immediately_available_for_review",
-      method: "GET",
-    });
+    let url = `${baseUrl}assignments?immediately_available_for_review`;
 
-    return response.data;
+    let reviews = await PagingAPI.iterateOverPages(url, []);
+    let reviewsCombined = PagingAPI.combinePages(reviews);
+
+    return reviewsCombined;
   },
   getLessons: async function () {
-    const response: AxiosResponse = await api.request({
-      url: "assignments?immediately_available_for_lessons",
-      method: "GET",
-    });
+    let url = `${baseUrl}assignments?immediately_available_for_lessons`;
 
-    return response.data;
+    let lessons = await PagingAPI.iterateOverPages(url, []);
+    let lessonsCombined = PagingAPI.combinePages(lessons);
+
+    return lessonsCombined;
   },
 
   getSubjectsByLevel: async function (level: number) {
     let url = `${baseUrl}subjects?levels=${level}`;
 
     let subjects = await PagingAPI.iterateOverPages(url, []);
-    let combined = PagingAPI.combinePages(subjects);
+    let subjectsCombined = PagingAPI.combinePages(subjects);
 
-    return combined;
+    return subjectsCombined;
   },
 
   getRadicalSubjectsByLevel: async function (level: number) {
     let url = `${baseUrl}subjects?levels=${level}&types=radical`;
 
     let radicals = await PagingAPI.iterateOverPages(url, []);
-    let combined = PagingAPI.combinePages(radicals);
+    let radicalsCombined = PagingAPI.combinePages(radicals);
 
-    return combined;
+    return radicalsCombined;
   },
 
   getKanjiSubjectsByLevel: async function (level: number) {
     let url = `${baseUrl}subjects?levels=${level}&types=kanji`;
 
     let kanji = await PagingAPI.iterateOverPages(url, []);
-    let combined = PagingAPI.combinePages(kanji);
+    let kanjiCombined = PagingAPI.combinePages(kanji);
 
-    return combined;
+    return kanjiCombined;
   },
 
   getRadicalAssignmentsByLvl: async function (level: number) {
     let url = `${baseUrl}assignments?levels=${level}&types=radical`;
 
     let radicals = await PagingAPI.iterateOverPages(url, []);
-    let radicalsOnLvl = PagingAPI.combinePages(radicals);
+    let radicalsCombined = PagingAPI.combinePages(radicals);
 
-    return radicalsOnLvl;
+    return radicalsCombined;
   },
 
   getKanjiAssignmentsByLvl: async function (level: number) {
     let url = `${baseUrl}assignments?levels=${level}&types=kanji`;
 
     let kanji = await PagingAPI.iterateOverPages(url, []);
-    let kanjiOnLvl = PagingAPI.combinePages(kanji);
+    let kanjiCombined = PagingAPI.combinePages(kanji);
 
-    console.log("kanjiOnLvl: ", kanjiOnLvl);
-    return kanjiOnLvl;
+    return kanjiCombined;
   },
 };

@@ -1,4 +1,4 @@
-ion-button.lessonBtn {
+ion-button.reviewBtn {
   min-height: 4.75rem;
   height: 100%;
   border-radius: 8px;
@@ -6,16 +6,16 @@ ion-button.lessonBtn {
   background-position: top center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-color: var(--wanikani-pink);
+  background-color: var(--wanikani-blue);
 }
 
-.lessonBtnTxt {
+.reviewBtnTxt {
   position: absolute;
   top: 3.125rem;
   left: 0;
 }
 
-.lessonBtnBadge {
+.reviewBtnBadge {
   position: absolute;
   top: 3.5rem;
   right: 0;
@@ -23,8 +23,8 @@ ion-button.lessonBtn {
 }
 
 @media (prefers-color-scheme: dark) {
-  .lessonBtnTxt,
-  .lessonBtnBadge {
+  .reviewBtnTxt,
+  .reviewBtnBadge {
     color: white;
   }
 }

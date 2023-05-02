@@ -8,6 +8,7 @@ export const useRadicalSubjectsForLvl = (level: any) => {
     queryKey: ["radical-subjects-for-lvl", level],
     queryFn: () => WaniKaniAPI.getRadicalSubjectsByLevel(level),
     enabled: !!level,
+    // TODO: simply this further
     select: useCallback(
       (data: any) => {
         let flattened = data.data.map((elem: any) => {
@@ -21,26 +22,21 @@ export const useRadicalSubjectsForLvl = (level: any) => {
           subject: any
         ) {
           if (subject.characters == null) {
-            // TODO: add image description
             let availableImages =
               subject.character_images
                 ?.filter((image: any) => image.content_type === "image/png")
                 .map((image: any) => image.url) || null;
 
-            // TODO: omg ewew, please actually do this for realz
-            subject.selectedImage = availableImages![0];
-            subject.fallbackImage = availableImages![1];
+            subject.availableImages = availableImages;
+            subject.useImage = true;
+          } else {
+            subject.useImage = false;
           }
           filtered.push(subject);
 
           return filtered;
         },
         []);
-
-        // *testing
-        console.log("radsUpdated: ", radsUpdated);
-        // *testing
-
         return radsUpdated;
       },
       [level]

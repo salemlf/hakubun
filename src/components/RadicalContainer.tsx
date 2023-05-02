@@ -11,6 +11,7 @@ import {
 } from "@ionic/react";
 
 import { ProgressBar } from "./ProgressBar";
+import ImageFallback from "./ImageFallback";
 import { Subject } from "../types/Subject";
 import { useRadicalAssignmentsForLvl } from "../hooks/useRadicalAssignmentsForLvl";
 import { useRadicalSubjectsForLvl } from "../hooks/useRadicalSubjectsForLvl";
@@ -78,21 +79,17 @@ export const RadicalContainer = ({ level }: Props) => {
                     size="2"
                     className={`${styles.radItemContainer}`}
                   >
-                    {radical.selectedImage ? (
+                    {radical.useImage ? (
                       <>
                         <IonRow>
                           <div
                             key={`${radical.id}`}
                             className={`${styles.radicalDivWithImg}`}
                           >
-                            <img
-                              src={
-                                radical.selectedImage
-                                  ? radical.selectedImage
-                                  : radical.fallbackImage
-                              }
-                              alt="radical image"
-                            />
+                            <ImageFallback
+                              images={radical.availableImages}
+                              altText={radical.meaning_mnemonic}
+                            ></ImageFallback>
                           </div>
                         </IonRow>
                         <IonRow className={`${styles.progressContainer}`}>

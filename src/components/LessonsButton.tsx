@@ -1,47 +1,34 @@
 import { useEffect, useState } from "react";
-import { IonButton } from "@ionic/react";
+import { IonButton, IonBadge } from "@ionic/react";
 
-import getBgByKey from "../getLessonBgByKey";
-import "./LessonsButton.module.scss";
+import getBgByKey from "../helpers/getLessonBgByKey";
 import styles from "./LessonsButton.module.scss";
 
 interface Props {
-  numLessons: number;
+  numLessons: number | undefined;
 }
 
-// interface Obj {
-//   [key: string]: any;
-// }
-
 const lessonBtnImages = [0, 24, 49, 99, 249, 499, 500];
+const maxedOut = lessonBtnImages.at(-1);
 
+// TODO: combine component with Reviews Button?
 const LessonsButton = ({ numLessons }: Props) => {
-  // const [bgImgClass, setBgImgClass] = useState<number>(0);
   const [bgImgName, setBgImgName] = useState<string>("");
 
-  // *testing
-  // let testLessonNum = 150;
-  // *testing
   useEffect(() => {
-    // TODO: uncomment when done testing
-    let imageClassNum = Math.min(
-      ...lessonBtnImages.filter((num: number) => num >= numLessons)
-    );
+    if (numLessons) {
+      // TODO: uncomment when done testing
+      let imageClassNum = Math.min(
+        ...lessonBtnImages.filter((num: number) => num >= numLessons)
+      );
 
-    // *testing
-    // let imageClassNum = Math.min(
-    //   ...lessonBtnImages.filter((num: number) => num >= testLessonNum)
-    // );
-    // console.log(
-    //   "🚀 ~ file: LessonsButton.tsx:15 ~ useEffect ~ imageClassNum:",
-    //   imageClassNum
-    // );
-    // *testing
+      let bgVarName =
+        imageClassNum == Infinity
+          ? `bgImg${maxedOut}`
+          : `bgImg${imageClassNum}`;
 
-    let bgVarName = `bgImg${imageClassNum}`;
-    setBgImgName(bgVarName);
-
-    console.log("bgImgName: ", bgImgName);
+      setBgImgName(bgVarName);
+    }
   }, [numLessons]);
 
   const goToLessons = () => {
@@ -49,20 +36,19 @@ const LessonsButton = ({ numLessons }: Props) => {
     console.log("TODO: add lessons button action");
   };
 
-  // TODO: move text left, show number as badge
   return (
     <IonButton
+      color="clear"
       expand="block"
       title="Lessons"
       onClick={goToLessons}
       className={`${styles.lessonBtn}`}
+      style={{
+        backgroundImage: `url(${getBgByKey(bgImgName)})`,
+      }}
     >
-      <img
-        src={`${getBgByKey(bgImgName)}`}
-        alt=""
-        className={`${styles.lessonBtnBgImg}`}
-      />
-      <p className={`${styles.lessonBtnTxt}`}>Lessons: {numLessons}</p>
+      <p className={`${styles.lessonBtnTxt}`}>Lessons</p>
+      <IonBadge className={`${styles.lessonBtnBadge}`}>{numLessons}</IonBadge>
     </IonButton>
   );
 };
