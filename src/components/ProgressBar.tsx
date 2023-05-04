@@ -1,41 +1,56 @@
 import { useState, useEffect } from "react";
-import "./ProgressBar.scss";
+import { useKanjiAssignmentsForLvl } from "../hooks/useKanjiAssignmentsForLvl";
+import { getAssignmentStatuses } from "../helpers/getAssignmentStatuses";
+
+import styles from "./ProgressBar.module.scss";
 
 interface Props {
-  stage: number;
+  level: number | undefined;
 }
 
-export const ProgressBar = ({ stage }: Props) => {
-  const [stagesComplete, setStagesComplete] = useState(new Set());
-
-  const fillProgressBar = (stage: number) => {
-    const updatedStagesComplete = new Set(stagesComplete);
-
-    // checks what stage is, then adds that number and below to the set to indicate they're complete
-    // ex. 1: stage = 1 -> set = [1]
-    // ex. 2: stage 3 -> set = [1, 2, 3]
-    for (let i = stage; i >= 1; i--) {
-      if (!stagesComplete.has(i)) {
-        updatedStagesComplete.add(i);
-      } else {
-        updatedStagesComplete.delete(i);
-      }
-    }
-
-    setStagesComplete(updatedStagesComplete);
-  };
+export const ProgressBar = ({ level }: Props) => {
+  const [completed, setCompleted] = useState(0);
+  const [passed, setPassed] = useState(0);
+  const [total, setTotal] = useState(0);
+  const {
+    isLoading: kanjiAssignmentsLvlLoading,
+    data: kanjiAssignmentsLvlData,
+    error: kanjiAssignmentsLvlErr,
+  } = useKanjiAssignmentsForLvl(level, false);
 
   useEffect(() => {
-    fillProgressBar(stage);
-  }, [stage]);
+    if (kanjiAssignmentsLvlData) {
+      console.log("kanjiAssignmentsLvlData: ", kanjiAssignmentsLvlData);
+
+      let { passed, total } = getAssignmentStatuses(kanjiAssignmentsLvlData);
+      let percentage = Math.round((passed / total) * 100);
+      setCompleted(percentage);
+
+      setPassed(passed);
+      setTotal(total);
+      // console.log(
+      //   "🚀 ~ file: ProgressBar.tsx:15 ~ useEffect ~ percentage:",
+      //   percentage
+      // );
+    }
+  }, [kanjiAssignmentsLvlData]);
+
+  //   TODO: change text color and placement based on percentage complete
+
+  const fillerStyles = {
+    height: "100%",
+    width: `${completed}%`,
+    backgroundColor: "#ff00aa",
+    borderRadius: "inherit",
+    position: "absolute" as "absolute",
+  };
 
   return (
-    <div className="container-styles">
-      <div className={`block ${stagesComplete.has(1) ? "done" : ""}`}></div>
-      <div className={`block ${stagesComplete.has(2) ? "done" : ""}`}></div>
-      <div className={`block ${stagesComplete.has(3) ? "done" : ""}`}></div>
-      <div className={`block ${stagesComplete.has(4) ? "done" : ""}`}></div>
-      <div className={`block ${stagesComplete.has(5) ? "done" : ""}`}></div>
+    <div className={`${styles.containerStyles}`}>
+      <div style={fillerStyles}></div>
+      <p
+        className={`${styles.labelStyles}`}
+      >{`${passed} of ${total} kanji passed`}</p>
     </div>
   );
 };

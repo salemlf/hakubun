@@ -13,6 +13,7 @@ import { useReviews } from "../hooks/useReviews";
 import { useLessons } from "../hooks/useLessons";
 
 // !temp
+import { ProgressBar } from "../components/ProgressBar";
 import Testing from "../components/ImageFallback";
 // !temp
 
@@ -76,8 +77,10 @@ const Home = () => {
               ></ReviewsButton>
             </IonCol>
           </IonRow>
-          <IonRow class="ion-justify-content-start">
-            <IonCol>{/* <Testing></Testing> */}</IonCol>
+          <IonRow>
+            {/* <IonCol> */}
+            <ProgressBar level={level}></ProgressBar>
+            {/* </IonCol> */}
           </IonRow>
           <IonRow class="ion-justify-content-start">
             <IonCol>

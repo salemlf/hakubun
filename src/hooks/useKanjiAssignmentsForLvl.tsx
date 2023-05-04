@@ -6,12 +6,15 @@ import { Subject } from "../types/Subject";
 // TODO: increase time to wait between data fetches
 export const useKanjiAssignmentsForLvl = (
   level: any,
-  relatedSubjs: Subject[]
+  needsRelatedSubj: boolean,
+  relatedSubjs?: Subject[]
 ) => {
+  let dependencies = needsRelatedSubj ? !!level && !!relatedSubjs : !!level;
   return useQuery({
     queryKey: ["kanji-assignments-for-lvl", level],
     queryFn: () => WaniKaniAPI.getKanjiAssignmentsByLvl(level),
-    enabled: !!level && !!relatedSubjs,
+    // enabled: !!level && !!relatedSubjs,
+    enabled: dependencies,
     select: useCallback(
       (data: any) => {
         let flattened = data.data.map((elem: any) => {
