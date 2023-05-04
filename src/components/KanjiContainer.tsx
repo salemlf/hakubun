@@ -9,7 +9,7 @@ import {
   IonCardContent,
 } from "@ionic/react";
 
-import { ProgressBar } from "./ProgressBar";
+import { StepProgressBar } from "./StepProgressBar";
 import { useKanjiSubjectsForLvl } from "../hooks/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../hooks/useKanjiAssignmentsForLvl";
 import { Subject } from "../types/Subject";
@@ -35,7 +35,7 @@ export const KanjiContainer = ({ level }: Props) => {
     isLoading: kanjiAssignmentsLvlLoading,
     data: kanjiAssignmentsLvlData,
     error: kanjiAssignmentsLvlErr,
-  } = useKanjiAssignmentsForLvl(level, kanjiSubLvlData);
+  } = useKanjiAssignmentsForLvl(level, true, kanjiSubLvlData);
 
   useEffect(() => {
     // TODO: change so if statement not needed?
@@ -86,9 +86,9 @@ export const KanjiContainer = ({ level }: Props) => {
                       </div>
                     </IonRow>
                     <IonRow className={`${styles.progressContainer}`}>
-                      <ProgressBar
+                      <StepProgressBar
                         stage={srsStages[kanjiItem.id]}
-                      ></ProgressBar>
+                      ></StepProgressBar>
                     </IonRow>
                   </IonCol>
                 );

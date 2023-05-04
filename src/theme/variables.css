@@ -28,6 +28,9 @@ http://ionicframework.com/docs/theming/ */
   --grey-background-color: #423949;
   --offwhite-color: #e8d6ee;
 
+  --light-greyish-purple: #423949;
+  --dark-greyish-purple: #30223a;
+
   --wanikani-purple: #aa00ff;
   --wanikani-pink: #ff00aa;
   --wanikani-blue: #00aaff;
@@ -76,7 +79,7 @@ http://ionicframework.com/docs/theming/ */
    */
 
   :root {
-    --ion-background-color: #1b0f24;
+    --ion-background-color: #30223a;
     --ion-background-color-rgb: 27, 15, 36;
 
     --ion-text-color: #ffffff;
@@ -106,7 +109,7 @@ http://ionicframework.com/docs/theming/ */
   }
 
   body {
-    --ion-background-color: #1b0f24;
+    --ion-background-color: #30223A
     --ion-color-primary: #c86bfa;
     --ion-color-primary-rgb: 200, 107, 250;
     --ion-color-primary-contrast: #000000;
@@ -177,12 +180,13 @@ http://ionicframework.com/docs/theming/ */
    */
 
   .ios body {
-    --ion-background-color: #1b0f24;
+    --ion-background-color: #30223A;
     --ion-background-color-rgb: 27, 15, 36;
 
     --ion-text-color: #ffffff;
     --ion-text-color-rgb: 255, 255, 255;
 
+    /* TODO: update color steps */
     --ion-color-step-50: #261b2f;
     --ion-color-step-100: #32273a;
     --ion-color-step-150: #3d3345;
@@ -203,6 +207,7 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-step-900: #e8e7e9;
     --ion-color-step-950: #f4f3f4;
 
+    /* TODO: change these once testing iOS */
     --ion-item-background: #423949;
 
     --ion-card-background: #1c1c1d;
@@ -220,7 +225,7 @@ http://ionicframework.com/docs/theming/ */
    */
 
   .md body {
-    --ion-background-color: #1b0f24;
+    --ion-background-color: #30223A;
     --ion-background-color-rgb: 27, 15, 36;
 
     --ion-text-color: #ffffff;

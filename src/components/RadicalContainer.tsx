@@ -10,7 +10,7 @@ import {
   IonCardContent,
 } from "@ionic/react";
 
-import { ProgressBar } from "./ProgressBar";
+import { StepProgressBar } from "./StepProgressBar";
 import ImageFallback from "./ImageFallback";
 import { Subject } from "../types/Subject";
 import { useRadicalAssignmentsForLvl } from "../hooks/useRadicalAssignmentsForLvl";
@@ -93,9 +93,9 @@ export const RadicalContainer = ({ level }: Props) => {
                           </div>
                         </IonRow>
                         <IonRow className={`${styles.progressContainer}`}>
-                          <ProgressBar
+                          <StepProgressBar
                             stage={srsStages[radical.id]}
-                          ></ProgressBar>
+                          ></StepProgressBar>
                         </IonRow>
                       </>
                     ) : (
@@ -111,9 +111,9 @@ export const RadicalContainer = ({ level }: Props) => {
                           </div>
                         </IonRow>
                         <IonRow className={`${styles.progressContainer}`}>
-                          <ProgressBar
+                          <StepProgressBar
                             stage={srsStages[radical.id]}
-                          ></ProgressBar>
+                          ></StepProgressBar>
                         </IonRow>
                       </>
                     )}
