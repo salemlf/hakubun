@@ -51,7 +51,7 @@ export const WaniKaniAPI = {
   },
 
   getRadicalAssignmentsByLvl: async function (level: number) {
-    let url = `${baseUrl}assignments?levels=${level}&types=radical`;
+    let url = `${baseUrl}assignments?levels=${level}&subject_types=radical`;
 
     let radicals = await PagingAPI.iterateOverPages(url, []);
     let radicalsCombined = PagingAPI.combinePages(radicals);
@@ -60,7 +60,7 @@ export const WaniKaniAPI = {
   },
 
   getKanjiAssignmentsByLvl: async function (level: number) {
-    let url = `${baseUrl}assignments?levels=${level}&types=kanji`;
+    let url = `${baseUrl}assignments?levels=${level}&subject_types=kanji`;
 
     let kanji = await PagingAPI.iterateOverPages(url, []);
     let kanjiCombined = PagingAPI.combinePages(kanji);
