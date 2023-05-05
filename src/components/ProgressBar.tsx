@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useKanjiAssignmentsForLvl } from "../hooks/useKanjiAssignmentsForLvl";
 import { getAssignmentStatuses } from "../helpers/getAssignmentStatuses";
 
@@ -9,9 +9,11 @@ interface Props {
 }
 
 export const ProgressBar = ({ level }: Props) => {
+  // TODO: change from useState?
   const [completed, setCompleted] = useState(0);
-  const [passed, setPassed] = useState(0);
-  const [total, setTotal] = useState(0);
+  const barRef = useRef<null | HTMLDivElement>(null);
+  const completedTxtRef = useRef<string>("");
+
   const {
     isLoading: kanjiAssignmentsLvlLoading,
     data: kanjiAssignmentsLvlData,
@@ -20,37 +22,34 @@ export const ProgressBar = ({ level }: Props) => {
 
   useEffect(() => {
     if (kanjiAssignmentsLvlData) {
-      console.log("kanjiAssignmentsLvlData: ", kanjiAssignmentsLvlData);
-
       let { passed, total } = getAssignmentStatuses(kanjiAssignmentsLvlData);
       let percentage = Math.round((passed / total) * 100);
-      setCompleted(percentage);
 
-      setPassed(passed);
-      setTotal(total);
-      // console.log(
-      //   "🚀 ~ file: ProgressBar.tsx:15 ~ useEffect ~ percentage:",
-      //   percentage
-      // );
+      let updatedTxt = `${passed} of ${total} kanji passed`;
+
+      completedTxtRef.current = updatedTxt;
+
+      if (barRef.current) {
+        barRef.current.style.width = `${percentage}%`;
+      }
+
+      setCompleted(percentage);
     }
   }, [kanjiAssignmentsLvlData]);
 
-  //   TODO: change text color and placement based on percentage complete
-
-  const fillerStyles = {
-    height: "100%",
-    width: `${completed}%`,
-    backgroundColor: "#ff00aa",
-    borderRadius: "inherit",
-    position: "absolute" as "absolute",
-  };
-
   return (
-    <div className={`${styles.containerStyles}`}>
-      <div style={fillerStyles}></div>
-      <p
-        className={`${styles.labelStyles}`}
-      >{`${passed} of ${total} kanji passed`}</p>
+    <div className={`${styles.container}`}>
+      <div className={`${styles.backdrop}`}>
+        <div className={`${styles.source}`}>
+          <div className={`${styles.barBg}`}>
+            <div ref={barRef} className={`${styles.bar}`}></div>
+          </div>
+          <div className={`${styles.contents}`}>
+            <span>{completedTxtRef.current}</span>
+          </div>
+          <div></div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -78,9 +78,9 @@ const Home = () => {
             </IonCol>
           </IonRow>
           <IonRow>
-            {/* <IonCol> */}
-            <ProgressBar level={level}></ProgressBar>
-            {/* </IonCol> */}
+            <IonCol>
+              <ProgressBar level={level}></ProgressBar>
+            </IonCol>
           </IonRow>
           <IonRow class="ion-justify-content-start">
             <IonCol>

@@ -1,24 +1,45 @@
-.containerStyles {
-  height: 20px;
+$loadingColor: var(--wanikani-pink);
+
+.container {
   width: 100%;
-  background-color: #e0e0de;
-  border-radius: 50px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  position: relative;
+  border: 2px solid $loadingColor;
+  margin: 10px 0;
+  border-radius: 10px;
 }
 
-.fillerStyles {
-  background-color: #ff00aa;
-  border-radius: inherit;
+.contents,
+.bar {
+  height: 20px;
+}
+
+.backdrop {
+  position: relative;
+  background-color: $loadingColor;
+  border-radius: 10px;
+}
+
+.source {
+  mix-blend-mode: screen;
+}
+
+.barBg {
+  background-color: white;
+  border-radius: 10px;
+}
+
+.bar {
+  background-color: black;
+  border-radius: 10px;
+}
+
+.contents {
   position: absolute;
-}
-
-.labelStyles {
-  padding: 5px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
-  position: relative;
-  text-align: center;
-  margin: 0px;
-  top: -5px;
+  mix-blend-mode: difference;
 }
