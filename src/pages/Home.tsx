@@ -8,15 +8,13 @@ import {
   IonSpinner,
 } from "@ionic/react";
 
+import "./Home.module.scss";
+
 import { useAuth } from "../contexts/AuthContext";
 import { useReviews } from "../hooks/useReviews";
 import { useLessons } from "../hooks/useLessons";
 
-// !temp
 import { ProgressBar } from "../components/ProgressBar";
-import Testing from "../components/ImageFallback";
-// !temp
-
 import Header from "../components/Header";
 import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";

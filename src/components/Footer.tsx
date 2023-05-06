@@ -1,6 +1,6 @@
 import { IonFooter, IonToolbar, IonTitle } from "@ionic/react";
 
-import styles from "./Footer.module.css";
+import styles from "./Footer.module.scss";
 
 export const Footer = () => {
   return (

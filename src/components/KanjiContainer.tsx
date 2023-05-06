@@ -13,7 +13,7 @@ import { StepProgressBar } from "./StepProgressBar";
 import { useKanjiSubjectsForLvl } from "../hooks/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../hooks/useKanjiAssignmentsForLvl";
 import { Subject } from "../types/Subject";
-import styles from "./KanjiContainer.module.css";
+import styles from "./KanjiContainer.module.scss";
 
 interface Props {
   level: number | undefined;

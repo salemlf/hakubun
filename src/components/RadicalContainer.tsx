@@ -15,7 +15,7 @@ import ImageFallback from "./ImageFallback";
 import { Subject } from "../types/Subject";
 import { useRadicalAssignmentsForLvl } from "../hooks/useRadicalAssignmentsForLvl";
 import { useRadicalSubjectsForLvl } from "../hooks/useRadicalSubjectsForLvl";
-import styles from "./RadicalContainer.module.css";
+import styles from "./RadicalContainer.module.scss";
 
 interface Props {
   level: number | undefined;

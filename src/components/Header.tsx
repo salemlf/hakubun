@@ -23,7 +23,7 @@ import {
 
 import { settings } from "ionicons/icons";
 
-import styles from "./Header.module.css";
+import styles from "./Header.module.scss";
 
 import settingsIcon from "../images/settings.svg";
 
