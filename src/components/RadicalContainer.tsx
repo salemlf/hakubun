@@ -8,6 +8,9 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  useIonPopover,
+  IonContent,
+  IonItem,
 } from "@ionic/react";
 
 import { StepProgressBar } from "./StepProgressBar";
@@ -15,6 +18,7 @@ import ImageFallback from "./ImageFallback";
 import { Subject } from "../types/Subject";
 import { useRadicalAssignmentsForLvl } from "../hooks/useRadicalAssignmentsForLvl";
 import { useRadicalSubjectsForLvl } from "../hooks/useRadicalSubjectsForLvl";
+// import "./RadicalContainer.module.scss";
 import styles from "./RadicalContainer.module.scss";
 
 interface Props {
@@ -25,9 +29,44 @@ interface SrsLevels {
   [key: string]: any;
 }
 
+type PopoverProps = {
+  onHide: () => void;
+  selectedRadical: any;
+};
+
+const RadicalDetailPopover = ({ onHide, selectedRadical }: PopoverProps) => {
+  // *testing
+  console.log("selectedRadical: ", selectedRadical);
+  // *testing
+  if (selectedRadical.useImage) {
+    return (
+      <div className={`${styles.radicalPopoverWithImg}`}>
+        <ImageFallback
+          images={selectedRadical.availableImages}
+          altText={selectedRadical.meaning_mnemonic}
+        ></ImageFallback>
+      </div>
+    );
+  } else {
+    return (
+      <div className={`${styles.radicalPopover}`}>
+        <p className={`${styles.radicalText}`}>{selectedRadical.characters}</p>
+      </div>
+    );
+  }
+};
+
 // TODO: use image description
 export const RadicalContainer = ({ level }: Props) => {
   const [srsStages, setSrsStages] = useState<SrsLevels>({});
+  const [selectedRadical, setSelectedRadical] = useState<any>();
+  const [present, dismiss] = useIonPopover(RadicalDetailPopover, {
+    onHide: () => {
+      dismiss();
+    },
+    size: "cover",
+    selectedRadical,
+  });
 
   const {
     isLoading: radicalSubLvlLoading,
@@ -79,18 +118,28 @@ export const RadicalContainer = ({ level }: Props) => {
                     size="2"
                     className={`${styles.radItemContainer}`}
                   >
+                    {/* TODO: change below into its own component */}
                     {radical.useImage ? (
                       <>
                         <IonRow>
-                          <div
+                          <button
                             key={`${radical.id}`}
                             className={`${styles.radicalDivWithImg}`}
+                            onClick={(e: any) => {
+                              setSelectedRadical(radical);
+                              present({
+                                event: e.nativeEvent,
+                                size: "auto",
+                                alignment: "center",
+                                cssClass: "radPopover",
+                              });
+                            }}
                           >
                             <ImageFallback
                               images={radical.availableImages}
                               altText={radical.meaning_mnemonic}
                             ></ImageFallback>
-                          </div>
+                          </button>
                         </IonRow>
                         <IonRow className={`${styles.progressContainer}`}>
                           <StepProgressBar
@@ -101,14 +150,24 @@ export const RadicalContainer = ({ level }: Props) => {
                     ) : (
                       <>
                         <IonRow>
-                          <div
+                          {/* TODO: change below into its own component */}
+                          <button
                             key={`${radical.id}`}
                             className={`${styles.radicalDiv}`}
+                            onClick={(e: any) => {
+                              setSelectedRadical(radical);
+                              present({
+                                event: e.nativeEvent,
+                                size: "auto",
+                                alignment: "center",
+                                cssClass: "radPopover",
+                              });
+                            }}
                           >
                             <p className={`${styles.radicalText}`}>
                               {radical.characters}
                             </p>
-                          </div>
+                          </button>
                         </IonRow>
                         <IonRow className={`${styles.progressContainer}`}>
                           <StepProgressBar
