@@ -7,6 +7,7 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  IonSkeletonText,
 } from "@ionic/react";
 
 import { Subject } from "../types/Subject";
@@ -34,6 +35,7 @@ interface AvailableTimes {
 export const RadicalContainer = ({ level }: Props) => {
   const [srsStages, setSrsStages] = useState<SrsLevels>({});
   const [availTimes, setAvailTimes] = useState<AvailableTimes>({});
+  const [loading, setLoading] = useState(true);
 
   const {
     isLoading: radicalSubLvlLoading,
@@ -69,10 +71,17 @@ export const RadicalContainer = ({ level }: Props) => {
     }
   }, [radicalAssignmentLvlData]);
 
+  useEffect(() => {
+    if (radicalSubLvlData && radicalAssignmentLvlData) {
+      setLoading(false);
+    }
+  }, [radicalAssignmentLvlData, radicalSubLvlData]);
+
   //   TODO: change to ternary where loading skeleton is displayed while no data
   return (
     <>
-      {radicalSubLvlData && radicalAssignmentLvlData && (
+      {/* {radicalSubLvlData && radicalAssignmentLvlData && ( */}
+      {!loading && (
         <IonCard className={`${styles.radicalCard}`}>
           <IonCardHeader>
             <IonCardTitle className={`${styles.radicalCardTitle}`}>
@@ -112,6 +121,33 @@ export const RadicalContainer = ({ level }: Props) => {
                 <IonCol></IonCol>
               </IonRow>
             )}
+          </IonCardContent>
+        </IonCard>
+      )}
+
+      {loading && (
+        <IonCard className={`${styles.radicalCard}`}>
+          <IonCardHeader>
+            <IonCardTitle className={`${styles.radicalCardTitle}`}>
+              <IonSkeletonText
+                animated={true}
+                style={{ height: "20px" }}
+              ></IonSkeletonText>
+            </IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent className={`${styles.cardContent}`}>
+            <IonRow>
+              <IonSkeletonText
+                animated={true}
+                style={{ height: "50px" }}
+              ></IonSkeletonText>
+            </IonRow>
+            <IonRow>
+              <IonSkeletonText
+                animated={true}
+                style={{ height: "50px" }}
+              ></IonSkeletonText>
+            </IonRow>
           </IonCardContent>
         </IonCard>
       )}

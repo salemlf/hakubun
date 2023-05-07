@@ -15,6 +15,14 @@ ion-button.lessonBtn {
   left: 0;
 }
 
+ion-skeleton-text.lessonSkeleton {
+  min-height: 4.75rem;
+  height: 100%;
+  border-radius: 8px;
+  --background: var(--wani-kani-pink-rgba);
+  --background-rgb: var(--wani-kani-pink-rgb);
+}
+
 .lessonBtnBadge {
   position: absolute;
   top: 3.5rem;

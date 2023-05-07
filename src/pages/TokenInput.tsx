@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   IonInput,
@@ -8,6 +8,7 @@ import {
   IonToolbar,
   IonTitle,
   IonButton,
+  IonSkeletonText,
 } from "@ionic/react";
 
 import { useAuth } from "../contexts/AuthContext";
@@ -15,12 +16,19 @@ import { useAuth } from "../contexts/AuthContext";
 const TokenInput = () => {
   // TODO: change token to useRef?
   const [token, setToken] = useState("");
-  const [loading, isLoading] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
   const [authErr, setAuthErr] = useState("");
+  const [loading, setLoading] = useState(true);
+
   const auth = useAuth();
 
+  useEffect(() => {
+    if (auth) {
+      setLoading(false);
+    }
+  }, [auth]);
+
   const setAuth = async () => {
-    isLoading(true);
     let success = await auth.setAuth(token);
 
     if (success) {
@@ -31,7 +39,7 @@ const TokenInput = () => {
       );
     }
 
-    isLoading(false);
+    setIsAuthLoading(false);
   };
 
   const onInput = (ev: Event) => {
@@ -42,29 +50,55 @@ const TokenInput = () => {
   // TODO: make spinner (loading thingy) larger and center of screen
   return (
     <>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Authorize Hakubun</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonInput
-          fill="outline"
-          label="WaniKani API Token"
-          style={styles.input}
-          onIonInput={onInput}
-        ></IonInput>
-        {authErr.length > 0 && <p style={styles.err}>{authErr}</p>}
-        {loading && <IonSpinner name="dots"></IonSpinner>}
-        <IonButton
-          color="tertiary"
-          disabled={!token}
-          title="Submit"
-          onClick={setAuth}
-        >
-          Submit
-        </IonButton>
-      </IonContent>
+      {!loading ? (
+        <>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Authorize Hakubun</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            <IonInput
+              fill="outline"
+              label="WaniKani API Token"
+              style={styles.input}
+              onIonInput={onInput}
+            ></IonInput>
+            {authErr.length > 0 && <p style={styles.err}>{authErr}</p>}
+            {isAuthLoading && <IonSpinner name="dots"></IonSpinner>}
+            <IonButton
+              color="tertiary"
+              disabled={!token}
+              title="Submit"
+              onClick={setAuth}
+            >
+              Submit
+            </IonButton>
+          </IonContent>
+        </>
+      ) : (
+        <>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>
+                <IonSkeletonText
+                  animated={true}
+                  style={{ height: "50px" }}
+                ></IonSkeletonText>
+              </IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            <IonInput label="WaniKani API Token Loading Skeleton">
+              <IonSkeletonText
+                animated={true}
+                style={{ height: "50px" }}
+              ></IonSkeletonText>
+            </IonInput>
+            <IonSkeletonText animated={true}></IonSkeletonText>
+          </IonContent>
+        </>
+      )}
     </>
   );
 };

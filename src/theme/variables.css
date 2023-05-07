@@ -33,7 +33,11 @@ http://ionicframework.com/docs/theming/ */
 
   --wanikani-purple: #aa00ff;
   --wanikani-pink: #ff00aa;
+  --wani-kani-pink-rgb: 255, 0, 170;
+  --wani-kani-pink-rgba: rgba(255, 0, 170, 0.065);
   --wanikani-blue: #00aaff;
+  --wanikani-blue-rgba: rgba(0, 170, 255, 0.065);
+  --wanikani-blue-rgb: 0, 170, 255;
   --deep-purple-accent: #6930c3;
 
   --ion-color-success: #2dd36f;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IonButton, IonBadge } from "@ionic/react";
+import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 
 import getBgByKey from "../helpers/getReviewBgByKey";
 
@@ -15,6 +15,7 @@ const maxedOut = reviewBtnImages.at(-1);
 // TODO: combine component with Lessons Button?
 const ReviewsButton = ({ numReviews }: Props) => {
   const [bgImgName, setBgImgName] = useState<string>("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (numReviews) {
@@ -29,6 +30,8 @@ const ReviewsButton = ({ numReviews }: Props) => {
           : `bgImg${imageClassNum}`;
 
       setBgImgName(bgVarName);
+
+      setLoading(false);
     }
   }, [numReviews]);
 
@@ -38,19 +41,30 @@ const ReviewsButton = ({ numReviews }: Props) => {
   };
 
   return (
-    <IonButton
-      expand="block"
-      title="Reviews"
-      color="clear"
-      onClick={goToReviews}
-      className={`${styles.reviewBtn}`}
-      style={{
-        backgroundImage: `url(${getBgByKey(bgImgName)})`,
-      }}
-    >
-      <p className={`${styles.reviewBtnTxt}`}>Reviews</p>
-      <IonBadge className={`${styles.reviewBtnBadge}`}>{numReviews}</IonBadge>
-    </IonButton>
+    <>
+      {!loading ? (
+        <IonButton
+          expand="block"
+          title="Reviews"
+          color="clear"
+          onClick={goToReviews}
+          className={`${styles.reviewBtn}`}
+          style={{
+            backgroundImage: `url(${getBgByKey(bgImgName)})`,
+          }}
+        >
+          <p className={`${styles.reviewBtnTxt}`}>Reviews</p>
+          <IonBadge className={`${styles.reviewBtnBadge}`}>
+            {numReviews}
+          </IonBadge>
+        </IonButton>
+      ) : (
+        <IonSkeletonText
+          animated={true}
+          className={`${styles.reviewsSkeleton}`}
+        ></IonSkeletonText>
+      )}
+    </>
   );
 };
 

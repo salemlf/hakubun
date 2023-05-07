@@ -7,10 +7,10 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  IonSkeletonText,
 } from "@ionic/react";
 
 import { SubjectCard } from "./SubjectCard";
-import { StepProgressBar } from "./StepProgressBar";
 import { useKanjiSubjectsForLvl } from "../hooks/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../hooks/useKanjiAssignmentsForLvl";
 import { Subject } from "../types/Subject";
@@ -31,6 +31,7 @@ interface AvailableTimes {
 export const KanjiContainer = ({ level }: Props) => {
   const [srsStages, setSrsStages] = useState<SrsLevels>({});
   const [availTimes, setAvailTimes] = useState<AvailableTimes>({});
+  const [loading, setLoading] = useState(true);
 
   const {
     isLoading: kanjiSubLvlLoading,
@@ -66,10 +67,16 @@ export const KanjiContainer = ({ level }: Props) => {
     }
   }, [kanjiAssignmentsLvlData]);
 
-  //   TODO: change to ternary where loading skeleton is displayed while no data
+  useEffect(() => {
+    if (kanjiSubLvlData && kanjiAssignmentsLvlData) {
+      setLoading(false);
+    }
+  }, [kanjiAssignmentsLvlData, kanjiSubLvlData]);
+
+  //   TODO: create component for loading subject card
   return (
     <>
-      {kanjiSubLvlData && kanjiAssignmentsLvlData && (
+      {!loading && (
         <IonCard className={`${styles.kanjiCard}`}>
           <IonCardHeader>
             <IonCardTitle className={`${styles.kanjiCardTitle}`}>
@@ -94,6 +101,44 @@ export const KanjiContainer = ({ level }: Props) => {
                   </IonCol>
                 );
               })}
+            </IonRow>
+          </IonCardContent>
+        </IonCard>
+      )}
+      {loading && (
+        <IonCard className={`${styles.kanjiCard}`}>
+          <IonCardHeader>
+            <IonCardTitle className={`${styles.kanjiCardTitle}`}>
+              <IonSkeletonText
+                animated={true}
+                style={{ height: "20px" }}
+              ></IonSkeletonText>
+            </IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent className={`${styles.cardContent}`}>
+            <IonRow>
+              <IonSkeletonText
+                animated={true}
+                style={{ height: "50px" }}
+              ></IonSkeletonText>
+            </IonRow>
+            <IonRow>
+              <IonSkeletonText
+                animated={true}
+                style={{ height: "50px" }}
+              ></IonSkeletonText>
+            </IonRow>
+            <IonRow>
+              <IonSkeletonText
+                animated={true}
+                style={{ height: "50px" }}
+              ></IonSkeletonText>
+            </IonRow>
+            <IonRow>
+              <IonSkeletonText
+                animated={true}
+                style={{ height: "50px" }}
+              ></IonSkeletonText>
             </IonRow>
           </IonCardContent>
         </IonCard>

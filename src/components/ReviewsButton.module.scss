@@ -9,6 +9,14 @@ ion-button.reviewBtn {
   background-color: var(--wanikani-blue);
 }
 
+ion-skeleton-text.reviewsSkeleton {
+  min-height: 4.75rem;
+  height: 100%;
+  border-radius: 8px;
+  --background: var(--wanikani-blue-rgba);
+  --background-rgb: var(--wanikani-blue-rgb);
+}
+
 .reviewBtnTxt {
   position: absolute;
   top: 3.125rem;

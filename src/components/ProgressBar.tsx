@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { IonSkeletonText } from "@ionic/react";
 import { useKanjiAssignmentsForLvl } from "../hooks/useKanjiAssignmentsForLvl";
 import { getAssignmentStatuses } from "../helpers/getAssignmentStatuses";
 
@@ -38,18 +39,30 @@ export const ProgressBar = ({ level }: Props) => {
   }, [kanjiAssignmentsLvlData]);
 
   return (
-    <div className={`${styles.container}`}>
-      <div className={`${styles.backdrop}`}>
-        <div className={`${styles.source}`}>
-          <div className={`${styles.barBg}`}>
-            <div ref={barRef} className={`${styles.bar}`}></div>
+    <>
+      {!kanjiAssignmentsLvlLoading && (
+        <div className={`${styles.container}`}>
+          <div className={`${styles.backdrop}`}>
+            <div className={`${styles.source}`}>
+              <div className={`${styles.barBg}`}>
+                <div ref={barRef} className={`${styles.bar}`}></div>
+              </div>
+              <div className={`${styles.contents}`}>
+                <span>{completedTxtRef.current}</span>
+              </div>
+              <div></div>
+            </div>
           </div>
-          <div className={`${styles.contents}`}>
-            <span>{completedTxtRef.current}</span>
-          </div>
-          <div></div>
         </div>
-      </div>
-    </div>
+      )}
+      {kanjiAssignmentsLvlLoading && (
+        <div>
+          <IonSkeletonText
+            animated={true}
+            style={{ height: "20px" }}
+          ></IonSkeletonText>
+        </div>
+      )}
+    </>
   );
 };
