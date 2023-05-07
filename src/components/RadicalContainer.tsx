@@ -100,6 +100,7 @@ export const RadicalContainer = ({ level }: Props) => {
                         subject={radical}
                         srsStage={srsStages[radical.id]}
                         availTime={availTimes[radical.id]}
+                        isRadical={true}
                       ></SubjectCard>
                     )}
                   </IonCol>

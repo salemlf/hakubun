@@ -25,6 +25,8 @@ export const getTimeFromNow = (availableTime: string | null) => {
     return `${hrsTill} hours`;
   } else if (minsTill > 0) {
     return `${minsTill} minutes`;
+  } else if (minsTill <= 0) {
+    return `Available now`;
   } else {
     return "Unknown";
   }

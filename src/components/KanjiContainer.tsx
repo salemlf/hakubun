@@ -9,6 +9,7 @@ import {
   IonCardContent,
 } from "@ionic/react";
 
+import { SubjectCard } from "./SubjectCard";
 import { StepProgressBar } from "./StepProgressBar";
 import { useKanjiSubjectsForLvl } from "../hooks/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../hooks/useKanjiAssignmentsForLvl";
@@ -23,8 +24,14 @@ interface SrsLevels {
   [key: string]: any;
 }
 
+interface AvailableTimes {
+  [key: string]: any;
+}
+
 export const KanjiContainer = ({ level }: Props) => {
   const [srsStages, setSrsStages] = useState<SrsLevels>({});
+  const [availTimes, setAvailTimes] = useState<AvailableTimes>({});
+
   const {
     isLoading: kanjiSubLvlLoading,
     data: kanjiSubLvlData,
@@ -41,6 +48,7 @@ export const KanjiContainer = ({ level }: Props) => {
     // TODO: change so if statement not needed?
     if (kanjiSubLvlData) {
       let mappedSrsLvls: SrsLevels = {};
+      let mappedAvailTimes: AvailableTimes = {};
 
       kanjiSubLvlData.forEach((kanji: any) => {
         const found = kanjiAssignmentsLvlData.find(
@@ -48,18 +56,20 @@ export const KanjiContainer = ({ level }: Props) => {
         );
 
         if (found) {
+          mappedAvailTimes[kanji.id] = found.available_at;
           mappedSrsLvls[kanji.id] = found.srs_stage;
         }
       });
 
       setSrsStages(mappedSrsLvls);
+      setAvailTimes(mappedAvailTimes);
     }
   }, [kanjiAssignmentsLvlData]);
 
   //   TODO: change to ternary where loading skeleton is displayed while no data
   return (
     <>
-      {kanjiSubLvlData && (
+      {kanjiSubLvlData && kanjiAssignmentsLvlData && (
         <IonCard className={`${styles.kanjiCard}`}>
           <IonCardHeader>
             <IonCardTitle className={`${styles.kanjiCardTitle}`}>
@@ -75,21 +85,12 @@ export const KanjiContainer = ({ level }: Props) => {
                     size="2"
                     className={`${styles.kanjiItemContainer}`}
                   >
-                    <IonRow>
-                      <div
-                        key={`${kanjiItem.id}`}
-                        className={`${styles.kanjiDiv}`}
-                      >
-                        <p className={`${styles.kanjiText}`}>
-                          {kanjiItem.characters}
-                        </p>
-                      </div>
-                    </IonRow>
-                    <IonRow className={`${styles.progressContainer}`}>
-                      <StepProgressBar
-                        stage={srsStages[kanjiItem.id]}
-                      ></StepProgressBar>
-                    </IonRow>
+                    <SubjectCard
+                      subject={kanjiItem}
+                      srsStage={srsStages[kanjiItem.id]}
+                      availTime={availTimes[kanjiItem.id]}
+                      isRadical={false}
+                    ></SubjectCard>
                   </IonCol>
                 );
               })}

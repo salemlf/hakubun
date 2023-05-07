@@ -20,15 +20,16 @@ export const useSubjectsCurrLevel = (level: any) => {
           filtered: any,
           subject: any
         ) {
-          if (subject.object == "radical") {
+          if (subject.object == "radical" && subject.characters == null) {
             let availableImages =
               subject.character_images
                 ?.filter((image: any) => image.content_type === "image/png")
                 .map((image: any) => image.url) || null;
 
-            // TODO: omg ewew, please actually do this for realz
-            subject.selectedImage = availableImages![0];
-            subject.fallbackImage = availableImages![1];
+            subject.availableImages = availableImages;
+            subject.useImage = true;
+          } else {
+            subject.useImage = false;
           }
           filtered.push(subject);
 
