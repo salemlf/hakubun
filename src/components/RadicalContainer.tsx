@@ -12,7 +12,7 @@ import {
 import { Subject } from "../types/Subject";
 
 import { RadicalImageCard } from "./RadicalImageCard";
-import { RadicalCard } from "./RadicalCard";
+import { SubjectCard } from "./SubjectCard";
 
 import { useRadicalAssignmentsForLvl } from "../hooks/useRadicalAssignmentsForLvl";
 import { useRadicalSubjectsForLvl } from "../hooks/useRadicalSubjectsForLvl";
@@ -27,8 +27,13 @@ interface SrsLevels {
   [key: string]: any;
 }
 
+interface AvailableTimes {
+  [key: string]: any;
+}
+
 export const RadicalContainer = ({ level }: Props) => {
   const [srsStages, setSrsStages] = useState<SrsLevels>({});
+  const [availTimes, setAvailTimes] = useState<AvailableTimes>({});
 
   const {
     isLoading: radicalSubLvlLoading,
@@ -46,6 +51,7 @@ export const RadicalContainer = ({ level }: Props) => {
     // TODO: change so if statement not needed?
     if (radicalSubLvlData) {
       let mappedSrsLvls: SrsLevels = {};
+      let mappedAvailTimes: AvailableTimes = {};
 
       radicalSubLvlData.forEach((radical: any) => {
         const found = radicalAssignmentLvlData.find(
@@ -53,11 +59,13 @@ export const RadicalContainer = ({ level }: Props) => {
         );
 
         if (found) {
+          mappedAvailTimes[radical.id] = found.available_at;
           mappedSrsLvls[radical.id] = found.srs_stage;
         }
       });
 
       setSrsStages(mappedSrsLvls);
+      setAvailTimes(mappedAvailTimes);
     }
   }, [radicalAssignmentLvlData]);
 
@@ -85,12 +93,14 @@ export const RadicalContainer = ({ level }: Props) => {
                         radicalObj={radical}
                         availableImages={radical.availableImages}
                         srsStage={srsStages[radical.id]}
+                        availTime={availTimes[radical.id]}
                       ></RadicalImageCard>
                     ) : (
-                      <RadicalCard
-                        radicalObj={radical}
+                      <SubjectCard
+                        subject={radical}
                         srsStage={srsStages[radical.id]}
-                      ></RadicalCard>
+                        availTime={availTimes[radical.id]}
+                      ></SubjectCard>
                     )}
                   </IonCol>
                 );

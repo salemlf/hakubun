@@ -2,70 +2,62 @@ import { useState } from "react";
 
 import { IonRow, useIonPopover } from "@ionic/react";
 
-import ImageFallback from "./ImageFallback";
 import { StepProgressBar } from "./StepProgressBar";
 import { getTimeFromNow } from "../helpers/getTimeFromNow";
 
-import styles from "./RadicalImageCard.module.scss";
+import styles from "./SubjectCard.module.scss";
 
 type PopoverProps = {
   onHide: () => void;
-  selectedRadical: any;
+  selectedSubj: any;
   availTime: string | null;
 };
 
-const RadicalDetailPopover = ({
+export const SubjDetailPopover = ({
   onHide,
-  selectedRadical,
+  selectedSubj,
   availTime,
 }: PopoverProps) => {
   // *testing
-  console.log("selectedRadical: ", selectedRadical);
+  console.log("selectedSubj: ", selectedSubj);
   // *testing
 
   let timeTill = getTimeFromNow(availTime);
+  console.log("🚀 ~ file: RadicalCard.tsx:26 ~ timeTill:", timeTill);
 
   return (
-    <div className={`${styles.radicalPopoverWithImg}`}>
-      <ImageFallback
-        images={selectedRadical.availableImages}
-        altText={selectedRadical.meaning_mnemonic}
-      ></ImageFallback>
+    <div className={`${styles.subjPopover}`}>
+      <p className={`${styles.subjText}`}>{selectedSubj.characters}</p>
       <p>{timeTill}</p>
     </div>
   );
 };
 
-type RadImageProps = {
-  radicalObj: any;
-  availableImages: any[];
+type RadProps = {
+  // TODO: change to use Subject obj type
+  subject: any;
   srsStage: number;
   availTime: string | null;
 };
 
-export const RadicalImageCard = ({
-  radicalObj,
-  availableImages,
-  srsStage,
-  availTime,
-}: RadImageProps) => {
-  const [selectedRadical, setSelectedRadical] = useState<any>();
-  const [present, dismiss] = useIonPopover(RadicalDetailPopover, {
+export const SubjectCard = ({ subject, srsStage, availTime }: RadProps) => {
+  const [selectedSubj, setSelectedSubj] = useState<any>();
+  const [present, dismiss] = useIonPopover(SubjDetailPopover, {
     onHide: () => {
       dismiss();
     },
     size: "cover",
-    selectedRadical,
+    selectedSubj,
     availTime,
   });
+
   return (
     <>
       <IonRow>
         <button
-          key={`${radicalObj.id}`}
-          className={`${styles.radicalDivWithImg}`}
+          className={`${styles.subjDiv}`}
           onClick={(e: any) => {
-            setSelectedRadical(radicalObj);
+            setSelectedSubj(subject);
             present({
               event: e.nativeEvent,
               size: "auto",
@@ -74,10 +66,7 @@ export const RadicalImageCard = ({
             });
           }}
         >
-          <ImageFallback
-            images={availableImages}
-            altText={radicalObj.meaning_mnemonic}
-          ></ImageFallback>
+          <p className={`${styles.subjText}`}>{subject.characters}</p>
         </button>
       </IonRow>
       <IonRow className={`${styles.progressContainer}`}>
