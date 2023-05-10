@@ -1,0 +1,48 @@
+.btnContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.rowContainer {
+  width: 100%;
+}
+
+.btn {
+  width: 100%;
+  margin: 0;
+  height: 3.5rem;
+  color: white;
+
+  &.apprentice {
+    --background: var(--wanikani-apprentice);
+  }
+
+  &.guru {
+    --background: var(--wanikani-guru);
+  }
+
+  &.master {
+    --background: var(--wanikani-master);
+  }
+
+  &.enlightened {
+    --background: var(--wanikani-enlightened);
+  }
+
+  &.burned {
+    --background: var(--wanikani-burned);
+  }
+}
+
+.stageNum {
+  margin: 5px 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.stageTxt {
+  margin: 5px 0;
+  font-size: 0.75rem;
+}

@@ -64,11 +64,7 @@ export const KanjiContainer = ({ level }: Props) => {
 
       setSrsStages(mappedSrsLvls);
       setAvailTimes(mappedAvailTimes);
-    }
-  }, [kanjiAssignmentsLvlData]);
 
-  useEffect(() => {
-    if (kanjiSubLvlData && kanjiAssignmentsLvlData) {
       setLoading(false);
     }
   }, [kanjiAssignmentsLvlData, kanjiSubLvlData]);

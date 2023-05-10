@@ -20,6 +20,7 @@ import LessonsButton from "../components/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton";
 import { RadicalContainer } from "../components/RadicalContainer";
 import { KanjiContainer } from "../components/KanjiContainer";
+import { SrsStages } from "../components/SrsStages";
 import { Footer } from "../components/Footer";
 
 const Home = () => {
@@ -90,7 +91,12 @@ const Home = () => {
               <KanjiContainer level={level}></KanjiContainer>
             </IonCol>
           </IonRow>
-          <IonRow>
+          <IonRow class="ion-justify-content-start">
+            {/* <IonCol> */}
+            <SrsStages></SrsStages>
+            {/* </IonCol> */}
+          </IonRow>
+          <IonRow className="ion-padding">
             <IonCol>
               <IonButton
                 title="Remove authorization"

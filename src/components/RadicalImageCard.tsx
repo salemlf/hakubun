@@ -19,10 +19,6 @@ const RadicalDetailPopover = ({
   selectedRadical,
   availTime,
 }: PopoverProps) => {
-  // *testing
-  console.log("selectedRadical: ", selectedRadical);
-  // *testing
-
   let timeTill = getTimeFromNow(availTime);
 
   return (

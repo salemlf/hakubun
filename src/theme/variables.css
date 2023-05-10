@@ -38,6 +38,11 @@ http://ionicframework.com/docs/theming/ */
   --wanikani-blue: #00aaff;
   --wanikani-blue-rgba: rgba(0, 170, 255, 0.065);
   --wanikani-blue-rgb: 0, 170, 255;
+  --wanikani-apprentice: #dd0093;
+  --wanikani-guru: #882d9e;
+  --wanikani-master: #294ddb;
+  --wanikani-enlightened: #0093dd;
+  --wanikani-burned: #434343;
   --deep-purple-accent: #6930c3;
 
   --ion-color-success: #2dd36f;

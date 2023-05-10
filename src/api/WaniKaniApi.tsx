@@ -2,6 +2,10 @@ import { api, baseUrl } from "./ApiConfig";
 import { PagingAPI } from "./PagingApi";
 import { AxiosResponse } from "axios";
 
+import { SrsLevelName } from "../types/MiscTypes";
+
+import getSrsLevelsByName from "../helpers/getSrsLevelsByName";
+
 export const WaniKaniAPI = {
   pages: Array(),
   subjects: [],
@@ -66,5 +70,15 @@ export const WaniKaniAPI = {
     let kanjiCombined = PagingAPI.combinePages(kanji);
 
     return kanjiCombined;
+  },
+
+  getAssignmentsByStage: async function (srsLvl: SrsLevelName) {
+    let lvlRange = getSrsLevelsByName(srsLvl);
+    let url = `${baseUrl}assignments?srs_stages=${lvlRange}&started=true`;
+
+    let assignments = await PagingAPI.iterateOverPages(url, []);
+    let assignmentsCombined = PagingAPI.combinePages(assignments);
+
+    return assignmentsCombined;
   },
 };

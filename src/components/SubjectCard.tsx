@@ -9,24 +9,17 @@ import "./SubjectCard.module.scss";
 import styles from "./SubjectCard.module.scss";
 
 type PopoverProps = {
-  onHide: () => void;
   selectedSubj: any;
   availTime: string | null;
   isRadical: boolean;
 };
 
 export const SubjDetailPopover = ({
-  onHide,
   selectedSubj,
   availTime,
   isRadical,
 }: PopoverProps) => {
-  // *testing
-  console.log("selectedSubj: ", selectedSubj);
-  // *testing
-
   let timeTill = getTimeFromNow(availTime);
-  console.log("🚀 ~ file: RadicalCard.tsx:26 ~ timeTill:", timeTill);
 
   return (
     <div
@@ -57,10 +50,7 @@ export const SubjectCard = ({
   isRadical,
 }: RadProps) => {
   const [selectedSubj, setSelectedSubj] = useState<any>();
-  const [present, dismiss] = useIonPopover(SubjDetailPopover, {
-    onHide: () => {
-      dismiss();
-    },
+  const [present] = useIonPopover(SubjDetailPopover, {
     size: "cover",
     selectedSubj,
     availTime,
@@ -71,6 +61,7 @@ export const SubjectCard = ({
     <>
       <IonRow>
         <button
+          title={isRadical ? "Radical Subject" : "Kanji Subject"}
           className={
             isRadical
               ? `${styles.radStyle} ${styles.subjDiv}`

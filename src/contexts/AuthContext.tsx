@@ -28,7 +28,6 @@ const AuthProvider = ({ children }: Props) => {
     loadStorageData();
   }, []);
 
-  // TODO: figure out why this is running twice
   async function loadStorageData() {
     console.log("Running loadStorageData...");
     try {
@@ -78,11 +77,12 @@ const AuthProvider = ({ children }: Props) => {
           level,
         };
 
+        // TODO: remove
         // *testing
-        console.log(
-          "🚀 ~ file: AuthContext.tsx:97 ~ returngetUser ~ authData:",
-          authData
-        );
+        // console.log(
+        //   "🚀 ~ file: AuthContext.tsx:97 ~ returngetUser ~ authData:",
+        //   authData
+        // );
         // *testing
 
         setAuthState((prevState) => ({

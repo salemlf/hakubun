@@ -13,10 +13,11 @@
 }
 
 .radicalDivWithImg {
-  padding: 6px;
+  padding: 8px;
 
   img {
     width: 2rem;
+    max-width: unset;
   }
 }
 
