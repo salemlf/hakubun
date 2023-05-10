@@ -1,25 +1,34 @@
 import { useEffect, useState } from "react";
 import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 
+import { useReviews } from "../hooks/useReviews";
+
 import getBgByKey from "../helpers/getReviewBgByKey";
 
 import styles from "./ReviewsButton.module.scss";
 
-interface Props {
-  numReviews: number | undefined;
-}
+type Props = {
+  level: number | undefined;
+};
 
 const reviewBtnImages = [0, 49, 99, 249, 499, 999, 1000];
 const maxedOut = reviewBtnImages.at(-1);
 
 // TODO: combine component with Lessons Button?
-const ReviewsButton = ({ numReviews }: Props) => {
+const ReviewsButton = ({ level }: Props) => {
   const [bgImgName, setBgImgName] = useState<string>("");
+  const [reviewNum, setReviewNum] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
+  const {
+    isLoading: reviewLoading,
+    data: reviewData,
+    error: reviewErr,
+  } = useReviews(level);
+
   useEffect(() => {
-    if (numReviews) {
-      // TODO: uncomment when done testing
+    if (reviewData) {
+      let numReviews = reviewData.length;
       let imageClassNum = Math.min(
         ...reviewBtnImages.filter((num: number) => num >= numReviews)
       );
@@ -29,11 +38,12 @@ const ReviewsButton = ({ numReviews }: Props) => {
           ? `bgImg${maxedOut}`
           : `bgImg${imageClassNum}`;
 
+      setReviewNum(numReviews);
       setBgImgName(bgVarName);
 
       setLoading(false);
     }
-  }, [numReviews]);
+  }, [reviewData]);
 
   const goToReviews = () => {
     // TODO: use reviewData
@@ -55,7 +65,7 @@ const ReviewsButton = ({ numReviews }: Props) => {
         >
           <p className={`${styles.reviewBtnTxt}`}>Reviews</p>
           <IonBadge className={`${styles.reviewBtnBadge}`}>
-            {numReviews}
+            {reviewNum}
           </IonBadge>
         </IonButton>
       ) : (

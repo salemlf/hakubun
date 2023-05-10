@@ -11,8 +11,6 @@ import {
 import "./Home.module.scss";
 
 import { useAuth } from "../contexts/AuthContext";
-import { useReviews } from "../hooks/useReviews";
-import { useLessons } from "../hooks/useLessons";
 
 import { ProgressBar } from "../components/ProgressBar";
 import Header from "../components/Header";
@@ -49,18 +47,6 @@ const Home = () => {
     setLevel(level);
   };
 
-  const {
-    isLoading: lessonsLoading,
-    data: lessonData,
-    error: lessonErr,
-  } = useLessons(level);
-
-  const {
-    isLoading: availReviewsLoading,
-    data: availReviewsData,
-    error: availReviewsErr,
-  } = useReviews(level);
-
   return (
     <>
       <Header username={username} level={level}></Header>
@@ -68,12 +54,10 @@ const Home = () => {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <LessonsButton numLessons={lessonData?.length}></LessonsButton>
+              <LessonsButton level={level}></LessonsButton>
             </IonCol>
             <IonCol>
-              <ReviewsButton
-                numReviews={availReviewsData?.length}
-              ></ReviewsButton>
+              <ReviewsButton level={level}></ReviewsButton>
             </IonCol>
           </IonRow>
           <IonRow>
@@ -92,9 +76,7 @@ const Home = () => {
             </IonCol>
           </IonRow>
           <IonRow class="ion-justify-content-start">
-            {/* <IonCol> */}
             <SrsStages></SrsStages>
-            {/* </IonCol> */}
           </IonRow>
           <IonRow className="ion-padding">
             <IonCol>
