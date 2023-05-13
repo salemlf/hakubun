@@ -9,9 +9,7 @@ type Props = {
 export const LvlBadge = ({ level }: Props) => {
   return (
     <IonItem>
-      <IonBadge slot="start" className={`${styles.lvlTxt}`}>
-        {level}
-      </IonBadge>
+      <IonBadge className={`${styles.lvlTxt}`}>{level}</IonBadge>
     </IonItem>
   );
 };

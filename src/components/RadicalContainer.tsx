@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
 
-import {
-  IonRow,
-  IonCol,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonSkeletonText,
-} from "@ionic/react";
+import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 
 import { Subject } from "../types/Subject";
 
+import { BasicCard } from "./BasicCard";
 import { RadicalImageCard } from "./RadicalImageCard";
 import { SubjectCard } from "./SubjectCard";
 
@@ -80,76 +73,58 @@ export const RadicalContainer = ({ level }: Props) => {
   //   TODO: change to ternary where loading skeleton is displayed while no data
   return (
     <>
-      {/* {radicalSubLvlData && radicalAssignmentLvlData && ( */}
       {!loading && (
-        <IonCard className={`${styles.radicalCard}`}>
-          <IonCardHeader>
-            <IonCardTitle className={`${styles.radicalCardTitle}`}>
-              Radicals
-            </IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent className={`${styles.cardContent}`}>
-            <IonRow class="ion-align-items-center ion-justify-content-start">
-              {(radicalSubLvlData as Subject[]).map((radical: any) => {
-                return (
-                  <IonCol
-                    key={`col_${radical.id}`}
-                    size="2"
-                    className={`${styles.radItemContainer}`}
-                  >
-                    {radical.useImage ? (
-                      <RadicalImageCard
-                        radicalObj={radical}
-                        availableImages={radical.availableImages}
-                        srsStage={srsStages[radical.id]}
-                        availTime={availTimes[radical.id]}
-                      ></RadicalImageCard>
-                    ) : (
-                      <SubjectCard
-                        subject={radical}
-                        srsStage={srsStages[radical.id]}
-                        availTime={availTimes[radical.id]}
-                        isRadical={true}
-                      ></SubjectCard>
-                    )}
-                  </IonCol>
-                );
-              })}
+        <BasicCard title="Radicals" isLoading={false}>
+          <IonRow class="ion-align-items-center ion-justify-content-start">
+            {(radicalSubLvlData as Subject[]).map((radical: any) => {
+              return (
+                <IonCol
+                  key={`col_${radical.id}`}
+                  size="2"
+                  className={`${styles.radItemContainer}`}
+                >
+                  {radical.useImage ? (
+                    <RadicalImageCard
+                      radicalObj={radical}
+                      availableImages={radical.availableImages}
+                      srsStage={srsStages[radical.id]}
+                      availTime={availTimes[radical.id]}
+                    ></RadicalImageCard>
+                  ) : (
+                    <SubjectCard
+                      subject={radical}
+                      srsStage={srsStages[radical.id]}
+                      availTime={availTimes[radical.id]}
+                      isRadical={true}
+                    ></SubjectCard>
+                  )}
+                </IonCol>
+              );
+            })}
+          </IonRow>
+          {srsStages && (
+            <IonRow>
+              <IonCol></IonCol>
             </IonRow>
-            {srsStages && (
-              <IonRow>
-                <IonCol></IonCol>
-              </IonRow>
-            )}
-          </IonCardContent>
-        </IonCard>
+          )}
+        </BasicCard>
       )}
 
       {loading && (
-        <IonCard className={`${styles.radicalCard}`}>
-          <IonCardHeader>
-            <IonCardTitle className={`${styles.radicalCardTitle}`}>
-              <IonSkeletonText
-                animated={true}
-                style={{ height: "20px" }}
-              ></IonSkeletonText>
-            </IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent className={`${styles.cardContent}`}>
-            <IonRow>
-              <IonSkeletonText
-                animated={true}
-                style={{ height: "50px" }}
-              ></IonSkeletonText>
-            </IonRow>
-            <IonRow>
-              <IonSkeletonText
-                animated={true}
-                style={{ height: "50px" }}
-              ></IonSkeletonText>
-            </IonRow>
-          </IonCardContent>
-        </IonCard>
+        <BasicCard title="" isLoading={true}>
+          <IonRow>
+            <IonSkeletonText
+              animated={true}
+              style={{ height: "50px" }}
+            ></IonSkeletonText>
+          </IonRow>
+          <IonRow>
+            <IonSkeletonText
+              animated={true}
+              style={{ height: "50px" }}
+            ></IonSkeletonText>
+          </IonRow>
+        </BasicCard>
       )}
     </>
   );

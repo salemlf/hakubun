@@ -1,15 +1,15 @@
+.basicCard {
+  margin: 0;
+}
+
 .cardContent {
   padding-inline-start: 10px;
   padding-inline-end: 10px;
   padding-bottom: 12px;
 }
 
-.radItemContainer {
-  margin-bottom: 10px;
-}
-
 @media (prefers-color-scheme: dark) {
-  .basicCardTitle {
+  .radicalCardTitle {
     color: white;
   }
 }

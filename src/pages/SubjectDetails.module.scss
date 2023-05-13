@@ -1,3 +1,7 @@
 .subjDefLoading {
   height: 2rem;
 }
+
+.cardRow ion-item::part(native) {
+  padding: 0;
+}

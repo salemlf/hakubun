@@ -7,16 +7,13 @@ import {
   IonCol,
   IonRow,
   IonPage,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
   IonSkeletonText,
 } from "@ionic/react";
 
 import { useSubjectByID } from "../hooks/useSubjectByID";
 
 import Header from "../components/Header";
+import { BasicCard } from "../components/BasicCard";
 import { LvlBadge } from "../components/LvlBadge";
 
 import styles from "./SubjectDetails.module.scss";
@@ -59,24 +56,37 @@ export const SubjectDetails: React.FC<SubjectDetailsProps> = ({ match }) => {
       <IonContent className="ion-padding">
         <IonGrid>
           {!subjDataLoading ? (
-            <IonRow>
+            <IonRow class="ion-justify-content-start">
               <IonCol>
-                <IonCard>
-                  <IonCardHeader>
-                    <IonCardTitle>Subject {match.params.id}</IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent>
-                    <IonRow class="ion-align-items-center ion-justify-content-start"></IonRow>
-                  </IonCardContent>
-                </IonCard>
+                <BasicCard
+                  title={`Subject ${match.params.id}`}
+                  isLoading={false}
+                >
+                  <IonRow
+                    class="ion-align-items-center ion-justify-content-start"
+                    className={`${styles.cardRow}`}
+                  >
+                    <IonCol>
+                      <LvlBadge level={subjData.level}></LvlBadge>
+                    </IonCol>
+                  </IonRow>
+                </BasicCard>
               </IonCol>
             </IonRow>
           ) : (
-            <IonRow>
-              <IonSkeletonText
-                animated={true}
-                className={`${styles.subjDefLoading}`}
-              ></IonSkeletonText>
+            <IonRow class="ion-justify-content-start">
+              <IonCol>
+                <BasicCard title="" isLoading={true}>
+                  <IonRow
+                    class="ion-align-items-center ion-justify-content-start"
+                    className={`${styles.cardRow}`}
+                  >
+                    <IonCol>
+                      <IonSkeletonText animated={true}></IonSkeletonText>
+                    </IonCol>
+                  </IonRow>
+                </BasicCard>
+              </IonCol>
             </IonRow>
           )}
         </IonGrid>
