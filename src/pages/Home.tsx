@@ -13,18 +13,17 @@ import "./Home.module.scss";
 
 import { useAuth } from "../contexts/AuthContext";
 
-import { ProgressBar } from "../components/ProgressBar";
+import { ProgressBar } from "../components/progress/ProgressBar";
 import Header from "../components/Header";
-import LessonsButton from "../components/LessonsButton";
-import ReviewsButton from "../components/ReviewsButton";
-import { RadicalContainer } from "../components/RadicalContainer";
-import { KanjiContainer } from "../components/KanjiContainer";
+import LessonsButton from "../components/buttons/LessonsButton";
+import ReviewsButton from "../components/buttons/ReviewsButton";
+import { RadicalContainer } from "../components/cards/RadicalForLvlCard";
+import { KanjiContainer } from "../components/cards/KanjiForLvlCard";
 import { SrsStages } from "../components/SrsStages";
 import { Footer } from "../components/Footer";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
-  // const [level, setLevel] = useState<number | undefined>();
   const [level, setLevel] = useState<number>(0);
   // TODO: remove, not needed?
   const [username, setUsername] = useState<string | undefined>("");

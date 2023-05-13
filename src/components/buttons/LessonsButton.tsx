@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 
-import { useLessons } from "../hooks/useLessons";
+import { useLessons } from "../../hooks/useLessons";
 
-import getBgByKey from "../helpers/getLessonBgByKey";
+import getBgByKey from "../../helpers/getLessonBgByKey";
 
 import styles from "./LessonsButton.module.scss";
 

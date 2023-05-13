@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 import { IonRow, IonItem, useIonPopover } from "@ionic/react";
 
-import { StepProgressBar } from "./StepProgressBar";
-import { getTimeFromNow } from "../helpers/getTimeFromNow";
+import { StepProgressBar } from "../progress/StepProgressBar";
+import { getTimeFromNow } from "../../helpers/getTimeFromNow";
 
 import "./SubjectCard.module.scss";
 import styles from "./SubjectCard.module.scss";

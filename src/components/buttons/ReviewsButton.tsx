@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 
-import { useReviews } from "../hooks/useReviews";
+import { useReviews } from "../../hooks/useReviews";
 
-import getBgByKey from "../helpers/getReviewBgByKey";
+import getBgByKey from "../../helpers/getReviewBgByKey";
 
 import styles from "./ReviewsButton.module.scss";
 

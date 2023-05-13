@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 
 import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 
-import { Subject } from "../types/Subject";
+import { Subject } from "../../types/Subject";
 
-import { BasicCard } from "./BasicCard";
-import { RadicalImageCard } from "./RadicalImageCard";
-import { SubjectCard } from "./SubjectCard";
+import { BasicCard } from ".././cards/BasicCard";
+import { RadicalImageCard } from "../buttons/RadicalImageButton";
+import { SubjectCard } from "../cards/SubjectCard";
 
-import { useRadicalAssignmentsForLvl } from "../hooks/useRadicalAssignmentsForLvl";
-import { useRadicalSubjectsForLvl } from "../hooks/useRadicalSubjectsForLvl";
+import { useRadicalAssignmentsForLvl } from "../../hooks/useRadicalAssignmentsForLvl";
+import { useRadicalSubjectsForLvl } from "../../hooks/useRadicalSubjectsForLvl";
 
-import styles from "./RadicalContainer.module.scss";
+import styles from "./RadicalForLvlCard.module.scss";
 
 interface Props {
   level: number | undefined;

@@ -4,10 +4,10 @@ import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 
 import { BasicCard } from "./BasicCard";
 import { SubjectCard } from "./SubjectCard";
-import { useKanjiSubjectsForLvl } from "../hooks/useKanjiSubjectsForLvl";
-import { useKanjiAssignmentsForLvl } from "../hooks/useKanjiAssignmentsForLvl";
-import { Subject } from "../types/Subject";
-import styles from "./KanjiContainer.module.scss";
+import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
+import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
+import { Subject } from "../../types/Subject";
+import styles from "./KanjiForLvlCard.module.scss";
 
 interface Props {
   level: number | undefined;

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { IonSkeletonText } from "@ionic/react";
-import { useKanjiAssignmentsForLvl } from "../hooks/useKanjiAssignmentsForLvl";
-import { getAssignmentStatuses } from "../helpers/getAssignmentStatuses";
+import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
+import { getAssignmentStatuses } from "../../helpers/getAssignmentStatuses";
 
 import styles from "./ProgressBar.module.scss";
 

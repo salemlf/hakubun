@@ -13,7 +13,7 @@ import {
 import { useSubjectByID } from "../hooks/useSubjectByID";
 
 import Header from "../components/Header";
-import { BasicCard } from "../components/BasicCard";
+import { BasicCard } from "../components/cards/BasicCard";
 import { LvlBadge } from "../components/LvlBadge";
 
 import styles from "./SubjectDetails.module.scss";
@@ -23,6 +23,7 @@ interface SubjectDetailsProps
     id: string;
   }> {}
 
+// TODO: display in modal instead
 export const SubjectDetails: React.FC<SubjectDetailsProps> = ({ match }) => {
   const [subjID, setsubjID] = useState<string>("");
 
