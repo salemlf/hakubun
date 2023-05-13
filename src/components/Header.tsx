@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
+
 import {
   IonHeader,
   IonToolbar,
@@ -5,23 +8,12 @@ import {
   IonCol,
   IonItem,
   IonRow,
-  IonIcon,
   IonButton,
   IonButtons,
   IonBadge,
 } from "@ionic/react";
 
-import {
-  create,
-  ellipsisHorizontal,
-  ellipsisVertical,
-  helpCircle,
-  search,
-  personCircle,
-  star,
-} from "ionicons/icons";
-
-import { settings } from "ionicons/icons";
+import { LvlBadge } from "./LvlBadge";
 
 import styles from "./Header.module.scss";
 
@@ -33,7 +25,24 @@ interface Props {
 }
 
 // TODO: add click event for settings button
-const Header = ({ username, level }: Props) => {
+const Header = () => {
+  const auth = useAuth();
+  const [level, setLevel] = useState<number | undefined>();
+  const [username, setUsername] = useState<string | undefined>("");
+
+  useEffect(() => {
+    setUserDetails();
+  }, [auth]);
+
+  const setUserDetails = () => {
+    let username = auth.auth!.username;
+    setUsername(username);
+
+    let level = auth.auth!.level;
+    setLevel(level);
+  };
+
+  // TODO: show loading skeleton
   return (
     <IonHeader>
       <IonToolbar>
@@ -43,11 +52,7 @@ const Header = ({ username, level }: Props) => {
             className={`${styles.userInfoRow}`}
           >
             <IonCol className={`${styles.userInfoCol}`}>
-              <IonItem>
-                <IonBadge slot="start" className={`${styles.lvlTxt}`}>
-                  {level}
-                </IonBadge>
-              </IonItem>
+              <LvlBadge level={level}></LvlBadge>
             </IonCol>
             <IonCol className={`${styles.userInfoCol}`}>
               <p>{username}</p>

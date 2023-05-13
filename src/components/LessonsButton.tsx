@@ -8,7 +8,7 @@ import getBgByKey from "../helpers/getLessonBgByKey";
 import styles from "./LessonsButton.module.scss";
 
 type Props = {
-  level: number | undefined;
+  level: number;
 };
 
 const lessonBtnImages = [0, 24, 49, 99, 249, 499, 500];
@@ -24,7 +24,7 @@ const LessonsButton = ({ level }: Props) => {
     isLoading: lessonsLoading,
     data: lessonData,
     error: lessonErr,
-  } = useLessons(level);
+  } = useLessons({ level: level });
 
   useEffect(() => {
     if (lessonData) {

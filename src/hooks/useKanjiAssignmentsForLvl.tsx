@@ -9,6 +9,7 @@ export const useKanjiAssignmentsForLvl = (
   needsRelatedSubj: boolean,
   relatedSubjs?: Subject[]
 ) => {
+  // TODO: change this, it's an icky mess
   let dependencies = needsRelatedSubj ? !!level && !!relatedSubjs : !!level;
   return useQuery({
     queryKey: ["kanji-assignments-for-lvl", level],

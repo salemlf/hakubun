@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-import { IonRow, useIonPopover } from "@ionic/react";
+import { IonRow, IonItem, useIonPopover } from "@ionic/react";
 
 import { StepProgressBar } from "./StepProgressBar";
 import { getTimeFromNow } from "../helpers/getTimeFromNow";
@@ -22,16 +23,21 @@ export const SubjDetailPopover = ({
   let timeTill = getTimeFromNow(availTime);
 
   return (
-    <div
-      className={
-        isRadical
-          ? `${styles.radStyle} ${styles.subjPopover}`
-          : `${styles.kanjiStyle} ${styles.subjPopover}`
-      }
+    <IonItem
+      routerLink={`/subject/${selectedSubj.id}`}
+      className={isRadical ? `${styles.radItem}` : `${styles.kanjiItem}`}
     >
-      <p className={`${styles.subjText}`}>{selectedSubj.characters}</p>
-      <p>{timeTill}</p>
-    </div>
+      <div
+        className={
+          isRadical
+            ? `${styles.radStyle} ${styles.subjPopover}`
+            : `${styles.kanjiStyle} ${styles.subjPopover}`
+        }
+      >
+        <p className={`${styles.subjText}`}>{selectedSubj.characters}</p>
+        <p>{timeTill}</p>
+      </div>
+    </IonItem>
   );
 };
 

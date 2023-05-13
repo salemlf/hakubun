@@ -2,11 +2,6 @@
   flex-grow: 0;
 }
 
-.lvlTxt {
-  font-size: 1.75rem;
-  margin-right: 0;
-}
-
 .settingsIcon {
   font-size: 4rem;
 }
@@ -18,10 +13,4 @@
 .userInfoCol p {
   font-size: 1.25rem;
   margin: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  .lvlTxt {
-    color: white;
-  }
 }

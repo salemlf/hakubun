@@ -219,7 +219,7 @@ http://ionicframework.com/docs/theming/ */
     /* TODO: change these once testing iOS */
     --ion-item-background: #423949;
 
-    --ion-card-background: #1c1c1d;
+    --ion-card-background: var(--light-greyish-purple);
   }
 
   .ios ion-modal {
@@ -268,7 +268,7 @@ http://ionicframework.com/docs/theming/ */
 
     --ion-tab-bar-background: #423949;
 
-    --ion-card-background: #6930c3;
+    --ion-card-background: var(--light-greyish-purple);
   }
 }
 

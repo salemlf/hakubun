@@ -54,6 +54,17 @@ export const WaniKaniAPI = {
     return kanjiCombined;
   },
 
+  getSubjectByID: async function (id: string) {
+    let url = `${baseUrl}subjects/${id}`;
+
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "GET",
+    });
+
+    return response.data;
+  },
+
   getRadicalAssignmentsByLvl: async function (level: number) {
     let url = `${baseUrl}assignments?levels=${level}&subject_types=radical`;
 
