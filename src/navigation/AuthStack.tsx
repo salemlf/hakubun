@@ -1,13 +1,17 @@
-import TokenInput from "../pages/TokenInput";
 import { IonReactRouter } from "@ionic/react-router";
-import { Route, Switch } from "react-router-dom";
+import { IonRouterOutlet } from "@ionic/react";
+
+// import { Route } from "react-router-dom";
+import { Route } from "react-router";
+
+import TokenInput from "../pages/TokenInput";
 
 export const AuthStack = () => {
   return (
     <IonReactRouter>
-      <Switch>
+      <IonRouterOutlet>
         <Route exact path="/" component={TokenInput} />
-      </Switch>
+      </IonRouterOutlet>
     </IonReactRouter>
   );
 };

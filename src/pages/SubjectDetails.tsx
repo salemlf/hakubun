@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useHistory } from "react-router-dom";
+// import { useHistory } from "react-router";
 
 import {
   IonContent,
@@ -23,9 +24,9 @@ interface SubjectDetailsProps
     id: string;
   }> {}
 
-// TODO: display in modal instead
 export const SubjectDetails: React.FC<SubjectDetailsProps> = ({ match }) => {
   const [subjID, setsubjID] = useState<string>("");
+  const history = useHistory();
 
   const {
     isLoading: subjDataLoading,

@@ -6,11 +6,10 @@ import {
   IonToolbar,
   IonGrid,
   IonCol,
-  IonItem,
   IonRow,
   IonButton,
   IonButtons,
-  IonBadge,
+  IonBackButton,
 } from "@ionic/react";
 
 import { LvlBadge } from "./LvlBadge";
@@ -18,11 +17,6 @@ import { LvlBadge } from "./LvlBadge";
 import styles from "./Header.module.scss";
 
 import settingsIcon from "../images/settings.svg";
-
-interface Props {
-  username?: string;
-  level?: number;
-}
 
 // TODO: add click event for settings button
 const Header = () => {

@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
-import { IonRow, IonItem, useIonPopover } from "@ionic/react";
+import { IonRow, IonItem, useIonPopover, IonNavLink } from "@ionic/react";
 
 import { StepProgressBar } from "../progress/StepProgressBar";
 import { getTimeFromNow } from "../../helpers/getTimeFromNow";
@@ -25,7 +24,9 @@ export const SubjDetailPopover = ({
   return (
     <IonItem
       routerLink={`/subject/${selectedSubj.id}`}
+      routerDirection="forward"
       className={isRadical ? `${styles.radItem}` : `${styles.kanjiItem}`}
+      button={true}
     >
       <div
         className={
