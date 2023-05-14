@@ -1,3 +1,6 @@
+import { Subject } from "./Subject";
+import { Assignment } from "./Assignment";
+
 export type SrsLevelName =
   | "initiate"
   | "apprentice"
@@ -5,3 +8,5 @@ export type SrsLevelName =
   | "master"
   | "enlightened"
   | "burned";
+
+export type SubjAndAssignment = Subject & Assignment;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { RouteComponentProps, useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 // import { useHistory } from "react-router";
 
 import {
@@ -13,20 +13,25 @@ import {
 
 import { useSubjectByID } from "../hooks/useSubjectByID";
 
+import { getSubjectDisplayName } from "../helpers/getSubjectDisplayName";
+
 import Header from "../components/Header";
 import { BasicCard } from "../components/cards/BasicCard";
 import { LvlBadge } from "../components/LvlBadge";
 
 import styles from "./SubjectDetails.module.scss";
 
-interface SubjectDetailsProps
-  extends RouteComponentProps<{
-    id: string;
-  }> {}
+type SubjectDetailParams = {
+  id: string;
+};
 
-export const SubjectDetails: React.FC<SubjectDetailsProps> = ({ match }) => {
+export const SubjectDetails = () => {
+  const { id } = useParams<SubjectDetailParams>();
   const [subjID, setsubjID] = useState<string>("");
-  const history = useHistory();
+  const [displayName, setDisplayName] = useState<string>("");
+
+  // TODO: use history to allow user to go back?
+  // const history = useHistory();
 
   const {
     isLoading: subjDataLoading,
@@ -41,16 +46,18 @@ export const SubjectDetails: React.FC<SubjectDetailsProps> = ({ match }) => {
         "🚀 ~ file: SubjectDetails.tsx:34 ~ useEffect ~ subjData:",
         subjData
       );
+      let name = getSubjectDisplayName(subjData);
+      setDisplayName(name);
     }
   }, [subjData]);
   // *testing
 
   // TODO: make sure this is necessary
   useEffect(() => {
-    if (match) {
-      setsubjID(match.params.id);
+    if (id) {
+      setsubjID(id);
     }
-  }, [match]);
+  }, [id]);
 
   return (
     <IonPage>
@@ -60,16 +67,16 @@ export const SubjectDetails: React.FC<SubjectDetailsProps> = ({ match }) => {
           {!subjDataLoading ? (
             <IonRow class="ion-justify-content-start">
               <IonCol>
-                <BasicCard
-                  title={`Subject ${match.params.id}`}
-                  isLoading={false}
-                >
+                <BasicCard isLoading={false}>
                   <IonRow
                     class="ion-align-items-center ion-justify-content-start"
                     className={`${styles.cardRow}`}
                   >
                     <IonCol>
                       <LvlBadge level={subjData.level}></LvlBadge>
+                    </IonCol>
+                    <IonCol>
+                      <h2>{`${displayName}`}</h2>
                     </IonCol>
                   </IonRow>
                 </BasicCard>
