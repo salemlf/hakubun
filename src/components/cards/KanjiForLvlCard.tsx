@@ -39,8 +39,6 @@ export const KanjiContainer = ({ level }: Props) => {
                 >
                   <SubjectCard
                     subject={kanjiItem}
-                    srsStage={kanjiItem.srs_stage}
-                    availTime={kanjiItem.available_at}
                     isRadical={false}
                   ></SubjectCard>
                 </IonCol>

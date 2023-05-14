@@ -10,15 +10,15 @@ import styles from "./SubjectCard.module.scss";
 
 type PopoverProps = {
   selectedSubj: any;
-  availTime: string | null;
   isRadical: boolean;
 };
 
 export const SubjDetailPopover = ({
   selectedSubj,
-  availTime,
   isRadical,
 }: PopoverProps) => {
+  let availTime = selectedSubj.available_at;
+
   let timeTill = getTimeFromNow(availTime);
 
   return (
@@ -45,23 +45,20 @@ export const SubjDetailPopover = ({
 type RadProps = {
   // TODO: change to use Subject obj type
   subject: any;
-  srsStage: number;
-  availTime: string | null;
   isRadical: boolean;
+  clickDisabled?: boolean;
 };
 
 // TODO: pass in option to disable popover (just disable button?)
 export const SubjectCard = ({
   subject,
-  srsStage,
-  availTime,
   isRadical,
+  clickDisabled,
 }: RadProps) => {
   const [selectedSubj, setSelectedSubj] = useState<any>();
   const [present] = useIonPopover(SubjDetailPopover, {
     size: "cover",
     selectedSubj,
-    availTime,
     isRadical,
   });
 
@@ -84,12 +81,13 @@ export const SubjectCard = ({
               cssClass: "radPopover",
             });
           }}
+          // disabled={clickDisabled}
         >
           <p className={`${styles.subjText}`}>{subject.characters}</p>
         </button>
       </IonRow>
       <IonRow className={`${styles.progressContainer}`}>
-        <StepProgressBar stage={srsStage}></StepProgressBar>
+        <StepProgressBar stage={subject.srs_stage}></StepProgressBar>
       </IonRow>
     </>
   );

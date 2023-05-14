@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useState } from "react";
 
 interface Props {
-  images: any[];
+  images: string[] | undefined;
   altText: string;
 }
 

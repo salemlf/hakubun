@@ -4,7 +4,7 @@ import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 import { Subject } from "../../types/Subject";
 
 import { BasicCard } from ".././cards/BasicCard";
-import { RadicalImageCard } from "../buttons/RadicalImageButton";
+import { RadicalImageCard } from "./RadicalImageCard";
 import { SubjectCard } from "../cards/SubjectCard";
 
 import { useRadicalSubAndAssignments } from "../../hooks/useRadicalSubAndAssignments";
@@ -40,17 +40,10 @@ export const RadicalContainer = ({ level }: Props) => {
                   className={`${styles.radItemContainer}`}
                 >
                   {radical.useImage ? (
-                    <RadicalImageCard
-                      radicalObj={radical}
-                      availableImages={radical.availableImages}
-                      srsStage={radical.srs_stage}
-                      availTime={radical.available_at}
-                    ></RadicalImageCard>
+                    <RadicalImageCard radicalObj={radical}></RadicalImageCard>
                   ) : (
                     <SubjectCard
                       subject={radical}
-                      srsStage={radical.srs_stage}
-                      availTime={radical.available_at}
                       isRadical={true}
                     ></SubjectCard>
                   )}

@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-// import { useHistory } from "react-router";
-
 import {
   IonContent,
   IonGrid,
@@ -18,6 +16,8 @@ import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
 import Header from "../components/Header";
 import { BasicCard } from "../components/cards/BasicCard";
 import { LvlBadge } from "../components/LvlBadge";
+import { SubjectCard } from "../components/cards/SubjectCard";
+import { RadicalImageCard } from "../components/cards/RadicalImageCard";
 
 import styles from "./SubjectDetails.module.scss";
 
@@ -76,6 +76,19 @@ export const SubjectDetails = () => {
                       <LvlBadge level={subjData.level}></LvlBadge>
                     </IonCol>
                     <IonCol>
+                      {subjData.useImage ? (
+                        <RadicalImageCard
+                          radicalObj={subjData}
+                          clickDisabled={true}
+                        ></RadicalImageCard>
+                      ) : (
+                        <SubjectCard
+                          subject={subjData}
+                          isRadical={true}
+                        ></SubjectCard>
+                      )}
+                    </IonCol>
+                    <IonCol>
                       <h2>{`${displayName}`}</h2>
                     </IonCol>
                   </IonRow>
@@ -85,7 +98,7 @@ export const SubjectDetails = () => {
           ) : (
             <IonRow class="ion-justify-content-start">
               <IonCol>
-                <BasicCard title="" isLoading={true}>
+                <BasicCard isLoading={true}>
                   <IonRow
                     class="ion-align-items-center ion-justify-content-start"
                     className={`${styles.cardRow}`}

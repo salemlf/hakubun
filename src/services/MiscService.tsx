@@ -1,6 +1,6 @@
 import { SrsLevelName } from "../types/MiscTypes";
 
-export const getTimeFromNow = (availableTime: string | null) => {
+export const getTimeFromNow = (availableTime: Date | null) => {
   if (availableTime == null) {
     return "N/A";
   }

@@ -1,8 +1,6 @@
 export type SubjectType = "radical" | "kanji" | "vocabulary";
 
 export interface Subject {
-  selectedImage?: string | null;
-  fallbackImage?: string | null;
   id: number;
   url: string;
   object: SubjectType;
@@ -29,6 +27,8 @@ export interface Subject {
   pronunciation_audios?: PronunciationAudio[];
   parts_of_speech?: string[];
   context_sentences?: ContextSentence[];
+  availableImages?: string[];
+  useImage?: boolean;
 }
 
 export interface SubjectAuxiliaryMeaning {
