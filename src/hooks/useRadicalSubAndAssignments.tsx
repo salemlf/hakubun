@@ -10,7 +10,7 @@ import { mergeSubjAndAssignmentData } from "../services/SubjectAndAssignmentServ
 
 // TODO: increase time to wait between data fetches
 export const useRadicalSubAndAssignments = (level: any) => {
-  let kanjiResponse = useQueries({
+  let radicalResponse = useQueries({
     queries: [
       {
         queryKey: ["radical-assignments-for-lvl-dependent", level],
@@ -33,6 +33,7 @@ export const useRadicalSubAndAssignments = (level: any) => {
         queryKey: ["radical-subjects-for-lvl-dependent", level],
         queryFn: () => WaniKaniAPI.getRadicalSubjectsByLevel(level),
         enabled: !!level,
+        // TODO: simply this further
         select: useCallback(
           (data: any) => {
             let flattened = data.data.map((elem: any) => {
@@ -69,16 +70,16 @@ export const useRadicalSubAndAssignments = (level: any) => {
     ],
   });
 
-  const kanjiDataLoading = kanjiResponse.some((p) => p.isLoading);
-  const data = kanjiResponse.map((p) => p.data);
+  const radicalDataLoading = radicalResponse.some((p) => p.isLoading);
+  const data = radicalResponse.map((p) => p.data);
 
   let assignments: Assignment[] | undefined = data[0];
   let subjects: Subject[] | undefined = data[1];
 
-  let kanjiData = useMemo(
+  let radicalData = useMemo(
     () => mergeSubjAndAssignmentData(data),
     [assignments, subjects]
   );
 
-  return { kanjiDataLoading, kanjiData };
+  return { radicalDataLoading, radicalData };
 };

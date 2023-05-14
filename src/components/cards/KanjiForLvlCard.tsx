@@ -15,7 +15,6 @@ interface Props {
 
 export const KanjiContainer = ({ level }: Props) => {
   const [loading, setLoading] = useState(true);
-
   const { kanjiDataLoading, kanjiData } = useKanjiSubAndAssignments(level);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export const KanjiContainer = ({ level }: Props) => {
   //   TODO: create component for loading subject card
   return (
     <>
-      {!loading && (
+      {!loading ? (
         <BasicCard title="Kanji" isLoading={false}>
           <IonRow class="ion-align-items-center ion-justify-content-start">
             {(kanjiData as Subject[]).map((kanjiItem: any) => {
@@ -49,8 +48,7 @@ export const KanjiContainer = ({ level }: Props) => {
             })}
           </IonRow>
         </BasicCard>
-      )}
-      {loading && (
+      ) : (
         <BasicCard title="" isLoading={true}>
           <IonRow>
             <IonSkeletonText
