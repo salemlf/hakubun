@@ -13,7 +13,7 @@ import {
 
 import { useSubjectByID } from "../hooks/useSubjectByID";
 
-import { getSubjectDisplayName } from "../helpers/getSubjectDisplayName";
+import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
 
 import Header from "../components/Header";
 import { BasicCard } from "../components/cards/BasicCard";

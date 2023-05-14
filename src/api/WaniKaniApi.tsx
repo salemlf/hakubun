@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 
 import { SrsLevelName } from "../types/MiscTypes";
 
-import getSrsLevelsByName from "../helpers/getSrsLevelsByName";
+import { getSrsLevelsByName } from "../services/MiscService";
 
 export const WaniKaniAPI = {
   pages: Array(),

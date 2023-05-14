@@ -3,7 +3,7 @@ import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 
 import { useReviews } from "../../hooks/useReviews";
 
-import getBgByKey from "../../helpers/getReviewBgByKey";
+import { getReviewBgByKey } from "../../services/ImageSrcService";
 
 import styles from "./ReviewsButton.module.scss";
 
@@ -26,6 +26,7 @@ const ReviewsButton = ({ level }: Props) => {
     error: reviewErr,
   } = useReviews(level);
 
+  // TODO: move this elsewhere, generalized?
   useEffect(() => {
     if (reviewData) {
       let numReviews = reviewData.length;
@@ -35,8 +36,8 @@ const ReviewsButton = ({ level }: Props) => {
 
       let bgVarName =
         imageClassNum == Infinity
-          ? `bgImg${maxedOut}`
-          : `bgImg${imageClassNum}`;
+          ? `reviewBgImg${maxedOut}`
+          : `reviewBgImg${imageClassNum}`;
 
       setReviewNum(numReviews);
       setBgImgName(bgVarName);
@@ -60,7 +61,7 @@ const ReviewsButton = ({ level }: Props) => {
           onClick={goToReviews}
           className={`${styles.reviewBtn}`}
           style={{
-            backgroundImage: `url(${getBgByKey(bgImgName)})`,
+            backgroundImage: `url(${getReviewBgByKey(bgImgName)})`,
           }}
         >
           <p className={`${styles.reviewBtnTxt}`}>Reviews</p>

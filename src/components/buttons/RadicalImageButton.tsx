@@ -1,10 +1,10 @@
 import { useState } from "react";
-
 import { IonRow, useIonPopover } from "@ionic/react";
 
 import ImageFallback from "../ImageFallback";
 import { StepProgressBar } from "../progress/StepProgressBar";
-import { getTimeFromNow } from "../../helpers/getTimeFromNow";
+
+import { getTimeFromNow } from "../../services/MiscService";
 
 import styles from "./RadicalImageButton.module.scss";
 

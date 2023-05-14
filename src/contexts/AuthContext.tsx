@@ -3,7 +3,11 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 import { Storage } from "@ionic/storage";
 import { api, pagingApi } from "../api/ApiConfig";
 
-import { AuthData } from "../services/authService";
+type AuthData = {
+  token?: string;
+  username?: string;
+  level?: number;
+};
 
 type Props = {
   children?: React.ReactNode;

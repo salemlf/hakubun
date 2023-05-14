@@ -9,12 +9,12 @@ import { Assignment } from "../types/Assignment";
 import { mergeSubjAndAssignmentData } from "../services/SubjectAndAssignmentService";
 
 // TODO: increase time to wait between data fetches
-export const useKanjiSubAndAssignments = (level: any) => {
+export const useRadicalSubAndAssignments = (level: any) => {
   let kanjiResponse = useQueries({
     queries: [
       {
-        queryKey: ["kanji-assignments-for-lvl-dependent", level],
-        queryFn: () => WaniKaniAPI.getKanjiAssignmentsByLvl(level),
+        queryKey: ["radical-assignments-for-lvl-dependent", level],
+        queryFn: () => WaniKaniAPI.getRadicalAssignmentsByLvl(level),
         enabled: !!level,
         select: useCallback(
           (data: any) => {
@@ -30,8 +30,8 @@ export const useKanjiSubAndAssignments = (level: any) => {
         ),
       },
       {
-        queryKey: ["kanji-subjects-for-lvl-dependent", level],
-        queryFn: () => WaniKaniAPI.getKanjiSubjectsByLevel(level),
+        queryKey: ["radical-subjects-for-lvl-dependent", level],
+        queryFn: () => WaniKaniAPI.getRadicalSubjectsByLevel(level),
         enabled: !!level,
         select: useCallback(
           (data: any) => {
@@ -41,7 +41,27 @@ export const useKanjiSubAndAssignments = (level: any) => {
               return elem;
             });
 
-            return flattened;
+            let radsUpdated = flattened.reduce(function (
+              filtered: any,
+              subject: any
+            ) {
+              if (subject.characters == null) {
+                let availableImages =
+                  subject.character_images
+                    ?.filter((image: any) => image.content_type === "image/png")
+                    .map((image: any) => image.url) || null;
+
+                subject.availableImages = availableImages;
+                subject.useImage = true;
+              } else {
+                subject.useImage = false;
+              }
+              filtered.push(subject);
+
+              return filtered;
+            },
+            []);
+            return radsUpdated;
           },
           [level]
         ),
@@ -54,6 +74,7 @@ export const useKanjiSubAndAssignments = (level: any) => {
 
   let assignments: Assignment[] | undefined = data[0];
   let subjects: Subject[] | undefined = data[1];
+
   let kanjiData = useMemo(
     () => mergeSubjAndAssignmentData(data),
     [assignments, subjects]

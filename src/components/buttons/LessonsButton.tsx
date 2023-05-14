@@ -3,7 +3,7 @@ import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 
 import { useLessons } from "../../hooks/useLessons";
 
-import getBgByKey from "../../helpers/getLessonBgByKey";
+import { getLessonBgByKey } from "../../services/ImageSrcService";
 
 import styles from "./LessonsButton.module.scss";
 
@@ -35,8 +35,8 @@ const LessonsButton = ({ level }: Props) => {
 
       let bgVarName =
         imageClassNum == Infinity
-          ? `bgImg${maxedOut}`
-          : `bgImg${imageClassNum}`;
+          ? `lessonBgImg${maxedOut}`
+          : `lessonBgImg${imageClassNum}`;
 
       setLessonNum(numLessons);
       setBgImgName(bgVarName);
@@ -60,7 +60,7 @@ const LessonsButton = ({ level }: Props) => {
           onClick={goToLessons}
           className={`${styles.lessonBtn}`}
           style={{
-            backgroundImage: `url(${getBgByKey(bgImgName)})`,
+            backgroundImage: `url(${getLessonBgByKey(bgImgName)})`,
           }}
         >
           <p className={`${styles.lessonBtnTxt}`}>Lessons</p>

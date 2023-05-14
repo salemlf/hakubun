@@ -1,9 +1,9 @@
 import { useState } from "react";
-
 import { IonRow, IonItem, useIonPopover } from "@ionic/react";
 
 import { StepProgressBar } from "../progress/StepProgressBar";
-import { getTimeFromNow } from "../../helpers/getTimeFromNow";
+
+import { getTimeFromNow } from "../../services/MiscService";
 
 import "./SubjectCard.module.scss";
 import styles from "./SubjectCard.module.scss";
