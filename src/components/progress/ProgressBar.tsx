@@ -19,7 +19,7 @@ export const ProgressBar = ({ level }: Props) => {
     isLoading: kanjiAssignmentsLvlLoading,
     data: kanjiAssignmentsLvlData,
     error: kanjiAssignmentsLvlErr,
-  } = useKanjiAssignmentsForLvl(level, false);
+  } = useKanjiAssignmentsForLvl(level);
 
   useEffect(() => {
     if (kanjiAssignmentsLvlData) {

@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { useQueries } from "@tanstack/react-query";
 
 import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 
 import { BasicCard } from "./BasicCard";
 import { SubjectCard } from "./SubjectCard";
-import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
-import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
 import { useKanjiSubAndAssignments } from "../../hooks/useKanjiSubAndAssignments";
 
 import { Subject } from "../../types/Subject";

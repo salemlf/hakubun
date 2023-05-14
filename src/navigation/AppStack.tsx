@@ -18,6 +18,7 @@ export const AppStack = () => {
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
+          {/* TODO: fix, not going to home screen on home tab click */}
           <Route path="/home" component={Home} exact={true} />
           <Route path="/subject/:id" component={SubjectDetails} />
           <Route exact path="/" render={() => <Redirect to="/home" />} />

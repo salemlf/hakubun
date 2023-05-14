@@ -1,18 +1,35 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useQueries } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { Subject } from "../types/Subject";
+import { Assignment } from "../types/Assignment";
+
+const mergeKanjiData = (data: any) => {
+  let assignArr: Assignment[] = data[0];
+  let subjArr: Subject[] = data[1];
+
+  if (!assignArr || !subjArr) {
+    return [];
+  }
+  const mergeById = (assignments: any, subjects: any) =>
+    assignments.map((assignment: any) => ({
+      ...subjects.find(
+        (subject: any) => subject.id === assignment.subject_id && subject
+      ),
+      ...assignment,
+    }));
+
+  let merged = mergeById(assignArr, subjArr);
+  return merged;
+};
 
 // TODO: increase time to wait between data fetches
 export const useKanjiSubAndAssignments = (level: any) => {
-  // TODO: change this, it's an icky mess
-  //   let dependencies = needsRelatedSubj ? !!level && !!relatedSubjs : !!level;
   let kanjiResponse = useQueries({
     queries: [
       {
-        queryKey: ["kanji-assignments-for-lvl-dbl", level],
+        queryKey: ["kanji-assignments-for-lvl-dependent", level],
         queryFn: () => WaniKaniAPI.getKanjiAssignmentsByLvl(level),
-        // enabled: !!level && !!relatedSubjs,
         enabled: !!level,
         select: useCallback(
           (data: any) => {
@@ -28,7 +45,7 @@ export const useKanjiSubAndAssignments = (level: any) => {
         ),
       },
       {
-        queryKey: ["kanji-subjects-for-lvl-dbl", level],
+        queryKey: ["kanji-subjects-for-lvl-dependent", level],
         queryFn: () => WaniKaniAPI.getKanjiSubjectsByLevel(level),
         enabled: !!level,
         select: useCallback(
@@ -50,26 +67,9 @@ export const useKanjiSubAndAssignments = (level: any) => {
   const kanjiDataLoading = kanjiResponse.some((p) => p.isLoading);
   const data = kanjiResponse.map((p) => p.data);
 
-  //   TODO: memoize?
-  let mergeKanjiData = () => {
-    const mergeById = (a1: any, a2: any) =>
-      a1.map((assignment: any) => ({
-        ...a2.find(
-          (subject: any) => subject.id === assignment.subject_id && subject
-        ),
-        ...assignment,
-      }));
-
-    let merged = mergeById(data[0], data[1]);
-    return merged;
-  };
-
-  let kanjiData = kanjiDataLoading ? [] : mergeKanjiData();
-
-  //   console.log(
-  //     "🚀 ~ file: useKanjiSubAndAssignments.tsx:60 ~ useKanjiSubAndAssignments ~ kanjiData:",
-  //     kanjiData
-  //   );
+  let assignments: Assignment[] | undefined = data[0];
+  let subjects: Subject[] | undefined = data[1];
+  let kanjiData = useMemo(() => mergeKanjiData(data), [assignments, subjects]);
 
   return { kanjiDataLoading, kanjiData };
 };
