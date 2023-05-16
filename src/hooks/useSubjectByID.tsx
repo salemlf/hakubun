@@ -4,7 +4,7 @@ import { WaniKaniAPI } from "../api/WaniKaniApi";
 
 export const useSubjectByID = (id: string) => {
   return useQuery({
-    queryKey: ["kanji-subject-by-id", id],
+    queryKey: ["subject-by-id", id],
     queryFn: () => WaniKaniAPI.getSubjectByID(id),
     enabled: !!id,
     select: useCallback(

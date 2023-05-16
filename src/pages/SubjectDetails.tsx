@@ -10,6 +10,7 @@ import {
 } from "@ionic/react";
 
 import { useSubjectByID } from "../hooks/useSubjectByID";
+import { useSubAndAssignmentByID } from "../hooks/useSubAndAssignmentByID";
 
 import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
 
@@ -22,49 +23,79 @@ import { RadicalImageCard } from "../components/cards/RadicalImageCard";
 import styles from "./SubjectDetails.module.scss";
 
 type SubjectDetailParams = {
+  // id: string | undefined;
   id: string;
 };
 
 export const SubjectDetails = () => {
   const { id } = useParams<SubjectDetailParams>();
-  const [subjID, setsubjID] = useState<string>("");
+  const [subjID, setSubjID] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
 
   // TODO: use history to allow user to go back?
   // const history = useHistory();
 
-  const {
-    isLoading: subjDataLoading,
-    data: subjData,
-    error: subjDataErr,
-  } = useSubjectByID(subjID);
+  // const {
+  //   isLoading: subjDataLoading,
+  //   data: subjData,
+  //   error: subjDataErr,
+  // } = useSubjectByID(subjID);
 
-  // *testing
-  useEffect(() => {
-    if (subjData) {
-      console.log(
-        "🚀 ~ file: SubjectDetails.tsx:34 ~ useEffect ~ subjData:",
-        subjData
-      );
-      let name = getSubjectDisplayName(subjData);
-      setDisplayName(name);
-    }
-  }, [subjData]);
-  // *testing
+  // const { subjAssignDataLoading, subjAssignData } =
+  //   useSubAndAssignmentByID(subjID);
+
+  // useEffect(() => {
+  //   // TODO: change so if statement not needed?
+  //   if (subjAssignData) {
+  //     console.log(
+  //       "🚀 ~ file: SubjectDetails.tsx:50 ~ useEffect ~ subjAssignData:",
+  //       subjAssignData
+  //     );
+
+  //     let name = getSubjectDisplayName(subjAssignData);
+  //     setDisplayName(name);
+
+  //     setIsLoading(false);
+  //   }
+  // }, [subjAssignDataLoading]);
 
   // TODO: make sure this is necessary
   useEffect(() => {
     if (id) {
-      setsubjID(id);
+      setSubjID(id);
     }
   }, [id]);
+
+  // const [loading, setLoading] = useState(true);
+  // const { kanjiDataLoading, kanjiData } = useKanjiSubAndAssignments(level);
+  const { subjAssignDataLoading, subjAssignData } =
+    useSubAndAssignmentByID(subjID);
+  // useSubAndAssignmentByID(id);
+
+  useEffect(() => {
+    // TODO: change so if statement not needed?
+    if (subjAssignData) {
+      console.log(
+        "🚀 ~ file: SubjectDetails.tsx:80 ~ useEffect ~ subjAssignData:",
+        subjAssignData
+      );
+
+      let name = getSubjectDisplayName(subjAssignData);
+      setDisplayName(name);
+
+      // setIsLoading(false);
+      setLoading(false);
+    }
+  }, [subjAssignDataLoading]);
 
   return (
     <IonPage>
       <Header></Header>
       <IonContent className="ion-padding">
         <IonGrid>
-          {!subjDataLoading ? (
+          {!loading ? (
             <IonRow class="ion-justify-content-start">
               <IonCol>
                 <BasicCard isLoading={false}>
@@ -73,18 +104,28 @@ export const SubjectDetails = () => {
                     className={`${styles.cardRow}`}
                   >
                     <IonCol>
-                      <LvlBadge level={subjData.level}></LvlBadge>
+                      <LvlBadge level={subjAssignData?.level}></LvlBadge>
                     </IonCol>
                     <IonCol>
-                      {subjData.useImage ? (
-                        <RadicalImageCard
-                          radicalObj={subjData}
-                          clickDisabled={true}
-                        ></RadicalImageCard>
+                      {subjAssignData?.object == "radical" ? (
+                        <>
+                          {subjAssignData.useImage ? (
+                            <RadicalImageCard
+                              radicalObj={subjAssignData}
+                              clickDisabled={true}
+                            ></RadicalImageCard>
+                          ) : (
+                            <SubjectCard
+                              subject={subjAssignData}
+                              isRadical={true}
+                              clickDisabled={true}
+                            ></SubjectCard>
+                          )}
+                        </>
                       ) : (
                         <SubjectCard
-                          subject={subjData}
-                          isRadical={true}
+                          subject={subjAssignData}
+                          isRadical={false}
                         ></SubjectCard>
                       )}
                     </IonCol>

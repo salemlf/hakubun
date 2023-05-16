@@ -8,6 +8,11 @@
   align-items: center;
 }
 
+.radicalDivWithImg {
+  width: 3rem;
+  height: 3rem;
+}
+
 .ionItem {
   --padding-start: 0px;
   --inner-padding-end: 0px;
@@ -19,16 +24,14 @@
 }
 
 .radicalDivWithImg {
-  padding: 8px;
+  padding: 4px;
 
   img {
-    width: 2rem;
-    max-width: unset;
+    width: 100%;
   }
 }
 
 .radicalPopoverWithImg img {
-  // width: 3rem;
   max-width: 25%;
 }
 

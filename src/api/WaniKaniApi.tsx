@@ -55,6 +55,8 @@ export const WaniKaniAPI = {
   },
 
   getSubjectByID: async function (id: string) {
+    console.log("🚀 ~ file: WaniKaniApi.tsx:58 ~ id:", id);
+
     let url = `${baseUrl}subjects/${id}`;
 
     const response: AxiosResponse = await api.request({
@@ -62,6 +64,20 @@ export const WaniKaniAPI = {
       method: "GET",
     });
 
+    console.log("response.data for subject by ID: ", response.data);
+
+    return response.data;
+  },
+
+  getAssignmentBySubjID: async function (id: string) {
+    let url = `${baseUrl}assignments?subject_ids=${id}`;
+
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "GET",
+    });
+
+    console.log("response.data for assignments: ", response.data);
     return response.data;
   },
 

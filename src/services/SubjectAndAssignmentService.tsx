@@ -18,6 +18,10 @@ const convertToUpperCase = (word: string) => {
 };
 
 export const getSubjectDisplayName = (subj: SubjAndAssignment) => {
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:21 ~ getSubjectDisplayName ~ subj:",
+    subj
+  );
   let subjType = subj["object"];
 
   if (subjType == "radical") {

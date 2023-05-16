@@ -38,12 +38,7 @@ const ImageFallback = ({ images, altText }: Props) => {
   return (
     <>
       {currImg && (
-        <img
-          src={`"${currImg}"`}
-          onError={useImageFallback}
-          style={{ height: "100%" }}
-          alt={altText}
-        />
+        <img src={`"${currImg}"`} onError={useImageFallback} alt={altText} />
       )}
     </>
   );

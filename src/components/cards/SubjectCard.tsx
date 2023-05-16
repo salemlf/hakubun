@@ -81,7 +81,7 @@ export const SubjectCard = ({
               cssClass: "radPopover",
             });
           }}
-          // disabled={clickDisabled}
+          disabled={clickDisabled}
         >
           <p className={`${styles.subjText}`}>{subject.characters}</p>
         </button>

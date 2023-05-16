@@ -72,7 +72,7 @@ export const RadicalImageCard = ({
               cssClass: "radPopover",
             });
           }}
-          // disabled={clickDisabled}
+          disabled={clickDisabled}
         >
           <ImageFallback
             images={radicalObj.availableImages}
