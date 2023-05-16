@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 
 import { useLessons } from "../../hooks/useLessons";
@@ -16,17 +15,13 @@ const maxedOut = lessonBtnImages.at(-1);
 
 // TODO: combine component with Reviews Button?
 const LessonsButton = ({ level }: Props) => {
-  const [bgImgName, setBgImgName] = useState<string>("");
-  const [lessonNum, setLessonNum] = useState<number>(0);
-  const [loading, setLoading] = useState(true);
-
   const {
     isLoading: lessonsLoading,
     data: lessonData,
     error: lessonErr,
   } = useLessons({ level: level });
 
-  useEffect(() => {
+  const setBgImgName = () => {
     if (lessonData) {
       let numLessons = lessonData.length;
       let imageClassNum = Math.min(
@@ -38,21 +33,31 @@ const LessonsButton = ({ level }: Props) => {
           ? `lessonBgImg${maxedOut}`
           : `lessonBgImg${imageClassNum}`;
 
-      setLessonNum(numLessons);
-      setBgImgName(bgVarName);
-
-      setLoading(false);
+      return bgVarName;
     }
-  }, [lessonData]);
+
+    return "";
+  };
 
   const goToLessons = () => {
     // TODO: use lessonData
     console.log("TODO: add lessons button action");
   };
 
+  // TODO: change to display error some other way
+  if (lessonErr) {
+    console.log("An error has occurred: " + lessonErr);
+    return (
+      <IonSkeletonText
+        animated={true}
+        className={`${styles.lessonSkeleton}`}
+      ></IonSkeletonText>
+    );
+  }
+
   return (
     <>
-      {!loading ? (
+      {!lessonsLoading ? (
         <IonButton
           color="clear"
           expand="block"
@@ -60,12 +65,12 @@ const LessonsButton = ({ level }: Props) => {
           onClick={goToLessons}
           className={`${styles.lessonBtn}`}
           style={{
-            backgroundImage: `url(${getLessonBgByKey(bgImgName)})`,
+            backgroundImage: `url(${getLessonBgByKey(setBgImgName())})`,
           }}
         >
           <p className={`${styles.lessonBtnTxt}`}>Lessons</p>
           <IonBadge className={`${styles.lessonBtnBadge}`}>
-            {lessonNum}
+            {lessonData ? lessonData.length : 0}
           </IonBadge>
         </IonButton>
       ) : (

@@ -50,7 +50,6 @@ type RadProps = {
   clickDisabled?: boolean;
 };
 
-// TODO: pass in option to disable popover (just disable button?)
 export const SubjectCard = ({
   subject,
   isRadical,

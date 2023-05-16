@@ -25,12 +25,10 @@ import { Footer } from "../components/Footer";
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
-  // TODO: remove, not needed?
-  const [username, setUsername] = useState<string | undefined>("");
 
   const auth = useAuth();
 
-  // TODO: change so loading displays until everything is loaded (including subjects)
+  // TODO: remove spinner for loading, just using text skeletons instead
   useEffect(() => {
     setHomeLoading(true);
     setUserDetails();
@@ -42,10 +40,6 @@ const Home = () => {
   };
 
   const setUserDetails = () => {
-    // TODO: remove, not needed?
-    let username = auth.auth!.username;
-    setUsername(username);
-
     let level = auth.auth!.level;
     if (level != undefined) {
       setLevel(level);
