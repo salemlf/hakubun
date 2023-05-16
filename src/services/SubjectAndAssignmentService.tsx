@@ -24,22 +24,23 @@ export const getSubjectDisplayName = (subj: SubjAndAssignment) => {
   );
   let subjType = subj["object"];
 
-  if (subjType == "radical") {
+  if (subjType === "radical") {
     return convertToUpperCase(subj["slug" as keyof {}]);
   } else {
     let primary = subj["meanings"]?.filter(
       (meaning: any) => meaning.primary === true
     );
 
-    // *testing
-    console.log(
-      "🚀 ~ file: getSubjectDisplayName.tsx:46 ~ getSubjectDisplayName ~ primary:",
-      primary
-    );
-    // *testing
-
     return primary ? primary[0].meaning : "";
   }
+};
+
+export const getAlternativeMeanings = (subj: SubjAndAssignment) => {
+  let alternatives = subj["meanings"]?.filter(
+    (meaning: any) => meaning.primary === false
+  );
+
+  return alternatives;
 };
 
 export const mergeSubjAndAssignmentData = (data: any) => {

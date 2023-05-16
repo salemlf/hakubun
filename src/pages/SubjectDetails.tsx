@@ -9,7 +9,6 @@ import {
   IonSkeletonText,
 } from "@ionic/react";
 
-import { useSubjectByID } from "../hooks/useSubjectByID";
 import { useSubAndAssignmentByID } from "../hooks/useSubAndAssignmentByID";
 
 import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
@@ -19,11 +18,11 @@ import { BasicCard } from "../components/cards/BasicCard";
 import { LvlBadge } from "../components/LvlBadge";
 import { SubjectCard } from "../components/cards/SubjectCard";
 import { RadicalImageCard } from "../components/cards/RadicalImageCard";
+import { AlternativeMeanings } from "../components/AlternativeMeanings";
 
 import styles from "./SubjectDetails.module.scss";
 
 type SubjectDetailParams = {
-  // id: string | undefined;
   id: string;
 };
 
@@ -105,6 +104,7 @@ export const SubjectDetails = () => {
                         <SubjectCard
                           subject={subjAssignData}
                           isRadical={false}
+                          clickDisabled={true}
                           displayProgress={false}
                         ></SubjectCard>
                       )}
@@ -113,10 +113,7 @@ export const SubjectDetails = () => {
                       <h1>{`${displayName}`}</h1>
                     </IonCol>
                   </IonRow>
-                  {/* TODO: add a button to add alternative meanings/synonyms */}
-                  <IonRow>
-                    <h5>Alternative Meanings</h5>
-                  </IonRow>
+                  <AlternativeMeanings subject={subjAssignData} />
                 </BasicCard>
               </IonCol>
             </IonRow>

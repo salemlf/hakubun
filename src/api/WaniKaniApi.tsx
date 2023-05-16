@@ -64,8 +64,6 @@ export const WaniKaniAPI = {
       method: "GET",
     });
 
-    console.log("response.data for subject by ID: ", response.data);
-
     return response.data;
   },
 
@@ -77,7 +75,6 @@ export const WaniKaniAPI = {
       method: "GET",
     });
 
-    console.log("response.data for assignments: ", response.data);
     return response.data;
   },
 
