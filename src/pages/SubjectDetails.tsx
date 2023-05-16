@@ -66,6 +66,8 @@ export const SubjectDetails = () => {
     }
   }, [subjAssignDataSuccess]);
 
+  // TODO: use getTimeFromNow in MiscService to display time till available
+  // TODO: Then use getSrsLevelsByName and convertToUpperCase functions to display srs phase
   return (
     <IonPage>
       <Header></Header>
