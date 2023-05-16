@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
-import "./StepProgressBar.module.scss";
+import styles from "./StepProgressBar.module.scss";
 
 interface Props {
   stage: number;
 }
 
 export const StepProgressBar = ({ stage }: Props) => {
-  const [stagesComplete, setStagesComplete] = useState(new Set());
+  let stagesComplete = new Set();
 
   const fillProgressBar = (stage: number) => {
     const updatedStagesComplete = new Set(stagesComplete);
@@ -22,20 +21,26 @@ export const StepProgressBar = ({ stage }: Props) => {
       }
     }
 
-    setStagesComplete(updatedStagesComplete);
+    stagesComplete = updatedStagesComplete;
   };
 
-  useEffect(() => {
-    fillProgressBar(stage);
-  }, [stage]);
+  const setBlockClasses = (stageNum: number) => {
+    let classNames = `${styles.block}`;
+    if (stagesComplete.has(stageNum)) {
+      classNames += ` ${styles.done}`;
+    }
+    return classNames;
+  };
+
+  fillProgressBar(stage);
 
   return (
-    <div className="container-styles">
-      <div className={`block ${stagesComplete.has(1) ? "done" : ""}`}></div>
-      <div className={`block ${stagesComplete.has(2) ? "done" : ""}`}></div>
-      <div className={`block ${stagesComplete.has(3) ? "done" : ""}`}></div>
-      <div className={`block ${stagesComplete.has(4) ? "done" : ""}`}></div>
-      <div className={`block ${stagesComplete.has(5) ? "done" : ""}`}></div>
+    <div className={`${styles.containerStyles}`}>
+      <div className={setBlockClasses(1)}></div>
+      <div className={setBlockClasses(2)}></div>
+      <div className={setBlockClasses(3)}></div>
+      <div className={setBlockClasses(4)}></div>
+      <div className={setBlockClasses(5)}></div>
     </div>
   );
 };

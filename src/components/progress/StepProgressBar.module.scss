@@ -1,12 +1,11 @@
-.container-styles {
+.containerStyles {
   height: 20;
   width: 100%;
   border-radius: 50;
   margin: 50;
-  height: 0.5rem;
+  height: 0.4rem;
   display: flex;
   justify-content: center;
-  // margin-top: 5px;
 
   :first-child {
     border-radius: 20px 0px 0px 20px;
@@ -17,7 +16,7 @@
   }
 
   :not(:last-child) {
-    border-right: 3px solid var(--offwhite-color);
+    border-right: 2px solid var(--light-greyish-purple);
   }
 }
 
