@@ -2,6 +2,8 @@ import { useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 
+import { setSubjectAvailImgs } from "../services/ImageSrcService";
+
 // TODO: increase time to wait between data fetches
 export const useRadicalSubjectsForLvl = (level: any) => {
   return useQuery({
@@ -21,18 +23,8 @@ export const useRadicalSubjectsForLvl = (level: any) => {
           filtered: any,
           subject: any
         ) {
-          if (subject.characters == null) {
-            let availableImages =
-              subject.character_images
-                ?.filter((image: any) => image.content_type === "image/png")
-                .map((image: any) => image.url) || null;
-
-            subject.availableImages = availableImages;
-            subject.useImage = true;
-          } else {
-            subject.useImage = false;
-          }
-          filtered.push(subject);
+          let updatedSubj = setSubjectAvailImgs(subject);
+          filtered.push(updatedSubj);
 
           return filtered;
         },

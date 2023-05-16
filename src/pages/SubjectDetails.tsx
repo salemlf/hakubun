@@ -30,36 +30,11 @@ type SubjectDetailParams = {
 export const SubjectDetails = () => {
   const { id } = useParams<SubjectDetailParams>();
   const [subjID, setSubjID] = useState<string>("");
-  const [displayName, setDisplayName] = useState<string>("");
-  // const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [displayName, setDisplayName] = useState<string>();
   const [loading, setLoading] = useState(true);
 
   // TODO: use history to allow user to go back?
   // const history = useHistory();
-
-  // const {
-  //   isLoading: subjDataLoading,
-  //   data: subjData,
-  //   error: subjDataErr,
-  // } = useSubjectByID(subjID);
-
-  // const { subjAssignDataLoading, subjAssignData } =
-  //   useSubAndAssignmentByID(subjID);
-
-  // useEffect(() => {
-  //   // TODO: change so if statement not needed?
-  //   if (subjAssignData) {
-  //     console.log(
-  //       "🚀 ~ file: SubjectDetails.tsx:50 ~ useEffect ~ subjAssignData:",
-  //       subjAssignData
-  //     );
-
-  //     let name = getSubjectDisplayName(subjAssignData);
-  //     setDisplayName(name);
-
-  //     setIsLoading(false);
-  //   }
-  // }, [subjAssignDataLoading]);
 
   // TODO: make sure this is necessary
   useEffect(() => {
@@ -68,27 +43,29 @@ export const SubjectDetails = () => {
     }
   }, [id]);
 
-  // const [loading, setLoading] = useState(true);
-  // const { kanjiDataLoading, kanjiData } = useKanjiSubAndAssignments(level);
-  const { subjAssignDataLoading, subjAssignData } =
+  const { subjAssignDataLoading, subjAssignDataSuccess, subjAssignData } =
     useSubAndAssignmentByID(subjID);
-  // useSubAndAssignmentByID(id);
 
   useEffect(() => {
     // TODO: change so if statement not needed?
     if (subjAssignData) {
       console.log(
-        "🚀 ~ file: SubjectDetails.tsx:80 ~ useEffect ~ subjAssignData:",
+        "🚀 ~ file: SubjectDetails.tsx:52 ~ useEffect ~ subjAssignData:",
         subjAssignData
       );
 
-      let name = getSubjectDisplayName(subjAssignData);
-      setDisplayName(name);
-
-      // setIsLoading(false);
       setLoading(false);
     }
-  }, [subjAssignDataLoading]);
+  }, [subjAssignDataSuccess]);
+
+  useEffect(() => {
+    // TODO: change so if statement not needed?
+    if (subjAssignData && !displayName) {
+      let name = getSubjectDisplayName(subjAssignData);
+      console.log("🚀 ~ file: SubjectDetails.tsx:58 ~ useEffect ~ name:", name);
+      setDisplayName(name);
+    }
+  }, [subjAssignDataSuccess]);
 
   return (
     <IonPage>
@@ -100,10 +77,10 @@ export const SubjectDetails = () => {
               <IonCol>
                 <BasicCard isLoading={false}>
                   <IonRow
-                    class="ion-align-items-center ion-justify-content-start"
+                    class="ion-align-items-end ion-justify-content-start"
                     className={`${styles.cardRow}`}
                   >
-                    <IonCol>
+                    <IonCol className={`${styles.badgeCol}`}>
                       <LvlBadge level={subjAssignData?.level}></LvlBadge>
                     </IonCol>
                     <IonCol>
@@ -113,12 +90,14 @@ export const SubjectDetails = () => {
                             <RadicalImageCard
                               radicalObj={subjAssignData}
                               clickDisabled={true}
+                              displayProgress={false}
                             ></RadicalImageCard>
                           ) : (
                             <SubjectCard
                               subject={subjAssignData}
                               isRadical={true}
                               clickDisabled={true}
+                              displayProgress={false}
                             ></SubjectCard>
                           )}
                         </>
@@ -126,12 +105,17 @@ export const SubjectDetails = () => {
                         <SubjectCard
                           subject={subjAssignData}
                           isRadical={false}
+                          displayProgress={false}
                         ></SubjectCard>
                       )}
                     </IonCol>
                     <IonCol>
-                      <h2>{`${displayName}`}</h2>
+                      <h1>{`${displayName}`}</h1>
                     </IonCol>
+                  </IonRow>
+                  {/* TODO: add a button to add alternative meanings/synonyms */}
+                  <IonRow>
+                    <h5>Alternative Meanings</h5>
                   </IonRow>
                 </BasicCard>
               </IonCol>

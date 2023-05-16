@@ -7,6 +7,7 @@ import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
 
 import { mergeSubjAndAssignmentData } from "../services/SubjectAndAssignmentService";
+import { setSubjectAvailImgs } from "../services/ImageSrcService";
 
 // TODO: increase time to wait between data fetches
 export const useRadicalSubAndAssignments = (level: any) => {
@@ -46,18 +47,8 @@ export const useRadicalSubAndAssignments = (level: any) => {
               filtered: any,
               subject: any
             ) {
-              if (subject.characters == null) {
-                let availableImages =
-                  subject.character_images
-                    ?.filter((image: any) => image.content_type === "image/png")
-                    .map((image: any) => image.url) || null;
-
-                subject.availableImages = availableImages;
-                subject.useImage = true;
-              } else {
-                subject.useImage = false;
-              }
-              filtered.push(subject);
+              let updatedSubj = setSubjectAvailImgs(subject);
+              filtered.push(updatedSubj);
 
               return filtered;
             },

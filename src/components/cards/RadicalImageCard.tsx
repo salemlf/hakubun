@@ -41,17 +41,15 @@ const RadicalDetailPopover = ({ selectedRadical }: PopoverProps) => {
 
 type RadImageProps = {
   radicalObj: SubjAndAssignment;
+  displayProgress?: boolean;
   clickDisabled?: boolean;
 };
 
 export const RadicalImageCard = ({
   radicalObj,
+  displayProgress = true,
   clickDisabled,
 }: RadImageProps) => {
-  // *testing
-  console.log("radicalObj: ", radicalObj);
-  // *testing
-
   const [selectedRadical, setSelectedRadical] = useState<any>();
   const [present] = useIonPopover(RadicalDetailPopover, {
     size: "cover",
@@ -80,9 +78,11 @@ export const RadicalImageCard = ({
           ></ImageFallback>
         </button>
       </IonRow>
-      <IonRow className={`${styles.progressContainer}`}>
-        <StepProgressBar stage={radicalObj.srs_stage}></StepProgressBar>
-      </IonRow>
+      {displayProgress && (
+        <IonRow className={`${styles.progressContainer}`}>
+          <StepProgressBar stage={radicalObj.srs_stage}></StepProgressBar>
+        </IonRow>
+      )}
     </>
   );
 };

@@ -38,7 +38,7 @@ export const getSubjectDisplayName = (subj: SubjAndAssignment) => {
     );
     // *testing
 
-    return primary[0].meaning;
+    return primary ? primary[0].meaning : "";
   }
 };
 

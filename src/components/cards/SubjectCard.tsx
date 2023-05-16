@@ -46,6 +46,7 @@ type RadProps = {
   // TODO: change to use Subject obj type
   subject: any;
   isRadical: boolean;
+  displayProgress?: boolean;
   clickDisabled?: boolean;
 };
 
@@ -53,6 +54,7 @@ type RadProps = {
 export const SubjectCard = ({
   subject,
   isRadical,
+  displayProgress = true,
   clickDisabled,
 }: RadProps) => {
   const [selectedSubj, setSelectedSubj] = useState<any>();
@@ -86,9 +88,11 @@ export const SubjectCard = ({
           <p className={`${styles.subjText}`}>{subject.characters}</p>
         </button>
       </IonRow>
-      <IonRow className={`${styles.progressContainer}`}>
-        <StepProgressBar stage={subject.srs_stage}></StepProgressBar>
-      </IonRow>
+      {displayProgress && (
+        <IonRow className={`${styles.progressContainer}`}>
+          <StepProgressBar stage={subject.srs_stage}></StepProgressBar>
+        </IonRow>
+      )}
     </>
   );
 };

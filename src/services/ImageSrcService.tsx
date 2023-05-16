@@ -43,3 +43,20 @@ const lessonBgImages: {} = {
 export const getLessonBgByKey = (key: string) => {
   return lessonBgImages[key as keyof {}];
 };
+
+export const setSubjectAvailImgs = (subject: any) => {
+  let updatedSubj = subject;
+  if (updatedSubj.characters == null) {
+    let availableImages =
+      updatedSubj.character_images
+        ?.filter((image: any) => image.content_type === "image/png")
+        .map((image: any) => image.url) || null;
+
+    updatedSubj.availableImages = availableImages;
+    updatedSubj.useImage = true;
+  } else {
+    updatedSubj.useImage = false;
+  }
+
+  return updatedSubj;
+};
