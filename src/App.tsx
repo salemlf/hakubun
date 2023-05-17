@@ -25,7 +25,14 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 setupIonicReact();
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // staleTime of 10 minutes
+      staleTime: 600000,
+    },
+  },
+});
 
 const App: React.FC = () => (
   <IonApp>

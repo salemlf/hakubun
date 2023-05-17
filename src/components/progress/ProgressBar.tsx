@@ -12,10 +12,8 @@ interface Props {
 }
 
 export const ProgressBar = ({ level }: Props) => {
-  // TODO: change from useState?
-  const [completed, setCompleted] = useState(0);
   const barRef = useRef<null | HTMLDivElement>(null);
-  const completedTxtRef = useRef<string>("");
+  const [completedTxt, setCompletedTxt] = useState("");
 
   const {
     isLoading: kanjiAssignmentsLvlLoading,
@@ -29,14 +27,11 @@ export const ProgressBar = ({ level }: Props) => {
       let percentage = Math.round((passed / total) * 100);
 
       let updatedTxt = `${passed} of ${total} kanji passed`;
-
-      completedTxtRef.current = updatedTxt;
+      setCompletedTxt(updatedTxt);
 
       if (barRef.current) {
         barRef.current.style.width = `${percentage}%`;
       }
-
-      setCompleted(percentage);
     }
   }, [kanjiAssignmentsLvlData]);
 
@@ -50,7 +45,7 @@ export const ProgressBar = ({ level }: Props) => {
                 <div ref={barRef} className={`${styles.bar}`}></div>
               </div>
               <div className={`${styles.contents}`}>
-                <span>{completedTxtRef.current}</span>
+                <span>{completedTxt}</span>
               </div>
               <div></div>
             </div>
