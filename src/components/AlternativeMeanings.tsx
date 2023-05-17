@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { IonRow } from "@ionic/react";
 
 import { SubjAndAssignment } from "../types/MiscTypes";
@@ -14,13 +13,7 @@ type Props = {
 
 //   TODO: add a button to add alternative meanings/synonyms
 export const AlternativeMeanings = ({ subject }: Props) => {
-  const [altMeanings, setAltMeanings] = useState<SubjectMeaning[]>([]);
-
-  useEffect(() => {
-    let alt = getAlternativeMeanings(subject);
-
-    setAltMeanings(alt);
-  }, [subject]);
+  let altMeanings: SubjectMeaning[] = getAlternativeMeanings(subject);
 
   return (
     <IonRow className={`${styles.altMeaningsTxt}`}>
