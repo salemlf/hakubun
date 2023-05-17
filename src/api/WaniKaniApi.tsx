@@ -18,6 +18,18 @@ export const WaniKaniAPI = {
 
     return reviewsCombined;
   },
+  getNumReviews: async function () {
+    let url = `${baseUrl}assignments?immediately_available_for_review`;
+
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "GET",
+    });
+
+    let numReviews = response.data.total_count;
+    return numReviews;
+  },
+
   getLessons: async function () {
     let url = `${baseUrl}assignments?immediately_available_for_lessons`;
 
@@ -25,6 +37,18 @@ export const WaniKaniAPI = {
     let lessonsCombined = PagingAPI.combinePages(lessons);
 
     return lessonsCombined;
+  },
+
+  getNumLessons: async function () {
+    let url = `${baseUrl}assignments?immediately_available_for_lessons`;
+
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "GET",
+    });
+
+    let numLessons = response.data.total_count;
+    return numLessons;
   },
 
   getSubjectsByLevel: async function (level: number) {

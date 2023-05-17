@@ -1,8 +1,8 @@
 import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 
-import { useLessons } from "../../hooks/useLessons";
+import { useNumLessons } from "../../hooks/useLessonNum";
 
-import { getLessonBgByKey } from "../../services/ImageSrcService";
+import { setBtnBackground } from "../../services/ImageSrcService";
 
 import styles from "./LessonsButton.module.scss";
 
@@ -10,43 +10,16 @@ type Props = {
   level: number;
 };
 
-const lessonBtnImages = [0, 24, 49, 99, 249, 499, 500];
-const maxedOut = lessonBtnImages.at(-1);
-
-// TODO: combine component with Reviews Button?
 const LessonsButton = ({ level }: Props) => {
   const {
-    isLoading: lessonsLoading,
-    data: lessonData,
+    isLoading: numLessonsLoading,
+    data: numLessons,
     error: lessonErr,
-  } = useLessons({ level: level });
-
-  const setBgImgName = () => {
-    if (lessonData) {
-      let numLessons = lessonData.length;
-      let imageClassNum = Math.min(
-        ...lessonBtnImages.filter((num: number) => num >= numLessons)
-      );
-
-      let bgVarName =
-        imageClassNum == Infinity
-          ? `lessonBgImg${maxedOut}`
-          : `lessonBgImg${imageClassNum}`;
-
-      return bgVarName;
-    }
-
-    return "";
-  };
-
-  const goToLessons = () => {
-    // TODO: use lessonData
-    console.log("TODO: add lessons button action");
-  };
+  } = useNumLessons({ level: level });
 
   // TODO: change to display error some other way
   if (lessonErr) {
-    console.log("An error has occurred: " + lessonErr);
+    console.log("An error has occurred in LessonsButton: " + lessonErr);
     return (
       <IonSkeletonText
         animated={true}
@@ -55,9 +28,14 @@ const LessonsButton = ({ level }: Props) => {
     );
   }
 
+  const goToLessons = () => {
+    // TODO: use lessonData
+    console.log("TODO: add lessons button action");
+  };
+
   return (
     <>
-      {!lessonsLoading ? (
+      {!numLessonsLoading ? (
         <IonButton
           color="clear"
           expand="block"
@@ -65,12 +43,16 @@ const LessonsButton = ({ level }: Props) => {
           onClick={goToLessons}
           className={`${styles.lessonBtn}`}
           style={{
-            backgroundImage: `url(${getLessonBgByKey(setBgImgName())})`,
+            backgroundImage: `url(${
+              numLessons
+                ? setBtnBackground({ btnType: "lessons", numItems: numLessons })
+                : ""
+            })`,
           }}
         >
           <p className={`${styles.lessonBtnTxt}`}>Lessons</p>
           <IonBadge className={`${styles.lessonBtnBadge}`}>
-            {lessonData ? lessonData.length : 0}
+            {numLessons ? numLessons : 0}
           </IonBadge>
         </IonButton>
       ) : (

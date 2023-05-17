@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
 import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 
-import { useReviews } from "../../hooks/useReviews";
+import { useNumReviews } from "../../hooks/useNumReviews";
 
-import { getReviewBgByKey } from "../../services/ImageSrcService";
+import { setBtnBackground } from "../../services/ImageSrcService";
 
 import styles from "./ReviewsButton.module.scss";
 
@@ -11,49 +10,33 @@ type Props = {
   level: number | undefined;
 };
 
-const reviewBtnImages = [0, 49, 99, 249, 499, 999, 1000];
-const maxedOut = reviewBtnImages.at(-1);
-
-// TODO: combine component with Lessons Button?
 const ReviewsButton = ({ level }: Props) => {
-  const [bgImgName, setBgImgName] = useState<string>("");
-  const [reviewNum, setReviewNum] = useState<number>(0);
-  const [loading, setLoading] = useState(true);
-
   const {
-    isLoading: reviewLoading,
-    data: reviewData,
+    isLoading: numReviewsLoading,
+    data: numReviews,
     error: reviewErr,
-  } = useReviews(level);
+  } = useNumReviews(level);
 
-  // TODO: move this elsewhere, generalized?
-  useEffect(() => {
-    if (reviewData) {
-      let numReviews = reviewData.length;
-      let imageClassNum = Math.min(
-        ...reviewBtnImages.filter((num: number) => num >= numReviews)
-      );
-
-      let bgVarName =
-        imageClassNum == Infinity
-          ? `reviewBgImg${maxedOut}`
-          : `reviewBgImg${imageClassNum}`;
-
-      setReviewNum(numReviews);
-      setBgImgName(bgVarName);
-
-      setLoading(false);
-    }
-  }, [reviewData]);
+  // TODO: change to display error some other way
+  if (reviewErr) {
+    console.log("An error has occurred in ReviewsButton: " + reviewErr);
+    return (
+      <IonSkeletonText
+        animated={true}
+        className={`${styles.reviewsSkeleton}`}
+      ></IonSkeletonText>
+    );
+  }
 
   const goToReviews = () => {
     // TODO: use reviewData
     console.log("TODO: add reviews button action");
   };
 
+  // TODO: delay loading until image is set
   return (
     <>
-      {!loading ? (
+      {!numReviewsLoading ? (
         <IonButton
           expand="block"
           title="Reviews"
@@ -61,12 +44,16 @@ const ReviewsButton = ({ level }: Props) => {
           onClick={goToReviews}
           className={`${styles.reviewBtn}`}
           style={{
-            backgroundImage: `url(${getReviewBgByKey(bgImgName)})`,
+            backgroundImage: `url(${
+              numReviews
+                ? setBtnBackground({ btnType: "reviews", numItems: numReviews })
+                : ""
+            })`,
           }}
         >
           <p className={`${styles.reviewBtnTxt}`}>Reviews</p>
           <IonBadge className={`${styles.reviewBtnBadge}`}>
-            {reviewNum}
+            {numReviews ? numReviews : 0}
           </IonBadge>
         </IonButton>
       ) : (

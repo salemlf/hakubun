@@ -1,48 +1,20 @@
 // Image sources for reviews button
-import reviewBgImg0 from "../images/bg_reviews_0.png";
-import reviewBgImg49 from "../images/bg_reviews_1-49.png";
-import reviewBgImg99 from "../images/bg_reviews_100-249.png";
-import reviewBgImg249 from "../images/bg_reviews_100-249.png";
-import reviewBgImg499 from "../images/bg_reviews_250-499.png";
-import reviewBgImg999 from "../images/bg_reviews_500-999.png";
-import reviewBgImg1000 from "../images/bg_reviews_500-999.png";
+import reviewsBgImg0 from "../images/bg_reviews_0.png";
+import reviewsBgImg49 from "../images/bg_reviews_1-49.png";
+import reviewsBgImg99 from "../images/bg_reviews_100-249.png";
+import reviewsBgImg249 from "../images/bg_reviews_100-249.png";
+import reviewsBgImg499 from "../images/bg_reviews_250-499.png";
+import reviewsBgImg999 from "../images/bg_reviews_500-999.png";
+import reviewsBgImg1000 from "../images/bg_reviews_500-999.png";
 
 // Image sources for lessons button
-import lessonBgImg0 from "../images/bg_lessons_0.png";
-import lessonBgImg24 from "../images/bg_lessons_1-24.png";
-import lessonBgImg49 from "../images/bg_lessons_25-49.png";
-import lessonBgImg99 from "../images/bg_lessons_50-99.png";
-import lessonBgImg249 from "../images/bg_lessons_100-249.png";
-import lessonBgImg499 from "../images/bg_lessons_250-499.png";
-import lessonBgImg500 from "../images/bg_lessons_500+.png";
-
-const reviewBgImages: {} = {
-  reviewBgImg0,
-  reviewBgImg49,
-  reviewBgImg99,
-  reviewBgImg249,
-  reviewBgImg499,
-  reviewBgImg999,
-  reviewBgImg1000,
-};
-
-export const getReviewBgByKey = (key: string) => {
-  return reviewBgImages[key as keyof {}];
-};
-
-const lessonBgImages: {} = {
-  lessonBgImg0,
-  lessonBgImg24,
-  lessonBgImg49,
-  lessonBgImg99,
-  lessonBgImg249,
-  lessonBgImg499,
-  lessonBgImg500,
-};
-
-export const getLessonBgByKey = (key: string) => {
-  return lessonBgImages[key as keyof {}];
-};
+import lessonsBgImg0 from "../images/bg_lessons_0.png";
+import lessonsBgImg24 from "../images/bg_lessons_1-24.png";
+import lessonsBgImg49 from "../images/bg_lessons_25-49.png";
+import lessonsBgImg99 from "../images/bg_lessons_50-99.png";
+import lessonsBgImg249 from "../images/bg_lessons_100-249.png";
+import lessonsBgImg499 from "../images/bg_lessons_250-499.png";
+import lessonsBgImg500 from "../images/bg_lessons_500+.png";
 
 export const setSubjectAvailImgs = (subject: any) => {
   let updatedSubj = subject;
@@ -59,4 +31,72 @@ export const setSubjectAvailImgs = (subject: any) => {
   }
 
   return updatedSubj;
+};
+
+const btnImgSrcs = {
+  reviews: {
+    bgImages: {
+      reviewsBgImg0,
+      reviewsBgImg49,
+      reviewsBgImg99,
+      reviewsBgImg249,
+      reviewsBgImg499,
+      reviewsBgImg999,
+      reviewsBgImg1000,
+    },
+    imgNums: [0, 49, 99, 249, 499, 999, 1000],
+  },
+  lessons: {
+    bgImages: {
+      lessonsBgImg0,
+      lessonsBgImg24,
+      lessonsBgImg49,
+      lessonsBgImg99,
+      lessonsBgImg249,
+      lessonsBgImg499,
+      lessonsBgImg500,
+    },
+    imgNums: [0, 24, 49, 99, 249, 499, 500],
+  },
+};
+
+type ButtonImgProps = {
+  btnType: "lessons" | "reviews";
+  numItems: number;
+};
+
+export const setButtonImgSrc = ({ btnType, numItems }: ButtonImgProps) => {
+  let imgNums = btnImgSrcs[btnType].imgNums;
+  console.log(
+    "🚀 ~ file: ImageSrcService.tsx:104 ~ setButtonImgSrc ~ imgNums:",
+    imgNums
+  );
+  let maxedOut = imgNums.at(-1);
+
+  let imageClassNum = Math.min(
+    ...imgNums.filter((num: number) => num >= numItems)
+  );
+
+  let bgVarName =
+    imageClassNum == Infinity
+      ? `${btnType}BgImg${maxedOut}`
+      : `${btnType}BgImg${imageClassNum}`;
+
+  return bgVarName;
+};
+
+export const setBtnBackground = ({ btnType, numItems }: ButtonImgProps) => {
+  let imgNums = btnImgSrcs[btnType].imgNums;
+  let maxedOut = imgNums.at(-1);
+
+  let imageClassNum = Math.min(
+    ...imgNums.filter((num: number) => num >= numItems)
+  );
+
+  let bgVarName =
+    imageClassNum == Infinity
+      ? `${btnType}BgImg${maxedOut}`
+      : `${btnType}BgImg${imageClassNum}`;
+  let bgSrc = btnImgSrcs[btnType].bgImages[bgVarName as keyof {}];
+  return bgSrc;
 };
