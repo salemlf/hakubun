@@ -15,14 +15,14 @@ import lessonsBgImg99 from "../images/bg_lessons_50-99.png";
 import lessonsBgImg249 from "../images/bg_lessons_100-249.png";
 import lessonsBgImg499 from "../images/bg_lessons_250-499.png";
 import lessonsBgImg500 from "../images/bg_lessons_500+.png";
+import { Subject } from "../types/Subject";
 
-export const setSubjectAvailImgs = (subject: any) => {
+export const setSubjectAvailImgs = (subject: Subject) => {
   let updatedSubj = subject;
   if (updatedSubj.characters == null) {
-    let availableImages =
-      updatedSubj.character_images
-        ?.filter((image: any) => image.content_type === "image/png")
-        .map((image: any) => image.url) || null;
+    let availableImages = updatedSubj.character_images
+      ?.filter((image: any) => image.content_type === "image/png")
+      .map((image: any) => image.url);
 
     updatedSubj.availableImages = availableImages;
     updatedSubj.useImage = true;
