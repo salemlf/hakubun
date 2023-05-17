@@ -1,4 +1,5 @@
 import { SrsLevelName } from "../types/MiscTypes";
+import { Collection } from "../types/Collection";
 
 export const getTimeFromNow = (availableTime: Date | null) => {
   if (availableTime == null) {
@@ -45,4 +46,23 @@ const srsLevels: {} = {
 
 export const getSrsLevelsByName = (key: SrsLevelName) => {
   return srsLevels[key as keyof {}];
+};
+
+export const convertToUpperCase = (word: string) => {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
+export const flattenData = (data: any) => {
+  let flattened = Object.assign({}, data, data.data);
+  delete flattened.data;
+  return flattened;
+};
+
+export const flattenCollectionOfOne = (data: Collection) => {
+  let flattenedCollection = Object.assign({}, data, data.data);
+  let innerDataItem = flattenedCollection.data[0];
+  let flattenedInnerData = Object.assign({}, innerDataItem, innerDataItem.data);
+
+  delete flattenedInnerData.data;
+  return flattenedInnerData;
 };

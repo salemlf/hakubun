@@ -91,7 +91,7 @@ export const WaniKaniAPI = {
     return response.data;
   },
 
-  getAssignmentBySubjID: async function (id: string) {
+  getAssignmentBySubjID: async function (id: number | string) {
     let url = `${baseUrl}assignments?subject_ids=${id}`;
 
     const response: AxiosResponse = await api.request({

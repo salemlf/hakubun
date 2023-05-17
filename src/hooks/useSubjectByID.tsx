@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
+import { setSubjectAvailImgs } from "../services/ImageSrcService";
 
 export const useSubjectByID = (id: string) => {
   return useQuery({
@@ -11,7 +12,14 @@ export const useSubjectByID = (id: string) => {
       (data: any) => {
         let flattened = Object.assign({}, data, data.data);
         delete flattened.data;
-        return flattened;
+
+        let subjWithImgInfo = setSubjectAvailImgs(flattened);
+        console.log(
+          "🚀 ~ file: useSubjectByID.tsx:17 ~ useSubjectByID ~ subjWithImgInfo:",
+          subjWithImgInfo
+        );
+        // return flattened;
+        return subjWithImgInfo;
       },
       [id]
     ),

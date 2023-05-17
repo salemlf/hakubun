@@ -1,10 +1,12 @@
+import { ResponseStructure } from "./MiscTypes";
+
 export type SubjectType = "radical" | "kanji" | "vocabulary";
 
-export interface Subject {
-  id: number;
-  url: string;
+export interface PreFlattenedSubject {
+  // id: number;
+  // url: string;
+  // data_updated_at: Date | null;
   object: SubjectType;
-  data_updated_at: Date | null;
   amalgamation_subject_ids: number[];
   auxiliary_meanings: SubjectAuxiliaryMeaning[];
   characters: string;
@@ -29,6 +31,16 @@ export interface Subject {
   context_sentences?: ContextSentence[];
   availableImages?: string[];
   useImage?: boolean;
+}
+
+export interface Subject extends PreFlattenedSubject {
+  id: number;
+  url: string;
+  data_updated_at: Date | null;
+}
+
+export interface SubjectData extends ResponseStructure {
+  id: number;
 }
 
 export interface SubjectAuxiliaryMeaning {
