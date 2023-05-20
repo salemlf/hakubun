@@ -1,38 +1,43 @@
 import { SrsLevelName } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
 
+const createTimeTillStr = (timeTill: number, timeFrame: string) => {
+  if (timeTill > 0) {
+    return timeTill === 1
+      ? `${timeTill} ${timeFrame}`
+      : `${timeTill} ${timeFrame}s`;
+  }
+  return undefined;
+};
+
+// TODO: modify so if 1 for value displays without "s"
 export const getTimeFromNow = (availableTime: Date | null) => {
-  if (availableTime == null) {
+  if (availableTime === null) {
     return "N/A";
   }
+
+  const minute = 1000 * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+  const month = day * 30;
 
   let availDate = new Date(availableTime);
   let rightNow = new Date();
   let timeDiff = availDate.getTime() - rightNow.getTime();
 
-  let minute = 1000 * 60;
-  let hour = minute * 60;
-  let day = hour * 24;
-  let month = day * 30;
-
+  // TODO: display one decimal point?
   let monthsTill = Math.floor(timeDiff / month);
   let daysTill = Math.floor(timeDiff / day);
   let hrsTill = Math.floor(timeDiff / hour);
   let minsTill = Math.floor(timeDiff / minute);
 
-  if (monthsTill > 0) {
-    return `${monthsTill} months`;
-  } else if (daysTill > 0) {
-    return `${daysTill} days`;
-  } else if (hrsTill > 0) {
-    return `${hrsTill} hours`;
-  } else if (minsTill > 0) {
-    return `${minsTill} minutes`;
-  } else if (minsTill <= 0) {
-    return `Available now`;
-  } else {
-    return "Unknown";
-  }
+  return (
+    createTimeTillStr(monthsTill, "month") ||
+    createTimeTillStr(daysTill, "day") ||
+    createTimeTillStr(hrsTill, "hour") ||
+    createTimeTillStr(minsTill, "minute") ||
+    "Available Now"
+  );
 };
 
 const srsLevels: {} = {
