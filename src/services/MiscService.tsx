@@ -58,8 +58,14 @@ export const convertToUpperCase = (word: string) => {
 };
 
 export const flattenData = (data: any) => {
-  let flattened = Object.assign({}, data, data.data);
-  delete flattened.data;
+  let flattened = data.data.map((elem: any) => {
+    elem = Object.assign({}, elem, elem.data);
+    delete elem.data;
+    return elem;
+  });
+
+  console.log("flattened: ", flattened);
+
   return flattened;
 };
 

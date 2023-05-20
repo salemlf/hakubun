@@ -12,6 +12,7 @@ type Props = {
   assignment: Assignment;
 };
 
+// TODO: Use getSrsLevelsByName and convertToUpperCase functions to display srs phase
 export const AssignmentSrs = ({ assignment }: Props) => {
   console.log(
     "🚀 ~ file: AssignmentSrs.tsx:16 ~ AssignmentSrs ~ assignment:",

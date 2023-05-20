@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
+import { flattenData } from "../services/MiscService";
 
-// TODO: increase time to wait between data fetches
 export const useKanjiSubjectsForLvl = (level: any) => {
   return useQuery({
     queryKey: ["kanji-subjects-for-lvl", level],
@@ -10,13 +10,7 @@ export const useKanjiSubjectsForLvl = (level: any) => {
     enabled: !!level,
     select: useCallback(
       (data: any) => {
-        let flattened = data.data.map((elem: any) => {
-          elem = Object.assign({}, elem, elem.data);
-          delete elem.data;
-          return elem;
-        });
-
-        return flattened;
+        return flattenData(data);
       },
       [level]
     ),

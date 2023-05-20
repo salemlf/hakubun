@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
+import { flattenData } from "../services/MiscService";
 
 export const useSubjectsCurrLevel = (level: any) => {
   return useQuery({
@@ -11,11 +12,7 @@ export const useSubjectsCurrLevel = (level: any) => {
     enabled: !!level,
     select: useCallback(
       (data: any) => {
-        let flattened = data.data.map((elem: any) => {
-          elem = Object.assign({}, elem, elem.data);
-          delete elem.data;
-          return elem;
-        });
+        let flattened = flattenData(data);
 
         let subjectsUpdated = flattened.reduce(function (
           filtered: any,

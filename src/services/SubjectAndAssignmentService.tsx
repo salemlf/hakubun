@@ -40,22 +40,3 @@ export const getAlternativeMeanings = (subj: Subject) => {
 
   return alternatives;
 };
-
-// export const mergeSubjAndAssignmentData = (data: any) => {
-//   let assignArr: Assignment[] = data[0];
-//   let subjArr: Subject[] = data[1];
-
-//   if (!assignArr || !subjArr) {
-//     return [];
-//   }
-//   const mergeById = (assignments: any, subjects: any) =>
-//     assignments.map((assignment: any) => ({
-//       ...subjects.find(
-//         (subject: any) => subject.id === assignment.subject_id && subject
-//       ),
-//       ...assignment,
-//     }));
-
-//   let merged: SubjAndAssignment[] = mergeById(assignArr, subjArr);
-//   return merged;
-// };
