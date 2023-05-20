@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { IonItem, IonRow, useIonPopover } from "@ionic/react";
 
 import ImageFallback from "../ImageFallback";
@@ -80,11 +79,7 @@ export const RadicalImageCard = ({
       </IonRow>
       {displayProgress && (
         <IonRow className={`${styles.progressContainer}`}>
-          <StepProgressBar
-            // TODO: pass in assignmentID to simplify StepProgressBar?
-            // stage={radicalAssignment.srs_stage}
-            subjID={subject.id}
-          ></StepProgressBar>
+          <StepProgressBar stage={assignment.srs_stage}></StepProgressBar>
         </IonRow>
       )}
     </>

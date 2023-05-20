@@ -92,9 +92,8 @@ export const SubjectCard = ({
         </button>
       </IonRow>
       {displayProgress && (
-        // TODO: pass in assignmentID to simplify StepProgressBar?
         <IonRow className={`${styles.progressContainer}`}>
-          <StepProgressBar subjID={subject.id}></StepProgressBar>
+          <StepProgressBar stage={assignment.srs_stage}></StepProgressBar>
         </IonRow>
       )}
     </>
