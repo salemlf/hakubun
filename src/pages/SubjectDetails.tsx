@@ -9,7 +9,9 @@ import {
   IonSkeletonText,
 } from "@ionic/react";
 
-import { useSubAndAssignmentByID } from "../hooks/useSubAndAssignmentByID";
+// import { useSubAndAssignmentByID } from "../hooks/useSubAndAssignmentByID";
+import { useSubjectByID } from "../hooks/useSubjectByID";
+import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
 import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
 
@@ -19,6 +21,7 @@ import { LvlBadge } from "../components/LvlBadge";
 import { SubjectCard } from "../components/cards/SubjectCard";
 import { RadicalImageCard } from "../components/cards/RadicalImageCard";
 import { AlternativeMeanings } from "../components/AlternativeMeanings";
+import { AssignmentSrs } from "../components/AssignmentSrs";
 
 import styles from "./SubjectDetails.module.scss";
 
@@ -29,7 +32,6 @@ type SubjectDetailParams = {
 export const SubjectDetails = () => {
   const { id } = useParams<SubjectDetailParams>();
   const [subjID, setSubjID] = useState<string>("");
-  const [displayName, setDisplayName] = useState<string>();
   const [loading, setLoading] = useState(true);
 
   // TODO: use history to allow user to go back?
@@ -42,29 +44,24 @@ export const SubjectDetails = () => {
     }
   }, [id]);
 
-  const { subjAssignDataLoading, subjAssignDataSuccess, subjAssignData } =
-    useSubAndAssignmentByID(subjID);
+  const {
+    isLoading: subjectLoading,
+    data: subjectData,
+    error: subjectErr,
+  } = useSubjectByID(subjID);
+
+  const {
+    isLoading: assignmentLoading,
+    data: assignmentData,
+    error: assignmentErr,
+  } = useAssignmentBySubjID(subjID);
 
   useEffect(() => {
     // TODO: change so if statement not needed?
-    if (subjAssignData) {
-      console.log(
-        "🚀 ~ file: SubjectDetails.tsx:52 ~ useEffect ~ subjAssignData:",
-        subjAssignData
-      );
-
+    if (!subjectLoading && !assignmentLoading) {
       setLoading(false);
     }
-  }, [subjAssignDataSuccess]);
-
-  useEffect(() => {
-    // TODO: change so if statement not needed?
-    if (subjAssignData && !displayName) {
-      let name = getSubjectDisplayName(subjAssignData);
-      console.log("🚀 ~ file: SubjectDetails.tsx:58 ~ useEffect ~ name:", name);
-      setDisplayName(name);
-    }
-  }, [subjAssignDataSuccess]);
+  }, [assignmentLoading, subjectLoading]);
 
   // TODO: use getTimeFromNow in MiscService to display time till available
   // TODO: Then use getSrsLevelsByName and convertToUpperCase functions to display srs phase
@@ -81,21 +78,24 @@ export const SubjectDetails = () => {
                     class="ion-align-items-end ion-justify-content-start"
                     className={`${styles.cardRow}`}
                   >
+                    {/* TODO: fix issue where page isn't displaying */}
                     <IonCol className={`${styles.badgeCol}`}>
-                      <LvlBadge level={subjAssignData?.level}></LvlBadge>
+                      {subjectData && (
+                        <LvlBadge level={subjectData.level}></LvlBadge>
+                      )}
                     </IonCol>
                     <IonCol>
-                      {subjAssignData?.object == "radical" ? (
+                      {subjectData?.object == "radical" ? (
                         <>
-                          {subjAssignData.useImage ? (
+                          {subjectData.useImage ? (
                             <RadicalImageCard
-                              radicalObj={subjAssignData}
+                              radicalSubj={subjectData}
                               clickDisabled={true}
                               displayProgress={false}
                             ></RadicalImageCard>
                           ) : (
                             <SubjectCard
-                              subject={subjAssignData}
+                              subject={subjectData}
                               isRadical={true}
                               clickDisabled={true}
                               displayProgress={false}
@@ -104,7 +104,7 @@ export const SubjectDetails = () => {
                         </>
                       ) : (
                         <SubjectCard
-                          subject={subjAssignData}
+                          subject={subjectData}
                           isRadical={false}
                           clickDisabled={true}
                           displayProgress={false}
@@ -112,10 +112,15 @@ export const SubjectDetails = () => {
                       )}
                     </IonCol>
                     <IonCol>
-                      <h1>{`${displayName}`}</h1>
+                      {subjectData && (
+                        <h1>{getSubjectDisplayName(subjectData)}</h1>
+                      )}
                     </IonCol>
                   </IonRow>
-                  <AlternativeMeanings subject={subjAssignData} />
+                  {subjectData && <AlternativeMeanings subject={subjectData} />}
+                  {assignmentData && (
+                    <AssignmentSrs assignment={assignmentData} />
+                  )}
                 </BasicCard>
               </IonCol>
             </IonRow>

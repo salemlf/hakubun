@@ -1,6 +1,8 @@
 import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
-import { SubjAndAssignment } from "../types/MiscTypes";
+// import { SubjAndAssignment } from "../types/MiscTypes";
+
+import { convertToUpperCase } from "./MiscService";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(
@@ -13,11 +15,7 @@ export const getAssignmentStatuses = (assignments: Assignment[]) => {
   );
 };
 
-const convertToUpperCase = (word: string) => {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-};
-
-export const getSubjectDisplayName = (subj: SubjAndAssignment) => {
+export const getSubjectDisplayName = (subj: Subject) => {
   console.log(
     "🚀 ~ file: SubjectAndAssignmentService.tsx:21 ~ getSubjectDisplayName ~ subj:",
     subj
@@ -35,7 +33,7 @@ export const getSubjectDisplayName = (subj: SubjAndAssignment) => {
   }
 };
 
-export const getAlternativeMeanings = (subj: SubjAndAssignment) => {
+export const getAlternativeMeanings = (subj: Subject) => {
   let alternatives = subj["meanings"]?.filter(
     (meaning: any) => meaning.primary === false
   );
@@ -43,21 +41,21 @@ export const getAlternativeMeanings = (subj: SubjAndAssignment) => {
   return alternatives;
 };
 
-export const mergeSubjAndAssignmentData = (data: any) => {
-  let assignArr: Assignment[] = data[0];
-  let subjArr: Subject[] = data[1];
+// export const mergeSubjAndAssignmentData = (data: any) => {
+//   let assignArr: Assignment[] = data[0];
+//   let subjArr: Subject[] = data[1];
 
-  if (!assignArr || !subjArr) {
-    return [];
-  }
-  const mergeById = (assignments: any, subjects: any) =>
-    assignments.map((assignment: any) => ({
-      ...subjects.find(
-        (subject: any) => subject.id === assignment.subject_id && subject
-      ),
-      ...assignment,
-    }));
+//   if (!assignArr || !subjArr) {
+//     return [];
+//   }
+//   const mergeById = (assignments: any, subjects: any) =>
+//     assignments.map((assignment: any) => ({
+//       ...subjects.find(
+//         (subject: any) => subject.id === assignment.subject_id && subject
+//       ),
+//       ...assignment,
+//     }));
 
-  let merged: SubjAndAssignment[] = mergeById(assignArr, subjArr);
-  return merged;
-};
+//   let merged: SubjAndAssignment[] = mergeById(assignArr, subjArr);
+//   return merged;
+// };

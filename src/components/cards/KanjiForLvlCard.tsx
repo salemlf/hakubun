@@ -4,10 +4,11 @@ import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 
 import { BasicCard } from "./BasicCard";
 import { SubjectCard } from "./SubjectCard";
-import { useKanjiSubAndAssignments } from "../../hooks/useKanjiSubAndAssignments";
+// import { useKanjiSubAndAssignments } from "../../hooks/useKanjiSubAndAssignments";
 
 import { Subject } from "../../types/Subject";
 import styles from "./KanjiForLvlCard.module.scss";
+import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
 
 interface Props {
   level: number | undefined;
@@ -15,14 +16,20 @@ interface Props {
 
 export const KanjiContainer = ({ level }: Props) => {
   const [loading, setLoading] = useState(true);
-  const { kanjiDataLoading, kanjiData } = useKanjiSubAndAssignments(level);
+  // const { kanjiDataLoading, kanjiData } = useKanjiSubAndAssignments(level);
+
+  const {
+    isLoading: kanjiSubLoading,
+    data: kanjiSubData,
+    error: kanjiSubErr,
+  } = useKanjiSubjectsForLvl(level);
 
   useEffect(() => {
     // TODO: change so if statement not needed?
-    if (kanjiData) {
+    if (kanjiSubData) {
       setLoading(false);
     }
-  }, [kanjiDataLoading]);
+  }, [kanjiSubLoading]);
 
   //   TODO: create component for loading subject card
   return (
@@ -30,7 +37,7 @@ export const KanjiContainer = ({ level }: Props) => {
       {!loading ? (
         <BasicCard title="Kanji" isLoading={false}>
           <IonRow class="ion-align-items-center ion-justify-content-start">
-            {(kanjiData as Subject[]).map((kanjiItem: any) => {
+            {(kanjiSubData as Subject[]).map((kanjiItem: any) => {
               return (
                 <IonCol
                   key={`col_${kanjiItem.id}`}

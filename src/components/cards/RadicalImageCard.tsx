@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IonItem, IonRow, useIonPopover } from "@ionic/react";
 
-import { SubjAndAssignment } from "../../types/MiscTypes";
+// import { SubjAndAssignment } from "../../types/MiscTypes";
 
 import ImageFallback from "../ImageFallback";
 import { StepProgressBar } from "../progress/StepProgressBar";
@@ -9,14 +9,18 @@ import { StepProgressBar } from "../progress/StepProgressBar";
 import { getTimeFromNow } from "../../services/MiscService";
 
 import styles from "./RadicalImageCard.module.scss";
+import { Subject } from "../../types/Subject";
+import { Assignment } from "../../types/Assignment";
 
 type PopoverProps = {
-  selectedRadical: SubjAndAssignment;
+  // TODO: change to subject or assignment
+  selectedRadical: any;
 };
 
 const RadicalDetailPopover = ({ selectedRadical }: PopoverProps) => {
   let availTime = selectedRadical.available_at;
 
+  // TODO: this is always returning N/A for subjects on homescreen, fix
   let timeTill = getTimeFromNow(availTime);
 
   return (
@@ -40,13 +44,14 @@ const RadicalDetailPopover = ({ selectedRadical }: PopoverProps) => {
 };
 
 type RadImageProps = {
-  radicalObj: SubjAndAssignment;
+  // radicalObj: SubjAndAssignment;
+  radicalSubj: Subject;
   displayProgress?: boolean;
   clickDisabled?: boolean;
 };
 
 export const RadicalImageCard = ({
-  radicalObj,
+  radicalSubj,
   displayProgress = true,
   clickDisabled,
 }: RadImageProps) => {
@@ -59,10 +64,10 @@ export const RadicalImageCard = ({
     <>
       <IonRow>
         <button
-          key={`${radicalObj.id}`}
+          key={`${radicalSubj.id}`}
           className={`${styles.radicalDivWithImg}`}
           onClick={(e: any) => {
-            setSelectedRadical(radicalObj);
+            setSelectedRadical(radicalSubj);
             present({
               event: e.nativeEvent,
               size: "auto",
@@ -73,14 +78,17 @@ export const RadicalImageCard = ({
           disabled={clickDisabled}
         >
           <ImageFallback
-            images={radicalObj.availableImages}
-            altText={radicalObj.meaning_mnemonic}
+            images={radicalSubj.availableImages}
+            altText={radicalSubj.meaning_mnemonic}
           ></ImageFallback>
         </button>
       </IonRow>
       {displayProgress && (
         <IonRow className={`${styles.progressContainer}`}>
-          <StepProgressBar stage={radicalObj.srs_stage}></StepProgressBar>
+          <StepProgressBar
+            // stage={radicalAssignment.srs_stage}
+            subjID={radicalSubj.id}
+          ></StepProgressBar>
         </IonRow>
       )}
     </>
