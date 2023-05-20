@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {
+  IonPage,
   IonContent,
   IonGrid,
   IonCol,
@@ -17,7 +18,7 @@ import { ProgressBar } from "../components/progress/ProgressBar";
 import Header from "../components/Header";
 import LessonsButton from "../components/buttons/LessonsButton";
 import ReviewsButton from "../components/buttons/ReviewsButton";
-import { RadicalContainer } from "../components/cards/RadicalForLvlCard";
+import { RadicalForLvlCard } from "../components/cards/RadicalForLvlCard";
 import { KanjiContainer } from "../components/cards/KanjiForLvlCard";
 import { SrsStages } from "../components/SrsStages";
 import { Footer } from "../components/Footer";
@@ -47,7 +48,7 @@ const Home = () => {
   };
 
   return (
-    <>
+    <IonPage>
       <Header></Header>
       <IonContent className="ion-padding">
         <IonGrid>
@@ -68,7 +69,7 @@ const Home = () => {
               </IonRow>
               <IonRow class="ion-justify-content-start">
                 <IonCol>
-                  <RadicalContainer level={level}></RadicalContainer>
+                  <RadicalForLvlCard level={level}></RadicalForLvlCard>
                 </IonCol>
               </IonRow>
               <IonRow class="ion-justify-content-start">
@@ -95,9 +96,9 @@ const Home = () => {
           )}
         </IonGrid>
         {homeLoading && <IonSpinner name="dots"></IonSpinner>}
+        <Footer></Footer>
       </IonContent>
-      <Footer></Footer>
-    </>
+    </IonPage>
   );
 };
 

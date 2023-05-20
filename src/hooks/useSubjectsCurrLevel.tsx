@@ -4,7 +4,6 @@ import { WaniKaniAPI } from "../api/WaniKaniApi";
 
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 
-// TODO: increase time to wait between data fetches
 export const useSubjectsCurrLevel = (level: any) => {
   return useQuery({
     queryKey: ["subjects-curr-lvl", level],

@@ -5,7 +5,6 @@ import { useSubjectByID } from "../../hooks/useSubjectByID";
 import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
 
 import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService";
-import { findAssignmentBySubjID } from "../../services/SubjectAndAssignmentService";
 
 import { BasicCard } from "../../components/cards/BasicCard";
 import { LvlBadge } from "../../components/LvlBadge";
