@@ -1,6 +1,7 @@
 import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 
 import { Subject } from "../../types/Subject";
+import { Assignment } from "../../types/Assignment";
 
 import { BasicCard } from ".././cards/BasicCard";
 import { RadicalImageCard } from "./RadicalImageCard";
@@ -27,12 +28,13 @@ export const RadicalForLvlCard = ({ level }: Props) => {
     error: assignmentCurrLvlErr,
   } = useRadicalAssignmentsForLvl(level);
 
-  if (
+  let radicalCardLoading =
     subjectCurrLvlLoading ||
     subjectCurrLvlErr ||
     assignmentCurrLvlLoading ||
-    assignmentCurrLvlErr
-  ) {
+    assignmentCurrLvlErr;
+
+  if (radicalCardLoading) {
     return (
       <BasicCard title="" isLoading={true}>
         <IonRow>
@@ -51,7 +53,6 @@ export const RadicalForLvlCard = ({ level }: Props) => {
     );
   }
 
-  // TODO: call find function to find assignment by subject_id
   return (
     <>
       <BasicCard title="Radicals" isLoading={false}>
@@ -64,9 +65,22 @@ export const RadicalForLvlCard = ({ level }: Props) => {
                 className={`${styles.radItemContainer}`}
               >
                 {radical.useImage ? (
-                  <RadicalImageCard radicalSubj={radical}></RadicalImageCard>
+                  <RadicalImageCard
+                    subject={radical}
+                    assignment={assignmentCurrLvlData.find(
+                      (assignment: Assignment) =>
+                        assignment.subject_id === radical.id
+                    )}
+                  ></RadicalImageCard>
                 ) : (
-                  <SubjectCard subject={radical} isRadical={true}></SubjectCard>
+                  <SubjectCard
+                    subject={radical}
+                    assignment={assignmentCurrLvlData.find(
+                      (assignment: Assignment) =>
+                        assignment.subject_id === radical.id
+                    )}
+                    isRadical={true}
+                  ></SubjectCard>
                 )}
               </IonCol>
             );

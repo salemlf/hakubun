@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { IonRow, IonItem, useIonPopover } from "@ionic/react";
 
 import { StepProgressBar } from "../progress/StepProgressBar";
@@ -7,23 +6,26 @@ import { getTimeFromNow } from "../../services/MiscService";
 
 import "./SubjectCard.module.scss";
 import styles from "./SubjectCard.module.scss";
+import { Subject } from "../../types/Subject";
+import { Assignment } from "../../types/Assignment";
 
 type PopoverProps = {
-  selectedSubj: any;
+  subject: Subject;
+  assignment: Assignment;
   isRadical: boolean;
 };
 
 export const SubjDetailPopover = ({
-  selectedSubj,
+  subject,
+  assignment,
   isRadical,
 }: PopoverProps) => {
-  let availTime = selectedSubj.available_at;
-
+  let availTime = assignment.available_at;
   let timeTill = getTimeFromNow(availTime);
 
   return (
     <IonItem
-      routerLink={`/subject/${selectedSubj.subject_id || selectedSubj.id}`}
+      routerLink={`/subject/${subject.id}`}
       routerDirection="forward"
       className={isRadical ? `${styles.radItem}` : `${styles.kanjiItem}`}
       button={true}
@@ -35,7 +37,7 @@ export const SubjDetailPopover = ({
             : `${styles.kanjiStyle} ${styles.subjPopover}`
         }
       >
-        <p className={`${styles.subjText}`}>{selectedSubj.characters}</p>
+        <p className={`${styles.subjText}`}>{subject.characters}</p>
         <p>{timeTill}</p>
       </div>
     </IonItem>
@@ -43,8 +45,8 @@ export const SubjDetailPopover = ({
 };
 
 type RadProps = {
-  // TODO: change to use Subject obj type
-  subject: any;
+  subject: Subject;
+  assignment: Assignment;
   isRadical: boolean;
   displayProgress?: boolean;
   clickDisabled?: boolean;
@@ -52,14 +54,15 @@ type RadProps = {
 
 export const SubjectCard = ({
   subject,
+  assignment,
   isRadical,
   displayProgress = true,
   clickDisabled,
 }: RadProps) => {
-  const [selectedSubj, setSelectedSubj] = useState<any>();
   const [present] = useIonPopover(SubjDetailPopover, {
     size: "cover",
-    selectedSubj,
+    subject,
+    assignment,
     isRadical,
   });
 
@@ -74,7 +77,6 @@ export const SubjectCard = ({
               : `${styles.kanjiStyle} ${styles.subjDiv}`
           }
           onClick={(e: any) => {
-            setSelectedSubj(subject);
             present({
               event: e.nativeEvent,
               size: "auto",
@@ -84,12 +86,15 @@ export const SubjectCard = ({
           }}
           disabled={clickDisabled}
         >
-          <p className={`${styles.subjText}`}>{subject.characters}</p>
+          {subject && (
+            <p className={`${styles.subjText}`}>{subject.characters}</p>
+          )}
         </button>
       </IonRow>
       {displayProgress && (
+        // TODO: pass in assignmentID to simplify StepProgressBar?
         <IonRow className={`${styles.progressContainer}`}>
-          <StepProgressBar stage={subject.srs_stage}></StepProgressBar>
+          <StepProgressBar subjID={subject.id}></StepProgressBar>
         </IonRow>
       )}
     </>

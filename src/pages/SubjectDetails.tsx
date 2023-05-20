@@ -9,7 +9,6 @@ import {
   IonSkeletonText,
 } from "@ionic/react";
 
-// import { useSubAndAssignmentByID } from "../hooks/useSubAndAssignmentByID";
 import { useSubjectByID } from "../hooks/useSubjectByID";
 import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
@@ -63,68 +62,12 @@ export const SubjectDetails = () => {
     }
   }, [assignmentLoading, subjectLoading]);
 
-  // TODO: use getTimeFromNow in MiscService to display time till available
-  // TODO: Then use getSrsLevelsByName and convertToUpperCase functions to display srs phase
-  return (
-    <IonPage>
-      <Header></Header>
-      <IonContent className="ion-padding">
-        <IonGrid>
-          {!loading ? (
-            <IonRow class="ion-justify-content-start">
-              <IonCol>
-                <BasicCard isLoading={false}>
-                  <IonRow
-                    class="ion-align-items-end ion-justify-content-start"
-                    className={`${styles.cardRow}`}
-                  >
-                    {/* TODO: fix issue where page isn't displaying */}
-                    <IonCol className={`${styles.badgeCol}`}>
-                      {subjectData && (
-                        <LvlBadge level={subjectData.level}></LvlBadge>
-                      )}
-                    </IonCol>
-                    <IonCol>
-                      {subjectData?.object == "radical" ? (
-                        <>
-                          {subjectData.useImage ? (
-                            <RadicalImageCard
-                              radicalSubj={subjectData}
-                              clickDisabled={true}
-                              displayProgress={false}
-                            ></RadicalImageCard>
-                          ) : (
-                            <SubjectCard
-                              subject={subjectData}
-                              isRadical={true}
-                              clickDisabled={true}
-                              displayProgress={false}
-                            ></SubjectCard>
-                          )}
-                        </>
-                      ) : (
-                        <SubjectCard
-                          subject={subjectData}
-                          isRadical={false}
-                          clickDisabled={true}
-                          displayProgress={false}
-                        ></SubjectCard>
-                      )}
-                    </IonCol>
-                    <IonCol>
-                      {subjectData && (
-                        <h1>{getSubjectDisplayName(subjectData)}</h1>
-                      )}
-                    </IonCol>
-                  </IonRow>
-                  {subjectData && <AlternativeMeanings subject={subjectData} />}
-                  {assignmentData && (
-                    <AssignmentSrs assignment={assignmentData} />
-                  )}
-                </BasicCard>
-              </IonCol>
-            </IonRow>
-          ) : (
+  if (subjectLoading || subjectErr || assignmentLoading || assignmentErr) {
+    return (
+      <IonPage>
+        <Header></Header>
+        <IonContent className="ion-padding">
+          <IonGrid>
             <IonRow class="ion-justify-content-start">
               <IonCol>
                 <BasicCard isLoading={true}>
@@ -139,7 +82,79 @@ export const SubjectDetails = () => {
                 </BasicCard>
               </IonCol>
             </IonRow>
-          )}
+          </IonGrid>
+        </IonContent>
+      </IonPage>
+    );
+  }
+
+  // TODO: use getTimeFromNow in MiscService to display time till available
+  // TODO: Then use getSrsLevelsByName and convertToUpperCase functions to display srs phase
+  return (
+    <IonPage>
+      <Header></Header>
+      <IonContent className="ion-padding">
+        <IonGrid>
+          <IonRow class="ion-justify-content-start">
+            <IonCol>
+              <BasicCard isLoading={false}>
+                <IonRow
+                  class="ion-align-items-end ion-justify-content-start"
+                  className={`${styles.cardRow}`}
+                >
+                  <IonCol className={`${styles.badgeCol}`}>
+                    {subjectData && (
+                      <LvlBadge level={subjectData.level}></LvlBadge>
+                    )}
+                  </IonCol>
+                  <IonCol>
+                    {subjectData?.object == "radical" ? (
+                      <>
+                        {subjectData.useImage
+                          ? assignmentData && (
+                              <RadicalImageCard
+                                subject={subjectData}
+                                assignment={assignmentData}
+                                clickDisabled={true}
+                                displayProgress={false}
+                              ></RadicalImageCard>
+                            )
+                          : assignmentData && (
+                              <SubjectCard
+                                subject={subjectData}
+                                assignment={assignmentData}
+                                isRadical={true}
+                                clickDisabled={true}
+                                displayProgress={false}
+                              ></SubjectCard>
+                            )}
+                      </>
+                    ) : (
+                      subjectData &&
+                      assignmentData && (
+                        <SubjectCard
+                          subject={subjectData}
+                          assignment={assignmentData}
+                          isRadical={false}
+                          clickDisabled={true}
+                          displayProgress={false}
+                        ></SubjectCard>
+                      )
+                    )}
+                  </IonCol>
+                  <IonCol>
+                    {subjectData && (
+                      <h1>{getSubjectDisplayName(subjectData)}</h1>
+                    )}
+                  </IonCol>
+                </IonRow>
+                {subjectData && <AlternativeMeanings subject={subjectData} />}
+                {assignmentData && (
+                  <AssignmentSrs assignment={assignmentData} />
+                )}
+              </BasicCard>
+            </IonCol>
+          </IonRow>
         </IonGrid>
       </IonContent>
     </IonPage>

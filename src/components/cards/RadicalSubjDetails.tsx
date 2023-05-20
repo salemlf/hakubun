@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-2;
 import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 
 import { useSubjectByID } from "../../hooks/useSubjectByID";
+import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
 
 import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService";
+import { findAssignmentBySubjID } from "../../services/SubjectAndAssignmentService";
 
-import Header from "../../components/Header";
 import { BasicCard } from "../../components/cards/BasicCard";
 import { LvlBadge } from "../../components/LvlBadge";
 import { SubjectCard } from "../../components/cards/SubjectCard";
@@ -15,10 +15,7 @@ import { RadicalImageCard } from "../../components/cards/RadicalImageCard";
 import styles from "./RadicalSubjDetails.module.scss";
 
 type RadProps = {
-  // TODO: change to use Subject obj type
   radID: string;
-  //   isRadical: boolean;
-  //   clickDisabled?: boolean;
 };
 
 export const RadicalSubjDetails = ({ radID }: RadProps) => {
@@ -30,6 +27,12 @@ export const RadicalSubjDetails = ({ radID }: RadProps) => {
     data: subjData,
     error: subjDataErr,
   } = useSubjectByID(radID);
+
+  const {
+    isLoading: assignmentLoading,
+    data: assignmentData,
+    error: assignmentErr,
+  } = useAssignmentBySubjID(radID);
 
   useEffect(() => {
     // TODO: change so if statement not needed?
@@ -50,20 +53,26 @@ export const RadicalSubjDetails = ({ radID }: RadProps) => {
             className={`${styles.cardRow}`}
           >
             <IonCol>
-              <LvlBadge level={subjData.level}></LvlBadge>
+              <LvlBadge level={subjData?.level}></LvlBadge>
             </IonCol>
             <IonCol>
-              {subjData.useImage ? (
-                <RadicalImageCard
-                  radicalObj={subjData}
-                  clickDisabled={true}
-                ></RadicalImageCard>
-              ) : (
-                <SubjectCard
-                  subject={subjData}
-                  isRadical={true}
-                  clickDisabled={true}
-                ></SubjectCard>
+              {subjData && assignmentData && (
+                <>
+                  {subjData.useImage ? (
+                    <RadicalImageCard
+                      subject={subjData}
+                      assignment={assignmentData}
+                      clickDisabled={true}
+                    ></RadicalImageCard>
+                  ) : (
+                    <SubjectCard
+                      subject={subjData}
+                      assignment={assignmentData}
+                      isRadical={true}
+                      clickDisabled={true}
+                    ></SubjectCard>
+                  )}
+                </>
               )}
             </IonCol>
             <IonCol>
