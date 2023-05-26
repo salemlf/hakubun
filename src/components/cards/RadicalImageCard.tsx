@@ -87,7 +87,10 @@ export const RadicalImageCard = ({
       {displayProgress && (
         <IonRow className={`${styles.progressContainer}`}>
           {assignment ? (
-            <StepProgressBar stage={assignment.srs_stage}></StepProgressBar>
+            <StepProgressBar
+              stage={assignment.srs_stage}
+              passedAt={assignment.passed_at}
+            ></StepProgressBar>
           ) : (
             <StepProgressBarLoading />
           )}
