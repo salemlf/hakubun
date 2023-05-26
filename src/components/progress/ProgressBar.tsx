@@ -24,9 +24,10 @@ export const ProgressBar = ({ level }: Props) => {
   useEffect(() => {
     if (kanjiAssignmentsLvlData) {
       let { passed, total } = getAssignmentStatuses(kanjiAssignmentsLvlData);
-      let percentage = Math.round((passed / total) * 100);
+      let numToPass = Math.ceil(total * 0.9);
+      let percentage = Math.round((passed / numToPass) * 100);
 
-      let updatedTxt = `${passed} of ${total} kanji passed`;
+      let updatedTxt = `${passed} of ${numToPass} kanji passed`;
       setCompletedTxt(updatedTxt);
 
       if (barRef.current) {
