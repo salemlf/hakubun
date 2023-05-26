@@ -50,36 +50,31 @@ export const SubjNameAndCharacter = ({
       <IonCol>
         {subjectData?.object == "radical" ? (
           <>
-            {subjectData.useImage
-              ? assignmentData && (
-                  <RadicalImageCard
-                    subject={subjectData}
-                    assignment={assignmentData}
-                    clickDisabled={true}
-                    displayProgress={false}
-                  ></RadicalImageCard>
-                )
-              : assignmentData && (
-                  <SubjectCard
-                    subject={subjectData}
-                    assignment={assignmentData}
-                    isRadical={true}
-                    clickDisabled={true}
-                    displayProgress={false}
-                  ></SubjectCard>
-                )}
+            {subjectData.useImage ? (
+              <RadicalImageCard
+                subject={subjectData}
+                assignment={assignmentData}
+                clickDisabled={true}
+                displayProgress={false}
+              ></RadicalImageCard>
+            ) : (
+              <SubjectCard
+                subject={subjectData}
+                assignment={assignmentData}
+                isRadical={true}
+                clickDisabled={true}
+                displayProgress={false}
+              ></SubjectCard>
+            )}
           </>
         ) : (
-          subjectData &&
-          assignmentData && (
-            <SubjectCard
-              subject={subjectData}
-              assignment={assignmentData}
-              isRadical={false}
-              clickDisabled={true}
-              displayProgress={false}
-            ></SubjectCard>
-          )
+          <SubjectCard
+            subject={subjectData}
+            assignment={assignmentData}
+            isRadical={false}
+            clickDisabled={true}
+            displayProgress={false}
+          ></SubjectCard>
         )}
       </IonCol>
       <IonCol>

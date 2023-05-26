@@ -54,39 +54,37 @@ export const RadicalForLvlCard = ({ level }: Props) => {
   }
 
   return (
-    <>
-      <BasicCard title="Radicals" isLoading={false}>
-        <IonRow class="ion-align-items-center ion-justify-content-start">
-          {(subjectCurrLvlData as Subject[]).map((radical: Subject) => {
-            return (
-              <IonCol
-                key={`col_${radical.id}`}
-                size="2"
-                className={`${styles.radItemContainer}`}
-              >
-                {radical.useImage ? (
-                  <RadicalImageCard
-                    subject={radical}
-                    assignment={assignmentCurrLvlData.find(
-                      (assignment: Assignment) =>
-                        assignment.subject_id === radical.id
-                    )}
-                  ></RadicalImageCard>
-                ) : (
-                  <SubjectCard
-                    subject={radical}
-                    assignment={assignmentCurrLvlData.find(
-                      (assignment: Assignment) =>
-                        assignment.subject_id === radical.id
-                    )}
-                    isRadical={true}
-                  ></SubjectCard>
-                )}
-              </IonCol>
-            );
-          })}
-        </IonRow>
-      </BasicCard>
-    </>
+    <BasicCard title="Radicals" isLoading={false}>
+      <IonRow class="ion-align-items-center ion-justify-content-start">
+        {(subjectCurrLvlData as Subject[]).map((radical: Subject) => {
+          return (
+            <IonCol
+              key={`col_${radical.id}`}
+              size="2"
+              className={`${styles.radItemContainer}`}
+            >
+              {radical.useImage ? (
+                <RadicalImageCard
+                  subject={radical}
+                  assignment={assignmentCurrLvlData.find(
+                    (assignment: Assignment) =>
+                      assignment.subject_id === radical.id
+                  )}
+                ></RadicalImageCard>
+              ) : (
+                <SubjectCard
+                  subject={radical}
+                  assignment={assignmentCurrLvlData.find(
+                    (assignment: Assignment) =>
+                      assignment.subject_id === radical.id
+                  )}
+                  isRadical={true}
+                ></SubjectCard>
+              )}
+            </IonCol>
+          );
+        })}
+      </IonRow>
+    </BasicCard>
   );
 };

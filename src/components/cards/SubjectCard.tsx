@@ -1,6 +1,8 @@
 import { IonRow, IonItem, useIonPopover } from "@ionic/react";
 
 import { StepProgressBar } from "../progress/StepProgressBar";
+import { SubjectCardLoading } from "../loading-skeletons/SubjectCardLoading";
+import { StepProgressBarLoading } from "../loading-skeletons/StepProgressBarLoading";
 
 import { getTimeFromNow } from "../../services/MiscService";
 
@@ -45,8 +47,8 @@ export const SubjDetailPopover = ({
 };
 
 type RadProps = {
-  subject: Subject;
-  assignment: Assignment;
+  subject: Subject | undefined;
+  assignment: Assignment | undefined;
   isRadical: boolean;
   displayProgress?: boolean;
   clickDisabled?: boolean;
@@ -69,31 +71,39 @@ export const SubjectCard = ({
   return (
     <>
       <IonRow>
-        <button
-          title={isRadical ? "Radical Subject" : "Kanji Subject"}
-          className={
-            isRadical
-              ? `${styles.radStyle} ${styles.subjDiv}`
-              : `${styles.kanjiStyle} ${styles.subjDiv}`
-          }
-          onClick={(e: any) => {
-            present({
-              event: e.nativeEvent,
-              size: "auto",
-              alignment: "center",
-              cssClass: "radPopover",
-            });
-          }}
-          disabled={clickDisabled}
-        >
-          {subject && (
-            <p className={`${styles.subjText}`}>{subject.characters}</p>
-          )}
-        </button>
+        {subject && assignment ? (
+          <button
+            title={isRadical ? "Radical Subject" : "Kanji Subject"}
+            className={
+              isRadical
+                ? `${styles.radStyle} ${styles.subjDiv}`
+                : `${styles.kanjiStyle} ${styles.subjDiv}`
+            }
+            onClick={(e: any) => {
+              present({
+                event: e.nativeEvent,
+                size: "auto",
+                alignment: "center",
+                cssClass: "radPopover",
+              });
+            }}
+            disabled={clickDisabled}
+          >
+            {subject && (
+              <p className={`${styles.subjText}`}>{subject.characters}</p>
+            )}
+          </button>
+        ) : (
+          <SubjectCardLoading />
+        )}
       </IonRow>
       {displayProgress && (
         <IonRow className={`${styles.progressContainer}`}>
-          <StepProgressBar stage={assignment.srs_stage}></StepProgressBar>
+          {assignment ? (
+            <StepProgressBar stage={assignment.srs_stage}></StepProgressBar>
+          ) : (
+            <StepProgressBarLoading />
+          )}
         </IonRow>
       )}
     </>

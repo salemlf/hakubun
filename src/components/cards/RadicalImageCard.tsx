@@ -2,6 +2,8 @@ import { IonItem, IonRow, useIonPopover } from "@ionic/react";
 
 import ImageFallback from "../ImageFallback";
 import { StepProgressBar } from "../progress/StepProgressBar";
+import { SubjectCardLoading } from "../loading-skeletons/SubjectCardLoading";
+import { StepProgressBarLoading } from "../loading-skeletons/StepProgressBarLoading";
 
 import { getTimeFromNow } from "../../services/MiscService";
 
@@ -39,7 +41,7 @@ const RadicalDetailPopover = ({ subject, assignment }: PopoverProps) => {
 
 type RadImageProps = {
   subject: Subject;
-  assignment: Assignment;
+  assignment: Assignment | undefined;
   displayProgress?: boolean;
   clickDisabled?: boolean;
 };
@@ -58,28 +60,37 @@ export const RadicalImageCard = ({
   return (
     <>
       <IonRow>
-        <button
-          key={`${subject.id}`}
-          className={`${styles.radicalDivWithImg}`}
-          onClick={(e: any) => {
-            present({
-              event: e.nativeEvent,
-              size: "auto",
-              alignment: "center",
-              cssClass: "radPopover",
-            });
-          }}
-          disabled={clickDisabled}
-        >
-          <ImageFallback
-            images={subject.availableImages}
-            altText={subject.meaning_mnemonic}
-          ></ImageFallback>
-        </button>
+        {subject && assignment ? (
+          <button
+            key={`${subject.id}`}
+            className={`${styles.radicalDivWithImg}`}
+            onClick={(e: any) => {
+              present({
+                event: e.nativeEvent,
+                size: "auto",
+                alignment: "center",
+                cssClass: "radPopover",
+              });
+            }}
+            disabled={clickDisabled}
+          >
+            <ImageFallback
+              images={subject.availableImages}
+              altText={subject.meaning_mnemonic}
+            ></ImageFallback>
+          </button>
+        ) : (
+          <SubjectCardLoading />
+        )}
       </IonRow>
+
       {displayProgress && (
         <IonRow className={`${styles.progressContainer}`}>
-          <StepProgressBar stage={assignment.srs_stage}></StepProgressBar>
+          {assignment ? (
+            <StepProgressBar stage={assignment.srs_stage}></StepProgressBar>
+          ) : (
+            <StepProgressBarLoading />
+          )}
         </IonRow>
       )}
     </>
