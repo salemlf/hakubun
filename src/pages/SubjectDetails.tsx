@@ -13,19 +13,16 @@ import { useSubjectByID } from "../hooks/useSubjectByID";
 import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
 import Header from "../components/Header";
-import { BasicCard } from "../components/cards/BasicCard";
-import { LvlBadge } from "../components/LvlBadge";
-import { AlternativeMeanings } from "../components/AlternativeMeanings";
-import { AssignmentSrs } from "../components/AssignmentSrs";
-import { SubjNameAndCharacter } from "../components/SubjNameAndCharacter";
 import { SubjectSummary } from "../components/SubjectSummary";
 
 import styles from "./SubjectDetails.module.scss";
+import { BasicCard } from "../components/cards/BasicCard";
 
 type SubjectDetailParams = {
   id: string;
 };
 
+// TODO: change bgcolor depending on whether radical, kanji, or vocab
 export const SubjectDetails = () => {
   const { id } = useParams<SubjectDetailParams>();
   const [subjID, setSubjID] = useState<string>("");
@@ -53,20 +50,27 @@ export const SubjectDetails = () => {
   } = useAssignmentBySubjID(subjID);
 
   return (
-    <IonPage>
-      <Header></Header>
-      <IonContent className="ion-padding">
-        <IonGrid>
-          <IonRow class="ion-justify-content-start">
-            <IonCol>
-              <SubjectSummary
-                subject={subjectData}
-                assignment={assignmentData}
-              ></SubjectSummary>
-            </IonCol>
-          </IonRow>
+    <IonPage className={`${styles.subjectDetailPg}`}>
+      {/* <Header></Header> */}
+      <IonContent>
+        <IonGrid className={`${styles.fullWidthGrid}`}>
+          {/* <IonRow class="ion-justify-content-start">
+            <IonCol> */}
+          <SubjectSummary
+            subject={subjectData}
+            assignment={assignmentData}
+          ></SubjectSummary>
+          {/* </IonCol>
+          </IonRow> */}
         </IonGrid>
+        {/* <IonGrid className={`${styles.fullWidthGrid}`}>
+          <BasicCard isLoading={false}></BasicCard>
+        </IonGrid> */}
       </IonContent>
+      {/* <IonContent>
+        <IonGrid>
+        </IonGrid>
+      </IonContent> */}
     </IonPage>
   );
 };

@@ -24,13 +24,12 @@ export const AssignmentSrs = ({ assignment }: Props) => {
     return getSrsNameBySrsLvl(assignment.srs_stage);
   };
 
-  // TODO: display badge color using srs phase color, similar to SrsStages component
   return (
-    <IonRow className={`${styles.srsContainer}`}>
+    <div className={`${styles.srsContainer}`}>
       <p>{timeTill}</p>
-      <IonBadge className={`${styles.srsLevel} ${getSrsLvl()}`}>
+      <p className={`${styles.srsLevel} ${styles[getSrsLvl()]}`}>
         {convertToUpperCase(getSrsLvl())}
-      </IonBadge>
-    </IonRow>
+      </p>
+    </div>
   );
 };

@@ -1,9 +1,55 @@
 .srsLevel {
   color: white;
+  background: blue;
+  padding: 5px;
+  border-radius: 12px;
+
+  &.apprentice {
+    background: var(--wanikani-apprentice);
+  }
+
+  &.guru {
+    --background: var(--wanikani-guru);
+  }
+
+  &.master {
+    --background: var(--wanikani-master);
+  }
+
+  &.enlightened {
+    background: var(--wanikani-enlightened);
+  }
+
+  &.burned {
+    --background: var(--wanikani-burned);
+  }
 }
+
+// p {
+.apprentice {
+  background: var(--wanikani-apprentice);
+}
+
+.guru {
+  background: var(--wanikani-guru);
+}
+
+.master {
+  background: var(--wanikani-master);
+}
+
+.enlightened {
+  background-color: var(--wanikani-enlightened);
+}
+
+.burned {
+  background: var(--wanikani-burned);
+}
+// }
 
 .srsContainer {
   display: flex;
   gap: 10px;
   justify-content: end;
+  align-items: center;
 }

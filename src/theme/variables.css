@@ -13,6 +13,7 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-color-secondary: #6930c3;
   --ion-color-secondary-rgb: 105, 48, 195;
+  --ion-color-secondary-dark: #4d248f;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
   --ion-color-secondary-shade: #5c2aac;
@@ -38,11 +39,17 @@ http://ionicframework.com/docs/theming/ */
   --wanikani-blue: #00aaff;
   --wanikani-blue-rgba: rgba(0, 170, 255, 0.065);
   --wanikani-blue-rgb: 0, 170, 255;
+
+  --wanikani-radical: #0af;
+  --wanikani-kanji: #f0a;
+  --wanikani-purple: #aa00ff;
+
   --wanikani-apprentice: #dd0093;
   --wanikani-guru: #882d9e;
   --wanikani-master: #294ddb;
   --wanikani-enlightened: #0093dd;
   --wanikani-burned: #434343;
+
   --deep-purple-accent: #6930c3;
 
   --ion-color-success: #2dd36f;
@@ -79,6 +86,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  --ion-tab-bar-background: var(--ion-color-secondary);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -118,7 +127,7 @@ http://ionicframework.com/docs/theming/ */
   }
 
   body {
-    --ion-background-color: #30223A
+    --ion-background-color: #30223a;
     --ion-color-primary: #c86bfa;
     --ion-color-primary-rgb: 200, 107, 250;
     --ion-color-primary-contrast: #000000;
@@ -192,7 +201,7 @@ http://ionicframework.com/docs/theming/ */
    */
 
   .ios body {
-    --ion-background-color: #30223A;
+    --ion-background-color: #30223a;
     --ion-background-color-rgb: 27, 15, 36;
 
     --ion-text-color: #ffffff;
@@ -238,7 +247,7 @@ http://ionicframework.com/docs/theming/ */
    */
 
   .md body {
-    --ion-background-color: #30223A;
+    --ion-background-color: #30223a;
     --ion-background-color-rgb: 27, 15, 36;
 
     --ion-text-color: #ffffff;
@@ -270,8 +279,6 @@ http://ionicframework.com/docs/theming/ */
     --ion-item-background: #423949;
 
     --ion-toolbar-background: #423949;
-
-    --ion-tab-bar-background: #423949;
 
     --ion-card-background: var(--light-greyish-purple);
   }
@@ -346,4 +353,20 @@ body.dark {
 
   --ion-text-color: #ffffff;
   --color: #ffffff;
+}
+
+ion-tab-bar {
+  --color: white;
+  --color-selected: white;
+  --background: var(--ion-color-secondary);
+}
+
+ion-tab-button {
+  --ripple-color: var(--ion-color-medium);
+  --color: white;
+  --color-selected: white;
+}
+
+ion-tab-button.tab-selected {
+  --background: var(--ion-color-secondary-dark);
 }

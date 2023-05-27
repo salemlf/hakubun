@@ -1,3 +1,9 @@
+.subjectDetailPg {
+  position: relative;
+  --ion-background-color: var(--light-greyish-purple);
+  background-color: var(--light-greyish-purple);
+}
+
 .cardRow ion-item::part(native) {
   padding: 0;
 }
@@ -16,4 +22,9 @@
 
 .badgeCol ion-item {
   --inner-padding-end: 0px;
+}
+
+.fullWidthGrid {
+  margin: 0;
+  padding: 0;
 }

@@ -1,4 +1,4 @@
-import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
+import { IonCol, IonRow, IonSkeletonText, IonHeader } from "@ionic/react";
 
 import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
@@ -19,6 +19,12 @@ type Props = {
 export const SubjectSummary = ({ subject, assignment }: Props) => {
   let subjectSummaryLoading = !subject || !assignment;
 
+  const getSummaryStyle = () => {
+    console.log("subject.object: ", subject?.object);
+    return subject ? subject.object : "";
+  };
+
+  // TODO: change this from card
   if (subjectSummaryLoading) {
     return (
       <BasicCard isLoading={true}>
@@ -35,21 +41,20 @@ export const SubjectSummary = ({ subject, assignment }: Props) => {
   }
 
   return (
-    <BasicCard isLoading={false}>
+    <div className={`${styles.subjContainer} ion-padding`}>
       <IonRow
-        class="ion-align-items-end ion-justify-content-start"
-        className={`${styles.cardRow}`}
+        className={`${styles.cardRow} ion-align-items-center ion-justify-content-start`}
       >
-        <IonCol className={`${styles.badgeCol}`}>
-          {subject && <LvlBadge level={subject!.level}></LvlBadge>}
-        </IonCol>
+        {subject && <LvlBadge level={subject!.level}></LvlBadge>}
         <SubjNameAndCharacter
           subjectData={subject}
           assignmentData={assignment}
         />
       </IonRow>
-      {subject && <AlternativeMeanings subject={subject} />}
-      {assignment && <AssignmentSrs assignment={assignment} />}
-    </BasicCard>
+      <IonRow>{subject && <AlternativeMeanings subject={subject} />}</IonRow>
+      <IonRow className="ion-justify-content-end">
+        {assignment && <AssignmentSrs assignment={assignment} />}
+      </IonRow>
+    </div>
   );
 };

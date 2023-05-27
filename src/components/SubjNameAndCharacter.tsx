@@ -47,39 +47,33 @@ export const SubjNameAndCharacter = ({
   // TODO: display loading skeletons
   return (
     <>
-      <IonCol>
-        {subjectData?.object == "radical" ? (
-          <>
-            {subjectData.useImage ? (
-              <RadicalImageCard
-                subject={subjectData}
-                assignment={assignmentData}
-                clickDisabled={true}
-                displayProgress={false}
-              ></RadicalImageCard>
-            ) : (
-              <SubjectCard
-                subject={subjectData}
-                assignment={assignmentData}
-                isRadical={true}
-                clickDisabled={true}
-                displayProgress={false}
-              ></SubjectCard>
-            )}
-          </>
+      {subjectData?.object == "radical" ? (
+        subjectData.useImage ? (
+          <RadicalImageCard
+            subject={subjectData}
+            assignment={assignmentData}
+            clickDisabled={true}
+            displayProgress={false}
+          ></RadicalImageCard>
         ) : (
           <SubjectCard
             subject={subjectData}
             assignment={assignmentData}
-            isRadical={false}
+            isRadical={true}
             clickDisabled={true}
             displayProgress={false}
           ></SubjectCard>
-        )}
-      </IonCol>
-      <IonCol>
-        {subjectData && <h1>{getSubjectDisplayName(subjectData)}</h1>}
-      </IonCol>
+        )
+      ) : (
+        <SubjectCard
+          subject={subjectData}
+          assignment={assignmentData}
+          isRadical={false}
+          clickDisabled={true}
+          displayProgress={false}
+        ></SubjectCard>
+      )}
+      {subjectData && <h1>{getSubjectDisplayName(subjectData)}</h1>}
     </>
   );
 };
