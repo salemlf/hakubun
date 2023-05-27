@@ -46,3 +46,8 @@
   margin: 5px 0;
   font-size: 0.75rem;
 }
+
+ion-badge.enlightened {
+  --background: var(--wanikani-enlightened);
+  background: var(--wanikani-enlightened);
+}

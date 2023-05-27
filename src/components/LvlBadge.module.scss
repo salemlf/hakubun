@@ -1,10 +1,5 @@
 .lvlTxt {
   font-size: 1.75rem;
   margin-right: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  .lvlTxt {
-    color: white;
-  }
+  color: white;
 }

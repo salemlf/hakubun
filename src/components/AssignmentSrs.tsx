@@ -1,9 +1,9 @@
-import { IonRow } from "@ionic/react";
-// import { SubjAndAssignment } from "../types/MiscTypes";
+import { IonRow, IonBadge } from "@ionic/react";
+import styles from "./AssignmentSrs.module.scss";
 
 import {
   getTimeFromNow,
-  getSrsLevelsByName,
+  getSrsNameBySrsLvl,
   convertToUpperCase,
 } from "../services/MiscService";
 import { Assignment } from "../types/Assignment";
@@ -12,7 +12,6 @@ type Props = {
   assignment: Assignment;
 };
 
-// TODO: Use getSrsLevelsByName and convertToUpperCase functions to display srs phase
 export const AssignmentSrs = ({ assignment }: Props) => {
   console.log(
     "🚀 ~ file: AssignmentSrs.tsx:16 ~ AssignmentSrs ~ assignment:",
@@ -21,9 +20,17 @@ export const AssignmentSrs = ({ assignment }: Props) => {
 
   let timeTill = getTimeFromNow(assignment.available_at);
 
+  const getSrsLvl = () => {
+    return getSrsNameBySrsLvl(assignment.srs_stage);
+  };
+
+  // TODO: display badge color using srs phase color, similar to SrsStages component
   return (
-    <IonRow>
+    <IonRow className={`${styles.srsContainer}`}>
       <p>{timeTill}</p>
+      <IonBadge className={`${styles.srsLevel} ${getSrsLvl()}`}>
+        {convertToUpperCase(getSrsLvl())}
+      </IonBadge>
     </IonRow>
   );
 };

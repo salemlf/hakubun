@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 
 import { SrsLevelName } from "../types/MiscTypes";
 
-import { getSrsLevelsByName } from "../services/MiscService";
+import { getSrsLvlBySrsName } from "../services/MiscService";
 
 export const WaniKaniAPI = {
   pages: Array(),
@@ -121,7 +121,7 @@ export const WaniKaniAPI = {
   },
 
   getAssignmentsByStage: async function (srsLvl: SrsLevelName) {
-    let lvlRange = getSrsLevelsByName(srsLvl);
+    let lvlRange = getSrsLvlBySrsName(srsLvl);
     let url = `${baseUrl}assignments?srs_stages=${lvlRange}&started=true`;
 
     let assignments = await PagingAPI.iterateOverPages(url, []);

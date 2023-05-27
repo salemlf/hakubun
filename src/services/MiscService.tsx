@@ -40,7 +40,9 @@ export const getTimeFromNow = (availableTime: Date | null) => {
   );
 };
 
-const srsLevels: {} = {
+type SrsLvls = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+const srsLevels: { [index: string]: SrsLvls[] } = {
   initiate: [0],
   apprentice: [1, 2, 3, 4],
   guru: [5, 6],
@@ -49,8 +51,28 @@ const srsLevels: {} = {
   burned: [9],
 };
 
-export const getSrsLevelsByName = (key: SrsLevelName) => {
+// used when there's no circumstance where undefined/null should be possible
+function ensure<T>(
+  argument: T | undefined | null,
+  message: string = "Value is not allowed to be undefined or null."
+): T {
+  if (argument === undefined || argument === null) {
+    throw new TypeError(message);
+  }
+
+  return argument;
+}
+
+export const getSrsLvlBySrsName = (key: SrsLevelName) => {
   return srsLevels[key as keyof {}];
+};
+
+export const getSrsNameBySrsLvl = (srsNum: number) => {
+  return ensure(
+    Object.keys(srsLevels).find((key) =>
+      srsLevels[key].some((lvl: number) => lvl === srsNum)
+    )
+  );
 };
 
 export const convertToUpperCase = (word: string) => {
