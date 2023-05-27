@@ -18,6 +18,7 @@ import { LvlBadge } from "../components/LvlBadge";
 import { AlternativeMeanings } from "../components/AlternativeMeanings";
 import { AssignmentSrs } from "../components/AssignmentSrs";
 import { SubjNameAndCharacter } from "../components/SubjNameAndCharacter";
+import { SubjectSummary } from "../components/SubjectSummary";
 
 import styles from "./SubjectDetails.module.scss";
 
@@ -51,35 +52,6 @@ export const SubjectDetails = () => {
     error: assignmentErr,
   } = useAssignmentBySubjID(subjID);
 
-  let subjectDetailsLoading =
-    subjectLoading || subjectErr || assignmentLoading || assignmentErr;
-
-  if (subjectDetailsLoading) {
-    return (
-      <IonPage>
-        <Header></Header>
-        <IonContent className="ion-padding">
-          <IonGrid>
-            <IonRow class="ion-justify-content-start">
-              <IonCol>
-                <BasicCard isLoading={true}>
-                  <IonRow
-                    class="ion-align-items-center ion-justify-content-start"
-                    className={`${styles.cardRow}`}
-                  >
-                    <IonCol>
-                      <IonSkeletonText animated={true}></IonSkeletonText>
-                    </IonCol>
-                  </IonRow>
-                </BasicCard>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonContent>
-      </IonPage>
-    );
-  }
-
   return (
     <IonPage>
       <Header></Header>
@@ -87,26 +59,10 @@ export const SubjectDetails = () => {
         <IonGrid>
           <IonRow class="ion-justify-content-start">
             <IonCol>
-              <BasicCard isLoading={false}>
-                <IonRow
-                  class="ion-align-items-end ion-justify-content-start"
-                  className={`${styles.cardRow}`}
-                >
-                  <IonCol className={`${styles.badgeCol}`}>
-                    {subjectData && (
-                      <LvlBadge level={subjectData.level}></LvlBadge>
-                    )}
-                  </IonCol>
-                  <SubjNameAndCharacter
-                    subjectData={subjectData}
-                    assignmentData={assignmentData}
-                  />
-                </IonRow>
-                {subjectData && <AlternativeMeanings subject={subjectData} />}
-                {assignmentData && (
-                  <AssignmentSrs assignment={assignmentData} />
-                )}
-              </BasicCard>
+              <SubjectSummary
+                subject={subjectData}
+                assignment={assignmentData}
+              ></SubjectSummary>
             </IonCol>
           </IonRow>
         </IonGrid>
