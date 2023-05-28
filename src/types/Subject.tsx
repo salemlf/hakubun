@@ -3,9 +3,6 @@ import { ResponseStructure } from "./MiscTypes";
 export type SubjectType = "radical" | "kanji" | "vocabulary";
 
 export interface PreFlattenedSubject {
-  // id: number;
-  // url: string;
-  // data_updated_at: Date | null;
   object: SubjectType;
   amalgamation_subject_ids: number[];
   auxiliary_meanings: SubjectAuxiliaryMeaning[];

@@ -1,6 +1,5 @@
 import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
-// import { SubjAndAssignment } from "../types/MiscTypes";
 
 import { convertToUpperCase } from "./MiscService";
 

@@ -29,6 +29,7 @@
     "react-dom": "^18.2.0",
     "react-router": "^5.2.0",
     "react-scripts": "^5.0.0",
+    "react-string-replace": "^1.1.0",
     "sass": "^1.62.1",
     "typescript": "^4.1.3",
     "web-vitals": "^0.2.4",

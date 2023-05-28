@@ -13,11 +13,6 @@ type Props = {
 };
 
 export const AssignmentSrs = ({ assignment }: Props) => {
-  console.log(
-    "🚀 ~ file: AssignmentSrs.tsx:16 ~ AssignmentSrs ~ assignment:",
-    assignment
-  );
-
   let timeTill = getTimeFromNow(assignment.available_at);
 
   const getSrsLvl = () => {

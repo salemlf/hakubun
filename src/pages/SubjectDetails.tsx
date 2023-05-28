@@ -12,11 +12,10 @@ import {
 import { useSubjectByID } from "../hooks/useSubjectByID";
 import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
-import Header from "../components/Header";
 import { SubjectSummary } from "../components/SubjectSummary";
+import { TxtWithSubjTags } from "../components/TxtWithSubjTags";
 
 import styles from "./SubjectDetails.module.scss";
-import { BasicCard } from "../components/cards/BasicCard";
 
 type SubjectDetailParams = {
   id: string;
@@ -51,26 +50,25 @@ export const SubjectDetails = () => {
 
   return (
     <IonPage className={`${styles.subjectDetailPg}`}>
-      {/* <Header></Header> */}
       <IonContent>
         <IonGrid className={`${styles.fullWidthGrid}`}>
-          {/* <IonRow class="ion-justify-content-start">
-            <IonCol> */}
           <SubjectSummary
             subject={subjectData}
             assignment={assignmentData}
           ></SubjectSummary>
-          {/* </IonCol>
-          </IonRow> */}
+          {/* TODO: add cases for kanji and vocab too */}
+          {subjectData &&
+            assignmentData &&
+            subjectData?.object == "radical" && (
+              <IonRow class="ion-justify-content-start">
+                <div className="ion-padding">
+                  <h3>Name Mnemonic</h3>
+                  <TxtWithSubjTags mnemonic={subjectData.meaning_mnemonic} />
+                </div>
+              </IonRow>
+            )}
         </IonGrid>
-        {/* <IonGrid className={`${styles.fullWidthGrid}`}>
-          <BasicCard isLoading={false}></BasicCard>
-        </IonGrid> */}
       </IonContent>
-      {/* <IonContent>
-        <IonGrid>
-        </IonGrid>
-      </IonContent> */}
     </IonPage>
   );
 };
