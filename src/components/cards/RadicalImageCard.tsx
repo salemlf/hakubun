@@ -1,3 +1,4 @@
+import { useHistory } from "react-router";
 import { IonItem, IonRow, useIonPopover } from "@ionic/react";
 
 import ImageFallback from "../ImageFallback";
@@ -14,19 +15,24 @@ import { Assignment } from "../../types/Assignment";
 type PopoverProps = {
   subject: Subject;
   assignment: Assignment;
+  navigate: any;
 };
 
-const RadicalDetailPopover = ({ subject, assignment }: PopoverProps) => {
+const RadicalDetailPopover = ({
+  subject,
+  assignment,
+  navigate,
+}: PopoverProps) => {
   let availTime = assignment.available_at;
 
   let timeTill = getTimeFromNow(availTime);
 
   return (
     <IonItem
+      button
+      detail={false}
       className={`${styles.ionItem}`}
-      button={true}
-      routerLink={`/subject/${subject.id}`}
-      routerDirection="forward"
+      onClick={() => navigate(`/subject/${subject.id}`)}
     >
       <div className={`${styles.radicalPopoverWithImg}`}>
         <ImageFallback
@@ -52,10 +58,19 @@ export const RadicalImageCard = ({
   displayProgress = true,
   clickDisabled,
 }: RadImageProps) => {
-  const [present] = useIonPopover(RadicalDetailPopover, {
+  const history = useHistory();
+  const handleDismiss = () => dismiss();
+
+  const navigate = (route: string) => {
+    handleDismiss();
+    history.push(route);
+  };
+
+  const [present, dismiss] = useIonPopover(RadicalDetailPopover, {
     size: "cover",
     subject,
     assignment,
+    navigate,
   });
   return (
     <>

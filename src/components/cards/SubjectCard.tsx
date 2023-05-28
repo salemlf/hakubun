@@ -1,3 +1,4 @@
+import { useHistory } from "react-router";
 import { IonRow, IonItem, useIonPopover } from "@ionic/react";
 
 import { StepProgressBar } from "../progress/StepProgressBar";
@@ -15,22 +16,24 @@ type PopoverProps = {
   subject: Subject;
   assignment: Assignment;
   isRadical: boolean;
+  navigate: any;
 };
 
 export const SubjDetailPopover = ({
   subject,
   assignment,
   isRadical,
+  navigate,
 }: PopoverProps) => {
   let availTime = assignment.available_at;
   let timeTill = getTimeFromNow(availTime);
 
   return (
     <IonItem
-      routerLink={`/subject/${subject.id}`}
-      routerDirection="forward"
+      button
+      detail={false}
       className={isRadical ? `${styles.radItem}` : `${styles.kanjiItem}`}
-      button={true}
+      onClick={() => navigate(`/subject/${subject.id}`)}
     >
       <div
         className={
@@ -61,11 +64,20 @@ export const SubjectCard = ({
   displayProgress = true,
   clickDisabled,
 }: RadProps) => {
-  const [present] = useIonPopover(SubjDetailPopover, {
+  const history = useHistory();
+  const handleDismiss = () => dismiss();
+
+  const navigate = (route: string) => {
+    handleDismiss();
+    history.push(route);
+  };
+
+  const [present, dismiss] = useIonPopover(SubjDetailPopover, {
     size: "cover",
     subject,
     assignment,
     isRadical,
+    navigate,
   });
 
   return (

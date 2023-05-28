@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router";
+// import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   IonContent,
   IonGrid,
@@ -60,12 +62,20 @@ export const SubjectDetails = () => {
           {subjectData &&
             assignmentData &&
             subjectData?.object == "radical" && (
-              <IonRow class="ion-justify-content-start">
-                <div className="ion-padding">
-                  <h3>Name Mnemonic</h3>
-                  <TxtWithSubjTags mnemonic={subjectData.meaning_mnemonic} />
-                </div>
-              </IonRow>
+              <>
+                <IonRow class="ion-justify-content-start">
+                  <div className="ion-padding">
+                    <h3>Name Mnemonic</h3>
+                    <TxtWithSubjTags mnemonic={subjectData.meaning_mnemonic} />
+                    <h3>Found in Kanji</h3>
+                  </div>
+                </IonRow>
+                {/* <IonRow class="ion-justify-content-start"> */}
+                {/* <div className="ion-padding">
+                    <h3>Found in Kanji</h3>
+                  </div> */}
+                {/* </IonRow> */}
+              </>
             )}
         </IonGrid>
       </IonContent>
