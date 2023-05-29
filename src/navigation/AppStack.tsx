@@ -28,8 +28,12 @@ export const AppStack = () => {
             <IonLabel>Home</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="levels" href="/levels">
+          <IonTabButton tab="levels" href="/level">
             <IonLabel>Levels</IonLabel>
+          </IonTabButton>
+
+          <IonTabButton tab="subjects" href="/subject">
+            <IonLabel>Subjects</IonLabel>
           </IonTabButton>
 
           <IonTabButton tab="search" href="/search">

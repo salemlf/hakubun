@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 // import { useHistory, useParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {
@@ -23,13 +23,11 @@ type SubjectDetailParams = {
   id: string;
 };
 
-// TODO: change bgcolor depending on whether radical, kanji, or vocab
 export const SubjectDetails = () => {
   const { id } = useParams<SubjectDetailParams>();
   const [subjID, setSubjID] = useState<string>("");
 
-  // TODO: use history to allow user to go back?
-  // const history = useHistory();
+  // TODO: use useHistory or useLocation to get state/type of subject
 
   // TODO: make sure this is necessary
   useEffect(() => {
@@ -70,11 +68,6 @@ export const SubjectDetails = () => {
                     <h3>Found in Kanji</h3>
                   </div>
                 </IonRow>
-                {/* <IonRow class="ion-justify-content-start"> */}
-                {/* <div className="ion-padding">
-                    <h3>Found in Kanji</h3>
-                  </div> */}
-                {/* </IonRow> */}
               </>
             )}
         </IonGrid>

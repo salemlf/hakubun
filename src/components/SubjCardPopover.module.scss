@@ -1,0 +1,70 @@
+.subjPopover {
+  width: 100%;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.radStyle {
+  background-color: var(--wanikani-blue);
+  --box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+// .subjDiv {
+//   width: 3rem;
+//   height: 3rem;
+// }
+
+.radItem {
+  --background: var(--wanikani-blue);
+}
+
+.kanjiItem {
+  --background: var(--wanikani-pink);
+}
+
+.kanjiStyle {
+  background-color: var(--wanikani-pink);
+  --box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+.subjPopover {
+  padding: 3rem 0;
+  flex-direction: column;
+}
+
+// .subjDiv .subjText {
+//   margin: 0;
+//   font-size: 2rem;
+// }
+
+.subjPopover .subjText {
+  font-size: 3rem;
+  margin: 0;
+}
+
+// .progressContainer {
+//   margin-top: 5px;
+// }
+
+.subjPopover p {
+  margin: 0;
+}
+
+.radPopover div {
+  border-radius: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .subjDiv .subjText,
+  .subjPopover .subjText {
+    color: white;
+  }
+}

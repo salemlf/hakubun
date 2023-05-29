@@ -9,13 +9,14 @@ import { StepProgressBarLoading } from "../loading-skeletons/StepProgressBarLoad
 import { getTimeFromNow } from "../../services/MiscService";
 
 import styles from "./RadicalImageCard.module.scss";
+
 import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 
 type PopoverProps = {
   subject: Subject;
   assignment: Assignment;
-  navigate: any;
+  navigate: (page: string) => void;
 };
 
 const RadicalDetailPopover = ({
@@ -61,6 +62,7 @@ export const RadicalImageCard = ({
   const history = useHistory();
   const handleDismiss = () => dismiss();
 
+  // TODO: use useHistory or useLocation to set state/type of subject
   const navigate = (route: string) => {
     handleDismiss();
     history.push(route);
