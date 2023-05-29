@@ -26,9 +26,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-tertiary-shade: #65cdaf;
   --ion-color-tertiary-tint: #81ebcd;
 
-  --grey-background-color: #423949;
   --offwhite-color: #e8d6ee;
-
   --light-greyish-purple: #423949;
   --dark-greyish-purple: #30223a;
 
@@ -230,7 +228,7 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-step-950: #f4f3f4;
 
     /* TODO: change these once testing iOS */
-    --ion-item-background: #423949;
+    --ion-item-background: var(--light-greyish-purple);
 
     --ion-card-background: var(--light-greyish-purple);
   }
@@ -274,12 +272,9 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-step-900: #e8e7e9;
     --ion-color-step-950: #f4f3f4;
 
-    --ion-border-color: #423949;
-
-    --ion-item-background: #423949;
-
-    --ion-toolbar-background: #423949;
-
+    --ion-border-color: var(--light-greyish-purple);
+    --ion-item-background: var(--light-greyish-purple);
+    --ion-toolbar-background: var(--light-greyish-purple);
     --ion-card-background: var(--light-greyish-purple);
   }
 }
