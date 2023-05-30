@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 
 import { useSubjectByID } from "../../hooks/useSubjectByID";
@@ -18,9 +17,6 @@ type RadProps = {
 };
 
 export const RadicalSubjDetails = ({ radID }: RadProps) => {
-  const [displayName, setDisplayName] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   const {
     isLoading: subjectLoading,
     data: subject,
@@ -33,19 +29,12 @@ export const RadicalSubjDetails = ({ radID }: RadProps) => {
     error: assignmentErr,
   } = useAssignmentBySubjID(radID);
 
-  useEffect(() => {
-    // TODO: change so if statement not needed?
-    if (subject) {
-      let name = getSubjectDisplayName(subject);
-      setDisplayName(name);
-
-      setIsLoading(false);
-    }
-  }, [subjectLoading]);
+  let radicalLoading =
+    subjectLoading || subjectErr || assignmentLoading || assignmentErr;
 
   return (
     <>
-      {!isLoading ? (
+      {!radicalLoading ? (
         <BasicCard isLoading={false}>
           <IonRow
             class="ion-align-items-center ion-justify-content-start"
@@ -76,8 +65,7 @@ export const RadicalSubjDetails = ({ radID }: RadProps) => {
               )}
             </IonCol>
             <IonCol>
-              {/* TODO: call getSubjectDisplayName here */}
-              <h2>{`${displayName}`}</h2>
+              {subject && <h2>{getSubjectDisplayName(subject)}</h2>}
             </IonCol>
           </IonRow>
         </BasicCard>
