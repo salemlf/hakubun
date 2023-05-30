@@ -3,7 +3,9 @@
   padding: 5px;
   border-radius: 12px;
 
-  // TODO: add color for locked
+  &.locked {
+    background-color: var(--light-greyish-purple);
+  }
 
   &.initiate {
     background: var(--ion-color-primary);

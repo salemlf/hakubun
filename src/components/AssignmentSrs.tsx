@@ -13,11 +13,8 @@ type Props = {
 
 export const AssignmentSrs = ({ assignment }: Props) => {
   const getTimeTill = () => {
-    if (assignment) {
-      let availTime = assignment.available_at;
-      return getTimeFromNow(availTime);
-    }
-    return "";
+    let availTime = assignment!.available_at;
+    return getTimeFromNow(availTime);
   };
 
   const getSrsLvl = () => {
@@ -30,7 +27,7 @@ export const AssignmentSrs = ({ assignment }: Props) => {
 
   return (
     <div className={`${styles.srsContainer}`}>
-      <p className={`${styles.timeTill}`}>{getTimeTill()}</p>
+      {assignment && <p className={`${styles.timeTill}`}>{getTimeTill()}</p>}
       <p className={`${styles.srsLevel} ${styles[getSrsLvl()]}`}>
         {convertToUpperCase(getSrsLvl())}
       </p>
