@@ -48,16 +48,13 @@ export const SubjectCard = ({
 
   return (
     <>
-      {/* TODO: make bg grey if locked */}
       <IonRow>
         {(subject && assignment) || (subject && locked) ? (
           <button
             title={isRadical ? "Radical Subject" : "Kanji Subject"}
-            className={
-              isRadical
-                ? `${styles.radStyle} ${styles.subjDiv}`
-                : `${styles.kanjiStyle} ${styles.subjDiv}`
-            }
+            className={`${styles.subjDiv} ${
+              isRadical ? styles.radStyle : styles.kanjiStyle
+            } ${locked ? styles.lockedSubj : ""}`}
             onClick={(e: any) => {
               present({
                 event: e.nativeEvent,
@@ -76,6 +73,7 @@ export const SubjectCard = ({
           <SubjectCardLoading />
         )}
       </IonRow>
+      {/* TODO: lift this up in tree so no need for displayProgress? */}
       {displayProgress && (
         <IonRow className={`${styles.progressContainer}`}>
           {assignment || locked ? (
