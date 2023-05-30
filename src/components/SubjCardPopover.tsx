@@ -10,14 +10,14 @@ import styles from "./SubjCardPopover.module.scss";
 type Props = {
   subject: Subject;
   assignment: Assignment | undefined;
-  isRadical: boolean;
+  // isRadical: boolean;
   navigate: any;
 };
 
 export const SubjCardPopover = ({
   subject,
   assignment,
-  isRadical,
+  // isRadical,
   navigate,
 }: Props) => {
   let timeTill;
@@ -33,12 +33,16 @@ export const SubjCardPopover = ({
     <IonItem
       button
       detail={false}
-      className={isRadical ? `${styles.radItem}` : `${styles.kanjiItem}`}
+      className={
+        subject.object === "radical"
+          ? `${styles.radItem}`
+          : `${styles.kanjiItem}`
+      }
       onClick={() => navigate(`/subject/${subject.id}`)}
     >
       <div
         className={
-          isRadical
+          subject.object === "radical"
             ? `${styles.radStyle} ${styles.subjPopover}`
             : `${styles.kanjiStyle} ${styles.subjPopover}`
         }

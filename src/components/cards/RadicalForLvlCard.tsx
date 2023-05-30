@@ -6,6 +6,7 @@ import { Assignment } from "../../types/Assignment";
 import { BasicCard } from ".././cards/BasicCard";
 import { RadicalImageCard } from "./RadicalImageCard";
 import { SubjectCard } from "../cards/SubjectCard";
+import { StepProgressBar } from "../progress/StepProgressBar";
 
 import styles from "./RadicalForLvlCard.module.scss";
 import { useRadicalSubjectsForLvl } from "../../hooks/useRadicalSubjectsForLvl";
@@ -78,10 +79,17 @@ export const RadicalForLvlCard = ({ level }: Props) => {
                     (assignment: Assignment) =>
                       assignment.subject_id === radical.id
                   )}
-                  isRadical={true}
                   locked={false}
+                  useLockedStyle={false}
                 ></SubjectCard>
               )}
+              <StepProgressBar
+                assignment={assignmentCurrLvlData.find(
+                  (assignment: Assignment) =>
+                    assignment.subject_id === radical.id
+                )}
+                locked={false}
+              />
             </IonCol>
           );
         })}

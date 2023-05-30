@@ -1,9 +1,7 @@
 import { useHistory } from "react-router";
 import { IonRow, useIonPopover } from "@ionic/react";
 
-import { StepProgressBar } from "../progress/StepProgressBar";
 import { SubjectCardLoading } from "../loading-skeletons/SubjectCardLoading";
-import { StepProgressBarLoading } from "../loading-skeletons/StepProgressBarLoading";
 import { SubjCardPopover } from "../SubjCardPopover";
 
 import styles from "./SubjectCard.module.scss";
@@ -12,22 +10,20 @@ import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 
 type RadProps = {
-  subject: Subject | undefined;
+  subject: Subject;
   assignment: Assignment | undefined;
-  isRadical: boolean;
-  displayProgress?: boolean;
   clickDisabled?: boolean;
   locked: boolean;
+  useLockedStyle: boolean;
 };
 
 // TODO: combine with RadicalImageCard since so many similarities
 export const SubjectCard = ({
   subject,
   assignment,
-  isRadical,
-  displayProgress = true,
   clickDisabled,
   locked,
+  useLockedStyle,
 }: RadProps) => {
   const history = useHistory();
   const handleDismiss = () => dismiss();
@@ -42,7 +38,6 @@ export const SubjectCard = ({
     size: "cover",
     subject,
     assignment,
-    isRadical,
     navigate,
   });
 
@@ -51,10 +46,12 @@ export const SubjectCard = ({
       <IonRow>
         {(subject && assignment) || (subject && locked) ? (
           <button
-            title={isRadical ? "Radical Subject" : "Kanji Subject"}
+            title={
+              subject.object === "radical" ? "Radical Subject" : "Kanji Subject"
+            }
             className={`${styles.subjDiv} ${
-              isRadical ? styles.radStyle : styles.kanjiStyle
-            } ${locked ? styles.lockedSubj : ""}`}
+              subject.object === "radical" ? styles.radStyle : styles.kanjiStyle
+            } ${useLockedStyle && locked ? styles.lockedSubj : ""}`}
             onClick={(e: any) => {
               present({
                 event: e.nativeEvent,
@@ -73,19 +70,6 @@ export const SubjectCard = ({
           <SubjectCardLoading />
         )}
       </IonRow>
-      {/* TODO: lift this up in tree so no need for displayProgress? */}
-      {displayProgress && (
-        <IonRow className={`${styles.progressContainer}`}>
-          {assignment || locked ? (
-            <StepProgressBar
-              stage={assignment?.srs_stage || 0}
-              passedAt={assignment?.passed_at || null}
-            ></StepProgressBar>
-          ) : (
-            <StepProgressBarLoading />
-          )}
-        </IonRow>
-      )}
     </>
   );
 };

@@ -56,9 +56,9 @@ export const RadicalSubjDetails = ({ radID }: RadProps) => {
                     <SubjectCard
                       subject={subject}
                       assignment={assignment}
-                      isRadical={true}
                       clickDisabled={true}
                       locked={assignment.subject_id !== subject.id}
+                      useLockedStyle={false}
                     ></SubjectCard>
                   )}
                 </>

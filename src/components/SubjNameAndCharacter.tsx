@@ -1,6 +1,5 @@
 import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 
-import { BasicCard } from "./cards/BasicCard";
 import { SubjectCard } from "./cards/SubjectCard";
 import { RadicalImageCard } from "./cards/RadicalImageCard";
 
@@ -12,7 +11,7 @@ import { Assignment } from "../types/Assignment";
 import styles from "./SubjNameAndCharacter.module.scss";
 
 type Props = {
-  subject: Subject | undefined;
+  subject: Subject;
   assignment: Assignment | undefined;
 };
 
@@ -20,32 +19,29 @@ export const SubjNameAndCharacter = ({ subject, assignment }: Props) => {
   // TODO: display loading skeletons
   return (
     <>
-      {subject?.object == "radical" ? (
+      {subject.object == "radical" ? (
         subject.useImage ? (
           <RadicalImageCard
             subject={subject}
             assignment={assignment}
             clickDisabled={true}
-            displayProgress={false}
           ></RadicalImageCard>
         ) : (
           <SubjectCard
             subject={subject}
             assignment={assignment}
-            isRadical={true}
             clickDisabled={true}
-            displayProgress={false}
             locked={assignment?.subject_id !== subject.id}
+            useLockedStyle={false}
           ></SubjectCard>
         )
       ) : (
         <SubjectCard
           subject={subject}
           assignment={assignment}
-          isRadical={false}
           clickDisabled={true}
-          displayProgress={false}
-          locked={assignment?.subject_id !== subject?.id}
+          locked={assignment?.subject_id !== subject.id}
+          useLockedStyle={false}
         ></SubjectCard>
       )}
       {subject && <h1>{getSubjectDisplayName(subject)}</h1>}

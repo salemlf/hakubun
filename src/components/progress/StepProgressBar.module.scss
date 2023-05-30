@@ -4,6 +4,8 @@
   height: 0.4rem;
   display: flex;
   justify-content: center;
+  margin: 0;
+  border-radius: 20px;
 
   :first-child {
     border-radius: 20px 0px 0px 20px;
@@ -16,6 +18,10 @@
   :not(:last-child) {
     border-right: 2px solid var(--light-greyish-purple);
   }
+}
+
+.progressContainer {
+  margin-top: 5px;
 }
 
 .block {

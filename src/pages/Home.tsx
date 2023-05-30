@@ -10,7 +10,7 @@ import {
   IonSkeletonText,
 } from "@ionic/react";
 
-import "./Home.module.scss";
+import styles from "./Home.module.scss";
 
 import { useAuth } from "../contexts/AuthContext";
 
@@ -41,11 +41,6 @@ const Home = () => {
   };
 
   const setUserDetails = () => {
-    // let level = appContext.auth!.level;
-    // if (level != undefined) {
-    //   setLevel(level);
-    // }
-
     let userData = appContext.userData;
     if (userData != undefined) {
       setLevel(userData.level);
@@ -55,7 +50,8 @@ const Home = () => {
   return (
     <IonPage>
       <Header></Header>
-      <IonContent className="ion-padding">
+      {/* <IonContent className="ion-padding"> */}
+      <IonContent className={`${styles.contentPadding}`}>
         <IonGrid>
           {!homeLoading ? (
             <>

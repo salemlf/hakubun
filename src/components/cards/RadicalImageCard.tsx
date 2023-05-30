@@ -2,9 +2,7 @@ import { useHistory } from "react-router";
 import { IonItem, IonRow, useIonPopover } from "@ionic/react";
 
 import ImageFallback from "../ImageFallback";
-import { StepProgressBar } from "../progress/StepProgressBar";
 import { SubjectCardLoading } from "../loading-skeletons/SubjectCardLoading";
-import { StepProgressBarLoading } from "../loading-skeletons/StepProgressBarLoading";
 
 import { getTimeFromNow } from "../../services/MiscService";
 
@@ -100,19 +98,6 @@ export const RadicalImageCard = ({
           <SubjectCardLoading />
         )}
       </IonRow>
-
-      {displayProgress && (
-        <IonRow className={`${styles.progressContainer}`}>
-          {assignment ? (
-            <StepProgressBar
-              stage={assignment.srs_stage}
-              passedAt={assignment.passed_at}
-            ></StepProgressBar>
-          ) : (
-            <StepProgressBarLoading />
-          )}
-        </IonRow>
-      )}
     </>
   );
 };

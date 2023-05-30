@@ -1,11 +1,42 @@
 import styles from "./StepProgressBar.module.scss";
+import { IonRow, IonSkeletonText } from "@ionic/react";
+import { Assignment } from "../../types/Assignment";
+
+type WrapperProps = {
+  assignment: Assignment | undefined;
+  locked: boolean;
+};
+
+export const StepProgressBar = ({ assignment, locked }: WrapperProps) => {
+  return (
+    <IonRow className={`${styles.progressContainer}`}>
+      {assignment || locked ? (
+        <StepProgressBarStages
+          stage={assignment?.srs_stage || 0}
+          passedAt={assignment?.passed_at || null}
+        ></StepProgressBarStages>
+      ) : (
+        <StepProgressBarLoading />
+      )}
+    </IonRow>
+  );
+};
+
+const StepProgressBarLoading = () => {
+  return (
+    <IonSkeletonText
+      className={`${styles.containerStyles}`}
+      animated={true}
+    ></IonSkeletonText>
+  );
+};
 
 interface Props {
   stage: number;
   passedAt: Date | null;
 }
 
-export const StepProgressBar = ({ stage, passedAt }: Props) => {
+const StepProgressBarStages = ({ stage, passedAt }: Props) => {
   const fillProgressBar = (stage: number) => {
     const stagesComplete = new Set();
 

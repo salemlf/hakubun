@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-
 import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 
 import { BasicCard } from "./BasicCard";
 import { SubjectCard } from "./SubjectCard";
+import { StepProgressBar } from "../progress/StepProgressBar";
 
 import styles from "./KanjiForLvlCard.module.scss";
 
@@ -93,15 +92,24 @@ export const KanjiContainer = ({ level }: Props) => {
               className={`${styles.kanjiItemContainer}`}
             >
               {assignmentsData && (
-                <SubjectCard
-                  subject={kanjiItem}
-                  assignment={findAssignmentWithSubjID(
-                    assignmentsData,
-                    kanjiItem
-                  )}
-                  isRadical={false}
-                  locked={isAssignmentLocked(assignmentsData, kanjiItem)}
-                ></SubjectCard>
+                <>
+                  <SubjectCard
+                    subject={kanjiItem}
+                    assignment={findAssignmentWithSubjID(
+                      assignmentsData,
+                      kanjiItem
+                    )}
+                    locked={isAssignmentLocked(assignmentsData, kanjiItem)}
+                    useLockedStyle={true}
+                  ></SubjectCard>
+                  <StepProgressBar
+                    assignment={findAssignmentWithSubjID(
+                      assignmentsData,
+                      kanjiItem
+                    )}
+                    locked={isAssignmentLocked(assignmentsData, kanjiItem)}
+                  />
+                </>
               )}
             </IonCol>
           );
