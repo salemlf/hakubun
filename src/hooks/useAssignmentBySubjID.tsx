@@ -12,19 +12,13 @@ export const useAssignmentBySubjID = (id: number | string) => {
     queryFn: () => WaniKaniAPI.getAssignmentBySubjID(id),
     enabled: !!id,
     select: useCallback(
-      (data: any) => flattenCollectionOfOne(data) as unknown as Assignment,
+      (data: any) => {
+        if (data.data.length) {
+          return flattenCollectionOfOne(data) as unknown as Assignment;
+        }
+        return undefined;
+      },
 
-      // {
-      //   let flattened = Object.assign({}, data, data.data);
-      //   delete flattened.data;
-
-      //   console.log(
-      //     "🚀 ~ file: useAssignmentBySubjID.tsx:18 ~ useAssignmentBySubjID ~ flattened:",
-      //     flattened
-      //   );
-
-      //   return flattened;
-      // }
       [id]
     ),
   });

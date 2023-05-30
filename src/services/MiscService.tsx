@@ -10,7 +10,6 @@ const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   return undefined;
 };
 
-// TODO: modify so if 1 for value displays without "s"
 export const getTimeFromNow = (availableTime: Date | null) => {
   if (availableTime === null) {
     return "N/A";
@@ -40,9 +39,11 @@ export const getTimeFromNow = (availableTime: Date | null) => {
   );
 };
 
-type SrsLvls = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+// type SrsLvls = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+type SrsLvls = -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 const srsLevels: { [index: string]: SrsLvls[] } = {
+  locked: [-1],
   initiate: [0],
   apprentice: [1, 2, 3, 4],
   guru: [5, 6],

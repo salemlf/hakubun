@@ -3,16 +3,22 @@
   padding: 5px;
   border-radius: 12px;
 
+  // TODO: add color for locked
+
+  &.initiate {
+    background: var(--ion-color-primary);
+  }
+
   &.apprentice {
     background: var(--wanikani-apprentice);
   }
 
   &.guru {
-    --background: var(--wanikani-guru);
+    background: var(--wanikani-guru);
   }
 
   &.master {
-    --background: var(--wanikani-master);
+    background: var(--wanikani-master);
   }
 
   &.enlightened {
@@ -20,35 +26,25 @@
   }
 
   &.burned {
-    --background: var(--wanikani-burned);
+    background: var(--wanikani-burned);
   }
 }
 
-// p {
-.apprentice {
-  background: var(--wanikani-apprentice);
+// TODO: make darker for higher contrast?
+.timeTill {
+  padding: 5px;
+  border-radius: 12px;
+  background: var(--ion-color-tertiary);
 }
-
-.guru {
-  background: var(--wanikani-guru);
-}
-
-.master {
-  background: var(--wanikani-master);
-}
-
-.enlightened {
-  background-color: var(--wanikani-enlightened);
-}
-
-.burned {
-  background: var(--wanikani-burned);
-}
-// }
 
 .srsContainer {
   display: flex;
   gap: 10px;
   justify-content: end;
   align-items: center;
+  padding: 5px 0;
+
+  p {
+    margin: 5px 0;
+  }
 }

@@ -22,26 +22,26 @@ export const RadicalSubjDetails = ({ radID }: RadProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const {
-    isLoading: subjDataLoading,
-    data: subjData,
-    error: subjDataErr,
+    isLoading: subjectLoading,
+    data: subject,
+    error: subjectErr,
   } = useSubjectByID(radID);
 
   const {
     isLoading: assignmentLoading,
-    data: assignmentData,
+    data: assignment,
     error: assignmentErr,
   } = useAssignmentBySubjID(radID);
 
   useEffect(() => {
     // TODO: change so if statement not needed?
-    if (subjData) {
-      let name = getSubjectDisplayName(subjData);
+    if (subject) {
+      let name = getSubjectDisplayName(subject);
       setDisplayName(name);
 
       setIsLoading(false);
     }
-  }, [subjDataLoading]);
+  }, [subjectLoading]);
 
   return (
     <>
@@ -52,29 +52,31 @@ export const RadicalSubjDetails = ({ radID }: RadProps) => {
             className={`${styles.cardRow}`}
           >
             <IonCol>
-              <LvlBadge level={subjData?.level}></LvlBadge>
+              <LvlBadge level={subject?.level}></LvlBadge>
             </IonCol>
             <IonCol>
-              {subjData && assignmentData && (
+              {subject && assignment && (
                 <>
-                  {subjData.useImage ? (
+                  {subject.useImage ? (
                     <RadicalImageCard
-                      subject={subjData}
-                      assignment={assignmentData}
+                      subject={subject}
+                      assignment={assignment}
                       clickDisabled={true}
                     ></RadicalImageCard>
                   ) : (
                     <SubjectCard
-                      subject={subjData}
-                      assignment={assignmentData}
+                      subject={subject}
+                      assignment={assignment}
                       isRadical={true}
                       clickDisabled={true}
+                      locked={assignment.subject_id !== subject.id}
                     ></SubjectCard>
                   )}
                 </>
               )}
             </IonCol>
             <IonCol>
+              {/* TODO: call getSubjectDisplayName here */}
               <h2>{`${displayName}`}</h2>
             </IonCol>
           </IonRow>

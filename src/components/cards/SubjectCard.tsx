@@ -17,6 +17,7 @@ type RadProps = {
   isRadical: boolean;
   displayProgress?: boolean;
   clickDisabled?: boolean;
+  locked: boolean;
 };
 
 // TODO: combine with RadicalImageCard since so many similarities
@@ -26,6 +27,7 @@ export const SubjectCard = ({
   isRadical,
   displayProgress = true,
   clickDisabled,
+  locked,
 }: RadProps) => {
   const history = useHistory();
   const handleDismiss = () => dismiss();
@@ -46,8 +48,9 @@ export const SubjectCard = ({
 
   return (
     <>
+      {/* TODO: make bg grey if locked */}
       <IonRow>
-        {subject && assignment ? (
+        {(subject && assignment) || (subject && locked) ? (
           <button
             title={isRadical ? "Radical Subject" : "Kanji Subject"}
             className={
@@ -75,10 +78,10 @@ export const SubjectCard = ({
       </IonRow>
       {displayProgress && (
         <IonRow className={`${styles.progressContainer}`}>
-          {assignment ? (
+          {assignment || locked ? (
             <StepProgressBar
-              stage={assignment.srs_stage}
-              passedAt={assignment.passed_at}
+              stage={assignment?.srs_stage || 0}
+              passedAt={assignment?.passed_at || null}
             ></StepProgressBar>
           ) : (
             <StepProgressBarLoading />

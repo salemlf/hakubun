@@ -1,7 +1,8 @@
-import { IonCol, IonRow, IonSkeletonText, IonHeader } from "@ionic/react";
+import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 
 import { Subject } from "../types/Subject";
-import { Assignment } from "../types/Assignment";
+
+import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
 import { LvlBadge } from "../components/LvlBadge";
 import { AlternativeMeanings } from "../components/AlternativeMeanings";
@@ -12,20 +13,18 @@ import { BasicCard } from "./cards/BasicCard";
 import styles from "./SubjectSummary.module.scss";
 
 type Props = {
-  subject: Subject | undefined;
-  assignment: Assignment | undefined;
+  subject: Subject;
 };
 
-export const SubjectSummary = ({ subject, assignment }: Props) => {
-  let subjectSummaryLoading = !subject || !assignment;
-
-  const getSummaryStyle = () => {
-    console.log("subject.object: ", subject?.object);
-    return subject ? subject.object : "";
-  };
+export const SubjectSummary = ({ subject }: Props) => {
+  const {
+    isLoading: assignmentLoading,
+    data: assignment,
+    error: assignmentErr,
+  } = useAssignmentBySubjID(subject.id);
 
   // TODO: change this from card
-  if (subjectSummaryLoading) {
+  if (assignmentLoading) {
     return (
       <BasicCard isLoading={true}>
         <IonRow
@@ -46,14 +45,11 @@ export const SubjectSummary = ({ subject, assignment }: Props) => {
         className={`${styles.cardRow} ion-align-items-center ion-justify-content-start`}
       >
         {subject && <LvlBadge level={subject!.level}></LvlBadge>}
-        <SubjNameAndCharacter
-          subjectData={subject}
-          assignmentData={assignment}
-        />
+        <SubjNameAndCharacter subject={subject} assignment={assignment} />
       </IonRow>
       <IonRow>{subject && <AlternativeMeanings subject={subject} />}</IonRow>
       <IonRow className="ion-justify-content-end">
-        {assignment && <AssignmentSrs assignment={assignment} />}
+        <AssignmentSrs assignment={assignment} />
       </IonRow>
     </div>
   );

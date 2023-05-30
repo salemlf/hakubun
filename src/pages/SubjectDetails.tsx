@@ -38,38 +38,56 @@ export const SubjectDetails = () => {
 
   const {
     isLoading: subjectLoading,
-    data: subjectData,
+    data: subject,
     error: subjectErr,
   } = useSubjectByID(subjID);
 
   const {
     isLoading: assignmentLoading,
-    data: assignmentData,
+    data: assignment,
     error: assignmentErr,
   } = useAssignmentBySubjID(subjID);
+
+  let locked =
+    subject !== undefined && !assignmentLoading && assignment === undefined;
+  console.log("🚀 ~ file: SubjectDetails.tsx:52 ~ locked:", locked);
 
   return (
     <IonPage className={`${styles.subjectDetailPg}`}>
       <IonContent>
         <IonGrid className={`${styles.fullWidthGrid}`}>
-          <SubjectSummary
-            subject={subjectData}
-            assignment={assignmentData}
-          ></SubjectSummary>
+          {subject && (
+            <SubjectSummary
+              subject={subject}
+              // assignment={assignment}
+              // locked={locked}
+            ></SubjectSummary>
+          )}
           {/* TODO: add cases for kanji and vocab too */}
-          {subjectData &&
-            assignmentData &&
-            subjectData?.object == "radical" && (
-              <>
-                <IonRow class="ion-justify-content-start">
-                  <div className="ion-padding">
-                    <h3>Name Mnemonic</h3>
-                    <TxtWithSubjTags mnemonic={subjectData.meaning_mnemonic} />
-                    <h3>Found in Kanji</h3>
-                  </div>
-                </IonRow>
-              </>
-            )}
+          {/* {subject && assignment && subject?.object == "radical" && ( */}
+          {subject && subject?.object == "radical" && (
+            <>
+              <IonRow class="ion-justify-content-start">
+                <div className="ion-padding">
+                  <h3>Name Mnemonic</h3>
+                  <TxtWithSubjTags mnemonic={subject.meaning_mnemonic} />
+                  <h3>Found in Kanji</h3>
+                </div>
+              </IonRow>
+            </>
+          )}
+          {subject && subject?.object == "kanji" && (
+            <>
+              <IonRow class="ion-justify-content-start">
+                <div className="ion-padding">
+                  <h3>Radical Combination</h3>
+                  <p>...</p>
+                  <h3>Meaning Mnemonic</h3>
+                  <p>...</p>
+                </div>
+              </IonRow>
+            </>
+          )}
         </IonGrid>
       </IonContent>
     </IonPage>

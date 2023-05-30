@@ -5,11 +5,30 @@ import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 import { BasicCard } from "./BasicCard";
 import { SubjectCard } from "./SubjectCard";
 
-import { Subject } from "../../types/Subject";
 import styles from "./KanjiForLvlCard.module.scss";
+
 import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
+
+import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
+
+const isAssignmentLocked = (
+  assignmentsData: Assignment[],
+  subject: Subject
+) => {
+  let found = findAssignmentWithSubjID(assignmentsData, subject);
+  return found === undefined;
+};
+
+const findAssignmentWithSubjID = (
+  assignmentsData: Assignment[],
+  subject: Subject
+) => {
+  return assignmentsData.find(
+    (assignment: Assignment) => assignment.subject_id === subject.id
+  );
+};
 
 interface Props {
   level: number | undefined;
@@ -76,11 +95,12 @@ export const KanjiContainer = ({ level }: Props) => {
               {assignmentsData && (
                 <SubjectCard
                   subject={kanjiItem}
-                  assignment={assignmentsData.find(
-                    (assignment: Assignment) =>
-                      assignment.subject_id === kanjiItem.id
+                  assignment={findAssignmentWithSubjID(
+                    assignmentsData,
+                    kanjiItem
                   )}
                   isRadical={false}
+                  locked={isAssignmentLocked(assignmentsData, kanjiItem)}
                 ></SubjectCard>
               )}
             </IonCol>

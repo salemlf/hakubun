@@ -9,7 +9,7 @@ import styles from "./SubjCardPopover.module.scss";
 
 type Props = {
   subject: Subject;
-  assignment: Assignment;
+  assignment: Assignment | undefined;
   isRadical: boolean;
   navigate: any;
 };
@@ -20,8 +20,14 @@ export const SubjCardPopover = ({
   isRadical,
   navigate,
 }: Props) => {
-  let availTime = assignment.available_at;
-  let timeTill = getTimeFromNow(availTime);
+  let timeTill;
+  if (assignment) {
+    let availTime = assignment.available_at;
+    timeTill = getTimeFromNow(availTime);
+  } else {
+    // TODO: display locked icon instead
+    timeTill = "Locked";
+  }
 
   return (
     <IonItem

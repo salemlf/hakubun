@@ -12,68 +12,43 @@ import { Assignment } from "../types/Assignment";
 import styles from "./SubjNameAndCharacter.module.scss";
 
 type Props = {
-  subjectData: Subject | undefined;
-  assignmentData: Assignment | undefined;
+  subject: Subject | undefined;
+  assignment: Assignment | undefined;
 };
 
-export const SubjNameAndCharacter = ({
-  subjectData,
-  assignmentData,
-}: Props) => {
-  let loading = !subjectData || !assignmentData;
-
-  if (loading) {
-    return (
-      <>
-        <IonCol>
-          <IonSkeletonText animated={true}></IonSkeletonText>
-        </IonCol>
-        <IonCol>
-          <BasicCard isLoading={true}>
-            <IonRow
-              class="ion-align-items-center ion-justify-content-start"
-              className={`${styles.cardRow}`}
-            >
-              <IonCol>
-                <IonSkeletonText animated={true}></IonSkeletonText>
-              </IonCol>
-            </IonRow>
-          </BasicCard>
-        </IonCol>
-      </>
-    );
-  }
-
+export const SubjNameAndCharacter = ({ subject, assignment }: Props) => {
   // TODO: display loading skeletons
   return (
     <>
-      {subjectData?.object == "radical" ? (
-        subjectData.useImage ? (
+      {subject?.object == "radical" ? (
+        subject.useImage ? (
           <RadicalImageCard
-            subject={subjectData}
-            assignment={assignmentData}
+            subject={subject}
+            assignment={assignment}
             clickDisabled={true}
             displayProgress={false}
           ></RadicalImageCard>
         ) : (
           <SubjectCard
-            subject={subjectData}
-            assignment={assignmentData}
+            subject={subject}
+            assignment={assignment}
             isRadical={true}
             clickDisabled={true}
             displayProgress={false}
+            locked={assignment?.subject_id !== subject.id}
           ></SubjectCard>
         )
       ) : (
         <SubjectCard
-          subject={subjectData}
-          assignment={assignmentData}
+          subject={subject}
+          assignment={assignment}
           isRadical={false}
           clickDisabled={true}
           displayProgress={false}
+          locked={assignment?.subject_id !== subject?.id}
         ></SubjectCard>
       )}
-      {subjectData && <h1>{getSubjectDisplayName(subjectData)}</h1>}
+      {subject && <h1>{getSubjectDisplayName(subject)}</h1>}
     </>
   );
 };

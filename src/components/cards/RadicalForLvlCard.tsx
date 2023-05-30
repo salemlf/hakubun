@@ -79,6 +79,7 @@ export const RadicalForLvlCard = ({ level }: Props) => {
                       assignment.subject_id === radical.id
                   )}
                   isRadical={true}
+                  locked={false}
                 ></SubjectCard>
               )}
             </IonCol>

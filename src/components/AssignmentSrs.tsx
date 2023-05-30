@@ -1,4 +1,3 @@
-import { IonRow, IonBadge } from "@ionic/react";
 import styles from "./AssignmentSrs.module.scss";
 
 import {
@@ -9,19 +8,29 @@ import {
 import { Assignment } from "../types/Assignment";
 
 type Props = {
-  assignment: Assignment;
+  assignment: Assignment | undefined;
 };
 
 export const AssignmentSrs = ({ assignment }: Props) => {
-  let timeTill = getTimeFromNow(assignment.available_at);
+  const getTimeTill = () => {
+    if (assignment) {
+      let availTime = assignment.available_at;
+      return getTimeFromNow(availTime);
+    }
+    return "";
+  };
 
   const getSrsLvl = () => {
-    return getSrsNameBySrsLvl(assignment.srs_stage);
+    if (assignment) {
+      return getSrsNameBySrsLvl(assignment.srs_stage);
+    }
+    // TODO: display locked icon instead
+    return "locked";
   };
 
   return (
     <div className={`${styles.srsContainer}`}>
-      <p>{timeTill}</p>
+      <p className={`${styles.timeTill}`}>{getTimeTill()}</p>
       <p className={`${styles.srsLevel} ${styles[getSrsLvl()]}`}>
         {convertToUpperCase(getSrsLvl())}
       </p>
