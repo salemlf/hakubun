@@ -27,23 +27,28 @@ const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
 
-  const auth = useAuth();
+  const appContext = useAuth();
 
   // TODO: remove spinner for loading, just using text skeletons instead
   useEffect(() => {
     setHomeLoading(true);
     setUserDetails();
     setHomeLoading(false);
-  }, [auth]);
+  }, [appContext]);
 
   const removeAuth = () => {
-    (auth as any).removeAuth();
+    (appContext as any).removeAuth();
   };
 
   const setUserDetails = () => {
-    let level = auth.auth!.level;
-    if (level != undefined) {
-      setLevel(level);
+    // let level = appContext.auth!.level;
+    // if (level != undefined) {
+    //   setLevel(level);
+    // }
+
+    let userData = appContext.userData;
+    if (userData != undefined) {
+      setLevel(userData.level);
     }
   };
 

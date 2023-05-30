@@ -32,8 +32,13 @@ const Header = () => {
     let username = auth.auth!.username;
     setUsername(username);
 
-    let level = auth.auth!.level;
-    setLevel(level);
+    // let level = auth.auth!.level;
+    // setLevel(level);
+
+    let userData = auth.userData;
+    if (userData != undefined) {
+      setLevel(userData.level);
+    }
   };
 
   // TODO: show loading skeleton

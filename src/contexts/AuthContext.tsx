@@ -1,7 +1,16 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useMemo,
+} from "react";
 
 import { Storage } from "@ionic/storage";
 import { api, pagingApi } from "../api/ApiConfig";
+
+import { useUserInfo } from "../hooks/useUserInfo";
+import { UserData } from "../types/MiscTypes";
 
 type AuthData = {
   token?: string;
@@ -16,6 +25,9 @@ type Props = {
 type AuthContextData = {
   auth?: AuthData;
   loading: boolean;
+  level?: number;
+  // setLevelState(): Promise<boolean>;
+  userData: UserData | undefined;
   setAuth(arg0: any): Promise<boolean>;
   removeAuth(): Promise<void>;
 };
@@ -26,12 +38,24 @@ const AuthProvider = ({ children }: Props) => {
   const [store, setStore] = useState<Storage>();
   const [auth, setAuthState] = useState<AuthData>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [level, setLevel] = useState<number>();
+  // const levelValue = useMemo(() => ({ level, setLevel }), [level]);
+
+  const {
+    isLoading: userDataLoading,
+    data: userData,
+    error: userDataErr,
+  } = useUserInfo({ token: auth?.token });
 
   // called whenever app is opened
   useEffect(() => {
     loadStorageData();
+    // !added
+    setLevelState();
+    // !added
   }, []);
 
+  // TODO: clean this up, use useUserInfo?
   async function loadStorageData() {
     console.log("Running loadStorageData...");
     try {
@@ -71,6 +95,7 @@ const AuthProvider = ({ children }: Props) => {
   const setAuth = (token: any) => {
     configureAxiosHeaders(token);
 
+    // TODO: clean this up, use useUserInfo?
     return getUser().then(async (res: any) => {
       if (res) {
         let { username, level } = res.data;
@@ -118,8 +143,21 @@ const AuthProvider = ({ children }: Props) => {
     await (store as any).remove("auth");
   };
 
+  const setLevelState = () => {
+    return getUser().then(async (res: any) => {
+      if (res) {
+        let { level } = res.data;
+        setLevel(level);
+
+        return;
+      }
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ auth, loading, setAuth, removeAuth }}>
+    <AuthContext.Provider
+      value={{ auth, loading, setAuth, removeAuth, userData }}
+    >
       {children}
     </AuthContext.Provider>
   );

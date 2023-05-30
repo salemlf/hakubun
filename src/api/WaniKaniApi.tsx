@@ -10,6 +10,18 @@ export const WaniKaniAPI = {
   pages: Array(),
   subjects: [],
 
+  getUser: async function () {
+    let url = `${baseUrl}user`;
+
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "GET",
+    });
+
+    console.log("🚀 ~ file: WaniKaniApi.tsx:23 ~ response:", response);
+    return response.data;
+  },
+
   getReviews: async function () {
     let url = `${baseUrl}assignments?immediately_available_for_review`;
 
@@ -74,6 +86,10 @@ export const WaniKaniAPI = {
 
     let kanji = await PagingAPI.iterateOverPages(url, []);
     let kanjiCombined = PagingAPI.combinePages(kanji);
+    console.log(
+      "🚀 ~ file: WaniKaniApi.tsx:89 ~ getKanjiSubjectsByLevel:",
+      kanjiCombined
+    );
 
     return kanjiCombined;
   },
@@ -116,6 +132,10 @@ export const WaniKaniAPI = {
 
     let kanji = await PagingAPI.iterateOverPages(url, []);
     let kanjiCombined = PagingAPI.combinePages(kanji);
+    console.log(
+      "🚀 ~ file: WaniKaniApi.tsx:135 ~ getKanjiAssignmentsByLvl:",
+      kanjiCombined
+    );
 
     return kanjiCombined;
   },

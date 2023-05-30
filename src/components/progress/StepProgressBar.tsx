@@ -13,6 +13,7 @@ export const StepProgressBar = ({ stage, passedAt }: Props) => {
     // ex. 1: stage = 1 -> set = [1]
     // ex. 2: stage 3 -> set = [1, 2, 3]
     for (let i = stage; i >= 1; i--) {
+      // TODO: change so not all these if statements
       if (passedAt !== null) {
         [1, 2, 3, 4, 5].forEach(stagesComplete.add, stagesComplete);
       } else if (!stagesComplete.has(i)) {
