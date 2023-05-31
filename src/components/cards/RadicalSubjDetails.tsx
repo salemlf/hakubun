@@ -1,75 +1,23 @@
 import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 
-import { useSubjectByID } from "../../hooks/useSubjectByID";
-import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
-
-import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService";
-
-import { BasicCard } from "../../components/cards/BasicCard";
-import { LvlBadge } from "../../components/LvlBadge";
-import { SubjectCard } from "../../components/cards/SubjectCard";
+import { TxtWithSubjTags } from "../TxtWithSubjTags";
 
 import styles from "./RadicalSubjDetails.module.scss";
+import { Subject } from "../../types/Subject";
 
-type RadProps = {
-  radID: string;
+type Props = {
+  subject: Subject;
 };
 
-export const RadicalSubjDetails = ({ radID }: RadProps) => {
-  const {
-    isLoading: subjectLoading,
-    data: subject,
-    error: subjectErr,
-  } = useSubjectByID(radID);
-
-  const {
-    isLoading: assignmentLoading,
-    data: assignment,
-    error: assignmentErr,
-  } = useAssignmentBySubjID(radID);
-
-  let radicalLoading =
-    subjectLoading || subjectErr || assignmentLoading || assignmentErr;
-
+export const RadicalSubjDetails = ({ subject }: Props) => {
   return (
-    <>
-      {!radicalLoading ? (
-        <BasicCard isLoading={false}>
-          <IonRow
-            class="ion-align-items-center ion-justify-content-start"
-            className={`${styles.cardRow}`}
-          >
-            <IonCol>
-              <LvlBadge level={subject?.level}></LvlBadge>
-            </IonCol>
-            <IonCol>
-              {subject && assignment && (
-                <SubjectCard
-                  subject={subject}
-                  assignment={assignment}
-                  clickDisabled={true}
-                  locked={assignment.subject_id !== subject.id}
-                  useLockedStyle={false}
-                ></SubjectCard>
-              )}
-            </IonCol>
-            <IonCol>
-              {subject && <h2>{getSubjectDisplayName(subject)}</h2>}
-            </IonCol>
-          </IonRow>
-        </BasicCard>
-      ) : (
-        <BasicCard isLoading={true}>
-          <IonRow
-            class="ion-align-items-center ion-justify-content-start"
-            className={`${styles.cardRow}`}
-          >
-            <IonCol>
-              <IonSkeletonText animated={true}></IonSkeletonText>
-            </IonCol>
-          </IonRow>
-        </BasicCard>
-      )}
-    </>
+    <IonRow class="ion-justify-content-start">
+      <div className="ion-padding">
+        <h3>Name Mnemonic</h3>
+        <TxtWithSubjTags mnemonic={subject.meaning_mnemonic} />
+        <h3>Found in Kanji</h3>
+        {/* TODO: create api call in api file and map over amalgamation_subject_ids (kanji) here, using subjectcards with isButtonLink as true  */}
+      </div>
+    </IonRow>
   );
 };

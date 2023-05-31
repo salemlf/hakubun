@@ -16,14 +16,17 @@ type RadProps = {
   clickDisabled?: boolean;
   locked: boolean;
   useLockedStyle: boolean;
+  isButtonLink?: boolean;
 };
 
+// TODO: create a version that links to subject as button, no locked styling, no popover
 export const SubjectCard = ({
   subject,
   assignment,
   clickDisabled,
   locked,
   useLockedStyle,
+  isButtonLink = false,
 }: RadProps) => {
   const history = useHistory();
   const handleDismiss = () => dismiss();
@@ -41,6 +44,18 @@ export const SubjectCard = ({
     navigate,
   });
 
+  const onClickEvent = (e: any) => {
+    if (isButtonLink) {
+      navigate(`/subject/${subject.id}`);
+    } else {
+      present({
+        event: e.nativeEvent,
+        size: "auto",
+        alignment: "center",
+      });
+    }
+  };
+
   return (
     <IonRow>
       {(subject && assignment) || (subject && locked) ? (
@@ -48,14 +63,14 @@ export const SubjectCard = ({
           <button
             key={`${subject.id}`}
             className={`${styles.radicalDivWithImg}`}
-            onClick={(e: any) => {
-              present({
-                event: e.nativeEvent,
-                size: "auto",
-                alignment: "center",
-                cssClass: "radPopover",
-              });
-            }}
+            // onClick={(e: any) => {
+            //   present({
+            //     event: e.nativeEvent,
+            //     size: "auto",
+            //     alignment: "center",
+            //   });
+            // }}
+            onClick={(e: any) => onClickEvent(e)}
             disabled={clickDisabled}
           >
             <ImageFallback
@@ -71,14 +86,14 @@ export const SubjectCard = ({
             className={`${styles.subjDiv} ${
               subject.object === "radical" ? styles.radStyle : styles.kanjiStyle
             } ${useLockedStyle && locked ? styles.lockedSubj : ""}`}
-            onClick={(e: any) => {
-              present({
-                event: e.nativeEvent,
-                size: "auto",
-                alignment: "center",
-                cssClass: "radPopover",
-              });
-            }}
+            // onClick={(e: any) => {
+            //   present({
+            //     event: e.nativeEvent,
+            //     size: "auto",
+            //     alignment: "center",
+            //   });
+            // }}
+            onClick={(e: any) => onClickEvent(e)}
             disabled={clickDisabled}
           >
             {subject && (

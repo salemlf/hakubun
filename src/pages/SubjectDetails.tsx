@@ -16,6 +16,7 @@ import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
 import { SubjectSummary } from "../components/SubjectSummary";
 import { TxtWithSubjTags } from "../components/TxtWithSubjTags";
+import { RadicalSubjDetails } from "../components/cards/RadicalSubjDetails";
 
 import styles from "./SubjectDetails.module.scss";
 
@@ -56,25 +57,20 @@ export const SubjectDetails = () => {
     <IonPage className={`${styles.subjectDetailPg}`}>
       <IonContent>
         <IonGrid className={`${styles.fullWidthGrid}`}>
-          {subject && (
-            <SubjectSummary
-              subject={subject}
-              // assignment={assignment}
-              // locked={locked}
-            ></SubjectSummary>
-          )}
+          {subject && <SubjectSummary subject={subject}></SubjectSummary>}
           {/* TODO: add cases for kanji and vocab too */}
-          {/* {subject && assignment && subject?.object == "radical" && ( */}
           {subject && subject?.object == "radical" && (
-            <>
-              <IonRow class="ion-justify-content-start">
-                <div className="ion-padding">
-                  <h3>Name Mnemonic</h3>
-                  <TxtWithSubjTags mnemonic={subject.meaning_mnemonic} />
-                  <h3>Found in Kanji</h3>
-                </div>
-              </IonRow>
-            </>
+            // <>
+            //   <IonRow class="ion-justify-content-start">
+            //     <div className="ion-padding">
+            //       <h3>Name Mnemonic</h3>
+            //       <TxtWithSubjTags mnemonic={subject.meaning_mnemonic} />
+            //       <h3>Found in Kanji</h3>
+            //       {/* TODO: map over amalgamation_subject_ids (kanji) here */}
+            //     </div>
+            //   </IonRow>
+            // </>
+            <RadicalSubjDetails subject={subject} />
           )}
           {subject && subject?.object == "kanji" && (
             <>
