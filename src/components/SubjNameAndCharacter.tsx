@@ -1,7 +1,6 @@
-import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
+import { IonSkeletonText } from "@ionic/react";
 
 import { SubjectCard } from "./cards/SubjectCard";
-import { RadicalImageCard } from "./cards/RadicalImageCard";
 
 import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
 
@@ -19,31 +18,13 @@ export const SubjNameAndCharacter = ({ subject, assignment }: Props) => {
   // TODO: display loading skeletons
   return (
     <>
-      {subject.object == "radical" ? (
-        subject.useImage ? (
-          <RadicalImageCard
-            subject={subject}
-            assignment={assignment}
-            clickDisabled={true}
-          ></RadicalImageCard>
-        ) : (
-          <SubjectCard
-            subject={subject}
-            assignment={assignment}
-            clickDisabled={true}
-            locked={assignment?.subject_id !== subject.id}
-            useLockedStyle={false}
-          ></SubjectCard>
-        )
-      ) : (
-        <SubjectCard
-          subject={subject}
-          assignment={assignment}
-          clickDisabled={true}
-          locked={assignment?.subject_id !== subject.id}
-          useLockedStyle={false}
-        ></SubjectCard>
-      )}
+      <SubjectCard
+        subject={subject}
+        assignment={assignment}
+        clickDisabled={true}
+        locked={assignment?.subject_id !== subject.id}
+        useLockedStyle={false}
+      ></SubjectCard>
       {subject && <h1>{getSubjectDisplayName(subject)}</h1>}
     </>
   );

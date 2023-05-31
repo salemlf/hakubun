@@ -4,7 +4,6 @@ import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 
 import { BasicCard } from ".././cards/BasicCard";
-import { RadicalImageCard } from "./RadicalImageCard";
 import { SubjectCard } from "../cards/SubjectCard";
 import { StepProgressBar } from "../progress/StepProgressBar";
 
@@ -37,7 +36,7 @@ export const RadicalForLvlCard = ({ level }: Props) => {
 
   if (radicalCardLoading) {
     return (
-      <BasicCard title="" isLoading={true}>
+      <BasicCard isLoading={true}>
         <IonRow>
           <IonSkeletonText
             animated={true}
@@ -64,25 +63,15 @@ export const RadicalForLvlCard = ({ level }: Props) => {
               size="2"
               className={`${styles.radItemContainer}`}
             >
-              {radical.useImage ? (
-                <RadicalImageCard
-                  subject={radical}
-                  assignment={assignmentCurrLvlData.find(
-                    (assignment: Assignment) =>
-                      assignment.subject_id === radical.id
-                  )}
-                ></RadicalImageCard>
-              ) : (
-                <SubjectCard
-                  subject={radical}
-                  assignment={assignmentCurrLvlData.find(
-                    (assignment: Assignment) =>
-                      assignment.subject_id === radical.id
-                  )}
-                  locked={false}
-                  useLockedStyle={false}
-                ></SubjectCard>
-              )}
+              <SubjectCard
+                subject={radical}
+                assignment={assignmentCurrLvlData.find(
+                  (assignment: Assignment) =>
+                    assignment.subject_id === radical.id
+                )}
+                locked={false}
+                useLockedStyle={false}
+              ></SubjectCard>
               <StepProgressBar
                 assignment={assignmentCurrLvlData.find(
                   (assignment: Assignment) =>

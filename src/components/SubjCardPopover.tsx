@@ -1,25 +1,21 @@
-import { IonRow, IonItem, useIonPopover } from "@ionic/react";
+import { IonItem } from "@ionic/react";
 
 import { getTimeFromNow } from "../services/MiscService";
 
 import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
 
+import ImageFallback from "./ImageFallback";
+
 import styles from "./SubjCardPopover.module.scss";
 
 type Props = {
   subject: Subject;
   assignment: Assignment | undefined;
-  // isRadical: boolean;
-  navigate: any;
+  navigate: (page: string) => void;
 };
 
-export const SubjCardPopover = ({
-  subject,
-  assignment,
-  // isRadical,
-  navigate,
-}: Props) => {
+export const SubjCardPopover = ({ subject, assignment, navigate }: Props) => {
   let timeTill;
   if (assignment) {
     let availTime = assignment.available_at;
@@ -27,6 +23,26 @@ export const SubjCardPopover = ({
   } else {
     // TODO: display locked icon instead
     timeTill = "Locked";
+  }
+
+  if (subject.object == "radical" && subject.useImage === true) {
+    // image card for when characters aren't available
+    return (
+      <IonItem
+        button
+        detail={false}
+        className={`${styles.ionItem}`}
+        onClick={() => navigate(`/subject/${subject.id}`)}
+      >
+        <div className={`${styles.radicalPopoverWithImg}`}>
+          <ImageFallback
+            images={subject.availableImages}
+            altText={subject.meaning_mnemonic}
+          ></ImageFallback>
+          <p>{timeTill}</p>
+        </div>
+      </IonItem>
+    );
   }
 
   return (
@@ -43,8 +59,8 @@ export const SubjCardPopover = ({
       <div
         className={
           subject.object === "radical"
-            ? `${styles.radStyle} ${styles.subjPopover}`
-            : `${styles.kanjiStyle} ${styles.subjPopover}`
+            ? `${styles.radItem} ${styles.subjPopover}`
+            : `${styles.kanjiItem} ${styles.subjPopover}`
         }
       >
         <p className={`${styles.subjText}`}>{subject.characters}</p>
