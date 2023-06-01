@@ -32,11 +32,11 @@
   }
 }
 
-// TODO: make darker for higher contrast?
 .timeTill {
   padding: 5px;
   border-radius: 12px;
   background: var(--ion-color-tertiary);
+  color: var(--dark-greyish-purple);
 }
 
 .srsContainer {
