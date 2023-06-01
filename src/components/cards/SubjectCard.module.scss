@@ -12,9 +12,19 @@
     0 100px 80px rgba(0, 0, 0, 0.12);
 }
 
+.radicalDivWithImg.buttonLink,
+.subjDiv.buttonLink {
+  width: 5rem;
+  height: 5rem;
+}
+
 .subjDiv .subjText {
   margin: 0;
   font-size: 2rem;
+}
+
+.subjDiv.buttonLink .subjText {
+  font-size: 3.33rem;
 }
 
 .radicalDivWithImg {

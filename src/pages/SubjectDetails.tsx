@@ -20,34 +20,23 @@ import { RadicalSubjDetails } from "../components/cards/RadicalSubjDetails";
 
 import styles from "./SubjectDetails.module.scss";
 
-type SubjectDetailParams = {
-  id: string;
-};
-
 export const SubjectDetails = () => {
-  const { id } = useParams<SubjectDetailParams>();
-  const [subjID, setSubjID] = useState<string>("");
+  const { id } = useParams<{ id?: string }>();
+  const parsedID = parseInt(id!);
 
   // TODO: use useHistory or useLocation to get state/type of subject
-
-  // TODO: make sure this is necessary
-  useEffect(() => {
-    if (id) {
-      setSubjID(id);
-    }
-  }, [id]);
 
   const {
     isLoading: subjectLoading,
     data: subject,
     error: subjectErr,
-  } = useSubjectByID(subjID);
+  } = useSubjectByID(parsedID);
 
   const {
     isLoading: assignmentLoading,
     data: assignment,
     error: assignmentErr,
-  } = useAssignmentBySubjID(subjID);
+  } = useAssignmentBySubjID([parsedID]);
 
   let locked =
     subject !== undefined && !assignmentLoading && assignment === undefined;
@@ -60,16 +49,6 @@ export const SubjectDetails = () => {
           {subject && <SubjectSummary subject={subject}></SubjectSummary>}
           {/* TODO: add cases for kanji and vocab too */}
           {subject && subject?.object == "radical" && (
-            // <>
-            //   <IonRow class="ion-justify-content-start">
-            //     <div className="ion-padding">
-            //       <h3>Name Mnemonic</h3>
-            //       <TxtWithSubjTags mnemonic={subject.meaning_mnemonic} />
-            //       <h3>Found in Kanji</h3>
-            //       {/* TODO: map over amalgamation_subject_ids (kanji) here */}
-            //     </div>
-            //   </IonRow>
-            // </>
             <RadicalSubjDetails subject={subject} />
           )}
           {subject && subject?.object == "kanji" && (

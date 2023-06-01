@@ -62,14 +62,9 @@ export const SubjectCard = ({
         subject.useImage ? (
           <button
             key={`${subject.id}`}
-            className={`${styles.radicalDivWithImg}`}
-            // onClick={(e: any) => {
-            //   present({
-            //     event: e.nativeEvent,
-            //     size: "auto",
-            //     alignment: "center",
-            //   });
-            // }}
+            className={`${styles.radicalDivWithImg} ${
+              isButtonLink ? styles.buttonLink : ""
+            }`}
             onClick={(e: any) => onClickEvent(e)}
             disabled={clickDisabled}
           >
@@ -85,14 +80,9 @@ export const SubjectCard = ({
             }
             className={`${styles.subjDiv} ${
               subject.object === "radical" ? styles.radStyle : styles.kanjiStyle
-            } ${useLockedStyle && locked ? styles.lockedSubj : ""}`}
-            // onClick={(e: any) => {
-            //   present({
-            //     event: e.nativeEvent,
-            //     size: "auto",
-            //     alignment: "center",
-            //   });
-            // }}
+            } ${useLockedStyle && locked ? styles.lockedSubj : ""} ${
+              isButtonLink ? styles.buttonLink : ""
+            }`}
             onClick={(e: any) => onClickEvent(e)}
             disabled={clickDisabled}
           >
