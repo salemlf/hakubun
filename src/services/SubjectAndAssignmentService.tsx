@@ -39,3 +39,19 @@ export const getAlternativeMeanings = (subj: Subject) => {
 
   return alternatives;
 };
+
+export const isAssignmentLocked = (
+  assignmentsData: Assignment[],
+  subject: Subject
+) => {
+  return findAssignmentWithSubjID(assignmentsData, subject) === undefined;
+};
+
+export const findAssignmentWithSubjID = (
+  assignmentsData: Assignment[],
+  subject: Subject
+) => {
+  return assignmentsData.find(
+    (assignment: Assignment) => assignment.subject_id === subject.id
+  );
+};

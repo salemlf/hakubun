@@ -4,30 +4,34 @@ import { BasicCard } from "./BasicCard";
 import { SubjectCard } from "./SubjectCard";
 import { StepProgressBar } from "../progress/StepProgressBar";
 
+import { Subject } from "../../types/Subject";
 import styles from "./KanjiForLvlCard.module.scss";
 
 import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
+import {
+  isAssignmentLocked,
+  findAssignmentWithSubjID,
+} from "../../services/SubjectAndAssignmentService";
 
-import { Subject } from "../../types/Subject";
-import { Assignment } from "../../types/Assignment";
+// import { Assignment } from "../../types/Assignment";
 
-const isAssignmentLocked = (
-  assignmentsData: Assignment[],
-  subject: Subject
-) => {
-  let found = findAssignmentWithSubjID(assignmentsData, subject);
-  return found === undefined;
-};
+// const isAssignmentLocked = (
+//   assignmentsData: Assignment[],
+//   subject: Subject
+// ) => {
+//   let found = findAssignmentWithSubjID(assignmentsData, subject);
+//   return found === undefined;
+// };
 
-const findAssignmentWithSubjID = (
-  assignmentsData: Assignment[],
-  subject: Subject
-) => {
-  return assignmentsData.find(
-    (assignment: Assignment) => assignment.subject_id === subject.id
-  );
-};
+// const findAssignmentWithSubjID = (
+//   assignmentsData: Assignment[],
+//   subject: Subject
+// ) => {
+//   return assignmentsData.find(
+//     (assignment: Assignment) => assignment.subject_id === subject.id
+//   );
+// };
 
 interface Props {
   level: number | undefined;

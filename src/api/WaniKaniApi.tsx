@@ -94,7 +94,7 @@ export const WaniKaniAPI = {
     return kanjiCombined;
   },
 
-  getSubjectByID: async function (id: string) {
+  getSubjectByID: async function (id: number) {
     console.log("🚀 ~ file: WaniKaniApi.tsx:58 ~ id:", id);
 
     let url = `${baseUrl}subjects/${id}`;
@@ -107,7 +107,23 @@ export const WaniKaniAPI = {
     return response.data;
   },
 
-  getAssignmentBySubjID: async function (id: number | string) {
+  getSubjectsBySubjIDs: async function (ids: number[]) {
+    console.log(
+      "🚀 ~ file: WaniKaniApi.tsx:111 ~ getSubjectsBySubjIDs ~ ids:",
+      ids
+    );
+
+    let url = `${baseUrl}subjects?ids=${ids}`;
+
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "GET",
+    });
+
+    return response.data;
+  },
+
+  getAssignmentsBySubjIDs: async function (id: number[]) {
     let url = `${baseUrl}assignments?subject_ids=${id}`;
 
     const response: AxiosResponse = await api.request({

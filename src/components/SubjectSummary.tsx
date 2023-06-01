@@ -21,7 +21,7 @@ export const SubjectSummary = ({ subject }: Props) => {
     isLoading: assignmentLoading,
     data: assignment,
     error: assignmentErr,
-  } = useAssignmentBySubjID(subject.id);
+  } = useAssignmentBySubjID([subject.id]);
 
   // TODO: change this from card
   if (assignmentLoading) {
