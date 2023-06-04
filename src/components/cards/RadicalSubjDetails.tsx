@@ -2,7 +2,9 @@ import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { SubjectCard } from "./SubjectCard";
+import { SubjInfoContainer } from "../SubjectDetailsStyled";
 
+// import styled from "styled-components";
 import styles from "./RadicalSubjDetails.module.scss";
 import { Subject } from "../../types/Subject";
 
@@ -49,10 +51,11 @@ export const RadicalSubjDetails = ({ subject }: Props) => {
   }
 
   return (
-    <IonRow class="ion-justify-content-start">
-      <div className="ion-padding">
-        <h3>Name Mnemonic</h3>
-        <TxtWithSubjTags mnemonic={subject.meaning_mnemonic} />
+    <SubjInfoContainer>
+      {/* <div> */}
+      <h3>Name Mnemonic</h3>
+      <TxtWithSubjTags mnemonic={subject.meaning_mnemonic} />
+      <div style={{ width: "100%" }}>
         <h3>Found in Kanji</h3>
         <IonRow class="ion-align-items-center ion-justify-content-start">
           {(usedInKanjiSubjData as Subject[]).map((kanjiSubj: any) => {
@@ -84,6 +87,7 @@ export const RadicalSubjDetails = ({ subject }: Props) => {
           })}
         </IonRow>
       </div>
-    </IonRow>
+      {/* </div> */}
+    </SubjInfoContainer>
   );
 };

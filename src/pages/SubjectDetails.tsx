@@ -17,6 +17,7 @@ import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 import { SubjectSummary } from "../components/SubjectSummary";
 import { TxtWithSubjTags } from "../components/TxtWithSubjTags";
 import { RadicalSubjDetails } from "../components/cards/RadicalSubjDetails";
+import { SubjInfoContainer } from "../components/SubjectDetailsStyled";
 
 import styles from "./SubjectDetails.module.scss";
 
@@ -42,6 +43,7 @@ export const SubjectDetails = () => {
     subject !== undefined && !assignmentLoading && assignment === undefined;
   console.log("🚀 ~ file: SubjectDetails.tsx:52 ~ locked:", locked);
 
+  // TODO: use SubjInfoContainer for kanji and vocab
   return (
     <IonPage className={`${styles.subjectDetailPg}`}>
       <IonContent>
@@ -52,16 +54,28 @@ export const SubjectDetails = () => {
             <RadicalSubjDetails subject={subject} />
           )}
           {subject && subject?.object == "kanji" && (
-            <>
-              <IonRow class="ion-justify-content-start">
-                <div className="ion-padding">
-                  <h3>Radical Combination</h3>
-                  <p>...</p>
-                  <h3>Meaning Mnemonic</h3>
-                  <p>...</p>
-                </div>
-              </IonRow>
-            </>
+            <SubjInfoContainer>
+              <div>
+                <h3>Radical Combination</h3>
+                <p>...</p>
+              </div>
+              <div>
+                <h3>Meaning Mnemonic</h3>
+                <p>...</p>
+              </div>
+            </SubjInfoContainer>
+          )}
+          {subject && subject?.object == "vocabulary" && (
+            <SubjInfoContainer>
+              <div>
+                <h3>Context Sentences</h3>
+                <p>...</p>
+              </div>
+              <div>
+                <h3>Meaning Explanation</h3>
+                <p>...</p>
+              </div>
+            </SubjInfoContainer>
           )}
         </IonGrid>
       </IonContent>

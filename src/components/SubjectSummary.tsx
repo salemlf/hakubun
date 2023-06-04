@@ -4,11 +4,10 @@ import { Subject } from "../types/Subject";
 
 import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
-import { LvlBadge } from "../components/LvlBadge";
 import { AlternativeMeanings } from "../components/AlternativeMeanings";
 import { AssignmentSrs } from "../components/AssignmentSrs";
-import { SubjNameAndCharacter } from "../components/SubjNameAndCharacter";
 import { BasicCard } from "./cards/BasicCard";
+import { SubjectHeader } from "./SubjectHeader";
 
 import styles from "./SubjectSummary.module.scss";
 
@@ -24,13 +23,10 @@ export const SubjectSummary = ({ subject }: Props) => {
   } = useAssignmentBySubjID([subject.id]);
 
   // TODO: change this from card
-  if (assignmentLoading) {
+  if (assignmentLoading || assignmentErr) {
     return (
       <BasicCard isLoading={true}>
-        <IonRow
-          class="ion-align-items-center ion-justify-content-start"
-          className={`${styles.cardRow}`}
-        >
+        <IonRow className="ion-align-items-center ion-justify-content-start">
           <IonCol>
             <IonSkeletonText animated={true}></IonSkeletonText>
           </IonCol>
@@ -40,17 +36,14 @@ export const SubjectSummary = ({ subject }: Props) => {
   }
 
   return (
-    <div className={`${styles.subjContainer} ion-padding`}>
-      <IonRow
-        className={`${styles.cardRow} ion-align-items-center ion-justify-content-start`}
-      >
-        {subject && <LvlBadge level={subject!.level}></LvlBadge>}
-        <SubjNameAndCharacter subject={subject} assignment={assignment} />
-      </IonRow>
-      <IonRow>{subject && <AlternativeMeanings subject={subject} />}</IonRow>
-      <IonRow className="ion-justify-content-end">
-        <AssignmentSrs assignment={assignment} />
-      </IonRow>
-    </div>
+    <>
+      {subject && <SubjectHeader subject={subject} assignment={assignment} />}
+      <div className={`${styles.subjContainer} ion-padding`}>
+        <IonRow>{subject && <AlternativeMeanings subject={subject} />}</IonRow>
+        <IonRow className="ion-justify-content-end">
+          <AssignmentSrs assignment={assignment} />
+        </IonRow>
+      </div>
+    </>
   );
 };
