@@ -17,10 +17,6 @@ export const Col = ({ className, children }: RowColProps) => (
 export const SubjInfoContainer = styled(IonRow)`
   display: flex;
   justify-content: start;
-  --padding-start: var(--ion-padding, 16px);
-  --padding-end: var(--ion-padding, 16px);
-  --padding-top: var(--ion-padding, 16px);
-  --padding-bottom: var(--ion-padding, 16px);
   padding-inline-start: var(--ion-padding, 16px);
   padding-inline-end: var(--ion-padding, 16px);
   padding-top: var(--ion-padding, 16px);
@@ -38,4 +34,17 @@ export const SubjSummaryCol = styled(Col)`
   display: flex;
   width: 100%;
   flex-direction: column;
+`;
+
+export const SubjDetailSubHeading = styled.h3`
+  margin: 5px 0;
+`;
+
+export const SubjDetailTxt = styled.p`
+  margin: 5px 0;
+`;
+
+export const SubjDetailSection = styled.div`
+  margin-bottom: 10px;
+  width: 100%;
 `;

@@ -29,6 +29,7 @@ http://ionicframework.com/docs/theming/ */
   --offwhite-color: #e8d6ee;
   --light-greyish-purple: #423949;
   --dark-greyish-purple: #30223a;
+  --darkest-purple: #1b0f24;
 
   --wanikani-purple: #aa00ff;
   --wanikani-pink: #ff00aa;
@@ -41,6 +42,7 @@ http://ionicframework.com/docs/theming/ */
   --wanikani-radical: #0af;
   --wanikani-kanji: #f0a;
   --wanikani-purple: #aa00ff;
+  --wanikani-reading: var(--darkest-purple);
 
   --wanikani-apprentice: #dd0093;
   --wanikani-guru: #882d9e;

@@ -8,17 +8,14 @@ import { AlternativeMeanings } from "./AlternativeMeanings";
 import { AssignmentSrs } from "./AssignmentSrs";
 import { BasicCard } from "./cards/BasicCard";
 import { SubjectHeader } from "./SubjectHeader";
-
-import styled from "styled-components";
 import { SubjSummaryRow } from "./SubjectDetailsStyled";
 
-type Props = {
-  subject: Subject;
-};
+import { getKanjiReadings } from "../services/SubjectAndAssignmentService";
+
+import styled from "styled-components";
 
 const Readings = styled(IonCol)`
-  padding: 5px 0;
-  margin-bottom: 5px;
+  padding: 3px 0;
 `;
 
 const ReadingContainer = styled(IonCol)`
@@ -51,7 +48,15 @@ const SummaryContainer = styled(IonRow)`
   padding-inline-end: var(--ion-padding, 16px);
   padding-top: var(--ion-padding, 0);
   padding-bottom: var(--ion-padding, 16px);
+
+  h3:first-of-type {
+    margin-top: 5px;
+  }
 `;
+
+type Props = {
+  subject: Subject;
+};
 
 export const SubjectSummary = ({ subject }: Props) => {
   const {
@@ -59,6 +64,13 @@ export const SubjectSummary = ({ subject }: Props) => {
     data: assignment,
     error: assignmentErr,
   } = useAssignmentBySubjID([subject.id]);
+
+  let onyomiReadings;
+  let kunyomiReadings;
+  if (subject.object == "kanji") {
+    onyomiReadings = getKanjiReadings(subject, "onyomi");
+    kunyomiReadings = getKanjiReadings(subject, "kunyomi");
+  }
 
   // TODO: change this from card
   if (assignmentLoading || assignmentErr) {
@@ -75,21 +87,35 @@ export const SubjectSummary = ({ subject }: Props) => {
 
   return (
     <>
-      {subject && <SubjectHeader subject={subject} assignment={assignment} />}
+      {<SubjectHeader subject={subject} assignment={assignment} />}
       <SummaryContainer>
-        {subject && <AlternativeMeanings subject={subject} />}
+        {<AlternativeMeanings subject={subject} />}
         <SubjSummaryRow className="ion-justify-content-between">
           {/* TODO: display onyomi and kunyomi details */}
-          {subject && subject?.object == "kanji" && (
+          {subject.object == "kanji" && (
             <ReadingContainer>
               <IonRow>
                 <Readings>
-                  <strong>On'yomi: </strong>...
+                  <strong>On'yomi: </strong>
+                  {onyomiReadings && onyomiReadings.length
+                    ? onyomiReadings
+                        .map((onyomiReading: any) => {
+                          return onyomiReading.reading;
+                        })
+                        .join(", ")
+                    : "-"}
                 </Readings>
               </IonRow>
               <IonRow>
                 <Readings>
-                  <strong>Kun'yomi: </strong>...
+                  <strong>Kun'yomi: </strong>
+                  {kunyomiReadings && kunyomiReadings.length
+                    ? kunyomiReadings
+                        .map((kunyomiReading: any) => {
+                          return kunyomiReading.reading;
+                        })
+                        .join(", ")
+                    : "-"}
                 </Readings>
               </IonRow>
             </ReadingContainer>

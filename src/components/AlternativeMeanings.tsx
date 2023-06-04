@@ -4,7 +4,11 @@ import styles from "./AlternativeMeanings.module.scss";
 import styled from "styled-components";
 
 import { Subject } from "../types/Subject";
-import { SubjSummaryCol } from "./SubjectDetailsStyled";
+import {
+  SubjSummaryCol,
+  SubjDetailSubHeading,
+  SubjDetailTxt,
+} from "./SubjectDetailsStyled";
 
 type Props = {
   subject: Subject;
@@ -21,8 +25,8 @@ export const AlternativeMeanings = ({ subject }: Props) => {
 
   return (
     <AlternativeMeaningsContainer className={`${styles.altMeaningsContainer}`}>
-      <h3>Alternative Meanings</h3>
-      <p>
+      <SubjDetailSubHeading>Alternative Meanings</SubjDetailSubHeading>
+      <SubjDetailTxt>
         {altMeanings && altMeanings.length
           ? altMeanings
               .map((altMeaning: any) => {
@@ -30,7 +34,7 @@ export const AlternativeMeanings = ({ subject }: Props) => {
               })
               .join(", ")
           : "-"}
-      </p>
+      </SubjDetailTxt>
     </AlternativeMeaningsContainer>
   );
 };

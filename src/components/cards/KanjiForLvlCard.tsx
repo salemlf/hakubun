@@ -85,6 +85,7 @@ export const KanjiContainer = ({ level }: Props) => {
     );
   }
 
+  // TODO: sort so locked kanji are last
   return (
     <BasicCard title="Kanji" isLoading={false}>
       <IonRow class="ion-align-items-center ion-justify-content-start">

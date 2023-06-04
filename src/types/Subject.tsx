@@ -61,8 +61,10 @@ export interface SubjectMeaning {
   acceptedAnswer: boolean;
 }
 
+export type ReadingType = "kunyomi" | "onyomi" | "nanori";
+
 export interface SubjectReading {
-  type?: string;
+  type?: ReadingType;
   primary: boolean;
   acceptedAnswer: boolean;
   reading: string;
