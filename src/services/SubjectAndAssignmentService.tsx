@@ -1,4 +1,4 @@
-import { Subject } from "../types/Subject";
+import { ReadingType, Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
 
 import { convertToUpperCase } from "./MiscService";
@@ -33,11 +33,20 @@ export const getSubjectDisplayName = (subj: Subject) => {
 };
 
 export const getAlternativeMeanings = (subj: Subject) => {
-  let alternatives = subj["meanings"]?.filter(
-    (meaning: any) => meaning.primary === false
+  return subj["meanings"]?.filter((meaning: any) => meaning.primary === false);
+};
+
+export const getKanjiReadings = (subj: Subject, readingType: ReadingType) => {
+  let readings = subj["readings"]?.filter(
+    (reading: any) => reading.type === readingType
+  );
+  readings = readings.sort((a, b) => (a.primary === true ? 1 : -1));
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:44 ~ getKanjiReadings ~ readings:",
+    readings
   );
 
-  return alternatives;
+  return readings;
 };
 
 export const isAssignmentLocked = (
