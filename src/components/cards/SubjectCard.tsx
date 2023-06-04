@@ -57,7 +57,7 @@ export const SubjectCard = ({
   };
 
   return (
-    <IonRow>
+    <IonRow className="ion-justify-content-center">
       {(subject && assignment) || (subject && locked) ? (
         subject.useImage ? (
           <button

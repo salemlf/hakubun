@@ -12,19 +12,22 @@
     0 100px 80px rgba(0, 0, 0, 0.12);
 }
 
+// TODO: decrease size a bit
 .radicalDivWithImg.buttonLink,
 .subjDiv.buttonLink {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
 }
 
 .subjDiv .subjText {
   margin: 0;
   font-size: 2rem;
+  color: white;
 }
 
+// TODO: decrease size a bit
 .subjDiv.buttonLink .subjText {
-  font-size: 3.33rem;
+  font-size: 2.66rem;
 }
 
 .radicalDivWithImg {
@@ -47,10 +50,4 @@
 
 .lockedSubj {
   background-color: var(--ion-color-step-300);
-}
-
-@media (prefers-color-scheme: dark) {
-  .subjDiv .subjText {
-    color: white;
-  }
 }

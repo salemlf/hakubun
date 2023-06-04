@@ -1,22 +1,17 @@
 import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
-import { SubjectCard } from "./SubjectCard";
+import { SubjectCardList } from "../SubjectCardList";
 import {
   SubjInfoContainer,
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../SubjectDetailsStyled";
 
-import styles from "./RadicalSubjDetails.module.scss";
 import { Subject } from "../../types/Subject";
 
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
-import {
-  isAssignmentLocked,
-  findAssignmentWithSubjID,
-} from "../../services/SubjectAndAssignmentService";
 
 type Props = {
   subject: Subject;
@@ -41,6 +36,7 @@ export const RadicalSubjDetails = ({ subject }: Props) => {
     usedInKanjiAssignmentsLoading ||
     usedInKanjiAssignmentsErr;
 
+  // TODO: improve laoding skeleton
   if (usedInKanjiLoading) {
     return (
       <IonRow class="ion-justify-content-start">
@@ -61,7 +57,11 @@ export const RadicalSubjDetails = ({ subject }: Props) => {
       </SubjDetailSection>
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
-        <IonRow class="ion-align-items-center ion-justify-content-start">
+        <SubjectCardList
+          subjList={usedInKanjiSubjData}
+          assignmentList={usedInKanjiAssignmentsData}
+        />
+        {/* <IonRow class="ion-align-items-center ion-justify-content-start">
           {(usedInKanjiSubjData as Subject[]).map((kanjiSubj: any) => {
             return (
               <IonCol
@@ -89,7 +89,7 @@ export const RadicalSubjDetails = ({ subject }: Props) => {
               </IonCol>
             );
           })}
-        </IonRow>
+        </IonRow> */}
       </SubjDetailSection>
     </SubjInfoContainer>
   );
