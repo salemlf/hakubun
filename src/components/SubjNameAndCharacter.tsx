@@ -8,6 +8,11 @@ import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
 
 import styles from "./SubjNameAndCharacter.module.scss";
+import styled from "styled-components";
+
+const SubjectName = styled.h1`
+  margin: 0;
+`;
 
 type Props = {
   subject: Subject;
@@ -25,7 +30,7 @@ export const SubjNameAndCharacter = ({ subject, assignment }: Props) => {
         locked={assignment?.subject_id !== subject.id}
         useLockedStyle={false}
       ></SubjectCard>
-      {subject && <h1>{getSubjectDisplayName(subject)}</h1>}
+      {subject && <SubjectName>{getSubjectDisplayName(subject)}</SubjectName>}
     </>
   );
 };

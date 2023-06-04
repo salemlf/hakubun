@@ -16,8 +16,9 @@ import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
 import { SubjectSummary } from "../components/SubjectSummary";
 import { TxtWithSubjTags } from "../components/TxtWithSubjTags";
-import { RadicalSubjDetails } from "../components/cards/RadicalSubjDetails";
 import { SubjInfoContainer } from "../components/SubjectDetailsStyled";
+import { RadicalSubjDetails } from "../components/cards/RadicalSubjDetails";
+import { KanjiSubjDetails } from "../components/KanjiSubjDetails";
 
 import styles from "./SubjectDetails.module.scss";
 
@@ -54,16 +55,7 @@ export const SubjectDetails = () => {
             <RadicalSubjDetails subject={subject} />
           )}
           {subject && subject?.object == "kanji" && (
-            <SubjInfoContainer>
-              <div>
-                <h3>Radical Combination</h3>
-                <p>...</p>
-              </div>
-              <div>
-                <h3>Meaning Mnemonic</h3>
-                <p>...</p>
-              </div>
-            </SubjInfoContainer>
+            <KanjiSubjDetails subject={subject} />
           )}
           {subject && subject?.object == "vocabulary" && (
             <SubjInfoContainer>

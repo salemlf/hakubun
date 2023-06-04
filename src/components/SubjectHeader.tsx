@@ -26,6 +26,7 @@ const Container = styled(IonHeader)`
 const StyledRow = styled(Row)`
   display: flex;
   gap: 10px;
+  align-items: center;
 
   ion-item::part(native) {
     padding: 0;
@@ -43,7 +44,7 @@ const StyledRow = styled(Row)`
     border-radius: 12px;
   }
 
-  padding-top: var(--ion-padding, 10px);
+  padding-top: var(--ion-padding, 5px);
   padding-bottom: var(--ion-padding, 5px);
 `;
 

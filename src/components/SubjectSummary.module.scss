@@ -5,6 +5,9 @@
 .subjContainer {
   background-color: var(--dark-greyish-purple);
   position: relative;
+  padding-top: 0;
+  --padding-top: var(--ion-padding, 16px);
+  padding-top: var(--ion-padding, 16px);
 
   &::after {
     content: "";

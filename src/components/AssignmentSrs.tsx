@@ -1,11 +1,30 @@
+import { IonCol } from "@ionic/react";
+import { SubjSummaryCol, SubjSummaryRow } from "./SubjectDetailsStyled";
+
 import styles from "./AssignmentSrs.module.scss";
+import styled from "styled-components";
 
 import {
   getTimeFromNow,
   getSrsNameBySrsLvl,
   convertToUpperCase,
 } from "../services/MiscService";
+
 import { Assignment } from "../types/Assignment";
+
+const AssignmentSrsContainer = styled(SubjSummaryCol)`
+  justify-content: flex-end;
+  padding: 5px 0;
+
+  p {
+    margin: 5px 0;
+  }
+`;
+
+const StagesRow = styled(SubjSummaryRow)`
+  justify-content: flex-end;
+  gap: 10px;
+`;
 
 type Props = {
   assignment: Assignment | undefined;
@@ -26,11 +45,13 @@ export const AssignmentSrs = ({ assignment }: Props) => {
   };
 
   return (
-    <div className={`${styles.srsContainer}`}>
-      {assignment && <p className={`${styles.timeTill}`}>{getTimeTill()}</p>}
-      <p className={`${styles.srsLevel} ${styles[getSrsLvl()]}`}>
-        {convertToUpperCase(getSrsLvl())}
-      </p>
-    </div>
+    <AssignmentSrsContainer>
+      <StagesRow>
+        {assignment && <p className={`${styles.timeTill}`}>{getTimeTill()}</p>}
+        <p className={`${styles.srsLevel} ${styles[getSrsLvl()]}`}>
+          {convertToUpperCase(getSrsLvl())}
+        </p>
+      </StagesRow>
+    </AssignmentSrsContainer>
   );
 };

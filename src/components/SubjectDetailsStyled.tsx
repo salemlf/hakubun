@@ -1,18 +1,18 @@
-import { IonRow } from "@ionic/react";
+import { IonCol, IonRow } from "@ionic/react";
 import styled from "styled-components";
 
-type RowProps = {
+type RowColProps = {
   className?: string;
   children: React.ReactNode;
 };
 
-export const Row = ({ className, children }: RowProps) => (
+export const Row = ({ className, children }: RowColProps) => (
   <IonRow className={className}>{children}</IonRow>
 );
 
-// export const Container = ({ children }: RowProps) => (
-//   <IonRow className="ion-justify-content-start">{children}</IonRow>
-// );
+export const Col = ({ className, children }: RowColProps) => (
+  <IonCol className={className}>{children}</IonCol>
+);
 
 export const SubjInfoContainer = styled(IonRow)`
   display: flex;
@@ -25,4 +25,17 @@ export const SubjInfoContainer = styled(IonRow)`
   padding-inline-end: var(--ion-padding, 16px);
   padding-top: var(--ion-padding, 16px);
   padding-bottom: var(--ion-padding, 16px);
+`;
+
+// TODO: probably have to alter to account for desktop size
+export const SubjSummaryRow = styled(Row)`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+`;
+
+export const SubjSummaryCol = styled(Col)`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
 `;

@@ -4,7 +4,6 @@ import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { SubjectCard } from "./SubjectCard";
 import { SubjInfoContainer } from "../SubjectDetailsStyled";
 
-// import styled from "styled-components";
 import styles from "./RadicalSubjDetails.module.scss";
 import { Subject } from "../../types/Subject";
 
