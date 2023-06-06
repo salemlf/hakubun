@@ -14,25 +14,6 @@ import {
   findAssignmentWithSubjID,
 } from "../../services/SubjectAndAssignmentService";
 
-// import { Assignment } from "../../types/Assignment";
-
-// const isAssignmentLocked = (
-//   assignmentsData: Assignment[],
-//   subject: Subject
-// ) => {
-//   let found = findAssignmentWithSubjID(assignmentsData, subject);
-//   return found === undefined;
-// };
-
-// const findAssignmentWithSubjID = (
-//   assignmentsData: Assignment[],
-//   subject: Subject
-// ) => {
-//   return assignmentsData.find(
-//     (assignment: Assignment) => assignment.subject_id === subject.id
-//   );
-// };
-
 interface Props {
   level: number | undefined;
 }
@@ -106,6 +87,7 @@ export const KanjiContainer = ({ level }: Props) => {
                     )}
                     locked={isAssignmentLocked(assignmentsData, kanjiItem)}
                     useLockedStyle={true}
+                    showDetails={false}
                   ></SubjectCard>
                   <StepProgressBar
                     assignment={findAssignmentWithSubjID(

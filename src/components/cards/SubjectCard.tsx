@@ -1,25 +1,26 @@
 import { useHistory } from "react-router";
 import { IonRow, useIonPopover } from "@ionic/react";
 
+import { RadicalButton } from "../buttons/RadicalButton";
+import { KanjiButton } from "../buttons/KanjiButton";
 import { SubjectCardLoading } from "../loading-skeletons/SubjectCardLoading";
 import { SubjCardPopover } from "../SubjCardPopover";
-import ImageFallback from "../ImageFallback";
-
-import styles from "./SubjectCard.module.scss";
 
 import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 
-type RadProps = {
+// TODO: use a context around this or abstract things out, this many props is icky
+type SubjProps = {
   subject: Subject;
   assignment: Assignment | undefined;
   clickDisabled?: boolean;
   locked: boolean;
   useLockedStyle: boolean;
   isButtonLink?: boolean;
+  showDetails?: boolean;
 };
 
-// TODO: create a version that links to subject as button, no locked styling, no popover
+// TODO: change name and move to buttons folder
 export const SubjectCard = ({
   subject,
   assignment,
@@ -27,7 +28,8 @@ export const SubjectCard = ({
   locked,
   useLockedStyle,
   isButtonLink = false,
-}: RadProps) => {
+  showDetails = true,
+}: SubjProps) => {
   const history = useHistory();
   const handleDismiss = () => dismiss();
 
@@ -59,37 +61,23 @@ export const SubjectCard = ({
   return (
     <IonRow className="ion-justify-content-center">
       {(subject && assignment) || (subject && locked) ? (
-        subject.useImage ? (
-          <button
-            key={`${subject.id}`}
-            className={`${styles.radicalDivWithImg} ${
-              isButtonLink ? styles.buttonLink : ""
-            }`}
-            onClick={(e: any) => onClickEvent(e)}
-            disabled={clickDisabled}
-          >
-            <ImageFallback
-              images={subject.availableImages}
-              altText={subject.meaning_mnemonic}
-            ></ImageFallback>
-          </button>
+        subject.object === "radical" ? (
+          <RadicalButton
+            subject={subject}
+            isBigBtn={isButtonLink}
+            clickDisabled={clickDisabled}
+            onBtnClick={onClickEvent}
+            showDetails={showDetails}
+          />
         ) : (
-          <button
-            title={
-              subject.object === "radical" ? "Radical Subject" : "Kanji Subject"
-            }
-            className={`${styles.subjDiv} ${
-              subject.object === "radical" ? styles.radStyle : styles.kanjiStyle
-            } ${useLockedStyle && locked ? styles.lockedSubj : ""} ${
-              isButtonLink ? styles.buttonLink : ""
-            }`}
-            onClick={(e: any) => onClickEvent(e)}
-            disabled={clickDisabled}
-          >
-            {subject && (
-              <p className={`${styles.subjText}`}>{subject.characters}</p>
-            )}
-          </button>
+          <KanjiButton
+            subject={subject}
+            isBigBtn={isButtonLink}
+            clickDisabled={clickDisabled}
+            onBtnClick={onClickEvent}
+            locked={useLockedStyle && locked}
+            showDetails={showDetails}
+          />
         )
       ) : (
         <SubjectCardLoading />

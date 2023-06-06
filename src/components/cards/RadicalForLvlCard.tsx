@@ -71,6 +71,7 @@ export const RadicalForLvlCard = ({ level }: Props) => {
                 )}
                 locked={false}
                 useLockedStyle={false}
+                showDetails={false}
               ></SubjectCard>
               <StepProgressBar
                 assignment={assignmentCurrLvlData.find(

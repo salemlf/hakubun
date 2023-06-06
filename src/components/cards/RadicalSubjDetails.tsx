@@ -61,35 +61,6 @@ export const RadicalSubjDetails = ({ subject }: Props) => {
           subjList={usedInKanjiSubjData}
           assignmentList={usedInKanjiAssignmentsData}
         />
-        {/* <IonRow class="ion-align-items-center ion-justify-content-start">
-          {(usedInKanjiSubjData as Subject[]).map((kanjiSubj: any) => {
-            return (
-              <IonCol
-                key={`col_${kanjiSubj.id}`}
-                size="3"
-                className={`${styles.foundInKanjiContainer}`}
-              >
-                {usedInKanjiAssignmentsData && (
-                  <>
-                    <SubjectCard
-                      subject={kanjiSubj}
-                      assignment={findAssignmentWithSubjID(
-                        usedInKanjiAssignmentsData,
-                        kanjiSubj
-                      )}
-                      locked={isAssignmentLocked(
-                        usedInKanjiAssignmentsData,
-                        kanjiSubj
-                      )}
-                      isButtonLink={true}
-                      useLockedStyle={false}
-                    ></SubjectCard>
-                  </>
-                )}
-              </IonCol>
-            );
-          })}
-        </IonRow> */}
       </SubjDetailSection>
     </SubjInfoContainer>
   );
