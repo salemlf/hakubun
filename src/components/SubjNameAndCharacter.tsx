@@ -7,8 +7,7 @@ import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
 import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
 
-import styles from "./SubjNameAndCharacter.module.scss";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const SubjectName = styled.h1`
   margin: 0;
@@ -29,6 +28,7 @@ export const SubjNameAndCharacter = ({ subject, assignment }: Props) => {
         clickDisabled={true}
         locked={assignment?.subject_id !== subject.id}
         useLockedStyle={false}
+        showDetails={false}
       ></SubjectCard>
       {subject && <SubjectName>{getSubjectDisplayName(subject)}</SubjectName>}
     </>

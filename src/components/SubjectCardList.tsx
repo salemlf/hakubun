@@ -9,7 +9,7 @@ import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
 import { SubjectCard } from "./cards/SubjectCard";
 
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const SubjCol = styled(IonCol)`
   margin-bottom: 10px;

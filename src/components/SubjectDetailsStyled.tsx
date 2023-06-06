@@ -1,5 +1,5 @@
 import { IonCol, IonRow } from "@ionic/react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 type RowColProps = {
   className?: string;
@@ -15,8 +15,13 @@ export const Col = ({ className, children }: RowColProps) => (
 );
 
 export const SubjInfoContainer = styled(IonRow)`
+  --ion-background-color: var(--light-greyish-purple);
+  background-color: var(--light-greyish-purple);
+  border-radius: 25px;
+  margin: 10px;
+
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   padding-inline-start: var(--ion-padding, 16px);
   padding-inline-end: var(--ion-padding, 16px);
   padding-top: var(--ion-padding, 16px);

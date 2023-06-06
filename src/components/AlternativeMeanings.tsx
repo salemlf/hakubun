@@ -1,7 +1,7 @@
 import { getAlternativeMeanings } from "../services/SubjectAndAssignmentService";
 
 import styles from "./AlternativeMeanings.module.scss";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 import { Subject } from "../types/Subject";
 import {

@@ -1,7 +1,7 @@
 import reactStringReplace from "react-string-replace";
 import { SubjDetailTxt } from "./SubjectDetailsStyled";
 
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const TaggedTxt = styled(SubjDetailTxt)`
   line-height: 1.75;

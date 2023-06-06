@@ -5,7 +5,7 @@ import { LvlBadge } from "./LvlBadge";
 import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
 import { SubjNameAndCharacter } from "./SubjNameAndCharacter";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 import { Row } from "./SubjectDetailsStyled";
 

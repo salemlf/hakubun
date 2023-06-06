@@ -2,25 +2,24 @@ import { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router";
 // import { useHistory, useParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import {
-  IonContent,
-  IonGrid,
-  IonCol,
-  IonRow,
-  IonPage,
-  IonSkeletonText,
-} from "@ionic/react";
+import { IonContent, IonGrid, IonCol, IonRow, IonPage } from "@ionic/react";
 
 import { useSubjectByID } from "../hooks/useSubjectByID";
 import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
 import { SubjectSummary } from "../components/SubjectSummary";
-import { TxtWithSubjTags } from "../components/TxtWithSubjTags";
 import { SubjInfoContainer } from "../components/SubjectDetailsStyled";
 import { RadicalSubjDetails } from "../components/cards/RadicalSubjDetails";
 import { KanjiSubjDetails } from "../components/KanjiSubjDetails";
+import { SubjectHeader } from "../components/SubjectHeader";
 
 import styles from "./SubjectDetails.module.scss";
+import styled from "styled-components/macro";
+
+const Page = styled(IonPage)`
+  --ion-background-color: var(--dark-greyish-purple);
+  background-color: var(--dark-greyish-purple);
+`;
 
 export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
@@ -42,11 +41,11 @@ export const SubjectDetails = () => {
 
   let locked =
     subject !== undefined && !assignmentLoading && assignment === undefined;
-  console.log("🚀 ~ file: SubjectDetails.tsx:52 ~ locked:", locked);
 
   // TODO: use SubjInfoContainer for kanji and vocab
   return (
-    <IonPage className={`${styles.subjectDetailPg}`}>
+    <Page>
+      {subject && <SubjectHeader subject={subject} assignment={assignment} />}
       <IonContent>
         <IonGrid className={`${styles.fullWidthGrid}`}>
           {subject && <SubjectSummary subject={subject}></SubjectSummary>}
@@ -71,6 +70,6 @@ export const SubjectDetails = () => {
           )}
         </IonGrid>
       </IonContent>
-    </IonPage>
+    </Page>
   );
 };
