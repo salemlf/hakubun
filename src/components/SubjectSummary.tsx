@@ -12,7 +12,7 @@ import { SubjSummaryRow } from "./SubjectDetailsStyled";
 
 import { getKanjiReadings } from "../services/SubjectAndAssignmentService";
 
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const Readings = styled(IonCol)`
   padding: 3px 0;
@@ -30,24 +30,10 @@ const SummaryContainer = styled(IonRow)`
   background-color: var(--dark-greyish-purple);
   position: relative;
 
-  &::after {
-    content: "";
-    position: absolute;
-
-    background-color: transparent;
-    bottom: -50px;
-    left: 0;
-    height: 50px;
-    width: 100%;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-    box-shadow: 0 -25px 0 0 var(--dark-greyish-purple);
-  }
-
   padding-inline-start: var(--ion-padding, 16px);
   padding-inline-end: var(--ion-padding, 16px);
   padding-top: var(--ion-padding, 0);
-  padding-bottom: var(--ion-padding, 16px);
+  padding-bottom: var(--ion-padding, 5px);
 
   h3:first-of-type {
     margin-top: 5px;
@@ -87,7 +73,7 @@ export const SubjectSummary = ({ subject }: Props) => {
 
   return (
     <>
-      {<SubjectHeader subject={subject} assignment={assignment} />}
+      {/* {<SubjectHeader subject={subject} assignment={assignment} />} */}
       <SummaryContainer>
         {<AlternativeMeanings subject={subject} />}
         <SubjSummaryRow className="ion-justify-content-between">
