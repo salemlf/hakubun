@@ -18,6 +18,10 @@ type Props = {
 };
 
 export const KanjiSubjDetails = ({ subject }: Props) => {
+  let similarSubjIDs = subject.visually_similar_subject_ids
+    ? subject.visually_similar_subject_ids
+    : [];
+
   const {
     isLoading: radicalsUsedSubjLoading,
     data: radicalsUsedSubjData,
@@ -30,11 +34,27 @@ export const KanjiSubjDetails = ({ subject }: Props) => {
     error: radicalsUsedAssignmentsErr,
   } = useAssignmentsBySubjIDs(subject.component_subject_ids!);
 
+  const {
+    isLoading: similarKanjiSubjLoading,
+    data: similarKanjiSubjData,
+    error: similarKanjiSubjErr,
+  } = useSubjectsByIDs(similarSubjIDs);
+
+  const {
+    isLoading: similarKanjiAssignmentsLoading,
+    data: similarKanjiAssignmentsData,
+    error: similarKanjiAssignmentsErr,
+  } = useAssignmentsBySubjIDs(similarSubjIDs);
+
   let radicalsUsedLoading =
     radicalsUsedSubjLoading ||
     radicalsUsedSubjErr ||
     radicalsUsedAssignmentsLoading ||
-    radicalsUsedAssignmentsErr;
+    radicalsUsedAssignmentsErr ||
+    similarKanjiSubjLoading ||
+    similarKanjiSubjErr ||
+    similarKanjiAssignmentsLoading ||
+    similarKanjiAssignmentsErr;
 
   // TODO: make this laoding skeleton actually good lol
   if (radicalsUsedLoading) {
@@ -67,7 +87,10 @@ export const KanjiSubjDetails = ({ subject }: Props) => {
       </SubjDetailSection>
       <SubjDetailSection>
         <SubjDetailSubHeading>Visually Similar Kanji</SubjDetailSubHeading>
-        <SubjDetailTxt>...</SubjDetailTxt>
+        <SubjectCardList
+          subjList={similarKanjiSubjData}
+          assignmentList={similarKanjiAssignmentsData}
+        />
       </SubjDetailSection>
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Vocabulary</SubjDetailSubHeading>
