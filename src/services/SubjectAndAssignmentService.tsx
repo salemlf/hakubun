@@ -36,16 +36,23 @@ export const getAlternativeMeanings = (subj: Subject) => {
   return subj["meanings"]?.filter((meaning: any) => meaning.primary === false);
 };
 
+export const getPrimaryReading = (subj: Subject) => {
+  let readings = subj["readings"]?.filter(
+    (reading: any) => reading.primary === true
+  );
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:43 ~ getPrimaryReading ~ readings:",
+    readings
+  );
+  // readings = readings.sort((a, b) => (a.primary === true ? 1 : -1));
+  return readings[0].reading;
+};
+
 export const getKanjiReadings = (subj: Subject, readingType: ReadingType) => {
   let readings = subj["readings"]?.filter(
     (reading: any) => reading.type === readingType
   );
   readings = readings.sort((a, b) => (a.primary === true ? 1 : -1));
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:44 ~ getKanjiReadings ~ readings:",
-    readings
-  );
-
   return readings;
 };
 

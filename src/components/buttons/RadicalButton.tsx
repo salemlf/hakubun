@@ -2,7 +2,7 @@ import ImageFallback from "../ImageFallback";
 import {
   BtnWithTxt,
   BtnWithImage,
-  SubjBtnTxt,
+  SubjBtnDetailsTxt,
   SubjInfoCol,
 } from "./SubjectButtonsStyled";
 
@@ -13,7 +13,6 @@ import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentServic
 type Props = {
   subject: Subject;
   isBigBtn: boolean;
-  clickDisabled: boolean | undefined;
   onBtnClick: (e: any) => void;
   showDetails: boolean;
 };
@@ -22,7 +21,6 @@ type Props = {
 export const RadicalButton = ({
   subject,
   isBigBtn,
-  clickDisabled,
   showDetails,
   onBtnClick,
 }: Props) => {
@@ -32,7 +30,6 @@ export const RadicalButton = ({
         <BtnWithImage
           title="Radical Subject"
           onClick={onBtnClick}
-          disabled={clickDisabled}
           bigBtn={isBigBtn}
         >
           <ImageFallback
@@ -44,13 +41,18 @@ export const RadicalButton = ({
         <BtnWithTxt
           title="Radical Subject"
           onClick={onBtnClick}
-          disabled={clickDisabled}
           bigBtn={isBigBtn}
           subjType="radical"
         >
           <SubjInfoCol>
-            <SubjBtnTxt bigBtn={isBigBtn}>{subject.characters}</SubjBtnTxt>
-            {showDetails && getSubjectDisplayName(subject)}
+            <p>{subject.characters}</p>
+            {showDetails && (
+              <div>
+                <SubjBtnDetailsTxt>
+                  {getSubjectDisplayName(subject)}
+                </SubjBtnDetailsTxt>
+              </div>
+            )}
           </SubjInfoCol>
         </BtnWithTxt>
       )}

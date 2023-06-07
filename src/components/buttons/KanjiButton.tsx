@@ -1,12 +1,18 @@
-import { BtnWithTxt, SubjBtnTxt, SubjInfoCol } from "./SubjectButtonsStyled";
+import {
+  BtnWithTxt,
+  SubjBtnDetailsTxt,
+  SubjInfoCol,
+} from "./SubjectButtonsStyled";
 import { Subject } from "../../types/Subject";
-import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService";
+import {
+  getSubjectDisplayName,
+  getPrimaryReading,
+} from "../../services/SubjectAndAssignmentService";
 
 // TODO: change to use size sm, md, lg?
 type Props = {
   subject: Subject;
   isBigBtn: boolean;
-  clickDisabled: boolean | undefined;
   locked: boolean;
   showDetails: boolean;
   onBtnClick: (e: any) => void;
@@ -17,7 +23,6 @@ type Props = {
 export const KanjiButton = ({
   subject,
   isBigBtn,
-  clickDisabled,
   locked,
   showDetails,
   onBtnClick,
@@ -26,14 +31,20 @@ export const KanjiButton = ({
     <BtnWithTxt
       title="Kanji Subject"
       onClick={onBtnClick}
-      disabled={clickDisabled}
       subjType="kanji"
       bigBtn={isBigBtn}
       lockedStyle={locked}
     >
       <SubjInfoCol>
-        <SubjBtnTxt bigBtn={isBigBtn}>{subject.characters}</SubjBtnTxt>
-        {showDetails && getSubjectDisplayName(subject)}
+        <p>{subject.characters}</p>
+        {showDetails && (
+          <div>
+            <SubjBtnDetailsTxt>{getPrimaryReading(subject)}</SubjBtnDetailsTxt>
+            <SubjBtnDetailsTxt style={{ marginTop: "2px" }}>
+              {getSubjectDisplayName(subject)}
+            </SubjBtnDetailsTxt>
+          </div>
+        )}
       </SubjInfoCol>
     </BtnWithTxt>
   );

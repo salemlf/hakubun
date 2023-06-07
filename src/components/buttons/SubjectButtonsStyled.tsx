@@ -11,8 +11,8 @@ export const DefaultBtn = styled.button<DefaultBtnProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ bigBtn }) => (bigBtn ? "4.25rem" : "3rem")};
-  height: ${({ bigBtn }) => (bigBtn ? "4.25rem" : "3rem")};
+  width: ${({ bigBtn }) => (bigBtn ? "5.2rem" : "3rem")};
+  height: ${({ bigBtn }) => (bigBtn ? "5.2rem" : "3rem")};
 
   --box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
@@ -39,12 +39,9 @@ export const BtnWithTxt = styled(DefaultBtn)<TxtBtnProps>`
   }
 `;
 
-type TxtProps = {
-  bigBtn: boolean;
-};
-
-export const SubjBtnTxt = styled.p<TxtProps>`
-  font-size: ${({ bigBtn }) => bigBtn && "2.66rem"};
+export const SubjBtnDetailsTxt = styled.span`
+  display: block;
+  font-size: 0.75rem;
 `;
 
 export const BtnWithImage = styled(DefaultBtn)`
@@ -62,4 +59,5 @@ export const SubjInfoCol = styled(Col)`
   width: 100%;
   flex-direction: column;
   align-items: center;
+  gap: 5px;
 `;
