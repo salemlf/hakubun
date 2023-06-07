@@ -13,7 +13,6 @@ import { Assignment } from "../../types/Assignment";
 type SubjProps = {
   subject: Subject;
   assignment: Assignment | undefined;
-  clickDisabled?: boolean;
   locked: boolean;
   useLockedStyle: boolean;
   isButtonLink?: boolean;
@@ -24,7 +23,6 @@ type SubjProps = {
 export const SubjectCard = ({
   subject,
   assignment,
-  clickDisabled,
   locked,
   useLockedStyle,
   isButtonLink = false,
@@ -65,7 +63,6 @@ export const SubjectCard = ({
           <RadicalButton
             subject={subject}
             isBigBtn={isButtonLink}
-            clickDisabled={clickDisabled}
             onBtnClick={onClickEvent}
             showDetails={showDetails}
           />
@@ -73,7 +70,6 @@ export const SubjectCard = ({
           <KanjiButton
             subject={subject}
             isBigBtn={isButtonLink}
-            clickDisabled={clickDisabled}
             onBtnClick={onClickEvent}
             locked={useLockedStyle && locked}
             showDetails={showDetails}

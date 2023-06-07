@@ -50,15 +50,15 @@ const StyledRow = styled(Row)`
 
 type Props = {
   subject: Subject;
-  assignment: Assignment | undefined;
 };
 
-export const SubjectHeader = ({ subject, assignment }: Props) => {
+// TODO: change from using badge for level to just using div
+export const SubjectHeader = ({ subject }: Props) => {
   return (
     <Container>
       <StyledRow className="ion-padding">
         {subject && <LvlBadge level={subject!.level}></LvlBadge>}
-        <SubjNameAndCharacter subject={subject} assignment={assignment} />
+        <SubjNameAndCharacter subject={subject} />
       </StyledRow>
     </Container>
   );

@@ -45,7 +45,7 @@ export const SubjectDetails = () => {
   // TODO: use SubjInfoContainer for kanji and vocab
   return (
     <Page>
-      {subject && <SubjectHeader subject={subject} assignment={assignment} />}
+      {subject && <SubjectHeader subject={subject} />}
       <IonContent>
         <IonGrid className={`${styles.fullWidthGrid}`}>
           {subject && <SubjectSummary subject={subject}></SubjectSummary>}
