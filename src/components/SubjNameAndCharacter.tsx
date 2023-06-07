@@ -1,6 +1,6 @@
 import { IonSkeletonText } from "@ionic/react";
 
-import { SubjectCard } from "./cards/SubjectCard";
+import { SubjectCard } from "./buttons/SubjectButton";
 import ImageFallback from "./ImageFallback";
 
 import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";

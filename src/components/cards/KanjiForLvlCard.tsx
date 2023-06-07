@@ -1,7 +1,7 @@
 import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 
 import { BasicCard } from "./BasicCard";
-import { SubjectCard } from "./SubjectCard";
+import { SubjectCard } from "../buttons/SubjectButton";
 import { StepProgressBar } from "../progress/StepProgressBar";
 
 import { Subject } from "../../types/Subject";

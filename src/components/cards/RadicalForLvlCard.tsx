@@ -4,7 +4,7 @@ import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 
 import { BasicCard } from ".././cards/BasicCard";
-import { SubjectCard } from "../cards/SubjectCard";
+import { SubjectCard } from "../buttons/SubjectButton";
 import { StepProgressBar } from "../progress/StepProgressBar";
 
 import styles from "./RadicalForLvlCard.module.scss";

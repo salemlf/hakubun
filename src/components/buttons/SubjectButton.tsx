@@ -1,9 +1,9 @@
 import { useHistory } from "react-router";
 import { IonRow, useIonPopover } from "@ionic/react";
 
-import { RadicalButton } from "../buttons/RadicalButton";
-import { KanjiButton } from "../buttons/KanjiButton";
-import { SubjectCardLoading } from "../loading-skeletons/SubjectCardLoading";
+import { RadicalButton } from "./RadicalButton";
+import { KanjiButton } from "./KanjiButton";
+import { SubjectButtonLoading } from "../loading-skeletons/SubjectButtonLoading";
 import { SubjCardPopover } from "../SubjCardPopover";
 
 import { Subject } from "../../types/Subject";
@@ -76,7 +76,7 @@ export const SubjectCard = ({
           />
         )
       ) : (
-        <SubjectCardLoading />
+        <SubjectButtonLoading />
       )}
     </IonRow>
   );

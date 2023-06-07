@@ -7,7 +7,7 @@ import {
 
 import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
-import { SubjectCard } from "./cards/SubjectCard";
+import { SubjectCard } from "./buttons/SubjectButton";
 
 import styled from "styled-components/macro";
 
