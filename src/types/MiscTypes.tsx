@@ -1,5 +1,4 @@
-import { Subject } from "./Subject";
-import { Assignment } from "./Assignment";
+import { SubjectType } from "./Subject";
 
 export interface ResponseStructure {
   object: string;
@@ -44,3 +43,5 @@ export type UserData = {
   subscription: Subscription;
   username: string;
 };
+
+export type TagType = SubjectType | "meaning" | "reading";

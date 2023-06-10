@@ -4,7 +4,6 @@ import { Kanji } from "../../types/Subject";
 import {
   SubjInfoContainer,
   SubjDetailSubHeading,
-  SubjDetailTxt,
   SubjDetailSection,
 } from "./SubjectDetailsStyled";
 

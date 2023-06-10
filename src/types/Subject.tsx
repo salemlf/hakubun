@@ -107,7 +107,7 @@ export interface Kanji extends Subject {
 }
 
 export interface Vocabulary extends Subject {
-  component_subject_ids: number[];
+  component_subject_ids?: number[];
   context_sentences: ContextSentence[];
   parts_of_speech: string[];
   pronunciation_audios: PronunciationAudio[];

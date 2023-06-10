@@ -5,6 +5,7 @@ import {
   SubjectType,
 } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
+import { TagType } from "../types/MiscTypes";
 
 import { convertToUpperCase } from "./MiscService";
 
@@ -52,7 +53,11 @@ export const getKanjiReadings = (
     (reading: any) => reading.type === readingType
   );
   readingsOfType = readingsOfType.sort((a, b) => (a.primary === true ? 1 : -1));
-  return readings;
+  return readingsOfType;
+};
+
+export const getVocabReadings = (readings: SubjectReading[]) => {
+  return readings.sort((a, b) => (a.primary === true ? 1 : -1));
 };
 
 export const isAssignmentLocked = (
@@ -77,6 +82,17 @@ const subjColors: { [index: string]: string } = {
   vocabulary: `var(--wanikani-vocab)`,
 };
 
+const tagColors: { [index: string]: string } = {
+  reading: `var(--wanikani-reading)`,
+  meaning: `var(--deep-purple-accent)`,
+};
+
+const subjAndTagColors = { ...subjColors, ...tagColors };
+
 export const getSubjectColor = (subjType: SubjectType) => {
   return subjColors[subjType as keyof {}];
+};
+
+export const getTagColor = (tagType: TagType) => {
+  return subjAndTagColors[tagType as keyof {}];
 };

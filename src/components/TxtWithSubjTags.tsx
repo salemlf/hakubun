@@ -2,51 +2,57 @@ import reactStringReplace from "react-string-replace";
 import { SubjDetailTxt } from "./subject-details/SubjectDetailsStyled";
 
 import styled from "styled-components/macro";
+import { getTagColor } from "../services/SubjectAndAssignmentService";
+import { TagType } from "../types/MiscTypes";
 
 const TaggedTxt = styled(SubjDetailTxt)`
   line-height: 1.75;
 `;
 
-const Tag = styled.span`
+type TagProps = {
+  tagType: TagType;
+};
+
+const Tag = styled.span<TagProps>`
   color: white;
   padding: 4px;
   border-radius: 10px;
+  background-color: ${({ tagType }) => getTagColor(tagType)};
 `;
 
-const RadicalTag = styled(Tag)`
-  background-color: var(--wanikani-radical);
-`;
-
-const KanjiTag = styled(Tag)`
-  background-color: var(--wanikani-kanji);
-`;
-
-const ReadingTag = styled(Tag)`
-  background-color: var(--wanikani-reading);
-`;
-
-// TODO: add rendering for vocabulary and meaning also
+// TODO: add rendering for meaning also
 const createSubjectTags = (text: string) => {
   let radRegEx = new RegExp(`<radical>(.+?)<\/radical>`, "g");
   let kanjiRegEx = new RegExp(`<kanji>(.+?)<\/kanji>`, "g");
+  let vocabRegEx = new RegExp(`<vocabulary>(.+?)<\/vocabulary>`, "g");
   let readingRegEx = new RegExp(`<reading>(.+?)<\/reading>`, "g");
   let japaneseRegEx = new RegExp(`<ja>(.+?)<\/ja>`, "g");
 
   let replaced = reactStringReplace(text, radRegEx, (match, i) => (
-    <RadicalTag key={"radical" + i}>{match}</RadicalTag>
+    <Tag key={"radical" + i} tagType="radical">
+      {match}
+    </Tag>
   ));
 
   replaced = reactStringReplace(replaced, kanjiRegEx, (match, i) => (
-    <KanjiTag key={"kanji" + i}>{match}</KanjiTag>
+    <Tag key={"kanji" + i} tagType="kanji">
+      {match}
+    </Tag>
   ));
+
+  replaced = reactStringReplace(replaced, vocabRegEx, (match, i) => (
+    <Tag key={"vocabulary" + i} tagType="vocabulary">
+      {match}
+    </Tag>
+  ));
+
+  // TODO: replacing with nothing rn, use different font?
+  replaced = reactStringReplace(replaced, japaneseRegEx, (match, i) => match);
 
   replaced = reactStringReplace(replaced, readingRegEx, (match, i) => (
-    <ReadingTag key={"reading" + i}>{match}</ReadingTag>
-  ));
-
-  // TODO: replacing with nothing rn, use different font
-  replaced = reactStringReplace(replaced, japaneseRegEx, (match, i) => (
-    <Tag key={"js" + i}>{match}</Tag>
+    <Tag key={"reading" + i} tagType="reading">
+      {match}
+    </Tag>
   ));
 
   return replaced;
