@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router";
 // import { useHistory, useParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -15,6 +14,7 @@ import { SubjectHeader } from "../components/SubjectHeader";
 
 import styles from "./SubjectDetails.module.scss";
 import styled from "styled-components/macro";
+import { Kanji, Radical } from "../types/Subject";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -51,10 +51,10 @@ export const SubjectDetails = () => {
           {subject && <SubjectSummary subject={subject}></SubjectSummary>}
           {/* TODO: add cases for kanji and vocab too */}
           {subject && subject?.object == "radical" && (
-            <RadicalSubjDetails subject={subject} />
+            <RadicalSubjDetails radical={subject as Radical} />
           )}
           {subject && subject?.object == "kanji" && (
-            <KanjiSubjDetails subject={subject} />
+            <KanjiSubjDetails kanji={subject as Kanji} />
           )}
           {subject && subject?.object == "vocabulary" && (
             <SubjInfoContainer>

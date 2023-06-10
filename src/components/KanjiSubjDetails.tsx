@@ -1,10 +1,11 @@
 import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 
-import { SubjInfoContainer } from "./SubjectDetailsStyled";
-import { Subject } from "../types/Subject";
+import { Kanji } from "../types/Subject";
 import { TxtWithSubjTags } from "./TxtWithSubjTags";
 import { SubjectCardList } from "./SubjectCardList";
+import { Hint } from "./Hint";
 import {
+  SubjInfoContainer,
   SubjDetailSubHeading,
   SubjDetailTxt,
   SubjDetailSection,
@@ -14,47 +15,52 @@ import { useSubjectsByIDs } from "../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../hooks/useAssignmentsBySubjIDs";
 
 type Props = {
-  subject: Subject;
+  kanji: Kanji;
 };
 
-export const KanjiSubjDetails = ({ subject }: Props) => {
-  let similarSubjIDs = subject.visually_similar_subject_ids
-    ? subject.visually_similar_subject_ids
-    : [];
+export const KanjiSubjDetails = ({ kanji }: Props) => {
+  let findComponents = kanji.component_subject_ids.length !== 0;
+  let findSimilar = kanji.visually_similar_subject_ids.length !== 0;
 
   const {
     isLoading: radicalsUsedSubjLoading,
     data: radicalsUsedSubjData,
     error: radicalsUsedSubjErr,
-  } = useSubjectsByIDs(subject.component_subject_ids!);
+  } = useSubjectsByIDs(kanji.component_subject_ids, findComponents);
 
   const {
     isLoading: radicalsUsedAssignmentsLoading,
     data: radicalsUsedAssignmentsData,
     error: radicalsUsedAssignmentsErr,
-  } = useAssignmentsBySubjIDs(subject.component_subject_ids!);
+  } = useAssignmentsBySubjIDs(kanji.component_subject_ids, findComponents);
 
   const {
     isLoading: similarKanjiSubjLoading,
     data: similarKanjiSubjData,
     error: similarKanjiSubjErr,
-  } = useSubjectsByIDs(similarSubjIDs);
+  } = useSubjectsByIDs(kanji.visually_similar_subject_ids, findSimilar);
 
   const {
     isLoading: similarKanjiAssignmentsLoading,
     data: similarKanjiAssignmentsData,
     error: similarKanjiAssignmentsErr,
-  } = useAssignmentsBySubjIDs(similarSubjIDs);
+  } = useAssignmentsBySubjIDs(kanji.visually_similar_subject_ids, findSimilar);
 
-  let radicalsUsedLoading =
-    radicalsUsedSubjLoading ||
-    radicalsUsedSubjErr ||
-    radicalsUsedAssignmentsLoading ||
-    radicalsUsedAssignmentsErr ||
-    similarKanjiSubjLoading ||
-    similarKanjiSubjErr ||
-    similarKanjiAssignmentsLoading ||
-    similarKanjiAssignmentsErr;
+  let simliarLoading =
+    findSimilar &&
+    (similarKanjiAssignmentsLoading ||
+      similarKanjiAssignmentsErr ||
+      similarKanjiSubjLoading ||
+      similarKanjiSubjErr);
+
+  let componentsLoading =
+    findComponents &&
+    (radicalsUsedSubjLoading ||
+      radicalsUsedSubjErr ||
+      radicalsUsedAssignmentsLoading ||
+      radicalsUsedAssignmentsErr);
+
+  let radicalsUsedLoading = simliarLoading || componentsLoading;
 
   // TODO: make this laoding skeleton actually good lol
   if (radicalsUsedLoading) {
@@ -79,19 +85,23 @@ export const KanjiSubjDetails = ({ subject }: Props) => {
       </SubjDetailSection>
       <SubjDetailSection>
         <SubjDetailSubHeading>Meaning Mnemonic</SubjDetailSubHeading>
-        <TxtWithSubjTags mnemonic={subject.meaning_mnemonic} />
+        <TxtWithSubjTags textWithTags={kanji.meaning_mnemonic} />
+        {kanji.reading_hint && <Hint hint={kanji.reading_hint} />}
       </SubjDetailSection>
       <SubjDetailSection>
         <SubjDetailSubHeading>Reading Mnemonic</SubjDetailSubHeading>
-        <TxtWithSubjTags mnemonic={subject.reading_mnemonic!} />
+        <TxtWithSubjTags textWithTags={kanji.reading_mnemonic!} />
+        {kanji.meaning_hint && <Hint hint={kanji.meaning_hint} />}
       </SubjDetailSection>
-      <SubjDetailSection>
-        <SubjDetailSubHeading>Visually Similar Kanji</SubjDetailSubHeading>
-        <SubjectCardList
-          subjList={similarKanjiSubjData}
-          assignmentList={similarKanjiAssignmentsData}
-        />
-      </SubjDetailSection>
+      {findSimilar && (
+        <SubjDetailSection>
+          <SubjDetailSubHeading>Visually Similar Kanji</SubjDetailSubHeading>
+          <SubjectCardList
+            subjList={similarKanjiSubjData}
+            assignmentList={similarKanjiAssignmentsData}
+          />
+        </SubjDetailSection>
+      )}
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Vocabulary</SubjDetailSubHeading>
         <SubjDetailTxt>...</SubjDetailTxt>
