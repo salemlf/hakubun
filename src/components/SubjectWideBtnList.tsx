@@ -1,3 +1,4 @@
+import { useHistory } from "react-router";
 import { IonCol, IonRow } from "@ionic/react";
 import styled from "styled-components/macro";
 
@@ -79,14 +80,15 @@ type ItemContainerProps = {
   subjType: SubjectType;
 };
 
-const SubjectItemContainer = styled.div<ItemContainerProps>`
+const SubjectItemContainer = styled.button<ItemContainerProps>`
   background-color: ${({ subjType }) => setBgColor(subjType)};
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 5px;
+  padding: 5px 8px;
   margin-bottom: 2px;
+  border-radius: 10px;
 `;
 
 type Props = {
@@ -94,17 +96,22 @@ type Props = {
 };
 
 const SubjectListItem = ({ subject }: Props) => {
+  const history = useHistory();
+
+  const onSubjBtnClick = (e: any) => {
+    history.push(`/subject/${subject.id}`);
+  };
+
   return (
-    <SubjectItemContainer subjType={subject.object}>
+    <SubjectItemContainer subjType={subject.object} onClick={onSubjBtnClick}>
       <Characters subject={subject} />
       {subject.object === "radical" && (
         <RadicalInfo radical={subject as Radical} />
       )}
 
-      {subject.object === "kanji" ||
-        (subject.object === "vocabulary" && (
-          <ReadingAndMeaning subject={subject as Kanji | Vocabulary} />
-        ))}
+      {(subject.object === "kanji" || subject.object === "vocabulary") && (
+        <ReadingAndMeaning subject={subject as Kanji | Vocabulary} />
+      )}
     </SubjectItemContainer>
   );
 };
@@ -124,7 +131,7 @@ type ListProps = {
   assignmentList: Assignment[];
 };
 
-export const SubjectList = ({ subjList, assignmentList }: ListProps) => {
+export const SubjectWideBtnList = ({ subjList, assignmentList }: ListProps) => {
   return (
     <SubjRow>
       {(subjList as Subject[]).map((subject: any) => {

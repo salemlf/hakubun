@@ -12,7 +12,7 @@ import { VisuallySimilarKanji } from "./VisuallySimilarKanji";
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { SubjectButtonList } from "../SubjectButtonList";
 import { Hint } from "./Hint";
-import { SubjectList } from "../SubjectList";
+import { SubjectWideBtnList } from "../SubjectWideBtnList";
 
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
@@ -100,7 +100,7 @@ export const KanjiSubjDetails = ({ kanji }: Props) => {
       {findSimilar && <VisuallySimilarKanji kanji={kanji} />}
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Vocabulary</SubjDetailSubHeading>
-        <SubjectList
+        <SubjectWideBtnList
           subjList={vocabFoundSubjData}
           assignmentList={vocabFoundAssignmentsData}
         />

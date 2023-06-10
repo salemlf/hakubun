@@ -8,7 +8,7 @@ import styled from "styled-components/macro";
 
 import { Row } from "./SubjectDetailsStyled";
 
-// TODO: decrease size of level and subject cards on scrolldown
+// TODO: make subject name and char larger, then decrease size of level and subject cards on scrolldown
 const Container = styled(IonHeader)`
   display: flex;
   align-items: center;
@@ -20,6 +20,7 @@ const Container = styled(IonHeader)`
 
   height: 5rem;
   transition: height 2s;
+  box-shadow: none;
 `;
 
 const StyledRow = styled(Row)`
