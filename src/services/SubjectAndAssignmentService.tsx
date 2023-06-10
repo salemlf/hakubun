@@ -1,4 +1,4 @@
-import { ReadingType, Subject } from "../types/Subject";
+import { ReadingType, Subject, SubjectReading } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
 
 import { convertToUpperCase } from "./MiscService";
@@ -15,10 +15,6 @@ export const getAssignmentStatuses = (assignments: Assignment[]) => {
 };
 
 export const getSubjectDisplayName = (subj: Subject) => {
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:21 ~ getSubjectDisplayName ~ subj:",
-    subj
-  );
   let subjType = subj["object"];
 
   if (subjType === "radical") {
@@ -36,23 +32,29 @@ export const getAlternativeMeanings = (subj: Subject) => {
   return subj["meanings"]?.filter((meaning: any) => meaning.primary === false);
 };
 
-export const getPrimaryReading = (subj: Subject) => {
-  let readings = subj["readings"]?.filter(
+export const getPrimaryReading = (readings: SubjectReading[]) => {
+  let primaryReading = readings.filter(
     (reading: any) => reading.primary === true
   );
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:43 ~ getPrimaryReading ~ readings:",
-    readings
-  );
-  // readings = readings.sort((a, b) => (a.primary === true ? 1 : -1));
-  return readings[0].reading;
+  return primaryReading[0].reading;
 };
 
-export const getKanjiReadings = (subj: Subject, readingType: ReadingType) => {
-  let readings = subj["readings"]?.filter(
+// export const getKanjiReadings = (subj: Subject, readingType: ReadingType) => {
+//   let readings = subj["readings"]?.filter(
+//     (reading: any) => reading.type === readingType
+//   );
+//   readings = readings.sort((a, b) => (a.primary === true ? 1 : -1));
+//   return readings;
+// };
+
+export const getKanjiReadings = (
+  readings: SubjectReading[],
+  readingType: ReadingType
+) => {
+  let readingsOfType = readings.filter(
     (reading: any) => reading.type === readingType
   );
-  readings = readings.sort((a, b) => (a.primary === true ? 1 : -1));
+  readingsOfType = readingsOfType.sort((a, b) => (a.primary === true ? 1 : -1));
   return readings;
 };
 

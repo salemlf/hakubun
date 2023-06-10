@@ -14,7 +14,7 @@ export interface PreFlattenedSubject {
   lesson_position: number;
   level: number;
   meanings: SubjectMeaning[];
-  readings: SubjectReading[];
+  readings?: SubjectReading[];
   meaning_mnemonic: string;
   slug: string;
   spaced_repetition_system_id: number;
@@ -111,6 +111,6 @@ export interface Vocabulary extends Subject {
   context_sentences: ContextSentence[];
   parts_of_speech: string[];
   pronunciation_audios: PronunciationAudio[];
-  readings: SubjectReading[];
+  readings?: SubjectReading[];
   reading_mnemonic: string;
 }

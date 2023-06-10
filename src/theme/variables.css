@@ -41,7 +41,7 @@ http://ionicframework.com/docs/theming/ */
 
   --wanikani-radical: #0af;
   --wanikani-kanji: #f0a;
-  --wanikani-purple: #aa00ff;
+  --wanikani-vocab: #aa00ff;
   --wanikani-reading: var(--darkest-purple);
 
   --wanikani-apprentice: #dd0093;

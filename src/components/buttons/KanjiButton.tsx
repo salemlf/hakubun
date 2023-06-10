@@ -27,6 +27,7 @@ export const KanjiButton = ({
   showDetails,
   onBtnClick,
 }: Props) => {
+  // kanji always have readings, so using ! for subject.readings
   return (
     <BtnWithTxt
       title="Kanji Subject"
@@ -39,7 +40,9 @@ export const KanjiButton = ({
         <p>{subject.characters}</p>
         {showDetails && (
           <div>
-            <SubjBtnDetailsTxt>{getPrimaryReading(subject)}</SubjBtnDetailsTxt>
+            <SubjBtnDetailsTxt>
+              {getPrimaryReading(subject.readings!)}
+            </SubjBtnDetailsTxt>
             <SubjBtnDetailsTxt style={{ marginTop: "2px" }}>
               {getSubjectDisplayName(subject)}
             </SubjBtnDetailsTxt>
