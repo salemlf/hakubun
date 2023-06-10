@@ -6,7 +6,7 @@ import {
   SubjInfoContainer,
   SubjDetailSection,
   SubjDetailSubHeading,
-} from "../subject-details/SubjectDetailsStyled";
+} from "./SubjectDetailsStyled";
 
 import { Radical, Subject } from "../../types/Subject";
 

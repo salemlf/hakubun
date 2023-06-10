@@ -18,7 +18,7 @@ const Container = styled(IonHeader)`
     background: none;
   }
 
-  height: 5rem;
+  padding: 10px 0;
   transition: height 2s;
   box-shadow: none;
 `;

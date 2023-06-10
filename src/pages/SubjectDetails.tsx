@@ -1,20 +1,19 @@
 import { useHistory, useLocation } from "react-router";
 // import { useHistory, useParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { IonContent, IonGrid, IonCol, IonRow, IonPage } from "@ionic/react";
+import { IonContent, IonGrid, IonPage } from "@ionic/react";
 
 import { useSubjectByID } from "../hooks/useSubjectByID";
-import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
 import { SubjectSummary } from "../components/subject-details/SubjectSummary";
-import { SubjInfoContainer } from "../components/subject-details/SubjectDetailsStyled";
-import { RadicalSubjDetails } from "../components/cards/RadicalSubjDetails";
+import { RadicalSubjDetails } from "../components/subject-details/RadicalSubjDetails";
 import { KanjiSubjDetails } from "../components/subject-details/KanjiSubjDetails";
+import { VocabSubjDetails } from "../components/subject-details/VocabSubjDetails";
 import { SubjectHeader } from "../components/subject-details/SubjectHeader";
 
 import styles from "./SubjectDetails.module.scss";
 import styled from "styled-components/macro";
-import { Kanji, Radical } from "../types/Subject";
+import { Kanji, Radical, Vocabulary } from "../types/Subject";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -27,22 +26,13 @@ export const SubjectDetails = () => {
 
   // TODO: use useHistory or useLocation to get state/type of subject
 
+  // TODO: display skeleton while loading
   const {
     isLoading: subjectLoading,
     data: subject,
     error: subjectErr,
   } = useSubjectByID(parsedID);
 
-  const {
-    isLoading: assignmentLoading,
-    data: assignment,
-    error: assignmentErr,
-  } = useAssignmentBySubjID([parsedID]);
-
-  let locked =
-    subject !== undefined && !assignmentLoading && assignment === undefined;
-
-  // TODO: use SubjInfoContainer for kanji and vocab
   return (
     <Page>
       {subject && <SubjectHeader subject={subject} />}
@@ -57,16 +47,7 @@ export const SubjectDetails = () => {
             <KanjiSubjDetails kanji={subject as Kanji} />
           )}
           {subject && subject?.object == "vocabulary" && (
-            <SubjInfoContainer>
-              <div>
-                <h3>Context Sentences</h3>
-                <p>...</p>
-              </div>
-              <div>
-                <h3>Meaning Explanation</h3>
-                <p>...</p>
-              </div>
-            </SubjInfoContainer>
+            <VocabSubjDetails vocab={subject as Vocabulary} />
           )}
         </IonGrid>
       </IonContent>
