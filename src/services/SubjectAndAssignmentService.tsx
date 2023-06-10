@@ -1,4 +1,9 @@
-import { ReadingType, Subject, SubjectReading } from "../types/Subject";
+import {
+  ReadingType,
+  Subject,
+  SubjectReading,
+  SubjectType,
+} from "../types/Subject";
 import { Assignment } from "../types/Assignment";
 
 import { convertToUpperCase } from "./MiscService";
@@ -39,14 +44,6 @@ export const getPrimaryReading = (readings: SubjectReading[]) => {
   return primaryReading[0].reading;
 };
 
-// export const getKanjiReadings = (subj: Subject, readingType: ReadingType) => {
-//   let readings = subj["readings"]?.filter(
-//     (reading: any) => reading.type === readingType
-//   );
-//   readings = readings.sort((a, b) => (a.primary === true ? 1 : -1));
-//   return readings;
-// };
-
 export const getKanjiReadings = (
   readings: SubjectReading[],
   readingType: ReadingType
@@ -72,4 +69,14 @@ export const findAssignmentWithSubjID = (
   return assignmentsData.find(
     (assignment: Assignment) => assignment.subject_id === subject.id
   );
+};
+
+const subjColors: { [index: string]: string } = {
+  radical: `var(--wanikani-radical)`,
+  kanji: `var(--wanikani-kanji)`,
+  vocabulary: `var(--wanikani-vocab)`,
+};
+
+export const getSubjectColor = (subjType: SubjectType) => {
+  return subjColors[subjType as keyof {}];
 };

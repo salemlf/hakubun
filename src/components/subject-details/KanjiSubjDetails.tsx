@@ -100,10 +100,12 @@ export const KanjiSubjDetails = ({ kanji }: Props) => {
       {findSimilar && <VisuallySimilarKanji kanji={kanji} />}
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Vocabulary</SubjDetailSubHeading>
-        <SubjectWideBtnList
-          subjList={vocabFoundSubjData}
-          assignmentList={vocabFoundAssignmentsData}
-        />
+        {vocabFoundSubjData && vocabFoundSubjData.length !== 0 && (
+          <SubjectWideBtnList
+            subjList={vocabFoundSubjData}
+            assignmentList={vocabFoundAssignmentsData}
+          />
+        )}
       </SubjDetailSection>
     </SubjInfoContainer>
   );

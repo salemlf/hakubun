@@ -1,9 +1,25 @@
 import ImageFallback from "./ImageFallback";
-import { Subject } from "../types/Subject";
+import { Subject, SubjectType } from "../types/Subject";
 
 import styled from "styled-components/macro";
+import { getSubjectColor } from "../services/SubjectAndAssignmentService";
 
-const DivWithTxt = styled.div`
+type CharDivProps = {
+  withBgColor: boolean;
+  subjType: SubjectType;
+};
+
+const CharDiv = styled.div<CharDivProps>`
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ withBgColor }) =>
+    withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
+  padding: 0 8px;
+`;
+
+const DivWithTxt = styled(CharDiv)`
   p {
     margin: 0;
     color: white;
@@ -11,7 +27,9 @@ const DivWithTxt = styled.div`
   }
 `;
 
-const DivWithImage = styled.div`
+const DivWithImage = styled(CharDiv)`
+  background-color: ${({ withBgColor }) =>
+    withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
   padding: 4px;
 
   img {
@@ -22,20 +40,23 @@ const DivWithImage = styled.div`
 
 type Props = {
   subject: Subject;
+  withBgColor?: boolean;
 };
 
-export const SubjectChars = ({ subject }: Props) => {
+export const SubjectChars = ({ subject, withBgColor = false }: Props) => {
+  let subjType = subject.object as SubjectType;
+
   return (
     <>
       {subject.useImage ? (
-        <DivWithImage>
+        <DivWithImage withBgColor={withBgColor} subjType={subjType}>
           <ImageFallback
             images={subject.availableImages}
             altText={subject.meaning_mnemonic}
           ></ImageFallback>
         </DivWithImage>
       ) : (
-        <DivWithTxt>
+        <DivWithTxt withBgColor={withBgColor} subjType={subjType}>
           <p>{subject.characters}</p>
         </DivWithTxt>
       )}

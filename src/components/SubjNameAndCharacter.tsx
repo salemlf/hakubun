@@ -5,6 +5,7 @@ import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
 
 import { Subject } from "../types/Subject";
 import { SubjectType } from "../types/Subject";
+import { SubjectChars } from "./SubjectChars";
 
 import styled from "styled-components/macro";
 
@@ -59,7 +60,7 @@ export const SubjNameAndCharacter = ({ subject }: Props) => {
   // TODO: display loading skeletons
   return (
     <>
-      {subject.useImage ? (
+      {/* {subject.useImage ? (
         <DivWithImage>
           <ImageFallback
             images={subject.availableImages}
@@ -70,7 +71,9 @@ export const SubjNameAndCharacter = ({ subject }: Props) => {
         <DivWithTxt subjType={subject.object}>
           <p>{subject.characters}</p>
         </DivWithTxt>
-      )}
+      )} */}
+
+      <SubjectChars subject={subject} withBgColor={true} />
 
       {subject && <SubjectName>{getSubjectDisplayName(subject)}</SubjectName>}
     </>

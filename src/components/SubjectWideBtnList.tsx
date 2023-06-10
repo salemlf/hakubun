@@ -15,6 +15,7 @@ import { Assignment } from "../types/Assignment";
 import {
   getSubjectDisplayName,
   getPrimaryReading,
+  getSubjectColor,
 } from "../services/SubjectAndAssignmentService";
 
 const Characters = styled(SubjectChars)`
@@ -65,23 +66,12 @@ const ReadingAndMeaning = ({ subject }: ReadingMeaningProps) => {
   );
 };
 
-const setBgColor = (subjType: SubjectType) => {
-  switch (subjType) {
-    case "radical":
-      return "var(--wanikani-radical)";
-    case "kanji":
-      return "var(--wanikani-kanji)";
-    case "vocabulary":
-      return "var(--wanikani-vocab)";
-  }
-};
-
 type ItemContainerProps = {
   subjType: SubjectType;
 };
 
 const SubjectItemContainer = styled.button<ItemContainerProps>`
-  background-color: ${({ subjType }) => setBgColor(subjType)};
+  background-color: ${({ subjType }) => getSubjectColor(subjType)};
   width: 100%;
   display: flex;
   align-items: center;
