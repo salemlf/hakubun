@@ -1,5 +1,8 @@
 import { IonCol } from "@ionic/react";
-import { SubjSummaryCol, SubjSummaryRow } from "./SubjectDetailsStyled";
+import {
+  SubjSummaryCol,
+  SubjSummaryRow,
+} from "./subject-details/SubjectDetailsStyled";
 
 import styles from "./AssignmentSrs.module.scss";
 import styled from "styled-components/macro";

@@ -20,7 +20,7 @@ type SubjProps = {
 };
 
 // TODO: change name and move to buttons folder
-export const SubjectCard = ({
+export const SubjectButton = ({
   subject,
   assignment,
   locked,

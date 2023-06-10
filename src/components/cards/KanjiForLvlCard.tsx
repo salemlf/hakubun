@@ -1,7 +1,7 @@
 import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
 
 import { BasicCard } from "./BasicCard";
-import { SubjectCard } from "../buttons/SubjectButton";
+import { SubjectButton } from "../buttons/SubjectButton";
 import { StepProgressBar } from "../progress/StepProgressBar";
 
 import { Subject } from "../../types/Subject";
@@ -79,7 +79,7 @@ export const KanjiContainer = ({ level }: Props) => {
             >
               {assignmentsData && (
                 <>
-                  <SubjectCard
+                  <SubjectButton
                     subject={kanjiItem}
                     assignment={findAssignmentWithSubjID(
                       assignmentsData,
@@ -88,7 +88,7 @@ export const KanjiContainer = ({ level }: Props) => {
                     locked={isAssignmentLocked(assignmentsData, kanjiItem)}
                     useLockedStyle={true}
                     showDetails={false}
-                  ></SubjectCard>
+                  />
                   <StepProgressBar
                     assignment={findAssignmentWithSubjID(
                       assignmentsData,

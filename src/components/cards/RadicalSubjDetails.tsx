@@ -1,12 +1,12 @@
 import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
-import { SubjectCardList } from "../SubjectCardList";
+import { SubjectButtonList } from "../SubjectButtonList";
 import {
   SubjInfoContainer,
   SubjDetailSection,
   SubjDetailSubHeading,
-} from "../SubjectDetailsStyled";
+} from "../subject-details/SubjectDetailsStyled";
 
 import { Radical, Subject } from "../../types/Subject";
 
@@ -57,7 +57,7 @@ export const RadicalSubjDetails = ({ radical }: Props) => {
       </SubjDetailSection>
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
-        <SubjectCardList
+        <SubjectButtonList
           subjList={usedInKanjiSubjData}
           assignmentList={usedInKanjiAssignmentsData}
         />

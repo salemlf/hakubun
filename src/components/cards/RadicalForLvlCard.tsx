@@ -4,7 +4,7 @@ import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 
 import { BasicCard } from ".././cards/BasicCard";
-import { SubjectCard } from "../buttons/SubjectButton";
+import { SubjectButton } from "../buttons/SubjectButton";
 import { StepProgressBar } from "../progress/StepProgressBar";
 
 import styles from "./RadicalForLvlCard.module.scss";
@@ -63,7 +63,7 @@ export const RadicalForLvlCard = ({ level }: Props) => {
               size="2"
               className={`${styles.radItemContainer}`}
             >
-              <SubjectCard
+              <SubjectButton
                 subject={radical}
                 assignment={assignmentCurrLvlData.find(
                   (assignment: Assignment) =>
@@ -72,7 +72,7 @@ export const RadicalForLvlCard = ({ level }: Props) => {
                 locked={false}
                 useLockedStyle={false}
                 showDetails={false}
-              ></SubjectCard>
+              />
               <StepProgressBar
                 assignment={assignmentCurrLvlData.find(
                   (assignment: Assignment) =>

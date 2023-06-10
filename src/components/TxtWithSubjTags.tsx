@@ -1,5 +1,5 @@
 import reactStringReplace from "react-string-replace";
-import { SubjDetailTxt } from "./SubjectDetailsStyled";
+import { SubjDetailTxt } from "./subject-details/SubjectDetailsStyled";
 
 import styled from "styled-components/macro";
 

@@ -1,10 +1,9 @@
 import { IonHeader } from "@ionic/react";
 
-import { LvlBadge } from "./LvlBadge";
+import { LvlBadge } from "../LvlBadge";
 
-import { Subject } from "../types/Subject";
-import { Assignment } from "../types/Assignment";
-import { SubjNameAndCharacter } from "./SubjNameAndCharacter";
+import { Subject } from "../../types/Subject";
+import { SubjNameAndCharacter } from "../SubjNameAndCharacter";
 import styled from "styled-components/macro";
 
 import { Row } from "./SubjectDetailsStyled";

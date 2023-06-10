@@ -1,7 +1,7 @@
-import { TxtWithSubjTags } from "./TxtWithSubjTags";
+import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import styled from "styled-components/macro";
 import { IonIcon } from "@ionic/react";
-import hintIcon from "../images/hint.svg";
+import hintIcon from "../../images/hint.svg";
 
 const HintContainer = styled.div`
   background-color: var(--hint-bg);

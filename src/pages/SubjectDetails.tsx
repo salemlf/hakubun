@@ -6,11 +6,11 @@ import { IonContent, IonGrid, IonCol, IonRow, IonPage } from "@ionic/react";
 import { useSubjectByID } from "../hooks/useSubjectByID";
 import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
 
-import { SubjectSummary } from "../components/SubjectSummary";
-import { SubjInfoContainer } from "../components/SubjectDetailsStyled";
+import { SubjectSummary } from "../components/subject-details/SubjectSummary";
+import { SubjInfoContainer } from "../components/subject-details/SubjectDetailsStyled";
 import { RadicalSubjDetails } from "../components/cards/RadicalSubjDetails";
-import { KanjiSubjDetails } from "../components/KanjiSubjDetails";
-import { SubjectHeader } from "../components/SubjectHeader";
+import { KanjiSubjDetails } from "../components/subject-details/KanjiSubjDetails";
+import { SubjectHeader } from "../components/subject-details/SubjectHeader";
 
 import styles from "./SubjectDetails.module.scss";
 import styled from "styled-components/macro";

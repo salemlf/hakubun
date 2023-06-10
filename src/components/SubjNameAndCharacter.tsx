@@ -1,12 +1,9 @@
 import { IonSkeletonText } from "@ionic/react";
-
-import { SubjectCard } from "./buttons/SubjectButton";
 import ImageFallback from "./ImageFallback";
 
 import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
 
 import { Subject } from "../types/Subject";
-import { Assignment } from "../types/Assignment";
 import { SubjectType } from "../types/Subject";
 
 import styled from "styled-components/macro";

@@ -1,16 +1,15 @@
 import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 
-import { Subject } from "../types/Subject";
+import { Subject } from "../../types/Subject";
 
-import { useAssignmentBySubjID } from "../hooks/useAssignmentBySubjID";
+import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
 
-import { AlternativeMeanings } from "./AlternativeMeanings";
-import { AssignmentSrs } from "./AssignmentSrs";
-import { BasicCard } from "./cards/BasicCard";
-import { SubjectHeader } from "./SubjectHeader";
+import { AlternativeMeanings } from "../AlternativeMeanings";
+import { AssignmentSrs } from "../AssignmentSrs";
+import { BasicCard } from "../cards/BasicCard";
 import { SubjSummaryRow } from "./SubjectDetailsStyled";
 
-import { getKanjiReadings } from "../services/SubjectAndAssignmentService";
+import { getKanjiReadings } from "../../services/SubjectAndAssignmentService";
 
 import styled from "styled-components/macro";
 
@@ -54,9 +53,11 @@ export const SubjectSummary = ({ subject }: Props) => {
   let onyomiReadings;
   let kunyomiReadings;
   if (subject.object == "kanji") {
-    onyomiReadings = getKanjiReadings(subject, "onyomi");
-    kunyomiReadings = getKanjiReadings(subject, "kunyomi");
+    // kanji always have readings, so using ! for subject.readings
+    onyomiReadings = getKanjiReadings(subject.readings!, "onyomi");
+    kunyomiReadings = getKanjiReadings(subject.readings!, "kunyomi");
   }
+  // TODO: account for vocabulary
 
   // TODO: change this from card
   if (assignmentLoading || assignmentErr) {
@@ -73,11 +74,9 @@ export const SubjectSummary = ({ subject }: Props) => {
 
   return (
     <>
-      {/* {<SubjectHeader subject={subject} assignment={assignment} />} */}
       <SummaryContainer>
         {<AlternativeMeanings subject={subject} />}
         <SubjSummaryRow className="ion-justify-content-between">
-          {/* TODO: display onyomi and kunyomi details */}
           {subject.object == "kanji" && (
             <ReadingContainer>
               <IonRow>

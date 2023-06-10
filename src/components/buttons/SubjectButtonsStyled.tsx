@@ -1,5 +1,5 @@
 import styled from "styled-components/macro";
-import { Col } from "../SubjectDetailsStyled";
+import { Col } from "../subject-details/SubjectDetailsStyled";
 import { SubjectType } from "../../types/Subject";
 
 type DefaultBtnProps = {

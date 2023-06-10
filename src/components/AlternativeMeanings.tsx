@@ -8,7 +8,7 @@ import {
   SubjSummaryCol,
   SubjDetailSubHeading,
   SubjDetailTxt,
-} from "./SubjectDetailsStyled";
+} from "./subject-details/SubjectDetailsStyled";
 
 type Props = {
   subject: Subject;
