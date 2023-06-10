@@ -8,27 +8,27 @@ import {
   SubjDetailSubHeading,
 } from "../SubjectDetailsStyled";
 
-import { Subject } from "../../types/Subject";
+import { Radical, Subject } from "../../types/Subject";
 
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 
 type Props = {
-  subject: Subject;
+  radical: Radical;
 };
 
-export const RadicalSubjDetails = ({ subject }: Props) => {
+export const RadicalSubjDetails = ({ radical }: Props) => {
   const {
     isLoading: usedInKanjiSubjLoading,
     data: usedInKanjiSubjData,
     error: usedInKanjiSubjErr,
-  } = useSubjectsByIDs(subject.amalgamation_subject_ids);
+  } = useSubjectsByIDs(radical.amalgamation_subject_ids);
 
   const {
     isLoading: usedInKanjiAssignmentsLoading,
     data: usedInKanjiAssignmentsData,
     error: usedInKanjiAssignmentsErr,
-  } = useAssignmentsBySubjIDs(subject.amalgamation_subject_ids);
+  } = useAssignmentsBySubjIDs(radical.amalgamation_subject_ids);
 
   let usedInKanjiLoading =
     usedInKanjiSubjLoading ||
@@ -42,7 +42,7 @@ export const RadicalSubjDetails = ({ subject }: Props) => {
       <IonRow class="ion-justify-content-start">
         <div className="ion-padding">
           <IonSkeletonText animated={true}></IonSkeletonText>
-          <TxtWithSubjTags mnemonic={subject.meaning_mnemonic} />
+          <TxtWithSubjTags textWithTags={radical.meaning_mnemonic} />
           <IonSkeletonText animated={true}></IonSkeletonText>
         </div>
       </IonRow>
@@ -53,7 +53,7 @@ export const RadicalSubjDetails = ({ subject }: Props) => {
     <SubjInfoContainer>
       <SubjDetailSection>
         <SubjDetailSubHeading>Name Mnemonic</SubjDetailSubHeading>
-        <TxtWithSubjTags mnemonic={subject.meaning_mnemonic} />
+        <TxtWithSubjTags textWithTags={radical.meaning_mnemonic} />
       </SubjDetailSection>
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>

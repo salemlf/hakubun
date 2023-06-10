@@ -86,17 +86,11 @@ export const WaniKaniAPI = {
 
     let kanji = await PagingAPI.iterateOverPages(url, []);
     let kanjiCombined = PagingAPI.combinePages(kanji);
-    console.log(
-      "🚀 ~ file: WaniKaniApi.tsx:89 ~ getKanjiSubjectsByLevel:",
-      kanjiCombined
-    );
 
     return kanjiCombined;
   },
 
   getSubjectByID: async function (id: number) {
-    console.log("🚀 ~ file: WaniKaniApi.tsx:58 ~ id:", id);
-
     let url = `${baseUrl}subjects/${id}`;
 
     const response: AxiosResponse = await api.request({
@@ -108,11 +102,6 @@ export const WaniKaniAPI = {
   },
 
   getSubjectsBySubjIDs: async function (ids: number[]) {
-    console.log(
-      "🚀 ~ file: WaniKaniApi.tsx:111 ~ getSubjectsBySubjIDs ~ ids:",
-      ids
-    );
-
     let url = `${baseUrl}subjects?ids=${ids}`;
 
     const response: AxiosResponse = await api.request({
@@ -148,10 +137,6 @@ export const WaniKaniAPI = {
 
     let kanji = await PagingAPI.iterateOverPages(url, []);
     let kanjiCombined = PagingAPI.combinePages(kanji);
-    console.log(
-      "🚀 ~ file: WaniKaniApi.tsx:135 ~ getKanjiAssignmentsByLvl:",
-      kanjiCombined
-    );
 
     return kanjiCombined;
   },

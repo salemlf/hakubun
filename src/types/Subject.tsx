@@ -4,9 +4,9 @@ export type SubjectType = "radical" | "kanji" | "vocabulary";
 
 export interface PreFlattenedSubject {
   object: SubjectType;
-  amalgamation_subject_ids: number[];
+  amalgamation_subject_ids?: number[];
   auxiliary_meanings: SubjectAuxiliaryMeaning[];
-  characters: string;
+  characters: string | null;
   character_images?: SubjectCharacterImage[];
   created_at: Date;
   document_url: string;
@@ -20,8 +20,8 @@ export interface PreFlattenedSubject {
   spaced_repetition_system_id: number;
   component_subject_ids?: number[];
   visually_similar_subject_ids?: number[];
-  reading_hint?: string;
-  meaning_hint?: string;
+  reading_hint?: string | null;
+  meaning_hint?: string | null;
   reading_mnemonic?: string;
   pronunciation_audios?: PronunciationAudio[];
   parts_of_speech?: string[];
@@ -88,4 +88,29 @@ export interface AudioMetadata {
   voiceActorId: number;
   voiceActorName: string;
   voiceDescription: string;
+}
+
+export interface Radical extends Subject {
+  amalgamation_subject_ids: number[];
+  characters: string | null;
+  character_images?: SubjectCharacterImage[];
+}
+
+export interface Kanji extends Subject {
+  amalgamation_subject_ids: number[];
+  component_subject_ids: number[];
+  reading_hint: string | null;
+  meaning_hint: string | null;
+  reading_mnemonic: string;
+  readings: SubjectReading[];
+  visually_similar_subject_ids: number[];
+}
+
+export interface Vocabulary extends Subject {
+  component_subject_ids: number[];
+  context_sentences: ContextSentence[];
+  parts_of_speech: string[];
+  pronunciation_audios: PronunciationAudio[];
+  readings: SubjectReading[];
+  reading_mnemonic: string;
 }

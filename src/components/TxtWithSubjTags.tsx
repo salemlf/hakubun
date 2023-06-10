@@ -53,10 +53,10 @@ const createSubjectTags = (text: string) => {
 };
 
 type Props = {
-  mnemonic: string;
+  textWithTags: string;
 };
 
 // TODO: also render links in this component?
-export const TxtWithSubjTags = ({ mnemonic }: Props) => {
-  return <TaggedTxt>{createSubjectTags(mnemonic)}</TaggedTxt>;
+export const TxtWithSubjTags = ({ textWithTags }: Props) => {
+  return <TaggedTxt>{createSubjectTags(textWithTags)}</TaggedTxt>;
 };
