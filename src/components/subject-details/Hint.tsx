@@ -11,6 +11,7 @@ const HintContainer = styled.div`
   p {
     margin: 0;
     font-size: 0.875rem;
+    line-height: 1.5;
   }
 `;
 
