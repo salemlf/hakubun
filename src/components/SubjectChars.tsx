@@ -16,7 +16,7 @@ const CharDiv = styled.div<CharDivProps>`
   align-items: center;
   background-color: ${({ withBgColor }) =>
     withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
-  padding: 0 8px;
+  padding: ${({ withBgColor }) => (withBgColor ? `0 8px` : `0`)};
 `;
 
 const DivWithTxt = styled(CharDiv)`
