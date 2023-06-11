@@ -30,11 +30,13 @@ const DivWithTxt = styled(CharDiv)`
 const DivWithImage = styled(CharDiv)`
   background-color: ${({ withBgColor }) =>
     withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
-  padding: 4px;
+  padding: 8px;
 
+  /* TODO: set height too? */
   img {
     width: 100%;
     filter: brightness(0) invert(1);
+    width: 2rem;
   }
 `;
 
