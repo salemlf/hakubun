@@ -8,6 +8,7 @@ import {
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { SubjectButtonList } from "../SubjectButtonList";
 import { Hint } from "./Hint";
+import { ContextSentences } from "../ContextSentences";
 
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
@@ -65,10 +66,7 @@ export const VocabSubjDetails = ({ vocab }: Props) => {
 
   return (
     <SubjInfoContainer>
-      <SubjDetailSection>
-        <SubjDetailSubHeading>Context Sentences</SubjDetailSubHeading>
-        <p>...</p>
-      </SubjDetailSection>
+      <ContextSentences sentences={vocab.context_sentences} />
       <SubjDetailSection>
         <SubjDetailSubHeading>Meaning Explanation</SubjDetailSubHeading>
         <TxtWithSubjTags textWithTags={vocab.meaning_mnemonic} />
