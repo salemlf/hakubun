@@ -21,7 +21,6 @@ import ReviewsButton from "../components/buttons/ReviewsButton";
 import { RadicalForLvlCard } from "../components/cards/RadicalForLvlCard";
 import { KanjiContainer } from "../components/cards/KanjiForLvlCard";
 import { SrsStages } from "../components/SrsStages";
-import { Footer } from "../components/Footer";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
@@ -97,7 +96,6 @@ const Home = () => {
           )}
         </IonGrid>
         {homeLoading && <IonSpinner name="dots"></IonSpinner>}
-        <Footer></Footer>
       </IonContent>
     </IonPage>
   );
