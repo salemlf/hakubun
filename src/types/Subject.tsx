@@ -78,7 +78,7 @@ export interface ContextSentence {
 export interface PronunciationAudio {
   url: string;
   contentType: string;
-  metadata: AudioMetadata[];
+  metadata: AudioMetadata;
 }
 
 export interface AudioMetadata {

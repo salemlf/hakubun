@@ -89,12 +89,12 @@ export const KanjiSubjDetails = ({ kanji }: Props) => {
       <SubjDetailSection>
         <SubjDetailSubHeading>Meaning Mnemonic</SubjDetailSubHeading>
         <TxtWithSubjTags textWithTags={kanji.meaning_mnemonic} />
-        {kanji.reading_hint && <Hint hint={kanji.reading_hint} />}
+        {kanji.meaning_hint && <Hint hint={kanji.meaning_hint} />}
       </SubjDetailSection>
       <SubjDetailSection>
         <SubjDetailSubHeading>Reading Mnemonic</SubjDetailSubHeading>
         <TxtWithSubjTags textWithTags={kanji.reading_mnemonic!} />
-        {kanji.meaning_hint && <Hint hint={kanji.meaning_hint} />}
+        {kanji.reading_hint && <Hint hint={kanji.reading_hint} />}
       </SubjDetailSection>
       {findSimilar && <VisuallySimilarKanji kanji={kanji} />}
       <SubjDetailSection>

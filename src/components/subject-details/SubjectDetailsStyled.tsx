@@ -55,3 +55,13 @@ export const SubjDetailSection = styled.div`
   margin-bottom: 10px;
   width: 100%;
 `;
+
+export const Readings = styled(IonCol)`
+  padding: 3px 0;
+`;
+
+export const ReadingContainer = styled(IonCol)`
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+`;
