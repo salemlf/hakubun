@@ -7,6 +7,7 @@ import { getSubjectColor } from "../services/SubjectAndAssignmentService";
 type CharDivProps = {
   withBgColor: boolean;
   subjType: SubjectType;
+  fontSize: string;
 };
 
 const CharDiv = styled.div<CharDivProps>`
@@ -23,42 +24,53 @@ const DivWithTxt = styled(CharDiv)`
   p {
     margin: 0;
     color: white;
-    font-size: 2rem;
+    font-size: ${({ fontSize }) => fontSize};
   }
 `;
 
 const DivWithImage = styled(CharDiv)`
   background-color: ${({ withBgColor }) =>
     withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
-  padding: 8px;
 
-  /* TODO: set height too? */
   img {
-    width: 100%;
+    margin: ${({ fontSize }) => `calc(${fontSize} * 0.33) 0`};
     filter: brightness(0) invert(1);
-    width: 2rem;
+    width: ${({ fontSize }) => fontSize};
   }
 `;
 
 type Props = {
   subject: Subject;
+  fontSize: string;
   withBgColor?: boolean;
 };
 
-export const SubjectChars = ({ subject, withBgColor = false }: Props) => {
+export const SubjectChars = ({
+  subject,
+  fontSize,
+  withBgColor = false,
+}: Props) => {
   let subjType = subject.object as SubjectType;
 
   return (
     <>
       {subject.useImage ? (
-        <DivWithImage withBgColor={withBgColor} subjType={subjType}>
+        <DivWithImage
+          withBgColor={withBgColor}
+          subjType={subjType}
+          fontSize={fontSize}
+        >
           <ImageFallback
             images={subject.availableImages}
             altText={subject.meaning_mnemonic}
           ></ImageFallback>
         </DivWithImage>
       ) : (
-        <DivWithTxt withBgColor={withBgColor} subjType={subjType}>
+        <DivWithTxt
+          withBgColor={withBgColor}
+          subjType={subjType}
+          fontSize={fontSize}
+        >
           <p>{subject.characters}</p>
         </DivWithTxt>
       )}

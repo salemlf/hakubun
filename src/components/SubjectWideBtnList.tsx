@@ -94,7 +94,7 @@ const SubjectListItem = ({ subject }: Props) => {
 
   return (
     <SubjectItemContainer subjType={subject.object} onClick={onSubjBtnClick}>
-      <Characters subject={subject} />
+      <Characters subject={subject} fontSize="2rem" />
       {subject.object === "radical" && (
         <RadicalInfo radical={subject as Radical} />
       )}
