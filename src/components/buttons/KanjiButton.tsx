@@ -8,6 +8,7 @@ import {
   getSubjectDisplayName,
   getPrimaryReading,
 } from "../../services/SubjectAndAssignmentService";
+import { SubjectChars } from "../SubjectChars";
 
 // TODO: change to use size sm, md, lg?
 type Props = {
@@ -37,13 +38,13 @@ export const KanjiButton = ({
       lockedStyle={locked}
     >
       <SubjInfoCol>
-        <p>{subject.characters}</p>
+        <SubjectChars subject={subject} fontSize="2rem" />
         {showDetails && (
           <div>
             <SubjBtnDetailsTxt>
               {getPrimaryReading(subject.readings!)}
             </SubjBtnDetailsTxt>
-            <SubjBtnDetailsTxt style={{ marginTop: "2px" }}>
+            <SubjBtnDetailsTxt>
               {getSubjectDisplayName(subject)}
             </SubjBtnDetailsTxt>
           </div>

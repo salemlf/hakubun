@@ -1,4 +1,4 @@
-import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
+import { IonRow, IonSkeletonText } from "@ionic/react";
 
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { SubjectButtonList } from "../SubjectButtonList";
@@ -8,7 +8,7 @@ import {
   SubjDetailSubHeading,
 } from "./SubjectDetailsStyled";
 
-import { Radical, Subject } from "../../types/Subject";
+import { Radical } from "../../types/Subject";
 
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";

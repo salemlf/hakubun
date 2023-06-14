@@ -12,37 +12,44 @@ import { SubjectButton } from "./buttons/SubjectButton";
 import styled from "styled-components/macro";
 
 const SubjCol = styled(IonCol)`
-  margin-bottom: 10px;
   flex-grow: 0;
+  flex-shrink: 0;
 `;
 
-const SubjRow = styled(IonRow)`
+type RowProps = {
+  justify: string;
+};
+
+const SubjRow = styled(IonRow)<RowProps>`
   align-items: center;
-  justify-content: flex-start;
+  justify-content: ${({ justify }) => justify};
   margin-left: -3px;
 `;
 
 type Props = {
   subjList: Subject[];
   assignmentList: Assignment[];
+  justify?: string;
 };
 
-export const SubjectButtonList = ({ subjList, assignmentList }: Props) => {
+export const SubjectButtonList = ({
+  subjList,
+  assignmentList,
+  justify = "center",
+}: Props) => {
   return (
-    <SubjRow>
+    <SubjRow justify={justify}>
       {(subjList as Subject[]).map((subject: any) => {
         return (
           <SubjCol key={`col_${subject.id}`}>
             {assignmentList && (
-              <>
-                <SubjectButton
-                  subject={subject}
-                  assignment={findAssignmentWithSubjID(assignmentList, subject)}
-                  locked={isAssignmentLocked(assignmentList, subject)}
-                  isButtonLink={true}
-                  useLockedStyle={false}
-                ></SubjectButton>
-              </>
+              <SubjectButton
+                subject={subject}
+                assignment={findAssignmentWithSubjID(assignmentList, subject)}
+                locked={isAssignmentLocked(assignmentList, subject)}
+                isButtonLink={true}
+                useLockedStyle={false}
+              ></SubjectButton>
             )}
           </SubjCol>
         );

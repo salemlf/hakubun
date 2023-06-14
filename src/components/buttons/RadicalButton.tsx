@@ -8,6 +8,7 @@ import {
 
 import { Subject } from "../../types/Subject";
 import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService";
+import { SubjectChars } from "../SubjectChars";
 
 // TODO: change to use size sm, md, lg?
 type Props = {
@@ -45,7 +46,8 @@ export const RadicalButton = ({
           subjType="radical"
         >
           <SubjInfoCol>
-            <p>{subject.characters}</p>
+            <SubjectChars subject={subject} fontSize="2rem" />
+            {/* <p>{subject.characters}</p> */}
             {showDetails && (
               <div>
                 <SubjBtnDetailsTxt>

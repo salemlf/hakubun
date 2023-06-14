@@ -11,8 +11,8 @@ export const DefaultBtn = styled.button<DefaultBtnProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ bigBtn }) => (bigBtn ? "5.2rem" : "3rem")};
-  height: ${({ bigBtn }) => (bigBtn ? "5.2rem" : "3rem")};
+  width: ${({ bigBtn }) => (bigBtn ? "5rem" : "3rem")};
+  height: ${({ bigBtn }) => (bigBtn ? "5rem" : "3rem")};
 
   --box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
@@ -31,17 +31,15 @@ export const BtnWithTxt = styled(DefaultBtn)<TxtBtnProps>`
     subjType === "radical" ? `var(--wanikani-blue)` : `var(--wanikani-pink)`};
   background-color: ${({ lockedStyle }) =>
     lockedStyle && `var(--ion-color-step-300)`};
-
-  p {
-    margin: 0;
-    color: white;
-    font-size: 2rem;
-  }
 `;
 
-export const SubjBtnDetailsTxt = styled.span`
-  display: block;
+export const SubjBtnDetailsTxt = styled.p`
+  margin: 0;
   font-size: 0.75rem;
+
+  &:last-of-type {
+    margin-top: 2px;
+  }
 `;
 
 export const BtnWithImage = styled(DefaultBtn)`
