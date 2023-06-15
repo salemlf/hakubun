@@ -10,14 +10,14 @@ import {
   SubjDetailTxt,
 } from "./subject-details/SubjectDetailsStyled";
 
-type Props = {
-  subject: Subject;
-};
-
 const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
   padding-left: 0;
   padding-right: 0;
 `;
+
+type Props = {
+  subject: Subject;
+};
 
 //   TODO: add a button to add alternative meanings/synonyms
 export const AlternativeMeanings = ({ subject }: Props) => {

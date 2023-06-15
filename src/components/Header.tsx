@@ -9,14 +9,34 @@ import {
   IonRow,
   IonButton,
   IonButtons,
-  IonBackButton,
 } from "@ionic/react";
 
 import { LvlBadge } from "./LvlBadge";
-
-import styles from "./Header.module.scss";
-
 import settingsIcon from "../images/settings.svg";
+
+import styled from "styled-components/macro";
+
+const SettingsImg = styled.img`
+  max-height: 100%;
+`;
+
+const Button = styled(IonButton)`
+  min-height: 38px;
+`;
+
+const UserInfoCol = styled(IonCol)`
+  flex-grow: 0;
+
+  p {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+`;
+
+const HeaderRow = styled(IonRow)`
+  align-items: center;
+  justify-content: flex-start;
+`;
 
 // TODO: add click event for settings button
 const Header = () => {
@@ -32,9 +52,6 @@ const Header = () => {
     let username = auth.auth!.username;
     setUsername(username);
 
-    // let level = auth.auth!.level;
-    // setLevel(level);
-
     let userData = auth.userData;
     if (userData != undefined) {
       setLevel(userData.level);
@@ -46,27 +63,19 @@ const Header = () => {
     <IonHeader>
       <IonToolbar>
         <IonGrid>
-          <IonRow
-            class="ion-justify-content-start"
-            className={`${styles.userInfoRow}`}
-          >
-            <IonCol className={`${styles.userInfoCol}`}>
+          <HeaderRow>
+            <UserInfoCol>
               <LvlBadge level={level}></LvlBadge>
-            </IonCol>
-            <IonCol className={`${styles.userInfoCol}`}>
+            </UserInfoCol>
+            <UserInfoCol>
               <p>{username}</p>
-            </IonCol>
-          </IonRow>
+            </UserInfoCol>
+          </HeaderRow>
         </IonGrid>
         <IonButtons slot="primary">
-          <IonButton>
-            <img
-              src={settingsIcon}
-              width="50"
-              height="50"
-              alt="settings icon"
-            ></img>
-          </IonButton>
+          <Button>
+            <SettingsImg src={settingsIcon} alt="settings icon"></SettingsImg>
+          </Button>
         </IonButtons>
       </IonToolbar>
     </IonHeader>

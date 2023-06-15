@@ -8,8 +8,10 @@ import { BasicCard } from "../cards/BasicCard";
 import { SubjSummaryRow } from "./SubjectDetailsStyled";
 import { KanjiReadings } from "./KanjiReadings";
 import { VocabReadings } from "./VocabReadings";
+import { PartsOfSpeech } from "./PartsOfSpeech";
 
 import styled from "styled-components/macro";
+import { Assignment } from "../../types/Assignment";
 
 const SummaryContainer = styled(IonRow)`
   display: flex;
@@ -27,8 +29,61 @@ const SummaryContainer = styled(IonRow)`
   }
 `;
 
+const AltMeaningsAndPartsOfSpeechRow = styled(SubjSummaryRow)`
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
+const ReadingsAndSrsRow = styled(SubjSummaryRow)`
+  justify-content: space-between;
+  align-items: center;
+`;
+
 type Props = {
   subject: Subject;
+};
+
+type SubjSummaryProps = {
+  subject: Subject;
+  assignment: Assignment | undefined;
+};
+
+const RadicalSummary = ({ subject, assignment }: SubjSummaryProps) => {
+  return (
+    <>
+      <AlternativeMeanings subject={subject} />
+      <AssignmentSrs assignment={assignment} />
+    </>
+  );
+};
+
+const KanjiSummary = ({ subject, assignment }: SubjSummaryProps) => {
+  return (
+    <>
+      <AltMeaningsAndPartsOfSpeechRow>
+        <AlternativeMeanings subject={subject} />
+      </AltMeaningsAndPartsOfSpeechRow>
+      <ReadingsAndSrsRow>
+        <KanjiReadings kanji={subject as Kanji} />
+        <AssignmentSrs assignment={assignment} />
+      </ReadingsAndSrsRow>
+    </>
+  );
+};
+
+const VocabSummary = ({ subject, assignment }: SubjSummaryProps) => {
+  return (
+    <>
+      <AltMeaningsAndPartsOfSpeechRow>
+        <AlternativeMeanings subject={subject} />
+        <PartsOfSpeech vocab={subject as Vocabulary} />
+      </AltMeaningsAndPartsOfSpeechRow>
+      <ReadingsAndSrsRow>
+        <VocabReadings vocab={subject as Vocabulary} />
+        <AssignmentSrs assignment={assignment} />
+      </ReadingsAndSrsRow>
+    </>
+  );
 };
 
 export const SubjectSummary = ({ subject }: Props) => {
@@ -37,8 +92,6 @@ export const SubjectSummary = ({ subject }: Props) => {
     data: assignment,
     error: assignmentErr,
   } = useAssignmentBySubjID([subject.id]);
-
-  let hasReadings = subject.readings && subject.readings.length !== 0;
 
   // TODO: change this from card
   if (assignmentLoading || assignmentErr) {
@@ -54,20 +107,16 @@ export const SubjectSummary = ({ subject }: Props) => {
   }
 
   return (
-    <>
-      <SummaryContainer>
-        {<AlternativeMeanings subject={subject} />}
-        <SubjSummaryRow className="ion-justify-content-between">
-          {subject.object == "kanji" && (
-            <KanjiReadings kanji={subject as Kanji} />
-          )}
-          {subject.object == "vocabulary" && hasReadings && (
-            <VocabReadings vocab={subject as Vocabulary} />
-          )}
-          {/* TODO: add part of sentence */}
-          <AssignmentSrs assignment={assignment} />
-        </SubjSummaryRow>
-      </SummaryContainer>
-    </>
+    <SummaryContainer>
+      {subject.object == "radical" && (
+        <RadicalSummary subject={subject} assignment={assignment} />
+      )}
+      {subject.object === "kanji" && (
+        <KanjiSummary subject={subject} assignment={assignment} />
+      )}
+      {subject.object === "vocabulary" && (
+        <VocabSummary subject={subject} assignment={assignment} />
+      )}
+    </SummaryContainer>
   );
 };

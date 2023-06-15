@@ -1,4 +1,3 @@
-import { IonCol } from "@ionic/react";
 import {
   SubjSummaryCol,
   SubjSummaryRow,
@@ -18,6 +17,7 @@ import { Assignment } from "../types/Assignment";
 const AssignmentSrsContainer = styled(SubjSummaryCol)`
   justify-content: flex-end;
   padding: 5px 0;
+  flex: 0 0 40%;
 
   p {
     margin: 5px 0;

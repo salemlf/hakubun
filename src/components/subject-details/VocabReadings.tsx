@@ -34,13 +34,17 @@ type AudioProps = {
   url: string;
 };
 
+const Btn = styled.button`
+  background-color: transparent;
+`;
+
 const AudioBtn = ({ url }: AudioProps) => {
   const [playing, toggle] = useAudio(url);
 
   return (
-    <button onClick={toggle}>
+    <Btn onClick={toggle}>
       <IonIcon icon={SoundIcon} />
-    </button>
+    </Btn>
   );
 };
 
