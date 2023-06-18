@@ -1,8 +1,7 @@
 import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
-
 import { useNumReviews } from "../../hooks/useNumReviews";
-
 import { setBtnBackground } from "../../services/ImageSrcService";
+import { useHistory } from "react-router";
 
 import styles from "./ReviewsButton.module.scss";
 
@@ -11,6 +10,7 @@ type Props = {
 };
 
 const ReviewsButton = ({ level }: Props) => {
+  const history = useHistory();
   const {
     isLoading: numReviewsLoading,
     data: numReviews,
@@ -19,7 +19,7 @@ const ReviewsButton = ({ level }: Props) => {
 
   // TODO: change to display error some other way
   if (reviewErr) {
-    console.log("An error has occurred in ReviewsButton: " + reviewErr);
+    console.error("An error has occurred in ReviewsButton: " + reviewErr);
     return (
       <IonSkeletonText
         animated={true}
@@ -27,11 +27,6 @@ const ReviewsButton = ({ level }: Props) => {
       ></IonSkeletonText>
     );
   }
-
-  const goToReviews = () => {
-    // TODO: use reviewData
-    console.log("TODO: add reviews button action");
-  };
 
   // TODO: delay loading until image is set
   return (
@@ -41,7 +36,7 @@ const ReviewsButton = ({ level }: Props) => {
           expand="block"
           title="Reviews"
           color="clear"
-          onClick={goToReviews}
+          onClick={() => history.push("/home/reviews")}
           className={`${styles.reviewBtn}`}
           style={{
             backgroundImage: `url(${
