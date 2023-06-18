@@ -28,8 +28,10 @@ setupIonicReact();
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // staleTime of 10 minutes
-      staleTime: 600000,
+      // stale time of 10 minutes
+      staleTime: 10 * (60 * 1000),
+      // cache time of 15 minutes
+      cacheTime: 15 * (60 * 1000),
     },
   },
 });

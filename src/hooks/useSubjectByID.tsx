@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 
+// TODO: increase cache time and stale time since subjects (cache time should always be > stale time)
 export const useSubjectByID = (id: number) => {
   return useQuery({
     queryKey: ["subject-by-id", id],

@@ -22,7 +22,7 @@ export const WaniKaniAPI = {
     return response.data;
   },
 
-  getReviews: async function () {
+  getAssignmentsAvailForReview: async function () {
     let url = `${baseUrl}assignments?immediately_available_for_review`;
 
     let reviews = await PagingAPI.iterateOverPages(url, []);

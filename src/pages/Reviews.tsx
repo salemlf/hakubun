@@ -4,7 +4,6 @@ import {
   IonPage,
   IonRow,
   IonCol,
-  IonSkeletonText,
   IonHeader,
   IonItem,
   IonList,
@@ -12,9 +11,12 @@ import {
   IonSelectOption,
 } from "@ionic/react";
 
+import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
 import { BasicCard } from "../components/cards/BasicCard";
+import { Assignment, assignmentBatchSizes } from "../types/Assignment";
+import { SubjectType } from "../types/Subject";
+import { getSubjectColor } from "../services/SubjectAndAssignmentService";
 
-import { useReviews } from "../hooks/useReviews";
 import styled from "styled-components/macro";
 
 const Page = styled(IonPage)`
@@ -49,12 +51,105 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-// TODO: limit this so max is <= number of available reviews
-const batchSizes = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+const SubjectTypeFieldset = styled.fieldset`
+  border: none;
+  padding-left: 12px;
+  display: flex;
+  gap: 10px;
+`;
+
+const SubjectTypeLegend = styled.legend`
+  font-size: 1rem;
+  color: white;
+`;
+
+type AssignTypeOptionProps = {
+  assignType: SubjectType;
+};
+
+// TODO: make this prettier
+// TODO: select all items by default
+// TODO: hide/disable if subject type not available
+const AssignTypeOption = styled.label<AssignTypeOptionProps>`
+  color: white;
+  border-radius: 10px;
+  padding: 3px 6px;
+  background-color: ${({ assignType }) => getSubjectColor(assignType)};
+
+  input {
+    margin-left: 5px;
+  }
+`;
+
+type SettingProps = {
+  availForReview: Assignment[];
+};
+
+const SettingOptions = ({ availForReview }: SettingProps) => {
+  // *testing
+  console.log(
+    "🚀 ~ file: Reviews.tsx:56 ~ Settings ~ availForReview:",
+    availForReview
+  );
+  // *testing
+  let availBatchSizes = assignmentBatchSizes.filter(
+    (batchSize) => batchSize <= availForReview.length
+  );
+  // TODO: select default num for batch
+
+  return (
+    <>
+      <IonList>
+        <IonItem>
+          <IonSelect aria-label="batch-size" label="Batch Size">
+            {availBatchSizes.map((batchSize: number) => {
+              return (
+                <IonSelectOption key={`batch_${batchSize}`} value={batchSize}>
+                  {batchSize}
+                </IonSelectOption>
+              );
+            })}
+          </IonSelect>
+        </IonItem>
+      </IonList>
+      <SubjectTypeFieldset>
+        <SubjectTypeLegend>Subject Types</SubjectTypeLegend>
+        <AssignTypeOption htmlFor="radicals" assignType="radical">
+          Radicals
+          <input
+            type="checkbox"
+            name="radicals"
+            value="radicals"
+            id="radicals"
+          />
+        </AssignTypeOption>
+        <AssignTypeOption htmlFor="kanji" assignType="kanji">
+          Kanji
+          <input type="checkbox" name="kanji" value="kanji" id="kanji" />
+        </AssignTypeOption>
+        <AssignTypeOption htmlFor="vocabulary" assignType="vocabulary">
+          Vocabulary
+          <input
+            id="vocabulary"
+            type="checkbox"
+            name="vocabulary"
+            value="vocabulary"
+          />
+        </AssignTypeOption>
+      </SubjectTypeFieldset>
+    </>
+  );
+};
 
 // TODO: hide tab bar on this page
 // TODO: add button to start review
 export const Reviews = () => {
+  const {
+    isLoading: availForReviewLoading,
+    data: availForReviewData,
+    error: availForReviewErr,
+  } = useAssignmentsAvailForReview();
+
   return (
     <Page>
       <HeaderContainer>
@@ -66,24 +161,19 @@ export const Reviews = () => {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <BasicCard isLoading={false}>
-                <IonList>
-                  <IonItem>
-                    <IonSelect aria-label="batch-size" label="Batch Size">
-                      {batchSizes.map((batchSize: number) => {
-                        return (
-                          <IonSelectOption
-                            key={`batch_${batchSize}`}
-                            value={batchSize}
-                          >
-                            {batchSize}
-                          </IonSelectOption>
-                        );
-                      })}
-                    </IonSelect>
-                  </IonItem>
-                </IonList>
-              </BasicCard>
+              {availForReviewLoading && (
+                <BasicCard isLoading={true}></BasicCard>
+              )}
+              {!availForReviewLoading && availForReviewErr && (
+                <div>{`Error: ${availForReviewErr}`}</div>
+              )}
+              {!availForReviewLoading &&
+                !availForReviewErr &&
+                availForReviewData && (
+                  <BasicCard isLoading={false}>
+                    <SettingOptions availForReview={availForReviewData} />
+                  </BasicCard>
+                )}
             </IonCol>
           </IonRow>
         </IonGrid>

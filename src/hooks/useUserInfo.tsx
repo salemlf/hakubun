@@ -6,7 +6,7 @@ type Props = {
   token: string | undefined;
 };
 
-// TODO: increase time to wait between data fetches
+// TODO: use in useAuth?
 export const useUserInfo = ({ token }: Props) => {
   return useQuery({
     queryKey: ["user-info", token],

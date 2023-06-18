@@ -4,6 +4,7 @@ import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 import { flattenData } from "../services/MiscService";
 
+// TODO: increase cache time and stale time since subjects (cache time should always be > stale time)
 export const useSubjectsByIDs = (ids: number[], enabled: boolean = true) => {
   return useQuery({
     queryKey: ["subjects-by-ids", ids],
