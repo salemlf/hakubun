@@ -1,15 +1,16 @@
 import { AppStack } from "./AppStack";
 import { AuthStack } from "./AuthStack";
-import { useAuth } from "../contexts/AuthContext";
+import { useUserAuth } from "../contexts/AuthContext";
 import { Loading } from "../components/Loading";
 
 const Router = () => {
-  const { auth, loading } = useAuth();
+  const { authLoading, isAuthenticated } = useUserAuth();
 
-  if (loading) {
+  if (authLoading) {
     return <Loading />;
   }
-  return auth ? <AppStack /> : <AuthStack />;
+
+  return isAuthenticated ? <AppStack /> : <AuthStack />;
 };
 
 export default Router;

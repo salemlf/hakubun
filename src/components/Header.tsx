@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useUserAuth } from "../contexts/AuthContext";
 
 import {
   IonHeader,
@@ -40,20 +40,18 @@ const HeaderRow = styled(IonRow)`
 
 // TODO: add click event for settings button
 const Header = () => {
-  const auth = useAuth();
+  const auth = useUserAuth();
   const [level, setLevel] = useState<number | undefined>();
   const [username, setUsername] = useState<string | undefined>("");
 
   useEffect(() => {
     setUserDetails();
-  }, [auth]);
+  }, [auth.isAuthenticated]);
 
   const setUserDetails = () => {
-    let username = auth.auth!.username;
-    setUsername(username);
-
-    let userData = auth.userData;
-    if (userData != undefined) {
+    let userData = auth.user;
+    if (userData !== null) {
+      setUsername(userData.username);
       setLevel(userData.level);
     }
   };

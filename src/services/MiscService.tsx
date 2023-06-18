@@ -86,8 +86,6 @@ export const flattenData = (data: any) => {
     return elem;
   });
 
-  console.log("flattened: ", flattened);
-
   return flattened;
 };
 

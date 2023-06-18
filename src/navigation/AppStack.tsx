@@ -16,8 +16,8 @@ import { Route, Redirect } from "react-router";
 import Home from "../pages/Home";
 import { SubjectDetails } from "../pages/SubjectDetails";
 import "./AppStack.module.scss";
+import { Reviews } from "../pages/Reviews";
 
-// TODO: add icons to tabs
 export const AppStack = () => {
   return (
     <IonReactRouter>
@@ -25,7 +25,9 @@ export const AppStack = () => {
         <IonRouterOutlet>
           <Route path="/subject/:id" component={SubjectDetails} />
           <Route path="/home" component={Home} exact={true} />
+          <Route path="/home/reviews" component={Reviews} exact={true} />
           <Route exact path="/" render={() => <Redirect to="/home" />} />
+          <Redirect from="/authenticate" to="/home" exact />
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">

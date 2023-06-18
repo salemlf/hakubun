@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 import {
   IonPage,
   IonContent,
@@ -12,8 +13,7 @@ import {
 
 import styles from "./Home.module.scss";
 
-import { useAuth } from "../contexts/AuthContext";
-
+import { useUserAuth } from "../contexts/AuthContext";
 import { ProgressBar } from "../components/progress/ProgressBar";
 import Header from "../components/Header";
 import LessonsButton from "../components/buttons/LessonsButton";
@@ -25,23 +25,25 @@ import { SrsStages } from "../components/SrsStages";
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
+  const history = useHistory();
 
-  const appContext = useAuth();
+  const appContext = useUserAuth();
 
   // TODO: remove spinner for loading, just using text skeletons instead
   useEffect(() => {
     setHomeLoading(true);
     setUserDetails();
     setHomeLoading(false);
-  }, [appContext]);
+  }, [appContext.isAuthenticated]);
 
   const removeAuth = () => {
-    (appContext as any).removeAuth();
+    appContext.logout();
+    history.push("/authenticate");
   };
 
   const setUserDetails = () => {
-    let userData = appContext.userData;
-    if (userData != undefined) {
+    let userData = appContext.user;
+    if (userData !== null) {
       setLevel(userData.level);
     }
   };

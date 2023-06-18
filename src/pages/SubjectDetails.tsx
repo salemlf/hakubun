@@ -1,7 +1,13 @@
 import { useHistory, useLocation } from "react-router";
 // import { useHistory, useParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { IonContent, IonGrid, IonPage } from "@ionic/react";
+import {
+  IonContent,
+  IonGrid,
+  IonPage,
+  IonRow,
+  IonSkeletonText,
+} from "@ionic/react";
 
 import { useSubjectByID } from "../hooks/useSubjectByID";
 
@@ -26,31 +32,44 @@ export const SubjectDetails = () => {
 
   // TODO: use useHistory or useLocation to get state/type of subject
 
-  // TODO: display skeleton while loading
   const {
     isLoading: subjectLoading,
     data: subject,
     error: subjectErr,
   } = useSubjectByID(parsedID);
 
+  // TODO: display loading skeleton for each component until all content on page is loaded
   return (
     <Page>
-      {subject && <SubjectHeader subject={subject} />}
-      <IonContent>
-        <IonGrid className={`${styles.fullWidthGrid}`}>
-          {subject && <SubjectSummary subject={subject}></SubjectSummary>}
-          {/* TODO: add cases for kanji and vocab too */}
-          {subject && subject?.object == "radical" && (
-            <RadicalSubjDetails radical={subject as Radical} />
-          )}
-          {subject && subject?.object == "kanji" && (
-            <KanjiSubjDetails kanji={subject as Kanji} />
-          )}
-          {subject && subject?.object == "vocabulary" && (
-            <VocabSubjDetails vocab={subject as Vocabulary} />
-          )}
-        </IonGrid>
-      </IonContent>
+      {subjectLoading ? (
+        <>
+          <IonRow>
+            <IonSkeletonText
+              animated={true}
+              style={{ height: "50px" }}
+            ></IonSkeletonText>
+          </IonRow>
+        </>
+      ) : (
+        <>
+          {subject && <SubjectHeader subject={subject} />}
+          <IonContent>
+            <IonGrid className={`${styles.fullWidthGrid}`}>
+              {subject && <SubjectSummary subject={subject}></SubjectSummary>}
+              {/* TODO: add cases for kanji and vocab too */}
+              {subject && subject?.object == "radical" && (
+                <RadicalSubjDetails radical={subject as Radical} />
+              )}
+              {subject && subject?.object == "kanji" && (
+                <KanjiSubjDetails kanji={subject as Kanji} />
+              )}
+              {subject && subject?.object == "vocabulary" && (
+                <VocabSubjDetails vocab={subject as Vocabulary} />
+              )}
+            </IonGrid>
+          </IonContent>
+        </>
+      )}
     </Page>
   );
 };

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 
 import {
   IonInput,
@@ -11,7 +12,7 @@ import {
   IonSkeletonText,
 } from "@ionic/react";
 
-import { useAuth } from "../contexts/AuthContext";
+import { useUserAuth } from "../contexts/AuthContext";
 
 const TokenInput = () => {
   // TODO: change token to useRef?
@@ -19,20 +20,23 @@ const TokenInput = () => {
   const [isAuthLoading, setIsAuthLoading] = useState(false);
   const [authErr, setAuthErr] = useState("");
   const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
-  const auth = useAuth();
+  const auth = useUserAuth();
 
   useEffect(() => {
     if (auth) {
       setLoading(false);
     }
-  }, [auth]);
+  }, [auth.isAuthenticated]);
 
   const setAuth = async () => {
-    let success = await auth.setAuth(token);
+    let success = await auth.login(token);
 
     if (success) {
+      console.log("Successfully logged in!");
       setAuthErr("");
+      history.push("/home");
     } else {
       setAuthErr(
         "An error occurred retrieving your info, make sure your API token is correct"
