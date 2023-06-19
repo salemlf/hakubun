@@ -2,10 +2,6 @@ import React, { createContext, useContext } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { User } from "../hooks/useUser";
 
-type Props = {
-  children?: React.ReactNode;
-};
-
 type AuthContextData = {
   user: User | null;
   isAuthenticated: boolean;
@@ -16,7 +12,11 @@ type AuthContextData = {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-const AuthProvider = ({ children }: Props) => {
+type ProviderProps = {
+  children?: React.ReactNode;
+};
+
+const AuthProvider = ({ children }: ProviderProps) => {
   const { user, isAuthenticated, authLoading, login, logout } = useAuth();
 
   return (

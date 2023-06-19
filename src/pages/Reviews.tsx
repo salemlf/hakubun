@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   IonContent,
   IonGrid,
@@ -12,12 +13,14 @@ import {
   IonTitle,
 } from "@ionic/react";
 
+import { useTabBarContext } from "../contexts/TabBarContext";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
+
 import { BasicCard } from "../components/cards/BasicCard";
 import { BatchSizeOption } from "../components/reviews/BatchSizeOption";
 import { AssignmentTypeSelector } from "../components/reviews/AssignmentTypeSelector";
+
 import styled from "styled-components/macro";
-import { useState } from "react";
 import { Assignment, AssignmentType } from "../types/Assignment";
 import { filterAssignmentsByType } from "../services/SubjectAndAssignmentService";
 
@@ -53,9 +56,17 @@ const ButtonCol = styled(IonCol)`
   justify-content: center;
 `;
 
-// TODO: hide tab bar on this page
 // TODO: change name to review settings
 export const Reviews = () => {
+  const { setShowTabBar } = useTabBarContext();
+  useEffect(() => {
+    setShowTabBar(false);
+
+    return () => {
+      setShowTabBar(true);
+    };
+  });
+
   const {
     isLoading: availForReviewLoading,
     data: availForReviewData,
