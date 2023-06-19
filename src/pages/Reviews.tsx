@@ -6,6 +6,10 @@ import {
   IonCol,
   IonHeader,
   IonButton,
+  IonBackButton,
+  IonButtons,
+  IonToolbar,
+  IonTitle,
 } from "@ionic/react";
 
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
@@ -28,24 +32,19 @@ const Page = styled(IonPage)`
 `;
 
 const HeaderContainer = styled(IonHeader)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: var(--wanikani-review);
-
+  --ion-toolbar-background: var(--wanikani-review);
   padding: 10px 0;
   box-shadow: none;
 `;
 
-const Row = styled(IonRow)`
-  display: flex;
-  align-items: center;
-
-  padding-top: var(--ion-padding, 5px);
-  padding-bottom: var(--ion-padding, 5px);
-`;
-
-const Title = styled.h1`
+const Title = styled(IonTitle)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0 90px 1px;
+  width: 100%;
+  height: 100%;
   text-align: center;
 `;
 
@@ -91,29 +90,29 @@ export const Reviews = () => {
   };
 
   const onButtonClick = () => {
-    // *testing
-    console.log("selectedAssignmentTypes: ", selectedAssignmentTypes);
-    // *testing
-    let assignmentsToReview = filterAssignmentsByType(
+    let allAssignmentsToReview = filterAssignmentsByType(
       availForReviewData,
       Array.from(selectedAssignmentTypes)
     );
-    // *testing
+
+    let assignmentsToReview = allAssignmentsToReview.slice(0, batchSize);
     console.log(
-      "🚀 ~ file: Reviews.tsx:93 ~ onButtonClick ~ assignmentsToReview:",
+      "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentsToReview:",
       assignmentsToReview
     );
-    console.log("batchSize: ", batchSize);
-    // *testing
-    // TODO: restrict to batch size and send assignments to next page
+
+    // TODO: send filtered and batched assignments to next page
   };
 
   return (
     <Page>
       <HeaderContainer>
-        <Row>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/home"></IonBackButton>
+          </IonButtons>
           <Title>Review</Title>
-        </Row>
+        </IonToolbar>
       </HeaderContainer>
       <IonContent>
         <IonGrid>

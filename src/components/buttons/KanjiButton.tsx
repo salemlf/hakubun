@@ -1,3 +1,5 @@
+import { IonNav, IonNavLink } from "@ionic/react";
+import { Reviews } from "../../pages/Reviews";
 import {
   BtnWithTxt,
   SubjBtnDetailsTxt,
@@ -30,26 +32,28 @@ export const KanjiButton = ({
 }: Props) => {
   // kanji always have readings, so using ! for subject.readings
   return (
-    <BtnWithTxt
-      title="Kanji Subject"
-      onClick={onBtnClick}
-      subjType="kanji"
-      bigBtn={isBigBtn}
-      lockedStyle={locked}
-    >
-      <SubjInfoCol>
-        <SubjectChars subject={subject} fontSize="2rem" />
-        {showDetails && (
-          <div>
-            <SubjBtnDetailsTxt>
-              {getPrimaryReading(subject.readings!)}
-            </SubjBtnDetailsTxt>
-            <SubjBtnDetailsTxt>
-              {getSubjectDisplayName(subject)}
-            </SubjBtnDetailsTxt>
-          </div>
-        )}
-      </SubjInfoCol>
-    </BtnWithTxt>
+    <IonNavLink routerDirection="forward" component={() => <Reviews />}>
+      <BtnWithTxt
+        title="Kanji Subject"
+        onClick={onBtnClick}
+        subjType="kanji"
+        bigBtn={isBigBtn}
+        lockedStyle={locked}
+      >
+        <SubjInfoCol>
+          <SubjectChars subject={subject} fontSize="2rem" />
+          {showDetails && (
+            <div>
+              <SubjBtnDetailsTxt>
+                {getPrimaryReading(subject.readings!)}
+              </SubjBtnDetailsTxt>
+              <SubjBtnDetailsTxt>
+                {getSubjectDisplayName(subject)}
+              </SubjBtnDetailsTxt>
+            </div>
+          )}
+        </SubjInfoCol>
+      </BtnWithTxt>
+    </IonNavLink>
   );
 };

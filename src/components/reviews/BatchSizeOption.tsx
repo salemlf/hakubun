@@ -9,6 +9,7 @@ type BatchSizeOptionProps = {
   onBatchSizeChange: (batchSize: number) => void;
 };
 
+// TODO: add an "all" option so can review all items at once if wanted
 export const BatchSizeOption = ({
   availForReview,
   defaultSize,
@@ -23,8 +24,6 @@ export const BatchSizeOption = ({
     setBatchSize(batchNum);
     onBatchSizeChange(batchNum);
   };
-
-  // TODO: add callback to pass batch size up
 
   return (
     <IonList>
