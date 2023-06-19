@@ -4,9 +4,8 @@ import {
   SubjectReading,
   SubjectType,
 } from "../types/Subject";
-import { Assignment } from "../types/Assignment";
+import { Assignment, AssignmentType } from "../types/Assignment";
 import { TagType } from "../types/MiscTypes";
-
 import { convertToUpperCase } from "./MiscService";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
@@ -74,6 +73,29 @@ export const findAssignmentWithSubjID = (
   return assignmentsData.find(
     (assignment: Assignment) => assignment.subject_id === subject.id
   );
+};
+
+export const filterAssignmentsByType = (
+  assignments: Assignment[],
+  assignmentTypes: SubjectType[]
+) => {
+  let filteredAssignments = assignments.filter(function (assignment) {
+    return assignmentTypes.indexOf(assignment.subject_type) !== -1;
+  });
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:86 ~ filteredAssignments ~ filteredAssignments:",
+    filteredAssignments
+  );
+
+  return filteredAssignments;
+};
+
+export const getAssignmentTypeDisplayText = (
+  assignmentType: AssignmentType,
+  plural: boolean
+) => {
+  let uppercaseAssignmentType = convertToUpperCase(assignmentType);
+  return plural ? `${uppercaseAssignmentType}s` : uppercaseAssignmentType;
 };
 
 const subjColors: { [index: string]: string } = {

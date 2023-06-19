@@ -12,10 +12,9 @@ import {
 } from "@ionic/react";
 
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
-import { BasicCard } from "../components/cards/BasicCard";
 import { Assignment, assignmentBatchSizes } from "../types/Assignment";
-import { SubjectType } from "../types/Subject";
-import { getSubjectColor } from "../services/SubjectAndAssignmentService";
+import { BasicCard } from "../components/cards/BasicCard";
+import { AssignmentTypeSelector } from "../components/reviews/AssignmentTypeSelector";
 
 import styled from "styled-components/macro";
 
@@ -51,36 +50,6 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-const SubjectTypeFieldset = styled.fieldset`
-  border: none;
-  padding-left: 12px;
-  display: flex;
-  gap: 10px;
-`;
-
-const SubjectTypeLegend = styled.legend`
-  font-size: 1rem;
-  color: white;
-`;
-
-type AssignTypeOptionProps = {
-  assignType: SubjectType;
-};
-
-// TODO: make this prettier
-// TODO: select all items by default
-// TODO: hide/disable if subject type not available
-const AssignTypeOption = styled.label<AssignTypeOptionProps>`
-  color: white;
-  border-radius: 10px;
-  padding: 3px 6px;
-  background-color: ${({ assignType }) => getSubjectColor(assignType)};
-
-  input {
-    margin-left: 5px;
-  }
-`;
-
 type SettingProps = {
   availForReview: Assignment[];
 };
@@ -112,31 +81,7 @@ const SettingOptions = ({ availForReview }: SettingProps) => {
           </IonSelect>
         </IonItem>
       </IonList>
-      <SubjectTypeFieldset>
-        <SubjectTypeLegend>Subject Types</SubjectTypeLegend>
-        <AssignTypeOption htmlFor="radicals" assignType="radical">
-          Radicals
-          <input
-            type="checkbox"
-            name="radicals"
-            value="radicals"
-            id="radicals"
-          />
-        </AssignTypeOption>
-        <AssignTypeOption htmlFor="kanji" assignType="kanji">
-          Kanji
-          <input type="checkbox" name="kanji" value="kanji" id="kanji" />
-        </AssignTypeOption>
-        <AssignTypeOption htmlFor="vocabulary" assignType="vocabulary">
-          Vocabulary
-          <input
-            id="vocabulary"
-            type="checkbox"
-            name="vocabulary"
-            value="vocabulary"
-          />
-        </AssignTypeOption>
-      </SubjectTypeFieldset>
+      <AssignmentTypeSelector />
     </>
   );
 };
