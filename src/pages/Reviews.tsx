@@ -14,7 +14,7 @@ import { BatchSizeOption } from "../components/reviews/BatchSizeOption";
 import { AssignmentTypeSelector } from "../components/reviews/AssignmentTypeSelector";
 import styled from "styled-components/macro";
 import { useState } from "react";
-import { AssignmentType } from "../types/Assignment";
+import { Assignment, AssignmentType } from "../types/Assignment";
 import { filterAssignmentsByType } from "../services/SubjectAndAssignmentService";
 
 const Page = styled(IonPage)`
@@ -136,6 +136,7 @@ export const Reviews = () => {
                         }
                       />
                       <AssignmentTypeSelector
+                        availForReviewData={availForReviewData as Assignment[]}
                         onSelectedAssignTypeChange={onSelectedAssignTypeChange}
                       />
                     </BasicCard>

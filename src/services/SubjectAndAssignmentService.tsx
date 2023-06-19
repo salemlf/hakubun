@@ -77,7 +77,7 @@ export const findAssignmentWithSubjID = (
 
 export const filterAssignmentsByType = (
   assignments: Assignment[],
-  assignmentTypes: SubjectType[]
+  assignmentTypes: AssignmentType[]
 ) => {
   let filteredAssignments = assignments.filter(function (assignment) {
     return assignmentTypes.indexOf(assignment.subject_type) !== -1;
@@ -88,6 +88,21 @@ export const filterAssignmentsByType = (
   );
 
   return filteredAssignments;
+};
+
+/**
+ * @description Determines whether an array of assignments contains a certain assignment type
+ * @param {Assignment[]} assignmentsData array of assignments to search through
+ * @param {AssignmentType} assignmentType  type of assignment to look for
+ * @returns {boolean} whether or not assignment type is in queue
+ */
+export const checkIfAssignmentTypeInQueue = (
+  assignmentsData: Assignment[],
+  assignmentType: AssignmentType
+) => {
+  return assignmentsData.some(
+    (assignment: Assignment) => assignment.subject_type === assignmentType
+  );
 };
 
 export const getAssignmentTypeDisplayText = (

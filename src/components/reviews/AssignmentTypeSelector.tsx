@@ -2,17 +2,31 @@ import { useToggle } from "../../hooks/useToggle";
 import {
   getAssignmentTypeDisplayText,
   getSubjectColor,
+  checkIfAssignmentTypeInQueue,
 } from "../../services/SubjectAndAssignmentService";
 
 import styled from "styled-components";
-import { AssignmentType } from "../../types/Assignment";
+import { Assignment, AssignmentType } from "../../types/Assignment";
+
+const AssignmentTypeFieldset = styled.fieldset`
+  border: none;
+  padding-left: 12px;
+  display: flex;
+  gap: 10px;
+`;
+
+const AssignmentTypeLegend = styled.legend`
+  font-size: 1rem;
+  color: white;
+  padding-top: 0;
+  margin-bottom: 5px;
+`;
 
 type AssignTypeOptionProps = {
   assignType: AssignmentType;
 };
 
 // TODO: update styles so bg color is duller if not checked
-// TODO: hide/disable if subject type not in currently available assignments
 const AssignTypeOption = styled.label<AssignTypeOptionProps>`
   color: white;
   border-radius: 10px;
@@ -111,31 +125,29 @@ const AssignmentTypeCheckbox = ({
   );
 };
 
-const AssignmentTypeFieldset = styled.fieldset`
-  border: none;
-  padding-left: 12px;
-  display: flex;
-  gap: 10px;
-`;
-
-const AssignmentTypeLegend = styled.legend`
-  font-size: 1rem;
-  color: white;
-  padding-top: 0;
-  margin-bottom: 5px;
-`;
-
 type AssignTypeSelectorProps = {
+  availForReviewData: Assignment[];
   onSelectedAssignTypeChange: (assignmentTypeUpdated: AssignmentType) => void;
 };
 
-// TODO: change to receive assignments available for review data, then can disable or hide assignment types not in reviews
 export const AssignmentTypeSelector = ({
+  availForReviewData,
   onSelectedAssignTypeChange,
 }: AssignTypeSelectorProps) => {
   const [radicalsSelected, toggleRadicalsSelected] = useToggle(true);
   const [kanjiSelected, toggleKanjiSelected] = useToggle(true);
   const [vocabSelected, toggleVocabSelected] = useToggle(true);
+
+  // TODO: clean this up, ideally refactor so availForReviewData doesn't need to be passed in
+  let radicalsInQueue = checkIfAssignmentTypeInQueue(
+    availForReviewData,
+    "radical"
+  );
+  let kanjiInQueue = checkIfAssignmentTypeInQueue(availForReviewData, "kanji");
+  let vocabInQueue = checkIfAssignmentTypeInQueue(
+    availForReviewData,
+    "vocabulary"
+  );
 
   const updateSelectedAssignTypes = (
     assignmentTypeUpdated: AssignmentType,
@@ -144,42 +156,48 @@ export const AssignmentTypeSelector = ({
     toggleFunc();
     onSelectedAssignTypeChange(assignmentTypeUpdated);
   };
-  // TODO: pass data with filtered assignments to parent when button is clicked in parent
 
   return (
     <AssignmentTypeFieldset>
       <AssignmentTypeLegend>Subject Types</AssignmentTypeLegend>
-      <AssignmentTypeCheckbox
-        assignmentType="radical"
-        isChecked={radicalsSelected}
-        onCheckValueChange={() =>
-          updateSelectedAssignTypes(
-            "radical" as AssignmentType,
-            toggleRadicalsSelected
-          )
-        }
-        pluralize={true}
-      />
-      <AssignmentTypeCheckbox
-        assignmentType="kanji"
-        isChecked={kanjiSelected}
-        onCheckValueChange={() =>
-          updateSelectedAssignTypes(
-            "kanji" as AssignmentType,
-            toggleKanjiSelected
-          )
-        }
-      />
-      <AssignmentTypeCheckbox
-        assignmentType="vocabulary"
-        isChecked={vocabSelected}
-        onCheckValueChange={() =>
-          updateSelectedAssignTypes(
-            "vocabulary" as AssignmentType,
-            toggleVocabSelected
-          )
-        }
-      />
+      {radicalsInQueue && (
+        <AssignmentTypeCheckbox
+          assignmentType="radical"
+          isChecked={radicalsSelected}
+          onCheckValueChange={() =>
+            updateSelectedAssignTypes(
+              "radical" as AssignmentType,
+              toggleRadicalsSelected
+            )
+          }
+          pluralize={true}
+        />
+      )}
+      {kanjiInQueue && (
+        <AssignmentTypeCheckbox
+          assignmentType="kanji"
+          isChecked={kanjiSelected}
+          onCheckValueChange={() =>
+            updateSelectedAssignTypes(
+              "kanji" as AssignmentType,
+              toggleKanjiSelected
+            )
+          }
+        />
+      )}
+
+      {vocabInQueue && (
+        <AssignmentTypeCheckbox
+          assignmentType="vocabulary"
+          isChecked={vocabSelected}
+          onCheckValueChange={() =>
+            updateSelectedAssignTypes(
+              "vocabulary" as AssignmentType,
+              toggleVocabSelected
+            )
+          }
+        />
+      )}
     </AssignmentTypeFieldset>
   );
 };
