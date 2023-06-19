@@ -83,14 +83,17 @@ const AssignTypeOption = styled.label<AssignTypeOptionProps>`
 
 type AssignmentTypeCheckboxProps = {
   assignmentType: SubjectType;
+  isChecked: boolean;
+  onCheckValueChange: () => void;
   pluralize?: boolean;
 };
 
 const AssignmentTypeCheckbox = ({
   assignmentType,
+  isChecked,
+  onCheckValueChange,
   pluralize = false,
 }: AssignmentTypeCheckboxProps) => {
-  const [value, toggle] = useToggle(true);
   let displayTxt = getAssignmentTypeDisplayText(assignmentType, pluralize);
 
   return (
@@ -101,8 +104,8 @@ const AssignmentTypeCheckbox = ({
         type="checkbox"
         name={assignmentType}
         value={assignmentType}
-        checked={value}
-        onChange={toggle}
+        checked={isChecked}
+        onChange={onCheckValueChange}
       />
     </AssignTypeOption>
   );
@@ -124,12 +127,29 @@ const SubjectTypeLegend = styled.legend`
 
 // TODO: change to receive assignments available for review data, then can disable or hide assignment types not in reviews
 export const AssignmentTypeSelector = () => {
+  const [radicalsSelected, toggleRadicalsSelected] = useToggle(true);
+  const [kanjiSelected, toggleKanjiSelected] = useToggle(true);
+  const [vocabSelected, toggleVocabSelected] = useToggle(true);
+
   return (
     <SubjectTypeFieldset>
       <SubjectTypeLegend>Subject Types</SubjectTypeLegend>
-      <AssignmentTypeCheckbox assignmentType="radical" pluralize={true} />
-      <AssignmentTypeCheckbox assignmentType="kanji" />
-      <AssignmentTypeCheckbox assignmentType="vocabulary" />
+      <AssignmentTypeCheckbox
+        assignmentType="radical"
+        isChecked={radicalsSelected}
+        onCheckValueChange={toggleRadicalsSelected}
+        pluralize={true}
+      />
+      <AssignmentTypeCheckbox
+        assignmentType="kanji"
+        isChecked={kanjiSelected}
+        onCheckValueChange={toggleKanjiSelected}
+      />
+      <AssignmentTypeCheckbox
+        assignmentType="vocabulary"
+        isChecked={vocabSelected}
+        onCheckValueChange={toggleVocabSelected}
+      />
     </SubjectTypeFieldset>
   );
 };

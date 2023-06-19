@@ -5,17 +5,12 @@ import {
   IonRow,
   IonCol,
   IonHeader,
-  IonItem,
-  IonList,
-  IonSelect,
-  IonSelectOption,
 } from "@ionic/react";
 
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
-import { Assignment, assignmentBatchSizes } from "../types/Assignment";
 import { BasicCard } from "../components/cards/BasicCard";
+import { BatchSizeOption } from "../components/reviews/BatchSizeOption";
 import { AssignmentTypeSelector } from "../components/reviews/AssignmentTypeSelector";
-
 import styled from "styled-components/macro";
 
 const Page = styled(IonPage)`
@@ -50,44 +45,9 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-type SettingProps = {
-  availForReview: Assignment[];
-};
-
-const SettingOptions = ({ availForReview }: SettingProps) => {
-  // *testing
-  console.log(
-    "🚀 ~ file: Reviews.tsx:56 ~ Settings ~ availForReview:",
-    availForReview
-  );
-  // *testing
-  let availBatchSizes = assignmentBatchSizes.filter(
-    (batchSize) => batchSize <= availForReview.length
-  );
-  // TODO: select default num for batch
-
-  return (
-    <>
-      <IonList>
-        <IonItem>
-          <IonSelect aria-label="batch-size" label="Batch Size">
-            {availBatchSizes.map((batchSize: number) => {
-              return (
-                <IonSelectOption key={`batch_${batchSize}`} value={batchSize}>
-                  {batchSize}
-                </IonSelectOption>
-              );
-            })}
-          </IonSelect>
-        </IonItem>
-      </IonList>
-      <AssignmentTypeSelector />
-    </>
-  );
-};
-
 // TODO: hide tab bar on this page
 // TODO: add button to start review
+// TODO: change name to review settings
 export const Reviews = () => {
   const {
     isLoading: availForReviewLoading,
@@ -116,7 +76,8 @@ export const Reviews = () => {
                 !availForReviewErr &&
                 availForReviewData && (
                   <BasicCard isLoading={false}>
-                    <SettingOptions availForReview={availForReviewData} />
+                    <BatchSizeOption availForReview={availForReviewData} />
+                    <AssignmentTypeSelector />
                   </BasicCard>
                 )}
             </IonCol>
