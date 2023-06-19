@@ -5,14 +5,26 @@ import { Assignment, assignmentBatchSizes } from "../../types/Assignment";
 
 type BatchSizeOptionProps = {
   availForReview: Assignment[];
+  defaultSize: number;
+  onBatchSizeChange: (batchSize: number) => void;
 };
 
-export const BatchSizeOption = ({ availForReview }: BatchSizeOptionProps) => {
-  // TODO: change to use user setting for default batch size once settings are implemented
-  const [batchSize, setBatchSize] = useState(5);
+export const BatchSizeOption = ({
+  availForReview,
+  defaultSize,
+  onBatchSizeChange,
+}: BatchSizeOptionProps) => {
+  const [batchSize, setBatchSize] = useState(defaultSize);
   let availBatchSizes = assignmentBatchSizes.filter(
     (batchSize) => batchSize <= availForReview.length
   );
+
+  const onBatchUpdate = (batchNum: number) => {
+    setBatchSize(batchNum);
+    onBatchSizeChange(batchNum);
+  };
+
+  // TODO: add callback to pass batch size up
 
   return (
     <IonList>
@@ -21,7 +33,7 @@ export const BatchSizeOption = ({ availForReview }: BatchSizeOptionProps) => {
           aria-label="batch-size"
           label="Batch Size"
           value={batchSize}
-          onIonChange={(e) => setBatchSize(e.detail.value)}
+          onIonChange={(e) => onBatchUpdate(e.detail.value)}
         >
           {availBatchSizes.map((batchSize: number) => {
             return (

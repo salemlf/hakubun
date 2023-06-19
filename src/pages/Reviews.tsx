@@ -5,6 +5,7 @@ import {
   IonRow,
   IonCol,
   IonHeader,
+  IonButton,
 } from "@ionic/react";
 
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
@@ -12,6 +13,9 @@ import { BasicCard } from "../components/cards/BasicCard";
 import { BatchSizeOption } from "../components/reviews/BatchSizeOption";
 import { AssignmentTypeSelector } from "../components/reviews/AssignmentTypeSelector";
 import styled from "styled-components/macro";
+import { useState } from "react";
+import { AssignmentType } from "../types/Assignment";
+import { filterAssignmentsByType } from "../services/SubjectAndAssignmentService";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -45,8 +49,12 @@ const Title = styled.h1`
   text-align: center;
 `;
 
+const ButtonCol = styled(IonCol)`
+  display: flex;
+  justify-content: center;
+`;
+
 // TODO: hide tab bar on this page
-// TODO: add button to start review
 // TODO: change name to review settings
 export const Reviews = () => {
   const {
@@ -54,6 +62,51 @@ export const Reviews = () => {
     data: availForReviewData,
     error: availForReviewErr,
   } = useAssignmentsAvailForReview();
+
+  let initialAssignTypes = [
+    "radical" as AssignmentType,
+    "kanji" as AssignmentType,
+    "vocabulary" as AssignmentType,
+  ];
+  // TODO: change to use user setting for default batch size once settings are implemented
+  let defaultBatchSize = 5;
+
+  const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
+    Set<AssignmentType>
+  >(new Set(initialAssignTypes));
+  const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
+
+  const onSelectedAssignTypeChange = (
+    assignmentTypeUpdated: AssignmentType
+  ) => {
+    let updatedAssignTypes = selectedAssignmentTypes;
+
+    if (!updatedAssignTypes.has(assignmentTypeUpdated)) {
+      updatedAssignTypes.add(assignmentTypeUpdated);
+    } else {
+      updatedAssignTypes.delete(assignmentTypeUpdated);
+    }
+
+    setSelectedAssignmentTypes(updatedAssignTypes);
+  };
+
+  const onButtonClick = () => {
+    // *testing
+    console.log("selectedAssignmentTypes: ", selectedAssignmentTypes);
+    // *testing
+    let assignmentsToReview = filterAssignmentsByType(
+      availForReviewData,
+      Array.from(selectedAssignmentTypes)
+    );
+    // *testing
+    console.log(
+      "🚀 ~ file: Reviews.tsx:93 ~ onButtonClick ~ assignmentsToReview:",
+      assignmentsToReview
+    );
+    console.log("batchSize: ", batchSize);
+    // *testing
+    // TODO: restrict to batch size and send assignments to next page
+  };
 
   return (
     <Page>
@@ -64,24 +117,38 @@ export const Reviews = () => {
       </HeaderContainer>
       <IonContent>
         <IonGrid>
-          <IonRow>
-            <IonCol>
-              {availForReviewLoading && (
-                <BasicCard isLoading={true}></BasicCard>
-              )}
-              {!availForReviewLoading && availForReviewErr && (
-                <div>{`Error: ${availForReviewErr}`}</div>
-              )}
-              {!availForReviewLoading &&
-                !availForReviewErr &&
-                availForReviewData && (
-                  <BasicCard isLoading={false}>
-                    <BatchSizeOption availForReview={availForReviewData} />
-                    <AssignmentTypeSelector />
-                  </BasicCard>
-                )}
-            </IonCol>
-          </IonRow>
+          {availForReviewLoading && <BasicCard isLoading={true}></BasicCard>}
+          {!availForReviewLoading && availForReviewErr && (
+            <div>{`Error: ${availForReviewErr}`}</div>
+          )}
+          {!availForReviewLoading &&
+            !availForReviewErr &&
+            availForReviewData && (
+              <>
+                <IonRow>
+                  <IonCol>
+                    <BasicCard isLoading={false}>
+                      <BatchSizeOption
+                        availForReview={availForReviewData}
+                        defaultSize={defaultBatchSize}
+                        onBatchSizeChange={(updatedBatchSize) =>
+                          setBatchSize(updatedBatchSize)
+                        }
+                      />
+                      <AssignmentTypeSelector
+                        onSelectedAssignTypeChange={onSelectedAssignTypeChange}
+                      />
+                    </BasicCard>
+                  </IonCol>
+                </IonRow>
+                <IonRow>
+                  {/* TODO: add icon to button */}
+                  <ButtonCol>
+                    <IonButton onClick={onButtonClick}>Begin Review</IonButton>
+                  </ButtonCol>
+                </IonRow>
+              </>
+            )}
         </IonGrid>
       </IonContent>
     </Page>

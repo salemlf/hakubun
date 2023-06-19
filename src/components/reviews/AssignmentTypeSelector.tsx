@@ -1,18 +1,18 @@
 import { useToggle } from "../../hooks/useToggle";
-import { SubjectType } from "../../types/Subject";
 import {
   getAssignmentTypeDisplayText,
   getSubjectColor,
 } from "../../services/SubjectAndAssignmentService";
 
 import styled from "styled-components";
+import { AssignmentType } from "../../types/Assignment";
 
 type AssignTypeOptionProps = {
-  assignType: SubjectType;
+  assignType: AssignmentType;
 };
 
 // TODO: update styles so bg color is duller if not checked
-// TODO: hide/disable if subject type not available
+// TODO: hide/disable if subject type not in currently available assignments
 const AssignTypeOption = styled.label<AssignTypeOptionProps>`
   color: white;
   border-radius: 10px;
@@ -82,7 +82,7 @@ const AssignTypeOption = styled.label<AssignTypeOptionProps>`
 `;
 
 type AssignmentTypeCheckboxProps = {
-  assignmentType: SubjectType;
+  assignmentType: AssignmentType;
   isChecked: boolean;
   onCheckValueChange: () => void;
   pluralize?: boolean;
@@ -111,45 +111,75 @@ const AssignmentTypeCheckbox = ({
   );
 };
 
-const SubjectTypeFieldset = styled.fieldset`
+const AssignmentTypeFieldset = styled.fieldset`
   border: none;
   padding-left: 12px;
   display: flex;
   gap: 10px;
 `;
 
-const SubjectTypeLegend = styled.legend`
+const AssignmentTypeLegend = styled.legend`
   font-size: 1rem;
   color: white;
   padding-top: 0;
   margin-bottom: 5px;
 `;
 
+type AssignTypeSelectorProps = {
+  onSelectedAssignTypeChange: (assignmentTypeUpdated: AssignmentType) => void;
+};
+
 // TODO: change to receive assignments available for review data, then can disable or hide assignment types not in reviews
-export const AssignmentTypeSelector = () => {
+export const AssignmentTypeSelector = ({
+  onSelectedAssignTypeChange,
+}: AssignTypeSelectorProps) => {
   const [radicalsSelected, toggleRadicalsSelected] = useToggle(true);
   const [kanjiSelected, toggleKanjiSelected] = useToggle(true);
   const [vocabSelected, toggleVocabSelected] = useToggle(true);
 
+  const updateSelectedAssignTypes = (
+    assignmentTypeUpdated: AssignmentType,
+    toggleFunc: () => void
+  ) => {
+    toggleFunc();
+    onSelectedAssignTypeChange(assignmentTypeUpdated);
+  };
+  // TODO: pass data with filtered assignments to parent when button is clicked in parent
+
   return (
-    <SubjectTypeFieldset>
-      <SubjectTypeLegend>Subject Types</SubjectTypeLegend>
+    <AssignmentTypeFieldset>
+      <AssignmentTypeLegend>Subject Types</AssignmentTypeLegend>
       <AssignmentTypeCheckbox
         assignmentType="radical"
         isChecked={radicalsSelected}
-        onCheckValueChange={toggleRadicalsSelected}
+        onCheckValueChange={() =>
+          updateSelectedAssignTypes(
+            "radical" as AssignmentType,
+            toggleRadicalsSelected
+          )
+        }
         pluralize={true}
       />
       <AssignmentTypeCheckbox
         assignmentType="kanji"
         isChecked={kanjiSelected}
-        onCheckValueChange={toggleKanjiSelected}
+        onCheckValueChange={() =>
+          updateSelectedAssignTypes(
+            "kanji" as AssignmentType,
+            toggleKanjiSelected
+          )
+        }
       />
       <AssignmentTypeCheckbox
         assignmentType="vocabulary"
         isChecked={vocabSelected}
-        onCheckValueChange={toggleVocabSelected}
+        onCheckValueChange={() =>
+          updateSelectedAssignTypes(
+            "vocabulary" as AssignmentType,
+            toggleVocabSelected
+          )
+        }
       />
-    </SubjectTypeFieldset>
+    </AssignmentTypeFieldset>
   );
 };
