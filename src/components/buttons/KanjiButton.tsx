@@ -21,8 +21,6 @@ type Props = {
   onBtnClick: (e: any) => void;
 };
 
-// TODO: add more space b/t character and meaning
-// TODO: add reading text
 export const KanjiButton = ({
   subject,
   isBigBtn,

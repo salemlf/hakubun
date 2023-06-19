@@ -37,7 +37,7 @@ const ReviewsButton = ({ level }: Props) => {
           title="Reviews"
           color="clear"
           // TODO: change so if no reviews -> doesn't redirect and displays a message
-          onClick={() => history.push("/home/reviews")}
+          onClick={() => history.push("/reviews")}
           className={`${styles.reviewBtn}`}
           style={{
             backgroundImage: `url(${
