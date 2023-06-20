@@ -1,5 +1,5 @@
 import { IonNav, IonNavLink } from "@ionic/react";
-import { Reviews } from "../../pages/Reviews";
+import { ReviewSettings } from "../../pages/ReviewSettings";
 import {
   BtnWithTxt,
   SubjBtnDetailsTxt,
@@ -30,7 +30,7 @@ export const KanjiButton = ({
 }: Props) => {
   // kanji always have readings, so using ! for subject.readings
   return (
-    <IonNavLink routerDirection="forward" component={() => <Reviews />}>
+    <IonNavLink routerDirection="forward" component={() => <ReviewSettings />}>
       <BtnWithTxt
         title="Kanji Subject"
         onClick={onBtnClick}

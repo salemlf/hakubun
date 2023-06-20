@@ -10,6 +10,7 @@ type BatchSizeOptionProps = {
 };
 
 // TODO: add an "all" option so can review all items at once if wanted
+// TODO: increase label font-size
 export const BatchSizeOption = ({
   availForReview,
   defaultSize,

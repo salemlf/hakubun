@@ -12,6 +12,7 @@ import {
   IonToolbar,
   IonTitle,
 } from "@ionic/react";
+import { useIonRouter } from "@ionic/react";
 
 import { useTabBarContext } from "../contexts/TabBarContext";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
@@ -52,13 +53,8 @@ const Title = styled(IonTitle)`
   text-align: center;
 `;
 
-const ButtonCol = styled(IonCol)`
-  display: flex;
-  justify-content: center;
-`;
-
-// TODO: change name to review settings
-export const Reviews = () => {
+export const ReviewSettings = () => {
+  const router = useIonRouter();
   const { setShowTabBar } = useTabBarContext();
   useEffect(() => {
     setShowTabBar(false);
@@ -114,6 +110,7 @@ export const Reviews = () => {
     );
 
     // TODO: send filtered and batched assignments to next page
+    router.push("/review/session");
   };
 
   return (

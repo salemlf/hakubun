@@ -13,7 +13,7 @@ export const AuthStack = () => {
         <Redirect from="/home" to="/authenticate" />
         <Redirect from="/subject" to="/authenticate" />
         <Redirect from="/search" to="/authenticate" />
-        <Redirect from="/reviews" to="/authenticate" />
+        <Redirect from="/review" to="/authenticate" />
       </IonRouterOutlet>
     </IonReactRouter>
   );

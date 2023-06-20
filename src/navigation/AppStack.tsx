@@ -9,6 +9,7 @@ import {
 import HomeIcon from "../images/home.svg";
 import SubjectsIcon from "../images/subjects.svg";
 import Search from "../images/search.svg";
+import "./AppStack.module.scss";
 
 import { IonReactRouter } from "@ionic/react-router";
 import { Route, Redirect } from "react-router";
@@ -16,8 +17,8 @@ import { useTabBarContext } from "../contexts/TabBarContext";
 
 import Home from "../pages/Home";
 import { SubjectDetails } from "../pages/SubjectDetails";
-import "./AppStack.module.scss";
-import { Reviews } from "../pages/Reviews";
+import { ReviewSettings } from "../pages/ReviewSettings";
+import { ReviewSession } from "../pages/ReviewSession";
 
 export const AppStack = () => {
   const { showTabBar } = useTabBarContext();
@@ -29,7 +30,16 @@ export const AppStack = () => {
         <IonRouterOutlet>
           <Route path="/subject/:id" component={SubjectDetails} />
           <Route path="/home" component={Home} exact={true} />
-          <Route path="/reviews" component={Reviews} exact={true} />
+          <Route
+            path="/review/settings"
+            component={ReviewSettings}
+            exact={true}
+          />
+          <Route
+            path="/review/session"
+            component={ReviewSession}
+            exact={true}
+          />
           <Route exact path="/" render={() => <Redirect to="/home" />} />
           <Redirect from="/authenticate" to="/home" exact />
         </IonRouterOutlet>
