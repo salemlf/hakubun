@@ -19,6 +19,7 @@ import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForRev
 import { BasicCard } from "../components/cards/BasicCard";
 import { BatchSizeOption } from "../components/reviews/BatchSizeOption";
 import { AssignmentTypeSelector } from "../components/reviews/AssignmentTypeSelector";
+import { StartReviewBtn } from "../components/reviews/StartReviewBtn";
 
 import styled from "styled-components/macro";
 import { Assignment, AssignmentType } from "../types/Assignment";
@@ -100,7 +101,7 @@ export const Reviews = () => {
     setSelectedAssignmentTypes(updatedAssignTypes);
   };
 
-  const onButtonClick = () => {
+  const onStartReviewBtnClick = () => {
     let allAssignmentsToReview = filterAssignmentsByType(
       availForReviewData,
       Array.from(selectedAssignmentTypes)
@@ -153,10 +154,9 @@ export const Reviews = () => {
                   </IonCol>
                 </IonRow>
                 <IonRow>
-                  {/* TODO: add icon to button */}
-                  <ButtonCol>
-                    <IonButton onClick={onButtonClick}>Begin Review</IonButton>
-                  </ButtonCol>
+                  <StartReviewBtn
+                    onStartReviewBtnClick={onStartReviewBtnClick}
+                  />
                 </IonRow>
               </>
             )}
