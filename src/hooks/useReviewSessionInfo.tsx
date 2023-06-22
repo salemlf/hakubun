@@ -4,14 +4,14 @@ import { Assignment } from "../types/Assignment";
 import { Subject } from "../types/Subject";
 
 export interface Session {
-  assignments: Assignment[];
-  subjects: Subject[];
+  reviewAssignments: Assignment[];
+  reviewSubjects: Subject[];
 }
 
 export const useReviewSessionInfo = () => {
   const [reviewSession, setSession] = useState<Session | null>(null);
-  const [reviewSessionLoading, setReviewSessionLoading] =
-    useState<boolean>(true);
+  const [reviewSessionInProgress, setReviewSessionInProgress] =
+    useState<boolean>(false);
 
   const { getItem, setItem, removeItem } = useStorage();
 
@@ -27,25 +27,42 @@ export const useReviewSessionInfo = () => {
         //* testing
         addReviewSession(reviewSession);
         setSession(reviewSession);
+        setReviewSessionInProgress(true);
       }
-      setReviewSessionLoading(false);
+      setReviewSessionInProgress(false);
     });
   }, []);
 
   const addReviewSession = (reviewSession: Session) => {
     setSession(reviewSession);
     setItem("reviewSession", reviewSession);
+    setReviewSessionInProgress(true);
   };
 
   const removeReviewSession = () => {
     setSession(null);
     removeItem("reviewSession");
+    setReviewSessionInProgress(false);
+  };
+
+  // TODO: add functions to begin review session and wrap up review session
+
+  const startReviewSession = (assignmentsToReview: Assignment[]) => {
+    // TODO: use the subject IDs from assignmentsToReview passed in to get the subject data
+    //  TODO: after getting that data, then will call addReviewSession with all the review session info (reviewAssignments, reviewSubjects)
+    console.log("Unimplemented startReviewSession called!");
+  };
+
+  // TODO: actually implement
+  const endReviewSession = () => {
+    // TODO: use removeReviewSession
+    console.log("Unimplemented endReviewSession called!");
   };
 
   return {
     reviewSession,
-    reviewSessionLoading,
-    addReviewSession,
-    removeReviewSession,
+    reviewSessionInProgress,
+    startReviewSession,
+    endReviewSession,
   };
 };

@@ -1,11 +1,12 @@
 import React, { createContext, useContext } from "react";
 import { useReviewSessionInfo, Session } from "../hooks/useReviewSessionInfo";
+import { Assignment } from "../types/Assignment";
 
 type ReviewSessionContextData = {
   reviewSession: Session | null;
-  reviewSessionLoading: boolean;
-  addReviewSession: (reviewSession: Session) => void;
-  removeReviewSession: () => void;
+  reviewSessionInProgress: boolean;
+  startReviewSession: (assignmentsToReview: Assignment[]) => void;
+  endReviewSession: () => void;
 };
 
 const ReviewSessionContext = createContext<ReviewSessionContextData>(
@@ -19,18 +20,18 @@ type ProviderProps = {
 const ReviewSessionProvider = ({ children }: ProviderProps) => {
   const {
     reviewSession,
-    reviewSessionLoading,
-    addReviewSession,
-    removeReviewSession,
+    reviewSessionInProgress,
+    startReviewSession,
+    endReviewSession,
   } = useReviewSessionInfo();
 
   return (
     <ReviewSessionContext.Provider
       value={{
         reviewSession,
-        reviewSessionLoading,
-        addReviewSession,
-        removeReviewSession,
+        reviewSessionInProgress,
+        startReviewSession,
+        endReviewSession,
       }}
     >
       {children}
