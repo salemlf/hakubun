@@ -28,7 +28,7 @@ const AuthProvider = ({ children }: ProviderProps) => {
   );
 };
 
-function useUserAuth() {
+const useUserAuth = () => {
   const context = useContext(AuthContext);
 
   if (!context) {
@@ -36,6 +36,6 @@ function useUserAuth() {
   }
 
   return context;
-}
+};
 
 export { AuthContext, AuthProvider, useUserAuth };

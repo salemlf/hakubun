@@ -22,7 +22,7 @@ const TabBarProvider = ({ children }: ProviderProps) => {
   );
 };
 
-function useTabBarContext() {
+const useTabBarContext = () => {
   const context = useContext(TabBarContext);
 
   if (!context) {
@@ -30,6 +30,6 @@ function useTabBarContext() {
   }
 
   return context;
-}
+};
 
 export { TabBarContext, TabBarProvider, useTabBarContext };

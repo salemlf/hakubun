@@ -2,12 +2,12 @@
 // can be used to easily toggle boolean values
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 
-export function useToggle(
+export const useToggle = (
   defaultValue?: boolean
-): [boolean, () => void, Dispatch<SetStateAction<boolean>>] {
+): [boolean, () => void, Dispatch<SetStateAction<boolean>>] => {
   const [value, setValue] = useState(!!defaultValue);
 
   const toggle = useCallback(() => setValue((x) => !x), []);
 
   return [value, toggle, setValue];
-}
+};
