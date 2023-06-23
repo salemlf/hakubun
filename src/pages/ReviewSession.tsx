@@ -35,10 +35,16 @@ export const ReviewSession = () => {
     error: subjReviewErr,
   } = useSubjectsByIDs(subjIDs);
 
+  // *testing
   console.log(
     "🚀 ~ file: ReviewSession.tsx:37 ~ ReviewSession ~ subjReviewData:",
     subjReviewData
   );
+  console.log(
+    "🚀 ~ file: ReviewSession.tsx:31 ~ ReviewSession ~ assignments:",
+    assignments
+  );
+  // *testing
 
   const { setShowTabBar } = useTabBarContext();
   useEffect(() => {

@@ -113,7 +113,7 @@ export const ReviewSettings = () => {
       compareAssignmentsByAvailableDate
     );
 
-    let assignmentBatchToReview = allAssignmentsToReview.slice(0, batchSize);
+    let assignmentBatchToReview = sortedToReview.slice(0, batchSize);
     // *testing
     console.log(
       "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentBatchToReview:",
