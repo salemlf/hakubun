@@ -133,3 +133,7 @@ export const getSubjectColor = (subjType: SubjectType) => {
 export const getTagColor = (tagType: TagType) => {
   return subjAndTagColors[tagType as keyof {}];
 };
+
+export const getSubjIDsFromAssignments = (assignments: Assignment[]) => {
+  return assignments.map((assignment) => assignment.subject_id);
+};

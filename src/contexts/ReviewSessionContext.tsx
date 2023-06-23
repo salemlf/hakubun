@@ -1,11 +1,17 @@
 import React, { createContext, useContext } from "react";
 import { useReviewSessionInfo, Session } from "../hooks/useReviewSessionInfo";
 import { Assignment } from "../types/Assignment";
+import { Subject } from "../types/Subject";
 
 type ReviewSessionContextData = {
   reviewSession: Session | null;
   reviewSessionInProgress: boolean;
-  startReviewSession: (assignmentsToReview: Assignment[]) => void;
+  startReviewSession: (subjectssToReview: Subject[]) => void;
+  getSessionAssignmentsAndSubjIDs: () => {
+    assignments: Assignment[];
+    subjIDs: number[];
+  };
+  setSessionAssignments: (assignmentsToReview: Assignment[]) => void;
   endReviewSession: () => void;
 };
 
@@ -21,6 +27,8 @@ const ReviewSessionProvider = ({ children }: ProviderProps) => {
   const {
     reviewSession,
     reviewSessionInProgress,
+    getSessionAssignmentsAndSubjIDs,
+    setSessionAssignments,
     startReviewSession,
     endReviewSession,
   } = useReviewSessionInfo();
@@ -30,6 +38,8 @@ const ReviewSessionProvider = ({ children }: ProviderProps) => {
       value={{
         reviewSession,
         reviewSessionInProgress,
+        getSessionAssignmentsAndSubjIDs,
+        setSessionAssignments,
         startReviewSession,
         endReviewSession,
       }}

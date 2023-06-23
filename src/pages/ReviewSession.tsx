@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { IonContent, IonGrid, IonPage } from "@ionic/react";
 
+import { useSubjectsByIDs } from "../hooks/useSubjectsByIDs";
 import { useTabBarContext } from "../contexts/TabBarContext";
+import { useReviewSession } from "../contexts/ReviewSessionContext";
 import styled from "styled-components/macro";
 
 const Page = styled(IonPage)`
@@ -17,6 +19,27 @@ const Page = styled(IonPage)`
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 // TODO: add a button to return home
 export const ReviewSession = () => {
+  const {
+    getSessionAssignmentsAndSubjIDs,
+    reviewSession,
+    reviewSessionInProgress,
+    startReviewSession,
+    endReviewSession,
+  } = useReviewSession();
+
+  let { assignments, subjIDs } = getSessionAssignmentsAndSubjIDs();
+
+  const {
+    isLoading: subjReviewLoading,
+    data: subjReviewData,
+    error: subjReviewErr,
+  } = useSubjectsByIDs(subjIDs);
+
+  console.log(
+    "🚀 ~ file: ReviewSession.tsx:37 ~ ReviewSession ~ subjReviewData:",
+    subjReviewData
+  );
+
   const { setShowTabBar } = useTabBarContext();
   useEffect(() => {
     setShowTabBar(false);
@@ -31,6 +54,11 @@ export const ReviewSession = () => {
       <IonContent>
         <IonGrid>
           <h1>Review Session</h1>
+          {subjReviewLoading && <p>Loading...</p>}
+          {!subjReviewLoading && subjReviewErr && (
+            <div>{`Error: ${subjReviewErr}`}</div>
+          )}
+          {!subjReviewLoading && !subjReviewErr && subjReviewData && <>BLEH</>}
         </IonGrid>
       </IonContent>
     </Page>

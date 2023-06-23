@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useStorage } from "./useStorage";
 import { Assignment } from "../types/Assignment";
 import { Subject } from "../types/Subject";
+import { getSubjIDsFromAssignments } from "../services/SubjectAndAssignmentService";
 
 export interface Session {
   reviewAssignments: Assignment[];
@@ -13,9 +14,25 @@ export const useReviewSessionInfo = () => {
   const [reviewSessionInProgress, setReviewSessionInProgress] =
     useState<boolean>(false);
 
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
+
   const { getItem, setItem, removeItem } = useStorage();
 
   useEffect(() => {
+    getItem("assignmentsToReview").then((assignmentsToReview) => {
+      if (assignmentsToReview) {
+        //* testing
+        console.log("Found assignmentsToReview in storage!");
+        console.log(
+          "🚀 ~ file: useReviewSessionInfo.tsx:40 ~ getItem ~ assignmentsToReview:",
+          assignmentsToReview
+        );
+
+        //* testing
+        setAssignments(assignmentsToReview);
+      }
+    });
+
     getItem("reviewSession").then((reviewSession) => {
       if (reviewSession) {
         //* testing
@@ -45,23 +62,34 @@ export const useReviewSessionInfo = () => {
     setReviewSessionInProgress(false);
   };
 
-  // TODO: add functions to begin review session and wrap up review session
-
-  const startReviewSession = (assignmentsToReview: Assignment[]) => {
-    // TODO: use the subject IDs from assignmentsToReview passed in to get the subject data
-    //  TODO: after getting that data, then will call addReviewSession with all the review session info (reviewAssignments, reviewSubjects)
-    console.log("Unimplemented startReviewSession called!");
+  const getSessionAssignmentsAndSubjIDs = () => {
+    let subjIDs = getSubjIDsFromAssignments(assignments);
+    return { assignments, subjIDs };
   };
 
-  // TODO: actually implement
+  const setSessionAssignments = (assignmentsToReview: Assignment[]) => {
+    setAssignments(assignmentsToReview);
+    setItem("assignmentsToReview", assignmentsToReview);
+  };
+
+  const startReviewSession = (subjectsToReview: Subject[]) => {
+    let session: Session = {
+      reviewAssignments: assignments,
+      reviewSubjects: subjectsToReview,
+    };
+    addReviewSession(session);
+  };
+
   const endReviewSession = () => {
-    // TODO: use removeReviewSession
-    console.log("Unimplemented endReviewSession called!");
+    removeReviewSession();
+    removeItem("assignmentsToReview");
   };
 
   return {
     reviewSession,
     reviewSessionInProgress,
+    getSessionAssignmentsAndSubjIDs,
+    setSessionAssignments,
     startReviewSession,
     endReviewSession,
   };

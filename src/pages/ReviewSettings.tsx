@@ -13,6 +13,7 @@ import {
   IonTitle,
 } from "@ionic/react";
 import { useIonRouter } from "@ionic/react";
+import { useReviewSession } from "../contexts/ReviewSessionContext";
 
 import { useTabBarContext } from "../contexts/TabBarContext";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
@@ -56,6 +57,7 @@ const Title = styled(IonTitle)`
 export const ReviewSettings = () => {
   const router = useIonRouter();
   const { setShowTabBar } = useTabBarContext();
+  const { setSessionAssignments } = useReviewSession();
   useEffect(() => {
     setShowTabBar(false);
 
@@ -104,12 +106,14 @@ export const ReviewSettings = () => {
     );
 
     let assignmentsToReview = allAssignmentsToReview.slice(0, batchSize);
+    // *testing
     console.log(
       "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentsToReview:",
       assignmentsToReview
     );
+    // *testing
 
-    // TODO: send filtered and batched assignments to next page
+    setSessionAssignments(assignmentsToReview);
     router.push("/review/session");
   };
 
