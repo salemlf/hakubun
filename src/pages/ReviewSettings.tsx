@@ -25,7 +25,10 @@ import { StartReviewBtn } from "../components/reviews/StartReviewBtn";
 
 import styled from "styled-components/macro";
 import { Assignment, AssignmentType } from "../types/Assignment";
-import { filterAssignmentsByType } from "../services/SubjectAndAssignmentService";
+import {
+  compareAssignmentsByAvailableDate,
+  filterAssignmentsByType,
+} from "../services/SubjectAndAssignmentService";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -105,15 +108,20 @@ export const ReviewSettings = () => {
       Array.from(selectedAssignmentTypes)
     );
 
-    let assignmentsToReview = allAssignmentsToReview.slice(0, batchSize);
+    //TODO: sort by available date ascending as default (oldest to newest), add other sort options
+    let sortedToReview = allAssignmentsToReview.sort(
+      compareAssignmentsByAvailableDate
+    );
+
+    let assignmentBatchToReview = allAssignmentsToReview.slice(0, batchSize);
     // *testing
     console.log(
-      "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentsToReview:",
-      assignmentsToReview
+      "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentBatchToReview:",
+      assignmentBatchToReview
     );
     // *testing
 
-    setSessionAssignments(assignmentsToReview);
+    setSessionAssignments(assignmentBatchToReview);
     router.push("/review/session");
   };
 

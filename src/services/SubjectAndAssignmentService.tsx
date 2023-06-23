@@ -137,3 +137,17 @@ export const getTagColor = (tagType: TagType) => {
 export const getSubjIDsFromAssignments = (assignments: Assignment[]) => {
   return assignments.map((assignment) => assignment.subject_id);
 };
+
+export const compareAssignmentsByAvailableDate = (
+  assignment1: Assignment,
+  assignment2: Assignment
+) => {
+  if (assignment1.available_at === null) return -1;
+  if (assignment2.available_at === null) return 1;
+
+  // older sorted before newer
+  return (
+    new Date(assignment1.available_at).getTime() -
+    new Date(assignment2.available_at).getTime()
+  );
+};
