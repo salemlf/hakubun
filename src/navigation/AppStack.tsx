@@ -12,7 +12,7 @@ import Search from "../images/search.svg";
 import "./AppStack.module.scss";
 
 import { IonReactRouter } from "@ionic/react-router";
-import { Route, Redirect } from "react-router";
+import { Route, Redirect, useLocation } from "react-router";
 import { useTabBarContext } from "../contexts/TabBarContext";
 
 import Home from "../pages/Home";
@@ -21,8 +21,9 @@ import { ReviewSettings } from "../pages/ReviewSettings";
 import { ReviewSession } from "../pages/ReviewSession";
 
 export const AppStack = () => {
+  // TODO: fix, tab bar isn't always coming back when it should
   const { showTabBar } = useTabBarContext();
-  let tabBarStyle = showTabBar ? undefined : { display: "none" };
+  let tabBarStyle = showTabBar === true ? undefined : { display: "none" };
 
   return (
     <IonReactRouter>

@@ -12,6 +12,7 @@ type ProviderProps = {
   children?: React.ReactNode;
 };
 
+// TODO: fix, sometimes this isn't resetting itself to true
 const TabBarProvider = ({ children }: ProviderProps) => {
   const { value: showTabBar, setValue: setShowTabBar } = useBoolean(true);
 

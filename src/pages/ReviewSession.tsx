@@ -17,9 +17,10 @@ import { useReviewSession } from "../contexts/ReviewSessionContext";
 import { useQueue } from "../hooks/useQueue";
 import { SubjectChars } from "../components/SubjectChars";
 import HomeIcon from "../images/home.svg";
+import { getSubjectColor } from "../services/SubjectAndAssignmentService";
 
 import styled from "styled-components/macro";
-import { Subject } from "../types/Subject";
+import { Subject, SubjectType } from "../types/Subject";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -42,6 +43,15 @@ const ButtonCol = styled(IonCol)`
   }
 `;
 
+type CharColProps = {
+  subjType: SubjectType;
+};
+
+const SubjectCharactersCol = styled(IonCol)<CharColProps>`
+  padding: 50px 0;
+  background-color: ${({ subjType }) => getSubjectColor(subjType)};
+`;
+
 type Props = {
   reviewCards: Subject[];
 };
@@ -59,45 +69,46 @@ const ReviewQueue = ({ reviewCards }: Props) => {
   };
 
   const currentReviewItem = reviewCards[currReviewCardIndex];
+  let subjType = currentReviewItem.object as SubjectType;
 
-  // TODO: let SubjectChars component take up full width (with max width), increase top and bottom padding
   // TODO: remove "previous" button, just for testing right now
 
   return (
     <>
       <IonRow>
-        <IonCol>
+        <SubjectCharactersCol subjType={subjType}>
           <SubjectChars
             subject={currentReviewItem}
             fontSize="4rem"
             withBgColor={true}
           />
-        </IonCol>
+        </SubjectCharactersCol>
       </IonRow>
-      <IonRow>
-        <ButtonCol>
-          <button
-            onClick={handlePrevClick}
-            disabled={currReviewCardIndex === 0}
-          >
-            Previous
-          </button>
-        </ButtonCol>
-        <ButtonCol>
-          <button
-            onClick={handleNextClick}
-            disabled={currReviewCardIndex === reviewCards.length - 1}
-          >
-            Next
-          </button>
-        </ButtonCol>
-      </IonRow>
+      <IonGrid>
+        <IonRow>
+          <ButtonCol>
+            <button
+              onClick={handlePrevClick}
+              disabled={currReviewCardIndex === 0}
+            >
+              Previous
+            </button>
+          </ButtonCol>
+          <ButtonCol>
+            <button
+              onClick={handleNextClick}
+              disabled={currReviewCardIndex === reviewCards.length - 1}
+            >
+              Next
+            </button>
+          </ButtonCol>
+        </IonRow>
+      </IonGrid>
     </>
   );
 };
 
 // TODO: redirect to home if user somehow ends up on this screen without data passed
-// TODO: add a back button/button to return home
 export const ReviewSession = () => {
   const router = useIonRouter();
   const { setShowTabBar } = useTabBarContext();
@@ -133,15 +144,15 @@ export const ReviewSession = () => {
         </IonToolbar>
       </SessionHeader>
       <IonContent>
-        <IonGrid>
-          {state.isLoading && <p>Loading...</p>}
-          {!state.isLoading &&
-            state.reviewData &&
-            subjectsToReview &&
-            subjectsToReview.length !== 0 && (
-              <ReviewQueue reviewCards={subjectsToReview} />
-            )}
-        </IonGrid>
+        {/* <IonGrid> */}
+        {state.isLoading && <p>Loading...</p>}
+        {!state.isLoading &&
+          state.reviewData &&
+          subjectsToReview &&
+          subjectsToReview.length !== 0 && (
+            <ReviewQueue reviewCards={subjectsToReview} />
+          )}
+        {/* </IonGrid> */}
       </IonContent>
     </Page>
   );

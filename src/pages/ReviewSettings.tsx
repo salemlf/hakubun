@@ -63,9 +63,9 @@ const Title = styled(IonTitle)`
 `;
 
 export const ReviewSettings = () => {
+  const { dispatch } = useReviewSession();
   const router = useIonRouter();
   const { setShowTabBar } = useTabBarContext();
-  const { dispatch } = useReviewSession();
   useEffect(() => {
     setShowTabBar(false);
 
