@@ -23,5 +23,7 @@ export const useQueue = (initialValues: any[] = []) => {
 
   const size = () => queue.length;
 
-  return { enqueue, dequeue, clear, first, last, size, queue };
+  const shuffle = () => setQueue(queue.sort(() => 0.5 - Math.random()));
+
+  return { enqueue, dequeue, clear, first, last, size, shuffle, queue };
 };
