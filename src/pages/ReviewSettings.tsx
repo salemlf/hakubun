@@ -13,7 +13,6 @@ import {
   IonTitle,
 } from "@ionic/react";
 import { useIonRouter } from "@ionic/react";
-import { useReviewSession } from "../contexts/ReviewSessionContext";
 
 import { useTabBarContext } from "../contexts/TabBarContext";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
@@ -28,7 +27,13 @@ import { Assignment, AssignmentType } from "../types/Assignment";
 import {
   compareAssignmentsByAvailableDate,
   filterAssignmentsByType,
+  getSubjIDsFromAssignments,
 } from "../services/SubjectAndAssignmentService";
+
+import {
+  useReviewSession,
+  updateSession,
+} from "../contexts/ReviewSessionContext";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -60,7 +65,7 @@ const Title = styled(IonTitle)`
 export const ReviewSettings = () => {
   const router = useIonRouter();
   const { setShowTabBar } = useTabBarContext();
-  const { setSessionAssignments } = useReviewSession();
+  const { dispatch } = useReviewSession();
   useEffect(() => {
     setShowTabBar(false);
 
@@ -121,7 +126,8 @@ export const ReviewSettings = () => {
     );
     // *testing
 
-    setSessionAssignments(assignmentBatchToReview);
+    let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
+    updateSession(subjIDs, assignmentBatchToReview, dispatch);
     router.push("/review/session");
   };
 
