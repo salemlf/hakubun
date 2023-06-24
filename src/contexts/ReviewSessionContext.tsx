@@ -11,6 +11,7 @@ interface Session {
   reviewSubjects: Subject[];
 }
 
+// TODO: add completed reviews array?
 type ReviewSessionState = {
   isReviewInProgress: boolean;
   reviewData: Session | null;

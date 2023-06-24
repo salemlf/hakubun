@@ -1,9 +1,22 @@
 import { useEffect, useState } from "react";
-import { IonContent, IonGrid, IonPage, IonRow, IonCol } from "@ionic/react";
+import {
+  IonContent,
+  IonGrid,
+  IonPage,
+  IonRow,
+  IonCol,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  useIonRouter,
+} from "@ionic/react";
 import { useTabBarContext } from "../contexts/TabBarContext";
 import { useReviewSession } from "../contexts/ReviewSessionContext";
 import { useQueue } from "../hooks/useQueue";
 import { SubjectChars } from "../components/SubjectChars";
+import HomeIcon from "../images/home.svg";
 
 import styled from "styled-components/macro";
 import { Subject } from "../types/Subject";
@@ -18,6 +31,10 @@ const Page = styled(IonPage)`
   }
 `;
 
+const SessionHeader = styled(IonHeader)`
+  box-shadow: none;
+`;
+
 const ButtonCol = styled(IonCol)`
   text-align: center;
   button {
@@ -29,6 +46,7 @@ type Props = {
   reviewCards: Subject[];
 };
 
+// TODO: for items that have separate meanings and readings, create a review item for each
 const ReviewQueue = ({ reviewCards }: Props) => {
   const [currReviewCardIndex, setCurrReviewCardIndex] = useState(0);
 
@@ -81,6 +99,7 @@ const ReviewQueue = ({ reviewCards }: Props) => {
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 // TODO: add a back button/button to return home
 export const ReviewSession = () => {
+  const router = useIonRouter();
   const { setShowTabBar } = useTabBarContext();
   useEffect(() => {
     setShowTabBar(false);
@@ -104,6 +123,15 @@ export const ReviewSession = () => {
 
   return (
     <Page>
+      <SessionHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonButton onClick={() => router.push("/home")}>
+              <IonIcon slot="icon-only" icon={HomeIcon}></IonIcon>
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </SessionHeader>
       <IonContent>
         <IonGrid>
           {state.isLoading && <p>Loading...</p>}
