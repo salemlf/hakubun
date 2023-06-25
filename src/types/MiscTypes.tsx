@@ -1,5 +1,6 @@
 import { Subject, SubjectType } from "./Subject";
 
+// TODO: add info to this for whether answers were correct or not
 export interface ReviewQueueItem extends Subject {
   itemID: string;
   assignment_id: number;

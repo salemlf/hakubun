@@ -156,7 +156,12 @@ const createReviewItems = async (
   );
   // *testing
 
-  dispatch({ type: "REVIEW_QUEUE_LOADED", payload: reviewQueueItems });
+  //TODO: doing a rough shuffle, change this based on user-selected sort order when that's implemented
+  const shuffledReviewQueueItems = reviewQueueItems.sort(
+    () => 0.5 - Math.random()
+  );
+
+  dispatch({ type: "REVIEW_QUEUE_LOADED", payload: shuffledReviewQueueItems });
 };
 
 const ReviewSessionProvider = ({ children }: ProviderProps) => {
