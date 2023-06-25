@@ -1,4 +1,11 @@
-import { SubjectType } from "./Subject";
+import { Subject, SubjectType } from "./Subject";
+
+export interface ReviewQueueItem extends Subject {
+  assignment_id: number;
+  is_reviewed: boolean;
+  srs_stage: number;
+  review_type: "reading" | "meaning";
+}
 
 export interface ResponseStructure {
   object: string;

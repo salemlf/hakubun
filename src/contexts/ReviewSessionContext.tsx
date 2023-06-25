@@ -1,28 +1,24 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { Assignment } from "../types/Assignment";
 import { Subject } from "../types/Subject";
+import { ReviewQueueItem } from "../types/MiscTypes";
 import { useStorage } from "../hooks/useStorage";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { flattenData } from "../services/MiscService";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
+import { findAssignmentWithSubjID } from "../services/SubjectAndAssignmentService";
 
-interface Session {
-  reviewAssignments: Assignment[];
-  reviewSubjects: Subject[];
-}
-
-// TODO: add completed reviews array?
 type ReviewSessionState = {
   isReviewInProgress: boolean;
-  reviewData: Session | null;
   isLoading: boolean;
+  reviewQueue: ReviewQueueItem[] | null;
 };
 
 type ActionType =
   | "START_REVIEW"
   | "END_REVIEW"
-  | "REVIEW_DATA_LOADING"
-  | "REVIEW_DATA_LOADED";
+  | "REVIEW_QUEUE_LOADING"
+  | "REVIEW_QUEUE_LOADED";
 
 type Dispatch = (action: ReviewSessionAction) => void;
 
@@ -38,8 +34,8 @@ type ReviewSessionContext = {
 
 const initialState: ReviewSessionState = {
   isReviewInProgress: false,
-  reviewData: null,
   isLoading: false,
+  reviewQueue: null,
 };
 
 const ReviewSessionContext = createContext<{
@@ -54,13 +50,7 @@ type ProviderProps = {
   children?: React.ReactNode;
 };
 
-// TODO: eventually use useSubjectsByID query instead, this is kinda icky
-const updateSession = async (
-  subjIDs: number[],
-  assignmentData: Assignment[],
-  dispatch: Dispatch
-) => {
-  dispatch({ type: "REVIEW_DATA_LOADING" });
+const getSubjectData = async (subjIDs: number[]) => {
   try {
     const subjData = await WaniKaniAPI.getSubjectsBySubjIDs(subjIDs);
     let flattened = flattenData(subjData);
@@ -75,15 +65,67 @@ const updateSession = async (
     },
     []);
 
-    let session = {
-      reviewAssignments: assignmentData,
-      reviewSubjects: subjReviewData,
-    };
-
-    dispatch({ type: "REVIEW_DATA_LOADED", payload: session });
+    return subjReviewData;
   } catch (error) {
     console.error("OH NO, couldn't update session! Error: ", error);
+    return [];
   }
+};
+
+const createMeaningAndReadingQueueItems = (
+  assignments: Assignment[],
+  subjects: Subject[]
+): ReviewQueueItem[] => {
+  const subjectsWithQueueProps = (subjects as ReviewQueueItem[]).map(
+    (subject) => {
+      let foundAssignment = findAssignmentWithSubjID(assignments, subject);
+
+      // this should always be true since we retrieved the subjects based on the assignments
+      let assignment = foundAssignment!;
+      subject.assignment_id = assignment.id;
+      subject.srs_stage = assignment.srs_stage;
+      subject.is_reviewed = false;
+
+      return { ...subject, review_type: "meaning" as const };
+    }
+  );
+
+  // adds reading items to queue if the subject has readings (radicals and kana vocab don't)
+  const itemsWithReadings = subjectsWithQueueProps.filter(
+    (queueItem) => queueItem.readings !== undefined
+  );
+
+  const meaningAndReadingQueue = [
+    ...subjectsWithQueueProps,
+    ...itemsWithReadings.map((itemWithReadings) => ({
+      ...itemWithReadings,
+      review_type: "reading" as const,
+    })),
+  ];
+
+  return meaningAndReadingQueue;
+};
+
+const createReviewItems = async (
+  assignments: Assignment[],
+  subjIDs: number[],
+  dispatch: Dispatch
+) => {
+  dispatch({ type: "REVIEW_QUEUE_LOADING" });
+  let subjects = (await getSubjectData(subjIDs)) as Subject[];
+
+  let reviewQueueItems = createMeaningAndReadingQueueItems(
+    assignments,
+    subjects
+  );
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewSessionContext.tsx:158 ~ reviewQueueItems:",
+    reviewQueueItems
+  );
+  // *testing
+
+  dispatch({ type: "REVIEW_QUEUE_LOADED", payload: reviewQueueItems });
 };
 
 const ReviewSessionProvider = ({ children }: ProviderProps) => {
@@ -99,30 +141,31 @@ const ReviewSessionProvider = ({ children }: ProviderProps) => {
       case "END_REVIEW":
         removeItem("reviewData");
         return { ...state, isReviewInProgress: false };
-      case "REVIEW_DATA_LOADING":
+      // TODO: remove, just use review queue
+      case "REVIEW_QUEUE_LOADING":
         return { ...state, isLoading: true };
-      case "REVIEW_DATA_LOADED":
-        setItem("reviewData", action.payload);
-        return { ...state, isLoading: false, reviewData: action.payload };
+      case "REVIEW_QUEUE_LOADED":
+        setItem("reviewQueue", action.payload);
+        return { ...state, isLoading: false, reviewQueue: action.payload };
       default: {
         throw new Error(`Unhandled action type: ${action.type}`);
       }
     }
   };
 
-  const getSessionFromStorage = async () => {
-    dispatch({ type: "REVIEW_DATA_LOADING" });
-    const session = await getItem("reviewData");
+  const getReviewQueueFromStorage = async () => {
+    dispatch({ type: "REVIEW_QUEUE_LOADING" });
+    const queue = await getItem("reviewQueue");
     dispatch({
-      type: "REVIEW_DATA_LOADED",
-      payload: session,
+      type: "REVIEW_QUEUE_LOADED",
+      payload: queue,
     });
   };
 
   const [state, dispatch] = useReducer(reviewQueueReducer, initialState);
 
   useEffect(() => {
-    getSessionFromStorage();
+    getReviewQueueFromStorage();
   }, []);
 
   const value = { state, dispatch };
@@ -150,5 +193,5 @@ export {
   ReviewSessionContext,
   ReviewSessionProvider,
   useReviewSession,
-  updateSession,
+  createReviewItems,
 };

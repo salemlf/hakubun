@@ -34,6 +34,9 @@ const Page = styled(IonPage)`
 
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;
+  --ion-toolbar-background: var(--dark-greyish-purple);
+  --ion-background-color: var(--dark-greyish-purple);
+  background-color: var(--dark-greyish-purple);
 `;
 
 const ButtonCol = styled(IonCol)`
@@ -121,16 +124,7 @@ export const ReviewSession = () => {
   });
 
   const { state, dispatch } = useReviewSession();
-
-  let session = state.reviewData;
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewSession.tsx:54 ~ ReviewSession ~ session:",
-    session
-  );
-  // *testing
-
-  let subjectsToReview = session?.reviewSubjects;
+  let reviewQueue = state.reviewQueue;
 
   return (
     <Page>
@@ -146,12 +140,9 @@ export const ReviewSession = () => {
       <IonContent>
         {/* <IonGrid> */}
         {state.isLoading && <p>Loading...</p>}
-        {!state.isLoading &&
-          state.reviewData &&
-          subjectsToReview &&
-          subjectsToReview.length !== 0 && (
-            <ReviewQueue reviewCards={subjectsToReview} />
-          )}
+        {!state.isLoading && reviewQueue && reviewQueue.length !== 0 && (
+          <ReviewQueue reviewCards={reviewQueue} />
+        )}
         {/* </IonGrid> */}
       </IonContent>
     </Page>

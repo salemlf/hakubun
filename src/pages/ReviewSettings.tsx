@@ -6,7 +6,6 @@ import {
   IonRow,
   IonCol,
   IonHeader,
-  IonButton,
   IonBackButton,
   IonButtons,
   IonToolbar,
@@ -32,7 +31,7 @@ import {
 
 import {
   useReviewSession,
-  updateSession,
+  createReviewItems,
 } from "../contexts/ReviewSessionContext";
 
 const Page = styled(IonPage)`
@@ -127,7 +126,7 @@ export const ReviewSettings = () => {
     // *testing
 
     let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
-    updateSession(subjIDs, assignmentBatchToReview, dispatch);
+    createReviewItems(assignmentBatchToReview, subjIDs, dispatch);
     router.push("/review/session");
   };
 
