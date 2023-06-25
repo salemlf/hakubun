@@ -18,7 +18,8 @@ type ActionType =
   | "START_REVIEW"
   | "END_REVIEW"
   | "REVIEW_QUEUE_LOADING"
-  | "REVIEW_QUEUE_LOADED";
+  | "REVIEW_QUEUE_LOADED"
+  | "UPDATE_ITEM_REVIEW_STATUS";
 
 type Dispatch = (action: ReviewSessionAction) => void;
 
@@ -72,21 +73,50 @@ const getSubjectData = async (subjIDs: number[]) => {
   }
 };
 
+const updateItemReviewStatus = (
+  queueItemToUpdate: ReviewQueueItem,
+  reviewStatus: boolean,
+  state: ReviewSessionState,
+  dispatch: Dispatch
+) => {
+  if (state.reviewQueue) {
+    let updatedReviewQueue = state.reviewQueue.map((queueItem) =>
+      queueItem.itemID === queueItemToUpdate.itemID
+        ? { ...queueItem, is_reviewed: reviewStatus }
+        : queueItem
+    );
+
+    dispatch({
+      type: "UPDATE_ITEM_REVIEW_STATUS",
+      payload: updatedReviewQueue,
+    });
+  } else {
+    console.error(
+      "Couldn't update item in queue, reviewQueue is somehow empty (how da hell)"
+    );
+    dispatch({ type: "UPDATE_ITEM_REVIEW_STATUS", payload: state.reviewQueue });
+  }
+};
+
 const createMeaningAndReadingQueueItems = (
   assignments: Assignment[],
   subjects: Subject[]
 ): ReviewQueueItem[] => {
   const subjectsWithQueueProps = (subjects as ReviewQueueItem[]).map(
-    (subject) => {
+    (subject, index) => {
       let foundAssignment = findAssignmentWithSubjID(assignments, subject);
 
       // this should always be true since we retrieved the subjects based on the assignments
       let assignment = foundAssignment!;
-      subject.assignment_id = assignment.id;
-      subject.srs_stage = assignment.srs_stage;
-      subject.is_reviewed = false;
 
-      return { ...subject, review_type: "meaning" as const };
+      return {
+        ...subject,
+        assignment_id: assignment.id,
+        srs_stage: assignment.srs_stage,
+        is_reviewed: false,
+        itemID: `meaning${index}`,
+        review_type: "meaning" as const,
+      };
     }
   );
 
@@ -97,9 +127,10 @@ const createMeaningAndReadingQueueItems = (
 
   const meaningAndReadingQueue = [
     ...subjectsWithQueueProps,
-    ...itemsWithReadings.map((itemWithReadings) => ({
+    ...itemsWithReadings.map((itemWithReadings, index) => ({
       ...itemWithReadings,
       review_type: "reading" as const,
+      itemID: `reading${index}`,
     })),
   ];
 
@@ -141,12 +172,13 @@ const ReviewSessionProvider = ({ children }: ProviderProps) => {
       case "END_REVIEW":
         removeItem("reviewData");
         return { ...state, isReviewInProgress: false };
-      // TODO: remove, just use review queue
       case "REVIEW_QUEUE_LOADING":
         return { ...state, isLoading: true };
       case "REVIEW_QUEUE_LOADED":
         setItem("reviewQueue", action.payload);
         return { ...state, isLoading: false, reviewQueue: action.payload };
+      case "UPDATE_ITEM_REVIEW_STATUS":
+        return { ...state, reviewQueue: action.payload };
       default: {
         throw new Error(`Unhandled action type: ${action.type}`);
       }
@@ -194,4 +226,5 @@ export {
   ReviewSessionProvider,
   useReviewSession,
   createReviewItems,
+  updateItemReviewStatus,
 };

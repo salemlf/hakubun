@@ -1,6 +1,7 @@
 import { Subject, SubjectType } from "./Subject";
 
 export interface ReviewQueueItem extends Subject {
+  itemID: string;
   assignment_id: number;
   is_reviewed: boolean;
   srs_stage: number;
