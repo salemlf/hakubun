@@ -21,6 +21,7 @@ import { getSubjectColor } from "../services/SubjectAndAssignmentService";
 
 import styled from "styled-components/macro";
 import { Subject, SubjectType } from "../types/Subject";
+import { ReviewQueueItem } from "../types/MiscTypes";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -56,12 +57,24 @@ const SubjectCharactersCol = styled(IonCol)<CharColProps>`
 `;
 
 type Props = {
-  reviewCards: Subject[];
+  reviewCards: ReviewQueueItem[];
 };
 
-// TODO: for items that have separate meanings and readings, create a review item for each
 const ReviewQueue = ({ reviewCards }: Props) => {
   const [currReviewCardIndex, setCurrReviewCardIndex] = useState(0);
+  // TODO: probably move this elsewhere, display number of items left
+  const numUniqueItemsInQueue = [
+    ...new Map(
+      reviewCards.map((reviewCard) => [reviewCard.assignment_id, reviewCard])
+    ).values(),
+  ].filter((reviewCard) => reviewCard.is_reviewed === false).length;
+
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewSession.tsx:74 ~ ReviewQueue ~ numUniqueItemsInQueue:",
+    numUniqueItemsInQueue
+  );
+  // *testing
 
   const handleNextClick = () => {
     setCurrReviewCardIndex((prevIndex) => prevIndex + 1);
