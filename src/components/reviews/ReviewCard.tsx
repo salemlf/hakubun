@@ -1,13 +1,15 @@
+import { useState } from "react";
 import { IonGrid, IonRow, IonCol } from "@ionic/react";
+import { toKana } from "wanakana";
 import { SubjectType } from "../../types/Subject";
 import { ReviewQueueItem, ReviewType } from "../../types/MiscTypes";
-import { capitalizeWord } from "../../services/MiscService";
-
-import styled from "styled-components/macro";
 import {
   getReviewTypeColor,
   getSubjectColor,
 } from "../../services/SubjectAndAssignmentService";
+import { capitalizeWord } from "../../services/MiscService";
+
+import styled from "styled-components/macro";
 import { SubjectChars } from "../SubjectChars";
 
 type CharColProps = {
@@ -64,12 +66,32 @@ export const ReviewCard = ({
   onNextClick,
   currReviewCardIndex,
 }: Props) => {
+  // !added
+  const [userAnswer, setUserAnswer] = useState("");
+  // !added
+  //   *testing
+  console.log("🚀 ~ file: ReviewCard.tsx:69 ~ userAnswer:", userAnswer);
+  //   *testing
   const currentReviewItem = reviewQueue[currReviewCardIndex];
   let subjType = currentReviewItem.object as SubjectType;
 
   let reviewType = currentReviewItem.review_type;
   let reviewTypeCapitalized = capitalizeWord(reviewType);
   let subjectTypeCapitalized = capitalizeWord(currentReviewItem.object);
+
+  const convertInputToKana = (newestUserInput: string) => {
+    // special case needed for "n" since could be the kana "ん" or any romaji that starts with "n"
+    if (userAnswer.at(-1) === "n" && newestUserInput.at(-1) === "n") {
+      return setUserAnswer(toKana(newestUserInput.slice(0, -1)));
+    }
+    if (newestUserInput.at(-1) === "n") {
+      return setUserAnswer(toKana(newestUserInput.slice(0, -1)) + "n");
+    }
+    setUserAnswer(toKana(newestUserInput));
+  };
+
+  let onInputFunction =
+    reviewType === "reading" ? convertInputToKana : setUserAnswer;
 
   // TODO: remove "previous" button, just for testing right now
   return (
@@ -89,7 +111,12 @@ export const ReviewCard = ({
         </p>
       </ReviewTypeRow>
       <IonRow>
-        <AnswerInput type="text" />
+        <AnswerInput
+          id="user-answer-field"
+          type="text"
+          value={userAnswer}
+          onChange={(e) => onInputFunction(e.target.value)}
+        />
       </IonRow>
       <IonGrid>
         <IonRow>
