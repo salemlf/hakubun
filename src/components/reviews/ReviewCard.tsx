@@ -121,13 +121,22 @@ export const ReviewCard = ({
       <IonGrid>
         <IonRow>
           <ButtonCol>
-            <button onClick={onPrevClick} disabled={currReviewCardIndex === 0}>
+            <button
+              onClick={() => {
+                setUserAnswer("");
+                onPrevClick();
+              }}
+              disabled={currReviewCardIndex === 0}
+            >
               Previous
             </button>
           </ButtonCol>
           <ButtonCol>
             <button
-              onClick={onNextClick}
+              onClick={() => {
+                setUserAnswer("");
+                onNextClick();
+              }}
               disabled={currReviewCardIndex === reviewQueue.length - 1}
             >
               Next

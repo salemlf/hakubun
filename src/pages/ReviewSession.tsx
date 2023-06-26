@@ -41,12 +41,10 @@ export const ReviewSession = () => {
   const { state } = useReviewSession();
   let reviewQueue = state.reviewQueue;
 
-  // TODO: clear input on click
   const handleNextClick = () => {
     setCurrReviewCardIndex((prevIndex) => prevIndex + 1);
   };
 
-  // TODO: clear input on click
   const handlePrevClick = () => {
     setCurrReviewCardIndex((prevIndex) => prevIndex - 1);
   };
