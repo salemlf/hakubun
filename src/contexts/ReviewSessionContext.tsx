@@ -8,6 +8,7 @@ import { flattenData } from "../services/MiscService";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 import { findAssignmentWithSubjID } from "../services/SubjectAndAssignmentService";
 
+// TODO: remove isReviewInProgress, just check if reviewQueue is null?
 type ReviewSessionState = {
   isReviewInProgress: boolean;
   isLoading: boolean;

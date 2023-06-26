@@ -5,8 +5,8 @@ import {
   SubjectType,
 } from "../types/Subject";
 import { Assignment, AssignmentType } from "../types/Assignment";
-import { TagType } from "../types/MiscTypes";
-import { convertToUpperCase } from "./MiscService";
+import { ReviewType, TagType } from "../types/MiscTypes";
+import { capitalizeWord } from "./MiscService";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(
@@ -23,7 +23,7 @@ export const getSubjectDisplayName = (subj: Subject) => {
   let subjType = subj["object"];
 
   if (subjType === "radical") {
-    return convertToUpperCase(subj["slug" as keyof {}]);
+    return capitalizeWord(subj["slug" as keyof {}]);
   } else {
     let primary = subj["meanings"]?.filter(
       (meaning: any) => meaning.primary === true
@@ -109,7 +109,7 @@ export const getAssignmentTypeDisplayText = (
   assignmentType: AssignmentType,
   plural: boolean
 ) => {
-  let uppercaseAssignmentType = convertToUpperCase(assignmentType);
+  let uppercaseAssignmentType = capitalizeWord(assignmentType);
   return plural ? `${uppercaseAssignmentType}s` : uppercaseAssignmentType;
 };
 
@@ -117,6 +117,11 @@ const subjColors: { [index: string]: string } = {
   radical: `var(--wanikani-radical)`,
   kanji: `var(--wanikani-kanji)`,
   vocabulary: `var(--wanikani-vocab)`,
+};
+
+const reviewColors: { [index: string]: string } = {
+  reading: `var(--ion-color-primary)`,
+  meaning: `var(--ion-color-secondary)`,
 };
 
 const tagColors: { [index: string]: string } = {
@@ -128,6 +133,10 @@ const subjAndTagColors = { ...subjColors, ...tagColors };
 
 export const getSubjectColor = (subjType: SubjectType) => {
   return subjColors[subjType as keyof {}];
+};
+
+export const getReviewTypeColor = (reviewType: ReviewType) => {
+  return reviewColors[reviewType as keyof {}];
 };
 
 export const getTagColor = (tagType: TagType) => {

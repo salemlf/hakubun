@@ -9,7 +9,7 @@ import styled from "styled-components/macro";
 import {
   getTimeFromNow,
   getSrsNameBySrsLvl,
-  convertToUpperCase,
+  capitalizeWord,
 } from "../services/MiscService";
 
 import { Assignment } from "../types/Assignment";
@@ -52,7 +52,7 @@ export const AssignmentSrs = ({ assignment }: Props) => {
       <StagesRow>
         {assignment && <p className={`${styles.timeTill}`}>{getTimeTill()}</p>}
         <p className={`${styles.srsLevel} ${styles[getSrsLvl()]}`}>
-          {convertToUpperCase(getSrsLvl())}
+          {capitalizeWord(getSrsLvl())}
         </p>
       </StagesRow>
     </AssignmentSrsContainer>

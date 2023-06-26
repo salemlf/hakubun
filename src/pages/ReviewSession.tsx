@@ -6,9 +6,14 @@ import { useQueue } from "../hooks/useQueue";
 
 import styled from "styled-components/macro";
 
-import { getSubjectColor } from "../services/SubjectAndAssignmentService";
+import {
+  getReviewTypeColor,
+  getSubjectColor,
+} from "../services/SubjectAndAssignmentService";
+import { capitalizeWord } from "../services/MiscService";
 import { SubjectType } from "../types/Subject";
 import { ReviewQueueItem } from "../types/MiscTypes";
+import { ReviewType } from "../types/MiscTypes";
 import { SubjectChars } from "../components/SubjectChars";
 import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
 
@@ -22,13 +27,6 @@ const Page = styled(IonPage)`
   }
 `;
 
-const ButtonCol = styled(IonCol)`
-  text-align: center;
-  button {
-    font-size: 1.5rem;
-  }
-`;
-
 type CharColProps = {
   subjType: SubjectType;
 };
@@ -37,6 +35,27 @@ const SubjectCharactersCol = styled(IonCol)<CharColProps>`
   padding: 50px 0;
   padding-bottom: 65px;
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
+`;
+
+const ButtonCol = styled(IonCol)`
+  text-align: center;
+  button {
+    font-size: 1.5rem;
+  }
+`;
+
+type ReviewTypeProps = {
+  reviewType: ReviewType;
+};
+
+const ReviewTypeRow = styled(IonRow)<ReviewTypeProps>`
+  justify-content: center;
+  background-color: ${({ reviewType }) => getReviewTypeColor(reviewType)};
+  --ion-background-color: ${({ reviewType }) => getReviewTypeColor(reviewType)};
+
+  p {
+    font-size: 1.25rem;
+  }
 `;
 
 type Props = {
@@ -55,8 +74,11 @@ const ReviewQueue = ({
   const currentReviewItem = reviewQueue[currReviewCardIndex];
   let subjType = currentReviewItem.object as SubjectType;
 
-  // TODO: remove "previous" button, just for testing right now
+  let reviewType = currentReviewItem.review_type;
+  let reviewTypeCapitalized = capitalizeWord(reviewType);
+  let subjectTypeCapitalized = capitalizeWord(currentReviewItem.object);
 
+  // TODO: remove "previous" button, just for testing right now
   return (
     <>
       <IonRow>
@@ -68,6 +90,11 @@ const ReviewQueue = ({
           />
         </SubjectCharactersCol>
       </IonRow>
+      <ReviewTypeRow reviewType={reviewType}>
+        <p>
+          {subjectTypeCapitalized} {reviewTypeCapitalized}
+        </p>
+      </ReviewTypeRow>
       <IonGrid>
         <IonRow>
           <ButtonCol>
