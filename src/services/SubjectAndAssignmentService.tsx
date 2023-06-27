@@ -205,6 +205,8 @@ export const isUserMeaningAnswerCorrect = (
   );
   // *testing
 
+  // TODO: update this based on user settings once those are implemented, allow strict meanings (0.0 threshold, and prob just apply to vocab)
+  // meanings allow some typos/mistakes
   let options = {
     keys: ["meaning", "synonyms"],
     threshold: 0.3,
@@ -250,7 +252,7 @@ export const isUserAnswerCorrect = (
 ) => {
   let reviewType = reviewItem.review_type as string;
   if (reviewType === "reading") {
-    return isUserMeaningAnswerCorrect(reviewItem, userAnswer);
+    return isUserReadingAnswerCorrect(reviewItem, userAnswer);
   } else {
     return isUserMeaningAnswerCorrect(reviewItem, userAnswer);
   }
