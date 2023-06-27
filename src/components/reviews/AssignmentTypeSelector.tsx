@@ -1,6 +1,6 @@
 import { useToggle } from "../../hooks/useToggle";
 import {
-  getAssignmentTypeDisplayText,
+  getSubjectTypeDisplayText,
   getSubjectColor,
   checkIfAssignmentTypeInQueue,
 } from "../../services/SubjectAndAssignmentService";
@@ -112,7 +112,7 @@ const AssignmentTypeCheckbox = ({
   onCheckValueChange,
   pluralize = false,
 }: AssignmentTypeCheckboxProps) => {
-  let displayTxt = getAssignmentTypeDisplayText(assignmentType, pluralize);
+  let displayTxt = getSubjectTypeDisplayText(assignmentType, pluralize);
 
   return (
     <AssignmentTypeContainer>

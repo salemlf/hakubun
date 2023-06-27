@@ -114,8 +114,8 @@ const assignmentTypeText: { [index: string]: {} } = {
   kana_vocabulary: { singular: "Kana Vocabulary", plural: "Kana Vocabulary" },
 };
 
-export const getAssignmentTypeDisplayText = (
-  assignmentType: AssignmentType,
+export const getSubjectTypeDisplayText = (
+  assignmentType: SubjectType,
   plural: boolean
 ) => {
   let assignmentTypeObj = assignmentTypeText[assignmentType as keyof {}];

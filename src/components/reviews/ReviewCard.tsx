@@ -6,6 +6,8 @@ import { ReviewQueueItem, ReviewType } from "../../types/MiscTypes";
 import {
   getReviewTypeColor,
   getSubjectColor,
+  isUserAnswerCorrect,
+  getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
 import { capitalizeWord } from "../../services/MiscService";
 
@@ -66,9 +68,7 @@ export const ReviewCard = ({
   onNextClick,
   currReviewCardIndex,
 }: Props) => {
-  // !added
   const [userAnswer, setUserAnswer] = useState("");
-  // !added
   //   *testing
   console.log("🚀 ~ file: ReviewCard.tsx:69 ~ userAnswer:", userAnswer);
   //   *testing
@@ -77,7 +77,10 @@ export const ReviewCard = ({
 
   let reviewType = currentReviewItem.review_type;
   let reviewTypeCapitalized = capitalizeWord(reviewType);
-  let subjectTypeCapitalized = capitalizeWord(currentReviewItem.object);
+  let reviewDisplayTxt = getSubjectTypeDisplayText(
+    currentReviewItem.object,
+    false
+  );
 
   const convertInputToKana = (newestUserInput: string) => {
     // special case needed for "n" since could be the kana "ん" or any romaji that starts with "n"
@@ -107,7 +110,7 @@ export const ReviewCard = ({
       </IonRow>
       <ReviewTypeRow reviewType={reviewType}>
         <p>
-          {subjectTypeCapitalized} {reviewTypeCapitalized}
+          {reviewDisplayTxt} {reviewTypeCapitalized}
         </p>
       </ReviewTypeRow>
       <IonRow>
@@ -134,6 +137,7 @@ export const ReviewCard = ({
           <ButtonCol>
             <button
               onClick={() => {
+                isUserAnswerCorrect(currentReviewItem, userAnswer);
                 setUserAnswer("");
                 onNextClick();
               }}
