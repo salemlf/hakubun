@@ -6,7 +6,6 @@ import { ReviewQueueItem, ReviewType } from "../../types/MiscTypes";
 import {
   getReviewTypeColor,
   getSubjectColor,
-  isUserAnswerCorrect,
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
 import { capitalizeWord } from "../../services/MiscService";
@@ -58,7 +57,11 @@ const AnswerInput = styled.input`
 type Props = {
   reviewQueue: ReviewQueueItem[];
   onPrevClick: () => void;
-  onNextClick: () => void;
+  onNextClick: (
+    currReviewItem: ReviewQueueItem,
+    userAnswer: string,
+    setUserAnswer: (value: React.SetStateAction<string>) => void
+  ) => void;
   currReviewCardIndex: number;
 };
 
@@ -137,18 +140,7 @@ export const ReviewCard = ({
           <ButtonCol>
             <button
               onClick={() => {
-                let isCorrectAnswer = isUserAnswerCorrect(
-                  currentReviewItem,
-                  userAnswer
-                );
-                // *testing
-                console.log(
-                  "🚀 ~ file: ReviewCard.tsx:141 ~ isCorrectAnswer:",
-                  isCorrectAnswer
-                );
-                // *testing
-                setUserAnswer("");
-                onNextClick();
+                onNextClick(currentReviewItem, userAnswer, setUserAnswer);
               }}
               disabled={currReviewCardIndex === reviewQueue.length - 1}
             >

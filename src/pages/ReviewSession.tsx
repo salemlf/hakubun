@@ -7,6 +7,8 @@ import { useQueue } from "../hooks/useQueue";
 import styled from "styled-components/macro";
 import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
 import { ReviewCard } from "../components/reviews/ReviewCard";
+import { ReviewQueueItem } from "../types/MiscTypes";
+import { isUserAnswerCorrect } from "../services/SubjectAndAssignmentService";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -41,7 +43,20 @@ export const ReviewSession = () => {
   const { state } = useReviewSession();
   let reviewQueue = state.reviewQueue;
 
-  const handleNextClick = () => {
+  const handleNextClick = (
+    currReviewItem: ReviewQueueItem,
+    userAnswer: string,
+    setUserAnswer: (value: React.SetStateAction<string>) => void
+  ) => {
+    // TODO: account for edge cases (create some function to check if valid input) before checking if correct answer
+    let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
+    // *testing
+    console.log(
+      "🚀 ~ file: ReviewCard.tsx:141 ~ isCorrectAnswer:",
+      isCorrectAnswer
+    );
+    // *testing
+    setUserAnswer("");
     setCurrReviewCardIndex((prevIndex) => prevIndex + 1);
   };
 

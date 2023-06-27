@@ -96,6 +96,7 @@ const getStudyMaterials = async (subjIDs: number[]) => {
   }
 };
 
+// TODO: call this in review queue when item has been reviewed (for true) or has not been reviewed (retry used)
 const updateItemReviewStatus = (
   queueItemToUpdate: ReviewQueueItem,
   reviewStatus: boolean,

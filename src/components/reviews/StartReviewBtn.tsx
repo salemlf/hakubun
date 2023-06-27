@@ -13,7 +13,7 @@ export const StartReviewBtn = ({ onStartReviewBtnClick }: Props) => {
     <>
       <IonFab vertical="bottom" horizontal="center" aria-label="Start Review">
         <IonFabButton onClick={onStartReviewBtnClick}>
-          <ShiftBy x={4}>
+          <ShiftBy x={3}>
             <IonIcon icon={startIcon}></IonIcon>
           </ShiftBy>
         </IonFabButton>
