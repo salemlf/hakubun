@@ -7,7 +7,12 @@ import {
   SubjectType,
 } from "../types/Subject";
 import { Assignment, AssignmentType } from "../types/Assignment";
-import { ReviewQueueItem, ReviewType, TagType } from "../types/MiscTypes";
+import {
+  ReviewQueueItem,
+  ReviewType,
+  StudyMaterial,
+  TagType,
+} from "../types/MiscTypes";
 import { capitalizeWord } from "./MiscService";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
@@ -74,6 +79,15 @@ export const findAssignmentWithSubjID = (
 ) => {
   return assignmentsData.find(
     (assignment: Assignment) => assignment.subject_id === subject.id
+  );
+};
+
+export const findStudyMaterialWithSubjID = (
+  studyMaterials: StudyMaterial[],
+  subject: Subject
+) => {
+  return studyMaterials.find(
+    (studyMaterial: StudyMaterial) => studyMaterial.subject_id === subject.id
   );
 };
 
@@ -175,27 +189,36 @@ export const compareAssignmentsByAvailableDate = (
   );
 };
 
-// TODO: finish implementing
-export const isUserAnswerCorrect = (
+export const isUserMeaningAnswerCorrect = (
   reviewItem: ReviewQueueItem,
   userAnswer: string
 ) => {
-  const reviewTypeMap = {
-    reading: "readings",
-    meaning: "meanings",
-  };
+  let answers = reviewItem["meanings"] as SubjectMeaning[];
+  let userSynonyms = reviewItem["meaning_synonyms"];
+  let acceptedAnswers = answers.filter((answer) => answer.accepted_answer);
 
-  // TODO: check if meaning or reading, then iterate over meanings or readings array to see if answer is correct
-  let reviewType = reviewItem.review_type as string;
-  let answersToSearch: string = reviewTypeMap[reviewType as keyof {}];
+  let answersWithSynonyms = [...acceptedAnswers, { synonyms: userSynonyms }];
+  // *testing
   console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:179 ~ answersToSearch:",
-    answersToSearch
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:200 ~ answersWithSynonyms:",
+    answersWithSynonyms
   );
+  // *testing
 
-  let answers = reviewItem[answersToSearch as keyof {}] as Array<
-    SubjectMeaning | SubjectReading
-  >;
+  let options = {
+    keys: ["meaning", "synonyms"],
+    threshold: 0.3,
+  };
+  let fuse = new Fuse(answersWithSynonyms, options);
+  let meaningsMatched = fuse.search(userAnswer);
+  return meaningsMatched.length !== 0;
+};
+
+export const isUserReadingAnswerCorrect = (
+  reviewItem: ReviewQueueItem,
+  userAnswer: string
+) => {
+  let answers = reviewItem["readings"] as SubjectReading[];
 
   let acceptedAnswers = answers.filter((answer) => answer.accepted_answer);
   // *testing
@@ -205,23 +228,30 @@ export const isUserAnswerCorrect = (
   );
 
   // readings shouldn't allow any typos/mistakes
-  let thresholdSetting = reviewType === "meaning" ? 0.3 : 0.0;
   let options = {
-    keys: [reviewType],
-    threshold: thresholdSetting,
+    keys: ["reading"],
+    threshold: 0.0,
   };
   let fuse = new Fuse(acceptedAnswers, options);
-  let answersMatched = fuse.search(userAnswer);
+  let readingsMatched = fuse.search(userAnswer);
   // *testing
   console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:200 ~ answersMatched:",
-    answersMatched
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:200 ~ readingsMatched:",
+    readingsMatched
   );
   // *testing
-  let found = answersMatched.length !== 0;
-  // *testing
-  console.log("🚀 ~ file: SubjectAndAssignmentService.tsx:205 ~ found:", found);
-  // *testing
-  // return answersMatched.length !== 0;
-  return found;
+  return readingsMatched.length !== 0;
+};
+
+// TODO: finish implementing
+export const isUserAnswerCorrect = (
+  reviewItem: ReviewQueueItem,
+  userAnswer: string
+) => {
+  let reviewType = reviewItem.review_type as string;
+  if (reviewType === "reading") {
+    return isUserMeaningAnswerCorrect(reviewItem, userAnswer);
+  } else {
+    return isUserMeaningAnswerCorrect(reviewItem, userAnswer);
+  }
 };

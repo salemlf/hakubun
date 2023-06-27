@@ -9,6 +9,8 @@ export interface ReviewQueueItem extends Subject {
   is_reviewed: boolean;
   srs_stage: number;
   review_type: ReviewType;
+  is_correct_answer: boolean | null;
+  meaning_synonyms: string[];
 }
 
 export interface ResponseStructure {
@@ -56,3 +58,13 @@ export type UserData = {
 };
 
 export type TagType = SubjectType | "meaning" | "reading";
+
+export interface StudyMaterial {
+  created_at: Date;
+  hidden: boolean;
+  meaning_note: string | null;
+  meaning_synonyms: string[];
+  reading_note: string | null;
+  subject_id: number;
+  subject_type: SubjectType;
+}

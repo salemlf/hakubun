@@ -150,4 +150,15 @@ export const WaniKaniAPI = {
 
     return assignmentsCombined;
   },
+
+  getStudyMaterialsBySubjIDs: async function (subjIDs: number[]) {
+    let url = `${baseUrl}study_materials?subject_ids=${subjIDs}`;
+
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "GET",
+    });
+
+    return response.data;
+  },
 };

@@ -83,7 +83,9 @@ export const ReviewSettings = () => {
     "radical" as AssignmentType,
     "kanji" as AssignmentType,
     "vocabulary" as AssignmentType,
+    "kana_vocabulary" as AssignmentType,
   ];
+
   // TODO: change to use user setting for default batch size once settings are implemented
   let defaultBatchSize = 5;
 

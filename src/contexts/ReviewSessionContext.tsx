@@ -1,12 +1,15 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { Assignment } from "../types/Assignment";
 import { Subject } from "../types/Subject";
-import { ReviewQueueItem } from "../types/MiscTypes";
+import { ReviewQueueItem, StudyMaterial } from "../types/MiscTypes";
 import { useStorage } from "../hooks/useStorage";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenData } from "../services/MiscService";
+import { flattenData, shuffleArray } from "../services/MiscService";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
-import { findAssignmentWithSubjID } from "../services/SubjectAndAssignmentService";
+import {
+  findAssignmentWithSubjID,
+  findStudyMaterialWithSubjID,
+} from "../services/SubjectAndAssignmentService";
 
 // TODO: remove isReviewInProgress, just check if reviewQueue is null?
 type ReviewSessionState = {
@@ -69,7 +72,26 @@ const getSubjectData = async (subjIDs: number[]) => {
 
     return subjReviewData;
   } catch (error) {
-    console.error("OH NO, couldn't update session! Error: ", error);
+    console.error(
+      "OH NO, couldn't get subject data for review session! Error: ",
+      error
+    );
+    return [];
+  }
+};
+
+const getStudyMaterials = async (subjIDs: number[]) => {
+  try {
+    const studyMaterialData = await WaniKaniAPI.getStudyMaterialsBySubjIDs(
+      subjIDs
+    );
+    let flattenedStudyMaterial = flattenData(studyMaterialData);
+    return flattenedStudyMaterial;
+  } catch (error) {
+    console.error(
+      "OH NO, couldn't get study material data for review session! Error: ",
+      error
+    );
     return [];
   }
 };
@@ -101,11 +123,16 @@ const updateItemReviewStatus = (
 
 const createMeaningAndReadingQueueItems = (
   assignments: Assignment[],
-  subjects: Subject[]
+  subjects: Subject[],
+  studyMaterials: StudyMaterial[]
 ): ReviewQueueItem[] => {
   const subjectsWithQueueProps = (subjects as ReviewQueueItem[]).map(
     (subject, index) => {
       let foundAssignment = findAssignmentWithSubjID(assignments, subject);
+      let foundStudyMaterial = findStudyMaterialWithSubjID(
+        studyMaterials,
+        subject
+      );
 
       // this should always be true since we retrieved the subjects based on the assignments
       let assignment = foundAssignment!;
@@ -116,6 +143,10 @@ const createMeaningAndReadingQueueItems = (
         srs_stage: assignment.srs_stage,
         is_reviewed: false,
         itemID: `meaning${index}`,
+        is_correct_answer: null,
+        meaning_synonyms: foundStudyMaterial
+          ? foundStudyMaterial.meaning_synonyms
+          : [],
         review_type: "meaning" as const,
       };
     }
@@ -145,10 +176,12 @@ const createReviewItems = async (
 ) => {
   dispatch({ type: "REVIEW_QUEUE_LOADING" });
   let subjects = (await getSubjectData(subjIDs)) as Subject[];
+  let studyMaterials = (await getStudyMaterials(subjIDs)) as StudyMaterial[];
 
   let reviewQueueItems = createMeaningAndReadingQueueItems(
     assignments,
-    subjects
+    subjects,
+    studyMaterials
   );
   // *testing
   console.log(
@@ -157,10 +190,8 @@ const createReviewItems = async (
   );
   // *testing
 
-  //TODO: doing a rough shuffle, change this based on user-selected sort order when that's implemented
-  const shuffledReviewQueueItems = reviewQueueItems.sort(
-    () => 0.5 - Math.random()
-  );
+  //TODO: shuffling, change this based on user-selected sort order when that's implemented
+  const shuffledReviewQueueItems = shuffleArray(reviewQueueItems);
 
   dispatch({ type: "REVIEW_QUEUE_LOADED", payload: shuffledReviewQueueItems });
 };

@@ -137,7 +137,16 @@ export const ReviewCard = ({
           <ButtonCol>
             <button
               onClick={() => {
-                isUserAnswerCorrect(currentReviewItem, userAnswer);
+                let isCorrectAnswer = isUserAnswerCorrect(
+                  currentReviewItem,
+                  userAnswer
+                );
+                // *testing
+                console.log(
+                  "🚀 ~ file: ReviewCard.tsx:141 ~ isCorrectAnswer:",
+                  isCorrectAnswer
+                );
+                // *testing
                 setUserAnswer("");
                 onNextClick();
               }}
