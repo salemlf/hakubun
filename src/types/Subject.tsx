@@ -1,6 +1,10 @@
 import { ResponseStructure } from "./MiscTypes";
 
-export type SubjectType = "radical" | "kanji" | "vocabulary";
+export type SubjectType =
+  | "radical"
+  | "kanji"
+  | "vocabulary"
+  | "kana_vocabulary";
 
 export interface PreFlattenedSubject {
   object: SubjectType;
@@ -58,7 +62,7 @@ export interface SubjectMetadata {
 export interface SubjectMeaning {
   meaning: string;
   primary: boolean;
-  acceptedAnswer: boolean;
+  accepted_answer: boolean;
 }
 
 export type ReadingType = "kunyomi" | "onyomi" | "nanori";
@@ -66,7 +70,7 @@ export type ReadingType = "kunyomi" | "onyomi" | "nanori";
 export interface SubjectReading {
   type?: ReadingType;
   primary: boolean;
-  acceptedAnswer: boolean;
+  accepted_answer: boolean;
   reading: string;
 }
 

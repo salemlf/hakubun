@@ -1,6 +1,10 @@
 import { ResponseStructure } from "./MiscTypes";
 
-export type AssignmentType = "radical" | "kanji" | "vocabulary";
+export type AssignmentType =
+  | "radical"
+  | "kanji"
+  | "vocabulary"
+  | "kana_vocabulary";
 
 export interface PreFlattenedAssignment {
   created_at: Date;

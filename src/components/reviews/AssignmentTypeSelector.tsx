@@ -9,9 +9,11 @@ import styled from "styled-components";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 
 const AssignmentTypeFieldset = styled.fieldset`
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
   border: none;
   padding-left: 12px;
-  display: flex;
   gap: 10px;
 `;
 
@@ -25,6 +27,8 @@ const AssignmentTypeLegend = styled.legend`
 type AssignTypeOptionProps = {
   assignType: AssignmentType;
 };
+
+const AssignmentTypeContainer = styled.div``;
 
 // TODO: update styles so bg color is duller if not checked
 const AssignTypeOption = styled.label<AssignTypeOptionProps>`
@@ -111,17 +115,19 @@ const AssignmentTypeCheckbox = ({
   let displayTxt = getAssignmentTypeDisplayText(assignmentType, pluralize);
 
   return (
-    <AssignTypeOption htmlFor={assignmentType} assignType={assignmentType}>
-      {displayTxt}
-      <input
-        id={assignmentType}
-        type="checkbox"
-        name={assignmentType}
-        value={assignmentType}
-        checked={isChecked}
-        onChange={onCheckValueChange}
-      />
-    </AssignTypeOption>
+    <AssignmentTypeContainer>
+      <AssignTypeOption htmlFor={assignmentType} assignType={assignmentType}>
+        {displayTxt}
+        <input
+          id={assignmentType}
+          type="checkbox"
+          name={assignmentType}
+          value={assignmentType}
+          checked={isChecked}
+          onChange={onCheckValueChange}
+        />
+      </AssignTypeOption>
+    </AssignmentTypeContainer>
   );
 };
 
@@ -137,6 +143,7 @@ export const AssignmentTypeSelector = ({
   const [radicalsSelected, toggleRadicalsSelected] = useToggle(true);
   const [kanjiSelected, toggleKanjiSelected] = useToggle(true);
   const [vocabSelected, toggleVocabSelected] = useToggle(true);
+  const [kanaVocabSelected, toggleKanaVocabSelected] = useToggle(true);
 
   // TODO: clean this up, ideally refactor so availForReviewData doesn't need to be passed in
   let radicalsInQueue = checkIfAssignmentTypeInQueue(
@@ -147,6 +154,10 @@ export const AssignmentTypeSelector = ({
   let vocabInQueue = checkIfAssignmentTypeInQueue(
     availForReviewData,
     "vocabulary"
+  );
+  let kanaVocabInQueue = checkIfAssignmentTypeInQueue(
+    availForReviewData,
+    "kana_vocabulary"
   );
 
   const updateSelectedAssignTypes = (
@@ -194,6 +205,18 @@ export const AssignmentTypeSelector = ({
             updateSelectedAssignTypes(
               "vocabulary" as AssignmentType,
               toggleVocabSelected
+            )
+          }
+        />
+      )}
+      {kanaVocabInQueue && (
+        <AssignmentTypeCheckbox
+          assignmentType="kana_vocabulary"
+          isChecked={kanaVocabSelected}
+          onCheckValueChange={() =>
+            updateSelectedAssignTypes(
+              "kana_vocabulary" as AssignmentType,
+              toggleKanaVocabSelected
             )
           }
         />

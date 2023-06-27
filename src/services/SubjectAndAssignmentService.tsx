@@ -1,11 +1,13 @@
+import Fuse from "fuse.js";
 import {
   ReadingType,
   Subject,
+  SubjectMeaning,
   SubjectReading,
   SubjectType,
 } from "../types/Subject";
 import { Assignment, AssignmentType } from "../types/Assignment";
-import { ReviewType, TagType } from "../types/MiscTypes";
+import { ReviewQueueItem, ReviewType, TagType } from "../types/MiscTypes";
 import { capitalizeWord } from "./MiscService";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
@@ -105,18 +107,30 @@ export const checkIfAssignmentTypeInQueue = (
   );
 };
 
+const assignmentTypeText: { [index: string]: {} } = {
+  radical: { singular: "Radical", plural: "Radicals" },
+  kanji: { singular: "Kanji", plural: "Kanji" },
+  vocabulary: { singular: "Vocabulary", plural: "Vocabulary" },
+  kana_vocabulary: { singular: "Kana Vocabulary", plural: "Kana Vocabulary" },
+};
+
 export const getAssignmentTypeDisplayText = (
   assignmentType: AssignmentType,
   plural: boolean
 ) => {
-  let uppercaseAssignmentType = capitalizeWord(assignmentType);
-  return plural ? `${uppercaseAssignmentType}s` : uppercaseAssignmentType;
+  let assignmentTypeObj = assignmentTypeText[assignmentType as keyof {}];
+  let displayText = plural
+    ? assignmentTypeObj["plural" as keyof {}]
+    : assignmentTypeObj["singular" as keyof {}];
+  return displayText;
 };
 
+// TODO: change kana vocab to some other color?
 const subjColors: { [index: string]: string } = {
   radical: `var(--wanikani-radical)`,
   kanji: `var(--wanikani-kanji)`,
   vocabulary: `var(--wanikani-vocab)`,
+  kana_vocabulary: `var(--wanikani-vocab)`,
 };
 
 const reviewColors: { [index: string]: string } = {
@@ -159,4 +173,55 @@ export const compareAssignmentsByAvailableDate = (
     new Date(assignment1.available_at).getTime() -
     new Date(assignment2.available_at).getTime()
   );
+};
+
+// TODO: finish implementing
+export const isUserAnswerCorrect = (
+  reviewItem: ReviewQueueItem,
+  userAnswer: string
+) => {
+  const reviewTypeMap = {
+    reading: "readings",
+    meaning: "meanings",
+  };
+
+  // TODO: check if meaning or reading, then iterate over meanings or readings array to see if answer is correct
+  let reviewType = reviewItem.review_type as string;
+  let answersToSearch: string = reviewTypeMap[reviewType as keyof {}];
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:179 ~ answersToSearch:",
+    answersToSearch
+  );
+
+  let answers = reviewItem[answersToSearch as keyof {}] as Array<
+    SubjectMeaning | SubjectReading
+  >;
+
+  let acceptedAnswers = answers.filter((answer) => answer.accepted_answer);
+  // *testing
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:193 ~ acceptedAnswers:",
+    acceptedAnswers
+  );
+
+  // readings shouldn't allow any typos/mistakes
+  let thresholdSetting = reviewType === "meaning" ? 0.3 : 0.0;
+  let options = {
+    keys: [reviewType],
+    threshold: thresholdSetting,
+  };
+  let fuse = new Fuse(acceptedAnswers, options);
+  let answersMatched = fuse.search(userAnswer);
+  // *testing
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:200 ~ answersMatched:",
+    answersMatched
+  );
+  // *testing
+  let found = answersMatched.length !== 0;
+  // *testing
+  console.log("🚀 ~ file: SubjectAndAssignmentService.tsx:205 ~ found:", found);
+  // *testing
+  // return answersMatched.length !== 0;
+  return found;
 };
