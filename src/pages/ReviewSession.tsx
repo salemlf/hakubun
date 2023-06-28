@@ -36,6 +36,7 @@ const Grid = styled(IonGrid)`
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 // TODO: fix the excessive number of rerenders happening for this page
 export const ReviewSession = () => {
+  // TODO: a lot of state here, change to use useReducer
   const [currReviewCardIndex, setCurrReviewCardIndex] = useState(0);
   // TODO: isSecondClick will be equivalent to swiping
   const [isSecondClick, setIsSecondClick] = useState(false);

@@ -1,34 +1,14 @@
-import { useEffect } from "react";
 import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
-import { Vocabulary } from "../../types/Subject";
-import { useState } from "react";
-
+import {
+  Vocabulary,
+  SubjectReading,
+  PronunciationAudio,
+} from "../../types/Subject";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
+import { useAudio } from "../../hooks/useAudio";
 import { Readings, ReadingContainer } from "./SubjectDetailsStyled";
 import styled from "styled-components/macro";
 import SoundIcon from "../../images/sound.svg";
-import { PronunciationAudio } from "../../types/Subject";
-import { SubjectReading } from "../../types/Subject";
-
-const useAudio = (url: string) => {
-  const [audio] = useState(new Audio(url));
-  const [playing, setPlaying] = useState(false);
-
-  const toggle = () => setPlaying(!playing);
-
-  useEffect(() => {
-    playing ? audio.play() : audio.pause();
-  }, [playing]);
-
-  useEffect(() => {
-    audio.addEventListener("ended", () => setPlaying(false));
-    return () => {
-      audio.removeEventListener("ended", () => setPlaying(false));
-    };
-  }, []);
-
-  return [playing, toggle] as const;
-};
 
 type AudioProps = {
   url: string;
