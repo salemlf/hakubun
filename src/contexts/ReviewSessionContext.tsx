@@ -11,19 +11,21 @@ import {
   findStudyMaterialWithSubjID,
 } from "../services/SubjectAndAssignmentService";
 
-// TODO: remove isReviewInProgress, just check if reviewQueue is null?
 type ReviewSessionState = {
-  isReviewInProgress: boolean;
   isLoading: boolean;
   reviewQueue: ReviewQueueItem[] | null;
+  completedReviews: ReviewQueueItem[];
 };
 
 type ActionType =
-  | "START_REVIEW"
   | "END_REVIEW"
   | "REVIEW_QUEUE_LOADING"
   | "REVIEW_QUEUE_LOADED"
-  | "UPDATE_ITEM_REVIEW_STATUS";
+  | "UPDATE_REVIEW_QUEUE"
+  | "MARK_ITEM_AS_REVIEWED"
+  | "COMPLETED_REVIEWS_LOADING"
+  | "COMPLETED_REVIEWS_LOADED"
+  | "UPDATE_COMPLETED_REVIEWS_QUEUE";
 
 type Dispatch = (action: ReviewSessionAction) => void;
 
@@ -38,9 +40,9 @@ type ReviewSessionContext = {
 };
 
 const initialState: ReviewSessionState = {
-  isReviewInProgress: false,
   isLoading: false,
   reviewQueue: null,
+  completedReviews: [],
 };
 
 const ReviewSessionContext = createContext<{
@@ -96,30 +98,62 @@ const getStudyMaterials = async (subjIDs: number[]) => {
   }
 };
 
-// TODO: call this in review queue when item has been reviewed (for true) or has not been reviewed (retry used)
-const updateItemReviewStatus = (
-  queueItemToUpdate: ReviewQueueItem,
-  reviewStatus: boolean,
+// const updateReviewQueue = (
+//   queueItemToUpdate: ReviewQueueItem,
+//   propertiesToUpdate: {},
+//   state: ReviewSessionState,
+//   dispatch: Dispatch
+// ) => {
+//   // TODO: remove this if statement, shouldn't ever be needed
+//   if (state.reviewQueue) {
+//     let updatedReviewQueue = state.reviewQueue.map((queueItem) =>
+//       queueItem.itemID === queueItemToUpdate.itemID
+//         ? { ...queueItem, ...propertiesToUpdate }
+//         : queueItem
+//     );
+
+//     dispatch({
+//       type: "UPDATE_REVIEW_QUEUE",
+//       payload: updatedReviewQueue,
+//     });
+//   } else {
+//     console.error(
+//       "Couldn't update item in queue, reviewQueue is somehow empty (how da hell)"
+//     );
+//     dispatch({ type: "UPDATE_REVIEW_QUEUE", payload: state.reviewQueue });
+//   }
+// };
+
+const dequeueFromReviewQueue = (
   state: ReviewSessionState,
   dispatch: Dispatch
 ) => {
+  // TODO: remove this if statement, shouldn't ever be needed
   if (state.reviewQueue) {
-    let updatedReviewQueue = state.reviewQueue.map((queueItem) =>
-      queueItem.itemID === queueItemToUpdate.itemID
-        ? { ...queueItem, is_reviewed: reviewStatus }
-        : queueItem
-    );
+    let updatedReviewQueue = state.reviewQueue.slice(1);
 
     dispatch({
-      type: "UPDATE_ITEM_REVIEW_STATUS",
+      type: "UPDATE_REVIEW_QUEUE",
       payload: updatedReviewQueue,
     });
   } else {
     console.error(
       "Couldn't update item in queue, reviewQueue is somehow empty (how da hell)"
     );
-    dispatch({ type: "UPDATE_ITEM_REVIEW_STATUS", payload: state.reviewQueue });
+    dispatch({ type: "UPDATE_REVIEW_QUEUE", payload: state.reviewQueue });
   }
+};
+
+const addToCompletedQueue = (
+  queueItemToAdd: ReviewQueueItem,
+  state: ReviewSessionState,
+  dispatch: Dispatch
+) => {
+  let updatedCompletedReviews = state.completedReviews.concat(queueItemToAdd);
+  dispatch({
+    type: "UPDATE_COMPLETED_REVIEWS_QUEUE",
+    payload: updatedCompletedReviews,
+  });
 };
 
 const createMeaningAndReadingQueueItems = (
@@ -205,17 +239,25 @@ const ReviewSessionProvider = ({ children }: ProviderProps) => {
     action: ReviewSessionAction
   ) => {
     switch (action.type) {
-      case "START_REVIEW":
-        return { ...state, isReviewInProgress: true };
+      case "MARK_ITEM_AS_REVIEWED":
+        return { ...state, completedReviews: action.payload };
       case "END_REVIEW":
         removeItem("reviewData");
-        return { ...state, isReviewInProgress: false };
+        removeItem("completedReviews");
+        return { ...state, reviewQueue: null, completedReviews: [] };
       case "REVIEW_QUEUE_LOADING":
         return { ...state, isLoading: true };
       case "REVIEW_QUEUE_LOADED":
+        // TODO: change so setItem not called here since usually pulled from cache
         setItem("reviewQueue", action.payload);
         return { ...state, isLoading: false, reviewQueue: action.payload };
-      case "UPDATE_ITEM_REVIEW_STATUS":
+      case "COMPLETED_REVIEWS_LOADING":
+        return { ...state, isLoading: true };
+      case "COMPLETED_REVIEWS_LOADED":
+        // TODO: change so setItem not called here since usually pulled from cache
+        setItem("completedReviews", action.payload);
+        return { ...state, isLoading: false, completedReviews: action.payload };
+      case "UPDATE_REVIEW_QUEUE":
         return { ...state, reviewQueue: action.payload };
       default: {
         throw new Error(`Unhandled action type: ${action.type}`);
@@ -232,10 +274,20 @@ const ReviewSessionProvider = ({ children }: ProviderProps) => {
     });
   };
 
+  const getCompletedReviewsFromStorage = async () => {
+    dispatch({ type: "COMPLETED_REVIEWS_LOADING" });
+    const queue = await getItem("completedReviews");
+    dispatch({
+      type: "COMPLETED_REVIEWS_LOADED",
+      payload: queue,
+    });
+  };
+
   const [state, dispatch] = useReducer(reviewQueueReducer, initialState);
 
   useEffect(() => {
     getReviewQueueFromStorage();
+    getCompletedReviewsFromStorage();
   }, []);
 
   const value = { state, dispatch };
@@ -264,5 +316,6 @@ export {
   ReviewSessionProvider,
   useReviewSession,
   createReviewItems,
-  updateItemReviewStatus,
+  dequeueFromReviewQueue,
+  addToCompletedQueue,
 };
