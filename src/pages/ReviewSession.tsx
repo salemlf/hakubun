@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IonContent, IonGrid, IonPage, IonRow, IonCol } from "@ionic/react";
+import { IonContent, IonGrid, IonPage, useIonToast } from "@ionic/react";
 import { useTabBarContext } from "../contexts/TabBarContext";
 import { useReviewSession } from "../contexts/ReviewSessionContext";
 import { useQueue } from "../hooks/useQueue";
@@ -30,7 +30,11 @@ const Grid = styled(IonGrid)`
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 // TODO: fix the excessive number of rerenders happening for this page
 export const ReviewSession = () => {
+  const [currReviewCardIndex, setCurrReviewCardIndex] = useState(0);
+  const [isSecondClick, setIsSecondClick] = useState(false);
   const { setShowTabBar } = useTabBarContext();
+  const [present] = useIonToast();
+  const { state } = useReviewSession();
   useEffect(() => {
     setShowTabBar(false);
 
@@ -39,8 +43,14 @@ export const ReviewSession = () => {
     };
   });
 
-  const [currReviewCardIndex, setCurrReviewCardIndex] = useState(0);
-  const { state } = useReviewSession();
+  const presentToast = (message: string) => {
+    present({
+      message: message,
+      duration: 3000,
+      position: "top",
+    });
+  };
+
   let reviewQueue = state.reviewQueue;
 
   const handleNextClick = (
@@ -48,6 +58,10 @@ export const ReviewSession = () => {
     userAnswer: string,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
+    if (userAnswer === "") {
+      presentToast("SHAKE-EDY SHAKE, INVALID INPUT!");
+      return;
+    }
     // TODO: account for edge cases (create some function to check if valid input) before checking if correct answer
     let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
     // *testing
@@ -56,7 +70,39 @@ export const ReviewSession = () => {
       isCorrectAnswer
     );
     // *testing
+
+    // TODO: isSecondClick will also be equivalent to swiping
+    if (isSecondClick) {
+      //TODO: move onto
+      if (isCorrectAnswer) {
+        presentToast("CORRECT!");
+        // TODO: if correct...
+        // TODO:   check that is_reviewed isn't already true (i.e. marked incorrect and now reviewing again)
+        // TODO: if above is true (is_reviewed is false)...
+        // TODO:   mark as correct and set is_reviewed to true
+        // TODO:   then remove from queue (dequeue), and add to completedReviews
+        // TODO: if above is not true (is_reviewed is true)...
+        // TODO:   keep answer as incorrect and and set is_reviewed to true
+        // TODO:   then remove from queue (dequeue), and add to completedReviews
+      } else {
+        // TODO: if incorrect...
+        // TODO: mark as incorrect and set is_reviewed to true
+        // TODO: then dequeue and add back to queue in some random spot
+        presentToast("SRRY, WRONG :(");
+      }
+    } else {
+      if (isCorrectAnswer) {
+        presentToast("CORRECT!");
+        // TODO: show tab at bottom to pull up for details
+      } else {
+        // TODO: show tab at bottom to pull up for details
+        presentToast("SRRY, WRONG :(");
+      }
+      // TODO: show incorrect junk, blah blah
+    }
+
     setUserAnswer("");
+    // TODO: this can be removed once correct/incorrect and dequeue stuff is implemented
     setCurrReviewCardIndex((prevIndex) => prevIndex + 1);
   };
 

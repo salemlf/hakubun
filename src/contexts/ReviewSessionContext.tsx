@@ -98,32 +98,6 @@ const getStudyMaterials = async (subjIDs: number[]) => {
   }
 };
 
-// const updateReviewQueue = (
-//   queueItemToUpdate: ReviewQueueItem,
-//   propertiesToUpdate: {},
-//   state: ReviewSessionState,
-//   dispatch: Dispatch
-// ) => {
-//   // TODO: remove this if statement, shouldn't ever be needed
-//   if (state.reviewQueue) {
-//     let updatedReviewQueue = state.reviewQueue.map((queueItem) =>
-//       queueItem.itemID === queueItemToUpdate.itemID
-//         ? { ...queueItem, ...propertiesToUpdate }
-//         : queueItem
-//     );
-
-//     dispatch({
-//       type: "UPDATE_REVIEW_QUEUE",
-//       payload: updatedReviewQueue,
-//     });
-//   } else {
-//     console.error(
-//       "Couldn't update item in queue, reviewQueue is somehow empty (how da hell)"
-//     );
-//     dispatch({ type: "UPDATE_REVIEW_QUEUE", payload: state.reviewQueue });
-//   }
-// };
-
 const dequeueFromReviewQueue = (
   state: ReviewSessionState,
   dispatch: Dispatch
