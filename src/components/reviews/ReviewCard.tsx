@@ -56,25 +56,29 @@ const AnswerInput = styled.input`
 
 type Props = {
   reviewQueue: ReviewQueueItem[];
-  onPrevClick: () => void;
+  onRetryClick: (
+    currReviewItem: ReviewQueueItem,
+    setUserAnswer: (value: React.SetStateAction<string>) => void
+  ) => void;
   onNextClick: (
     currReviewItem: ReviewQueueItem,
     userAnswer: string,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => void;
   currReviewCardIndex: number;
+  enterTextDisabled: boolean;
+  showRetryButton: boolean;
 };
 
 export const ReviewCard = ({
   reviewQueue,
-  onPrevClick,
+  onRetryClick,
   onNextClick,
   currReviewCardIndex,
+  enterTextDisabled,
+  showRetryButton,
 }: Props) => {
   const [userAnswer, setUserAnswer] = useState("");
-  //   *testing
-  console.log("🚀 ~ file: ReviewCard.tsx:69 ~ userAnswer:", userAnswer);
-  //   *testing
   const currentReviewItem = reviewQueue[currReviewCardIndex];
   let subjType = currentReviewItem.object as SubjectType;
 
@@ -99,7 +103,6 @@ export const ReviewCard = ({
   let onInputFunction =
     reviewType === "reading" ? convertInputToKana : setUserAnswer;
 
-  // TODO: remove "previous" button, just for testing right now
   return (
     <>
       <IonRow>
@@ -122,24 +125,30 @@ export const ReviewCard = ({
           type="text"
           value={userAnswer}
           onChange={(e) => onInputFunction(e.target.value)}
+          disabled={enterTextDisabled}
+          placeholder={reviewType === "reading" ? "かな" : ""}
         />
       </IonRow>
       <IonGrid>
         <IonRow>
+          {showRetryButton && (
+            <ButtonCol>
+              <button
+                onClick={() => {
+                  onRetryClick(currentReviewItem, setUserAnswer);
+                }}
+              >
+                Retry
+              </button>
+            </ButtonCol>
+          )}
           <ButtonCol>
             <button
               onClick={() => {
-                setUserAnswer("");
-                onPrevClick();
-              }}
-              disabled={currReviewCardIndex === 0}
-            >
-              Previous
-            </button>
-          </ButtonCol>
-          <ButtonCol>
-            <button
-              onClick={() => {
+                // so "ん" is displayed properly (setter is async though, so needs to be converted elsewhere too)
+                if (reviewType === "reading") {
+                  setUserAnswer(toKana(userAnswer));
+                }
                 onNextClick(currentReviewItem, userAnswer, setUserAnswer);
               }}
               disabled={currReviewCardIndex === reviewQueue.length - 1}

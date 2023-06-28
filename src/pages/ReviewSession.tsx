@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { IonContent, IonGrid, IonPage, useIonToast } from "@ionic/react";
 import { useTabBarContext } from "../contexts/TabBarContext";
-import { useReviewSession } from "../contexts/ReviewSessionContext";
-import { useQueue } from "../hooks/useQueue";
+import {
+  useReviewSession,
+  addToReviewQueue,
+  updateReviewQueue,
+} from "../contexts/ReviewSessionContext";
 
 import styled from "styled-components/macro";
 import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
 import { ReviewCard } from "../components/reviews/ReviewCard";
 import { ReviewQueueItem } from "../types/MiscTypes";
-import { isUserAnswerCorrect } from "../services/SubjectAndAssignmentService";
+import {
+  isUserAnswerCorrect,
+  isUserAnswerValid,
+} from "../services/SubjectAndAssignmentService";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -31,10 +37,13 @@ const Grid = styled(IonGrid)`
 // TODO: fix the excessive number of rerenders happening for this page
 export const ReviewSession = () => {
   const [currReviewCardIndex, setCurrReviewCardIndex] = useState(0);
+  // TODO: isSecondClick will be equivalent to swiping
   const [isSecondClick, setIsSecondClick] = useState(false);
+  const [isSubjectDetailsVisible, setIsSubjectDetailsVisible] = useState(false);
+  const [showRetryButton, setShowRetryButton] = useState(false);
   const { setShowTabBar } = useTabBarContext();
   const [present] = useIonToast();
-  const { state } = useReviewSession();
+  const { state, dispatch } = useReviewSession();
   useEffect(() => {
     setShowTabBar(false);
 
@@ -53,16 +62,77 @@ export const ReviewSession = () => {
 
   let reviewQueue = state.reviewQueue;
 
+  const handleCorrectAnswer = (
+    currReviewItem: ReviewQueueItem,
+    setUserAnswer: (value: React.SetStateAction<string>) => void
+  ) => {
+    let updatedReviewItem = currReviewItem;
+    if (isSecondClick) {
+      setIsSubjectDetailsVisible(false);
+      setUserAnswer("");
+      setCurrReviewCardIndex((prevIndex) => prevIndex + 1);
+    } else {
+      presentToast("CORRECT!");
+      // showing tab at bottom to pull up for details
+      setIsSubjectDetailsVisible(true);
+
+      // making sure is_reviewed isn't already true (i.e. marked incorrect and now reviewing again)
+      if (updatedReviewItem.is_reviewed) {
+        // keeping answer as incorrect and is_reviewed as true
+        // TODO: make sure this actually updates
+        updatedReviewItem.is_reviewed = true;
+        // TODO: update SRS level
+        // TODO: change to show toast with updated SRS level
+        presentToast("FAKE UPDATING SRS LEVEL...");
+      } else {
+        // TODO: make sure this actually updates
+        updatedReviewItem.is_correct_answer = true;
+        updatedReviewItem.is_reviewed = true;
+      }
+      updateReviewQueue(updatedReviewItem, state, dispatch);
+    }
+  };
+
+  const handleWrongAnswer = (
+    currReviewItem: ReviewQueueItem,
+    setUserAnswer: (value: React.SetStateAction<string>) => void
+  ) => {
+    let updatedReviewItem = currReviewItem;
+    if (isSecondClick) {
+      setIsSubjectDetailsVisible(false);
+      setShowRetryButton(false);
+      // TODO: rn just adding to back of queue, change to add to some random spot
+      addToReviewQueue(updatedReviewItem, state, dispatch);
+      setUserAnswer("");
+      setCurrReviewCardIndex((prevIndex) => prevIndex + 1);
+    } else {
+      // showing tab at bottom to pull up for details
+      setIsSubjectDetailsVisible(true);
+      // TODO: display retry button
+      setShowRetryButton(true);
+      presentToast("SRRY, WRONG :(");
+      updatedReviewItem.is_correct_answer = false;
+      updatedReviewItem.is_reviewed = true;
+      updateReviewQueue(updatedReviewItem, state, dispatch);
+    }
+  };
+
   const handleNextClick = (
     currReviewItem: ReviewQueueItem,
     userAnswer: string,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
-    if (userAnswer === "") {
-      presentToast("SHAKE-EDY SHAKE, INVALID INPUT!");
+    let isValidInfo = isUserAnswerValid(currReviewItem, userAnswer);
+    if (!isValidInfo.isValid) {
+      presentToast(isValidInfo.message);
       return;
     }
-    // TODO: account for edge cases (create some function to check if valid input) before checking if correct answer
+    // *testing
+    console.log(
+      "🚀 ~ file: ReviewSession.tsx:137 ~ ReviewSession ~ userAnswer:",
+      userAnswer
+    );
+    // *testing
     let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
     // *testing
     console.log(
@@ -71,43 +141,32 @@ export const ReviewSession = () => {
     );
     // *testing
 
-    // TODO: isSecondClick will also be equivalent to swiping
-    if (isSecondClick) {
-      //TODO: move onto
-      if (isCorrectAnswer) {
-        presentToast("CORRECT!");
-        // TODO: if correct...
-        // TODO:   check that is_reviewed isn't already true (i.e. marked incorrect and now reviewing again)
-        // TODO: if above is true (is_reviewed is false)...
-        // TODO:   mark as correct and set is_reviewed to true
-        // TODO:   then remove from queue (dequeue), and add to completedReviews
-        // TODO: if above is not true (is_reviewed is true)...
-        // TODO:   keep answer as incorrect and and set is_reviewed to true
-        // TODO:   then remove from queue (dequeue), and add to completedReviews
-      } else {
-        // TODO: if incorrect...
-        // TODO: mark as incorrect and set is_reviewed to true
-        // TODO: then dequeue and add back to queue in some random spot
-        presentToast("SRRY, WRONG :(");
-      }
-    } else {
-      if (isCorrectAnswer) {
-        presentToast("CORRECT!");
-        // TODO: show tab at bottom to pull up for details
-      } else {
-        // TODO: show tab at bottom to pull up for details
-        presentToast("SRRY, WRONG :(");
-      }
-      // TODO: show incorrect junk, blah blah
-    }
+    isCorrectAnswer
+      ? handleCorrectAnswer(currReviewItem, setUserAnswer)
+      : handleWrongAnswer(currReviewItem, setUserAnswer);
 
-    setUserAnswer("");
-    // TODO: this can be removed once correct/incorrect and dequeue stuff is implemented
-    setCurrReviewCardIndex((prevIndex) => prevIndex + 1);
+    setIsSecondClick(!isSecondClick);
   };
 
-  const handlePrevClick = () => {
-    setCurrReviewCardIndex((prevIndex) => prevIndex - 1);
+  const handleRetryClick = (
+    currReviewItem: ReviewQueueItem,
+    setUserAnswer: (value: React.SetStateAction<string>) => void
+  ) => {
+    // *testing
+    console.log(
+      "🚀 ~ file: ReviewSession.tsx:150 ~ handleRetryClick ~ currReviewItem:",
+      currReviewItem
+    );
+    // *testing
+    let updatedReviewItem = currReviewItem;
+
+    updatedReviewItem.is_correct_answer = null;
+    updatedReviewItem.is_reviewed = false;
+    updateReviewQueue(updatedReviewItem, state, dispatch);
+    setIsSubjectDetailsVisible(false);
+    setUserAnswer("");
+    setIsSecondClick(false);
+    setShowRetryButton(false);
   };
 
   return (
@@ -121,14 +180,26 @@ export const ReviewSession = () => {
       <IonContent>
         <Grid>
           {state.isLoading && <p>Loading...</p>}
-          {!state.isLoading && reviewQueue && reviewQueue.length !== 0 && (
-            <ReviewCard
-              reviewQueue={reviewQueue}
-              currReviewCardIndex={currReviewCardIndex}
-              onPrevClick={handlePrevClick}
-              onNextClick={handleNextClick}
-            />
-          )}
+          {!state.isLoading &&
+            reviewQueue &&
+            reviewQueue.length - 1 !== currReviewCardIndex && (
+              <>
+                <ReviewCard
+                  reviewQueue={reviewQueue}
+                  currReviewCardIndex={currReviewCardIndex}
+                  onRetryClick={handleRetryClick}
+                  onNextClick={handleNextClick}
+                  enterTextDisabled={isSecondClick}
+                  showRetryButton={showRetryButton}
+                />
+                {isSubjectDetailsVisible && <div>Subject info here</div>}
+              </>
+            )}
+          {!state.isLoading &&
+            reviewQueue &&
+            reviewQueue.length - 1 === currReviewCardIndex && (
+              <div>REVIEW SUMMARY</div>
+            )}
         </Grid>
       </IonContent>
     </Page>
