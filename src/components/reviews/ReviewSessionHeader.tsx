@@ -73,6 +73,8 @@ export const ReviewSessionHeader = ({
   const notReviewed = reviewQueue.filter(
     (reviewItem) => reviewItem.is_reviewed === false
   );
+
+  // TODO: calculate some other way, this is showing wrong #
   const numUniqueItemsInQueue = [
     ...new Map(
       notReviewed.map((unreviewedCard) => [

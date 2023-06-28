@@ -14,6 +14,7 @@ import {
   TagType,
 } from "../types/MiscTypes";
 import { capitalizeWord } from "./MiscService";
+import { toKana } from "wanakana";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(
@@ -189,6 +190,42 @@ export const compareAssignmentsByAvailableDate = (
   );
 };
 
+// TODO: finish implementing
+export const isUserAnswerValid = (
+  currReviewItem: ReviewQueueItem,
+  userAnswer: string
+) => {
+  let answerValidInfo = {
+    isValid: true,
+    message: "",
+  };
+  // TODO: return an object with boolean on whether or not valid answer, along with message (if answer isn't valid) on why invalid
+  if (userAnswer === "") {
+    answerValidInfo.isValid = false;
+    answerValidInfo.message = "SHAKE-EDY SHAKE, PLEASE ENTER ANSWER!";
+    return answerValidInfo;
+  }
+  /*
+  examples of invalid answers
+  -------------------
+  any subject
+  - no answer entered
+  - entered kanji/kana for meaning
+  - entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
+  
+  kanji
+  - entered onyomi instead of kunyomi, or vice versa
+
+  meaning review type
+  - entered kanji/kana
+
+  reading review type
+  - romaji that can't be converted to kana
+  */
+
+  return answerValidInfo;
+};
+
 export const isUserMeaningAnswerCorrect = (
   reviewItem: ReviewQueueItem,
   userAnswer: string
@@ -220,6 +257,8 @@ export const isUserReadingAnswerCorrect = (
   reviewItem: ReviewQueueItem,
   userAnswer: string
 ) => {
+  // so "ん" is converted properly
+  let userReading = toKana(userAnswer);
   let answers = reviewItem["readings"] as SubjectReading[];
 
   let acceptedAnswers = answers.filter((answer) => answer.accepted_answer);
@@ -228,6 +267,7 @@ export const isUserReadingAnswerCorrect = (
     "🚀 ~ file: SubjectAndAssignmentService.tsx:193 ~ acceptedAnswers:",
     acceptedAnswers
   );
+  // *testing
 
   // readings shouldn't allow any typos/mistakes
   let options = {
@@ -235,7 +275,7 @@ export const isUserReadingAnswerCorrect = (
     threshold: 0.0,
   };
   let fuse = new Fuse(acceptedAnswers, options);
-  let readingsMatched = fuse.search(userAnswer);
+  let readingsMatched = fuse.search(userReading);
   // *testing
   console.log(
     "🚀 ~ file: SubjectAndAssignmentService.tsx:200 ~ readingsMatched:",
@@ -245,7 +285,6 @@ export const isUserReadingAnswerCorrect = (
   return readingsMatched.length !== 0;
 };
 
-// TODO: finish implementing
 export const isUserAnswerCorrect = (
   reviewItem: ReviewQueueItem,
   userAnswer: string
