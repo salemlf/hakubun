@@ -127,7 +127,7 @@ export const ReviewCard = ({
           value={userAnswer}
           onChange={(e) => onInputFunction(e.target.value)}
           disabled={enterTextDisabled}
-          placeholder={reviewType === "reading" ? "かな" : ""}
+          placeholder={reviewType === "reading" ? "答え" : ""}
         />
       </IonRow>
       <IonGrid>
