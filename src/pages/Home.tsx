@@ -21,7 +21,6 @@ import ReviewsButton from "../components/buttons/ReviewsButton";
 import { RadicalForLvlCard } from "../components/cards/RadicalForLvlCard";
 import { KanjiContainer } from "../components/cards/KanjiForLvlCard";
 import { SrsStages } from "../components/SrsStages";
-import { useTabBarContext } from "../contexts/TabBarContext";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);

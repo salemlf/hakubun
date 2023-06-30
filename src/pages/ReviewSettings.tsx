@@ -12,8 +12,6 @@ import {
   IonTitle,
 } from "@ionic/react";
 import { useIonRouter } from "@ionic/react";
-
-import { useTabBarContext } from "../contexts/TabBarContext";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
 
 import { BasicCard } from "../components/cards/BasicCard";
@@ -64,14 +62,6 @@ const Title = styled(IonTitle)`
 export const ReviewSettings = () => {
   const { dispatch } = useReviewSession();
   const router = useIonRouter();
-  const { setShowTabBar } = useTabBarContext();
-  useEffect(() => {
-    setShowTabBar(false);
-
-    return () => {
-      setShowTabBar(true);
-    };
-  });
 
   const {
     isLoading: availForReviewLoading,

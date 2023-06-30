@@ -70,6 +70,7 @@ type Props = {
   showRetryButton: boolean;
 };
 
+// TODO: add button to abandon session
 export const ReviewCard = ({
   reviewQueue,
   onRetryClick,
