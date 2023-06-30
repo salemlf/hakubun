@@ -30,7 +30,7 @@ import {
 import {
   useReviewSession,
   createReviewItems,
-} from "../contexts/ReviewSessionContext";
+} from "../contexts/ReviewSessionDataContext";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -60,7 +60,7 @@ const Title = styled(IonTitle)`
 `;
 
 export const ReviewSettings = () => {
-  const { dispatch } = useReviewSession();
+  const { dispatchContext } = useReviewSession();
   const router = useIonRouter();
 
   const {
@@ -118,7 +118,7 @@ export const ReviewSettings = () => {
     // *testing
 
     let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
-    createReviewItems(assignmentBatchToReview, subjIDs, dispatch);
+    createReviewItems(assignmentBatchToReview, subjIDs, dispatchContext);
     router.push("/review/session");
   };
 
