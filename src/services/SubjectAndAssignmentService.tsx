@@ -195,15 +195,20 @@ export const isUserAnswerValid = (
   currReviewItem: ReviewQueueItem,
   userAnswer: string
 ) => {
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:198 ~ userAnswer:",
+    userAnswer
+  );
   let answerValidInfo = {
     isValid: true,
     message: "",
   };
   // TODO: return an object with boolean on whether or not valid answer, along with message (if answer isn't valid) on why invalid
   if (userAnswer === "") {
-    answerValidInfo.isValid = false;
-    answerValidInfo.message = "SHAKE-EDY SHAKE, PLEASE ENTER ANSWER!";
-    return answerValidInfo;
+    return {
+      isValid: false,
+      message: "SHAKE-EDY SHAKE, PLEASE ENTER ANSWER!",
+    };
   }
   /*
   examples of invalid answers

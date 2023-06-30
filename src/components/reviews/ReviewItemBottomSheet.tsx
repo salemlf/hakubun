@@ -8,17 +8,28 @@ import {
 } from "@ionic/react";
 
 // TODO: pass in subject info
-export const ReviewItemBottomSheet = () => {
+// TODO: fix issue where this is showing up on other pages, change isOpen to be changed by passed in value
+
+type Props = {
+  isBottomSheetVisible: boolean;
+};
+
+export const ReviewItemBottomSheet = ({ isBottomSheetVisible }: Props) => {
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewItemBottomSheet.tsx:18 ~ ReviewItemBottomSheet ~ isBottomSheetVisible:",
+    isBottomSheetVisible
+  );
+  // *testing
   const modal = useRef<HTMLIonModalElement>(null);
 
   return (
     <IonModal
       ref={modal}
-      isOpen={true}
+      isOpen={isBottomSheetVisible}
       initialBreakpoint={0.06}
       breakpoints={[0.06, 1]}
       handleBehavior="cycle"
-      canDismiss={false}
       backdropDismiss={false}
       backdropBreakpoint={0.5}
     >

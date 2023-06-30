@@ -1,5 +1,6 @@
 import { SrsLevelName } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
+import { PopoverMessageType } from "../reducers/reviewSessionReducer";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   if (timeTill > 0) {
@@ -104,4 +105,14 @@ export const shuffleArray = (array: any[]) => {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
+};
+
+const popoverColors: { [index: string]: string } = {
+  correct: "var(--ion-color-tertiary)",
+  incorrect: "var(--ion-color-danger)",
+  invalid: "var(--ion-color-warning)",
+};
+
+export const getPopoverMsgColor = (messageType: PopoverMessageType) => {
+  return popoverColors[messageType as keyof {}];
 };

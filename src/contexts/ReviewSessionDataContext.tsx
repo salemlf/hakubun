@@ -208,12 +208,14 @@ const createReviewItems = async (
 const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
   const { getItem, setItem, removeItem } = useStorage();
 
+  // TODO: refactor and then move into its own file
   const reviewQueueReducer = (
     state: ReviewDataSessionState,
     action: ReviewSessionAction
   ) => {
     switch (action.type) {
       case "END_REVIEW":
+        // TODO: change so setItem called in function, not here
         removeItem("reviewData");
         return { ...state, reviewQueue: null };
       case "REVIEW_QUEUE_LOADING":

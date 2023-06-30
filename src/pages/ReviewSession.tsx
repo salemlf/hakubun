@@ -1,20 +1,23 @@
 import { useReducer } from "react";
-import { IonContent, IonGrid, IonPage, useIonToast } from "@ionic/react";
+import { IonContent, IonGrid, IonPage } from "@ionic/react";
 import {
   useReviewSession,
   addToReviewQueue,
   updateReviewQueue,
 } from "../contexts/ReviewSessionDataContext";
 
-import styled from "styled-components/macro";
+import { ReviewQueueItem } from "../types/MiscTypes";
 import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
 import { ReviewCard } from "../components/reviews/ReviewCard";
 import { ReviewItemBottomSheet } from "../components/reviews/ReviewItemBottomSheet";
-import { ReviewQueueItem } from "../types/MiscTypes";
+import { ReviewCharAndType } from "../components/reviews/ReviewCharAndType";
+
 import {
   isUserAnswerCorrect,
   isUserAnswerValid,
 } from "../services/SubjectAndAssignmentService";
+import { reviewSessionReducer } from "../reducers/reviewSessionReducer";
+import styled from "styled-components/macro";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -33,102 +36,23 @@ const Grid = styled(IonGrid)`
   padding-bottom: 0;
 `;
 
-type SessionStateProps = {
-  currReviewCardIndex: number;
-  // TODO: change below to more generic name, swiping will also toggle value
-  isSecondClick: boolean;
-  isSubjectDetailsVisible: boolean;
-  showRetryButton: boolean;
-};
-
-type ActionType =
-  | "CORRECT_MOVE_TO_NEXT"
-  | "WRONG_MOVE_TO_NEXT"
-  | "CORRECT_SHOW_RESULT"
-  | "WRONG_SHOW_RESULT"
-  | "SUBMIT_CHOICE"
-  | "RETRY_REVIEW";
-
-type SessionAction = {
-  type: ActionType;
-  payload?: any;
-};
-
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 // TODO: fix the excessive number of rerenders happening for this page
 export const ReviewSession = () => {
-  const [present] = useIonToast();
   // TODO: rename state to reviewContextState or something
   const { state, dispatchContext } = useReviewSession();
 
-  const presentToast = (message: string) => {
-    present({
-      message: message,
-      duration: 3000,
-      position: "top",
-    });
-  };
-
   let reviewQueue = state.reviewQueue;
-
-  // TODO: fix all the switch cases
-  const reviewSessionReducer = (
-    state: SessionStateProps,
-    action: SessionAction
-  ) => {
-    switch (action.type) {
-      case "CORRECT_SHOW_RESULT":
-        return { ...state, isSubjectDetailsVisible: true };
-      case "CORRECT_MOVE_TO_NEXT":
-        // TODO: rn just adding to back of queue, change to add to some random spot
-        return { ...state, currReviewCardIndex: state.currReviewCardIndex + 1 };
-      case "WRONG_SHOW_RESULT":
-        return {
-          ...state,
-          isSubjectDetailsVisible: true,
-          showRetryButton: true,
-        };
-      case "WRONG_MOVE_TO_NEXT":
-        // TODO: rn just adding to back of queue, change to add to some random spot
-        return {
-          ...state,
-          isSubjectDetailsVisible: false,
-          showRetryButton: false,
-          currReviewCardIndex: state.currReviewCardIndex + 1,
-        };
-      case "WRONG_SHOW_RESULT":
-        return {
-          ...state,
-          isSubjectDetailsVisible: true,
-          showRetryButton: true,
-        };
-      case "SUBMIT_CHOICE":
-        return {
-          ...state,
-          isSecondClick: !state.isSecondClick,
-        };
-      case "RETRY_REVIEW":
-        return {
-          ...state,
-          isSecondClick: false,
-          isSubjectDetailsVisible: false,
-          showRetryButton: false,
-        };
-      default: {
-        throw new Error(
-          `Unhandled review session reducer action type: ${action.type}`
-        );
-      }
-    }
-  };
 
   const [sessionState, dispatchSessionState] = useReducer(
     reviewSessionReducer,
     {
       currReviewCardIndex: 0,
       isSecondClick: false,
-      isSubjectDetailsVisible: false,
+      isBottomSheetVisible: false,
       showRetryButton: false,
+      popoverInfo: { message: "", messageType: "invalid" },
+      displayPopoverMsg: false,
     }
   );
 
@@ -141,17 +65,26 @@ export const ReviewSession = () => {
       setUserAnswer("");
     } else {
       let updatedReviewItem = currReviewItem;
-      presentToast("CORRECT!");
+      dispatchSessionState({
+        type: "SHOW_POPOVER_MSG",
+        payload: { message: "CORRECT!", messageType: "correct" },
+      });
       dispatchSessionState({ type: "CORRECT_SHOW_RESULT" });
 
-      // user is correcting after being incorrect
-      if (updatedReviewItem.is_reviewed) {
+      let wasWrongFirstAttempt = updatedReviewItem.is_reviewed;
+      if (wasWrongFirstAttempt) {
         // keeping answer as incorrect and is_reviewed as true
         // TODO: make sure this actually updates
         updatedReviewItem.is_reviewed = true;
         // TODO: update review item SRS level
         // TODO: change to show toast with updated SRS level
-        presentToast("FAKE UPDATING SRS LEVEL...");
+        dispatchSessionState({
+          type: "SHOW_POPOVER_MSG",
+          payload: {
+            message: "FAKE UPDATING SRS LEVEL...",
+            messageType: "correct",
+          },
+        });
       }
       // user got answer correct first try
       else {
@@ -174,7 +107,10 @@ export const ReviewSession = () => {
       setUserAnswer("");
     } else {
       dispatchSessionState({ type: "WRONG_SHOW_RESULT" });
-      presentToast("SRRY, WRONG :(");
+      dispatchSessionState({
+        type: "SHOW_POPOVER_MSG",
+        payload: { message: "SRRY, WRONG :(", messageType: "incorrect" },
+      });
       updatedReviewItem.is_correct_answer = false;
       updatedReviewItem.is_reviewed = true;
     }
@@ -187,8 +123,17 @@ export const ReviewSession = () => {
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
     let isValidInfo = isUserAnswerValid(currReviewItem, userAnswer);
-    if (!isValidInfo.isValid) {
-      presentToast(isValidInfo.message);
+    if (isValidInfo.isValid === false) {
+      dispatchSessionState({
+        type: "SHOW_POPOVER_MSG",
+        payload: { message: isValidInfo.message, messageType: "invalid" },
+      });
+      // *testing
+      console.log(
+        "🚀 ~ file: ReviewSession.tsx:233 ~ ReviewSession ~ isValidInfo.message:",
+        isValidInfo.message
+      );
+      // *testing
       return;
     }
     // *testing
@@ -240,6 +185,12 @@ export const ReviewSession = () => {
             reviewQueue &&
             reviewQueue.length - 1 !== sessionState.currReviewCardIndex && (
               <>
+                <ReviewCharAndType
+                  reviewQueue={reviewQueue}
+                  currReviewCardIndex={sessionState.currReviewCardIndex}
+                  showReviewMsg={sessionState.displayPopoverMsg}
+                  popoverInfo={sessionState.popoverInfo}
+                />
                 <ReviewCard
                   reviewQueue={reviewQueue}
                   currReviewCardIndex={sessionState.currReviewCardIndex}
@@ -248,9 +199,9 @@ export const ReviewSession = () => {
                   enterTextDisabled={sessionState.isSecondClick}
                   showRetryButton={sessionState.showRetryButton}
                 />
-                {sessionState.isSubjectDetailsVisible && (
-                  <ReviewItemBottomSheet />
-                )}
+                <ReviewItemBottomSheet
+                  isBottomSheetVisible={sessionState.isBottomSheetVisible}
+                />
               </>
             )}
           {!state.isLoading &&
