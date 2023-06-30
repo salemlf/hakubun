@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useReducer } from "react";
 import { IonContent, IonGrid, IonPage, useIonToast } from "@ionic/react";
 import {
   useReviewSession,
   addToReviewQueue,
   updateReviewQueue,
-} from "../contexts/ReviewSessionContext";
+} from "../contexts/ReviewSessionDataContext";
 
 import styled from "styled-components/macro";
 import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
 import { ReviewCard } from "../components/reviews/ReviewCard";
-import { BottomSheet } from "../components/reviews/BottomSheet";
+import { ReviewItemBottomSheet } from "../components/reviews/ReviewItemBottomSheet";
 import { ReviewQueueItem } from "../types/MiscTypes";
 import {
   isUserAnswerCorrect,
@@ -33,17 +33,33 @@ const Grid = styled(IonGrid)`
   padding-bottom: 0;
 `;
 
+type SessionStateProps = {
+  currReviewCardIndex: number;
+  // TODO: change below to more generic name, swiping will also toggle value
+  isSecondClick: boolean;
+  isSubjectDetailsVisible: boolean;
+  showRetryButton: boolean;
+};
+
+type ActionType =
+  | "CORRECT_MOVE_TO_NEXT"
+  | "WRONG_MOVE_TO_NEXT"
+  | "CORRECT_SHOW_RESULT"
+  | "WRONG_SHOW_RESULT"
+  | "SUBMIT_CHOICE"
+  | "RETRY_REVIEW";
+
+type SessionAction = {
+  type: ActionType;
+  payload?: any;
+};
+
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 // TODO: fix the excessive number of rerenders happening for this page
 export const ReviewSession = () => {
-  // TODO: a lot of state here, change to use useReducer
-  const [currReviewCardIndex, setCurrReviewCardIndex] = useState(0);
-  // TODO: isSecondClick will be equivalent to swiping
-  const [isSecondClick, setIsSecondClick] = useState(false);
-  const [isSubjectDetailsVisible, setIsSubjectDetailsVisible] = useState(false);
-  const [showRetryButton, setShowRetryButton] = useState(false);
   const [present] = useIonToast();
-  const { state, dispatch } = useReviewSession();
+  // TODO: rename state to reviewContextState or something
+  const { state, dispatchContext } = useReviewSession();
 
   const presentToast = (message: string) => {
     present({
@@ -55,34 +71,95 @@ export const ReviewSession = () => {
 
   let reviewQueue = state.reviewQueue;
 
+  // TODO: fix all the switch cases
+  const reviewSessionReducer = (
+    state: SessionStateProps,
+    action: SessionAction
+  ) => {
+    switch (action.type) {
+      case "CORRECT_SHOW_RESULT":
+        return { ...state, isSubjectDetailsVisible: true };
+      case "CORRECT_MOVE_TO_NEXT":
+        // TODO: rn just adding to back of queue, change to add to some random spot
+        return { ...state, currReviewCardIndex: state.currReviewCardIndex + 1 };
+      case "WRONG_SHOW_RESULT":
+        return {
+          ...state,
+          isSubjectDetailsVisible: true,
+          showRetryButton: true,
+        };
+      case "WRONG_MOVE_TO_NEXT":
+        // TODO: rn just adding to back of queue, change to add to some random spot
+        return {
+          ...state,
+          isSubjectDetailsVisible: false,
+          showRetryButton: false,
+          currReviewCardIndex: state.currReviewCardIndex + 1,
+        };
+      case "WRONG_SHOW_RESULT":
+        return {
+          ...state,
+          isSubjectDetailsVisible: true,
+          showRetryButton: true,
+        };
+      case "SUBMIT_CHOICE":
+        return {
+          ...state,
+          isSecondClick: !state.isSecondClick,
+        };
+      case "RETRY_REVIEW":
+        return {
+          ...state,
+          isSecondClick: false,
+          isSubjectDetailsVisible: false,
+          showRetryButton: false,
+        };
+      default: {
+        throw new Error(
+          `Unhandled review session reducer action type: ${action.type}`
+        );
+      }
+    }
+  };
+
+  const [sessionState, dispatchSessionState] = useReducer(
+    reviewSessionReducer,
+    {
+      currReviewCardIndex: 0,
+      isSecondClick: false,
+      isSubjectDetailsVisible: false,
+      showRetryButton: false,
+    }
+  );
+
   const handleCorrectAnswer = (
     currReviewItem: ReviewQueueItem,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
-    let updatedReviewItem = currReviewItem;
-    if (isSecondClick) {
-      setIsSubjectDetailsVisible(false);
+    if (sessionState.isSecondClick) {
+      dispatchSessionState({ type: "CORRECT_MOVE_TO_NEXT" });
       setUserAnswer("");
-      setCurrReviewCardIndex((prevIndex) => prevIndex + 1);
     } else {
+      let updatedReviewItem = currReviewItem;
       presentToast("CORRECT!");
-      // showing tab at bottom to pull up for details
-      setIsSubjectDetailsVisible(true);
+      dispatchSessionState({ type: "CORRECT_SHOW_RESULT" });
 
-      // making sure is_reviewed isn't already true (i.e. marked incorrect and now reviewing again)
+      // user is correcting after being incorrect
       if (updatedReviewItem.is_reviewed) {
         // keeping answer as incorrect and is_reviewed as true
         // TODO: make sure this actually updates
         updatedReviewItem.is_reviewed = true;
-        // TODO: update SRS level
+        // TODO: update review item SRS level
         // TODO: change to show toast with updated SRS level
         presentToast("FAKE UPDATING SRS LEVEL...");
-      } else {
+      }
+      // user got answer correct first try
+      else {
         // TODO: make sure this actually updates
         updatedReviewItem.is_correct_answer = true;
         updatedReviewItem.is_reviewed = true;
       }
-      updateReviewQueue(updatedReviewItem, state, dispatch);
+      updateReviewQueue(updatedReviewItem, state, dispatchContext);
     }
   };
 
@@ -91,23 +168,17 @@ export const ReviewSession = () => {
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
     let updatedReviewItem = currReviewItem;
-    if (isSecondClick) {
-      setIsSubjectDetailsVisible(false);
-      setShowRetryButton(false);
-      // TODO: rn just adding to back of queue, change to add to some random spot
-      addToReviewQueue(updatedReviewItem, state, dispatch);
+    if (sessionState.isSecondClick) {
+      addToReviewQueue(updatedReviewItem, state, dispatchContext);
+      dispatchSessionState({ type: "WRONG_MOVE_TO_NEXT" });
       setUserAnswer("");
-      setCurrReviewCardIndex((prevIndex) => prevIndex + 1);
     } else {
-      // showing tab at bottom to pull up for details
-      setIsSubjectDetailsVisible(true);
-      // TODO: display retry button
-      setShowRetryButton(true);
+      dispatchSessionState({ type: "WRONG_SHOW_RESULT" });
       presentToast("SRRY, WRONG :(");
       updatedReviewItem.is_correct_answer = false;
       updatedReviewItem.is_reviewed = true;
-      updateReviewQueue(updatedReviewItem, state, dispatch);
     }
+    updateReviewQueue(updatedReviewItem, state, dispatchContext);
   };
 
   const handleNextClick = (
@@ -138,28 +209,20 @@ export const ReviewSession = () => {
       ? handleCorrectAnswer(currReviewItem, setUserAnswer)
       : handleWrongAnswer(currReviewItem, setUserAnswer);
 
-    setIsSecondClick(!isSecondClick);
+    dispatchSessionState({ type: "SUBMIT_CHOICE" });
   };
 
   const handleRetryClick = (
     currReviewItem: ReviewQueueItem,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
-    // *testing
-    console.log(
-      "🚀 ~ file: ReviewSession.tsx:150 ~ handleRetryClick ~ currReviewItem:",
-      currReviewItem
-    );
-    // *testing
     let updatedReviewItem = currReviewItem;
-
     updatedReviewItem.is_correct_answer = null;
     updatedReviewItem.is_reviewed = false;
-    updateReviewQueue(updatedReviewItem, state, dispatch);
-    setIsSubjectDetailsVisible(false);
+
+    updateReviewQueue(updatedReviewItem, state, dispatchContext);
     setUserAnswer("");
-    setIsSecondClick(false);
-    setShowRetryButton(false);
+    dispatchSessionState({ type: "RETRY_REVIEW" });
   };
 
   return (
@@ -167,7 +230,7 @@ export const ReviewSession = () => {
       {!state.isLoading && reviewQueue && reviewQueue.length !== 0 && (
         <ReviewSessionHeader
           reviewQueue={reviewQueue}
-          currReviewCardIndex={currReviewCardIndex}
+          currReviewCardIndex={sessionState.currReviewCardIndex}
         />
       )}
       <IonContent>
@@ -175,22 +238,24 @@ export const ReviewSession = () => {
           {state.isLoading && <p>Loading...</p>}
           {!state.isLoading &&
             reviewQueue &&
-            reviewQueue.length - 1 !== currReviewCardIndex && (
+            reviewQueue.length - 1 !== sessionState.currReviewCardIndex && (
               <>
                 <ReviewCard
                   reviewQueue={reviewQueue}
-                  currReviewCardIndex={currReviewCardIndex}
+                  currReviewCardIndex={sessionState.currReviewCardIndex}
                   onRetryClick={handleRetryClick}
                   onNextClick={handleNextClick}
-                  enterTextDisabled={isSecondClick}
-                  showRetryButton={showRetryButton}
+                  enterTextDisabled={sessionState.isSecondClick}
+                  showRetryButton={sessionState.showRetryButton}
                 />
-                {isSubjectDetailsVisible && <BottomSheet></BottomSheet>}
+                {sessionState.isSubjectDetailsVisible && (
+                  <ReviewItemBottomSheet />
+                )}
               </>
             )}
           {!state.isLoading &&
             reviewQueue &&
-            reviewQueue.length - 1 === currReviewCardIndex && (
+            reviewQueue.length - 1 === sessionState.currReviewCardIndex && (
               <div>REVIEW SUMMARY</div>
             )}
         </Grid>
