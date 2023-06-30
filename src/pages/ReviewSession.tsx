@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { IonContent, IonGrid, IonPage, useIonToast } from "@ionic/react";
-import { useTabBarContext } from "../contexts/TabBarContext";
 import {
   useReviewSession,
   addToReviewQueue,
@@ -10,6 +9,7 @@ import {
 import styled from "styled-components/macro";
 import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
 import { ReviewCard } from "../components/reviews/ReviewCard";
+import { BottomSheet } from "../components/reviews/BottomSheet";
 import { ReviewQueueItem } from "../types/MiscTypes";
 import {
   isUserAnswerCorrect,
@@ -42,16 +42,8 @@ export const ReviewSession = () => {
   const [isSecondClick, setIsSecondClick] = useState(false);
   const [isSubjectDetailsVisible, setIsSubjectDetailsVisible] = useState(false);
   const [showRetryButton, setShowRetryButton] = useState(false);
-  const { setShowTabBar } = useTabBarContext();
   const [present] = useIonToast();
   const { state, dispatch } = useReviewSession();
-  useEffect(() => {
-    setShowTabBar(false);
-
-    return () => {
-      setShowTabBar(true);
-    };
-  });
 
   const presentToast = (message: string) => {
     present({
@@ -193,7 +185,7 @@ export const ReviewSession = () => {
                   enterTextDisabled={isSecondClick}
                   showRetryButton={showRetryButton}
                 />
-                {isSubjectDetailsVisible && <div>Subject info here</div>}
+                {isSubjectDetailsVisible && <BottomSheet></BottomSheet>}
               </>
             )}
           {!state.isLoading &&
