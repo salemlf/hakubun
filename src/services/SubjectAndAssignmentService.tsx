@@ -270,19 +270,10 @@ export const isUserReadingAnswerCorrect = (
   // *testing
 
   // readings shouldn't allow any typos/mistakes
-  let options = {
-    keys: ["reading"],
-    threshold: 0.0,
-  };
-  let fuse = new Fuse(acceptedAnswers, options);
-  let readingsMatched = fuse.search(userReading);
-  // *testing
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:200 ~ readingsMatched:",
-    readingsMatched
+  let isCorrectReading = acceptedAnswers.some(
+    (subjReading) => subjReading.reading === userReading
   );
-  // *testing
-  return readingsMatched.length !== 0;
+  return isCorrectReading;
 };
 
 export const isUserAnswerCorrect = (
