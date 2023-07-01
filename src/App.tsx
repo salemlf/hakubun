@@ -1,6 +1,7 @@
 import { IonApp, setupIonicReact } from "@ionic/react";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ReviewSessionDataProvider } from "./contexts/ReviewSessionDataContext";
+import { ReviewSessionQueueProvider } from "./contexts/ReviewSessionQueueContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -42,7 +43,9 @@ const App: React.FC = () => (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ReviewSessionDataProvider>
-          <Router />
+          <ReviewSessionQueueProvider>
+            <Router />
+          </ReviewSessionQueueProvider>
         </ReviewSessionDataProvider>
       </AuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />

@@ -17,7 +17,7 @@ import { Route, Redirect, useLocation } from "react-router";
 import Home from "../pages/Home";
 import { SubjectDetails } from "../pages/SubjectDetails";
 import { ReviewSettings } from "../pages/ReviewSettings";
-import { ReviewSession } from "../pages/ReviewSession";
+import { ReviewSessionQueue } from "../pages/ReviewSessionQueue";
 import { useEffect, useState } from "react";
 
 export const AppStack = () => {
@@ -52,7 +52,11 @@ export const TabBar = () => {
           component={ReviewSettings}
           exact={true}
         />
-        <Route path="/review/session" component={ReviewSession} exact={true} />
+        <Route
+          path="/review/session"
+          component={ReviewSessionQueue}
+          exact={true}
+        />
         <Route exact path="/" render={() => <Redirect to="/home" />} />
         <Redirect from="/authenticate" to="/home" exact />
       </IonRouterOutlet>

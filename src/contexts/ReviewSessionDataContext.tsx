@@ -1,7 +1,14 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { Assignment } from "../types/Assignment";
 import { Subject } from "../types/Subject";
-import { ReviewQueueItem, StudyMaterial } from "../types/MiscTypes";
+import { StudyMaterial } from "../types/MiscTypes";
+import {
+  ReviewSessionDataState,
+  ReviewSessionDataAction,
+  ReviewQueueItem,
+  ReviewSessionDataDispatch,
+} from "../types/ReviewSessionTypes";
+
 import { useStorage } from "../hooks/useStorage";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import {
@@ -15,39 +22,17 @@ import {
   findStudyMaterialWithSubjID,
 } from "../services/SubjectAndAssignmentService";
 
-// TODO: change so reviewQueue is never null, just empty array at first?
-type ReviewDataSessionState = {
-  isLoading: boolean;
-  // reviewQueue: ReviewQueueItem[] | null;
-  reviewQueue: ReviewQueueItem[];
-};
-
-type ActionType =
-  | "END_REVIEW"
-  | "REVIEW_QUEUE_LOADING"
-  | "REVIEW_QUEUE_LOADED"
-  | "UPDATE_REVIEW_QUEUE";
-
-type ReviewSessionAction = {
-  type: ActionType;
-  payload?: any;
-};
-
-type Dispatch = (action: ReviewSessionAction) => void;
-
-// TODO: change so reviewQueue is empty array?
-const initialState: ReviewDataSessionState = {
+const initialState: ReviewSessionDataState = {
   isLoading: false,
-  // reviewQueue: null,
   reviewQueue: [],
 };
 
 const ReviewSessionDataContext = createContext<{
-  state: ReviewDataSessionState;
-  dispatchContext: Dispatch;
+  queueDataState: ReviewSessionDataState;
+  dispatchQueueDataContext: ReviewSessionDataDispatch;
 }>({
-  state: initialState,
-  dispatchContext: () => null,
+  queueDataState: initialState,
+  dispatchQueueDataContext: () => null,
 });
 
 type ProviderProps = {
@@ -99,14 +84,11 @@ const getStudyMaterials = async (subjIDs: number[]) => {
 
 const updateReviewQueue = (
   queueItemToUpdate: ReviewQueueItem,
-  state: ReviewDataSessionState,
-  dispatchContext: Dispatch
+  state: ReviewSessionDataState,
+  dispatchContext: ReviewSessionDataDispatch
 ) => {
   let currReviewQueue = state.reviewQueue;
-  // this shouldn't ever be needed, but here just in case
-  // if (!currReviewQueue) {
-  //   currReviewQueue = [];
-  // }
+
   const updatedQueue = currReviewQueue.map((reviewQueueItem) => {
     if (reviewQueueItem.itemID === queueItemToUpdate.itemID) {
       return queueItemToUpdate;
@@ -120,14 +102,11 @@ const updateReviewQueue = (
 
 const addToReviewQueue = (
   queueItemToAdd: ReviewQueueItem,
-  state: ReviewDataSessionState,
-  dispatchContext: Dispatch
+  state: ReviewSessionDataState,
+  dispatchContext: ReviewSessionDataDispatch
 ) => {
   let currReviewQueue = state.reviewQueue;
-  // this shouldn't ever be needed, but here just in case
-  // if (!currReviewQueue) {
-  //   currReviewQueue = [];
-  // }
+
   let updatedQueue = currReviewQueue.concat(queueItemToAdd);
   dispatchContext({
     type: "UPDATE_REVIEW_QUEUE",
@@ -196,7 +175,7 @@ const createMeaningAndReadingQueueItems = (
 const createReviewItems = async (
   assignments: Assignment[],
   subjIDs: number[],
-  dispatchContext: Dispatch
+  dispatchContext: ReviewSessionDataDispatch
 ) => {
   dispatchContext({ type: "REVIEW_QUEUE_LOADING" });
   let subjects = (await getSubjectData(subjIDs)) as Subject[];
@@ -228,8 +207,8 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
 
   // TODO: refactor and then move into its own file
   const reviewQueueReducer = (
-    state: ReviewDataSessionState,
-    action: ReviewSessionAction
+    state: ReviewSessionDataState,
+    action: ReviewSessionDataAction
   ) => {
     switch (action.type) {
       case "END_REVIEW":
@@ -252,21 +231,24 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
   };
 
   const getReviewQueueFromStorage = async () => {
-    dispatchContext({ type: "REVIEW_QUEUE_LOADING" });
+    dispatchQueueDataContext({ type: "REVIEW_QUEUE_LOADING" });
     const queue = await getItem("reviewQueue");
-    dispatchContext({
+    dispatchQueueDataContext({
       type: "REVIEW_QUEUE_LOADED",
       payload: queue,
     });
   };
 
-  const [state, dispatchContext] = useReducer(reviewQueueReducer, initialState);
+  const [queueDataState, dispatchQueueDataContext] = useReducer(
+    reviewQueueReducer,
+    initialState
+  );
 
   useEffect(() => {
     getReviewQueueFromStorage();
   }, []);
 
-  const value = { state, dispatchContext };
+  const value = { queueDataState, dispatchQueueDataContext };
 
   return (
     <ReviewSessionDataContext.Provider value={value}>
@@ -275,12 +257,12 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
   );
 };
 
-const useReviewSession = () => {
+const useReviewSessionData = () => {
   const context = useContext(ReviewSessionDataContext);
 
   if (!context) {
     throw new Error(
-      "useReviewSession must be used within a ReviewSessionProvider"
+      "useReviewSessionData must be used within a ReviewSessionProvider"
     );
   }
 
@@ -290,7 +272,7 @@ const useReviewSession = () => {
 export {
   ReviewSessionDataContext,
   ReviewSessionDataProvider,
-  useReviewSession,
+  useReviewSessionData,
   createReviewItems,
   addToReviewQueue,
   updateReviewQueue,
