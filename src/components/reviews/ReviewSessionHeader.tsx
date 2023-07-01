@@ -10,8 +10,9 @@ import {
 import HomeIcon from "../../images/home.svg";
 import styled from "styled-components/macro";
 import { SubjectType } from "../../types/Subject";
-import { ReviewQueueItem } from "../../types/MiscTypes";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { useReviewQueue } from "../../hooks/useReviewQueue";
+import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 
 type HeaderStyleProps = {
   subjType: SubjectType;
@@ -60,22 +61,20 @@ const HomeIconStyled = styled(IonIcon)`
 `;
 
 type Props = {
-  reviewQueue: ReviewQueueItem[];
-  currReviewCardIndex: number;
+  currentReviewItem: ReviewQueueItem;
 };
 
-export const ReviewSessionHeader = ({
-  reviewQueue,
-  currReviewCardIndex,
-}: Props) => {
+export const ReviewSessionHeader = ({ currentReviewItem }: Props) => {
   const router = useIonRouter();
+  const { queueDataState } = useReviewQueue();
+  let currItemSubjType = currentReviewItem.object as SubjectType;
 
-  const notReviewed = reviewQueue.filter(
+  let notReviewed = queueDataState.reviewQueue.filter(
     (reviewItem) => reviewItem.is_reviewed === false
   );
 
   // TODO: calculate some other way, this is showing wrong #
-  const numUniqueItemsInQueue = [
+  let numUniqueItemsInQueue = [
     ...new Map(
       notReviewed.map((unreviewedCard) => [
         unreviewedCard.assignment_id,
@@ -83,9 +82,6 @@ export const ReviewSessionHeader = ({
       ])
     ).values(),
   ].length;
-
-  const currentReviewItem = reviewQueue[currReviewCardIndex];
-  let currItemSubjType = currentReviewItem.object as SubjectType;
 
   return (
     <SessionHeader subjType={currItemSubjType}>

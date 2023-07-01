@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { IonGrid, IonRow, IonCol } from "@ionic/react";
 import { toKana } from "wanakana";
-import { ReviewQueueItem } from "../../types/MiscTypes";
 
 import styled from "styled-components/macro";
 import { useKeyPress } from "../../hooks/useKeyPress";
+import { useReviewQueue } from "../../hooks/useReviewQueue";
+import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 
 const ButtonCol = styled(IonCol)`
   text-align: center;
@@ -23,32 +24,14 @@ const AnswerInput = styled.input`
 `;
 
 type Props = {
-  reviewQueue: ReviewQueueItem[];
-  onRetryClick: (
-    currReviewItem: ReviewQueueItem,
-    setUserAnswer: (value: React.SetStateAction<string>) => void
-  ) => void;
-  onNextClick: (
-    currReviewItem: ReviewQueueItem,
-    userAnswer: string,
-    setUserAnswer: (value: React.SetStateAction<string>) => void
-  ) => void;
-  currReviewCardIndex: number;
-  enterTextDisabled: boolean;
-  showRetryButton: boolean;
+  currentReviewItem: ReviewQueueItem;
 };
 
 // TODO: add button to abandon session
-export const ReviewInputAndButtons = ({
-  reviewQueue,
-  onRetryClick,
-  onNextClick,
-  currReviewCardIndex,
-  enterTextDisabled,
-  showRetryButton,
-}: Props) => {
+export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
+  const { queueDataState, queueState, handleNextClick, handleRetryClick } =
+    useReviewQueue();
   const [userAnswer, setUserAnswer] = useState("");
-  const currentReviewItem = reviewQueue[currReviewCardIndex];
   useKeyPress(() => nextBtnClicked(), ["F12"]);
 
   let reviewType = currentReviewItem.review_type;
@@ -59,7 +42,7 @@ export const ReviewInputAndButtons = ({
     if (reviewType === "reading") {
       setUserAnswer(toKana(userAnswer));
     }
-    onNextClick(currentReviewItem, userAnswer, setUserAnswer);
+    handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
   };
 
   const convertInputToKana = (newestUserInput: string) => {
@@ -84,17 +67,17 @@ export const ReviewInputAndButtons = ({
           type="text"
           value={userAnswer}
           onChange={(e) => onInputFunction(e.target.value)}
-          disabled={enterTextDisabled}
+          disabled={queueState.isSecondClick}
           placeholder={reviewType === "reading" ? "答え" : ""}
         />
       </IonRow>
       <IonGrid>
         <IonRow>
-          {showRetryButton && (
+          {queueState.showRetryButton && (
             <ButtonCol>
               <button
                 onClick={() => {
-                  onRetryClick(currentReviewItem, setUserAnswer);
+                  handleRetryClick(currentReviewItem, setUserAnswer);
                 }}
               >
                 Retry
@@ -106,7 +89,10 @@ export const ReviewInputAndButtons = ({
               onClick={() => {
                 nextBtnClicked();
               }}
-              disabled={currReviewCardIndex === reviewQueue.length - 1}
+              disabled={
+                queueState.currReviewCardIndex ===
+                queueDataState.reviewQueue.length - 1
+              }
             >
               Next
             </button>

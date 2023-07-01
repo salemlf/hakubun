@@ -1,6 +1,6 @@
 import { SrsLevelName } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
-import { PopoverMessageType } from "../reducers/reviewSessionReducer";
+import { PopoverMessageType, ReviewType } from "../types/ReviewSessionTypes";
 import { PronunciationAudio, SubjectReading } from "../types/Subject";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
@@ -138,4 +138,16 @@ export const getAudioForReading = (
   // TODO: change to allow selecting based on voice in settings
   let selectedAudioFile = getAudioUrlByGender(audioItems, "female");
   return selectedAudioFile ? selectedAudioFile : audioOptions[0].url;
+};
+
+// TODO: make this more *elegant*
+export const playAudioIfAvailable = (
+  url: string | null,
+  reviewType: ReviewType
+) => {
+  let shouldPlayAudio = url !== null && reviewType === "reading";
+  if (shouldPlayAudio) {
+    let audio = new Audio(url!);
+    audio.play();
+  }
 };

@@ -1,10 +1,6 @@
 import { IonCol, IonRow } from "@ionic/react";
 import { SubjectType } from "../../types/Subject";
 import {
-  PopoverInfo,
-  PopoverMessageType,
-} from "../../reducers/reviewSessionReducer";
-import {
   getReviewTypeColor,
   getSubjectColor,
   getSubjectTypeDisplayText,
@@ -12,8 +8,14 @@ import {
 import { SubjectChars } from "../SubjectChars";
 
 import styled from "styled-components/macro";
-import { ReviewQueueItem, ReviewType } from "../../types/MiscTypes";
 import { capitalizeWord, getPopoverMsgColor } from "../../services/MiscService";
+import {
+  PopoverInfo,
+  PopoverMessageType,
+  ReviewQueueItem,
+  ReviewType,
+} from "../../types/ReviewSessionTypes";
+import { useReviewQueue } from "../../hooks/useReviewQueue";
 
 type ReviewTypeProps = {
   reviewType: ReviewType;
@@ -67,6 +69,7 @@ type ReviewMessageProps = {
   popoverInfo: PopoverInfo;
 };
 
+// TODO: change to just merge with ReviewCharAndType component below
 const ReviewMessage = ({ displayMsg, popoverInfo }: ReviewMessageProps) => {
   return (
     <MessageWrapper displayMsg={displayMsg}>
@@ -88,19 +91,12 @@ const SubjectCharactersCol = styled(IonCol)<CharColProps>`
 `;
 
 type Props = {
-  reviewQueue: ReviewQueueItem[];
-  currReviewCardIndex: number;
-  showReviewMsg: boolean;
-  popoverInfo: PopoverInfo;
+  currentReviewItem: ReviewQueueItem;
 };
 
-export const ReviewCharAndType = ({
-  reviewQueue,
-  currReviewCardIndex,
-  showReviewMsg,
-  popoverInfo,
-}: Props) => {
-  const currentReviewItem = reviewQueue[currReviewCardIndex];
+export const ReviewCharAndType = ({ currentReviewItem }: Props) => {
+  const { queueState } = useReviewQueue();
+
   let subjType = currentReviewItem.object as SubjectType;
   let reviewType = currentReviewItem.review_type;
   let reviewTypeCapitalized = capitalizeWord(reviewType);
@@ -119,7 +115,10 @@ export const ReviewCharAndType = ({
             withBgColor={true}
           />
         </SubjectCharactersCol>
-        <ReviewMessage displayMsg={showReviewMsg} popoverInfo={popoverInfo} />
+        <ReviewMessage
+          displayMsg={queueState.displayPopoverMsg}
+          popoverInfo={queueState.popoverInfo}
+        />
       </SubjectCharRow>
       <ReviewTypeRow reviewType={reviewType}>
         <p>

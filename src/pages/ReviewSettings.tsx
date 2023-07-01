@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   IonContent,
   IonGrid,
@@ -28,7 +28,7 @@ import {
 } from "../services/SubjectAndAssignmentService";
 
 import {
-  useReviewSession,
+  useReviewSessionData,
   createReviewItems,
 } from "../contexts/ReviewSessionDataContext";
 
@@ -60,7 +60,7 @@ const Title = styled(IonTitle)`
 `;
 
 export const ReviewSettings = () => {
-  const { dispatchContext } = useReviewSession();
+  const { dispatchQueueDataContext } = useReviewSessionData();
   const router = useIonRouter();
 
   const {
@@ -119,7 +119,11 @@ export const ReviewSettings = () => {
 
     // TODO: change so this overwrites items in current queue and resets currReviewCardIndex to 0
     let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
-    createReviewItems(assignmentBatchToReview, subjIDs, dispatchContext);
+    createReviewItems(
+      assignmentBatchToReview,
+      subjIDs,
+      dispatchQueueDataContext
+    );
     router.push("/review/session");
   };
 

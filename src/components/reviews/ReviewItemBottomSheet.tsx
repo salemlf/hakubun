@@ -6,15 +6,14 @@ import {
   IonToolbar,
   IonTitle,
 } from "@ionic/react";
+import { useReviewQueue } from "../../hooks/useReviewQueue";
 
 // TODO: pass in subject info
-// TODO: fix issue where this is showing up on other pages, change isOpen to be changed by passed in value
+// TODO: fix issue where this isn't always closed after moving to other pages
 
-type Props = {
-  isBottomSheetVisible: boolean;
-};
-
-export const ReviewItemBottomSheet = ({ isBottomSheetVisible }: Props) => {
+export const ReviewItemBottomSheet = () => {
+  const { queueState } = useReviewQueue();
+  let isBottomSheetVisible = queueState.isBottomSheetVisible;
   // *testing
   console.log(
     "🚀 ~ file: ReviewItemBottomSheet.tsx:18 ~ ReviewItemBottomSheet ~ isBottomSheetVisible:",

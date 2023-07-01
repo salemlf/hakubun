@@ -7,14 +7,10 @@ import {
   SubjectType,
 } from "../types/Subject";
 import { Assignment, AssignmentType } from "../types/Assignment";
-import {
-  ReviewQueueItem,
-  ReviewType,
-  StudyMaterial,
-  TagType,
-} from "../types/MiscTypes";
+import { StudyMaterial, TagType } from "../types/MiscTypes";
 import { capitalizeWord } from "./MiscService";
 import { toKana } from "wanakana";
+import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(
