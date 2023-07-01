@@ -117,6 +117,7 @@ export const ReviewSettings = () => {
     );
     // *testing
 
+    // TODO: change so this overwrites items in current queue and resets currReviewCardIndex to 0
     let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
     createReviewItems(assignmentBatchToReview, subjIDs, dispatchContext);
     router.push("/review/session");

@@ -9,6 +9,7 @@ type Props = {
   level: number | undefined;
 };
 
+// TODO: check if review is currently in session (reviewQueue length !==0), then user if they want to resume if session exists
 const ReviewsButton = ({ level }: Props) => {
   const history = useHistory();
   const {

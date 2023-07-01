@@ -8,7 +8,7 @@ import {
 
 import { ReviewQueueItem, ReviewType } from "../types/MiscTypes";
 import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
-import { ReviewCard } from "../components/reviews/ReviewCard";
+import { ReviewInputAndButtons } from "../components/reviews/ReviewInputAndButtons";
 import { ReviewItemBottomSheet } from "../components/reviews/ReviewItemBottomSheet";
 import { ReviewCharAndType } from "../components/reviews/ReviewCharAndType";
 
@@ -187,7 +187,8 @@ export const ReviewSession = () => {
 
   return (
     <Page>
-      {!state.isLoading && reviewQueue && reviewQueue.length !== 0 && (
+      {/* {!state.isLoading && reviewQueue && reviewQueue.length !== 0 && ( */}
+      {!state.isLoading && reviewQueue.length !== 0 && (
         <ReviewSessionHeader
           reviewQueue={reviewQueue}
           currReviewCardIndex={sessionState.currReviewCardIndex}
@@ -196,8 +197,10 @@ export const ReviewSession = () => {
       <IonContent>
         <Grid>
           {state.isLoading && <p>Loading...</p>}
-          {!state.isLoading &&
+          {/* {!state.isLoading &&
             reviewQueue &&
+            reviewQueue.length - 1 !== sessionState.currReviewCardIndex && ( */}
+          {!state.isLoading &&
             reviewQueue.length - 1 !== sessionState.currReviewCardIndex && (
               <>
                 <ReviewCharAndType
@@ -206,7 +209,7 @@ export const ReviewSession = () => {
                   showReviewMsg={sessionState.displayPopoverMsg}
                   popoverInfo={sessionState.popoverInfo}
                 />
-                <ReviewCard
+                <ReviewInputAndButtons
                   reviewQueue={reviewQueue}
                   currReviewCardIndex={sessionState.currReviewCardIndex}
                   onRetryClick={handleRetryClick}
@@ -219,8 +222,10 @@ export const ReviewSession = () => {
                 />
               </>
             )}
-          {!state.isLoading &&
+          {/* {!state.isLoading &&
             reviewQueue &&
+            reviewQueue.length - 1 === sessionState.currReviewCardIndex && ( */}
+          {!state.isLoading &&
             reviewQueue.length - 1 === sessionState.currReviewCardIndex && (
               <div>REVIEW SUMMARY</div>
             )}

@@ -18,7 +18,8 @@ import {
 // TODO: change so reviewQueue is never null, just empty array at first?
 type ReviewDataSessionState = {
   isLoading: boolean;
-  reviewQueue: ReviewQueueItem[] | null;
+  // reviewQueue: ReviewQueueItem[] | null;
+  reviewQueue: ReviewQueueItem[];
 };
 
 type ActionType =
@@ -37,7 +38,8 @@ type Dispatch = (action: ReviewSessionAction) => void;
 // TODO: change so reviewQueue is empty array?
 const initialState: ReviewDataSessionState = {
   isLoading: false,
-  reviewQueue: null,
+  // reviewQueue: null,
+  reviewQueue: [],
 };
 
 const ReviewSessionDataContext = createContext<{
@@ -102,9 +104,9 @@ const updateReviewQueue = (
 ) => {
   let currReviewQueue = state.reviewQueue;
   // this shouldn't ever be needed, but here just in case
-  if (!currReviewQueue) {
-    currReviewQueue = [];
-  }
+  // if (!currReviewQueue) {
+  //   currReviewQueue = [];
+  // }
   const updatedQueue = currReviewQueue.map((reviewQueueItem) => {
     if (reviewQueueItem.itemID === queueItemToUpdate.itemID) {
       return queueItemToUpdate;
@@ -123,9 +125,9 @@ const addToReviewQueue = (
 ) => {
   let currReviewQueue = state.reviewQueue;
   // this shouldn't ever be needed, but here just in case
-  if (!currReviewQueue) {
-    currReviewQueue = [];
-  }
+  // if (!currReviewQueue) {
+  //   currReviewQueue = [];
+  // }
   let updatedQueue = currReviewQueue.concat(queueItemToAdd);
   dispatchContext({
     type: "UPDATE_REVIEW_QUEUE",
@@ -233,7 +235,8 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
       case "END_REVIEW":
         // TODO: change so setItem called in function, not here
         removeItem("reviewData");
-        return { ...state, reviewQueue: null };
+        // return { ...state, reviewQueue: null };
+        return { ...state, reviewQueue: [] };
       case "REVIEW_QUEUE_LOADING":
         return { ...state, isLoading: true };
       case "REVIEW_QUEUE_LOADED":

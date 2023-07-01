@@ -39,7 +39,7 @@ type Props = {
 };
 
 // TODO: add button to abandon session
-export const ReviewCard = ({
+export const ReviewInputAndButtons = ({
   reviewQueue,
   onRetryClick,
   onNextClick,
