@@ -10,6 +10,7 @@ import { Readings, ReadingContainer } from "./SubjectDetailsStyled";
 import styled from "styled-components/macro";
 import SoundIcon from "../../images/sound.svg";
 import { getAudioUrlByGender } from "../../services/MiscService";
+import { getAudioForReading } from "../../services/MiscService";
 
 type AudioProps = {
   url: string;
@@ -27,20 +28,6 @@ const AudioBtn = ({ url }: AudioProps) => {
       <IonIcon icon={SoundIcon} />
     </Btn>
   );
-};
-
-const getAudioForReading = (
-  audioItems: PronunciationAudio[],
-  reading: SubjectReading
-) => {
-  let audioOptions = audioItems.filter(
-    (audioOption: PronunciationAudio) =>
-      audioOption.metadata.pronunciation === reading.reading
-  );
-
-  // TODO: change to allow selecting based on voice in settings
-  let selectedAudioFile = getAudioUrlByGender(audioItems, "female");
-  return selectedAudioFile ? selectedAudioFile : audioOptions[0].url;
 };
 
 type VocabReadingProps = {

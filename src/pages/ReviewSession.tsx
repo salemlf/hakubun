@@ -60,6 +60,8 @@ export const ReviewSession = () => {
     currReviewItem: ReviewQueueItem,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
+    // TODO use the primary reading for review item for specific audio URL here
+
     if (sessionState.isSecondClick) {
       dispatchSessionState({ type: "CORRECT_MOVE_TO_NEXT" });
       setUserAnswer("");

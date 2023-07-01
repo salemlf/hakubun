@@ -1,7 +1,7 @@
 import { SrsLevelName } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
 import { PopoverMessageType } from "../reducers/reviewSessionReducer";
-import { PronunciationAudio } from "../types/Subject";
+import { PronunciationAudio, SubjectReading } from "../types/Subject";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   if (timeTill > 0) {
@@ -124,4 +124,18 @@ export const getAudioUrlByGender = (
 ) => {
   const audio = audioArray.find((audio) => audio.metadata.gender === gender);
   return audio?.url;
+};
+
+export const getAudioForReading = (
+  audioItems: PronunciationAudio[],
+  reading: SubjectReading
+) => {
+  let audioOptions = audioItems.filter(
+    (audioOption: PronunciationAudio) =>
+      audioOption.metadata.pronunciation === reading.reading
+  );
+
+  // TODO: change to allow selecting based on voice in settings
+  let selectedAudioFile = getAudioUrlByGender(audioItems, "female");
+  return selectedAudioFile ? selectedAudioFile : audioOptions[0].url;
 };

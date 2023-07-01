@@ -4,7 +4,11 @@ import { Subject } from "../types/Subject";
 import { ReviewQueueItem, StudyMaterial } from "../types/MiscTypes";
 import { useStorage } from "../hooks/useStorage";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenData, shuffleArray } from "../services/MiscService";
+import {
+  flattenData,
+  shuffleArray,
+  getAudioForReading,
+} from "../services/MiscService";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 import {
   findAssignmentWithSubjID,
@@ -140,6 +144,24 @@ const createMeaningAndReadingQueueItems = (
         subject
       );
 
+      // TODO: get primary reading
+      let primaryReading = subject.readings?.find(
+        (reading: any) => reading.primary === true
+      );
+
+      // TODO: get the audio URL for the primary reading of review item
+      let audioUrl =
+        subject.pronunciation_audios && primaryReading
+          ? getAudioForReading(subject.pronunciation_audios, primaryReading)
+          : "";
+
+      // *testing
+      console.log(
+        "🚀 ~ file: ReviewSessionDataContext.tsx:158 ~ audioUrl:",
+        audioUrl
+      );
+      // *testing
+
       // this should always be true since we retrieved the subjects based on the assignments
       let assignment = foundAssignment!;
 
@@ -154,6 +176,7 @@ const createMeaningAndReadingQueueItems = (
           ? foundStudyMaterial.meaning_synonyms
           : [],
         review_type: "meaning" as const,
+        primary_audio_url: audioUrl,
       };
     }
   );
