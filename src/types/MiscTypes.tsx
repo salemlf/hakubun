@@ -1,18 +1,4 @@
-import { Subject, SubjectType } from "./Subject";
-
-export type ReviewType = "reading" | "meaning";
-
-// TODO: add info to this for whether answers were correct or not
-export interface ReviewQueueItem extends Subject {
-  itemID: string;
-  assignment_id: number;
-  is_reviewed: boolean;
-  srs_stage: number;
-  review_type: ReviewType;
-  is_correct_answer: boolean | null;
-  meaning_synonyms: string[];
-  primary_audio_url: string | null;
-}
+import { SubjectType } from "./Subject";
 
 export interface ResponseStructure {
   object: string;
