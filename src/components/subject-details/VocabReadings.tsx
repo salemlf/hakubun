@@ -9,6 +9,7 @@ import { useAudio } from "../../hooks/useAudio";
 import { Readings, ReadingContainer } from "./SubjectDetailsStyled";
 import styled from "styled-components/macro";
 import SoundIcon from "../../images/sound.svg";
+import { getAudioUrlByGender } from "../../services/MiscService";
 
 type AudioProps = {
   url: string;
@@ -37,8 +38,9 @@ const getAudioForReading = (
       audioOption.metadata.pronunciation === reading.reading
   );
 
-  // TODO: change so not just getting first audio file, allow selecting based on voice in settings
-  return audioOptions[0].url;
+  // TODO: change to allow selecting based on voice in settings
+  let selectedAudioFile = getAudioUrlByGender(audioItems, "female");
+  return selectedAudioFile ? selectedAudioFile : audioOptions[0].url;
 };
 
 type VocabReadingProps = {

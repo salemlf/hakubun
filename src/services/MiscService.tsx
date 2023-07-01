@@ -1,6 +1,7 @@
 import { SrsLevelName } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
 import { PopoverMessageType } from "../reducers/reviewSessionReducer";
+import { PronunciationAudio } from "../types/Subject";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   if (timeTill > 0) {
@@ -115,4 +116,12 @@ const popoverColors: { [index: string]: string } = {
 
 export const getPopoverMsgColor = (messageType: PopoverMessageType) => {
   return popoverColors[messageType as keyof {}];
+};
+
+export const getAudioUrlByGender = (
+  audioArray: PronunciationAudio[],
+  gender: string
+) => {
+  const audio = audioArray.find((audio) => audio.metadata.gender === gender);
+  return audio?.url;
 };
