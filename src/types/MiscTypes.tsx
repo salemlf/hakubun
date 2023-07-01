@@ -11,7 +11,7 @@ export interface ReviewQueueItem extends Subject {
   review_type: ReviewType;
   is_correct_answer: boolean | null;
   meaning_synonyms: string[];
-  primary_audio_url: string;
+  primary_audio_url: string | null;
 }
 
 export interface ResponseStructure {

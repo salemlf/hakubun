@@ -6,7 +6,7 @@ import {
   updateReviewQueue,
 } from "../contexts/ReviewSessionDataContext";
 
-import { ReviewQueueItem } from "../types/MiscTypes";
+import { ReviewQueueItem, ReviewType } from "../types/MiscTypes";
 import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
 import { ReviewCard } from "../components/reviews/ReviewCard";
 import { ReviewItemBottomSheet } from "../components/reviews/ReviewItemBottomSheet";
@@ -56,16 +56,28 @@ export const ReviewSession = () => {
     }
   );
 
+  // TODO: make this more *elegant*
+  const playAudioIfAvailable = (url: string | null, reviewType: ReviewType) => {
+    let shouldPlayAudio = url !== null && reviewType === "reading";
+    if (shouldPlayAudio) {
+      let audio = new Audio(url!);
+      audio.play();
+    }
+  };
+
   const handleCorrectAnswer = (
     currReviewItem: ReviewQueueItem,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
-    // TODO use the primary reading for review item for specific audio URL here
-
     if (sessionState.isSecondClick) {
       dispatchSessionState({ type: "CORRECT_MOVE_TO_NEXT" });
       setUserAnswer("");
     } else {
+      playAudioIfAvailable(
+        currReviewItem.primary_audio_url,
+        currReviewItem.review_type
+      );
+
       let updatedReviewItem = currReviewItem;
       dispatchSessionState({
         type: "SHOW_POPOVER_MSG",
@@ -102,6 +114,7 @@ export const ReviewSession = () => {
     currReviewItem: ReviewQueueItem,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
+    console.log("Called handleWrongAnswer");
     let updatedReviewItem = currReviewItem;
     if (sessionState.isSecondClick) {
       addToReviewQueue(updatedReviewItem, state, dispatchContext);
@@ -124,6 +137,7 @@ export const ReviewSession = () => {
     userAnswer: string,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
+    // TODO: also check that next reviewQueue.length - 1 !== sessionState.currReviewCardIndex ? may not be necessary
     let isValidInfo = isUserAnswerValid(currReviewItem, userAnswer);
     if (isValidInfo.isValid === false) {
       dispatchSessionState({

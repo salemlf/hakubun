@@ -144,23 +144,14 @@ const createMeaningAndReadingQueueItems = (
         subject
       );
 
-      // TODO: get primary reading
       let primaryReading = subject.readings?.find(
         (reading: any) => reading.primary === true
       );
 
-      // TODO: get the audio URL for the primary reading of review item
       let audioUrl =
         subject.pronunciation_audios && primaryReading
           ? getAudioForReading(subject.pronunciation_audios, primaryReading)
-          : "";
-
-      // *testing
-      console.log(
-        "🚀 ~ file: ReviewSessionDataContext.tsx:158 ~ audioUrl:",
-        audioUrl
-      );
-      // *testing
+          : null;
 
       // this should always be true since we retrieved the subjects based on the assignments
       let assignment = foundAssignment!;
