@@ -114,7 +114,6 @@ export const ReviewSession = () => {
     currReviewItem: ReviewQueueItem,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
-    console.log("Called handleWrongAnswer");
     let updatedReviewItem = currReviewItem;
     if (sessionState.isSecondClick) {
       addToReviewQueue(updatedReviewItem, state, dispatchContext);

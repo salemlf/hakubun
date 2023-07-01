@@ -4,6 +4,7 @@ import { toKana } from "wanakana";
 import { ReviewQueueItem } from "../../types/MiscTypes";
 
 import styled from "styled-components/macro";
+import { useKeyPress } from "../../hooks/useKeyPress";
 
 const ButtonCol = styled(IonCol)`
   text-align: center;
@@ -48,8 +49,18 @@ export const ReviewCard = ({
 }: Props) => {
   const [userAnswer, setUserAnswer] = useState("");
   const currentReviewItem = reviewQueue[currReviewCardIndex];
+  useKeyPress(() => nextBtnClicked(), ["F12"]);
 
   let reviewType = currentReviewItem.review_type;
+
+  const nextBtnClicked = () => {
+    console.log("userAnswer: ", userAnswer);
+    console.log("nextBtnClicked called!");
+    if (reviewType === "reading") {
+      setUserAnswer(toKana(userAnswer));
+    }
+    onNextClick(currentReviewItem, userAnswer, setUserAnswer);
+  };
 
   const convertInputToKana = (newestUserInput: string) => {
     // special case needed for "n" since could be the kana "ん" or any romaji that starts with "n"
@@ -93,11 +104,7 @@ export const ReviewCard = ({
           <ButtonCol>
             <button
               onClick={() => {
-                // so "ん" is displayed properly (setter is async though, so needs to be converted elsewhere too)
-                if (reviewType === "reading") {
-                  setUserAnswer(toKana(userAnswer));
-                }
-                onNextClick(currentReviewItem, userAnswer, setUserAnswer);
+                nextBtnClicked();
               }}
               disabled={currReviewCardIndex === reviewQueue.length - 1}
             >

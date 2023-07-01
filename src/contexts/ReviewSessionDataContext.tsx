@@ -52,6 +52,7 @@ type ProviderProps = {
   children?: React.ReactNode;
 };
 
+// TODO: move into different file
 const getSubjectData = async (subjIDs: number[]) => {
   try {
     const subjData = await WaniKaniAPI.getSubjectsBySubjIDs(subjIDs);
@@ -77,6 +78,7 @@ const getSubjectData = async (subjIDs: number[]) => {
   }
 };
 
+// TODO: move into different file
 const getStudyMaterials = async (subjIDs: number[]) => {
   try {
     const studyMaterialData = await WaniKaniAPI.getStudyMaterialsBySubjIDs(
