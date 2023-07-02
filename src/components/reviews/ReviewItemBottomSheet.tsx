@@ -9,6 +9,7 @@ import {
   IonSegment,
   IonSegmentButton,
   IonLabel,
+  IonRow,
 } from "@ionic/react";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem, ReviewType } from "../../types/ReviewSessionTypes";
@@ -47,6 +48,20 @@ const Toolbar = styled(IonToolbar)`
     padding-top: 8px;
   }
   padding-bottom: 8px;
+`;
+
+const BottomSheetContent = styled(IonRow)`
+  --ion-background-color: var(--light-greyish-purple);
+  background-color: var(--light-greyish-purple);
+  border-radius: 25px;
+  margin: 0;
+
+  display: flex;
+  justify-content: flex-start;
+  padding-inline-start: var(--ion-padding, 16px);
+  padding-inline-end: var(--ion-padding, 16px);
+  padding-top: var(--ion-padding, 16px);
+  padding-bottom: var(--ion-padding, 16px);
 `;
 
 type BottomSheetSubjectProps = {
@@ -114,6 +129,7 @@ const VocabBottomSheet = ({
   );
 };
 
+// TODO: make sure selectedSegment always changes to reviewType passed in, maybe useEffect?
 // TODO: fix issue where this isn't always closed after moving to other pages
 export const ReviewItemBottomSheet = ({
   currentReviewItem,
@@ -164,47 +180,49 @@ export const ReviewItemBottomSheet = ({
           <SubjectHeader subject={currentReviewItem as Subject} />
           <IonContent>
             <FullWidthGrid>
-              <IonSegment value={selectedSegment} onClick={onSegmentClick}>
+              <BottomSheetContent>
+                <IonSegment value={selectedSegment} onClick={onSegmentClick}>
+                  {currentReviewItem.object == "kanji" && (
+                    <IonSegmentButton value="radicals">
+                      <IonLabel>Radicals</IonLabel>
+                    </IonSegmentButton>
+                  )}
+                  {currentReviewItem.object == "vocabulary" && (
+                    <IonSegmentButton value="kanji">
+                      <IonLabel>Kanji</IonLabel>
+                    </IonSegmentButton>
+                  )}
+                  <IonSegmentButton value="meaning">
+                    <IonLabel>Meaning</IonLabel>
+                  </IonSegmentButton>
+                  {subjectsWithReadings.includes(currentReviewItem.object) && (
+                    <IonSegmentButton value="reading">
+                      <IonLabel>Reading</IonLabel>
+                    </IonSegmentButton>
+                  )}
+                </IonSegment>
+                {currentReviewItem.object == "radical" && (
+                  // <RadicalSubjDetails radical={currentReviewItem as Radical} />
+                  <RadicalBottomSheet
+                    reviewItem={currentReviewItem}
+                    selectedSegment={selectedSegment}
+                  />
+                )}
                 {currentReviewItem.object == "kanji" && (
-                  <IonSegmentButton value="radicals">
-                    <IonLabel>Radicals</IonLabel>
-                  </IonSegmentButton>
+                  <KanjiBottomSheet
+                    reviewItem={currentReviewItem}
+                    selectedSegment={selectedSegment}
+                  />
                 )}
+                {/* // TODO: create a version of this for kana vocab */}
                 {currentReviewItem.object == "vocabulary" && (
-                  <IonSegmentButton value="kanji">
-                    <IonLabel>Kanji</IonLabel>
-                  </IonSegmentButton>
+                  // <VocabSubjDetails vocab={currentReviewItem as Vocabulary} />
+                  <VocabBottomSheet
+                    reviewItem={currentReviewItem}
+                    selectedSegment={selectedSegment}
+                  />
                 )}
-                <IonSegmentButton value="meaning">
-                  <IonLabel>Meaning</IonLabel>
-                </IonSegmentButton>
-                {subjectsWithReadings.includes(currentReviewItem.object) && (
-                  <IonSegmentButton value="reading">
-                    <IonLabel>Reading</IonLabel>
-                  </IonSegmentButton>
-                )}
-              </IonSegment>
-              {currentReviewItem.object == "radical" && (
-                // <RadicalSubjDetails radical={currentReviewItem as Radical} />
-                <RadicalBottomSheet
-                  reviewItem={currentReviewItem}
-                  selectedSegment={selectedSegment}
-                />
-              )}
-              {currentReviewItem.object == "kanji" && (
-                <KanjiBottomSheet
-                  reviewItem={currentReviewItem}
-                  selectedSegment={selectedSegment}
-                />
-              )}
-              {/* // TODO: create a version of this for kana vocab */}
-              {currentReviewItem.object == "vocabulary" && (
-                // <VocabSubjDetails vocab={currentReviewItem as Vocabulary} />
-                <VocabBottomSheet
-                  reviewItem={currentReviewItem}
-                  selectedSegment={selectedSegment}
-                />
-              )}
+              </BottomSheetContent>
             </FullWidthGrid>
           </IonContent>
         </>

@@ -1,6 +1,7 @@
 import { IonCol, IonRow } from "@ionic/react";
 import styled from "styled-components/macro";
 
+// TODO: move this file to a more general location
 type RowColProps = {
   className?: string;
   children: React.ReactNode;
