@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   IonModal,
   IonHeader,
@@ -28,6 +28,7 @@ import { VocabSubjDetails } from "../subject-details/VocabSubjDetails";
 import { RadicalCombination } from "../RadicalCombination";
 import { SubjectMeanings } from "../SubjectMeanings";
 import { KanjiMeaningMnemonic } from "../KanjiMeaningMnemonic";
+import { useLocation } from "react-router";
 
 type Props = {
   currentReviewItem: ReviewQueueItem;
@@ -62,6 +63,10 @@ const BottomSheetContent = styled(IonRow)`
   padding-inline-end: var(--ion-padding, 16px);
   padding-top: var(--ion-padding, 16px);
   padding-bottom: var(--ion-padding, 16px);
+`;
+
+const Segment = styled(IonSegment)`
+  margin-bottom: 10px;
 `;
 
 type BottomSheetSubjectProps = {
@@ -130,25 +135,29 @@ const VocabBottomSheet = ({
 };
 
 // TODO: make sure selectedSegment always changes to reviewType passed in, maybe useEffect?
-// TODO: fix issue where this isn't always closed after moving to other pages
 export const ReviewItemBottomSheet = ({
   currentReviewItem,
   reviewType,
 }: Props) => {
+  const location = useLocation();
   const { queueState } = useReviewQueue();
   const modal = useRef<HTMLIonModalElement>(null);
+  const [closedOnPageLeave, setClosedOnPageLeave] = useState(false);
   const [selectedSegment, setSelectedSegment] = useState<ReviewType | string>(
     reviewType
   );
-  const subjectsWithReadings: SubjectType[] = ["kanji", "vocabulary"];
 
+  // TODO: also reopen to previous breakpoint on return? Use something like modal.current.getCurrentBreakpoint()
+  useEffect(() => {
+    if (location.pathname !== "/review/session") {
+      setClosedOnPageLeave(true);
+    } else {
+      setClosedOnPageLeave(false);
+    }
+  }, [location.pathname]);
+
+  const subjectsWithReadings: SubjectType[] = ["kanji", "vocabulary"];
   let isBottomSheetVisible = queueState.isBottomSheetVisible;
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewItemBottomSheet.tsx:18 ~ ReviewItemBottomSheet ~ isBottomSheetVisible:",
-    isBottomSheetVisible
-  );
-  // *testing
 
   // TODO: change type to click event
   const onSegmentClick = (e: any) => {
@@ -163,7 +172,7 @@ export const ReviewItemBottomSheet = ({
   return (
     <IonModal
       ref={modal}
-      isOpen={isBottomSheetVisible}
+      isOpen={isBottomSheetVisible && !closedOnPageLeave}
       initialBreakpoint={0.08}
       breakpoints={[0.08, 1]}
       handleBehavior="cycle"
@@ -181,7 +190,7 @@ export const ReviewItemBottomSheet = ({
           <IonContent>
             <FullWidthGrid>
               <BottomSheetContent>
-                <IonSegment value={selectedSegment} onClick={onSegmentClick}>
+                <Segment value={selectedSegment} onClick={onSegmentClick}>
                   {currentReviewItem.object == "kanji" && (
                     <IonSegmentButton value="radicals">
                       <IonLabel>Radicals</IonLabel>
@@ -200,7 +209,7 @@ export const ReviewItemBottomSheet = ({
                       <IonLabel>Reading</IonLabel>
                     </IonSegmentButton>
                   )}
-                </IonSegment>
+                </Segment>
                 {currentReviewItem.object == "radical" && (
                   // <RadicalSubjDetails radical={currentReviewItem as Radical} />
                   <RadicalBottomSheet

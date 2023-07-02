@@ -44,7 +44,7 @@ export const SubjSummaryCol = styled(Col)`
 
 export const SubjDetailSubHeading = styled.h3`
   font-size: 1.25rem;
-  margin: 5px 0;
+  margin: 8px 0;
 `;
 
 export const SubjDetailTxt = styled.p`
