@@ -1,7 +1,12 @@
 import { BottomSheetSubjectProps } from "../../types/ReviewSessionTypes";
-import { Subject } from "../../types/Subject";
+import { Subject, Vocabulary } from "../../types/Subject";
 import { SubjectMeanings } from "../SubjectMeanings";
 import { KanjiUsedInVocab } from "../subjects/KanjiUsedInVocab";
+import { PartsOfSpeech } from "../subject-details/PartsOfSpeech";
+import {
+  SubjDetailSection,
+  SubjDetailSubHeading,
+} from "../subject-details/SubjectDetailsStyled";
 
 // TODO: add meaning mnemonics
 export const VocabBottomSheet = ({
@@ -22,10 +27,16 @@ export const VocabBottomSheet = ({
       )}
       {selectedSegment === "meaning" && (
         <>
-          <SubjectMeanings
-            subject={reviewItem as Subject}
-            showPrimaryMeaning={true}
-          />
+          <SubjDetailSection>
+            <SubjectMeanings
+              subject={reviewItem as Subject}
+              showPrimaryMeaning={true}
+            />
+          </SubjDetailSection>
+          <SubjDetailSection>
+            <SubjDetailSubHeading>Parts of Speech</SubjDetailSubHeading>
+            <PartsOfSpeech vocab={reviewItem as Vocabulary} alignLeft={true} />
+          </SubjDetailSection>
         </>
       )}
       {selectedSegment === "reading" && <p>Nothing here rn</p>}

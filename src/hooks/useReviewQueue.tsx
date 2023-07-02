@@ -37,12 +37,12 @@ export const useReviewQueue = () => {
       type: "END_REVIEW",
     });
     createReviewItems(assignments, subjIDs, dispatchQueueDataContext);
-    resetCurrReviewCardIndex();
+    resetCurrReviewCardsState();
   };
 
-  const resetCurrReviewCardIndex = () => {
+  const resetCurrReviewCardsState = () => {
     dispatchQueueContext({
-      type: "RESET_REVIEW_CARD_INDEX",
+      type: "RESET_REVIEW_CARDS",
     });
   };
 
@@ -225,7 +225,6 @@ export const useReviewQueue = () => {
   return {
     queueDataState,
     queueState,
-    resetCurrReviewCardIndex,
     handleNextClick,
     handleRetryClick,
     createNewReviewSession,

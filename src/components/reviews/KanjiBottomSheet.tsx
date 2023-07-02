@@ -34,25 +34,29 @@ export const KanjiBottomSheet = ({
         </>
       )}
       {selectedSegment === "reading" && (
-        <SubjDetailSection>
-          <SubjDetailSubHeading>On'yomi Readings</SubjDetailSubHeading>
-          <IonRow>
-            <ReadingsForKanji
-              kanji={reviewItem as Kanji}
-              readingType="onyomi"
-              hideReadingType={true}
-            />
-          </IonRow>
-          <SubjDetailSubHeading>Kun'yomi Readings</SubjDetailSubHeading>
-          <IonRow>
-            <ReadingsForKanji
-              kanji={reviewItem as Kanji}
-              readingType="kunyomi"
-              hideReadingType={true}
-            />
-          </IonRow>
+        <>
+          <SubjDetailSection>
+            <SubjDetailSubHeading>On'yomi Readings</SubjDetailSubHeading>
+            <IonRow>
+              <ReadingsForKanji
+                kanji={reviewItem as Kanji}
+                readingType="onyomi"
+                hideReadingType={true}
+              />
+            </IonRow>
+          </SubjDetailSection>
+          <SubjDetailSection>
+            <SubjDetailSubHeading>Kun'yomi Readings</SubjDetailSubHeading>
+            <IonRow>
+              <ReadingsForKanji
+                kanji={reviewItem as Kanji}
+                readingType="kunyomi"
+                hideReadingType={true}
+              />
+            </IonRow>
+          </SubjDetailSection>
           <KanjiReadingMnemonic kanji={reviewItem as Kanji} />
-        </SubjDetailSection>
+        </>
       )}
     </>
   );

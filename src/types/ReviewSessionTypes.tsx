@@ -59,8 +59,7 @@ export type ReviewSessionQueueActionType =
   | "SUBMIT_CHOICE"
   | "RETRY_REVIEW"
   | "SHOW_POPOVER_MSG"
-  // TODO: probably change to something more general
-  | "RESET_REVIEW_CARD_INDEX";
+  | "RESET_REVIEW_CARDS";
 
 export type ReviewSessionQueueAction = {
   type: ReviewSessionQueueActionType;

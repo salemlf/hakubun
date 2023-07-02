@@ -3,6 +3,7 @@ import {
   ReviewSessionQueueAction,
 } from "../types/ReviewSessionTypes";
 
+// TODO: add option to hide popover, used for when new session is starting
 export const reviewSessionQueueReducer = (
   state: ReviewSessionQueueState,
   action: ReviewSessionQueueAction
@@ -58,10 +59,14 @@ export const reviewSessionQueueReducer = (
         popoverInfo: action.payload,
         displayPopoverMsg: true,
       };
-    case "RESET_REVIEW_CARD_INDEX":
+    case "RESET_REVIEW_CARDS":
       return {
         ...state,
         currReviewCardIndex: 0,
+        displayPopoverMsg: false,
+        isSecondClick: false,
+        isBottomSheetVisible: false,
+        showRetryButton: false,
       };
     default: {
       throw new Error(
