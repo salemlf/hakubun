@@ -7,6 +7,7 @@ import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../subject-details/SubjectDetailsStyled";
+import { VocabMeaningExplanation } from "../subjects/VocabMeaningExplanation";
 
 // TODO: add meaning mnemonics
 export const VocabBottomSheet = ({
@@ -37,6 +38,7 @@ export const VocabBottomSheet = ({
             <SubjDetailSubHeading>Parts of Speech</SubjDetailSubHeading>
             <PartsOfSpeech vocab={reviewItem as Vocabulary} alignLeft={true} />
           </SubjDetailSection>
+          <VocabMeaningExplanation vocab={reviewItem as Vocabulary} />
         </>
       )}
       {selectedSegment === "reading" && <p>Nothing here rn</p>}

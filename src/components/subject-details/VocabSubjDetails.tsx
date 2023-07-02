@@ -9,6 +9,7 @@ import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { Hint } from "./Hint";
 import { ContextSentences } from "../ContextSentences";
 import { KanjiUsedInVocab } from "../subjects/KanjiUsedInVocab";
+import { VocabMeaningExplanation } from "../subjects/VocabMeaningExplanation";
 
 type Props = {
   vocab: Vocabulary;
@@ -22,11 +23,7 @@ export const VocabSubjDetails = ({ vocab }: Props) => {
   return (
     <SubjInfoContainer>
       <ContextSentences sentences={vocab.context_sentences} />
-      <SubjDetailSection>
-        <SubjDetailSubHeading>Meaning Explanation</SubjDetailSubHeading>
-        <TxtWithSubjTags textWithTags={vocab.meaning_mnemonic} />
-        {vocab.reading_hint && <Hint hint={vocab.reading_hint} />}
-      </SubjDetailSection>
+      <VocabMeaningExplanation vocab={vocab} />
       <SubjDetailSection>
         <SubjDetailSubHeading>Reading Explanation</SubjDetailSubHeading>
         <TxtWithSubjTags textWithTags={vocab.reading_mnemonic!} />
