@@ -1,15 +1,10 @@
 import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
-import {
-  Vocabulary,
-  SubjectReading,
-  PronunciationAudio,
-} from "../../types/Subject";
+import { Vocabulary, SubjectReading } from "../../types/Subject";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
 import { useAudio } from "../../hooks/useAudio";
 import { ReadingsStyle, ReadingContainer } from "./SubjectDetailsStyled";
 import styled from "styled-components/macro";
 import SoundIcon from "../../images/sound.svg";
-import { getAudioUrlByGender } from "../../services/MiscService";
 import { getAudioForReading } from "../../services/MiscService";
 
 type AudioProps = {
@@ -30,38 +25,40 @@ const AudioBtn = ({ url }: AudioProps) => {
   );
 };
 
-type VocabReadingProps = {
-  vocab: Vocabulary;
-};
-
 const VocabReadingContainer = styled.div`
   display: flex;
   gap: 6px;
+  align-items: center;
 `;
 
+const ReadingTxt = styled.p`
+  margin: 5px 0;
+`;
+
+type VocabReadingProps = {
+  vocab: Vocabulary;
+  hideReadingTxt?: boolean;
+};
+
 // TODO: map reading to the pronunciation audio
-export const VocabReadings = ({ vocab }: VocabReadingProps) => {
+export const VocabReadings = ({
+  vocab,
+  hideReadingTxt = false,
+}: VocabReadingProps) => {
   let hasReadings = vocab.readings && vocab.readings.length !== 0;
-  // TODO: refactor this, it's icky
-  let readings;
-  if (hasReadings) {
-    readings = getVocabReadings(vocab.readings!);
-    console.log(
-      "🚀 ~ file: VocabReadings.tsx:113 ~ VocabReadings ~ readings:",
-      readings
-    );
-  }
+  let readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
+
   // TODO: test layout with multiple pronunciations
   return hasReadings ? (
     <ReadingContainer>
       <IonRow>
         <ReadingsStyle>
-          <strong>Readings: </strong>
+          {!hideReadingTxt && <strong>Readings: </strong>}
           {readings && readings.length
             ? readings.map((vocabReading: SubjectReading, index: number) => {
                 return (
                   <VocabReadingContainer key={`reading_${index}`}>
-                    <p>{vocabReading.reading}</p>
+                    <ReadingTxt>{vocabReading.reading}</ReadingTxt>
                     {hasReadings && (
                       <AudioBtn
                         url={getAudioForReading(

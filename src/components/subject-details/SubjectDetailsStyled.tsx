@@ -27,6 +27,7 @@ export const SubjInfoContainer = styled(IonRow)`
   padding-inline-end: var(--ion-padding, 16px);
   padding-top: var(--ion-padding, 16px);
   padding-bottom: var(--ion-padding, 16px);
+  margin-top: 0;
 `;
 
 // TODO: probably have to alter to account for desktop size
@@ -58,7 +59,8 @@ export const SubjDetailSection = styled.div`
 `;
 
 export const ReadingsStyle = styled(IonCol)`
-  padding: 3px 0;
+  padding: 0;
+  padding-top: 0;
 `;
 
 export const ReadingContainer = styled(IonCol)`

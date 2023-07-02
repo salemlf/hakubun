@@ -9,6 +9,17 @@ import { KanjiUsedInVocab } from "../subjects/KanjiUsedInVocab";
 import { PartsOfSpeech } from "../subject-details/PartsOfSpeech";
 import { VocabMeaningExplanation } from "../subjects/VocabMeaningExplanation";
 import { VocabReadingExplanation } from "../subjects/VocabReadingExplanation";
+import { VocabReadings } from "../subject-details/VocabReadings";
+
+import styled from "styled-components/macro";
+
+const ReadingHeading = styled(SubjDetailSubHeading)`
+  margin-bottom: 0;
+`;
+
+const VocabReadingSection = styled(SubjDetailSection)`
+  margin-bottom: 0;
+`;
 
 // TODO: add meaning mnemonics
 export const VocabBottomSheet = ({
@@ -43,7 +54,16 @@ export const VocabBottomSheet = ({
         </>
       )}
       {selectedSegment === "reading" && (
-        <VocabReadingExplanation vocab={reviewItem as Vocabulary} />
+        <>
+          <VocabReadingSection>
+            <ReadingHeading>Vocab Reading</ReadingHeading>
+            <VocabReadings
+              vocab={reviewItem as Vocabulary}
+              hideReadingTxt={true}
+            />
+          </VocabReadingSection>
+          <VocabReadingExplanation vocab={reviewItem as Vocabulary} />
+        </>
       )}
     </>
   );

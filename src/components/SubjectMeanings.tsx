@@ -18,6 +18,10 @@ const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
   padding-right: 0;
 `;
 
+const SubjDetailHeadingNoBtmMargin = styled(SubjDetailSubHeading)`
+  margin-bottom: 0;
+`;
+
 type PrimaryAndAltProps = {
   subject: Subject;
   altMeanings: SubjectMeaning[];
@@ -80,9 +84,13 @@ export const SubjectMeanings = ({
 
   return (
     <AlternativeMeaningsContainer className={`${styles.altMeaningsContainer}`}>
-      <SubjDetailSubHeading>
-        {showPrimaryMeaning ? "Meanings" : "Alternative Meanings"}
-      </SubjDetailSubHeading>
+      {showPrimaryMeaning ? (
+        <SubjDetailSubHeading>Meanings</SubjDetailSubHeading>
+      ) : (
+        <SubjDetailHeadingNoBtmMargin>
+          Alternative Meanings
+        </SubjDetailHeadingNoBtmMargin>
+      )}
       {showPrimaryMeaning && (
         <PrimaryAndAltMeanings
           subject={subject}

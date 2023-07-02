@@ -19,10 +19,10 @@ export const VocabSubjDetails = ({ vocab }: Props) => {
     <SubjInfoContainer>
       <VocabMeaningExplanation vocab={vocab} />
       <VocabReadingExplanation vocab={vocab} />
+      <ContextSentences sentences={vocab.context_sentences} />
       {findComponents && (
         <KanjiUsedInVocab kanjiIDs={vocab.component_subject_ids!} />
       )}
-      <ContextSentences sentences={vocab.context_sentences} />
     </SubjInfoContainer>
   );
 };
