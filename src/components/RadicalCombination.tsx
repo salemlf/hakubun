@@ -11,9 +11,13 @@ import { IonRow, IonSkeletonText } from "@ionic/react";
 
 type Props = {
   kanji: Kanji;
+  displayQuestionTxt?: boolean;
 };
 
-export const RadicalCombination = ({ kanji }: Props) => {
+export const RadicalCombination = ({
+  kanji,
+  displayQuestionTxt = false,
+}: Props) => {
   let findComponents = kanji.component_subject_ids.length !== 0;
 
   const {
@@ -49,6 +53,9 @@ export const RadicalCombination = ({ kanji }: Props) => {
   return (
     <SubjDetailSection>
       <SubjDetailSubHeading>Radical Combination</SubjDetailSubHeading>
+      {displayQuestionTxt && (
+        <p>Can you see where the radicals fit in the kanji?</p>
+      )}
       <SubjectButtonList
         subjList={radicalsUsedSubjData}
         assignmentList={radicalsUsedAssignmentsData}

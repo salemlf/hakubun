@@ -87,12 +87,9 @@ export const ReviewItemBottomSheet = ({
   const subjectsWithReadings: SubjectType[] = ["kanji", "vocabulary"];
   let isBottomSheetVisible = queueState.isBottomSheetVisible;
 
-  // TODO: change type to click event
   const onSegmentClick = (e: any) => {
     const segmentClicked = e.target.value;
-    if (segmentClicked === selectedSegment) {
-      // TODO: refresh the data, rn does nothing
-    } else {
+    if (segmentClicked !== selectedSegment) {
       setSelectedSegment(segmentClicked);
     }
   };

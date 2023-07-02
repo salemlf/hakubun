@@ -11,6 +11,7 @@ import {
 import { ReadingsForKanji } from "../subjects/ReadingsForKanji";
 import { KanjiReadingMnemonic } from "../subjects/KanjiReadingMnemonic";
 
+// TODO: add stroke order to radicals segment
 export const KanjiBottomSheet = ({
   reviewItem,
   selectedSegment,
@@ -18,7 +19,10 @@ export const KanjiBottomSheet = ({
   return (
     <>
       {selectedSegment === "radicals" && (
-        <RadicalCombination kanji={reviewItem as Kanji} />
+        <RadicalCombination
+          kanji={reviewItem as Kanji}
+          displayQuestionTxt={true}
+        />
       )}
       {selectedSegment === "meaning" && (
         <>
