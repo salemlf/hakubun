@@ -1,4 +1,4 @@
-import { IonCol, IonRow } from "@ionic/react";
+import { IonRow } from "@ionic/react";
 import { BottomSheetSubjectProps } from "../../types/ReviewSessionTypes";
 import { Kanji, Subject } from "../../types/Subject";
 import { KanjiMeaningMnemonic } from "../KanjiMeaningMnemonic";
@@ -9,6 +9,7 @@ import {
   SubjDetailSubHeading,
 } from "../subject-details/SubjectDetailsStyled";
 import { ReadingsForKanji } from "../subjects/ReadingsForKanji";
+import { KanjiReadingMnemonic } from "../subjects/KanjiReadingMnemonic";
 
 export const KanjiBottomSheet = ({
   reviewItem,
@@ -46,6 +47,7 @@ export const KanjiBottomSheet = ({
               hideReadingType={true}
             />
           </IonRow>
+          <KanjiReadingMnemonic kanji={reviewItem as Kanji} />
         </SubjDetailSection>
       )}
     </>
