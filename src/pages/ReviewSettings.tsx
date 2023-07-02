@@ -114,7 +114,6 @@ export const ReviewSettings = () => {
     );
     // *testing
 
-    // TODO: change so this overwrites items in current queue and resets currReviewCardIndex to 0
     let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
 
     createNewReviewSession(assignmentBatchToReview, subjIDs);

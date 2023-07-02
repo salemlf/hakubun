@@ -68,14 +68,14 @@ export const useReviewQueue = () => {
   };
 
   const correctFirstClick = (currReviewItem: ReviewQueueItem) => {
-    let reviewComplete = checkIfReviewIsComplete(
+    let reviewItemComplete = checkIfReviewIsComplete(
       currReviewItem,
       queueDataState.reviewQueue
     );
     // *testing
     console.log(
-      "🚀 ~ file: useReviewQueue.tsx:40 ~ correctFirstClick ~ reviewComplete:",
-      reviewComplete
+      "🚀 ~ file: useReviewQueue.tsx:40 ~ correctFirstClick ~ reviewItemComplete:",
+      reviewItemComplete
     );
     // *testing
 
@@ -96,12 +96,12 @@ export const useReviewQueue = () => {
       // keeping answer as incorrect and is_reviewed as true
       // TODO: make sure this actually updates
       updatedReviewItem.is_reviewed = true;
-      // TODO: update review item SRS level
-      // TODO: change to show toast with updated SRS level
-      if (reviewComplete) {
+
+      // TODO: get review item's current SRS level, update item's SRS level
+      if (reviewItemComplete) {
         displaySRSStatus(false);
       }
-      // TODO: call update to review queue item
+
       updateReviewQueueItem(
         updatedReviewItem,
         queueDataState,
@@ -110,7 +110,7 @@ export const useReviewQueue = () => {
     }
     // user got answer correct first try
     else {
-      if (reviewComplete) {
+      if (reviewItemComplete) {
         displaySRSStatus(true);
       }
       // TODO: make sure this actually updates
@@ -126,9 +126,10 @@ export const useReviewQueue = () => {
 
   const handleCorrectAnswer = (
     currReviewItem: ReviewQueueItem,
-    setUserAnswer: (value: React.SetStateAction<string>) => void
+    setUserAnswer: (value: React.SetStateAction<string>) => void,
+    moveToNextItem: boolean
   ) => {
-    if (queueState.isSecondClick) {
+    if (moveToNextItem) {
       dispatchQueueContext({ type: "CORRECT_MOVE_TO_NEXT" });
       setUserAnswer("");
     } else {
@@ -138,10 +139,12 @@ export const useReviewQueue = () => {
 
   const handleWrongAnswer = (
     currReviewItem: ReviewQueueItem,
-    setUserAnswer: (value: React.SetStateAction<string>) => void
+    setUserAnswer: (value: React.SetStateAction<string>) => void,
+    moveToNextItem: boolean
   ) => {
     let updatedReviewItem = currReviewItem;
-    if (queueState.isSecondClick) {
+
+    if (moveToNextItem) {
       addToReviewQueue(
         updatedReviewItem,
         queueDataState,
@@ -157,12 +160,13 @@ export const useReviewQueue = () => {
       });
       updatedReviewItem.is_correct_answer = false;
       updatedReviewItem.is_reviewed = true;
+
+      updateReviewQueueItem(
+        updatedReviewItem,
+        queueDataState,
+        dispatchQueueDataContext
+      );
     }
-    updateReviewQueueItem(
-      updatedReviewItem,
-      queueDataState,
-      dispatchQueueDataContext
-    );
   };
 
   const handleNextClick = (
@@ -170,7 +174,6 @@ export const useReviewQueue = () => {
     userAnswer: string,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
-    // TODO: also check that next reviewQueue.length - 1 !== sessionState.currReviewCardIndex ? may not be necessary
     let isValidInfo = isUserAnswerValid(currReviewItem, userAnswer);
     if (isValidInfo.isValid === false) {
       dispatchQueueContext({
@@ -193,9 +196,10 @@ export const useReviewQueue = () => {
     );
     // *testing
 
+    let moveToNextItem = queueState.isSecondClick;
     isCorrectAnswer
-      ? handleCorrectAnswer(currReviewItem, setUserAnswer)
-      : handleWrongAnswer(currReviewItem, setUserAnswer);
+      ? handleCorrectAnswer(currReviewItem, setUserAnswer, moveToNextItem)
+      : handleWrongAnswer(currReviewItem, setUserAnswer, moveToNextItem);
 
     dispatchQueueContext({ type: "SUBMIT_CHOICE" });
   };
