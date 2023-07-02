@@ -6,55 +6,9 @@ import {
   SubjDetailSubHeading,
 } from "./SubjectDetailsStyled";
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
-import { SubjectButtonList } from "../SubjectButtonList";
 import { Hint } from "./Hint";
 import { ContextSentences } from "../ContextSentences";
-
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
-
-type KanjiUsedProps = {
-  kanjiIDs: number[];
-};
-
-const KanjiUsed = ({ kanjiIDs }: KanjiUsedProps) => {
-  const {
-    isLoading: kanjiUsedSubjLoading,
-    data: kanjiUsedSubjData,
-    error: kanjiUsedSubjErr,
-  } = useSubjectsByIDs(kanjiIDs);
-
-  const {
-    isLoading: kanjiUsedAssignmentsLoading,
-    data: kanjiUsedAssignmentsData,
-    error: kanjiUsedAssignmentsErr,
-  } = useAssignmentsBySubjIDs(kanjiIDs);
-
-  let loading =
-    kanjiUsedSubjLoading ||
-    kanjiUsedSubjErr ||
-    kanjiUsedAssignmentsLoading ||
-    kanjiUsedAssignmentsErr;
-
-  if (loading) {
-    return (
-      <div className="ion-padding">
-        <IonSkeletonText animated={true}></IonSkeletonText>
-        <IonSkeletonText animated={true}></IonSkeletonText>
-      </div>
-    );
-  }
-
-  return (
-    <SubjDetailSection>
-      <SubjDetailSubHeading>Kanji Used</SubjDetailSubHeading>
-      <SubjectButtonList
-        subjList={kanjiUsedSubjData}
-        assignmentList={kanjiUsedAssignmentsData}
-      />
-    </SubjDetailSection>
-  );
-};
+import { KanjiUsedInVocab } from "../subjects/KanjiUsedInVocab";
 
 type Props = {
   vocab: Vocabulary;
@@ -78,7 +32,9 @@ export const VocabSubjDetails = ({ vocab }: Props) => {
         <TxtWithSubjTags textWithTags={vocab.reading_mnemonic!} />
         {vocab.meaning_hint && <Hint hint={vocab.meaning_hint} />}
       </SubjDetailSection>
-      {findComponents && <KanjiUsed kanjiIDs={vocab.component_subject_ids!} />}
+      {findComponents && (
+        <KanjiUsedInVocab kanjiIDs={vocab.component_subject_ids!} />
+      )}
     </SubjInfoContainer>
   );
 };

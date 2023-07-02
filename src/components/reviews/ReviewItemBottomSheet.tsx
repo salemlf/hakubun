@@ -122,8 +122,8 @@ export const ReviewItemBottomSheet = ({
                     </IonSegmentButton>
                   )}
                   {currentReviewItem.object == "vocabulary" && (
-                    <IonSegmentButton value="kanji">
-                      <IonLabel>Kanji</IonLabel>
+                    <IonSegmentButton value="breakdown">
+                      <IonLabel>Breakdown</IonLabel>
                     </IonSegmentButton>
                   )}
                   <IonSegmentButton value="meaning">
