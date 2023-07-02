@@ -82,21 +82,14 @@ const getStudyMaterials = async (subjIDs: number[]) => {
   }
 };
 
-const updateReviewQueue = (
+const updateReviewQueueItem = (
   queueItemToUpdate: ReviewQueueItem,
   state: ReviewSessionDataState,
   dispatchContext: ReviewSessionDataDispatch
 ) => {
-  let currReviewQueue = state.reviewQueue;
-
-  const updatedQueue = currReviewQueue.map((reviewQueueItem) => {
-    if (reviewQueueItem.itemID === queueItemToUpdate.itemID) {
-      return queueItemToUpdate;
-    } else return reviewQueueItem;
-  });
   dispatchContext({
-    type: "UPDATE_REVIEW_QUEUE",
-    payload: updatedQueue,
+    type: "UPDATE_REVIEW_QUEUE_ITEM",
+    payload: queueItemToUpdate,
   });
 };
 
@@ -105,12 +98,9 @@ const addToReviewQueue = (
   state: ReviewSessionDataState,
   dispatchContext: ReviewSessionDataDispatch
 ) => {
-  let currReviewQueue = state.reviewQueue;
-
-  let updatedQueue = currReviewQueue.concat(queueItemToAdd);
   dispatchContext({
-    type: "UPDATE_REVIEW_QUEUE",
-    payload: updatedQueue,
+    type: "ADD_TO_REVIEW_QUEUE",
+    payload: queueItemToAdd,
   });
 };
 
@@ -214,7 +204,6 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
       case "END_REVIEW":
         // TODO: change so setItem called in function, not here
         removeItem("reviewData");
-        // return { ...state, reviewQueue: null };
         return { ...state, reviewQueue: [] };
       case "REVIEW_QUEUE_LOADING":
         return { ...state, isLoading: true };
@@ -222,8 +211,31 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
         // TODO: change so setItem not called here since usually pulled from cache
         setItem("reviewQueue", action.payload);
         return { ...state, isLoading: false, reviewQueue: action.payload };
-      case "UPDATE_REVIEW_QUEUE":
-        return { ...state, reviewQueue: action.payload };
+      case "UPDATE_REVIEW_QUEUE_ITEM":
+        let lastIndexOfItem =
+          state.reviewQueue.length -
+          1 -
+          state.reviewQueue
+            .slice()
+            .reverse()
+            .findIndex(
+              (reviewItem) => reviewItem.itemID === action.payload.itemID
+            );
+        let updatedQueueItem = Object.assign({}, action.payload);
+
+        return {
+          ...state,
+          reviewQueue: [
+            ...state.reviewQueue.slice(0, lastIndexOfItem),
+            updatedQueueItem,
+            ...state.reviewQueue.slice(lastIndexOfItem + 1),
+          ],
+        };
+      case "ADD_TO_REVIEW_QUEUE":
+        return {
+          ...state,
+          reviewQueue: [...state.reviewQueue.concat(action.payload)],
+        };
       default: {
         throw new Error(`Unhandled action type: ${action.type}`);
       }
@@ -275,5 +287,5 @@ export {
   useReviewSessionData,
   createReviewItems,
   addToReviewQueue,
-  updateReviewQueue,
+  updateReviewQueueItem,
 };

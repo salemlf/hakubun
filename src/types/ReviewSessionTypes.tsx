@@ -23,7 +23,8 @@ type ReviewSessionDataActionType =
   | "END_REVIEW"
   | "REVIEW_QUEUE_LOADING"
   | "REVIEW_QUEUE_LOADED"
-  | "UPDATE_REVIEW_QUEUE";
+  | "UPDATE_REVIEW_QUEUE_ITEM"
+  | "ADD_TO_REVIEW_QUEUE";
 
 export type ReviewSessionDataAction = {
   type: ReviewSessionDataActionType;

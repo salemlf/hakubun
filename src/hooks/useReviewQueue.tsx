@@ -1,7 +1,7 @@
 import { useReviewSessionQueue } from "../contexts/ReviewSessionQueueContext";
 import {
   useReviewSessionData,
-  updateReviewQueue,
+  updateReviewQueueItem,
   addToReviewQueue,
 } from "../contexts/ReviewSessionDataContext";
 import { playAudioIfAvailable } from "../services/MiscService";
@@ -10,12 +10,20 @@ import {
   isUserAnswerCorrect,
   isUserAnswerValid,
 } from "../services/SubjectAndAssignmentService";
+import { useEffect } from "react";
 
 export const useReviewQueue = () => {
   const { queueDataState, dispatchQueueDataContext } = useReviewSessionData();
   const { queueState, dispatchQueueContext } = useReviewSessionQueue();
+  // *testing
+  useEffect(() => {
+    console.log(
+      "🚀 ~ file: useReviewQueue.tsx:16 ~ useReviewQueue ~ queueDataState.reviewQueue:",
+      queueDataState.reviewQueue
+    );
+  }, [queueDataState.reviewQueue]);
+  // *testing
 
-  // TODO: call in review settings page
   const resetCurrReviewCardIndex = () => {
     dispatchQueueContext({
       type: "RESET_REVIEW_CARD_INDEX",
@@ -62,13 +70,12 @@ export const useReviewQueue = () => {
         // TODO: make sure this actually updates
         updatedReviewItem.is_correct_answer = true;
         updatedReviewItem.is_reviewed = true;
+        updateReviewQueueItem(
+          updatedReviewItem,
+          queueDataState,
+          dispatchQueueDataContext
+        );
       }
-
-      updateReviewQueue(
-        updatedReviewItem,
-        queueDataState,
-        dispatchQueueDataContext
-      );
     }
   };
 
@@ -94,7 +101,7 @@ export const useReviewQueue = () => {
       updatedReviewItem.is_correct_answer = false;
       updatedReviewItem.is_reviewed = true;
     }
-    updateReviewQueue(
+    updateReviewQueueItem(
       updatedReviewItem,
       queueDataState,
       dispatchQueueDataContext
@@ -150,7 +157,7 @@ export const useReviewQueue = () => {
     updatedReviewItem.is_correct_answer = null;
     updatedReviewItem.is_reviewed = false;
 
-    updateReviewQueue(
+    updateReviewQueueItem(
       updatedReviewItem,
       queueDataState,
       dispatchQueueDataContext
