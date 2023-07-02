@@ -3,7 +3,7 @@ import { IonGrid, IonRow, IonCol } from "@ionic/react";
 import { toKana } from "wanakana";
 
 import styled from "styled-components/macro";
-import { useKeyPress } from "../../hooks/useKeyPress";
+import { useKeyDown } from "../../hooks/useKeyDown";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 
@@ -32,7 +32,7 @@ export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
   const { queueDataState, queueState, handleNextClick, handleRetryClick } =
     useReviewQueue();
   const [userAnswer, setUserAnswer] = useState("");
-  useKeyPress(() => nextBtnClicked(), ["F12"]);
+  useKeyDown(() => nextBtnClicked(), ["F12"]);
 
   let reviewType = currentReviewItem.review_type;
 
@@ -67,6 +67,11 @@ export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
           type="text"
           value={userAnswer}
           onChange={(e) => onInputFunction(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              nextBtnClicked();
+            }
+          }}
           disabled={queueState.isSecondClick}
           placeholder={reviewType === "reading" ? "答え" : ""}
         />
