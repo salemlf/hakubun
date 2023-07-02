@@ -70,3 +70,8 @@ export type ReviewSessionQueueAction = {
 export type ReviewSessionQueueDispatch = (
   action: ReviewSessionQueueAction
 ) => void;
+
+export type BottomSheetSubjectProps = {
+  reviewItem: ReviewQueueItem;
+  selectedSegment: ReviewType | string;
+};

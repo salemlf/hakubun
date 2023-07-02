@@ -57,7 +57,7 @@ export const SubjDetailSection = styled.div`
   width: 100%;
 `;
 
-export const Readings = styled(IonCol)`
+export const ReadingsStyle = styled(IonCol)`
   padding: 3px 0;
 `;
 

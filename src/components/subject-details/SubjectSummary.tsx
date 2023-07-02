@@ -6,7 +6,7 @@ import { SubjectMeanings } from "../SubjectMeanings";
 import { AssignmentSrs } from "../AssignmentSrs";
 import { BasicCard } from "../cards/BasicCard";
 import { SubjSummaryRow } from "./SubjectDetailsStyled";
-import { KanjiReadings } from "./KanjiReadings";
+import { SubjDetailsKanjiReadings } from "./SubjDetailsKanjiReadings";
 import { VocabReadings } from "./VocabReadings";
 import { PartsOfSpeech } from "./PartsOfSpeech";
 
@@ -64,7 +64,7 @@ const KanjiSummary = ({ subject, assignment }: SubjSummaryProps) => {
         <SubjectMeanings subject={subject} />
       </AltMeaningsAndPartsOfSpeechRow>
       <ReadingsAndSrsRow>
-        <KanjiReadings kanji={subject as Kanji} />
+        <SubjDetailsKanjiReadings kanji={subject as Kanji} />
         <AssignmentSrs assignment={assignment} />
       </ReadingsAndSrsRow>
     </>

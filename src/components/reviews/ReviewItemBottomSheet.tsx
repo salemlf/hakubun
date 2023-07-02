@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router";
 import {
   IonModal,
   IonHeader,
@@ -14,21 +15,13 @@ import {
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem, ReviewType } from "../../types/ReviewSessionTypes";
 import { SubjectHeader } from "../subject-details/SubjectHeader";
-import {
-  Kanji,
-  Radical,
-  Subject,
-  SubjectType,
-  Vocabulary,
-} from "../../types/Subject";
+import { Subject, SubjectType, Vocabulary } from "../../types/Subject";
 
 import styled from "styled-components/macro";
-import { RadicalSubjDetails } from "../subject-details/RadicalSubjDetails";
-import { VocabSubjDetails } from "../subject-details/VocabSubjDetails";
-import { RadicalCombination } from "../RadicalCombination";
-import { SubjectMeanings } from "../SubjectMeanings";
-import { KanjiMeaningMnemonic } from "../KanjiMeaningMnemonic";
-import { useLocation } from "react-router";
+
+import { RadicalBottomSheet } from "./RadicalBottomSheet";
+import { KanjiBottomSheet } from "./KanjiBottomSheet";
+import { VocabBottomSheet } from "./VocabBottomSheet";
 
 type Props = {
   currentReviewItem: ReviewQueueItem;
@@ -68,71 +61,6 @@ const BottomSheetContent = styled(IonRow)`
 const Segment = styled(IonSegment)`
   margin-bottom: 10px;
 `;
-
-type BottomSheetSubjectProps = {
-  reviewItem: ReviewQueueItem;
-  selectedSegment: ReviewType | string;
-};
-
-// TODO: add meaning mnemonics
-const RadicalBottomSheet = ({
-  reviewItem,
-  selectedSegment,
-}: BottomSheetSubjectProps) => {
-  return (
-    <>
-      {selectedSegment === "meaning" && (
-        <>
-          <SubjectMeanings
-            subject={reviewItem as Subject}
-            showPrimaryMeaning={true}
-          />
-        </>
-      )}
-    </>
-  );
-};
-
-const KanjiBottomSheet = ({
-  reviewItem,
-  selectedSegment,
-}: BottomSheetSubjectProps) => {
-  return (
-    <>
-      {selectedSegment === "radicals" && (
-        <RadicalCombination kanji={reviewItem as Kanji} />
-      )}
-      {selectedSegment === "meaning" && (
-        <>
-          <SubjectMeanings
-            subject={reviewItem as Subject}
-            showPrimaryMeaning={true}
-          />
-          <KanjiMeaningMnemonic kanji={reviewItem as Kanji} />
-        </>
-      )}
-    </>
-  );
-};
-
-// TODO: add meaning mnemonics
-const VocabBottomSheet = ({
-  reviewItem,
-  selectedSegment,
-}: BottomSheetSubjectProps) => {
-  return (
-    <>
-      {selectedSegment === "meaning" && (
-        <>
-          <SubjectMeanings
-            subject={reviewItem as Subject}
-            showPrimaryMeaning={true}
-          />
-        </>
-      )}
-    </>
-  );
-};
 
 // TODO: make sure selectedSegment always changes to reviewType passed in, maybe useEffect?
 export const ReviewItemBottomSheet = ({
@@ -211,7 +139,6 @@ export const ReviewItemBottomSheet = ({
                   )}
                 </Segment>
                 {currentReviewItem.object == "radical" && (
-                  // <RadicalSubjDetails radical={currentReviewItem as Radical} />
                   <RadicalBottomSheet
                     reviewItem={currentReviewItem}
                     selectedSegment={selectedSegment}
@@ -225,7 +152,6 @@ export const ReviewItemBottomSheet = ({
                 )}
                 {/* // TODO: create a version of this for kana vocab */}
                 {currentReviewItem.object == "vocabulary" && (
-                  // <VocabSubjDetails vocab={currentReviewItem as Vocabulary} />
                   <VocabBottomSheet
                     reviewItem={currentReviewItem}
                     selectedSegment={selectedSegment}

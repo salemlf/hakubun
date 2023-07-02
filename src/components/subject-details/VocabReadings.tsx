@@ -6,7 +6,7 @@ import {
 } from "../../types/Subject";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
 import { useAudio } from "../../hooks/useAudio";
-import { Readings, ReadingContainer } from "./SubjectDetailsStyled";
+import { ReadingsStyle, ReadingContainer } from "./SubjectDetailsStyled";
 import styled from "styled-components/macro";
 import SoundIcon from "../../images/sound.svg";
 import { getAudioUrlByGender } from "../../services/MiscService";
@@ -55,7 +55,7 @@ export const VocabReadings = ({ vocab }: VocabReadingProps) => {
   return hasReadings ? (
     <ReadingContainer>
       <IonRow>
-        <Readings>
+        <ReadingsStyle>
           <strong>Readings: </strong>
           {readings && readings.length
             ? readings.map((vocabReading: SubjectReading, index: number) => {
@@ -74,16 +74,16 @@ export const VocabReadings = ({ vocab }: VocabReadingProps) => {
                 );
               })
             : "-"}
-        </Readings>
+        </ReadingsStyle>
       </IonRow>
     </ReadingContainer>
   ) : (
     <ReadingContainer>
       <IonRow>
-        <Readings>
+        <ReadingsStyle>
           <strong>Readings: </strong>
           {vocab.characters}
-        </Readings>
+        </ReadingsStyle>
       </IonRow>
     </ReadingContainer>
   );
