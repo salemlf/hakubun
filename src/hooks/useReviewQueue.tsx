@@ -3,6 +3,7 @@ import {
   useReviewSessionData,
   updateReviewQueueItem,
   addToReviewQueue,
+  createReviewItems,
 } from "../contexts/ReviewSessionDataContext";
 import { playAudioIfAvailable } from "../services/MiscService";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
@@ -12,6 +13,7 @@ import {
 } from "../services/SubjectAndAssignmentService";
 import { useEffect } from "react";
 import { checkIfReviewIsComplete } from "../services/ReviewService";
+import { Assignment } from "../types/Assignment";
 
 export const useReviewQueue = () => {
   const { queueDataState, dispatchQueueDataContext } = useReviewSessionData();
@@ -24,6 +26,18 @@ export const useReviewQueue = () => {
     );
   }, [queueDataState.reviewQueue]);
   // *testing
+
+  const createNewReviewSession = (
+    assignments: Assignment[],
+    subjIDs: number[]
+  ) => {
+    // ending the current review (if it exists)
+    dispatchQueueDataContext({
+      type: "END_REVIEW",
+    });
+    createReviewItems(assignments, subjIDs, dispatchQueueDataContext);
+    resetCurrReviewCardIndex();
+  };
 
   const resetCurrReviewCardIndex = () => {
     dispatchQueueContext({
@@ -209,5 +223,6 @@ export const useReviewQueue = () => {
     resetCurrReviewCardIndex,
     handleNextClick,
     handleRetryClick,
+    createNewReviewSession,
   };
 };

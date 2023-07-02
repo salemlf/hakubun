@@ -27,10 +27,7 @@ import {
   getSubjIDsFromAssignments,
 } from "../services/SubjectAndAssignmentService";
 
-import {
-  useReviewSessionData,
-  createReviewItems,
-} from "../contexts/ReviewSessionDataContext";
+import { useReviewQueue } from "../hooks/useReviewQueue";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -60,7 +57,7 @@ const Title = styled(IonTitle)`
 `;
 
 export const ReviewSettings = () => {
-  const { dispatchQueueDataContext } = useReviewSessionData();
+  const { createNewReviewSession } = useReviewQueue();
   const router = useIonRouter();
 
   const {
@@ -119,11 +116,8 @@ export const ReviewSettings = () => {
 
     // TODO: change so this overwrites items in current queue and resets currReviewCardIndex to 0
     let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
-    createReviewItems(
-      assignmentBatchToReview,
-      subjIDs,
-      dispatchQueueDataContext
-    );
+
+    createNewReviewSession(assignmentBatchToReview, subjIDs);
     router.push("/review/session");
   };
 
