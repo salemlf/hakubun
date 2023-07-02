@@ -1,15 +1,10 @@
 import { IonSkeletonText } from "@ionic/react";
 import { Vocabulary } from "../../types/Subject";
-import {
-  SubjInfoContainer,
-  SubjDetailSection,
-  SubjDetailSubHeading,
-} from "./SubjectDetailsStyled";
-import { TxtWithSubjTags } from "../TxtWithSubjTags";
-import { Hint } from "./Hint";
+import { SubjInfoContainer } from "./SubjectDetailsStyled";
 import { ContextSentences } from "../ContextSentences";
 import { KanjiUsedInVocab } from "../subjects/KanjiUsedInVocab";
 import { VocabMeaningExplanation } from "../subjects/VocabMeaningExplanation";
+import { VocabReadingExplanation } from "../subjects/VocabReadingExplanation";
 
 type Props = {
   vocab: Vocabulary;
@@ -22,16 +17,12 @@ export const VocabSubjDetails = ({ vocab }: Props) => {
 
   return (
     <SubjInfoContainer>
-      <ContextSentences sentences={vocab.context_sentences} />
       <VocabMeaningExplanation vocab={vocab} />
-      <SubjDetailSection>
-        <SubjDetailSubHeading>Reading Explanation</SubjDetailSubHeading>
-        <TxtWithSubjTags textWithTags={vocab.reading_mnemonic!} />
-        {vocab.meaning_hint && <Hint hint={vocab.meaning_hint} />}
-      </SubjDetailSection>
+      <VocabReadingExplanation vocab={vocab} />
       {findComponents && (
         <KanjiUsedInVocab kanjiIDs={vocab.component_subject_ids!} />
       )}
+      <ContextSentences sentences={vocab.context_sentences} />
     </SubjInfoContainer>
   );
 };

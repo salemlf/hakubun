@@ -1,13 +1,14 @@
 import { BottomSheetSubjectProps } from "../../types/ReviewSessionTypes";
 import { Subject, Vocabulary } from "../../types/Subject";
-import { SubjectMeanings } from "../SubjectMeanings";
-import { KanjiUsedInVocab } from "../subjects/KanjiUsedInVocab";
-import { PartsOfSpeech } from "../subject-details/PartsOfSpeech";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../subject-details/SubjectDetailsStyled";
+import { SubjectMeanings } from "../SubjectMeanings";
+import { KanjiUsedInVocab } from "../subjects/KanjiUsedInVocab";
+import { PartsOfSpeech } from "../subject-details/PartsOfSpeech";
 import { VocabMeaningExplanation } from "../subjects/VocabMeaningExplanation";
+import { VocabReadingExplanation } from "../subjects/VocabReadingExplanation";
 
 // TODO: add meaning mnemonics
 export const VocabBottomSheet = ({
@@ -41,7 +42,9 @@ export const VocabBottomSheet = ({
           <VocabMeaningExplanation vocab={reviewItem as Vocabulary} />
         </>
       )}
-      {selectedSegment === "reading" && <p>Nothing here rn</p>}
+      {selectedSegment === "reading" && (
+        <VocabReadingExplanation vocab={reviewItem as Vocabulary} />
+      )}
     </>
   );
 };
