@@ -42,6 +42,13 @@ const Title = styled(IonTitle)`
   text-align: center;
 `;
 
+const Toolbar = styled(IonToolbar)`
+  &:first-of-type {
+    padding-top: 8px;
+  }
+  padding-bottom: 8px;
+`;
+
 type BottomSheetSubjectProps = {
   reviewItem: ReviewQueueItem;
   selectedSegment: ReviewType | string;
@@ -88,6 +95,25 @@ const KanjiBottomSheet = ({
   );
 };
 
+// TODO: add meaning mnemonics
+const VocabBottomSheet = ({
+  reviewItem,
+  selectedSegment,
+}: BottomSheetSubjectProps) => {
+  return (
+    <>
+      {selectedSegment === "meaning" && (
+        <>
+          <SubjectMeanings
+            subject={reviewItem as Subject}
+            showPrimaryMeaning={true}
+          />
+        </>
+      )}
+    </>
+  );
+};
+
 // TODO: fix issue where this isn't always closed after moving to other pages
 export const ReviewItemBottomSheet = ({
   currentReviewItem,
@@ -118,21 +144,20 @@ export const ReviewItemBottomSheet = ({
     }
   };
 
-  // TODO: temporary, change so this is sliding tabs with different info on each tab (components used, meaning, reading) with section selected based on review type
   return (
     <IonModal
       ref={modal}
       isOpen={isBottomSheetVisible}
-      initialBreakpoint={0.06}
-      breakpoints={[0.06, 1]}
+      initialBreakpoint={0.08}
+      breakpoints={[0.08, 1]}
       handleBehavior="cycle"
       backdropDismiss={false}
       backdropBreakpoint={0.5}
     >
       <IonHeader>
-        <IonToolbar>
+        <Toolbar>
           <Title>Subject Info</Title>
-        </IonToolbar>
+        </Toolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <>
@@ -174,7 +199,11 @@ export const ReviewItemBottomSheet = ({
               )}
               {/* // TODO: create a version of this for kana vocab */}
               {currentReviewItem.object == "vocabulary" && (
-                <VocabSubjDetails vocab={currentReviewItem as Vocabulary} />
+                // <VocabSubjDetails vocab={currentReviewItem as Vocabulary} />
+                <VocabBottomSheet
+                  reviewItem={currentReviewItem}
+                  selectedSegment={selectedSegment}
+                />
               )}
             </FullWidthGrid>
           </IonContent>
