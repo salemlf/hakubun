@@ -1,4 +1,7 @@
-import { getAlternativeMeanings } from "../services/SubjectAndAssignmentService";
+import {
+  getAlternativeMeanings,
+  getSubjectDisplayName,
+} from "../services/SubjectAndAssignmentService";
 
 import styles from "./AlternativeMeanings.module.scss";
 import styled from "styled-components/macro";
@@ -17,22 +20,40 @@ const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
 
 type Props = {
   subject: Subject;
+  showPrimaryMeaning?: boolean;
 };
 
 //   TODO: add a button to add alternative meanings/synonyms
-export const AlternativeMeanings = ({ subject }: Props) => {
+export const SubjectMeanings = ({
+  subject,
+  showPrimaryMeaning = false,
+}: Props) => {
+  let primaryMeaning = getSubjectDisplayName(subject);
   let altMeanings = getAlternativeMeanings(subject);
 
   return (
     <AlternativeMeaningsContainer className={`${styles.altMeaningsContainer}`}>
-      <SubjDetailSubHeading>Alternative Meanings</SubjDetailSubHeading>
+      <SubjDetailSubHeading>
+        {showPrimaryMeaning ? "Meanings" : "Alternative Meanings"}
+      </SubjDetailSubHeading>
       <SubjDetailTxt>
-        {altMeanings && altMeanings.length
+        {showPrimaryMeaning && (
+          <span>
+            {primaryMeaning}
+            {showPrimaryMeaning &&
+              altMeanings &&
+              altMeanings.length !== 0 &&
+              ","}
+          </span>
+        )}
+        {!showPrimaryMeaning && altMeanings && altMeanings.length
           ? altMeanings
               .map((altMeaning: any) => {
                 return altMeaning.meaning;
               })
               .join(", ")
+          : showPrimaryMeaning
+          ? ""
           : "-"}
       </SubjDetailTxt>
     </AlternativeMeaningsContainer>

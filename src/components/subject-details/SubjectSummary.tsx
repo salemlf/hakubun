@@ -2,7 +2,7 @@ import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 import { Kanji, Subject, Vocabulary } from "../../types/Subject";
 import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
 
-import { AlternativeMeanings } from "../AlternativeMeanings";
+import { SubjectMeanings } from "../SubjectMeanings";
 import { AssignmentSrs } from "../AssignmentSrs";
 import { BasicCard } from "../cards/BasicCard";
 import { SubjSummaryRow } from "./SubjectDetailsStyled";
@@ -51,7 +51,7 @@ type SubjSummaryProps = {
 const RadicalSummary = ({ subject, assignment }: SubjSummaryProps) => {
   return (
     <>
-      <AlternativeMeanings subject={subject} />
+      <SubjectMeanings subject={subject} />
       <AssignmentSrs assignment={assignment} />
     </>
   );
@@ -61,7 +61,7 @@ const KanjiSummary = ({ subject, assignment }: SubjSummaryProps) => {
   return (
     <>
       <AltMeaningsAndPartsOfSpeechRow>
-        <AlternativeMeanings subject={subject} />
+        <SubjectMeanings subject={subject} />
       </AltMeaningsAndPartsOfSpeechRow>
       <ReadingsAndSrsRow>
         <KanjiReadings kanji={subject as Kanji} />
@@ -75,7 +75,7 @@ const VocabSummary = ({ subject, assignment }: SubjSummaryProps) => {
   return (
     <>
       <AltMeaningsAndPartsOfSpeechRow>
-        <AlternativeMeanings subject={subject} />
+        <SubjectMeanings subject={subject} />
         <PartsOfSpeech vocab={subject as Vocabulary} />
       </AltMeaningsAndPartsOfSpeechRow>
       <ReadingsAndSrsRow>

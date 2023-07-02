@@ -25,6 +25,7 @@ import styled from "styled-components/macro";
 import { RadicalSubjDetails } from "../subject-details/RadicalSubjDetails";
 import { VocabSubjDetails } from "../subject-details/VocabSubjDetails";
 import { RadicalCombination } from "../RadicalCombination";
+import { SubjectMeanings } from "../SubjectMeanings";
 
 type Props = {
   currentReviewItem: ReviewQueueItem;
@@ -34,6 +35,10 @@ type Props = {
 const FullWidthGrid = styled(IonGrid)`
   margin: 0;
   padding: 0;
+`;
+
+const Title = styled(IonTitle)`
+  text-align: center;
 `;
 
 // TODO: fix issue where this isn't always closed after moving to other pages
@@ -54,7 +59,7 @@ export const ReviewItemBottomSheet = ({
   );
   // *testing
 
-  // TODO: change to click event
+  // TODO: change type to click event
   const onSegmentClick = (e: any) => {
     const segmentClicked = e.target.value;
     if (segmentClicked === selectedSegment) {
@@ -77,7 +82,7 @@ export const ReviewItemBottomSheet = ({
     >
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Subject Info</IonTitle>
+          <Title>Subject Info</Title>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
@@ -115,6 +120,12 @@ export const ReviewItemBottomSheet = ({
               {/* // TODO: create a version of this for kana vocab */}
               {currentReviewItem.object == "vocabulary" && (
                 <VocabSubjDetails vocab={currentReviewItem as Vocabulary} />
+              )}
+              {selectedSegment == "meaning" && (
+                <SubjectMeanings
+                  subject={currentReviewItem as Subject}
+                  showPrimaryMeaning={true}
+                />
               )}
             </FullWidthGrid>
           </IonContent>
