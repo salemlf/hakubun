@@ -12,6 +12,7 @@ import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { SubjectButtonList } from "../SubjectButtonList";
 import { Hint } from "./Hint";
 import { SubjectWideBtnList } from "../SubjectWideBtnList";
+import { RadicalCombination } from "../RadicalCombination";
 
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
@@ -21,21 +22,8 @@ type Props = {
 };
 
 export const KanjiSubjDetails = ({ kanji }: Props) => {
-  let findComponents = kanji.component_subject_ids.length !== 0;
   let findSimilar = kanji.visually_similar_subject_ids.length !== 0;
   let findVocab = kanji.amalgamation_subject_ids.length !== 0;
-
-  const {
-    isLoading: radicalsUsedSubjLoading,
-    data: radicalsUsedSubjData,
-    error: radicalsUsedSubjErr,
-  } = useSubjectsByIDs(kanji.component_subject_ids, findComponents);
-
-  const {
-    isLoading: radicalsUsedAssignmentsLoading,
-    data: radicalsUsedAssignmentsData,
-    error: radicalsUsedAssignmentsErr,
-  } = useAssignmentsBySubjIDs(kanji.component_subject_ids, findComponents);
 
   const {
     isLoading: vocabFoundSubjLoading,
@@ -49,13 +37,6 @@ export const KanjiSubjDetails = ({ kanji }: Props) => {
     error: vocabFoundAssignmentsErr,
   } = useAssignmentsBySubjIDs(kanji.amalgamation_subject_ids, findVocab);
 
-  let radicalsUsedLoading =
-    findComponents &&
-    (radicalsUsedSubjLoading ||
-      radicalsUsedSubjErr ||
-      radicalsUsedAssignmentsLoading ||
-      radicalsUsedAssignmentsErr);
-
   let vocabFoundLoading =
     findVocab &&
     (vocabFoundSubjLoading ||
@@ -63,10 +44,8 @@ export const KanjiSubjDetails = ({ kanji }: Props) => {
       vocabFoundAssignmentsLoading ||
       vocabFoundAssignmentsErr);
 
-  let kanjiDetailsLoading = radicalsUsedLoading && vocabFoundLoading;
-
   // TODO: make this laoding skeleton actually good lol
-  if (kanjiDetailsLoading) {
+  if (vocabFoundLoading) {
     return (
       <IonRow class="ion-justify-content-start">
         <div className="ion-padding">
@@ -79,13 +58,7 @@ export const KanjiSubjDetails = ({ kanji }: Props) => {
 
   return (
     <SubjInfoContainer>
-      <SubjDetailSection>
-        <SubjDetailSubHeading>Radical Combination</SubjDetailSubHeading>
-        <SubjectButtonList
-          subjList={radicalsUsedSubjData}
-          assignmentList={radicalsUsedAssignmentsData}
-        />
-      </SubjDetailSection>
+      <RadicalCombination kanji={kanji} />
       <SubjDetailSection>
         <SubjDetailSubHeading>Meaning Mnemonic</SubjDetailSubHeading>
         <TxtWithSubjTags textWithTags={kanji.meaning_mnemonic} />

@@ -56,7 +56,6 @@ export const SubjectDetails = () => {
           <IonContent>
             <IonGrid className={`${styles.fullWidthGrid}`}>
               {subject && <SubjectSummary subject={subject}></SubjectSummary>}
-              {/* TODO: add cases for kanji and vocab too */}
               {subject && subject?.object == "radical" && (
                 <RadicalSubjDetails radical={subject as Radical} />
               )}

@@ -43,11 +43,15 @@ export const ReviewSessionQueue = () => {
         <Grid>
           {queueDataState.isLoading && <p>Loading...</p>}
           {!queueDataState.isLoading &&
-            reviewQueue.length - 1 !== queueState.currReviewCardIndex && (
+            reviewQueue.length - 1 !== queueState.currReviewCardIndex &&
+            currentReviewItem && (
               <>
                 <ReviewCharAndType currentReviewItem={currentReviewItem} />
                 <ReviewInputAndButtons currentReviewItem={currentReviewItem} />
-                <ReviewItemBottomSheet />
+                <ReviewItemBottomSheet
+                  currentReviewItem={currentReviewItem}
+                  reviewType={currentReviewItem.review_type}
+                />
               </>
             )}
           {!queueDataState.isLoading &&

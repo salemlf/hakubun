@@ -60,6 +60,7 @@ type Props = {
   vocab: Vocabulary;
 };
 
+// TODO: create a version of this for kana vocab
 export const VocabSubjDetails = ({ vocab }: Props) => {
   let findComponents =
     vocab.component_subject_ids && vocab.component_subject_ids.length !== 0;
