@@ -9,10 +9,10 @@ import {
 
 import { VisuallySimilarKanji } from "./VisuallySimilarKanji";
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
-import { SubjectButtonList } from "../SubjectButtonList";
 import { Hint } from "./Hint";
 import { SubjectWideBtnList } from "../SubjectWideBtnList";
 import { RadicalCombination } from "../RadicalCombination";
+import { KanjiMeaningMnemonic } from "../KanjiMeaningMnemonic";
 
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
@@ -59,11 +59,7 @@ export const KanjiSubjDetails = ({ kanji }: Props) => {
   return (
     <SubjInfoContainer>
       <RadicalCombination kanji={kanji} />
-      <SubjDetailSection>
-        <SubjDetailSubHeading>Meaning Mnemonic</SubjDetailSubHeading>
-        <TxtWithSubjTags textWithTags={kanji.meaning_mnemonic} />
-        {kanji.meaning_hint && <Hint hint={kanji.meaning_hint} />}
-      </SubjDetailSection>
+      <KanjiMeaningMnemonic kanji={kanji} />
       <SubjDetailSection>
         <SubjDetailSubHeading>Reading Mnemonic</SubjDetailSubHeading>
         <TxtWithSubjTags textWithTags={kanji.reading_mnemonic!} />

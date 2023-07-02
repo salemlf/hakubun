@@ -26,6 +26,7 @@ import { RadicalSubjDetails } from "../subject-details/RadicalSubjDetails";
 import { VocabSubjDetails } from "../subject-details/VocabSubjDetails";
 import { RadicalCombination } from "../RadicalCombination";
 import { SubjectMeanings } from "../SubjectMeanings";
+import { KanjiMeaningMnemonic } from "../KanjiMeaningMnemonic";
 
 type Props = {
   currentReviewItem: ReviewQueueItem;
@@ -41,6 +42,52 @@ const Title = styled(IonTitle)`
   text-align: center;
 `;
 
+type BottomSheetSubjectProps = {
+  reviewItem: ReviewQueueItem;
+  selectedSegment: ReviewType | string;
+};
+
+// TODO: add meaning mnemonics
+const RadicalBottomSheet = ({
+  reviewItem,
+  selectedSegment,
+}: BottomSheetSubjectProps) => {
+  return (
+    <>
+      {selectedSegment === "meaning" && (
+        <>
+          <SubjectMeanings
+            subject={reviewItem as Subject}
+            showPrimaryMeaning={true}
+          />
+        </>
+      )}
+    </>
+  );
+};
+
+const KanjiBottomSheet = ({
+  reviewItem,
+  selectedSegment,
+}: BottomSheetSubjectProps) => {
+  return (
+    <>
+      {selectedSegment === "radicals" && (
+        <RadicalCombination kanji={reviewItem as Kanji} />
+      )}
+      {selectedSegment === "meaning" && (
+        <>
+          <SubjectMeanings
+            subject={reviewItem as Subject}
+            showPrimaryMeaning={true}
+          />
+          <KanjiMeaningMnemonic kanji={reviewItem as Kanji} />
+        </>
+      )}
+    </>
+  );
+};
+
 // TODO: fix issue where this isn't always closed after moving to other pages
 export const ReviewItemBottomSheet = ({
   currentReviewItem,
@@ -48,7 +95,9 @@ export const ReviewItemBottomSheet = ({
 }: Props) => {
   const { queueState } = useReviewQueue();
   const modal = useRef<HTMLIonModalElement>(null);
-  const [selectedSegment, setSelectedSegment] = useState(reviewType);
+  const [selectedSegment, setSelectedSegment] = useState<ReviewType | string>(
+    reviewType
+  );
   const subjectsWithReadings: SubjectType[] = ["kanji", "vocabulary"];
 
   let isBottomSheetVisible = queueState.isBottomSheetVisible;
@@ -110,22 +159,22 @@ export const ReviewItemBottomSheet = ({
                   </IonSegmentButton>
                 )}
               </IonSegment>
-              {/* TODO: change below info to match selected segment */}
               {currentReviewItem.object == "radical" && (
-                <RadicalSubjDetails radical={currentReviewItem as Radical} />
+                // <RadicalSubjDetails radical={currentReviewItem as Radical} />
+                <RadicalBottomSheet
+                  reviewItem={currentReviewItem}
+                  selectedSegment={selectedSegment}
+                />
               )}
               {currentReviewItem.object == "kanji" && (
-                <RadicalCombination kanji={currentReviewItem as Kanji} />
+                <KanjiBottomSheet
+                  reviewItem={currentReviewItem}
+                  selectedSegment={selectedSegment}
+                />
               )}
               {/* // TODO: create a version of this for kana vocab */}
               {currentReviewItem.object == "vocabulary" && (
                 <VocabSubjDetails vocab={currentReviewItem as Vocabulary} />
-              )}
-              {selectedSegment == "meaning" && (
-                <SubjectMeanings
-                  subject={currentReviewItem as Subject}
-                  showPrimaryMeaning={true}
-                />
               )}
             </FullWidthGrid>
           </IonContent>
