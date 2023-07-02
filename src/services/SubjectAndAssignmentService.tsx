@@ -186,6 +186,7 @@ export const compareAssignmentsByAvailableDate = (
   );
 };
 
+// TODO: move to review service
 // TODO: finish implementing
 export const isUserAnswerValid = (
   currReviewItem: ReviewQueueItem,
@@ -227,6 +228,7 @@ export const isUserAnswerValid = (
   return answerValidInfo;
 };
 
+// TODO: move to review service
 export const isUserMeaningAnswerCorrect = (
   reviewItem: ReviewQueueItem,
   userAnswer: string
@@ -254,6 +256,7 @@ export const isUserMeaningAnswerCorrect = (
   return meaningsMatched.length !== 0;
 };
 
+// TODO: move to review service
 export const isUserReadingAnswerCorrect = (
   reviewItem: ReviewQueueItem,
   userAnswer: string
@@ -277,6 +280,7 @@ export const isUserReadingAnswerCorrect = (
   return isCorrectReading;
 };
 
+// TODO: move to review service
 export const isUserAnswerCorrect = (
   reviewItem: ReviewQueueItem,
   userAnswer: string

@@ -11,6 +11,7 @@ import {
   isUserAnswerValid,
 } from "../services/SubjectAndAssignmentService";
 import { useEffect } from "react";
+import { checkIfReviewIsComplete } from "../services/ReviewService";
 
 export const useReviewQueue = () => {
   const { queueDataState, dispatchQueueDataContext } = useReviewSessionData();
@@ -30,6 +31,85 @@ export const useReviewQueue = () => {
     });
   };
 
+  // TODO: update to display actual SRS status
+  // TODO: change to use more specific types that display up or down arrows based on correct/incorrect
+  const displaySRSStatus = (answerWasCorrect: boolean) => {
+    let popoverToDispatch = answerWasCorrect
+      ? {
+          type: "SHOW_POPOVER_MSG" as const,
+          payload: {
+            message: "FAKE INCREASING SRS LEVEL...",
+            messageType: "correct",
+          },
+        }
+      : {
+          type: "SHOW_POPOVER_MSG" as const,
+          payload: {
+            message: "FAKE DECREASING SRS LEVEL...",
+            messageType: "incorrect",
+          },
+        };
+
+    dispatchQueueContext(popoverToDispatch);
+  };
+
+  const correctFirstClick = (currReviewItem: ReviewQueueItem) => {
+    let reviewComplete = checkIfReviewIsComplete(
+      currReviewItem,
+      queueDataState.reviewQueue
+    );
+    // *testing
+    console.log(
+      "🚀 ~ file: useReviewQueue.tsx:40 ~ correctFirstClick ~ reviewComplete:",
+      reviewComplete
+    );
+    // *testing
+
+    playAudioIfAvailable(
+      currReviewItem.primary_audio_url,
+      currReviewItem.review_type
+    );
+
+    let updatedReviewItem = currReviewItem;
+    dispatchQueueContext({
+      type: "SHOW_POPOVER_MSG",
+      payload: { message: "CORRECT!", messageType: "correct" },
+    });
+    dispatchQueueContext({ type: "CORRECT_SHOW_RESULT" });
+
+    let wasWrongFirstAttempt = updatedReviewItem.is_reviewed;
+    if (wasWrongFirstAttempt) {
+      // keeping answer as incorrect and is_reviewed as true
+      // TODO: make sure this actually updates
+      updatedReviewItem.is_reviewed = true;
+      // TODO: update review item SRS level
+      // TODO: change to show toast with updated SRS level
+      if (reviewComplete) {
+        displaySRSStatus(false);
+      }
+      // TODO: call update to review queue item
+      updateReviewQueueItem(
+        updatedReviewItem,
+        queueDataState,
+        dispatchQueueDataContext
+      );
+    }
+    // user got answer correct first try
+    else {
+      if (reviewComplete) {
+        displaySRSStatus(true);
+      }
+      // TODO: make sure this actually updates
+      updatedReviewItem.is_correct_answer = true;
+      updatedReviewItem.is_reviewed = true;
+      updateReviewQueueItem(
+        updatedReviewItem,
+        queueDataState,
+        dispatchQueueDataContext
+      );
+    }
+  };
+
   const handleCorrectAnswer = (
     currReviewItem: ReviewQueueItem,
     setUserAnswer: (value: React.SetStateAction<string>) => void
@@ -38,44 +118,7 @@ export const useReviewQueue = () => {
       dispatchQueueContext({ type: "CORRECT_MOVE_TO_NEXT" });
       setUserAnswer("");
     } else {
-      playAudioIfAvailable(
-        currReviewItem.primary_audio_url,
-        currReviewItem.review_type
-      );
-
-      let updatedReviewItem = currReviewItem;
-      dispatchQueueContext({
-        type: "SHOW_POPOVER_MSG",
-        payload: { message: "CORRECT!", messageType: "correct" },
-      });
-      dispatchQueueContext({ type: "CORRECT_SHOW_RESULT" });
-
-      let wasWrongFirstAttempt = updatedReviewItem.is_reviewed;
-      if (wasWrongFirstAttempt) {
-        // keeping answer as incorrect and is_reviewed as true
-        // TODO: make sure this actually updates
-        updatedReviewItem.is_reviewed = true;
-        // TODO: update review item SRS level
-        // TODO: change to show toast with updated SRS level
-        dispatchQueueContext({
-          type: "SHOW_POPOVER_MSG",
-          payload: {
-            message: "FAKE UPDATING SRS LEVEL...",
-            messageType: "correct",
-          },
-        });
-      }
-      // user got answer correct first try
-      else {
-        // TODO: make sure this actually updates
-        updatedReviewItem.is_correct_answer = true;
-        updatedReviewItem.is_reviewed = true;
-        updateReviewQueueItem(
-          updatedReviewItem,
-          queueDataState,
-          dispatchQueueDataContext
-        );
-      }
+      correctFirstClick(currReviewItem);
     }
   };
 
@@ -120,12 +163,6 @@ export const useReviewQueue = () => {
         type: "SHOW_POPOVER_MSG",
         payload: { message: isValidInfo.message, messageType: "invalid" },
       });
-      // *testing
-      console.log(
-        "🚀 ~ file: ReviewSession.tsx:233 ~ ReviewSession ~ isValidInfo.message:",
-        isValidInfo.message
-      );
-      // *testing
       return;
     }
     // *testing
