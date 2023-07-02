@@ -6,7 +6,7 @@ import {
 import styles from "./AlternativeMeanings.module.scss";
 import styled from "styled-components/macro";
 
-import { Subject } from "../types/Subject";
+import { Subject, SubjectMeaning } from "../types/Subject";
 import {
   SubjSummaryCol,
   SubjDetailSubHeading,
@@ -18,6 +18,53 @@ const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
   padding-right: 0;
 `;
 
+type PrimaryAndAltProps = {
+  subject: Subject;
+  altMeanings: SubjectMeaning[];
+  hasAltMeanings: boolean;
+};
+
+const PrimaryAndAltMeanings = ({
+  subject,
+  altMeanings,
+}: PrimaryAndAltProps) => {
+  let primaryMeaning = getSubjectDisplayName(subject);
+  let hasAltMeanings = altMeanings && altMeanings.length !== 0;
+  return (
+    <SubjDetailTxt>
+      {primaryMeaning}
+      {hasAltMeanings ? ", " : ""}
+      {hasAltMeanings
+        ? altMeanings
+            .map((altMeaning: SubjectMeaning) => {
+              return altMeaning.meaning;
+            })
+            .join(", ")
+        : ""}
+    </SubjDetailTxt>
+  );
+};
+
+type AltProps = {
+  altMeanings: SubjectMeaning[];
+  hasAltMeanings: boolean;
+};
+
+const AltMeanings = ({ altMeanings }: AltProps) => {
+  let hasAltMeanings = altMeanings && altMeanings.length !== 0;
+  return (
+    <SubjDetailTxt>
+      {hasAltMeanings
+        ? altMeanings
+            .map((altMeaning: SubjectMeaning) => {
+              return altMeaning.meaning;
+            })
+            .join(", ")
+        : "-"}
+    </SubjDetailTxt>
+  );
+};
+
 type Props = {
   subject: Subject;
   showPrimaryMeaning?: boolean;
@@ -28,34 +75,27 @@ export const SubjectMeanings = ({
   subject,
   showPrimaryMeaning = false,
 }: Props) => {
-  let primaryMeaning = getSubjectDisplayName(subject);
   let altMeanings = getAlternativeMeanings(subject);
+  let hasAltMeanings = altMeanings && altMeanings.length !== 0;
 
   return (
     <AlternativeMeaningsContainer className={`${styles.altMeaningsContainer}`}>
       <SubjDetailSubHeading>
         {showPrimaryMeaning ? "Meanings" : "Alternative Meanings"}
       </SubjDetailSubHeading>
-      <SubjDetailTxt>
-        {showPrimaryMeaning && (
-          <span>
-            {primaryMeaning}
-            {showPrimaryMeaning &&
-              altMeanings &&
-              altMeanings.length !== 0 &&
-              ","}
-          </span>
-        )}
-        {!showPrimaryMeaning && altMeanings && altMeanings.length
-          ? altMeanings
-              .map((altMeaning: any) => {
-                return altMeaning.meaning;
-              })
-              .join(", ")
-          : showPrimaryMeaning
-          ? ""
-          : "-"}
-      </SubjDetailTxt>
+      {showPrimaryMeaning && (
+        <PrimaryAndAltMeanings
+          subject={subject}
+          altMeanings={altMeanings}
+          hasAltMeanings={hasAltMeanings}
+        />
+      )}
+      {!showPrimaryMeaning && (
+        <AltMeanings
+          altMeanings={altMeanings}
+          hasAltMeanings={hasAltMeanings}
+        />
+      )}
     </AlternativeMeaningsContainer>
   );
 };
