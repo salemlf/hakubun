@@ -10,6 +10,7 @@ import { PartsOfSpeech } from "../subject-details/PartsOfSpeech";
 import { VocabMeaningExplanation } from "../subjects/VocabMeaningExplanation";
 import { VocabReadingExplanation } from "../subjects/VocabReadingExplanation";
 import { VocabReadings } from "../subject-details/VocabReadings";
+import { ContextSentences } from "../ContextSentences";
 
 import styled from "styled-components/macro";
 
@@ -63,6 +64,9 @@ export const VocabBottomSheet = ({
             />
           </VocabReadingSection>
           <VocabReadingExplanation vocab={reviewItem as Vocabulary} />
+          {reviewItem.context_sentences && (
+            <ContextSentences sentences={reviewItem.context_sentences} />
+          )}
         </>
       )}
     </>
