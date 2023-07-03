@@ -18,6 +18,8 @@ const CharDiv = styled.div<CharDivProps>`
   background-color: ${({ withBgColor }) =>
     withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
   padding: ${({ withBgColor }) => (withBgColor ? `0 8px` : `0`)};
+  text-align: center;
+  word-break: break-all;
 `;
 
 const DivWithTxt = styled(CharDiv)`

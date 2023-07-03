@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import {
+  IonPage,
   IonModal,
   IonHeader,
   IonContent,
@@ -14,14 +15,14 @@ import {
 } from "@ionic/react";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem, ReviewType } from "../../types/ReviewSessionTypes";
-import { SubjectHeader } from "../subject-details/SubjectHeader";
-import { Subject, SubjectType, Vocabulary } from "../../types/Subject";
+import { Subject, SubjectType } from "../../types/Subject";
 
 import styled from "styled-components/macro";
 
 import { RadicalBottomSheet } from "./RadicalBottomSheet";
 import { KanjiBottomSheet } from "./KanjiBottomSheet";
 import { VocabBottomSheet } from "./VocabBottomSheet";
+import { BottomSheetHeader } from "./BottomSheetHeader";
 
 type Props = {
   currentReviewItem: ReviewQueueItem;
@@ -102,70 +103,74 @@ export const ReviewItemBottomSheet = ({
       ref={modal}
       isOpen={isBottomSheetVisible && !closedOnPageLeave}
       initialBreakpoint={0.08}
-      breakpoints={[0.08, 0.7]}
+      breakpoints={[0.08, 1]}
       handleBehavior="cycle"
       backdropDismiss={false}
       backdropBreakpoint={0.5}
+      className="auto-height"
     >
-      <IonHeader>
-        <Toolbar>
-          <Title>Subject Info</Title>
-        </Toolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonGrid>
-          <BottomSheetContent>
-            <Segment value={selectedSegment} onClick={onSegmentClick}>
-              {currentReviewItem.object == "kanji" && (
-                <IonSegmentButton value="radicals">
-                  <IonLabel>Radicals</IonLabel>
-                </IonSegmentButton>
-              )}
-              {currentReviewItem.object == "vocabulary" && (
-                <IonSegmentButton value="breakdown">
-                  <IonLabel>Breakdown</IonLabel>
-                </IonSegmentButton>
-              )}
-              {(currentReviewItem.object == "vocabulary" ||
-                currentReviewItem.object == "kanji") && (
-                <IonSegmentButton value="meaning">
-                  <IonLabel>Meaning</IonLabel>
-                </IonSegmentButton>
-              )}
-              {currentReviewItem.object == "radical" && (
-                <IonSegmentButton value="name">
-                  <IonLabel>Name</IonLabel>
-                </IonSegmentButton>
-              )}
-              {subjectsWithReadings.includes(currentReviewItem.object) && (
-                <IonSegmentButton value="reading">
-                  <IonLabel>Reading</IonLabel>
-                </IonSegmentButton>
-              )}
-            </Segment>
+      <IonPage className="inner-content">
+        <IonHeader>
+          <Toolbar>
+            <Title>Subject Info</Title>
+          </Toolbar>
+        </IonHeader>
+        <BottomSheetHeader subject={currentReviewItem as Subject} />
+        <IonContent className="ion-padding">
+          <FullWidthGrid>
+            <BottomSheetContent>
+              <Segment value={selectedSegment} onClick={onSegmentClick}>
+                {currentReviewItem.object == "kanji" && (
+                  <IonSegmentButton value="radicals">
+                    <IonLabel>Radicals</IonLabel>
+                  </IonSegmentButton>
+                )}
+                {currentReviewItem.object == "vocabulary" && (
+                  <IonSegmentButton value="breakdown">
+                    <IonLabel>Breakdown</IonLabel>
+                  </IonSegmentButton>
+                )}
+                {(currentReviewItem.object == "vocabulary" ||
+                  currentReviewItem.object == "kanji") && (
+                  <IonSegmentButton value="meaning">
+                    <IonLabel>Meaning</IonLabel>
+                  </IonSegmentButton>
+                )}
+                {currentReviewItem.object == "radical" && (
+                  <IonSegmentButton value="name">
+                    <IonLabel>Name</IonLabel>
+                  </IonSegmentButton>
+                )}
+                {subjectsWithReadings.includes(currentReviewItem.object) && (
+                  <IonSegmentButton value="reading">
+                    <IonLabel>Reading</IonLabel>
+                  </IonSegmentButton>
+                )}
+              </Segment>
 
-            {currentReviewItem.object == "radical" && (
-              <RadicalBottomSheet
-                reviewItem={currentReviewItem}
-                selectedSegment={selectedSegment}
-              />
-            )}
-            {currentReviewItem.object == "kanji" && (
-              <KanjiBottomSheet
-                reviewItem={currentReviewItem}
-                selectedSegment={selectedSegment}
-              />
-            )}
-            {/* // TODO: create a version of this for kana vocab */}
-            {currentReviewItem.object == "vocabulary" && (
-              <VocabBottomSheet
-                reviewItem={currentReviewItem}
-                selectedSegment={selectedSegment}
-              />
-            )}
-          </BottomSheetContent>
-        </IonGrid>
-      </IonContent>
+              {currentReviewItem.object == "radical" && (
+                <RadicalBottomSheet
+                  reviewItem={currentReviewItem}
+                  selectedSegment={selectedSegment}
+                />
+              )}
+              {currentReviewItem.object == "kanji" && (
+                <KanjiBottomSheet
+                  reviewItem={currentReviewItem}
+                  selectedSegment={selectedSegment}
+                />
+              )}
+              {/* // TODO: create a version of this for kana vocab */}
+              {currentReviewItem.object == "vocabulary" && (
+                <VocabBottomSheet
+                  reviewItem={currentReviewItem}
+                  selectedSegment={selectedSegment}
+                />
+              )}
+            </BottomSheetContent>
+          </FullWidthGrid>
+        </IonContent>
+      </IonPage>
     </IonModal>
   );
 };
