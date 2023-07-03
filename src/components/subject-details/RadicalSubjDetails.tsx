@@ -1,17 +1,16 @@
 import { IonRow, IonSkeletonText } from "@ionic/react";
-
+import { Radical } from "../../types/Subject";
+import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { SubjectButtonList } from "../SubjectButtonList";
+import { RadicalNameMnemonic } from "../subjects/RadicalNameMnemonic";
+
 import {
   SubjInfoContainer,
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "./SubjectDetailsStyled";
-
-import { Radical } from "../../types/Subject";
-
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 
 type Props = {
   radical: Radical;
@@ -51,10 +50,7 @@ export const RadicalSubjDetails = ({ radical }: Props) => {
 
   return (
     <SubjInfoContainer>
-      <SubjDetailSection>
-        <SubjDetailSubHeading>Name Mnemonic</SubjDetailSubHeading>
-        <TxtWithSubjTags textWithTags={radical.meaning_mnemonic} />
-      </SubjDetailSection>
+      <RadicalNameMnemonic radical={radical} />
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
         <SubjectButtonList

@@ -1,20 +1,21 @@
 import { BottomSheetSubjectProps } from "../../types/ReviewSessionTypes";
-import { Subject } from "../../types/Subject";
+import { Radical, Subject } from "../../types/Subject";
 import { SubjectMeanings } from "../SubjectMeanings";
+import { RadicalNameMnemonic } from "../subjects/RadicalNameMnemonic";
 
-// TODO: add meaning mnemonics
 export const RadicalBottomSheet = ({
   reviewItem,
   selectedSegment,
 }: BottomSheetSubjectProps) => {
   return (
     <>
-      {selectedSegment === "meaning" && (
+      {selectedSegment === "name" && (
         <>
           <SubjectMeanings
             subject={reviewItem as Subject}
             showPrimaryMeaning={true}
           />
+          <RadicalNameMnemonic radical={reviewItem as Radical} />
         </>
       )}
     </>

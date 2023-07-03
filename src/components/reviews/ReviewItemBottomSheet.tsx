@@ -73,8 +73,9 @@ export const ReviewItemBottomSheet = ({
   const { queueState } = useReviewQueue();
   const modal = useRef<HTMLIonModalElement>(null);
   const [closedOnPageLeave, setClosedOnPageLeave] = useState(false);
+  let initalValue = currentReviewItem.object == "radical" ? "name" : reviewType;
   const [selectedSegment, setSelectedSegment] = useState<ReviewType | string>(
-    reviewType
+    initalValue
   );
 
   // TODO: also reopen to previous breakpoint on return? Use something like modal.current.getCurrentBreakpoint()
@@ -125,9 +126,17 @@ export const ReviewItemBottomSheet = ({
                   <IonLabel>Breakdown</IonLabel>
                 </IonSegmentButton>
               )}
-              <IonSegmentButton value="meaning">
-                <IonLabel>Meaning</IonLabel>
-              </IonSegmentButton>
+              {(currentReviewItem.object == "vocabulary" ||
+                currentReviewItem.object == "kanji") && (
+                <IonSegmentButton value="meaning">
+                  <IonLabel>Meaning</IonLabel>
+                </IonSegmentButton>
+              )}
+              {currentReviewItem.object == "radical" && (
+                <IonSegmentButton value="name">
+                  <IonLabel>Name</IonLabel>
+                </IonSegmentButton>
+              )}
               {subjectsWithReadings.includes(currentReviewItem.object) && (
                 <IonSegmentButton value="reading">
                   <IonLabel>Reading</IonLabel>

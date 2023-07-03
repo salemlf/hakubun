@@ -22,7 +22,6 @@ const VocabReadingSection = styled(SubjDetailSection)`
   margin-bottom: 0;
 `;
 
-// TODO: add meaning mnemonics
 export const VocabBottomSheet = ({
   reviewItem,
   selectedSegment,

@@ -49,8 +49,11 @@ const NumReviewsLeftText = styled.p`
 `;
 
 const HomeBtn = styled(IonButton)`
+  background-color: --dark-greyish-purple;
+  border-radius: 10px;
+  --border-radius: 10px;
   ion-icon {
-    font-size: 36px;
+    font-size: 32px;
   }
 `;
 
@@ -87,10 +90,7 @@ export const ReviewSessionHeader = ({ currentReviewItem }: Props) => {
     <SessionHeader subjType={currItemSubjType}>
       <Toolbar>
         <IonButtons slot="start">
-          <HomeBtn
-            onClick={() => router.push("/home")}
-            className="ion-no-padding ion-no-margin"
-          >
+          <HomeBtn onClick={() => router.push("/home")}>
             <HomeIconStyled icon={HomeIcon}></HomeIconStyled>
           </HomeBtn>
         </IonButtons>
