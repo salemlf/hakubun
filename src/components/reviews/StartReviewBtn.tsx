@@ -11,13 +11,15 @@ type Props = {
 export const StartReviewBtn = ({ onStartReviewBtnClick }: Props) => {
   return (
     <>
-      <IonFab vertical="bottom" horizontal="center" aria-label="Start Review">
-        <IonFabButton onClick={onStartReviewBtnClick}>
-          <ShiftBy x={3}>
-            <IonIcon icon={startIcon}></IonIcon>
-          </ShiftBy>
-        </IonFabButton>
-      </IonFab>
+      <ShiftBy y={-30}>
+        <IonFab vertical="bottom" horizontal="center" aria-label="Start Review">
+          <IonFabButton onClick={onStartReviewBtnClick}>
+            <ShiftBy x={3}>
+              <IonIcon icon={startIcon}></IonIcon>
+            </ShiftBy>
+          </IonFabButton>
+        </IonFab>
+      </ShiftBy>
     </>
   );
 };
