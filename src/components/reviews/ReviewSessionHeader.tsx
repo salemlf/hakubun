@@ -49,9 +49,11 @@ const NumReviewsLeftText = styled.p`
 `;
 
 const HomeBtn = styled(IonButton)`
-  background-color: --dark-greyish-purple;
+  background-color: var(--dark-greyish-purple);
   border-radius: 10px;
   --border-radius: 10px;
+  padding: 2px 0;
+
   ion-icon {
     font-size: 32px;
   }

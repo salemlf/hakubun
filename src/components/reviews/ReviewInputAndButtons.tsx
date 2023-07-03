@@ -14,6 +14,20 @@ const ButtonCol = styled(IonCol)`
   }
 `;
 
+const BaseBtn = styled.button`
+  padding: 10px;
+  border-radius: 12px;
+`;
+
+const PreviousBtn = styled(BaseBtn)`
+  background-color: var(--ion-color-primary);
+`;
+
+const NextBtn = styled(BaseBtn)`
+  background-color: var(--ion-color-tertiary);
+  color: black;
+`;
+
 const AnswerInput = styled.input`
   width: 100%;
   padding: 12px;
@@ -80,17 +94,17 @@ export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
         <IonRow>
           {queueState.showRetryButton && (
             <ButtonCol>
-              <button
+              <PreviousBtn
                 onClick={() => {
                   handleRetryClick(currentReviewItem, setUserAnswer);
                 }}
               >
                 Retry
-              </button>
+              </PreviousBtn>
             </ButtonCol>
           )}
           <ButtonCol>
-            <button
+            <NextBtn
               onClick={() => {
                 nextBtnClicked();
               }}
@@ -100,7 +114,7 @@ export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
               }
             >
               Next
-            </button>
+            </NextBtn>
           </ButtonCol>
         </IonRow>
       </IonGrid>
