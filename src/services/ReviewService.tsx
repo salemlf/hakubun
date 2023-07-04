@@ -23,6 +23,7 @@ export const checkIfReviewIsComplete = (
   return matchHasBeenReviewd;
 };
 
+// TODO: fix this, always returning 2+ if any incorrect
 export const getItemWithNumIncorrectReviews = (
   reviewQueue: ReviewQueueItem[],
   reviewItem: ReviewQueueItem
@@ -77,7 +78,7 @@ export const calculateSRSLevel = (reviewItem: ReviewQueueItem) => {
     console.error(
       "Woah now, can't calculate SRS level with null incorrect meaning/reading answers!"
     );
-    return;
+    return reviewItem;
   }
 
   let penaltyFactor = reviewItem.srs_stage >= 5 ? 2 : 1;

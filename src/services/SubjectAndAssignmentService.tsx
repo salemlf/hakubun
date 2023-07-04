@@ -249,7 +249,8 @@ export const isUserMeaningAnswerCorrect = (
   // meanings allow some typos/mistakes
   let options = {
     keys: ["meaning", "synonyms"],
-    threshold: 0.3,
+    threshold: 0.1,
+    distance: 20,
   };
   let fuse = new Fuse(answersWithSynonyms, options);
   let meaningsMatched = fuse.search(userAnswer);
