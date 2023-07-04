@@ -7,6 +7,7 @@ import {
   ReviewSessionDataAction,
   ReviewQueueItem,
   ReviewSessionDataDispatch,
+  ReviewType,
 } from "../types/ReviewSessionTypes";
 
 import { useStorage } from "../hooks/useStorage";
@@ -139,7 +140,7 @@ const createMeaningAndReadingQueueItems = (
         meaning_synonyms: foundStudyMaterial
           ? foundStudyMaterial.meaning_synonyms
           : [],
-        review_type: "meaning" as const,
+        review_type: "meaning" as ReviewType,
         primary_audio_url: audioUrl,
       };
     }
@@ -154,7 +155,7 @@ const createMeaningAndReadingQueueItems = (
     ...subjectsWithQueueProps,
     ...itemsWithReadings.map((itemWithReadings, index) => ({
       ...itemWithReadings,
-      review_type: "reading" as const,
+      review_type: "reading" as ReviewType,
       itemID: `reading${index}`,
     })),
   ];

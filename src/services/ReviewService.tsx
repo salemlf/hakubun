@@ -35,3 +35,45 @@ export const checkIfReviewIsComplete = (
 
   return matchHasBeenReviewd;
 };
+
+export const getNumberOfIncorrectForReviewTypes = (
+  reviewQueue: ReviewQueueItem[],
+  reviewItem: ReviewQueueItem
+) => {
+  // let incorrectCount = {
+  //   incorrect_meaning_answers: 0,
+  //   incorrect_reading_answers: 0
+  // }
+  let incorrectMeaningCount = reviewQueue.reduce(
+    (acc, curr) =>
+      curr.id == reviewItem.id &&
+      curr.review_type === ("meaning" as ReviewType) &&
+      curr.is_correct_answer === false
+        ? ++acc
+        : acc,
+    0
+  );
+  console.log(
+    "🚀 ~ file: ReviewService.tsx:56 ~ incorrectMeaningCount:",
+    incorrectMeaningCount
+  );
+
+  let incorrectReadingCount = reviewQueue.reduce(
+    (acc, curr) =>
+      curr.id == reviewItem.id &&
+      curr.review_type === ("reading" as ReviewType) &&
+      curr.is_correct_answer === false
+        ? ++acc
+        : acc,
+    0
+  );
+  console.log(
+    "🚀 ~ file: ReviewService.tsx:67 ~ incorrectReadingCount:",
+    incorrectReadingCount
+  );
+
+  return {
+    incorrect_meaning_answers: incorrectMeaningCount,
+    incorrect_reading_answers: incorrectReadingCount,
+  };
+};

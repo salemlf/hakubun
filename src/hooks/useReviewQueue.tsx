@@ -12,7 +12,10 @@ import {
   isUserAnswerValid,
 } from "../services/SubjectAndAssignmentService";
 import { useEffect } from "react";
-import { checkIfReviewIsComplete } from "../services/ReviewService";
+import {
+  checkIfReviewIsComplete,
+  getNumberOfIncorrectForReviewTypes,
+} from "../services/ReviewService";
 import { Assignment } from "../types/Assignment";
 
 // TODO: add wrap up functionality
@@ -73,6 +76,18 @@ export const useReviewQueue = () => {
       currReviewItem,
       queueDataState.reviewQueue
     );
+    // TODO: calculate number of times incorrect for reading and meaning
+    if (reviewItemComplete) {
+      let incorrectNum = getNumberOfIncorrectForReviewTypes(
+        queueDataState.reviewQueue,
+        currReviewItem
+      );
+      console.log(
+        "🚀 ~ file: useReviewQueue.tsx:85 ~ correctFirstClick ~ incorrectNum:",
+        incorrectNum
+      );
+    }
+
     // *testing
     console.log(
       "🚀 ~ file: useReviewQueue.tsx:40 ~ correctFirstClick ~ reviewItemComplete:",

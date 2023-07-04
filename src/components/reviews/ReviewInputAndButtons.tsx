@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IonGrid, IonRow, IonCol } from "@ionic/react";
-import { toKana } from "wanakana";
+import { toHiragana, toKana } from "wanakana";
 
 import styled from "styled-components/macro";
 import { useKeyDown } from "../../hooks/useKeyDown";
@@ -59,19 +59,19 @@ export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
     handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
   };
 
-  const convertInputToKana = (newestUserInput: string) => {
+  const convertInputToHiragana = (newestUserInput: string) => {
     // special case needed for "n" since could be the kana "ん" or any romaji that starts with "n"
     if (userAnswer.at(-1) === "n" && newestUserInput.at(-1) === "n") {
-      return setUserAnswer(toKana(newestUserInput.slice(0, -1)));
+      return setUserAnswer(toHiragana(newestUserInput.slice(0, -1)));
     }
     if (newestUserInput.at(-1) === "n") {
-      return setUserAnswer(toKana(newestUserInput.slice(0, -1)) + "n");
+      return setUserAnswer(toHiragana(newestUserInput.slice(0, -1)) + "n");
     }
-    setUserAnswer(toKana(newestUserInput));
+    setUserAnswer(toHiragana(newestUserInput));
   };
 
   let onInputFunction =
-    reviewType === "reading" ? convertInputToKana : setUserAnswer;
+    reviewType === "reading" ? convertInputToHiragana : setUserAnswer;
 
   return (
     <>
