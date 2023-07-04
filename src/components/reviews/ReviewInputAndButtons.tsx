@@ -62,10 +62,12 @@ export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
   const convertInputToHiragana = (newestUserInput: string) => {
     // special case needed for "n" since could be the kana "ん" or any romaji that starts with "n"
     if (userAnswer.at(-1) === "n" && newestUserInput.at(-1) === "n") {
-      return setUserAnswer(toHiragana(newestUserInput.slice(0, -1)));
+      setUserAnswer(toHiragana(newestUserInput.slice(0, -1)));
+      return;
     }
     if (newestUserInput.at(-1) === "n") {
-      return setUserAnswer(toHiragana(newestUserInput.slice(0, -1)) + "n");
+      setUserAnswer(toHiragana(newestUserInput.slice(0, -1)) + "n");
+      return;
     }
     setUserAnswer(toHiragana(newestUserInput));
   };

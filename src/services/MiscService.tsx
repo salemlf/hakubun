@@ -141,6 +141,7 @@ export const getAudioForReading = (
 };
 
 // TODO: make this more *elegant*
+// TODO: also account for when there's multiple valid readings, use the one the user selected
 export const playAudioIfAvailable = (
   url: string | null,
   reviewType: ReviewType
