@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
 import { IonGrid, IonRow, IonCol } from "@ionic/react";
 import { toHiragana, toKana } from "wanakana";
 
@@ -28,7 +28,53 @@ const NextBtn = styled(BaseBtn)`
   color: black;
 `;
 
-const AnswerInput = styled.input`
+type Props = {
+  currentReviewItem: ReviewQueueItem;
+};
+
+const translateInputValue = (string: string, translateToHiragana: boolean) => {
+  if (translateToHiragana) {
+    return toHiragana(string, { IMEMode: true });
+  }
+  return string;
+};
+
+type InputProps = {
+  [key: string]: any;
+  value: string;
+  onChange: (e: any) => void;
+  translateToHiragana: boolean;
+};
+
+const WanakanaInput = ({
+  component,
+  value,
+  onChange,
+  translateToHiragana,
+  ...props
+}: InputProps) => {
+  const inputRef = useRef(document.createElement("input"));
+
+  const translatedVal = translateInputValue(value, translateToHiragana);
+
+  const handleChange = (e: any) => {
+    const updatedValue = translateInputValue(
+      e.target.value,
+      translateToHiragana
+    );
+    inputRef.current.value = updatedValue;
+    onChange(e);
+  };
+
+  return createElement("input", {
+    ref: inputRef,
+    value: translatedVal,
+    onChange: handleChange,
+    ...props,
+  });
+};
+
+const AnswerInput = styled(WanakanaInput)`
   width: 100%;
   padding: 12px;
   text-align: center;
@@ -37,43 +83,19 @@ const AnswerInput = styled.input`
   color: black;
 `;
 
-type Props = {
-  currentReviewItem: ReviewQueueItem;
-};
-
 // TODO: add button to abandon session
 export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
   const { queueDataState, queueState, handleNextClick, handleRetryClick } =
     useReviewQueue();
   const [userAnswer, setUserAnswer] = useState("");
   useKeyDown(() => nextBtnClicked(), ["F12"]);
-
   let reviewType = currentReviewItem.review_type;
 
   const nextBtnClicked = () => {
     console.log("userAnswer: ", userAnswer);
     console.log("nextBtnClicked called!");
-    if (reviewType === "reading") {
-      setUserAnswer(toKana(userAnswer));
-    }
     handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
   };
-
-  const convertInputToHiragana = (newestUserInput: string) => {
-    // special case needed for "n" since could be the kana "ん" or any romaji that starts with "n"
-    if (userAnswer.at(-1) === "n" && newestUserInput.at(-1) === "n") {
-      setUserAnswer(toHiragana(newestUserInput.slice(0, -1)));
-      return;
-    }
-    if (newestUserInput.at(-1) === "n") {
-      setUserAnswer(toHiragana(newestUserInput.slice(0, -1)) + "n");
-      return;
-    }
-    setUserAnswer(toHiragana(newestUserInput));
-  };
-
-  let onInputFunction =
-    reviewType === "reading" ? convertInputToHiragana : setUserAnswer;
 
   return (
     <>
@@ -81,12 +103,13 @@ export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
         <AnswerInput
           type="text"
           value={userAnswer}
-          onChange={(e) => onInputFunction(e.target.value)}
-          onKeyDown={(e) => {
+          onKeyDown={(e: any) => {
             if (e.key === "Enter") {
               nextBtnClicked();
             }
           }}
+          translateToHiragana={reviewType === "reading"}
+          onChange={(e: any) => setUserAnswer(e.target.value)}
           disabled={queueState.isSecondClick}
           placeholder={reviewType === "reading" ? "答え" : ""}
         />
