@@ -12,12 +12,11 @@ export const reviewSessionQueueReducer = (
     case "CORRECT_SHOW_RESULT":
       return { ...state, isBottomSheetVisible: true };
     case "CORRECT_MOVE_TO_NEXT":
-      // TODO: rn just adding to back of queue, change to add to some random spot
       return {
         ...state,
         isBottomSheetVisible: false,
         displayPopoverMsg: false,
-        currReviewCardIndex: state.currReviewCardIndex + 1,
+        // currReviewCardIndex: state.currReviewCardIndex + 1,
       };
     case "WRONG_SHOW_RESULT":
       return {
@@ -26,13 +25,12 @@ export const reviewSessionQueueReducer = (
         showRetryButton: true,
       };
     case "WRONG_MOVE_TO_NEXT":
-      // TODO: rn just adding to back of queue, change to add to some random spot
       return {
         ...state,
         isBottomSheetVisible: false,
         showRetryButton: false,
         displayPopoverMsg: false,
-        currReviewCardIndex: state.currReviewCardIndex + 1,
+        // currReviewCardIndex: state.currReviewCardIndex + 1,
       };
     case "WRONG_SHOW_RESULT":
       return {
@@ -62,7 +60,7 @@ export const reviewSessionQueueReducer = (
     case "RESET_REVIEW_CARDS":
       return {
         ...state,
-        currReviewCardIndex: 0,
+        // currReviewCardIndex: 0,
         displayPopoverMsg: false,
         isSecondClick: false,
         isBottomSheetVisible: false,

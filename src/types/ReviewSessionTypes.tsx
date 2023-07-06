@@ -12,11 +12,17 @@ export interface ReviewQueueItem extends Subject {
   is_correct_answer: boolean | null;
   meaning_synonyms: string[];
   primary_audio_url: string | null;
+  incorrect_meaning_answers: number;
+  incorrect_reading_answers: number;
+  ending_srs_stage: number | null;
 }
 
 export type ReviewSessionDataState = {
   isLoading: boolean;
   reviewQueue: ReviewQueueItem[];
+  // !added
+  currQueueIndex: number;
+  // !added
 };
 
 type ReviewSessionDataActionType =
@@ -24,7 +30,10 @@ type ReviewSessionDataActionType =
   | "REVIEW_QUEUE_LOADING"
   | "REVIEW_QUEUE_LOADED"
   | "UPDATE_REVIEW_QUEUE_ITEM"
-  | "ADD_TO_REVIEW_QUEUE";
+  | "REMOVE_REVIEW_QUEUE_ITEM"
+  | "ADD_TO_REVIEW_QUEUE"
+  | "RESET_REVIEW"
+  | "INCREMENT_CURR_INDEX";
 
 export type ReviewSessionDataAction = {
   type: ReviewSessionDataActionType;
@@ -43,7 +52,7 @@ export type PopoverInfo = {
 };
 
 export type ReviewSessionQueueState = {
-  currReviewCardIndex: number;
+  // currReviewCardIndex: number;
   isSecondClick: boolean;
   isBottomSheetVisible: boolean;
   showRetryButton: boolean;

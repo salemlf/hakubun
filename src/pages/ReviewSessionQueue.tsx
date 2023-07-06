@@ -28,11 +28,11 @@ const Grid = styled(IonGrid)`
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 // TODO: fix the excessive number of rerenders happening for this page
 export const ReviewSessionQueue = () => {
-  const { queueDataState, queueState } = useReviewQueue();
+  const { queueDataState } = useReviewQueue();
 
   let reviewQueue = queueDataState.reviewQueue;
   let currentReviewItem =
-    queueDataState.reviewQueue[queueState.currReviewCardIndex];
+    queueDataState.reviewQueue[queueDataState.currQueueIndex];
 
   return (
     <Page>
@@ -43,7 +43,7 @@ export const ReviewSessionQueue = () => {
         <Grid>
           {queueDataState.isLoading && <p>Loading...</p>}
           {!queueDataState.isLoading &&
-            reviewQueue.length - 1 !== queueState.currReviewCardIndex &&
+            reviewQueue.length - 1 !== queueDataState.currQueueIndex &&
             currentReviewItem && (
               <>
                 <ReviewCharAndType currentReviewItem={currentReviewItem} />
@@ -55,7 +55,7 @@ export const ReviewSessionQueue = () => {
               </>
             )}
           {!queueDataState.isLoading &&
-            reviewQueue.length - 1 === queueState.currReviewCardIndex && (
+            reviewQueue.length - 1 === queueDataState.currQueueIndex && (
               <div>REVIEW SUMMARY</div>
             )}
         </Grid>

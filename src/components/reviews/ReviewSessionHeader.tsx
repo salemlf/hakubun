@@ -81,10 +81,7 @@ export const ReviewSessionHeader = ({ currentReviewItem }: Props) => {
   // TODO: calculate some other way, this is showing wrong #
   let numUniqueItemsInQueue = [
     ...new Map(
-      notReviewed.map((unreviewedCard) => [
-        unreviewedCard.assignment_id,
-        unreviewedCard,
-      ])
+      notReviewed.map((unreviewedCard) => [unreviewedCard.id, unreviewedCard])
     ).values(),
   ].length;
 

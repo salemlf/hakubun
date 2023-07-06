@@ -8,7 +8,7 @@ import {
 import { useReviewSessionData } from "./ReviewSessionDataContext";
 
 const initialState: ReviewSessionQueueState = {
-  currReviewCardIndex: 0,
+  // currReviewCardIndex: 0,
   isSecondClick: false,
   isBottomSheetVisible: false,
   showRetryButton: false,

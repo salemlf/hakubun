@@ -26,6 +26,7 @@ import {
 const initialState: ReviewSessionDataState = {
   isLoading: false,
   reviewQueue: [],
+  currQueueIndex: 0,
 };
 
 const ReviewSessionDataContext = createContext<{
@@ -136,12 +137,16 @@ const createMeaningAndReadingQueueItems = (
         srs_stage: assignment.srs_stage,
         is_reviewed: false,
         itemID: `meaning${index}`,
-        is_correct_answer: null,
         meaning_synonyms: foundStudyMaterial
           ? foundStudyMaterial.meaning_synonyms
           : [],
         review_type: "meaning" as ReviewType,
         primary_audio_url: audioUrl,
+        // TODO: change so null items aren't explcitly set, change type to use undefined?
+        is_correct_answer: null,
+        ending_srs_stage: null,
+        incorrect_meaning_answers: 0,
+        incorrect_reading_answers: 0,
       };
     }
   );
@@ -177,6 +182,7 @@ const createReviewItems = async (
     subjects,
     studyMaterials
   );
+
   // *testing
   console.log(
     "🚀 ~ file: ReviewSessionContext.tsx:158 ~ reviewQueueItems:",
@@ -203,15 +209,20 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
   ) => {
     switch (action.type) {
       case "END_REVIEW":
-        // TODO: change so setItem called in function, not here
+        // TODO: change so removeItem called in function, not here
         removeItem("reviewData");
         return { ...state, reviewQueue: [] };
+      case "RESET_REVIEW":
+        // TODO: change so removeItem called in function, not here
+        removeItem("reviewData");
+        return { ...state, reviewQueue: [], currQueueIndex: 0 };
       case "REVIEW_QUEUE_LOADING":
         return { ...state, isLoading: true };
       case "REVIEW_QUEUE_LOADED":
         // TODO: change so setItem not called here since usually pulled from cache
         setItem("reviewQueue", action.payload);
         return { ...state, isLoading: false, reviewQueue: action.payload };
+      // TODO: update so no need to find last item with subject ID, should be unique now since deleting item with old data
       case "UPDATE_REVIEW_QUEUE_ITEM":
         let lastIndexOfItem =
           state.reviewQueue.length -
@@ -220,7 +231,9 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
             .slice()
             .reverse()
             .findIndex(
-              (reviewItem) => reviewItem.itemID === action.payload.itemID
+              (reviewItem) =>
+                reviewItem.itemID === action.payload.itemID &&
+                reviewItem.review_type === action.payload.review_type
             );
         let updatedQueueItem = Object.assign({}, action.payload);
 
@@ -232,10 +245,32 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
             ...state.reviewQueue.slice(lastIndexOfItem + 1),
           ],
         };
+      case "INCREMENT_CURR_INDEX":
+        return {
+          ...state,
+          currQueueIndex: state.currQueueIndex + 1,
+        };
       case "ADD_TO_REVIEW_QUEUE":
         return {
           ...state,
-          reviewQueue: [...state.reviewQueue.concat(action.payload)],
+          reviewQueue: [...state.reviewQueue, action.payload],
+        };
+      case "REMOVE_REVIEW_QUEUE_ITEM":
+        console.log("REMOVE_REVIEW_QUEUE_ITEM called!");
+        let indexToRemove = state.currQueueIndex;
+        // *testing
+        console.log(
+          "🚀 ~ file: ReviewSessionDataContext.tsx:249 ~ ReviewSessionDataProvider ~ indexToRemove:",
+          indexToRemove
+        );
+        // *testing
+
+        return {
+          ...state,
+          reviewQueue: [
+            ...state.reviewQueue.slice(0, indexToRemove),
+            ...state.reviewQueue.slice(indexToRemove + 1),
+          ],
         };
       default: {
         throw new Error(`Unhandled action type: ${action.type}`);

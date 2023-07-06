@@ -6,7 +6,7 @@ import {
   createReviewItems,
 } from "../contexts/ReviewSessionDataContext";
 import { playAudioIfAvailable } from "../services/MiscService";
-import { ReviewQueueItem } from "../types/ReviewSessionTypes";
+import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
 import {
   isUserAnswerCorrect,
   isUserAnswerValid,
@@ -14,7 +14,7 @@ import {
 import { useEffect } from "react";
 import {
   checkIfReviewIsComplete,
-  getNumberOfIncorrectForReviewTypes,
+  // getItemWithNumIncorrectReviews,
 } from "../services/ReviewService";
 import { Assignment } from "../types/Assignment";
 
@@ -28,6 +28,10 @@ export const useReviewQueue = () => {
       "🚀 ~ file: useReviewQueue.tsx:16 ~ useReviewQueue ~ queueDataState.reviewQueue:",
       queueDataState.reviewQueue
     );
+    console.log(
+      "🚀 ~ file: useReviewQueue.tsx:16 ~ useReviewQueue ~ queueDataState.currQueueIndex:",
+      queueDataState.currQueueIndex
+    );
   }, [queueDataState.reviewQueue]);
   // *testing
 
@@ -39,14 +43,15 @@ export const useReviewQueue = () => {
     dispatchQueueDataContext({
       type: "END_REVIEW",
     });
-    createReviewItems(assignments, subjIDs, dispatchQueueDataContext);
     resetCurrReviewCardsState();
+    createReviewItems(assignments, subjIDs, dispatchQueueDataContext);
   };
 
   const resetCurrReviewCardsState = () => {
     dispatchQueueContext({
       type: "RESET_REVIEW_CARDS",
     });
+    dispatchQueueDataContext({ type: "RESET_REVIEW" });
   };
 
   // TODO: update to display actual SRS status
@@ -76,17 +81,6 @@ export const useReviewQueue = () => {
       currReviewItem,
       queueDataState.reviewQueue
     );
-    // TODO: calculate number of times incorrect for reading and meaning
-    if (reviewItemComplete) {
-      let incorrectNum = getNumberOfIncorrectForReviewTypes(
-        queueDataState.reviewQueue,
-        currReviewItem
-      );
-      console.log(
-        "🚀 ~ file: useReviewQueue.tsx:85 ~ correctFirstClick ~ incorrectNum:",
-        incorrectNum
-      );
-    }
 
     // *testing
     console.log(
@@ -115,6 +109,7 @@ export const useReviewQueue = () => {
 
       // TODO: get review item's current SRS level, update item's SRS level
       if (reviewItemComplete) {
+        // TODO: calculate number of times incorrect for reading and meaning (add incorrect values with matching subject IDs together)
         displaySRSStatus(false);
       }
 
@@ -147,6 +142,7 @@ export const useReviewQueue = () => {
   ) => {
     if (moveToNextItem) {
       dispatchQueueContext({ type: "CORRECT_MOVE_TO_NEXT" });
+      dispatchQueueDataContext({ type: "INCREMENT_CURR_INDEX" });
       setUserAnswer("");
     } else {
       correctFirstClick(currReviewItem);
@@ -167,6 +163,9 @@ export const useReviewQueue = () => {
         dispatchQueueDataContext
       );
       dispatchQueueContext({ type: "WRONG_MOVE_TO_NEXT" });
+      dispatchQueueDataContext({
+        type: "REMOVE_REVIEW_QUEUE_ITEM",
+      });
       setUserAnswer("");
     } else {
       dispatchQueueContext({ type: "WRONG_SHOW_RESULT" });
@@ -176,6 +175,9 @@ export const useReviewQueue = () => {
       });
       updatedReviewItem.is_correct_answer = false;
       updatedReviewItem.is_reviewed = true;
+      updatedReviewItem.review_type === "reading"
+        ? (updatedReviewItem.incorrect_reading_answers += 1)
+        : (updatedReviewItem.incorrect_meaning_answers += 1);
 
       updateReviewQueueItem(
         updatedReviewItem,
@@ -217,6 +219,14 @@ export const useReviewQueue = () => {
       ? handleCorrectAnswer(currReviewItem, setUserAnswer, moveToNextItem)
       : handleWrongAnswer(currReviewItem, setUserAnswer, moveToNextItem);
 
+    // *testing
+    console.log(
+      "🚀 ~ file: useReviewQueue.tsx:221 ~ useReviewQueue ~ currReviewItem:",
+      currReviewItem
+    );
+    console.log("queueDataState.reviewQueue: ", queueDataState.reviewQueue);
+    // *testing
+
     dispatchQueueContext({ type: "SUBMIT_CHOICE" });
   };
 
@@ -227,6 +237,10 @@ export const useReviewQueue = () => {
     let updatedReviewItem = currReviewItem;
     updatedReviewItem.is_correct_answer = null;
     updatedReviewItem.is_reviewed = false;
+    // undoing the increment previously done
+    updatedReviewItem.review_type === "reading"
+      ? (updatedReviewItem.incorrect_reading_answers -= 1)
+      : (updatedReviewItem.incorrect_meaning_answers -= 1);
 
     updateReviewQueueItem(
       updatedReviewItem,

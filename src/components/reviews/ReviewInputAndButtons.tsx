@@ -79,7 +79,6 @@ export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
     <>
       <IonRow>
         <AnswerInput
-          id="user-answer-field"
           type="text"
           value={userAnswer}
           onChange={(e) => onInputFunction(e.target.value)}
@@ -111,7 +110,7 @@ export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
                 nextBtnClicked();
               }}
               disabled={
-                queueState.currReviewCardIndex ===
+                queueDataState.currQueueIndex ===
                 queueDataState.reviewQueue.length - 1
               }
             >

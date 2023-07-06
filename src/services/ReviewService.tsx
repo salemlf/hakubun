@@ -24,62 +24,62 @@ export const checkIfReviewIsComplete = (
 };
 
 // TODO: fix this, always returning 2+ if any incorrect
-export const getItemWithNumIncorrectReviews = (
-  reviewQueue: ReviewQueueItem[],
-  reviewItem: ReviewQueueItem
-) => {
-  let incorrectMeaningCount = reviewQueue.reduce(
-    (acc, curr) =>
-      curr.id == reviewItem.id &&
-      curr.review_type === ("meaning" as ReviewType) &&
-      curr.is_correct_answer === false
-        ? ++acc
-        : acc,
-    0
-  );
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewService.tsx:56 ~ incorrectMeaningCount:",
-    incorrectMeaningCount
-  );
-  // *testing
+// export const getItemWithNumIncorrectReviews = (
+//   reviewQueue: ReviewQueueItem[],
+//   reviewItem: ReviewQueueItem
+// ) => {
+//   let incorrectMeaningCount = reviewQueue.reduce(
+//     (acc, curr) =>
+//       curr.id == reviewItem.id &&
+//       curr.review_type === ("meaning" as ReviewType) &&
+//       curr.is_correct_answer === false
+//         ? ++acc
+//         : acc,
+//     0
+//   );
+//   // *testing
+//   console.log(
+//     "🚀 ~ file: ReviewService.tsx:56 ~ incorrectMeaningCount:",
+//     incorrectMeaningCount
+//   );
+//   // *testing
 
-  let incorrectReadingCount = reviewQueue.reduce(
-    (acc, curr) =>
-      curr.id == reviewItem.id &&
-      curr.review_type === ("reading" as ReviewType) &&
-      curr.is_correct_answer === false
-        ? ++acc
-        : acc,
-    0
-  );
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewService.tsx:67 ~ incorrectReadingCount:",
-    incorrectReadingCount
-  );
-  // *testing
+//   let incorrectReadingCount = reviewQueue.reduce(
+//     (acc, curr) =>
+//       curr.id == reviewItem.id &&
+//       curr.review_type === ("reading" as ReviewType) &&
+//       curr.is_correct_answer === false
+//         ? ++acc
+//         : acc,
+//     0
+//   );
+//   // *testing
+//   console.log(
+//     "🚀 ~ file: ReviewService.tsx:67 ~ incorrectReadingCount:",
+//     incorrectReadingCount
+//   );
+//   // *testing
 
-  return {
-    ...reviewItem,
-    incorrect_meaning_answers: incorrectMeaningCount,
-    incorrect_reading_answers: incorrectReadingCount,
-  };
-};
+//   return {
+//     ...reviewItem,
+//     incorrect_meaning_answers: incorrectMeaningCount,
+//     incorrect_reading_answers: incorrectReadingCount,
+//   };
+// };
 
 export const calculateSRSLevel = (reviewItem: ReviewQueueItem) => {
   // per wanikani docs: new_srs_stage = current_srs_stage - (incorrect_adjustment_count * srs_penalty_factor)
   // incorrect_adjustment_count: number of incorrect answers divided by two and rounded up
   // srs_penalty_factor: 2 if current_srs_stage is at or above 5, 1 if < 5
-  if (
-    reviewItem.incorrect_meaning_answers === null ||
-    reviewItem.incorrect_reading_answers === null
-  ) {
-    console.error(
-      "Woah now, can't calculate SRS level with null incorrect meaning/reading answers!"
-    );
-    return reviewItem;
-  }
+  // if (
+  //   reviewItem.incorrect_meaning_answers === null ||
+  //   reviewItem.incorrect_reading_answers === null
+  // ) {
+  //   console.error(
+  //     "Woah now, can't calculate SRS level with null incorrect meaning/reading answers!"
+  //   );
+  //   return reviewItem;
+  // }
 
   let penaltyFactor = reviewItem.srs_stage >= 5 ? 2 : 1;
   let incorrectAdjustmentCount = Math.ceil(
