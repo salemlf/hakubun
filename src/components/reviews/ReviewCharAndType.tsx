@@ -31,7 +31,6 @@ const ReviewTypeRow = styled(IonRow)<ReviewTypeProps>`
     margin: 10px;
   }
 `;
-
 const SubjectCharRow = styled(IonRow)`
   position: relative;
   justify-content: center;
@@ -82,19 +81,24 @@ const ReviewMessage = ({ displayMsg, popoverInfo }: ReviewMessageProps) => {
 
 type CharColProps = {
   subjType: SubjectType;
+  cardStyle: boolean;
 };
 
 const SubjectCharactersCol = styled(IonCol)<CharColProps>`
-  padding: 50px 0;
-  padding-bottom: 65px;
+  padding: 65px 0 65px;
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
+  border-radius: ${({ cardStyle }) => (cardStyle ? "10px 10px 0 0" : "0")};
 `;
 
 type Props = {
   currentReviewItem: ReviewQueueItem;
+  cardStyle?: boolean;
 };
 
-export const ReviewCharAndType = ({ currentReviewItem }: Props) => {
+export const ReviewCharAndType = ({
+  currentReviewItem,
+  cardStyle = false,
+}: Props) => {
   const { queueState } = useReviewQueue();
 
   let subjType = currentReviewItem.object as SubjectType;
@@ -108,7 +112,7 @@ export const ReviewCharAndType = ({ currentReviewItem }: Props) => {
   return (
     <>
       <SubjectCharRow>
-        <SubjectCharactersCol subjType={subjType}>
+        <SubjectCharactersCol subjType={subjType} cardStyle={cardStyle}>
           <SubjectChars
             subject={currentReviewItem}
             fontSize="4rem"

@@ -28,16 +28,16 @@ export const useReviewQueue = () => {
   const { queueDataState, dispatchQueueDataContext } = useReviewSessionData();
   const { queueState, dispatchQueueContext } = useReviewSessionQueue();
   // *testing
-  useEffect(() => {
-    console.log(
-      "🚀 ~ file: useReviewQueue.tsx:16 ~ useReviewQueue ~ queueDataState.reviewQueue:",
-      queueDataState.reviewQueue
-    );
-    console.log(
-      "🚀 ~ file: useReviewQueue.tsx:16 ~ useReviewQueue ~ queueDataState.currQueueIndex:",
-      queueDataState.currQueueIndex
-    );
-  }, [queueDataState.reviewQueue]);
+  // useEffect(() => {
+  //   console.log(
+  //     "🚀 ~ file: useReviewQueue.tsx:16 ~ useReviewQueue ~ queueDataState.reviewQueue:",
+  //     queueDataState.reviewQueue
+  //   );
+  //   console.log(
+  //     "🚀 ~ file: useReviewQueue.tsx:16 ~ useReviewQueue ~ queueDataState.currQueueIndex:",
+  //     queueDataState.currQueueIndex
+  //   );
+  // }, [queueDataState.reviewQueue]);
   // *testing
 
   const createNewReviewSession = (

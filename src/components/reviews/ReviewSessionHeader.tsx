@@ -69,6 +69,7 @@ type Props = {
   currentReviewItem: ReviewQueueItem;
 };
 
+// TODO: change so just neutral bg color, not based on review type
 export const ReviewSessionHeader = ({ currentReviewItem }: Props) => {
   const router = useIonRouter();
   const { queueDataState } = useReviewQueue();

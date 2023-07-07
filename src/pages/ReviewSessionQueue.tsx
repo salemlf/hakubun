@@ -23,6 +23,7 @@ const Grid = styled(IonGrid)`
   padding-inline-end: 0;
   padding-top: 0;
   padding-bottom: 0;
+  margin: 10px;
 `;
 
 // TODO: redirect to home if user somehow ends up on this screen without data passed
@@ -46,7 +47,10 @@ export const ReviewSessionQueue = () => {
             reviewQueue.length - 1 !== queueDataState.currQueueIndex &&
             currentReviewItem && (
               <>
-                <ReviewCharAndType currentReviewItem={currentReviewItem} />
+                <ReviewCharAndType
+                  currentReviewItem={currentReviewItem}
+                  cardStyle={true}
+                />
                 <ReviewInputAndButtons currentReviewItem={currentReviewItem} />
                 <ReviewItemBottomSheet
                   currentReviewItem={currentReviewItem}
