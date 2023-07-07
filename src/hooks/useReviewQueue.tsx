@@ -5,7 +5,11 @@ import {
   addToReviewQueue,
   createReviewItems,
 } from "../contexts/ReviewSessionDataContext";
-import { playAudioIfAvailable } from "../services/MiscService";
+import {
+  capitalizeWord,
+  getSrsNameBySrsLvl,
+  playAudioIfAvailable,
+} from "../services/MiscService";
 import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
 import {
   isUserAnswerCorrect,
@@ -13,6 +17,7 @@ import {
 } from "../services/SubjectAndAssignmentService";
 import { useEffect } from "react";
 import {
+  calculateSRSLevel,
   checkIfReviewIsComplete,
   // getItemWithNumIncorrectReviews,
 } from "../services/ReviewService";
@@ -54,21 +59,30 @@ export const useReviewQueue = () => {
     dispatchQueueDataContext({ type: "RESET_REVIEW" });
   };
 
-  // TODO: update to display actual SRS status
-  // TODO: change to use more specific types that display up or down arrows based on correct/incorrect
-  const displaySRSStatus = (answerWasCorrect: boolean) => {
-    let popoverToDispatch = answerWasCorrect
+  const displaySRSStatus = (reviewItem: ReviewQueueItem) => {
+    // *testing
+    console.log("reviewItem.srs_stage: ", reviewItem.srs_stage);
+    console.log("reviewItem.ending_srs_stage: ", reviewItem.ending_srs_stage);
+    // *testing
+
+    let endingSRS = reviewItem.ending_srs_stage!;
+
+    let hasIncreased = endingSRS > reviewItem.srs_stage;
+    let endingSRSName = capitalizeWord(getSrsNameBySrsLvl(endingSRS));
+
+    // TODO: change to use more specific types that display up or down arrows based on correct/incorrect
+    let popoverToDispatch = hasIncreased
       ? {
           type: "SHOW_POPOVER_MSG" as const,
           payload: {
-            message: "FAKE INCREASING SRS LEVEL...",
+            message: `Fake increasing to ${endingSRSName}...`,
             messageType: "correct",
           },
         }
       : {
           type: "SHOW_POPOVER_MSG" as const,
           payload: {
-            message: "FAKE DECREASING SRS LEVEL...",
+            message: `Fake decreasing to ${endingSRSName}...`,
             messageType: "incorrect",
           },
         };
@@ -77,15 +91,15 @@ export const useReviewQueue = () => {
   };
 
   const correctFirstClick = (currReviewItem: ReviewQueueItem) => {
-    let reviewItemComplete = checkIfReviewIsComplete(
+    let isReviewItemComplete = checkIfReviewIsComplete(
       currReviewItem,
       queueDataState.reviewQueue
     );
 
     // *testing
     console.log(
-      "🚀 ~ file: useReviewQueue.tsx:40 ~ correctFirstClick ~ reviewItemComplete:",
-      reviewItemComplete
+      "🚀 ~ file: useReviewQueue.tsx:40 ~ correctFirstClick ~ isReviewItemComplete:",
+      isReviewItemComplete
     );
     // *testing
 
@@ -101,17 +115,24 @@ export const useReviewQueue = () => {
     });
     dispatchQueueContext({ type: "CORRECT_SHOW_RESULT" });
 
+    if (isReviewItemComplete) {
+      updatedReviewItem = calculateSRSLevel(
+        queueDataState.reviewQueue,
+        updatedReviewItem
+      );
+      // *testing
+      console.log(
+        "🚀 ~ file: useReviewQueue.tsx:127 ~ correctFirstClick ~ updatedReviewItem:",
+        updatedReviewItem
+      );
+      // *testing
+      displaySRSStatus(updatedReviewItem);
+    }
+
     let wasWrongFirstAttempt = updatedReviewItem.is_reviewed;
     if (wasWrongFirstAttempt) {
       // keeping answer as incorrect and is_reviewed as true
-      // TODO: make sure this actually updates
       updatedReviewItem.is_reviewed = true;
-
-      // TODO: get review item's current SRS level, update item's SRS level
-      if (reviewItemComplete) {
-        // TODO: calculate number of times incorrect for reading and meaning (add incorrect values with matching subject IDs together)
-        displaySRSStatus(false);
-      }
 
       updateReviewQueueItem(
         updatedReviewItem,
@@ -121,10 +142,6 @@ export const useReviewQueue = () => {
     }
     // user got answer correct first try
     else {
-      if (reviewItemComplete) {
-        displaySRSStatus(true);
-      }
-      // TODO: make sure this actually updates
       updatedReviewItem.is_correct_answer = true;
       updatedReviewItem.is_reviewed = true;
       updateReviewQueueItem(
