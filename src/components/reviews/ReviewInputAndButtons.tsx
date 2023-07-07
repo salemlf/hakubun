@@ -28,9 +28,9 @@ const NextBtn = styled(BaseBtn)`
   color: black;
 `;
 
-type Props = {
-  currentReviewItem: ReviewQueueItem;
-};
+const InputRow = styled(IonRow)`
+  width: 100%;
+`;
 
 const translateInputValue = (string: string, translateToHiragana: boolean) => {
   if (translateToHiragana) {
@@ -58,10 +58,7 @@ const WanakanaInput = ({
   const translatedVal = translateInputValue(value, translateToHiragana);
 
   const handleChange = (e: any) => {
-    const updatedValue = translateInputValue(
-      e.target.value,
-      translateToHiragana
-    );
+    let updatedValue = translateInputValue(e.target.value, translateToHiragana);
     inputRef.current.value = updatedValue;
     onChange(e);
   };
@@ -83,23 +80,32 @@ const AnswerInput = styled(WanakanaInput)`
   color: black;
 `;
 
+type Props = {
+  currentReviewItem: ReviewQueueItem;
+  userAnswer: string;
+  setUserAnswer: (value: React.SetStateAction<string>) => void;
+  nextBtnClicked: () => void;
+};
+
 // TODO: add button to abandon session
-export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
+export const ReviewInputAndButtons = ({
+  currentReviewItem,
+  userAnswer,
+  setUserAnswer,
+  nextBtnClicked,
+}: Props) => {
   const { queueDataState, queueState, handleNextClick, handleRetryClick } =
     useReviewQueue();
-  const [userAnswer, setUserAnswer] = useState("");
-  useKeyDown(() => nextBtnClicked(), ["F12"]);
+
   let reviewType = currentReviewItem.review_type;
 
-  const nextBtnClicked = () => {
-    console.log("userAnswer: ", userAnswer);
-    console.log("nextBtnClicked called!");
-    handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
+  const handleAnswerUpdate = (updatedAnswer: string) => {
+    setUserAnswer(updatedAnswer);
   };
 
   return (
     <>
-      <IonRow>
+      <InputRow>
         <AnswerInput
           type="text"
           value={userAnswer}
@@ -109,11 +115,12 @@ export const ReviewInputAndButtons = ({ currentReviewItem }: Props) => {
             }
           }}
           translateToHiragana={reviewType === "reading"}
+          // onChange={(e: any) => setUserAnswer(e.target.value)}
           onChange={(e: any) => setUserAnswer(e.target.value)}
           disabled={queueState.isSecondClick}
           placeholder={reviewType === "reading" ? "答え" : ""}
         />
-      </IonRow>
+      </InputRow>
       <IonGrid>
         <IonRow>
           {queueState.showRetryButton && (

@@ -23,6 +23,7 @@ type ReviewTypeProps = {
 
 const ReviewTypeRow = styled(IonRow)<ReviewTypeProps>`
   justify-content: center;
+  width: 100%;
   background-color: ${({ reviewType }) => getReviewTypeColor(reviewType)};
   --ion-background-color: ${({ reviewType }) => getReviewTypeColor(reviewType)};
 
@@ -34,6 +35,7 @@ const ReviewTypeRow = styled(IonRow)<ReviewTypeProps>`
 const SubjectCharRow = styled(IonRow)`
   position: relative;
   justify-content: center;
+  width: 100%;
 `;
 
 type MsgWrapperProps = {
@@ -81,24 +83,18 @@ const ReviewMessage = ({ displayMsg, popoverInfo }: ReviewMessageProps) => {
 
 type CharColProps = {
   subjType: SubjectType;
-  cardStyle: boolean;
 };
 
 const SubjectCharactersCol = styled(IonCol)<CharColProps>`
-  padding: 65px 0 65px;
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
-  border-radius: ${({ cardStyle }) => (cardStyle ? "10px 10px 0 0" : "0")};
+  padding-bottom: 40px;
 `;
 
 type Props = {
   currentReviewItem: ReviewQueueItem;
-  cardStyle?: boolean;
 };
 
-export const ReviewCharAndType = ({
-  currentReviewItem,
-  cardStyle = false,
-}: Props) => {
+export const ReviewCharAndType = ({ currentReviewItem }: Props) => {
   const { queueState } = useReviewQueue();
 
   let subjType = currentReviewItem.object as SubjectType;
@@ -112,7 +108,7 @@ export const ReviewCharAndType = ({
   return (
     <>
       <SubjectCharRow>
-        <SubjectCharactersCol subjType={subjType} cardStyle={cardStyle}>
+        <SubjectCharactersCol subjType={subjType}>
           <SubjectChars
             subject={currentReviewItem}
             fontSize="4rem"

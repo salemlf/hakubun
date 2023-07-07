@@ -20,9 +20,6 @@ type HeaderStyleProps = {
 
 const SessionHeader = styled(IonHeader)<HeaderStyleProps>`
   box-shadow: none;
-  --ion-toolbar-background: ${({ subjType }) => getSubjectColor(subjType)};
-  --ion-background-color: ${({ subjType }) => getSubjectColor(subjType)};
-  background-color: ${({ subjType }) => getSubjectColor(subjType)};
 
   button::part(native) {
     padding-inline-start: 0;
@@ -49,7 +46,6 @@ const NumReviewsLeftText = styled.p`
 `;
 
 const HomeBtn = styled(IonButton)`
-  background-color: var(--dark-greyish-purple);
   border-radius: 10px;
   --border-radius: 10px;
   padding: 2px 0;

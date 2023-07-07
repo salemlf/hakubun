@@ -1,12 +1,10 @@
 import { IonContent, IonGrid, IonPage } from "@ionic/react";
 
 import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
-import { ReviewInputAndButtons } from "../components/reviews/ReviewInputAndButtons";
-import { ReviewItemBottomSheet } from "../components/reviews/ReviewItemBottomSheet";
-import { ReviewCharAndType } from "../components/reviews/ReviewCharAndType";
 
 import styled from "styled-components/macro";
 import { useReviewQueue } from "../hooks/useReviewQueue";
+import { ReviewItemCard } from "../components/reviews/ReviewItemCard";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -46,17 +44,7 @@ export const ReviewSessionQueue = () => {
           {!queueDataState.isLoading &&
             reviewQueue.length - 1 !== queueDataState.currQueueIndex &&
             currentReviewItem && (
-              <>
-                <ReviewCharAndType
-                  currentReviewItem={currentReviewItem}
-                  cardStyle={true}
-                />
-                <ReviewInputAndButtons currentReviewItem={currentReviewItem} />
-                <ReviewItemBottomSheet
-                  currentReviewItem={currentReviewItem}
-                  reviewType={currentReviewItem.review_type}
-                />
-              </>
+              <ReviewItemCard currentReviewItem={currentReviewItem} />
             )}
           {!queueDataState.isLoading &&
             reviewQueue.length - 1 === queueDataState.currQueueIndex && (
