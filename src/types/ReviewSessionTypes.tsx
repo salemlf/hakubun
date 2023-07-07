@@ -2,7 +2,6 @@ import { Subject } from "./Subject";
 
 export type ReviewType = "reading" | "meaning";
 
-// TODO: add info to this for whether answers were correct or not
 export interface ReviewQueueItem extends Subject {
   itemID: string;
   assignment_id: number;
@@ -20,9 +19,7 @@ export interface ReviewQueueItem extends Subject {
 export type ReviewSessionDataState = {
   isLoading: boolean;
   reviewQueue: ReviewQueueItem[];
-  // !added
   currQueueIndex: number;
-  // !added
 };
 
 type ReviewSessionDataActionType =
