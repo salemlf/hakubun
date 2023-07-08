@@ -1,5 +1,5 @@
-import { createElement, useRef } from "react";
-import { IonGrid, IonRow, IonCol } from "@ionic/react";
+import React, { createElement, useRef } from "react";
+import { IonGrid, IonRow, IonCol, IonInput } from "@ionic/react";
 import { toHiragana } from "wanakana";
 
 import styled from "styled-components/macro";
@@ -45,8 +45,8 @@ type InputProps = {
   translateToHiragana: boolean;
 };
 
+// TODO: fix so autofocuses
 const WanakanaInput = ({
-  component,
   value,
   onChange,
   translateToHiragana,
@@ -94,7 +94,6 @@ export const ReviewInputAndButtons = ({
   nextBtnClicked,
 }: Props) => {
   const { queueDataState, queueState, handleRetryClick } = useReviewQueue();
-
   let reviewType = currentReviewItem.review_type;
 
   return (
@@ -113,6 +112,7 @@ export const ReviewInputAndButtons = ({
           disabled={queueState.isSecondClick}
           placeholder={reviewType === "reading" ? "答え" : ""}
         />
+        <IonInput />
       </InputRow>
       <IonGrid>
         <IonRow>
