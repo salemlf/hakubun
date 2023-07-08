@@ -1,4 +1,4 @@
-import React, { createElement, useRef } from "react";
+import React, { createElement, useEffect, useRef } from "react";
 import { IonGrid, IonRow, IonCol, IonInput } from "@ionic/react";
 import { toHiragana } from "wanakana";
 
@@ -45,7 +45,6 @@ type InputProps = {
   translateToHiragana: boolean;
 };
 
-// TODO: fix so autofocuses
 const WanakanaInput = ({
   value,
   onChange,
@@ -53,8 +52,13 @@ const WanakanaInput = ({
   ...props
 }: InputProps) => {
   const inputRef = useRef(document.createElement("input"));
-
   const translatedVal = translateInputValue(value, translateToHiragana);
+  // TODO: change this, a mehhh workaround for autofocusing
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current.focus();
+    }, 500);
+  });
 
   const handleChange = (e: any) => {
     let updatedValue = translateInputValue(e.target.value, translateToHiragana);
@@ -86,6 +90,7 @@ type Props = {
   nextBtnClicked: () => void;
 };
 
+// TODO: remove next and retry buttons once gestures are implemented
 // TODO: add button to abandon session
 export const ReviewInputAndButtons = ({
   currentReviewItem,
