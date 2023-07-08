@@ -11,6 +11,7 @@ import { useReviewQueue } from "../../hooks/useReviewQueue";
 
 import styled from "styled-components/macro";
 import { useKeyDown } from "../../hooks/useKeyDown";
+import { toHiragana } from "wanakana";
 
 type ReviewItemProps = {
   subjType: SubjectType;
@@ -41,6 +42,9 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
     console.log("userAnswer: ", userAnswer);
     console.log("nextBtnClicked called!");
     // *testing
+
+    currentReviewItem.review_type === "reading" &&
+      setUserAnswer(toHiragana(userAnswer));
     handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
   };
 

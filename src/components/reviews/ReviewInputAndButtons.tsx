@@ -1,9 +1,8 @@
-import { createElement, useEffect, useRef, useState } from "react";
+import { createElement, useRef } from "react";
 import { IonGrid, IonRow, IonCol } from "@ionic/react";
-import { toHiragana, toKana } from "wanakana";
+import { toHiragana } from "wanakana";
 
 import styled from "styled-components/macro";
-import { useKeyDown } from "../../hooks/useKeyDown";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 
@@ -94,14 +93,9 @@ export const ReviewInputAndButtons = ({
   setUserAnswer,
   nextBtnClicked,
 }: Props) => {
-  const { queueDataState, queueState, handleNextClick, handleRetryClick } =
-    useReviewQueue();
+  const { queueDataState, queueState, handleRetryClick } = useReviewQueue();
 
   let reviewType = currentReviewItem.review_type;
-
-  const handleAnswerUpdate = (updatedAnswer: string) => {
-    setUserAnswer(updatedAnswer);
-  };
 
   return (
     <>
@@ -115,7 +109,6 @@ export const ReviewInputAndButtons = ({
             }
           }}
           translateToHiragana={reviewType === "reading"}
-          // onChange={(e: any) => setUserAnswer(e.target.value)}
           onChange={(e: any) => setUserAnswer(e.target.value)}
           disabled={queueState.isSecondClick}
           placeholder={reviewType === "reading" ? "答え" : ""}
