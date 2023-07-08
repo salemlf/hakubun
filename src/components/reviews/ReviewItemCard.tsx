@@ -18,7 +18,7 @@ type ReviewItemProps = {
 };
 
 const ReviewCard = styled(IonRow)<ReviewItemProps>`
-  padding: 65px 0 65px;
+  padding: 50px 0;
   border-radius: 10px;
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
 `;
@@ -31,6 +31,7 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
   const cardRef = useRef<HTMLIonRowElement>(null);
   const [userAnswer, setUserAnswer] = useState("");
   useKeyDown(() => nextBtnClicked(), ["F12"]);
+  useKeyDown(() => handleRetryClick(currentReviewItem, setUserAnswer), ["F6"]);
   const { handleNextClick, handleRetryClick, queueState } = useReviewQueue();
 
   useEffect(() => {
