@@ -16,7 +16,6 @@ export const reviewSessionQueueReducer = (
         ...state,
         isBottomSheetVisible: false,
         displayPopoverMsg: false,
-        // currReviewCardIndex: state.currReviewCardIndex + 1,
       };
     case "WRONG_SHOW_RESULT":
       return {
@@ -30,7 +29,6 @@ export const reviewSessionQueueReducer = (
         isBottomSheetVisible: false,
         showRetryButton: false,
         displayPopoverMsg: false,
-        // currReviewCardIndex: state.currReviewCardIndex + 1,
       };
     case "WRONG_SHOW_RESULT":
       return {
@@ -60,7 +58,6 @@ export const reviewSessionQueueReducer = (
     case "RESET_REVIEW_CARDS":
       return {
         ...state,
-        // currReviewCardIndex: 0,
         displayPopoverMsg: false,
         isSecondClick: false,
         isBottomSheetVisible: false,

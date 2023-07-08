@@ -31,11 +31,11 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
   const cardRef = useRef<HTMLIonRowElement>(null);
   const [userAnswer, setUserAnswer] = useState("");
   useKeyDown(() => nextBtnClicked(), ["F12"]);
-
   const { handleNextClick, handleRetryClick, queueState } = useReviewQueue();
+
   useEffect(() => {
     createCardGesture();
-  }, []);
+  }, [queueState.showRetryButton]);
 
   const nextBtnClicked = () => {
     // *testing
@@ -56,15 +56,15 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
         gestureName: "card-swipe",
         onMove: (info) => {
           if (info.deltaX > 0) {
-            // *testing
-            console.log("RIGHT");
-            // *testing
             reviewCard!.style.transform = `translateX(${
               info.deltaX
             }px) rotate(${info.deltaX / 20}deg)`;
           } else {
             // *testing
-            console.log("LEFT");
+            console.log(
+              "🚀 ~ file: ReviewItemCard.tsx:70 ~ createCardGesture ~ queueState.showRetryButton:",
+              queueState.showRetryButton
+            );
             // *testing
             if (queueState.showRetryButton) {
               reviewCard!.style.transform = `translateX(${
@@ -85,7 +85,6 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
           // TODO: also don't let user submit if invalid answer
           if (info.deltaX > windowWidth / 2) {
             reviewCard!.style.transform = `translateX(${windowWidth * 1.5}px)`;
-            // TODO: call onNextClick with user answer, right swipe
             // *testing
             console.log(
               "🚀 ~ file: ReviewItemCard.tsx:74 ~ createCardGesture ~ info:",
@@ -93,13 +92,14 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
             );
             // *testing
             handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
+            reviewCard!.style.transform = "";
           } else if (
             info.deltaX < -windowWidth / 2 &&
             queueState.showRetryButton
           ) {
             reviewCard!.style.transform = `translateX(-${windowWidth * 1.5}px)`;
-            // TODO: call retry, left swipe
             handleRetryClick(currentReviewItem, setUserAnswer);
+            reviewCard!.style.transform = "";
           } else {
             reviewCard!.style.transform = "";
           }
