@@ -47,9 +47,9 @@ export const TabBar = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route path="/:tab(home)" component={Home} exact />
-        <Route path="/:tab(subjects)" component={Subjects} exact />
-        <Route path="/:tab(search)" component={Search} exact />
+        <Route path="/:tab(home)" component={Home} exact={true} />
+        <Route path="/:tab(subjects)" component={Subjects} exact={true} />
+        <Route path="/:tab(search)" component={Search} exact={true} />
         <Route path="/subjects/:id" component={SubjectDetails} />
         <Route path="/home" component={Home} exact={true} />
         <Route
@@ -62,8 +62,8 @@ export const TabBar = () => {
           component={ReviewSessionQueue}
           exact={true}
         />
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-        <Redirect from="/authenticate" to="/home" exact />
+        <Route exact={true} path="/" render={() => <Redirect to="/home" />} />
+        <Redirect from="/authenticate" to="/home" exact={true} />
       </IonRouterOutlet>
       <IonTabBar slot="bottom" style={tabBarStyle}>
         <IonTabButton tab="subjects" href="/subjects">
