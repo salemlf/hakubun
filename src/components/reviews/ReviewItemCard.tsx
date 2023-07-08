@@ -36,7 +36,7 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
 
   useEffect(() => {
     createCardGesture();
-  }, [queueState.showRetryButton]);
+  }, [queueState.showRetryButton, currentReviewItem, userAnswer]);
 
   const nextBtnClicked = () => {
     // *testing

@@ -10,7 +10,6 @@ import {
 import HomeIcon from "../../images/home.svg";
 import styled from "styled-components/macro";
 import { SubjectType } from "../../types/Subject";
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 
