@@ -1,4 +1,4 @@
-import { useHistory } from "react-router";
+import { useIonRouter } from "@ionic/react";
 import { IonRow, useIonPopover } from "@ionic/react";
 
 import { RadicalButton } from "./RadicalButton";
@@ -28,13 +28,13 @@ export const SubjectButton = ({
   isButtonLink = false,
   showDetails = true,
 }: SubjProps) => {
-  const history = useHistory();
+  const router = useIonRouter();
+
   const handleDismiss = () => dismiss();
 
-  // TODO: use useHistory or useLocation to set state/type of subject
   const navigate = (route: string) => {
     handleDismiss();
-    history.push(route);
+    router.push(route);
   };
 
   const [present, dismiss] = useIonPopover(SubjCardPopover, {

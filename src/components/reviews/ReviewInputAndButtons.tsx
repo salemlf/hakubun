@@ -56,7 +56,9 @@ const WanakanaInput = ({
   // TODO: change this, a mehhh workaround for autofocusing
   useEffect(() => {
     setTimeout(() => {
-      inputRef.current.focus();
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
     }, 500);
   });
 
@@ -117,7 +119,6 @@ export const ReviewInputAndButtons = ({
           disabled={queueState.isSecondClick}
           placeholder={reviewType === "reading" ? "答え" : ""}
         />
-        <IonInput />
       </InputRow>
       <IonGrid>
         <IonRow>

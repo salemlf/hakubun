@@ -1,5 +1,3 @@
-import { useHistory, useLocation } from "react-router";
-// import { useHistory, useParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {
   IonContent,
@@ -29,8 +27,6 @@ const Page = styled(IonPage)`
 export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
-
-  // TODO: use useHistory or useLocation to get state/type of subject
 
   const {
     isLoading: subjectLoading,

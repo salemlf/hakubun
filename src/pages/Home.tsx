@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router";
+import { useIonRouter } from "@ionic/react";
 import {
   IonPage,
   IonContent,
@@ -25,7 +25,7 @@ import { SrsStages } from "../components/SrsStages";
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
-  const history = useHistory();
+  const router = useIonRouter();
 
   const appContext = useUserAuth();
 
@@ -38,7 +38,8 @@ const Home = () => {
 
   const removeAuth = () => {
     appContext.logout();
-    history.push("/authenticate");
+    // history.push("/authenticate");
+    router.push("/authenticate");
   };
 
   const setUserDetails = () => {
@@ -51,7 +52,6 @@ const Home = () => {
   return (
     <IonPage>
       <Header></Header>
-      {/* <IonContent className="ion-padding"> */}
       <IonContent className={`${styles.contentPadding}`}>
         <IonGrid>
           {!homeLoading ? (

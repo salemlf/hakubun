@@ -1,7 +1,7 @@
 import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 import { useNumReviews } from "../../hooks/useNumReviews";
 import { setBtnBackground } from "../../services/ImageSrcService";
-import { useHistory } from "react-router";
+import { useIonRouter } from "@ionic/react";
 
 import styles from "./ReviewsButton.module.scss";
 
@@ -11,7 +11,8 @@ type Props = {
 
 // TODO: check if review is currently in session (reviewQueue length !==0), then ask user if they want to resume if it exists
 const ReviewsButton = ({ level }: Props) => {
-  const history = useHistory();
+  const router = useIonRouter();
+
   const {
     isLoading: numReviewsLoading,
     data: numReviews,
@@ -38,7 +39,8 @@ const ReviewsButton = ({ level }: Props) => {
           title="Reviews"
           color="clear"
           // TODO: change so if no reviews -> doesn't redirect and displays a message
-          onClick={() => history.push("/review/settings")}
+          // onClick={() => history.push("/review/settings")}
+          onClick={() => router.push("/review/settings")}
           className={`${styles.reviewBtn}`}
           style={{
             backgroundImage: `url(${

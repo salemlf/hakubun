@@ -1,4 +1,4 @@
-import { useHistory } from "react-router";
+import { useIonRouter } from "@ionic/react";
 import { IonCol, IonRow } from "@ionic/react";
 import styled from "styled-components/macro";
 
@@ -86,10 +86,10 @@ type Props = {
 };
 
 const SubjectListItem = ({ subject }: Props) => {
-  const history = useHistory();
+  const router = useIonRouter();
 
   const onSubjBtnClick = (e: any) => {
-    history.push(`/subjects/${subject.id}`);
+    router.push(`/subjects/${subject.id}`);
   };
 
   return (

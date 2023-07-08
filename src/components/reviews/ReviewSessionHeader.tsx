@@ -4,8 +4,8 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
-  useIonRouter,
 } from "@ionic/react";
+import { useIonRouter } from "@ionic/react";
 
 import HomeIcon from "../../images/home.svg";
 import styled from "styled-components/macro";
@@ -67,6 +67,7 @@ type Props = {
 // TODO: change so just neutral bg color, not based on review type
 export const ReviewSessionHeader = ({ currentReviewItem }: Props) => {
   const router = useIonRouter();
+
   const { queueDataState } = useReviewQueue();
   let currItemSubjType = currentReviewItem.object as SubjectType;
 
@@ -85,7 +86,7 @@ export const ReviewSessionHeader = ({ currentReviewItem }: Props) => {
     <SessionHeader subjType={currItemSubjType}>
       <Toolbar>
         <IonButtons slot="start">
-          <HomeBtn onClick={() => router.push("/home")}>
+          <HomeBtn onClick={() => router.push("/home", "root", "replace")}>
             <HomeIconStyled icon={HomeIcon}></HomeIconStyled>
           </HomeBtn>
         </IonButtons>
