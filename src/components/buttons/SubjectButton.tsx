@@ -46,7 +46,7 @@ export const SubjectButton = ({
 
   const onClickEvent = (e: any) => {
     if (isButtonLink) {
-      navigate(`/subject/${subject.id}`);
+      navigate(`/subjects/${subject.id}`);
     } else {
       present({
         event: e.nativeEvent,

@@ -89,7 +89,7 @@ const SubjectListItem = ({ subject }: Props) => {
   const history = useHistory();
 
   const onSubjBtnClick = (e: any) => {
-    history.push(`/subject/${subject.id}`);
+    history.push(`/subjects/${subject.id}`);
   };
 
   return (

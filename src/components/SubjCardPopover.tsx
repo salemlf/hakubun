@@ -57,7 +57,7 @@ export const SubjCardPopover = ({ subject, assignment, navigate }: Props) => {
       subjType={subject.object}
       button
       detail={false}
-      onClick={() => navigate(`/subject/${subject.id}`)}
+      onClick={() => navigate(`/subjects/${subject.id}`)}
     >
       <TxtContainer>
         <SubjectChars subject={subject} fontSize="4rem" />

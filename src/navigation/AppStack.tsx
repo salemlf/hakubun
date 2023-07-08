@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   IonRouterOutlet,
   IonLabel,
@@ -8,7 +9,7 @@ import {
 } from "@ionic/react";
 import HomeIcon from "../images/home.svg";
 import SubjectsIcon from "../images/subjects.svg";
-import Search from "../images/search.svg";
+import SearchIcon from "../images/search.svg";
 import "./AppStack.module.scss";
 
 import { IonReactRouter } from "@ionic/react-router";
@@ -18,7 +19,8 @@ import Home from "../pages/Home";
 import { SubjectDetails } from "../pages/SubjectDetails";
 import { ReviewSettings } from "../pages/ReviewSettings";
 import { ReviewSessionQueue } from "../pages/ReviewSessionQueue";
-import { useEffect, useState } from "react";
+import { Subjects } from "../pages/Subjects";
+import { Search } from "../pages/Search";
 
 export const AppStack = () => {
   return (
@@ -45,7 +47,10 @@ export const TabBar = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route path="/subject/:id" component={SubjectDetails} />
+        <Route path="/:tab(home)" component={Home} exact />
+        <Route path="/:tab(subjects)" component={Subjects} exact />
+        <Route path="/:tab(search)" component={Search} exact />
+        <Route path="/subjects/:id" component={SubjectDetails} />
         <Route path="/home" component={Home} exact={true} />
         <Route
           path="/review/settings"
@@ -61,7 +66,7 @@ export const TabBar = () => {
         <Redirect from="/authenticate" to="/home" exact />
       </IonRouterOutlet>
       <IonTabBar slot="bottom" style={tabBarStyle}>
-        <IonTabButton tab="subjects" href="/subject">
+        <IonTabButton tab="subjects" href="/subjects">
           <IonLabel>Subjects</IonLabel>
           <IonIcon icon={SubjectsIcon} />
         </IonTabButton>
@@ -70,10 +75,9 @@ export const TabBar = () => {
           <IonLabel>Home</IonLabel>
           <IonIcon icon={HomeIcon} />
         </IonTabButton>
-
         <IonTabButton tab="search" href="/search">
           <IonLabel>Search</IonLabel>
-          <IonIcon icon={Search} />
+          <IonIcon icon={SearchIcon} />
         </IonTabButton>
       </IonTabBar>
     </IonTabs>
