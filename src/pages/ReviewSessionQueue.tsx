@@ -1,10 +1,10 @@
 import { IonContent, IonGrid, IonPage } from "@ionic/react";
 
-import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
-
 import styled from "styled-components/macro";
 import { useReviewQueue } from "../hooks/useReviewQueue";
+import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
 import { ReviewItemCard } from "../components/reviews/ReviewItemCard";
+import { ReviewSummary } from "../components/reviews/ReviewSummary";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -48,7 +48,7 @@ export const ReviewSessionQueue = () => {
             )}
           {!queueDataState.isLoading &&
             reviewQueue.length - 1 === queueDataState.currQueueIndex && (
-              <div>REVIEW SUMMARY</div>
+              <ReviewSummary />
             )}
         </Grid>
       </IonContent>

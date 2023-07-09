@@ -81,3 +81,47 @@ export const calculateSRSLevel = (
     ending_srs_stage: updatedSrsLvl,
   };
 };
+
+export const mergeQueueItems = (A: ReviewQueueItem, B: ReviewQueueItem) => {
+  let merged: any = {};
+  Object.keys({ ...A, ...B }).map((key) => {
+    if (
+      key === "incorrect_meaning_answers" ||
+      key === "incorrect_reading_answers"
+    ) {
+      merged[key] = (B[key] || 0) + (A[key] || 0);
+    } else {
+      merged[key] = B[key as keyof {}] || A[key as keyof {}];
+    }
+  });
+  return merged;
+};
+
+// combining objects with same IDs (subject IDs)
+export const getReviewSessionStats = (reviewQueue: ReviewQueueItem[]) => {
+  const queueItemReducer = (
+    reducedQueueItems: any,
+    reviewQueueItem: ReviewQueueItem
+  ) => {
+    let key = reviewQueueItem.id;
+    let correspondingReview = reducedQueueItems.get(key);
+    let mergedItem = mergeQueueItems(
+      correspondingReview || {},
+      reviewQueueItem
+    );
+    reducedQueueItems.set(key, mergedItem);
+    return reducedQueueItems;
+  };
+
+  let reviewQueueItemIterator = reviewQueue
+    .reduce(queueItemReducer, new Map())
+    .values();
+
+  let combinedQueueItems = Array.from(reviewQueueItemIterator);
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewService.tsx:179 ~ getReviewSessionStats ~ combinedQueueItems:",
+    combinedQueueItems
+  );
+  // *testing
+};
