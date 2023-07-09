@@ -21,7 +21,7 @@ type ReviewItemProps = {
 };
 
 const ReviewCard = styled(IonRow)<ReviewItemProps>`
-  padding: 50px 0;
+  padding: 50px 0 75px 0;
   border-radius: 10px;
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
   position: relative;

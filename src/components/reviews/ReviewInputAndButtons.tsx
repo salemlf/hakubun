@@ -120,7 +120,7 @@ export const ReviewInputAndButtons = ({
           placeholder={reviewType === "reading" ? "答え" : ""}
         />
       </InputRow>
-      <IonGrid>
+      {/* <IonGrid>
         <IonRow>
           {queueState.showRetryButton && (
             <ButtonCol>
@@ -147,7 +147,7 @@ export const ReviewInputAndButtons = ({
             </NextBtn>
           </ButtonCol>
         </IonRow>
-      </IonGrid>
+      </IonGrid> */}
     </>
   );
 };
