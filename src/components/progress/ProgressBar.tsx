@@ -6,17 +6,19 @@ import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl
 import { getAssignmentStatuses } from "../../services/SubjectAndAssignmentService";
 import styled from "styled-components/macro";
 
-const ProgressContainer = styled.div`
+const PillShapedBar = styled.div`
+  border-radius: 18px;
+`;
+
+const ProgressContainer = styled(PillShapedBar)`
   width: 100%;
   border: 2px solid var(--wanikani-pink);
   margin: 10px 0;
-  border-radius: 10px;
 `;
 
-const Backdrop = styled.div`
+const Backdrop = styled(PillShapedBar)`
   position: relative;
   background-color: var(--wanikani-pink);
-  border-radius: 10px;
 
   .source {
     mix-blend-mode: screen;
@@ -24,18 +26,16 @@ const Backdrop = styled.div`
 
   .contents,
   .bar {
-    height: 20px;
+    height: 1.75rem;
   }
 `;
 
-const BarBg = styled.div`
+const BarBg = styled(PillShapedBar)`
   background-color: white;
-  border-radius: 10px;
 `;
 
-const Bar = styled.div`
+const Bar = styled(PillShapedBar)`
   background-color: black;
-  border-radius: 10px;
 `;
 
 const Contents = styled.div`
@@ -48,6 +48,10 @@ const Contents = styled.div`
   justify-content: center;
   color: white;
   mix-blend-mode: difference;
+
+  span {
+    font-size: 1.25rem;
+  }
 `;
 
 type Props = {
