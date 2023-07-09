@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { IonRow, createGesture } from "@ionic/react";
+import { IonRow, IonIcon, createGesture } from "@ionic/react";
 
 import { ReviewCharAndType } from "./ReviewCharAndType";
 import { ReviewInputAndButtons } from "./ReviewInputAndButtons";
@@ -9,9 +9,12 @@ import { SubjectType } from "../../types/Subject";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 
-import styled from "styled-components/macro";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { toHiragana } from "wanakana";
+import styled from "styled-components/macro";
+
+import RetryIcon from "../../images/retry.svg";
+import NextIcon from "../../images/next-item.svg";
 
 type ReviewItemProps = {
   subjType: SubjectType;
@@ -21,6 +24,34 @@ const ReviewCard = styled(IonRow)<ReviewItemProps>`
   padding: 50px 0;
   border-radius: 10px;
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
+  position: relative;
+`;
+
+const SwipeMsg = styled.div`
+  padding: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+
+  ion-icon {
+    width: 5rem;
+    height: 5rem;
+  }
+`;
+
+const NextCardMsg = styled(SwipeMsg)`
+  background-color: var(--ion-color-tertiary);
+  color: black;
+  border: 2px solid black;
+`;
+
+const RetryCardMsg = styled(SwipeMsg)`
+  background-color: var(--ion-color-secondary);
+  color: white;
+  border: 2px solid white;
 `;
 
 type Props = {
@@ -29,6 +60,9 @@ type Props = {
 
 export const ReviewItemCard = ({ currentReviewItem }: Props) => {
   const cardRef = useRef<HTMLIonRowElement>(null);
+  const retryCardMsg = useRef<HTMLDivElement>(null);
+  const nextCardMsg = useRef<HTMLDivElement>(null);
+
   const [userAnswer, setUserAnswer] = useState("");
   useKeyDown(() => nextBtnClicked(), ["F12"]);
   useKeyDown(() => handleRetryClick(currentReviewItem, setUserAnswer), ["F6"]);
@@ -51,6 +85,11 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
 
   const createCardGesture = () => {
     let reviewCard = cardRef.current;
+    // !added
+    let retry = retryCardMsg.current;
+    let next = nextCardMsg.current;
+    // !added
+
     if (reviewCard) {
       let gesture = createGesture({
         el: reviewCard,
@@ -61,12 +100,6 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
               info.deltaX
             }px) rotate(${info.deltaX / 20}deg)`;
           } else {
-            // *testing
-            console.log(
-              "🚀 ~ file: ReviewItemCard.tsx:70 ~ createCardGesture ~ queueState.showRetryButton:",
-              queueState.showRetryButton
-            );
-            // *testing
             if (queueState.showRetryButton) {
               reviewCard!.style.transform = `translateX(${
                 info.deltaX
@@ -125,6 +158,12 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
         currentReviewItem={currentReviewItem}
         reviewType={currentReviewItem.review_type}
       />
+      <RetryCardMsg ref={retryCardMsg}>
+        <IonIcon icon={RetryIcon}></IonIcon>
+      </RetryCardMsg>
+      <NextCardMsg ref={nextCardMsg}>
+        <IonIcon icon={NextIcon}></IonIcon>
+      </NextCardMsg>
     </ReviewCard>
   );
 };
