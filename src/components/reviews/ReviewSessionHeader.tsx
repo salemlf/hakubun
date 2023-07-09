@@ -9,15 +9,13 @@ import { useIonRouter } from "@ionic/react";
 
 import HomeIcon from "../../images/home.svg";
 import styled from "styled-components/macro";
-import { SubjectType } from "../../types/Subject";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import {
+  ReviewQueueItem,
+  ReviewSessionDataState,
+} from "../../types/ReviewSessionTypes";
 
-type HeaderStyleProps = {
-  subjType: SubjectType;
-};
-
-const SessionHeader = styled(IonHeader)<HeaderStyleProps>`
+const SessionHeader = styled(IonHeader)`
   box-shadow: none;
 
   button::part(native) {
@@ -60,39 +58,44 @@ const HomeIconStyled = styled(IonIcon)`
   }
 `;
 
-type Props = {
-  currentReviewItem: ReviewQueueItem;
-};
-
-// TODO: change so just neutral bg color, not based on review type
-export const ReviewSessionHeader = ({ currentReviewItem }: Props) => {
-  const router = useIonRouter();
-
-  const { queueDataState } = useReviewQueue();
-  let currItemSubjType = currentReviewItem.object as SubjectType;
-
+const calculateNumItemsInQueue = (queueDataState: ReviewSessionDataState) => {
   let notReviewed = queueDataState.reviewQueue.filter(
     (reviewItem) => reviewItem.is_reviewed === false
   );
 
-  // TODO: calculate some other way, this is showing wrong #
-  let numUniqueItemsInQueue = [
+  return [
     ...new Map(
       notReviewed.map((unreviewedCard) => [unreviewedCard.id, unreviewedCard])
     ).values(),
   ].length;
+};
+
+type Props = {
+  currentReviewItem: ReviewQueueItem;
+};
+
+export const ReviewSessionHeader = ({ currentReviewItem }: Props) => {
+  const router = useIonRouter();
+
+  const { queueDataState } = useReviewQueue();
+
+  let numUniqueItemsInQueue = currentReviewItem
+    ? calculateNumItemsInQueue(queueDataState)
+    : undefined;
 
   return (
-    <SessionHeader subjType={currItemSubjType}>
+    <SessionHeader>
       <Toolbar>
         <IonButtons slot="start">
           <HomeBtn onClick={() => router.push("/home", "root", "replace")}>
             <HomeIconStyled icon={HomeIcon}></HomeIconStyled>
           </HomeBtn>
         </IonButtons>
-        <NumReviewsLeftContainer>
-          <NumReviewsLeftText>{numUniqueItemsInQueue}</NumReviewsLeftText>
-        </NumReviewsLeftContainer>
+        {numUniqueItemsInQueue && (
+          <NumReviewsLeftContainer>
+            <NumReviewsLeftText>{numUniqueItemsInQueue}</NumReviewsLeftText>
+          </NumReviewsLeftContainer>
+        )}
       </Toolbar>
     </SessionHeader>
   );
