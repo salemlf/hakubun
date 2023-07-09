@@ -44,9 +44,6 @@ export const calculateSRSLevel = (
   reviewItem: ReviewQueueItem
 ) => {
   let matchingItem = getCorrespondingReview(reviewQueue, reviewItem);
-  // *testing
-  console.log("🚀 ~ file: ReviewService.tsx:62 ~ matchingItem:", matchingItem);
-  // *testing
 
   let incorrecMeaningNum = reviewItem.incorrect_meaning_answers;
   let incorrecReadingNum = reviewItem.incorrect_reading_answers;
@@ -97,31 +94,78 @@ export const mergeQueueItems = (A: ReviewQueueItem, B: ReviewQueueItem) => {
   return merged;
 };
 
+// reducer that merges ReviewQueueItems with same ids
+export const queueItemReducer = (
+  reducedQueueItems: any,
+  reviewQueueItem: ReviewQueueItem
+) => {
+  let key = reviewQueueItem.id;
+  let correspondingReview = reducedQueueItems.get(key);
+  let mergedItem = mergeQueueItems(correspondingReview || {}, reviewQueueItem);
+  reducedQueueItems.set(key, mergedItem);
+  return reducedQueueItems;
+};
+
+export const getReviewPercentageCorrect = (
+  reviewQueueAfterCombined: ReviewQueueItem[]
+) => {
+  let totalNumReviews = reviewQueueAfterCombined.length;
+
+  let correctReadingReviews = reviewQueueAfterCombined.filter((reviewItem) => {
+    return (
+      reviewItem.readings !== undefined &&
+      reviewItem.incorrect_reading_answers === 0
+    );
+  });
+
+  let correctMeaningReviews = reviewQueueAfterCombined.filter((reviewItem) => {
+    return (
+      reviewItem.meanings !== undefined &&
+      reviewItem.incorrect_meaning_answers === 0
+    );
+  });
+
+  let totalNumCorrect =
+    correctReadingReviews.length + correctMeaningReviews.length;
+
+  const numItemsWithReadings = reviewQueueAfterCombined.filter(
+    (queueItem) => queueItem.readings !== undefined
+  ).length;
+
+  let totalReviews =
+    numItemsWithReadings * 2 + (totalNumReviews - numItemsWithReadings);
+
+  // *testing
+  console.log("total: ", totalReviews);
+  // *testing
+
+  let percentageCorrect = Math.ceil(100 * (totalNumCorrect / totalReviews));
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewService.tsx:153 ~ getReviewSessionStats ~ percentageCorrect:",
+    percentageCorrect
+  );
+  // *testing
+
+  return percentageCorrect;
+};
+
 // combining objects with same IDs (subject IDs)
 export const getReviewSessionStats = (reviewQueue: ReviewQueueItem[]) => {
-  const queueItemReducer = (
-    reducedQueueItems: any,
-    reviewQueueItem: ReviewQueueItem
-  ) => {
-    let key = reviewQueueItem.id;
-    let correspondingReview = reducedQueueItems.get(key);
-    let mergedItem = mergeQueueItems(
-      correspondingReview || {},
-      reviewQueueItem
-    );
-    reducedQueueItems.set(key, mergedItem);
-    return reducedQueueItems;
-  };
-
   let reviewQueueItemIterator = reviewQueue
     .reduce(queueItemReducer, new Map())
     .values();
 
-  let combinedQueueItems = Array.from(reviewQueueItemIterator);
+  let combinedQueueItems: ReviewQueueItem[] = Array.from(
+    reviewQueueItemIterator
+  );
   // *testing
   console.log(
     "🚀 ~ file: ReviewService.tsx:179 ~ getReviewSessionStats ~ combinedQueueItems:",
     combinedQueueItems
   );
   // *testing
+
+  // TODO: return review session stats
+  let percentCorrect = getReviewPercentageCorrect(combinedQueueItems);
 };
