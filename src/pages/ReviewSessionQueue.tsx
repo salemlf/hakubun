@@ -35,19 +35,21 @@ export const ReviewSessionQueue = () => {
 
   return (
     <Page>
-      {!queueDataState.isLoading && reviewQueue.length !== 0 && (
-        <ReviewSessionHeader currentReviewItem={currentReviewItem} />
-      )}
+      {!queueDataState.isLoading &&
+        currentReviewItem &&
+        reviewQueue.length !== 0 && (
+          <ReviewSessionHeader currentReviewItem={currentReviewItem} />
+        )}
       <IonContent>
         <Grid>
           {queueDataState.isLoading && <p>Loading...</p>}
           {!queueDataState.isLoading &&
-            reviewQueue.length - 1 !== queueDataState.currQueueIndex &&
+            reviewQueue.length !== queueDataState.currQueueIndex &&
             currentReviewItem && (
               <ReviewItemCard currentReviewItem={currentReviewItem} />
             )}
           {!queueDataState.isLoading &&
-            reviewQueue.length - 1 === queueDataState.currQueueIndex && (
+            reviewQueue.length === queueDataState.currQueueIndex && (
               <ReviewSummary />
             )}
         </Grid>

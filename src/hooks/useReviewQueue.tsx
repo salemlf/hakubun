@@ -120,21 +120,13 @@ export const useReviewQueue = () => {
       // keeping answer as incorrect and is_reviewed as true
       updatedReviewItem.is_reviewed = true;
 
-      updateReviewQueueItem(
-        updatedReviewItem,
-        queueDataState,
-        dispatchQueueDataContext
-      );
+      updateReviewQueueItem(updatedReviewItem, dispatchQueueDataContext);
     }
     // user got answer correct first try
     else {
       updatedReviewItem.is_correct_answer = true;
       updatedReviewItem.is_reviewed = true;
-      updateReviewQueueItem(
-        updatedReviewItem,
-        queueDataState,
-        dispatchQueueDataContext
-      );
+      updateReviewQueueItem(updatedReviewItem, dispatchQueueDataContext);
     }
   };
 
@@ -160,11 +152,7 @@ export const useReviewQueue = () => {
     let updatedReviewItem = currReviewItem;
 
     if (moveToNextItem) {
-      addToReviewQueue(
-        updatedReviewItem,
-        queueDataState,
-        dispatchQueueDataContext
-      );
+      addToReviewQueue(updatedReviewItem, dispatchQueueDataContext);
       dispatchQueueContext({ type: "WRONG_MOVE_TO_NEXT" });
       dispatchQueueDataContext({
         type: "REMOVE_REVIEW_QUEUE_ITEM",
@@ -177,16 +165,13 @@ export const useReviewQueue = () => {
         payload: { message: "SRRY, WRONG :(", messageType: "incorrect" },
       });
       updatedReviewItem.is_correct_answer = false;
-      updatedReviewItem.is_reviewed = true;
+      updatedReviewItem.is_reviewed = false;
+
       updatedReviewItem.review_type === "reading"
         ? (updatedReviewItem.incorrect_reading_answers += 1)
         : (updatedReviewItem.incorrect_meaning_answers += 1);
 
-      updateReviewQueueItem(
-        updatedReviewItem,
-        queueDataState,
-        dispatchQueueDataContext
-      );
+      updateReviewQueueItem(updatedReviewItem, dispatchQueueDataContext);
     }
   };
 
@@ -245,11 +230,7 @@ export const useReviewQueue = () => {
       ? (updatedReviewItem.incorrect_reading_answers -= 1)
       : (updatedReviewItem.incorrect_meaning_answers -= 1);
 
-    updateReviewQueueItem(
-      updatedReviewItem,
-      queueDataState,
-      dispatchQueueDataContext
-    );
+    updateReviewQueueItem(updatedReviewItem, dispatchQueueDataContext);
     setUserAnswer("");
     dispatchQueueContext({ type: "RETRY_REVIEW" });
   };

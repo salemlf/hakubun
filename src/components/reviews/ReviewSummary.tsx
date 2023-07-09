@@ -1,8 +1,6 @@
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { getReviewSessionStats } from "../../services/ReviewService";
 
-//
-
 export const ReviewSummary = () => {
   const { queueDataState } = useReviewQueue();
   let reviewQueue = queueDataState.reviewQueue;

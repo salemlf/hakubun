@@ -86,7 +86,6 @@ const getStudyMaterials = async (subjIDs: number[]) => {
 
 const updateReviewQueueItem = (
   queueItemToUpdate: ReviewQueueItem,
-  state: ReviewSessionDataState,
   dispatchContext: ReviewSessionDataDispatch
 ) => {
   dispatchContext({
@@ -97,7 +96,6 @@ const updateReviewQueueItem = (
 
 const addToReviewQueue = (
   queueItemToAdd: ReviewQueueItem,
-  state: ReviewSessionDataState,
   dispatchContext: ReviewSessionDataDispatch
 ) => {
   dispatchContext({
@@ -142,7 +140,6 @@ const createMeaningAndReadingQueueItems = (
           : [],
         review_type: "meaning" as ReviewType,
         primary_audio_url: audioUrl,
-        // TODO: change so null items aren't explcitly set, change type to use undefined?
         is_correct_answer: null,
         ending_srs_stage: null,
         incorrect_meaning_answers: 0,
@@ -182,13 +179,6 @@ const createReviewItems = async (
     subjects,
     studyMaterials
   );
-
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewSessionContext.tsx:158 ~ reviewQueueItems:",
-    reviewQueueItems
-  );
-  // *testing
 
   //TODO: shuffling, change this based on user-selected sort order when that's implemented
   const shuffledReviewQueueItems = shuffleArray(reviewQueueItems);
