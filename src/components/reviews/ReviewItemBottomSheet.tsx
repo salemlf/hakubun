@@ -65,7 +65,6 @@ const Segment = styled(IonSegment)`
   margin-bottom: 10px;
 `;
 
-// TODO: make sure selectedSegment always changes to reviewType passed in, maybe useEffect?
 export const ReviewItemBottomSheet = ({
   currentReviewItem,
   reviewType,
@@ -87,6 +86,14 @@ export const ReviewItemBottomSheet = ({
       setClosedOnPageLeave(false);
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (reviewType !== selectedSegment) {
+      let selected =
+        currentReviewItem.object == "radical" ? "name" : reviewType;
+      setSelectedSegment(selected);
+    }
+  }, [reviewType]);
 
   const subjectsWithReadings: SubjectType[] = ["kanji", "vocabulary"];
   let isBottomSheetVisible = queueState.isBottomSheetVisible;
