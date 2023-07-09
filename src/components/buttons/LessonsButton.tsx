@@ -1,4 +1,3 @@
-import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 import { useNumLessons } from "../../hooks/useLessonNum";
 import { setBtnBackground } from "../../services/ImageSrcService";
 import {
@@ -39,26 +38,24 @@ const LessonsButton = ({ level }: Props) => {
   };
 
   return (
-    <>
-      <LessonsButtonStyled
-        color="clear"
-        expand="block"
-        title="Lessons"
-        onClick={goToLessons}
-        style={{
-          backgroundImage: `url(${
-            numLessons
-              ? setBtnBackground({ btnType: "lessons", numItems: numLessons })
-              : ""
-          })`,
-        }}
-      >
-        <p>Lessons</p>
-        <BaseReviewLessonButtonBadge>
-          {numLessons ? numLessons : 0}
-        </BaseReviewLessonButtonBadge>
-      </LessonsButtonStyled>
-    </>
+    <LessonsButtonStyled
+      color="clear"
+      expand="block"
+      title="Lessons"
+      onClick={goToLessons}
+      style={{
+        backgroundImage: `url(${
+          numLessons
+            ? setBtnBackground({ btnType: "lessons", numItems: numLessons })
+            : ""
+        })`,
+      }}
+    >
+      <p>Lessons</p>
+      <BaseReviewLessonButtonBadge>
+        {numLessons ? numLessons : 0}
+      </BaseReviewLessonButtonBadge>
+    </LessonsButtonStyled>
   );
 };
 

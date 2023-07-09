@@ -1,9 +1,22 @@
-import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
 import { useNumReviews } from "../../hooks/useNumReviews";
 import { setBtnBackground } from "../../services/ImageSrcService";
 import { useIonRouter } from "@ionic/react";
 
-import styles from "./ReviewsButton.module.scss";
+import styled from "styled-components/macro";
+import {
+  BaseReviewLessonButton,
+  BaseReviewLessonButtonSkeleton,
+  BaseReviewLessonButtonBadge,
+} from "./SubjectButtonsStyled";
+
+const ReviewsButtonStyled = styled(BaseReviewLessonButton)`
+  background-color: var(--wanikani-review);
+`;
+
+const ReviewsButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`
+  --background: var(--wanikani-blue-rgba);
+  --background-rgb: var(--wanikani-blue-rgb);
+`;
 
 type Props = {
   level: number | undefined;
@@ -19,49 +32,31 @@ const ReviewsButton = ({ level }: Props) => {
     error: reviewErr,
   } = useNumReviews(level);
 
-  // TODO: change to display error some other way
-  if (reviewErr) {
-    console.error("An error has occurred in ReviewsButton: " + reviewErr);
-    return (
-      <IonSkeletonText
-        animated={true}
-        className={`${styles.reviewsSkeleton}`}
-      ></IonSkeletonText>
-    );
+  if (numReviewsLoading || reviewErr) {
+    return <ReviewsButtonSkeleton animated={true}></ReviewsButtonSkeleton>;
   }
 
   // TODO: delay loading until image is set
   return (
-    <>
-      {!numReviewsLoading ? (
-        <IonButton
-          expand="block"
-          title="Reviews"
-          color="clear"
-          // TODO: change so if no reviews -> doesn't redirect and displays a message
-          // onClick={() => history.push("/review/settings")}
-          onClick={() => router.push("/review/settings")}
-          className={`${styles.reviewBtn}`}
-          style={{
-            backgroundImage: `url(${
-              numReviews
-                ? setBtnBackground({ btnType: "reviews", numItems: numReviews })
-                : ""
-            })`,
-          }}
-        >
-          <p className={`${styles.reviewBtnTxt}`}>Reviews</p>
-          <IonBadge className={`${styles.reviewBtnBadge}`}>
-            {numReviews ? numReviews : 0}
-          </IonBadge>
-        </IonButton>
-      ) : (
-        <IonSkeletonText
-          animated={true}
-          className={`${styles.reviewsSkeleton}`}
-        ></IonSkeletonText>
-      )}
-    </>
+    <ReviewsButtonStyled
+      expand="block"
+      title="Reviews"
+      color="clear"
+      // TODO: change so if no reviews -> doesn't redirect and displays a message
+      onClick={() => router.push("/review/settings")}
+      style={{
+        backgroundImage: `url(${
+          numReviews
+            ? setBtnBackground({ btnType: "reviews", numItems: numReviews })
+            : ""
+        })`,
+      }}
+    >
+      <p>Reviews</p>
+      <BaseReviewLessonButtonBadge>
+        {numReviews ? numReviews : 0}
+      </BaseReviewLessonButtonBadge>
+    </ReviewsButtonStyled>
   );
 };
 
