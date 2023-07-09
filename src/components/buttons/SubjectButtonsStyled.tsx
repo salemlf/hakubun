@@ -1,6 +1,7 @@
 import styled from "styled-components/macro";
 import { Col } from "../subject-details/SubjectDetailsStyled";
 import { SubjectType } from "../../types/Subject";
+import { IonBadge, IonButton, IonSkeletonText } from "@ionic/react";
 
 type DefaultBtnProps = {
   bigBtn: boolean;
@@ -58,4 +59,37 @@ export const SubjInfoCol = styled(Col)`
   flex-direction: column;
   align-items: center;
   gap: 5px;
+`;
+
+export const BaseReviewLessonButton = styled(IonButton)`
+  min-height: 100px;
+  height: 100%;
+  border-radius: 8px;
+  position: relative;
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  p {
+    position: absolute;
+    margin: 0;
+    bottom: 10px;
+    left: 0;
+    color: white;
+    font-weight: 600;
+  }
+`;
+
+export const BaseReviewLessonButtonSkeleton = styled(IonSkeletonText)`
+  min-height: 100px;
+  height: 100%;
+  border-radius: 8px;
+`;
+
+export const BaseReviewLessonButtonBadge = styled(IonBadge)`
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  background-color: var(--deep-purple-accent);
+  color: white;
 `;

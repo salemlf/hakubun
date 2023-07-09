@@ -1,10 +1,22 @@
 import { IonButton, IonBadge, IonSkeletonText } from "@ionic/react";
-
 import { useNumLessons } from "../../hooks/useLessonNum";
-
 import { setBtnBackground } from "../../services/ImageSrcService";
+import {
+  BaseReviewLessonButton,
+  BaseReviewLessonButtonSkeleton,
+  BaseReviewLessonButtonBadge,
+} from "./SubjectButtonsStyled";
 
-import styles from "./LessonsButton.module.scss";
+import styled from "styled-components/macro";
+
+const LessonsButtonStyled = styled(BaseReviewLessonButton)`
+  background-color: var(--wanikani-lesson);
+`;
+
+const LessonButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`
+  --background: var(--wani-kani-pink-rgba);
+  --background-rgb: var(--wani-kani-pink-rgb);
+`;
 
 type Props = {
   level: number;
@@ -17,15 +29,8 @@ const LessonsButton = ({ level }: Props) => {
     error: lessonErr,
   } = useNumLessons({ level: level });
 
-  // TODO: change to display error some other way
-  if (lessonErr) {
-    console.log("An error has occurred in LessonsButton: " + lessonErr);
-    return (
-      <IonSkeletonText
-        animated={true}
-        className={`${styles.lessonSkeleton}`}
-      ></IonSkeletonText>
-    );
+  if (numLessonsLoading || lessonErr) {
+    return <LessonButtonSkeleton animated={true}></LessonButtonSkeleton>;
   }
 
   const goToLessons = () => {
@@ -35,32 +40,24 @@ const LessonsButton = ({ level }: Props) => {
 
   return (
     <>
-      {!numLessonsLoading ? (
-        <IonButton
-          color="clear"
-          expand="block"
-          title="Lessons"
-          onClick={goToLessons}
-          className={`${styles.lessonBtn}`}
-          style={{
-            backgroundImage: `url(${
-              numLessons
-                ? setBtnBackground({ btnType: "lessons", numItems: numLessons })
-                : ""
-            })`,
-          }}
-        >
-          <p className={`${styles.lessonBtnTxt}`}>Lessons</p>
-          <IonBadge className={`${styles.lessonBtnBadge}`}>
-            {numLessons ? numLessons : 0}
-          </IonBadge>
-        </IonButton>
-      ) : (
-        <IonSkeletonText
-          animated={true}
-          className={`${styles.lessonSkeleton}`}
-        ></IonSkeletonText>
-      )}
+      <LessonsButtonStyled
+        color="clear"
+        expand="block"
+        title="Lessons"
+        onClick={goToLessons}
+        style={{
+          backgroundImage: `url(${
+            numLessons
+              ? setBtnBackground({ btnType: "lessons", numItems: numLessons })
+              : ""
+          })`,
+        }}
+      >
+        <p>Lessons</p>
+        <BaseReviewLessonButtonBadge>
+          {numLessons ? numLessons : 0}
+        </BaseReviewLessonButtonBadge>
+      </LessonsButtonStyled>
     </>
   );
 };
