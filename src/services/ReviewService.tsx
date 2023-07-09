@@ -45,16 +45,16 @@ export const calculateSRSLevel = (
 ) => {
   let matchingItem = getCorrespondingReview(reviewQueue, reviewItem);
 
-  let incorrecMeaningNum = reviewItem.incorrect_meaning_answers;
-  let incorrecReadingNum = reviewItem.incorrect_reading_answers;
+  let incorrectMeaningNum = reviewItem.incorrect_meaning_answers;
+  let incorrectReadingNum = reviewItem.incorrect_reading_answers;
 
   if (matchingItem) {
-    incorrecMeaningNum += matchingItem.incorrect_meaning_answers;
-    incorrecReadingNum += matchingItem.incorrect_reading_answers;
+    incorrectMeaningNum += matchingItem.incorrect_meaning_answers;
+    incorrectReadingNum += matchingItem.incorrect_reading_answers;
   }
 
   // If no change, level up!
-  if (incorrecMeaningNum === 0 && incorrecReadingNum === 0) {
+  if (incorrectMeaningNum === 0 && incorrectReadingNum === 0) {
     return {
       ...reviewItem,
       ending_srs_stage: reviewItem.srs_stage + 1,
@@ -68,10 +68,21 @@ export const calculateSRSLevel = (
 
   let penaltyFactor = reviewItem.srs_stage >= 5 ? 2 : 1;
   let incorrectAdjustmentCount = Math.ceil(
-    (incorrecMeaningNum + incorrecReadingNum) / 2
+    (incorrectMeaningNum + incorrectReadingNum) / 2
   );
-  let updatedSrsLvl =
-    reviewItem.srs_stage - incorrectAdjustmentCount * penaltyFactor;
+
+  // level can only as low as 1 for review items, so creating lower bound
+  let updatedSrsLvl = Math.max(
+    1,
+    reviewItem.srs_stage - incorrectAdjustmentCount * penaltyFactor
+  );
+
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewService.tsx:78 ~ updatedSrsLvl:",
+    updatedSrsLvl
+  );
+  // *testing
 
   return {
     ...reviewItem,
