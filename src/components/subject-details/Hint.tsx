@@ -4,7 +4,7 @@ import { IonIcon } from "@ionic/react";
 import hintIcon from "../../images/hint.svg";
 
 const HintContainer = styled.div`
-  background-color: var(--hint-bg);
+  background-color: var(--light-grey);
   border-radius: 15px;
   padding: 8px;
 

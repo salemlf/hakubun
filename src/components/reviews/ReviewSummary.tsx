@@ -59,6 +59,11 @@ const IncorrectItemsHeader = styled(CardHeader)`
   background-color: var(--ion-color-danger);
 `;
 
+const CardContent = styled(IonCardContent)`
+  --ion-background-color: var(--light-grey);
+  background-color: var(--light-grey);
+`;
+
 export const ReviewSummary = () => {
   const { queueDataState } = useReviewQueue();
   let reviewQueue = queueDataState.reviewQueue;
@@ -102,19 +107,19 @@ export const ReviewSummary = () => {
         <FullWidthGrid>
           <IonCard>
             <IncorrectItemsHeader>
-              <CardTitle>{numCorrect} Answered Incorrectly</CardTitle>
+              <CardTitle>{numWrong} Answered Incorrectly</CardTitle>
             </IncorrectItemsHeader>
-            <IonCardContent>
+            <CardContent>
               <p>Testing</p>
-            </IonCardContent>
+            </CardContent>
           </IonCard>
           <IonCard>
             <CorrectItemsHeader>
-              <CardTitle>{numWrong} Answered Correctly</CardTitle>
+              <CardTitle>{numCorrect} Answered Correctly</CardTitle>
             </CorrectItemsHeader>
-            <IonCardContent>
+            <CardContent>
               <p>Testing</p>
-            </IonCardContent>
+            </CardContent>
           </IonCard>
         </FullWidthGrid>
       </IonContent>
