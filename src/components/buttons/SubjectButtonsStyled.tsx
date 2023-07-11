@@ -48,7 +48,7 @@ export const BtnWithImage = styled(DefaultBtn)`
   padding: 4px;
 
   img {
-    width: 100%;
+    width: 2rem;
     filter: brightness(0) invert(1);
   }
 `;

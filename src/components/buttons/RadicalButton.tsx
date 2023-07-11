@@ -33,10 +33,19 @@ export const RadicalButton = ({
           onClick={onBtnClick}
           bigBtn={isBigBtn}
         >
-          <ImageFallback
-            images={subject.availableImages}
-            altText={subject.meaning_mnemonic}
-          ></ImageFallback>
+          <SubjInfoCol>
+            <ImageFallback
+              images={subject.availableImages}
+              altText={subject.meaning_mnemonic}
+            ></ImageFallback>
+            {showDetails && (
+              <div>
+                <SubjBtnDetailsTxt>
+                  {getSubjectDisplayName(subject)}
+                </SubjBtnDetailsTxt>
+              </div>
+            )}
+          </SubjInfoCol>
         </BtnWithImage>
       ) : (
         <BtnWithTxt
