@@ -21,10 +21,11 @@ type ReviewItemProps = {
 };
 
 const ReviewCard = styled(IonRow)<ReviewItemProps>`
-  padding: 50px 0 75px 0;
+  padding: 50px 0 100px 0;
   border-radius: 10px;
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
   position: relative;
+  transition: transform 250ms ease-out, opacity 500ms ease-in-out;
 `;
 
 const SwipeOverlay = styled.div`
