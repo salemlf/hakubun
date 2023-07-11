@@ -72,20 +72,23 @@ export const ReviewItemBottomSheet = ({
   const location = useLocation();
   const { queueState } = useReviewQueue();
   const modal = useRef<HTMLIonModalElement>(null);
-  const [closedOnPageLeave, setClosedOnPageLeave] = useState(false);
   let initalValue = currentReviewItem.object == "radical" ? "name" : reviewType;
   const [selectedSegment, setSelectedSegment] = useState<ReviewType | string>(
     initalValue
   );
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   // TODO: also reopen to previous breakpoint on return? Use something like modal.current.getCurrentBreakpoint()
   useEffect(() => {
-    if (location.pathname !== "/review/session") {
-      setClosedOnPageLeave(true);
+    if (
+      location.pathname === "/review/session" &&
+      queueState.isBottomSheetVisible
+    ) {
+      setIsBottomSheetVisible(true);
     } else {
-      setClosedOnPageLeave(false);
+      setIsBottomSheetVisible(false);
     }
-  }, [location.pathname]);
+  }, [location.pathname, queueState.isBottomSheetVisible]);
 
   useEffect(() => {
     if (reviewType !== selectedSegment) {
@@ -96,7 +99,6 @@ export const ReviewItemBottomSheet = ({
   }, [reviewType]);
 
   const subjectsWithReadings: SubjectType[] = ["kanji", "vocabulary"];
-  let isBottomSheetVisible = queueState.isBottomSheetVisible;
 
   const onSegmentClick = (e: any) => {
     const segmentClicked = e.target.value;
@@ -108,13 +110,12 @@ export const ReviewItemBottomSheet = ({
   return (
     <IonModal
       ref={modal}
-      isOpen={isBottomSheetVisible && !closedOnPageLeave}
+      isOpen={isBottomSheetVisible}
       initialBreakpoint={0.08}
       breakpoints={[0.08, 1]}
       handleBehavior="cycle"
       backdropDismiss={false}
       backdropBreakpoint={0.5}
-      className="auto-height"
     >
       <IonPage className="inner-content">
         <IonHeader>
