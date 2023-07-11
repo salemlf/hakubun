@@ -45,7 +45,6 @@ const Header = styled(IonHeader)`
 
 const CardHeader = styled(IonCardHeader)`
   padding: 20px 15px;
-  margin-bottom: 15px;
 `;
 
 const CorrectItemsHeader = styled(CardHeader)`
@@ -67,6 +66,9 @@ const IncorrectItemsHeader = styled(CardHeader)`
 const CardContent = styled(IonCardContent)`
   --ion-background-color: var(--light-grey);
   background-color: var(--light-grey);
+  /* I use !important sparingly, but overriding ionic styles is annoying lol.. */
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
 
   .card-content-md p {
     font-size: unset;
