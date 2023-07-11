@@ -1,4 +1,4 @@
-import { IonCol, IonRow } from "@ionic/react";
+// import { IonCol, IonRow } from "@ionic/react";
 
 import {
   findAssignmentWithSubjID,
@@ -8,23 +8,24 @@ import {
 import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
 import { SubjectButton } from "./buttons/SubjectButton";
+import { SubjRow, SubjCol } from "./styles/BaseStyledComponents";
 
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
 
-const SubjCol = styled(IonCol)`
-  flex-grow: 0;
-  flex-shrink: 0;
-`;
+// const SubjCol = styled(IonCol)`
+//   flex-grow: 0;
+//   flex-shrink: 0;
+// `;
 
-type RowProps = {
-  justify: string;
-};
+// type RowProps = {
+//   justify: string;
+// };
 
-const SubjRow = styled(IonRow)<RowProps>`
-  align-items: center;
-  justify-content: ${({ justify }) => justify};
-  margin-left: -3px;
-`;
+// const SubjRow = styled(IonRow)<RowProps>`
+//   align-items: center;
+//   justify-content: ${({ justify }) => justify};
+//   margin-left: -3px;
+// `;
 
 type Props = {
   subjList: Subject[];

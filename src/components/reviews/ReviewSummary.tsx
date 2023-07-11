@@ -10,6 +10,7 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  IonSkeletonText,
 } from "@ionic/react";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import {
@@ -19,6 +20,10 @@ import {
 import { FullWidthGrid } from "../styles/BaseStyledComponents";
 
 import styled from "styled-components/macro";
+import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
+import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { SubjectButtonList } from "../SubjectButtonList";
+import { SubjNameAndCharacterList } from "../subjects/SubjNameAndCharacterList";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--light-greyish-purple);
@@ -62,17 +67,24 @@ const IncorrectItemsHeader = styled(CardHeader)`
 const CardContent = styled(IonCardContent)`
   --ion-background-color: var(--light-grey);
   background-color: var(--light-grey);
+
+  .card-content-md p {
+    font-size: unset;
+  }
+  .card-content-md h1 {
+    font-size: unset;
+  }
 `;
 
 export const ReviewSummary = () => {
   const { queueDataState } = useReviewQueue();
+  // *testing
   let reviewQueue = queueDataState.reviewQueue;
   // *testing
   console.log(
     "🚀 ~ file: ReviewSummary.tsx:7 ~ ReviewSummary ~ reviewQueue:",
     reviewQueue
   );
-  // *testing
   let reviewData = getCompletedReviewSessionData(reviewQueue);
   // *testing
   console.log(
@@ -91,9 +103,49 @@ export const ReviewSummary = () => {
   let numCorrect = reviewsByResult.correct.length;
   let numWrong = reviewsByResult.incorrect.length;
 
+  let correctSubjIDs = reviewsByResult.correct.map(
+    (reviewItem: any) => reviewItem.id
+  );
+  let incorrectSubjIDs = reviewsByResult.incorrect.map(
+    (reviewItem: any) => reviewItem.id
+  );
+
+  const {
+    isLoading: correctReviewSubjLoading,
+    data: correctReviewSubjData,
+    error: correctReviewSubjErr,
+  } = useSubjectsByIDs(correctSubjIDs);
+
+  const {
+    isLoading: correctReviewAssignmentsLoading,
+    data: correctReviewAssignmentsData,
+    error: correctReviewAssignmentsErr,
+  } = useAssignmentsBySubjIDs(correctSubjIDs);
+
+  const {
+    isLoading: incorrectReviewSubjLoading,
+    data: incorrectReviewSubjData,
+    error: incorrectReviewSubjErr,
+  } = useSubjectsByIDs(incorrectSubjIDs);
+
+  const {
+    isLoading: incorrectReviewAssignmentsLoading,
+    data: incorrectReviewAssignmentsData,
+    error: incorrectReviewAssignmentsErr,
+  } = useAssignmentsBySubjIDs(incorrectSubjIDs);
+
   let percentageCorrect = Math.ceil(100 * (numCorrect / reviewData.length));
   // *testing
 
+  let reviewSummaryDataLoading =
+    correctReviewSubjLoading ||
+    correctReviewSubjErr ||
+    correctReviewAssignmentsLoading ||
+    correctReviewAssignmentsErr ||
+    incorrectReviewSubjLoading ||
+    incorrectReviewSubjErr ||
+    incorrectReviewAssignmentsLoading ||
+    incorrectReviewAssignmentsErr;
   return (
     <Page>
       <Header>
@@ -109,17 +161,45 @@ export const ReviewSummary = () => {
             <IncorrectItemsHeader>
               <CardTitle>{numWrong} Answered Incorrectly</CardTitle>
             </IncorrectItemsHeader>
-            <CardContent>
-              <p>Testing</p>
-            </CardContent>
+            {!reviewSummaryDataLoading ? (
+              <CardContent>
+                <IonRow>
+                  <SubjNameAndCharacterList
+                    subjList={incorrectReviewSubjData}
+                    assignmentList={incorrectReviewAssignmentsData}
+                  />
+                </IonRow>
+              </CardContent>
+            ) : (
+              <CardContent>
+                <IonSkeletonText
+                  animated={true}
+                  style={{ height: "50px" }}
+                ></IonSkeletonText>
+              </CardContent>
+            )}
           </IonCard>
           <IonCard>
             <CorrectItemsHeader>
               <CardTitle>{numCorrect} Answered Correctly</CardTitle>
             </CorrectItemsHeader>
-            <CardContent>
-              <p>Testing</p>
-            </CardContent>
+            {!reviewSummaryDataLoading ? (
+              <CardContent>
+                <IonRow>
+                  <SubjNameAndCharacterList
+                    subjList={correctReviewSubjData}
+                    assignmentList={correctReviewAssignmentsData}
+                  />
+                </IonRow>
+              </CardContent>
+            ) : (
+              <CardContent>
+                <IonSkeletonText
+                  animated={true}
+                  style={{ height: "50px" }}
+                ></IonSkeletonText>
+              </CardContent>
+            )}
           </IonCard>
         </FullWidthGrid>
       </IonContent>
