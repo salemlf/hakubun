@@ -1,5 +1,6 @@
 import reactStringReplace from "react-string-replace";
 import { SubjDetailTxt } from "./subject-details/SubjectDetailsStyled";
+import { nanoid } from "nanoid";
 
 import styled from "styled-components/macro";
 import { getTagColor } from "../services/SubjectAndAssignmentService";
@@ -29,19 +30,19 @@ const createSubjectTags = (text: string) => {
   let japaneseRegEx = new RegExp(`<ja>(.+?)<\/ja>`, "g");
 
   let replaced = reactStringReplace(text, radRegEx, (match, i) => (
-    <Tag key={"radical" + i} tagType="radical">
+    <Tag key={`radical-tag${nanoid()}`} tagType="radical">
       {match}
     </Tag>
   ));
 
   replaced = reactStringReplace(replaced, kanjiRegEx, (match, i) => (
-    <Tag key={"kanji" + i} tagType="kanji">
+    <Tag key={`kanji-tag${nanoid()}`} tagType="kanji">
       {match}
     </Tag>
   ));
 
   replaced = reactStringReplace(replaced, vocabRegEx, (match, i) => (
-    <Tag key={"vocabulary" + i} tagType="vocabulary">
+    <Tag key={`vocabulary-tag${nanoid()}`} tagType="vocabulary">
       {match}
     </Tag>
   ));
@@ -50,7 +51,7 @@ const createSubjectTags = (text: string) => {
   replaced = reactStringReplace(replaced, japaneseRegEx, (match, i) => match);
 
   replaced = reactStringReplace(replaced, readingRegEx, (match, i) => (
-    <Tag key={"reading" + i} tagType="reading">
+    <Tag key={`reading-tag${nanoid()}`} tagType="reading">
       {match}
     </Tag>
   ));

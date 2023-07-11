@@ -28,6 +28,7 @@
     "fuse.js": "^6.6.2",
     "history": "^4.9.0",
     "ionicons": "^7.0.0",
+    "nanoid": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^5.2.0",
@@ -72,6 +73,7 @@
     "iOS >=14"
   ],
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@capacitor/cli": "^5.0.0",
     "@types/styled-components": "^5.1.26",
     "@types/wanakana": "^4.0.3",
