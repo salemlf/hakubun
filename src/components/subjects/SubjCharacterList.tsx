@@ -34,7 +34,7 @@ export const SubjCharacterList = ({ subjList, justify = "center" }: Props) => {
             <CharContainer subjType={subject.object}>
               <SubjectChars
                 subject={subject}
-                fontSize="2rem"
+                fontSize="1.75rem"
                 withBgColor={true}
               />
             </CharContainer>

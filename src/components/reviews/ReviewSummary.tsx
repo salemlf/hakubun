@@ -32,6 +32,10 @@ const Page = styled(IonPage)`
 
 const Title = styled(IonTitle)`
   text-align: center;
+  font-size: 1.75rem;
+`;
+
+const Percentage = styled.h2`
   font-size: 2rem;
 `;
 
@@ -39,12 +43,12 @@ const Header = styled(IonHeader)`
   --ion-toolbar-background: var(--ion-color-secondary);
   --ion-background-color: var(--ion-color-secondary);
   background-color: var(--ion-color-secondary);
-  padding: 30px 0;
+  padding: 18px 0;
   text-align: center;
 `;
 
 const CardHeader = styled(IonCardHeader)`
-  padding: 20px 15px;
+  padding: 12px;
 `;
 
 const CorrectItemsHeader = styled(CardHeader)`
@@ -138,7 +142,7 @@ export const ReviewSummary = () => {
       <Header>
         <IonToolbar>
           <Title>Review Summary</Title>
-          <h2>{percentageCorrect}%</h2>
+          <Percentage>{percentageCorrect}%</Percentage>
           <p>Answered Correctly</p>
         </IonToolbar>
       </Header>
