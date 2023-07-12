@@ -99,7 +99,6 @@ export const useReviewQueue = () => {
       type: "SHOW_POPOVER_MSG",
       payload: { message: "CORRECT!", messageType: "correct" },
     });
-    dispatchQueueContext({ type: "CORRECT_SHOW_RESULT" });
 
     if (isReviewItemComplete) {
       updatedReviewItem = calculateSRSLevel(
@@ -128,6 +127,8 @@ export const useReviewQueue = () => {
       updatedReviewItem.is_reviewed = true;
       updateReviewQueueItem(updatedReviewItem, dispatchQueueDataContext);
     }
+
+    dispatchQueueContext({ type: "CORRECT_SHOW_RESULT" });
   };
 
   const handleCorrectAnswer = (
