@@ -154,13 +154,12 @@ export const useReviewQueue = () => {
 
     if (moveToNextItem) {
       addToReviewQueue(updatedReviewItem, dispatchQueueDataContext);
-      dispatchQueueContext({ type: "WRONG_MOVE_TO_NEXT" });
       dispatchQueueDataContext({
         type: "REMOVE_REVIEW_QUEUE_ITEM",
       });
+      dispatchQueueContext({ type: "WRONG_MOVE_TO_NEXT" });
       setUserAnswer("");
     } else {
-      dispatchQueueContext({ type: "WRONG_SHOW_RESULT" });
       dispatchQueueContext({
         type: "SHOW_POPOVER_MSG",
         payload: { message: "SRRY, WRONG :(", messageType: "incorrect" },
@@ -173,6 +172,7 @@ export const useReviewQueue = () => {
         : (updatedReviewItem.incorrect_meaning_answers += 1);
 
       updateReviewQueueItem(updatedReviewItem, dispatchQueueDataContext);
+      dispatchQueueContext({ type: "WRONG_SHOW_RESULT" });
     }
   };
 
