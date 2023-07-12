@@ -23,7 +23,7 @@ import styled from "styled-components/macro";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { SubjectButtonList } from "../SubjectButtonList";
-import { SubjNameAndCharacterList } from "../subjects/SubjNameAndCharacterList";
+import { SubjCharacterList } from "../subjects/SubjCharacterList";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--light-greyish-purple);
@@ -119,22 +119,10 @@ export const ReviewSummary = () => {
   } = useSubjectsByIDs(correctSubjIDs);
 
   const {
-    isLoading: correctReviewAssignmentsLoading,
-    data: correctReviewAssignmentsData,
-    error: correctReviewAssignmentsErr,
-  } = useAssignmentsBySubjIDs(correctSubjIDs);
-
-  const {
     isLoading: incorrectReviewSubjLoading,
     data: incorrectReviewSubjData,
     error: incorrectReviewSubjErr,
   } = useSubjectsByIDs(incorrectSubjIDs);
-
-  const {
-    isLoading: incorrectReviewAssignmentsLoading,
-    data: incorrectReviewAssignmentsData,
-    error: incorrectReviewAssignmentsErr,
-  } = useAssignmentsBySubjIDs(incorrectSubjIDs);
 
   let percentageCorrect = Math.ceil(100 * (numCorrect / reviewData.length));
   // *testing
@@ -142,12 +130,9 @@ export const ReviewSummary = () => {
   let reviewSummaryDataLoading =
     correctReviewSubjLoading ||
     correctReviewSubjErr ||
-    correctReviewAssignmentsLoading ||
-    correctReviewAssignmentsErr ||
     incorrectReviewSubjLoading ||
-    incorrectReviewSubjErr ||
-    incorrectReviewAssignmentsLoading ||
-    incorrectReviewAssignmentsErr;
+    incorrectReviewSubjErr;
+
   return (
     <Page>
       <Header>
@@ -166,10 +151,7 @@ export const ReviewSummary = () => {
             {!reviewSummaryDataLoading ? (
               <CardContent>
                 <IonRow>
-                  <SubjNameAndCharacterList
-                    subjList={incorrectReviewSubjData}
-                    assignmentList={incorrectReviewAssignmentsData}
-                  />
+                  <SubjCharacterList subjList={incorrectReviewSubjData} />
                 </IonRow>
               </CardContent>
             ) : (
@@ -188,10 +170,7 @@ export const ReviewSummary = () => {
             {!reviewSummaryDataLoading ? (
               <CardContent>
                 <IonRow>
-                  <SubjNameAndCharacterList
-                    subjList={correctReviewSubjData}
-                    assignmentList={correctReviewAssignmentsData}
-                  />
+                  <SubjCharacterList subjList={correctReviewSubjData} />
                 </IonRow>
               </CardContent>
             ) : (

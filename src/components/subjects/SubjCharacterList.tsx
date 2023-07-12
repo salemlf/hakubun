@@ -1,11 +1,10 @@
-import { SubjNameAndCharacter } from "../SubjNameAndCharacter";
 import { SubjRow, SubjCol } from "../styles/BaseStyledComponents";
 import { Subject, SubjectType } from "../../types/Subject";
-import { Assignment } from "../../types/Assignment";
 import { nanoid } from "nanoid";
 
 import styled from "styled-components/macro";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { SubjectChars } from "../SubjectChars";
 
 type CharContainerProps = {
   subjType: SubjectType;
@@ -22,25 +21,23 @@ const CharContainer = styled.div<CharContainerProps>`
 
 type Props = {
   subjList: Subject[];
-  assignmentList: Assignment[];
   justify?: string;
 };
 
-export const SubjNameAndCharacterList = ({
-  subjList,
-  assignmentList,
-  justify = "center",
-}: Props) => {
+// TODO: turn into buttons that link to subject
+export const SubjCharacterList = ({ subjList, justify = "center" }: Props) => {
   return (
     <SubjRow justify={justify}>
       {(subjList as Subject[]).map((subject: any) => {
         return (
           <SubjCol key={`subj-name-${nanoid()}`}>
-            {assignmentList && (
-              <CharContainer subjType={subject.object}>
-                <SubjNameAndCharacter subject={subject} />
-              </CharContainer>
-            )}
+            <CharContainer subjType={subject.object}>
+              <SubjectChars
+                subject={subject}
+                fontSize="2rem"
+                withBgColor={true}
+              />
+            </CharContainer>
           </SubjCol>
         );
       })}
