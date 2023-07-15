@@ -72,8 +72,8 @@ const WanakanaInput = ({
     ref: inputRef,
     value: translatedVal,
     onChange: handleChange,
-    autocorrect: "off",
-    autocapitalize: "none",
+    autoCorrect: "off",
+    autoCapitalize: "none",
     ...props,
   });
 };

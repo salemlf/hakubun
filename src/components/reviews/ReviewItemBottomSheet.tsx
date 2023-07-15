@@ -65,6 +65,7 @@ const Segment = styled(IonSegment)`
   margin-bottom: 10px;
 `;
 
+// TODO: this is still popping up sometimes before going back down, fix
 export const ReviewItemBottomSheet = ({
   currentReviewItem,
   reviewType,
