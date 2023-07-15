@@ -182,6 +182,10 @@ const createReviewItems = async (
 
   //TODO: shuffling, change this based on user-selected sort order when that's implemented
   const shuffledReviewQueueItems = shuffleArray(reviewQueueItems);
+  console.log(
+    "🚀 ~ file: ReviewSessionDataContext.tsx:185 ~ shuffledReviewQueueItems:",
+    shuffledReviewQueueItems
+  );
 
   dispatchContext({
     type: "REVIEW_QUEUE_LOADED",

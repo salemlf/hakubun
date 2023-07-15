@@ -88,6 +88,7 @@ type CharColProps = {
 const SubjectCharactersCol = styled(IonCol)<CharColProps>`
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
   padding-bottom: 50px;
+  border-radius: 10px 10px 0px 0px;
 `;
 
 type Props = {

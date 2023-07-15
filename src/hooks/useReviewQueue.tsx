@@ -181,6 +181,12 @@ export const useReviewQueue = () => {
     userAnswer: string,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
+    if (queueState.isSecondClick) {
+      console.log(
+        "🚀 ~ file: useReviewQueue.tsx:184 ~ useReviewQueue ~ userAnswer:",
+        userAnswer
+      );
+    }
     let isValidInfo = isUserAnswerValid(currReviewItem, userAnswer);
     if (isValidInfo.isValid === false) {
       dispatchQueueContext({
