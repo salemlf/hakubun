@@ -72,6 +72,8 @@ const WanakanaInput = ({
     ref: inputRef,
     value: translatedVal,
     onChange: handleChange,
+    autocorrect: "off",
+    autocapitalize: "none",
     ...props,
   });
 };
@@ -120,34 +122,6 @@ export const ReviewInputAndButtons = ({
           placeholder={reviewType === "reading" ? "答え" : ""}
         />
       </InputRow>
-      {/* <IonGrid>
-        <IonRow>
-          {queueState.showRetryButton && (
-            <ButtonCol>
-              <PreviousBtn
-                onClick={() => {
-                  handleRetryClick(currentReviewItem, setUserAnswer);
-                }}
-              >
-                Retry
-              </PreviousBtn>
-            </ButtonCol>
-          )}
-          <ButtonCol>
-            <NextBtn
-              onClick={() => {
-                nextBtnClicked();
-              }}
-              disabled={
-                queueDataState.currQueueIndex ===
-                queueDataState.reviewQueue.length - 1
-              }
-            >
-              Next
-            </NextBtn>
-          </ButtonCol>
-        </IonRow>
-      </IonGrid> */}
     </>
   );
 };
