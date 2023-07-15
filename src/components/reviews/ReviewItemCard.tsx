@@ -100,6 +100,7 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
   const x = useMotionValue(0);
   const opacityLeft = useTransform(x, [-100, 0], [1, 0]);
   const opacityRight = useTransform(x, [0, 100], [0, 1]);
+  const rotate = useTransform(x, [-300, 300], [-10, 10]);
 
   const nextBtnClicked = () => {
     // *testing
@@ -135,9 +136,11 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
           subjType={currentReviewItem.object as SubjectType}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
+          dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
           onDragEnd={handleDragEnd}
           style={{
             x,
+            rotate: rotate,
           }}
         >
           <ReviewCharAndType currentReviewItem={currentReviewItem} />
@@ -156,6 +159,7 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
           style={{
             x,
             opacity: opacityLeft,
+            rotate: rotate,
           }}
         >
           <SwipeIcon>
@@ -166,6 +170,7 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
           style={{
             x,
             opacity: opacityRight,
+            rotate: rotate,
           }}
         >
           <SwipeIcon>
