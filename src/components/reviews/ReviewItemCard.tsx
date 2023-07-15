@@ -4,6 +4,7 @@ import {
   motion,
   useMotionValue,
   useTransform,
+  useAnimate,
   LayoutGroup,
 } from "framer-motion";
 
@@ -22,7 +23,7 @@ import NextIcon from "../../images/next-item.svg";
 import styled from "styled-components/macro";
 
 type ReviewItemProps = {
-  subjType: SubjectType;
+  subjtype: SubjectType;
 };
 
 const ReviewCardContainer = styled(IonRow)`
@@ -37,7 +38,9 @@ const ReviewCard = styled(motion.div)<ReviewItemProps>`
   border-radius: 10px;
   width: 100%;
   height: 100%;
-  background-color: ${({ subjType }) => getSubjectColor(subjType)};
+  background-color: ${({ subjtype }) => getSubjectColor(subjtype)};
+  will-change: "transform";
+  cursor: grab;
 `;
 
 const SwipeOverlay = styled(motion.div)`
@@ -94,6 +97,11 @@ type Props = {
 
 export const ReviewItemCard = ({ currentReviewItem }: Props) => {
   const [userAnswer, setUserAnswer] = useState("");
+  // !added
+  const [reviewCardRef, animateCard] = useAnimate();
+  const [nextOverlayRef, animateNextOverlay] = useAnimate();
+  const [retryOverlayRef, animateRetryOverlay] = useAnimate();
+  // !added
   useKeyDown(() => nextBtnClicked(), ["F12"]);
   useKeyDown(() => handleRetryClick(currentReviewItem, setUserAnswer), ["F6"]);
   const { handleNextClick, handleRetryClick, queueState } = useReviewQueue();
@@ -114,16 +122,30 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
   };
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
-    if (info.offset.x > window.innerWidth / 2) {
+    if (info.offset.x > 200) {
       console.log("RIGHT");
-      handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
-    }
-    if (info.offset.x < -window.innerWidth / 2) {
+
+      // TODO: first check that answer is valid before letting card fly off screen
+      animateCard(reviewCardRef.current, { x: "150%" }, { duration: 0.2 });
+      animateNextOverlay(nextOverlayRef.current, { opacity: 0 });
+      setTimeout(
+        () => handleNextClick(currentReviewItem, userAnswer, setUserAnswer),
+        200
+      );
+      // handleNextClick(currentReviewItem, userAnswer, setUserAnswer)
+    } else if (info.offset.x < -200) {
       console.log("LEFT");
       if (queueState.showRetryButton) {
-        handleRetryClick(currentReviewItem, setUserAnswer);
+        animateCard(reviewCardRef.current, { x: "-150%" }, { duration: 0.2 });
+        setTimeout(
+          () => handleRetryClick(currentReviewItem, setUserAnswer),
+          200
+        );
+        animateRetryOverlay(retryOverlayRef.current, { opacity: 0 });
+        //  handleRetryClick(currentReviewItem, setUserAnswer)
       } else {
         console.log("RETRY NOT AVAILABLE!");
+        // animateCard(reviewCardRef.current, { x: "150%" }, { duration: 0.2 });
         // TODO: show some visual indication of this
       }
     }
@@ -133,7 +155,8 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
     <ReviewCardContainer>
       <LayoutGroup>
         <ReviewCard
-          subjType={currentReviewItem.object as SubjectType}
+          subjtype={currentReviewItem.object as SubjectType}
+          ref={reviewCardRef}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
@@ -142,6 +165,8 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
             x,
             rotate: rotate,
           }}
+          dragDirectionLock={true}
+          whileTap={{ cursor: "grabbing" }}
         >
           <ReviewCharAndType currentReviewItem={currentReviewItem} />
           <ReviewInputAndButtons
@@ -156,6 +181,7 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
           />
         </ReviewCard>
         <RetryCardOverlay
+          ref={retryOverlayRef}
           style={{
             x,
             opacity: opacityLeft,
@@ -167,6 +193,7 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
           </SwipeIcon>
         </RetryCardOverlay>
         <NextCardOverlay
+          ref={nextOverlayRef}
           style={{
             x,
             opacity: opacityRight,
