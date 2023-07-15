@@ -11,7 +11,10 @@ import {
 import { ReviewCharAndType } from "./ReviewCharAndType";
 import { ReviewInputAndButtons } from "./ReviewInputAndButtons";
 import { ReviewItemBottomSheet } from "./ReviewItemBottomSheet";
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import {
+  getSubjectColor,
+  isUserAnswerValid,
+} from "../../services/SubjectAndAssignmentService";
 import { SubjectType } from "../../types/Subject";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
@@ -104,7 +107,12 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
   // !added
   useKeyDown(() => nextBtnClicked(), ["F12"]);
   useKeyDown(() => handleRetryClick(currentReviewItem, setUserAnswer), ["F6"]);
-  const { handleNextClick, handleRetryClick, queueState } = useReviewQueue();
+  const {
+    handleNextClick,
+    handleRetryClick,
+    queueState,
+    displayInvalidAnswerMsg,
+  } = useReviewQueue();
   const x = useMotionValue(0);
   const opacityLeft = useTransform(x, [-100, 0], [1, 0]);
   const opacityRight = useTransform(x, [0, 100], [0, 1]);
@@ -118,20 +126,24 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
 
     currentReviewItem.review_type === "reading" &&
       setUserAnswer(toHiragana(userAnswer));
-    handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
-  };
 
-  const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
-    if (info.offset.x > 200) {
-      console.log("RIGHT");
-
-      // TODO: first check that answer is valid before letting card fly off screen
+    let isValidInfo = isUserAnswerValid(currentReviewItem, userAnswer);
+    if (isValidInfo.isValid === false) {
+      displayInvalidAnswerMsg(isValidInfo.message);
+    } else {
       animateCard(reviewCardRef.current, { x: "150%" }, { duration: 0.2 });
       animateNextOverlay(nextOverlayRef.current, { opacity: 0 });
       setTimeout(
         () => handleNextClick(currentReviewItem, userAnswer, setUserAnswer),
         200
       );
+    }
+  };
+
+  const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
+    if (info.offset.x > 200) {
+      console.log("RIGHT");
+      nextBtnClicked();
       // handleNextClick(currentReviewItem, userAnswer, setUserAnswer)
     } else if (info.offset.x < -200) {
       console.log("LEFT");
@@ -144,9 +156,9 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
         animateRetryOverlay(retryOverlayRef.current, { opacity: 0 });
         //  handleRetryClick(currentReviewItem, setUserAnswer)
       } else {
+        // TODO: show some visual indication of this
         console.log("RETRY NOT AVAILABLE!");
         // animateCard(reviewCardRef.current, { x: "150%" }, { duration: 0.2 });
-        // TODO: show some visual indication of this
       }
     }
   };

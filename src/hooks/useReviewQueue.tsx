@@ -45,6 +45,13 @@ export const useReviewQueue = () => {
     dispatchQueueDataContext({ type: "RESET_REVIEW" });
   };
 
+  const displayInvalidAnswerMsg = (message: string) => {
+    dispatchQueueContext({
+      type: "SHOW_POPOVER_MSG",
+      payload: { message: message, messageType: "invalid" },
+    });
+  };
+
   const displaySRSStatus = (reviewItem: ReviewQueueItem) => {
     // *testing
     console.log("reviewItem.srs_stage: ", reviewItem.srs_stage);
@@ -181,20 +188,6 @@ export const useReviewQueue = () => {
     userAnswer: string,
     setUserAnswer: (value: React.SetStateAction<string>) => void
   ) => {
-    if (queueState.isSecondClick) {
-      console.log(
-        "🚀 ~ file: useReviewQueue.tsx:184 ~ useReviewQueue ~ userAnswer:",
-        userAnswer
-      );
-    }
-    let isValidInfo = isUserAnswerValid(currReviewItem, userAnswer);
-    if (isValidInfo.isValid === false) {
-      dispatchQueueContext({
-        type: "SHOW_POPOVER_MSG",
-        payload: { message: isValidInfo.message, messageType: "invalid" },
-      });
-      return;
-    }
     // *testing
     console.log(
       "🚀 ~ file: ReviewSession.tsx:137 ~ ReviewSession ~ userAnswer:",
@@ -248,5 +241,6 @@ export const useReviewQueue = () => {
     handleNextClick,
     handleRetryClick,
     createNewReviewSession,
+    displayInvalidAnswerMsg,
   };
 };
