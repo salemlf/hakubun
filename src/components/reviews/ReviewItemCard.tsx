@@ -1,5 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { IonRow, IonIcon, createGesture } from "@ionic/react";
+import { useState } from "react";
+import { IonRow, IonIcon } from "@ionic/react";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  LayoutGroup,
+} from "framer-motion";
 
 import { ReviewCharAndType } from "./ReviewCharAndType";
 import { ReviewInputAndButtons } from "./ReviewInputAndButtons";
@@ -11,39 +17,50 @@ import { useReviewQueue } from "../../hooks/useReviewQueue";
 
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { toHiragana } from "wanakana";
-import styled from "styled-components/macro";
-
 import RetryIcon from "../../images/retry.svg";
 import NextIcon from "../../images/next-item.svg";
+import styled from "styled-components/macro";
 
 type ReviewItemProps = {
   subjType: SubjectType;
 };
 
-const ReviewCard = styled(IonRow)<ReviewItemProps>`
+const ReviewCardContainer = styled(IonRow)`
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  max-width: 1400px;
+`;
+
+const ReviewCard = styled(motion.div)<ReviewItemProps>`
   padding: 50px 0 100px 0;
   border-radius: 10px;
-  background-color: ${({ subjType }) => getSubjectColor(subjType)};
-  position: relative;
-  transition: transform 250ms ease-out, opacity 500ms ease-in-out;
-`;
-
-const SwipeOverlay = styled.div`
-  position: absolute;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
-  border-radius: 10px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s;
+  background-color: ${({ subjType }) => getSubjectColor(subjType)};
 `;
 
-const SwipeIcon = styled.div`
+const SwipeOverlay = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 10px;
+  pointer-events: none;
+  flex-grow: 1;
+`;
+
+const SwipeIcon = styled(motion.div)`
+  position: absolute;
   padding: 20px;
   border-radius: 50%;
-  position: absolute;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -76,18 +93,13 @@ type Props = {
 };
 
 export const ReviewItemCard = ({ currentReviewItem }: Props) => {
-  const cardRef = useRef<HTMLIonRowElement>(null);
-  const retryCardOverlay = useRef<HTMLDivElement>(null);
-  const nextCardOverlay = useRef<HTMLDivElement>(null);
-
   const [userAnswer, setUserAnswer] = useState("");
   useKeyDown(() => nextBtnClicked(), ["F12"]);
   useKeyDown(() => handleRetryClick(currentReviewItem, setUserAnswer), ["F6"]);
   const { handleNextClick, handleRetryClick, queueState } = useReviewQueue();
-
-  useEffect(() => {
-    createCardGesture();
-  }, [queueState.showRetryButton, currentReviewItem, userAnswer]);
+  const x = useMotionValue(0);
+  const opacityLeft = useTransform(x, [-100, 0], [1, 0]);
+  const opacityRight = useTransform(x, [0, 100], [0, 1]);
 
   const nextBtnClicked = () => {
     // *testing
@@ -100,99 +112,67 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
     handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
   };
 
-  const createCardGesture = () => {
-    let reviewCard = cardRef.current;
-    let retryOverlay = retryCardOverlay.current;
-    let nextOverlay = nextCardOverlay.current;
-
-    if (reviewCard) {
-      let gesture = createGesture({
-        el: reviewCard,
-        gestureName: "card-swipe",
-        onMove: (info) => {
-          let overlayOpacity = info.deltaX / 100;
-          let retryOpacity = overlayOpacity >= 0 ? 0 : Math.abs(overlayOpacity);
-          let nextOpacity = overlayOpacity <= 0 ? 0 : overlayOpacity;
-
-          if (info.deltaX > 0) {
-            reviewCard!.style.transform = `translateX(${
-              info.deltaX
-            }px) rotate(${info.deltaX / 20}deg)`;
-
-            nextOverlay!.style.opacity = `${nextOpacity}`;
-          } else {
-            if (queueState.showRetryButton) {
-              reviewCard!.style.transform = `translateX(${
-                info.deltaX
-              }px) rotate(${info.deltaX / 20}deg)`;
-
-              retryOverlay!.style.opacity = `${retryOpacity}`;
-            } else {
-              reviewCard!.style.transform = "";
-              // TODO: show some other indication that retry not allowed
-              console.log("Retry not allowed rn!");
-            }
-          }
-        },
-        onEnd: (info) => {
-          retryOverlay!.style.opacity = "0";
-          nextOverlay!.style.opacity = "0";
-          const windowWidth = window.innerWidth;
-          reviewCard!.style.transition =
-            "0.25s cubic-bezier (0.175, 0.885, 0.32, 1.275)";
-
-          // TODO: also don't let user submit if invalid answer
-          if (info.deltaX > windowWidth / 2) {
-            reviewCard!.style.transform = `translateX(${windowWidth * 1.5}px)`;
-            // *testing
-            console.log(
-              "🚀 ~ file: ReviewItemCard.tsx:74 ~ createCardGesture ~ info:",
-              info
-            );
-            // *testing
-            handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
-            reviewCard!.style.transform = "";
-          } else if (
-            info.deltaX < -windowWidth / 2 &&
-            queueState.showRetryButton
-          ) {
-            reviewCard!.style.transform = `translateX(-${windowWidth * 1.5}px)`;
-            handleRetryClick(currentReviewItem, setUserAnswer);
-            reviewCard!.style.transform = "";
-          } else {
-            reviewCard!.style.transform = "";
-          }
-        },
-      });
-      gesture.enable();
+  const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
+    if (info.offset.x > window.innerWidth / 2) {
+      console.log("RIGHT");
+      handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
+    }
+    if (info.offset.x < -window.innerWidth / 2) {
+      console.log("LEFT");
+      if (queueState.showRetryButton) {
+        handleRetryClick(currentReviewItem, setUserAnswer);
+      } else {
+        console.log("RETRY NOT AVAILABLE!");
+        // TODO: show some visual indication of this
+      }
     }
   };
 
-  let subjType = currentReviewItem.object as SubjectType;
-
   return (
-    <ReviewCard subjType={subjType} ref={cardRef}>
-      <ReviewCharAndType currentReviewItem={currentReviewItem} />
-      <ReviewInputAndButtons
-        currentReviewItem={currentReviewItem}
-        userAnswer={userAnswer}
-        setUserAnswer={setUserAnswer}
-        nextBtnClicked={nextBtnClicked}
-      />
-      <ReviewItemBottomSheet
-        currentReviewItem={currentReviewItem}
-        reviewType={currentReviewItem.review_type}
-      />
-      <RetryCardOverlay ref={retryCardOverlay}>
-        <SwipeIcon>
-          <IonIcon icon={RetryIcon}></IonIcon>
-        </SwipeIcon>
-      </RetryCardOverlay>
-      <NextCardOverlay ref={nextCardOverlay}>
-        <SwipeIcon>
-          <IonIcon icon={NextIcon}></IonIcon>
-        </SwipeIcon>
-      </NextCardOverlay>
-    </ReviewCard>
+    <ReviewCardContainer>
+      <LayoutGroup>
+        <ReviewCard
+          subjType={currentReviewItem.object as SubjectType}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragEnd={handleDragEnd}
+          style={{
+            x,
+          }}
+        >
+          <ReviewCharAndType currentReviewItem={currentReviewItem} />
+          <ReviewInputAndButtons
+            currentReviewItem={currentReviewItem}
+            userAnswer={userAnswer}
+            setUserAnswer={setUserAnswer}
+            nextBtnClicked={nextBtnClicked}
+          />
+          <ReviewItemBottomSheet
+            currentReviewItem={currentReviewItem}
+            reviewType={currentReviewItem.review_type}
+          />
+        </ReviewCard>
+        <RetryCardOverlay
+          style={{
+            x,
+            opacity: opacityLeft,
+          }}
+        >
+          <SwipeIcon>
+            <IonIcon icon={RetryIcon}></IonIcon>
+          </SwipeIcon>
+        </RetryCardOverlay>
+        <NextCardOverlay
+          style={{
+            x,
+            opacity: opacityRight,
+          }}
+        >
+          <SwipeIcon>
+            <IonIcon icon={NextIcon}></IonIcon>
+          </SwipeIcon>
+        </NextCardOverlay>
+      </LayoutGroup>
+    </ReviewCardContainer>
   );
 };
