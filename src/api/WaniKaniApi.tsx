@@ -2,7 +2,7 @@ import { api, baseUrl } from "./ApiConfig";
 import { PagingAPI } from "./PagingApi";
 import { AxiosResponse } from "axios";
 
-import { SrsLevelName } from "../types/MiscTypes";
+import { SrsLevelName, StudyMaterialPutBody } from "../types/MiscTypes";
 
 import { getSrsLvlBySrsName } from "../services/MiscService";
 
@@ -158,6 +158,21 @@ export const WaniKaniAPI = {
     const response: AxiosResponse = await api.request({
       url: url,
       method: "GET",
+    });
+
+    return response.data;
+  },
+
+  putStudyMaterialsByMaterialID: async function (
+    studyMaterialID: number,
+    updatedStudyMaterials: StudyMaterialPutBody
+  ) {
+    let url = `${baseUrl}study_materials/${studyMaterialID}`;
+
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "PUT",
+      data: updatedStudyMaterials,
     });
 
     return response.data;
