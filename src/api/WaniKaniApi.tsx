@@ -10,6 +10,7 @@ import {
 
 import { getSrsLvlBySrsName } from "../services/MiscService";
 
+// TODO: make paging "automatic" where no need to add special case for it
 export const WaniKaniAPI = {
   pages: Array(),
   subjects: [],
@@ -194,5 +195,19 @@ export const WaniKaniAPI = {
     });
 
     return response.data;
+  },
+
+  getAllSubjects: async function () {
+    let url = `${baseUrl}subjects`;
+
+    // const response: AxiosResponse = await api.request({
+    //   url: url,
+    //   method: "GET",
+    // });
+
+    let subjects = await PagingAPI.iterateOverPages(url, []);
+    let subjectsCombined = PagingAPI.combinePages(subjects);
+
+    return subjectsCombined;
   },
 };
