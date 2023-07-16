@@ -7,6 +7,7 @@ type Props = {
   subjData: Subject[];
 };
 
+// TODO: need updated srs level data to display actual info, test with fake data for now
 export const GroupedReviewSummaryResults = ({ subjData }: Props) => {
   let subjectsByLevel = groupDataByProperty(subjData, "level");
   console.log(
@@ -15,8 +16,10 @@ export const GroupedReviewSummaryResults = ({ subjData }: Props) => {
   );
 
   // TODO: use below method to loop over items, creating subjgroups using SRS level
+  let dataGroupedByLevelAndSRS = [];
   for (const level in subjectsByLevel) {
     console.log(`Level: ${level}: `, subjectsByLevel[level]);
+    let groupedBySRS = groupDataByProperty(subjectsByLevel[level], "srs_stage");
   }
 
   return (

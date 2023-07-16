@@ -63,6 +63,7 @@ export const WaniKaniAPI = {
     return numLessons;
   },
 
+  // TODO: change below functions so passing in types and using one function (getSubjectsByLevel)
   getSubjectsByLevel: async function (level: number) {
     let url = `${baseUrl}subjects?levels=${level}`;
 

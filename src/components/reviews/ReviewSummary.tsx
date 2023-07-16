@@ -78,7 +78,6 @@ const CardContent = styled(IonCardContent)`
   }
 `;
 
-// TODO: split cards into sections by subject level and SRS level
 export const ReviewSummary = () => {
   const { queueDataState } = useReviewQueue();
   let reviewQueue = queueDataState.reviewQueue;

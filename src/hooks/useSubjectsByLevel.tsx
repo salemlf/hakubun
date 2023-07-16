@@ -6,9 +6,9 @@ import { setSubjectAvailImgs } from "../services/ImageSrcService";
 import { flattenData } from "../services/MiscService";
 
 // TODO: increase cache time and stale time since subjects (cache time should always be > stale time)
-export const useSubjectsCurrLevel = (level: any) => {
+export const useSubjectsByLevel = (level: any) => {
   return useQuery({
-    queryKey: ["subjects-curr-lvl", level],
+    queryKey: ["subjects-by-lvl", level],
     queryFn: () => WaniKaniAPI.getSubjectsByLevel(level),
     enabled: !!level,
     select: useCallback(
