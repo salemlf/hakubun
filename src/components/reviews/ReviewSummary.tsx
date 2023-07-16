@@ -117,26 +117,27 @@ export const ReviewSummary = () => {
     (reviewItem: any) => reviewItem.id
   );
 
+  let hasCorrect = correctSubjIDs.length !== 0;
+  let hasIncorrect = incorrectSubjIDs.length !== 0;
+
   const {
     isLoading: correctReviewSubjLoading,
     data: correctReviewSubjData,
     error: correctReviewSubjErr,
-  } = useSubjectsByIDs(correctSubjIDs);
+  } = useSubjectsByIDs(correctSubjIDs, hasCorrect);
 
   const {
     isLoading: incorrectReviewSubjLoading,
     data: incorrectReviewSubjData,
     error: incorrectReviewSubjErr,
-  } = useSubjectsByIDs(incorrectSubjIDs);
+  } = useSubjectsByIDs(incorrectSubjIDs, hasIncorrect);
 
   let percentageCorrect = Math.ceil(100 * (numCorrect / reviewData.length));
   // *testing
 
   let reviewSummaryDataLoading =
-    correctReviewSubjLoading ||
-    correctReviewSubjErr ||
-    incorrectReviewSubjLoading ||
-    incorrectReviewSubjErr;
+    (correctReviewSubjLoading && hasCorrect) ||
+    (incorrectReviewSubjLoading && hasIncorrect);
 
   return (
     <Page>
@@ -156,7 +157,9 @@ export const ReviewSummary = () => {
             {!reviewSummaryDataLoading ? (
               <CardContent>
                 <IonRow>
-                  <SubjCharacterList subjList={incorrectReviewSubjData} />
+                  {incorrectReviewSubjData && (
+                    <SubjCharacterList subjList={incorrectReviewSubjData} />
+                  )}
                 </IonRow>
               </CardContent>
             ) : (
@@ -175,7 +178,9 @@ export const ReviewSummary = () => {
             {!reviewSummaryDataLoading ? (
               <CardContent>
                 <IonRow>
-                  <SubjCharacterList subjList={correctReviewSubjData} />
+                  {correctReviewSubjData && (
+                    <SubjCharacterList subjList={correctReviewSubjData} />
+                  )}
                 </IonRow>
               </CardContent>
             ) : (
