@@ -12,6 +12,7 @@ import {
   getSubjectDisplayName,
 } from "../services/SubjectAndAssignmentService";
 import { UserMeaningChips } from "./subjects/UserMeaningChips";
+import { AddUserMeaningButton } from "./subjects/AddUserMeaningButton";
 
 const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
   padding-left: 0;
@@ -110,6 +111,7 @@ export const SubjectMeanings = ({
             hasAltMeanings={hasAltMeanings}
           />
           <UserMeaningChips subject={subject} />
+          <AddUserMeaningButton subject={subject} />
         </AltMeaningsContainer>
       )}
     </AlternativeMeaningsContainer>
