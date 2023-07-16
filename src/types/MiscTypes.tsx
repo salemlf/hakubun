@@ -69,8 +69,12 @@ export interface StudyMaterialPutData {
   reading_note?: string | null;
 }
 
-export interface StudyMaterialPostData extends StudyMaterialPutData {
+export interface StudyMaterialPostDataWithID extends StudyMaterialPutData {
   subject_id: number;
+}
+
+export interface StudyMaterialPostData {
+  study_material: StudyMaterialPostDataWithID;
 }
 
 export interface StudyMaterialPutBody {

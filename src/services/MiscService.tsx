@@ -1,4 +1,8 @@
-import { SrsLevelName, StudyMaterial } from "../types/MiscTypes";
+import {
+  SrsLevelName,
+  StudyMaterial,
+  StudyMaterialPostDataWithID,
+} from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
 import { PopoverMessageType, ReviewType } from "../types/ReviewSessionTypes";
 import { PronunciationAudio, SubjectReading } from "../types/Subject";
@@ -154,9 +158,20 @@ export const playAudioIfAvailable = (
   }
 };
 
-// TODO: implement
-export const constructStudyMaterialData = (subject_id: number) => {
-  console.log("constructStudyMaterialData not implemented!");
+export const constructStudyMaterialData = ({
+  subject_id,
+  meaning_note = null,
+  meaning_synonyms = [],
+  reading_note = null,
+}: StudyMaterialPostDataWithID) => {
+  return {
+    study_material: {
+      subject_id: subject_id,
+      meaning_note: meaning_note,
+      reading_note: reading_note,
+      meaning_synonyms: meaning_synonyms,
+    },
+  };
 };
 
 export const updateMeaningSynonymsInStudyMaterial = (
