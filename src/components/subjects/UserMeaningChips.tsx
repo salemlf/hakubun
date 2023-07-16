@@ -1,4 +1,10 @@
-import { IonChip, IonLabel, IonIcon, IonSkeletonText } from "@ionic/react";
+import {
+  IonChip,
+  IonLabel,
+  IonIcon,
+  IonSkeletonText,
+  IonAlert,
+} from "@ionic/react";
 import { closeCircle } from "ionicons/icons";
 import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
@@ -6,14 +12,22 @@ import { nanoid } from "nanoid";
 import { StudyMaterial } from "../../types/MiscTypes";
 
 import styled from "styled-components/macro";
+import { useState } from "react";
 
 type ChipProps = {
   studyMaterials: StudyMaterial;
 };
 
-// TODO: allow click
-// TODO: onclick, make dialog show confirming delete of synonym
+const Alert = styled(IonAlert)`
+  @media (prefers-color-scheme: dark) {
+    .alert-message {
+      color: white;
+    }
+  }
+`;
+
 const Chips = ({ studyMaterials }: ChipProps) => {
+  const [selectedMeaning, setSelectedMeaning] = useState("");
   // *testing
   console.log(
     "🚀 ~ file: UserMeaningChips.tsx:11 ~ Chips ~ studyMaterials:",
@@ -21,15 +35,58 @@ const Chips = ({ studyMaterials }: ChipProps) => {
   );
   // *testing
 
+  //   TODO: create function to filter out meaning from userMeanings, will then be used in PUT request
+
   let userMeanings = studyMaterials.meaning_synonyms;
   return (
     <>
       {userMeanings.map((meaning: string) => {
+        let currChipID = nanoid();
         return (
-          <IonChip key={`meaning-chip-${nanoid()}`}>
-            <IonLabel>{meaning}</IonLabel>
-            <IonIcon icon={closeCircle}></IonIcon>
-          </IonChip>
+          <>
+            <IonChip
+              onClick={(e: any) => {
+                setSelectedMeaning(meaning);
+              }}
+              id={`present-${currChipID}`}
+              key={`meaning-chip-${currChipID}`}
+            >
+              <IonLabel>{meaning}</IonLabel>
+              <IonIcon icon={closeCircle}></IonIcon>
+            </IonChip>
+            <Alert
+              header="Delete Meaning"
+              trigger={`present-${currChipID}`}
+              message={`Delete user meaning ${meaning}?`}
+              buttons={[
+                {
+                  text: "Cancel",
+                  role: "cancel",
+                  handler: () => {
+                    // *testing
+                    console.log("Canceled deletion");
+                    // *testing
+                  },
+                },
+                {
+                  text: "Delete",
+                  role: "destructive",
+                  handler: () => {
+                    // *testing
+                    console.log("Deleting meaning...");
+                    // *testing
+                    // TODO: call function to filter out and delete meaning
+                  },
+                },
+              ]}
+              onDidDismiss={({ detail }) => {
+                console.log(
+                  "🚀 ~ file: UserMeaningChips.tsx:119 ~ detail:",
+                  detail
+                );
+              }}
+            ></Alert>
+          </>
         );
       })}
     </>
