@@ -30,12 +30,6 @@ export const reviewSessionQueueReducer = (
         showRetryButton: false,
         displayPopoverMsg: false,
       };
-    case "WRONG_SHOW_RESULT":
-      return {
-        ...state,
-        isBottomSheetVisible: true,
-        showRetryButton: true,
-      };
     case "SUBMIT_CHOICE":
       return {
         ...state,
