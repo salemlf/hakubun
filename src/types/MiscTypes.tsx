@@ -46,6 +46,8 @@ export type UserData = {
 
 export type TagType = SubjectType | "meaning" | "reading";
 
+// TODO: create type for StudyMaterialDataResponse
+
 export interface StudyMaterial {
   created_at: Date;
   hidden: boolean;
@@ -54,4 +56,18 @@ export interface StudyMaterial {
   reading_note: string | null;
   subject_id: number;
   subject_type: SubjectType;
+}
+
+export interface StudyMaterialPutData {
+  meaning_note?: string | null;
+  meaning_synonyms?: string[];
+  reading_note?: string | null;
+}
+
+export interface StudyMaterialPostData extends StudyMaterialPutData {
+  subject_id: number;
+}
+
+export interface StudyMaterialPutBody {
+  study_material: StudyMaterialPutData;
 }
