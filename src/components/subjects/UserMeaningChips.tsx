@@ -42,20 +42,6 @@ const Chips = ({ studyMaterialsResponse, userMeaningsWithKeys }: ChipProps) => {
   const [selectedMeaning, setSelectedMeaning] = useState("");
   const { mutate: updateStudyMaterials } = useUpdateStudyMaterials();
 
-  // TODO: do this in UserMeaningChips component, then pass data?
-  // let userMeaningsWithUUIDs = studyMaterialsResponse.meaning_synonyms.map(
-  //   (meaning: any) => ({
-  //     meaning,
-  //     uuid: generateUUID(),
-  //   })
-  // );
-  // *testing
-  console.log(
-    "🚀 ~ file: UserMeaningChips.tsx:44 ~ Chips ~ userMeaningsWithKeys:",
-    userMeaningsWithKeys
-  );
-  // *testing
-
   type MeaningWithUUID = {
     meaning: string;
     uuid: string;
