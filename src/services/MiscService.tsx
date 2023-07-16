@@ -1,7 +1,8 @@
-import { SrsLevelName } from "../types/MiscTypes";
+import { SrsLevelName, StudyMaterial } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
 import { PopoverMessageType, ReviewType } from "../types/ReviewSessionTypes";
 import { PronunciationAudio, SubjectReading } from "../types/Subject";
+import { nanoid } from "nanoid";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   if (timeTill > 0) {
@@ -151,4 +152,33 @@ export const playAudioIfAvailable = (
     let audio = new Audio(url!);
     audio.play();
   }
+};
+
+// TODO: implement
+export const constructStudyMaterialData = (subject_id: number) => {
+  console.log("constructStudyMaterialData not implemented!");
+};
+
+export const updateMeaningSynonymsInStudyMaterial = (
+  studyMaterial: StudyMaterial,
+  meaning: string,
+  action: "add" | "remove"
+): StudyMaterial => {
+  let newArray;
+  if (action == "add") {
+    newArray = [...studyMaterial.meaning_synonyms, meaning];
+  } else {
+    newArray = studyMaterial.meaning_synonyms.filter(
+      (string) => string !== meaning
+    );
+  }
+  return { ...studyMaterial, meaning_synonyms: newArray };
+};
+
+export const generateUUID = (): string => {
+  return nanoid();
+};
+
+export const addUUIDsToObjects = (objectArr: any[]) => {
+  return objectArr.map((obj) => ({ ...obj, uuid: generateUUID() }));
 };

@@ -8,11 +8,11 @@ import {
 import { closeCircle } from "ionicons/icons";
 import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { nanoid } from "nanoid";
 import { StudyMaterial } from "../../types/MiscTypes";
 
 import styled from "styled-components/macro";
 import { useState } from "react";
+import { generateUUID } from "../../services/MiscService";
 
 type ChipProps = {
   studyMaterials: StudyMaterial;
@@ -26,6 +26,7 @@ const Alert = styled(IonAlert)`
   }
 `;
 
+// TODO: check that uuids are being generated properly, getting warning that key props aren't unique
 const Chips = ({ studyMaterials }: ChipProps) => {
   const [selectedMeaning, setSelectedMeaning] = useState("");
   // *testing
@@ -35,29 +36,48 @@ const Chips = ({ studyMaterials }: ChipProps) => {
   );
   // *testing
 
-  //   TODO: create function to filter out meaning from userMeanings, will then be used in PUT request
+  // TODO: use updateMeaningSynonymsInStudyMaterial to filter out meaning from userMeanings, will then be used in PUT request
 
   let userMeanings = studyMaterials.meaning_synonyms;
+  console.log(
+    "🚀 ~ file: UserMeaningChips.tsx:42 ~ Chips ~ userMeanings:",
+    userMeanings
+  );
+
+  let userMeaningsWithUUIDs = userMeanings.map((meaning) => ({
+    meaning,
+    uuid: generateUUID(),
+  }));
+  // *testing
+  console.log(
+    "🚀 ~ file: UserMeaningChips.tsx:44 ~ Chips ~ userMeaningsWithUUIDs:",
+    userMeaningsWithUUIDs
+  );
+  // *testing
+  type MeaningWithUUID = {
+    meaning: string;
+    uuid: string;
+  };
+
   return (
     <>
-      {userMeanings.map((meaning: string) => {
-        let currChipID = nanoid();
+      {userMeaningsWithUUIDs.map((meaningWithUUID: MeaningWithUUID) => {
         return (
           <>
             <IonChip
               onClick={(e: any) => {
-                setSelectedMeaning(meaning);
+                setSelectedMeaning(meaningWithUUID.meaning);
               }}
-              id={`present-${currChipID}`}
-              key={`meaning-chip-${currChipID}`}
+              id={`present-${meaningWithUUID.uuid}`}
+              key={meaningWithUUID.uuid}
             >
-              <IonLabel>{meaning}</IonLabel>
+              <IonLabel>{meaningWithUUID.meaning}</IonLabel>
               <IonIcon icon={closeCircle}></IonIcon>
             </IonChip>
             <Alert
               header="Delete Meaning"
-              trigger={`present-${currChipID}`}
-              message={`Delete user meaning ${meaning}?`}
+              trigger={`present-${meaningWithUUID.uuid}`}
+              message={`Delete user meaning ${meaningWithUUID.meaning}?`}
               buttons={[
                 {
                   text: "Cancel",
@@ -107,7 +127,11 @@ export const UserMeaningChips = ({ subject }: Props) => {
   return (
     <>
       {!studyMaterialLoading ? (
-        <>{studyMaterialData && <Chips studyMaterials={studyMaterialData} />}</>
+        <>
+          {studyMaterialData && studyMaterialData.meaning_synonyms && (
+            <Chips studyMaterials={studyMaterialData} />
+          )}
+        </>
       ) : (
         <IonSkeletonText
           animated={true}
