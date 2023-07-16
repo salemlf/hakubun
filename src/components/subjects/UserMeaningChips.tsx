@@ -1,3 +1,4 @@
+import { Fragment, useState } from "react";
 import {
   IonChip,
   IonLabel,
@@ -5,18 +6,18 @@ import {
   IonSkeletonText,
   IonAlert,
 } from "@ionic/react";
-import { closeCircle } from "ionicons/icons";
-import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { StudyMaterial } from "../../types/MiscTypes";
-
-import styled from "styled-components/macro";
-import { useState } from "react";
+import { useUpdateStudyMaterials } from "../../hooks/misc/useUpdateStudyMaterials";
+import { updateMeaningSynonymsInStudyMaterial } from "../../services/MiscService";
 import { generateUUID } from "../../services/MiscService";
+import { Subject } from "../../types/Subject";
+import {
+  StudyMaterial,
+  StudyMaterialDataResponse,
+} from "../../types/MiscTypes";
 
-type ChipProps = {
-  studyMaterials: StudyMaterial;
-};
+import { closeCircle } from "ionicons/icons";
+import styled from "styled-components/macro";
 
 const Alert = styled(IonAlert)`
   @media (prefers-color-scheme: dark) {
@@ -26,50 +27,64 @@ const Alert = styled(IonAlert)`
   }
 `;
 
+type UserMeaningsWithKeys = {
+  meaning: string;
+  uuid: string;
+};
+
+type ChipProps = {
+  studyMaterialsResponse: StudyMaterialDataResponse;
+  userMeaningsWithKeys: UserMeaningsWithKeys[];
+};
+
 // TODO: check that uuids are being generated properly, getting warning that key props aren't unique
-const Chips = ({ studyMaterials }: ChipProps) => {
+const Chips = ({ studyMaterialsResponse, userMeaningsWithKeys }: ChipProps) => {
   const [selectedMeaning, setSelectedMeaning] = useState("");
+  const { mutate: updateStudyMaterials } = useUpdateStudyMaterials();
+
+  // TODO: do this in UserMeaningChips component, then pass data?
+  // let userMeaningsWithUUIDs = studyMaterialsResponse.meaning_synonyms.map(
+  //   (meaning: any) => ({
+  //     meaning,
+  //     uuid: generateUUID(),
+  //   })
+  // );
   // *testing
   console.log(
-    "🚀 ~ file: UserMeaningChips.tsx:11 ~ Chips ~ studyMaterials:",
-    studyMaterials
+    "🚀 ~ file: UserMeaningChips.tsx:44 ~ Chips ~ userMeaningsWithKeys:",
+    userMeaningsWithKeys
   );
   // *testing
 
-  // TODO: use updateMeaningSynonymsInStudyMaterial to filter out meaning from userMeanings, will then be used in PUT request
-
-  let userMeanings = studyMaterials.meaning_synonyms;
-  console.log(
-    "🚀 ~ file: UserMeaningChips.tsx:42 ~ Chips ~ userMeanings:",
-    userMeanings
-  );
-
-  let userMeaningsWithUUIDs = userMeanings.map((meaning) => ({
-    meaning,
-    uuid: generateUUID(),
-  }));
-  // *testing
-  console.log(
-    "🚀 ~ file: UserMeaningChips.tsx:44 ~ Chips ~ userMeaningsWithUUIDs:",
-    userMeaningsWithUUIDs
-  );
-  // *testing
   type MeaningWithUUID = {
     meaning: string;
     uuid: string;
   };
 
+  const deleteUserMeaning = () => {
+    let updatedMaterialsWithRemovedMeaning =
+      updateMeaningSynonymsInStudyMaterial(
+        studyMaterialsResponse as StudyMaterial,
+        selectedMeaning,
+        "remove"
+      );
+
+    updateStudyMaterials({
+      studyMaterialID: studyMaterialsResponse.id,
+      updatedStudyMaterials: updatedMaterialsWithRemovedMeaning,
+    });
+  };
+
   return (
     <>
-      {userMeaningsWithUUIDs.map((meaningWithUUID: MeaningWithUUID) => {
+      {userMeaningsWithKeys.map((meaningWithUUID: MeaningWithUUID) => {
         return (
-          <>
+          <Fragment key={meaningWithUUID.uuid}>
             <IonChip
               onClick={(e: any) => {
                 setSelectedMeaning(meaningWithUUID.meaning);
               }}
               id={`present-${meaningWithUUID.uuid}`}
-              key={meaningWithUUID.uuid}
             >
               <IonLabel>{meaningWithUUID.meaning}</IonLabel>
               <IonIcon icon={closeCircle}></IonIcon>
@@ -82,11 +97,6 @@ const Chips = ({ studyMaterials }: ChipProps) => {
                 {
                   text: "Cancel",
                   role: "cancel",
-                  handler: () => {
-                    // *testing
-                    console.log("Canceled deletion");
-                    // *testing
-                  },
                 },
                 {
                   text: "Delete",
@@ -95,18 +105,20 @@ const Chips = ({ studyMaterials }: ChipProps) => {
                     // *testing
                     console.log("Deleting meaning...");
                     // *testing
-                    // TODO: call function to filter out and delete meaning
+                    deleteUserMeaning();
                   },
                 },
               ]}
               onDidDismiss={({ detail }) => {
+                // *testing
                 console.log(
                   "🚀 ~ file: UserMeaningChips.tsx:119 ~ detail:",
                   detail
                 );
+                // *testing
               }}
             ></Alert>
-          </>
+          </Fragment>
         );
       })}
     </>
@@ -124,12 +136,24 @@ export const UserMeaningChips = ({ subject }: Props) => {
     error: studyMaterialErr,
   } = useStudyMaterialsBySubjIDs([subject.id]);
 
+  const createUserMeaningKeys = (
+    studyMaterialsResponse: StudyMaterialDataResponse
+  ) => {
+    return studyMaterialsResponse.meaning_synonyms.map((meaning: any) => ({
+      meaning,
+      uuid: generateUUID(),
+    }));
+  };
+
   return (
     <>
       {!studyMaterialLoading ? (
         <>
           {studyMaterialData && studyMaterialData.meaning_synonyms && (
-            <Chips studyMaterials={studyMaterialData} />
+            <Chips
+              studyMaterialsResponse={studyMaterialData}
+              userMeaningsWithKeys={createUserMeaningKeys(studyMaterialData)}
+            />
           )}
         </>
       ) : (
