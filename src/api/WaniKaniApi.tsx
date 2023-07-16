@@ -2,7 +2,11 @@ import { api, baseUrl } from "./ApiConfig";
 import { PagingAPI } from "./PagingApi";
 import { AxiosResponse } from "axios";
 
-import { SrsLevelName, StudyMaterialPutBody } from "../types/MiscTypes";
+import {
+  SrsLevelName,
+  StudyMaterialPostData,
+  StudyMaterialPutBody,
+} from "../types/MiscTypes";
 
 import { getSrsLvlBySrsName } from "../services/MiscService";
 
@@ -173,6 +177,20 @@ export const WaniKaniAPI = {
       url: url,
       method: "PUT",
       data: updatedStudyMaterials,
+    });
+
+    return response.data;
+  },
+
+  postStudyMaterials: async function (
+    studyMaterialData: StudyMaterialPostData
+  ) {
+    let url = `${baseUrl}study_materials`;
+
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "POST",
+      data: studyMaterialData,
     });
 
     return response.data;
