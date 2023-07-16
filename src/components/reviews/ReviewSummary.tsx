@@ -1,9 +1,7 @@
 import {
-  IonCol,
   IonContent,
   IonHeader,
   IonPage,
-  IonRow,
   IonTitle,
   IonToolbar,
   IonCard,
@@ -20,10 +18,8 @@ import {
 import { FullWidthGrid } from "../styles/BaseStyledComponents";
 
 import styled from "styled-components/macro";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { SubjectButtonList } from "../SubjectButtonList";
-import { SubjCharacterList } from "../subjects/SubjCharacterList";
+import { GroupedReviewSummaryResults } from "./GroupedReviewSummaryResults";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--light-greyish-purple);
@@ -85,30 +81,18 @@ const CardContent = styled(IonCardContent)`
 // TODO: split cards into sections by subject level and SRS level
 export const ReviewSummary = () => {
   const { queueDataState } = useReviewQueue();
-  // *testing
   let reviewQueue = queueDataState.reviewQueue;
   // *testing
   console.log(
     "🚀 ~ file: ReviewSummary.tsx:7 ~ ReviewSummary ~ reviewQueue:",
     reviewQueue
   );
+  // *testing
   let reviewData = getCompletedReviewSessionData(reviewQueue);
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewSummary.tsx:37 ~ ReviewSummary ~ reviewData:",
-    reviewData
-  );
-  // *testing
-
   let reviewsByResult = getReviewsGroupedByResult(reviewData);
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewSummary.tsx:69 ~ ReviewSummary ~ reviewsByResult:",
-    reviewsByResult
-  );
-  // *testing
   let numCorrect = reviewsByResult.correct.length;
   let numWrong = reviewsByResult.incorrect.length;
+  let percentageCorrect = Math.ceil(100 * (numCorrect / reviewData.length));
 
   let correctSubjIDs = reviewsByResult.correct.map(
     (reviewItem: any) => reviewItem.id
@@ -132,9 +116,6 @@ export const ReviewSummary = () => {
     error: incorrectReviewSubjErr,
   } = useSubjectsByIDs(incorrectSubjIDs, hasIncorrect);
 
-  let percentageCorrect = Math.ceil(100 * (numCorrect / reviewData.length));
-  // *testing
-
   let reviewSummaryDataLoading =
     (correctReviewSubjLoading && hasCorrect) ||
     (incorrectReviewSubjLoading && hasIncorrect);
@@ -156,11 +137,11 @@ export const ReviewSummary = () => {
             </IncorrectItemsHeader>
             {!reviewSummaryDataLoading ? (
               <CardContent>
-                <IonRow>
-                  {incorrectReviewSubjData && (
-                    <SubjCharacterList subjList={incorrectReviewSubjData} />
-                  )}
-                </IonRow>
+                {incorrectReviewSubjData && (
+                  <GroupedReviewSummaryResults
+                    subjData={incorrectReviewSubjData}
+                  />
+                )}
               </CardContent>
             ) : (
               <CardContent>
@@ -177,11 +158,11 @@ export const ReviewSummary = () => {
             </CorrectItemsHeader>
             {!reviewSummaryDataLoading ? (
               <CardContent>
-                <IonRow>
-                  {correctReviewSubjData && (
-                    <SubjCharacterList subjList={correctReviewSubjData} />
-                  )}
-                </IonRow>
+                {correctReviewSubjData && (
+                  <GroupedReviewSummaryResults
+                    subjData={correctReviewSubjData}
+                  />
+                )}
               </CardContent>
             ) : (
               <CardContent>

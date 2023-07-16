@@ -1,4 +1,5 @@
 import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
+import { Subject } from "../types/Subject";
 
 export const checkIfReviewIsComplete = (
   reviewItemToMatch: ReviewQueueItem,
@@ -178,4 +179,14 @@ export const getCompletedReviewSessionData = (
   );
 
   return combinedQueueItems;
+};
+
+export const groupDataByProperty = function (dataToGroup: any[], key: string) {
+  return dataToGroup.reduce(function (objWithGroups, item) {
+    let group = item[key];
+    objWithGroups[group] = objWithGroups[group] || [];
+    objWithGroups[group].push(item);
+
+    return objWithGroups;
+  }, {});
 };
