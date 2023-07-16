@@ -10,11 +10,12 @@ import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import styled from "styled-components/macro";
 import { useUpdateStudyMaterials } from "../../hooks/misc/useUpdateStudyMaterials";
-import { updateMeaningSynonymsInStudyMaterial } from "../../services/MiscService";
-
-type Props = {
-  subject: Subject;
-};
+import { useCreateStudyMaterials } from "../../hooks/misc/useCreateStudyMaterials";
+import {
+  constructStudyMaterialData,
+  updateMeaningSynonymsInStudyMaterial,
+} from "../../services/MiscService";
+import { StudyMaterialPostData } from "../../types/MiscTypes";
 
 const AddChip = styled(IonChip)`
   --background: #6930c3;
@@ -33,6 +34,10 @@ const Alert = styled(IonAlert)`
   }
 `;
 
+type Props = {
+  subject: Subject;
+};
+
 export const AddUserMeaningButton = ({ subject }: Props) => {
   const {
     isLoading: studyMaterialLoading,
@@ -41,14 +46,17 @@ export const AddUserMeaningButton = ({ subject }: Props) => {
   } = useStudyMaterialsBySubjIDs([subject.id]);
 
   const { mutate: updateStudyMaterials } = useUpdateStudyMaterials();
+  const { mutate: createStudyMaterials } = useCreateStudyMaterials();
 
   const addUserMeaning = (userMeaningToAdd: string) => {
+    // *testing
     console.log(
       "🚀 ~ file: AddUserMeaningButton.tsx:102 ~ addUserMeaning ~ studyMaterialData:",
       studyMaterialData
     );
-    if (studyMaterialData) {
-      //
+    // *testing
+
+    if (studyMaterialData && !Array.isArray(studyMaterialData)) {
       let updatedMaterialsWithAddedMeaning =
         updateMeaningSynonymsInStudyMaterial(
           studyMaterialData,
@@ -61,15 +69,23 @@ export const AddUserMeaningButton = ({ subject }: Props) => {
         updatedMaterialsWithAddedMeaning
       );
       // *testing
-      // TODO: data already exists, call updateStudyMaterialsMutation (do put request using study materials ID)
 
       updateStudyMaterials({
         studyMaterialID: studyMaterialData.id,
         updatedStudyMaterials: updatedMaterialsWithAddedMeaning,
       });
     } else {
-      // TODO: data doesn't exist, call constructStudyMaterialData and then separate function to put data (do post using subject id to create)
-      console.log("NOT IMPLEMENTED - Need to construct data");
+      let createdStudyMaterialData = constructStudyMaterialData({
+        subject_id: subject.id,
+        meaning_synonyms: [userMeaningToAdd],
+      }) as StudyMaterialPostData;
+      console.log(
+        "🚀 ~ file: AddUserMeaningButton.tsx:78 ~ addUserMeaning ~ createdStudyMaterialData:",
+        createdStudyMaterialData
+      );
+      // TODO: data doesn't exist, call constructStudyMaterialData and then do post using subject id to create
+      // console.log("NOT IMPLEMENTED - Need to construct data");
+      createStudyMaterials({ studyMaterialsData: createdStudyMaterialData });
     }
   };
 
