@@ -1,17 +1,17 @@
-import {
-  getAlternativeMeanings,
-  getSubjectDisplayName,
-} from "../services/SubjectAndAssignmentService";
-
 import styles from "./AlternativeMeanings.module.scss";
 import styled from "styled-components/macro";
-
-import { Subject, SubjectMeaning } from "../types/Subject";
 import {
   SubjSummaryCol,
   SubjDetailSubHeading,
   SubjDetailTxt,
 } from "./subject-details/SubjectDetailsStyled";
+
+import { Subject, SubjectMeaning } from "../types/Subject";
+import {
+  getAlternativeMeanings,
+  getSubjectDisplayName,
+} from "../services/SubjectAndAssignmentService";
+import { UserMeaningChips } from "./subjects/UserMeaningChips";
 
 const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
   padding-left: 0;
@@ -20,6 +20,11 @@ const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
 
 const SubjDetailHeadingNoBtmMargin = styled(SubjDetailSubHeading)`
   margin-bottom: 0;
+`;
+
+const AltMeaningsContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 type PrimaryAndAltProps = {
@@ -74,7 +79,7 @@ type Props = {
   showPrimaryMeaning?: boolean;
 };
 
-//   TODO: add a button to add alternative meanings/synonyms
+// TODO: add a button to add alternative meanings/synonyms
 export const SubjectMeanings = ({
   subject,
   showPrimaryMeaning = false,
@@ -99,10 +104,13 @@ export const SubjectMeanings = ({
         />
       )}
       {!showPrimaryMeaning && (
-        <AltMeanings
-          altMeanings={altMeanings}
-          hasAltMeanings={hasAltMeanings}
-        />
+        <AltMeaningsContainer>
+          <AltMeanings
+            altMeanings={altMeanings}
+            hasAltMeanings={hasAltMeanings}
+          />
+          <UserMeaningChips subject={subject} />
+        </AltMeaningsContainer>
       )}
     </AlternativeMeaningsContainer>
   );
