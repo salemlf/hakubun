@@ -19,18 +19,25 @@ const CharDiv = styled.div<CharDivProps>`
     withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
   padding: ${({ withBgColor }) => (withBgColor ? `0 8px` : `0`)};
   text-align: center;
-  word-break: break-all;
+  word-break: break-word;
 `;
 
 const DivWithTxt = styled(CharDiv)`
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
   p {
     margin: 0;
     color: white;
     font-size: ${({ fontSize }) => fontSize};
+    word-break: keep-all;
   }
 `;
 
 const DivWithImage = styled(CharDiv)`
+  user-select: auto;
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
   background-color: ${({ withBgColor }) =>
     withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
 
