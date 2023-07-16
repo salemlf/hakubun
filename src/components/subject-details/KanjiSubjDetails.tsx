@@ -14,7 +14,6 @@ import { KanjiMeaningMnemonic } from "../KanjiMeaningMnemonic";
 import { KanjiReadingMnemonic } from "../subjects/KanjiReadingMnemonic";
 
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 
 type Props = {
   kanji: Kanji;
@@ -30,18 +29,8 @@ export const KanjiSubjDetails = ({ kanji }: Props) => {
     error: vocabFoundSubjErr,
   } = useSubjectsByIDs(kanji.amalgamation_subject_ids, findVocab);
 
-  const {
-    isLoading: vocabFoundAssignmentsLoading,
-    data: vocabFoundAssignmentsData,
-    error: vocabFoundAssignmentsErr,
-  } = useAssignmentsBySubjIDs(kanji.amalgamation_subject_ids, findVocab);
-
   let vocabFoundLoading =
-    findVocab &&
-    (vocabFoundSubjLoading ||
-      vocabFoundSubjErr ||
-      vocabFoundAssignmentsLoading ||
-      vocabFoundAssignmentsErr);
+    findVocab && (vocabFoundSubjLoading || vocabFoundSubjErr);
 
   // TODO: make this laoding skeleton actually good lol
   if (vocabFoundLoading) {
@@ -64,10 +53,7 @@ export const KanjiSubjDetails = ({ kanji }: Props) => {
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Vocabulary</SubjDetailSubHeading>
         {vocabFoundSubjData && vocabFoundSubjData.length !== 0 && (
-          <SubjectWideBtnList
-            subjList={vocabFoundSubjData}
-            assignmentList={vocabFoundAssignmentsData}
-          />
+          <SubjectWideBtnList subjList={vocabFoundSubjData} />
         )}
       </SubjDetailSection>
     </SubjInfoContainer>

@@ -10,7 +10,6 @@ import {
   SubjectType,
 } from "../types/Subject";
 import { SubjectChars } from "./SubjectChars";
-import { Assignment } from "../types/Assignment";
 
 import {
   getSubjectDisplayName,
@@ -118,20 +117,17 @@ const SubjRow = styled(IonRow)`
 
 type ListProps = {
   subjList: Subject[];
-  assignmentList: Assignment[];
 };
 
-export const SubjectWideBtnList = ({ subjList, assignmentList }: ListProps) => {
+export const SubjectWideBtnList = ({ subjList }: ListProps) => {
   return (
     <SubjRow>
       {(subjList as Subject[]).map((subject: any) => {
         return (
           <SubjCol key={`col_${subject.id}`}>
-            {assignmentList && (
-              <>
-                <SubjectListItem subject={subject} />
-              </>
-            )}
+            <>
+              <SubjectListItem subject={subject} />
+            </>
           </SubjCol>
         );
       })}
