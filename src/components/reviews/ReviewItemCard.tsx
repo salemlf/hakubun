@@ -98,13 +98,12 @@ type Props = {
   currentReviewItem: ReviewQueueItem;
 };
 
+// TODO: also use animations when keyboard shortcuts are used
 export const ReviewItemCard = ({ currentReviewItem }: Props) => {
   const [userAnswer, setUserAnswer] = useState("");
-  // !added
   const [reviewCardRef, animateCard] = useAnimate();
   const [nextOverlayRef, animateNextOverlay] = useAnimate();
   const [retryOverlayRef, animateRetryOverlay] = useAnimate();
-  // !added
   useKeyDown(() => nextBtnClicked(), ["F12"]);
   useKeyDown(() => handleRetryClick(currentReviewItem, setUserAnswer), ["F6"]);
   const {
