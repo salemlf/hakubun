@@ -84,7 +84,7 @@ type Props = {
   subject: Subject;
 };
 
-const SubjectListItem = ({ subject }: Props) => {
+export const SubjectWideButton = ({ subject }: Props) => {
   const router = useIonRouter();
 
   const onSubjBtnClick = (e: any) => {
@@ -126,7 +126,7 @@ export const SubjectWideBtnList = ({ subjList }: ListProps) => {
         return (
           <SubjCol key={`col_${subject.id}`}>
             <>
-              <SubjectListItem subject={subject} />
+              <SubjectWideButton subject={subject} />
             </>
           </SubjCol>
         );
