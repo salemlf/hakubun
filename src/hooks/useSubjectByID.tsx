@@ -18,7 +18,6 @@ export const useSubjectByID = (id: number) => {
           "🚀 ~ file: useSubjectByID.tsx:17 ~ useSubjectByID ~ subjWithImgInfo:",
           subjWithImgInfo
         );
-        // return flattened;
         return subjWithImgInfo;
       },
       [id]

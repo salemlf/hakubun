@@ -1,12 +1,6 @@
-import { useState } from "react";
-import {
-  IonContent,
-  IonGrid,
-  IonItem,
-  IonList,
-  IonPage,
-  IonSearchbar,
-} from "@ionic/react";
+import { useMemo, useState, useEffect } from "react";
+import { IonContent, IonList, IonPage, IonSearchbar } from "@ionic/react";
+import Fuse from "fuse.js";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
 import styled from "styled-components/macro";
@@ -27,22 +21,23 @@ const SearchBar = styled(IonSearchbar)`
   --clear-button-color: var(--dark-greyish-purple);
 `;
 
+const List = styled(IonList)`
+  --background: none;
+  background: none;
+  margin: 0 8px;
+`;
+
 // TODO: move searchbar so it's right above keyboard/at bottom of screen
+// TODO: paginate search results
 export const Search = () => {
-  // const [searchInput, setSearchInput] = useState("");
-  const data = [
-    "Amsterdam",
-    "Buenos Aires",
-    "Cairo",
-    "Geneva",
-    "Hong Kong",
-    "Istanbul",
-    "London",
-    "Madrid",
-    "New York",
-    "Panama City",
-  ];
-  let [results, setResults] = useState<Subject[]>([]);
+  let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
+  const [query, setQuery] = useState("");
+
+  const options = {
+    threshold: 0.1,
+    distance: 20,
+    keys: ["slug", "meanings.meaning"],
+  };
 
   const {
     isLoading: allSubjectsLoading,
@@ -50,18 +45,20 @@ export const Search = () => {
     error: allSubjectsErr,
   } = useAllSubjects();
 
-  // TODO: change to search by meaning, not slug
-  // TODO: change to use Fuse js
-  const handleInput = (ev: Event) => {
-    let query = "";
-    const target = ev.target as HTMLIonSearchbarElement;
-    if (target) query = target.value!.toLowerCase();
+  useEffect(() => {
+    if (allSubjectsData) {
+      const fuse = new Fuse(allSubjectsData, options);
+      const results = fuse.search(query);
+      setResults(results);
+    }
+  }, [allSubjectsData, query]);
 
-    setResults(
-      allSubjectsData.filter(
-        (subject: Subject) => subject.slug.toLowerCase().indexOf(query) > -1
-      )
-    );
+  const handleInput = (ev: Event) => {
+    let enteredQuery = "";
+    const target = ev.target as HTMLIonSearchbarElement;
+    if (target) enteredQuery = target.value!.toLowerCase();
+
+    setQuery(enteredQuery);
   };
 
   return (
@@ -78,11 +75,15 @@ export const Search = () => {
             ></SearchBar>
           </>
           {!allSubjectsLoading ? (
-            <IonList>
-              {results.map((subject: Subject) => (
-                <SubjectWideButton subject={subject} key={subject.id} />
+            <List>
+              {results.map((subject: any) => (
+                <SubjectWideButton
+                  subject={subject.item}
+                  key={subject.item.id}
+                  findImages={true}
+                />
               ))}
-            </IonList>
+            </List>
           ) : (
             <p>Loading...</p>
           )}

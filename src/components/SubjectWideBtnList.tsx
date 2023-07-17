@@ -16,6 +16,7 @@ import {
   getPrimaryReading,
   getSubjectColor,
 } from "../services/SubjectAndAssignmentService";
+import { setSubjectAvailImgs } from "../services/ImageSrcService";
 
 const Characters = styled(SubjectChars)`
   display: flex;
@@ -82,9 +83,15 @@ const SubjectItemContainer = styled.button<ItemContainerProps>`
 
 type Props = {
   subject: Subject;
+  findImages?: boolean;
 };
 
-export const SubjectWideButton = ({ subject }: Props) => {
+export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
+  if (subject.object === "radical" && findImages) {
+    let updatedSubj = setSubjectAvailImgs(subject);
+    subject = updatedSubj;
+  }
+
   const router = useIonRouter();
 
   const onSubjBtnClick = (e: any) => {

@@ -19,11 +19,6 @@ export const useSubjectsByIDs = (ids: number[], enabled: boolean = true) => {
         ) {
           let updatedSubj = setSubjectAvailImgs(subject);
           filtered.push(updatedSubj);
-
-          console.log(
-            "🚀 ~ file: useSubjectsByIDs.tsx:26 ~ useSubjectsByIDs ~ filtered:",
-            filtered
-          );
           return filtered;
         },
         []);
