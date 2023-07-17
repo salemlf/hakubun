@@ -9,9 +9,9 @@ export const useAllSubjects = () => {
     select: (data: any) => {
       return flattenData(data);
     },
-    // stale time of 5 hours
-    staleTime: 5 * 60 * (60 * 1000),
-    // cache time of 6 hours
-    cacheTime: 6 * 60 * (60 * 1000),
+    // stale time of 6 hours
+    staleTime: 6 * 60 * (60 * 1000),
+    // cache time of 7 hours
+    cacheTime: 7 * 60 * (60 * 1000),
   });
 };
