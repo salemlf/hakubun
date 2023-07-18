@@ -1,9 +1,10 @@
-import { Kanji } from "../types/Subject";
+import { Kanji, Subject } from "../types/Subject";
 import { Hint } from "./subject-details/Hint";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "./subject-details/SubjectDetailsStyled";
+import { UserMeaningNote } from "./subject-details/UserMeaningNote";
 import { TxtWithSubjTags } from "./TxtWithSubjTags";
 
 type Props = {
@@ -16,6 +17,7 @@ export const KanjiMeaningMnemonic = ({ kanji }: Props) => {
       <SubjDetailSubHeading>Meaning Mnemonic</SubjDetailSubHeading>
       <TxtWithSubjTags textWithTags={kanji.meaning_mnemonic} />
       {kanji.meaning_hint && <Hint hint={kanji.meaning_hint} />}
+      <UserMeaningNote subject={kanji as Subject} />
     </SubjDetailSection>
   );
 };

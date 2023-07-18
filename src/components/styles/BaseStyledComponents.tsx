@@ -22,3 +22,31 @@ export const SubjCol = styled(IonCol)`
   flex-grow: 0;
   flex-shrink: 0;
 `;
+
+export const NoteHintContainer = styled.div`
+  background-color: var(--light-grey);
+  border-radius: 15px;
+  padding: 8px;
+  margin: 10px 0 5px 0;
+
+  font-size: 0.9rem;
+  line-height: 1.5;
+`;
+
+export const NoteHintHeading = styled.h6`
+  margin: 3px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+`;
+
+export const IconHeadingContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 5px;
+
+  ion-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 5px;
+  }
+`;

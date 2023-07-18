@@ -1,30 +1,11 @@
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
-import styled from "styled-components/macro";
 import { IonIcon } from "@ionic/react";
 import hintIcon from "../../images/hint.svg";
-
-const HintContainer = styled.div`
-  background-color: var(--light-grey);
-  border-radius: 15px;
-  padding: 8px;
-
-  p {
-    margin: 0;
-    font-size: 0.875rem;
-    line-height: 1.5;
-  }
-`;
-
-const HintHeading = styled.h6`
-  margin: 3px 0;
-  font-size: 0.875rem;
-  font-weight: 600;
-`;
-
-const HintIcon = styled(IonIcon)`
-  margin-right: 5px;
-  vertical-align: text-top;
-`;
+import {
+  NoteHintContainer,
+  NoteHintHeading,
+  IconHeadingContainer,
+} from "../styles/BaseStyledComponents";
 
 type Props = {
   hint: string;
@@ -32,12 +13,12 @@ type Props = {
 
 export const Hint = ({ hint }: Props) => {
   return (
-    <HintContainer>
-      <HintHeading>
-        <HintIcon src={hintIcon} />
-        Hint
-      </HintHeading>
+    <NoteHintContainer>
+      <IconHeadingContainer>
+        <IonIcon src={hintIcon} />
+        <NoteHintHeading>Hint</NoteHintHeading>
+      </IconHeadingContainer>
       <TxtWithSubjTags textWithTags={hint} />
-    </HintContainer>
+    </NoteHintContainer>
   );
 };
