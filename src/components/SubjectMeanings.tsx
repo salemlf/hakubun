@@ -17,6 +17,7 @@ import { AddAltUserMeaningButton } from "./subjects/AddAltUserMeaningButton";
 const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
   padding-left: 0;
   padding-right: 0;
+  margin-bottom: 8px;
 `;
 
 const SubjDetailHeadingNoBtmMargin = styled(SubjDetailSubHeading)`
@@ -26,6 +27,11 @@ const SubjDetailHeadingNoBtmMargin = styled(SubjDetailSubHeading)`
 const AltMeaningsContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 8px;
+`;
+
+const AltMeaningText = styled(SubjDetailTxt)`
+  margin-right: 5px;
 `;
 
 type PrimaryAndAltProps = {
@@ -41,7 +47,7 @@ const PrimaryAndAltMeanings = ({
   let primaryMeaning = getSubjectDisplayName(subject);
   let hasAltMeanings = altMeanings && altMeanings.length !== 0;
   return (
-    <SubjDetailTxt>
+    <AltMeaningText>
       {primaryMeaning}
       {hasAltMeanings ? ", " : ""}
       {hasAltMeanings
@@ -51,7 +57,7 @@ const PrimaryAndAltMeanings = ({
             })
             .join(", ")
         : ""}
-    </SubjDetailTxt>
+    </AltMeaningText>
   );
 };
 
@@ -61,13 +67,13 @@ type AltProps = {
 
 const AltMeanings = ({ altMeanings }: AltProps) => {
   return (
-    <SubjDetailTxt>
+    <AltMeaningText>
       {altMeanings
         .map((altMeaning: SubjectMeaning) => {
           return altMeaning.meaning;
         })
         .join(", ")}
-    </SubjDetailTxt>
+    </AltMeaningText>
   );
 };
 
@@ -85,7 +91,7 @@ export const SubjectMeanings = ({
   let hasAltMeanings = altMeanings && altMeanings.length !== 0;
 
   return (
-    <AlternativeMeaningsContainer className={`${styles.altMeaningsContainer}`}>
+    <AlternativeMeaningsContainer>
       {showPrimaryMeaning ? (
         <SubjDetailSubHeading>Meanings</SubjDetailSubHeading>
       ) : (

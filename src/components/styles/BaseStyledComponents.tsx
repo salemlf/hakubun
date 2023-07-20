@@ -55,8 +55,14 @@ export const AddChip = styled(IonChip)`
   --background: #6930c3;
   --color: white;
 
+  padding-bottom: 0px;
+  padding-inline: 8px;
+  padding-top: 0px;
+  margin: 0;
+
   ion-icon {
     color: white;
+    margin-left: 2px;
   }
 `;
 
