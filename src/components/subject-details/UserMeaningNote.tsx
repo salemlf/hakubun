@@ -17,6 +17,7 @@ import {
   AddChip,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components/macro";
+import { StudyMaterialDataResponse } from "../../types/MiscTypes";
 
 const NoteContainer = styled(NoteHintContainer)`
   position: relative;
@@ -189,13 +190,22 @@ export const UserMeaningNote = ({ subject }: Props) => {
     studyMaterialData
   );
 
+  const meaningNoteNotEmpty = (
+    studyMaterialData: StudyMaterialDataResponse
+  ) => {
+    return (
+      studyMaterialData &&
+      !Array.isArray(studyMaterialData) &&
+      studyMaterialData.meaning_note !== null &&
+      studyMaterialData.meaning_note !== ""
+    );
+  };
+
   return (
     <>
       {!studyMaterialLoading ? (
         <>
-          {studyMaterialData &&
-          !Array.isArray(studyMaterialData) &&
-          studyMaterialData.meaning_note !== null ? (
+          {meaningNoteNotEmpty(studyMaterialData) ? (
             <Note meaningNote={studyMaterialData.meaning_note} />
           ) : (
             <AddButtonContainer>
