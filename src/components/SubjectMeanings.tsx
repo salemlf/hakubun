@@ -12,7 +12,7 @@ import {
   getSubjectDisplayName,
 } from "../services/SubjectAndAssignmentService";
 import { UserMeaningChips } from "./subjects/UserMeaningChips";
-import { AddUserMeaningButton } from "./subjects/AddUserMeaningButton";
+import { AddAltUserMeaningButton } from "./subjects/AddAltUserMeaningButton";
 
 const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
   padding-left: 0;
@@ -57,20 +57,16 @@ const PrimaryAndAltMeanings = ({
 
 type AltProps = {
   altMeanings: SubjectMeaning[];
-  hasAltMeanings: boolean;
 };
 
 const AltMeanings = ({ altMeanings }: AltProps) => {
-  let hasAltMeanings = altMeanings && altMeanings.length !== 0;
   return (
     <SubjDetailTxt>
-      {hasAltMeanings
-        ? altMeanings
-            .map((altMeaning: SubjectMeaning) => {
-              return altMeaning.meaning;
-            })
-            .join(", ")
-        : "-"}
+      {altMeanings
+        .map((altMeaning: SubjectMeaning) => {
+          return altMeaning.meaning;
+        })
+        .join(", ")}
     </SubjDetailTxt>
   );
 };
@@ -106,12 +102,11 @@ export const SubjectMeanings = ({
       )}
       {!showPrimaryMeaning && (
         <AltMeaningsContainer>
-          <AltMeanings
-            altMeanings={altMeanings}
-            hasAltMeanings={hasAltMeanings}
-          />
-          <UserMeaningChips subject={subject} />
-          <AddUserMeaningButton subject={subject} />
+          <>
+            {hasAltMeanings && <AltMeanings altMeanings={altMeanings} />}
+            <UserMeaningChips subject={subject} />
+            <AddAltUserMeaningButton subject={subject} />
+          </>
         </AltMeaningsContainer>
       )}
     </AlternativeMeaningsContainer>

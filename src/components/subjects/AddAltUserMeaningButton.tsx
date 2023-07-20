@@ -1,10 +1,4 @@
-import {
-  IonAlert,
-  IonChip,
-  IonIcon,
-  IonLabel,
-  IonSkeletonText,
-} from "@ionic/react";
+import { IonIcon, IonLabel, IonSkeletonText } from "@ionic/react";
 import { addOutline } from "ionicons/icons";
 import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
@@ -22,7 +16,7 @@ type Props = {
   subject: Subject;
 };
 
-export const AddUserMeaningButton = ({ subject }: Props) => {
+export const AddAltUserMeaningButton = ({ subject }: Props) => {
   const {
     isLoading: studyMaterialLoading,
     data: studyMaterialData,
