@@ -10,7 +10,7 @@ import {
 import HomeIcon from "../images/home.svg";
 import SubjectsIcon from "../images/subjects.svg";
 import SearchIcon from "../images/search.svg";
-import "./AppStack.module.scss";
+import styled from "styled-components/macro";
 
 import { IonReactRouter } from "@ionic/react-router";
 import { Route, Redirect, useLocation } from "react-router";
@@ -25,12 +25,42 @@ import { Search } from "../pages/Search";
 export const AppStack = () => {
   return (
     <IonReactRouter>
-      <TabBar />
+      <Tabs />
     </IonReactRouter>
   );
 };
 
-export const TabBar = () => {
+const TabsStyled = styled(IonTabs)`
+  ion-tab-bar {
+    box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.4);
+    border-radius: 30px;
+    width: 65%;
+    min-width: 200px;
+    max-width: 500px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    bottom: 20px;
+    position: relative;
+    margin: 0 auto;
+    border-top: none;
+  }
+
+  ion-tab-button {
+    border-radius: 30px;
+    border: 2px solid transparent;
+    --border: 2px solid transparent;
+
+    &:focus {
+      --border: 2px solid white;
+      border: 2px solid white;
+    }
+  }
+`;
+
+export const Tabs = () => {
   const location = useLocation();
   const [showTabs, setShowTabs] = useState(true);
   const pagesToHideTabBar = ["/review/settings", "/review/session"];
@@ -45,7 +75,7 @@ export const TabBar = () => {
   }, [location.pathname]);
 
   return (
-    <IonTabs>
+    <TabsStyled>
       <IonRouterOutlet>
         <Route path="/:tab(home)" component={Home} exact={true} />
         <Route path="/:tab(subjects)" component={Subjects} exact={true} />
@@ -80,6 +110,6 @@ export const TabBar = () => {
           <IonIcon icon={SearchIcon} />
         </IonTabButton>
       </IonTabBar>
-    </IonTabs>
+    </TabsStyled>
   );
 };

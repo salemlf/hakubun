@@ -9,7 +9,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
   --ion-color-primary-shade: #b05edc;
-  --ion-color-primary-tint: #ce7afb;
+  --ion-color-primary-tint: #c461fa;
 
   --ion-color-secondary: #6930c3;
   --ion-color-secondary-rgb: 105, 48, 195;
@@ -92,6 +92,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-tint: #f5f6f9;
 
   --ion-tab-bar-background: var(--ion-color-secondary);
+  --ion-tab-bar-background-focused: var(--ion-color-primary-shade);
 }
 
 @media (prefers-color-scheme: dark) {

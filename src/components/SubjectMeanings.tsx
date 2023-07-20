@@ -1,4 +1,3 @@
-import styles from "./AlternativeMeanings.module.scss";
 import styled from "styled-components/macro";
 import {
   SubjSummaryCol,
