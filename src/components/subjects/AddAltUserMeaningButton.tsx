@@ -57,6 +57,8 @@ export const AddAltUserMeaningButton = ({ subject }: Props) => {
                   console.log("Adding meaning...");
                   // *testing
 
+                  // TODO: don't let user submit empty input
+
                   let addedMeaning = alertData.meaning;
                   addUserAltSubjectMeaning(
                     subject,
@@ -76,6 +78,9 @@ export const AddAltUserMeaningButton = ({ subject }: Props) => {
                 },
               },
             ]}
+            onDidDismiss={({ detail }) => {
+              // TODO: clear input
+            }}
           ></Alert>
         </>
       ) : (

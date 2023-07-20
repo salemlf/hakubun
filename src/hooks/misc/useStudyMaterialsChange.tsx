@@ -1,6 +1,7 @@
 import { useCreateStudyMaterials } from "./useCreateStudyMaterials";
 import { useUpdateStudyMaterials } from "./useUpdateStudyMaterials";
 import {
+  StudyMaterial,
   StudyMaterialDataResponse,
   StudyMaterialPostData,
 } from "../../types/MiscTypes";
@@ -45,14 +46,11 @@ export const useStudyMaterialsChange = () => {
       subject_id: subject.id,
       meaning_synonyms: [userMeaningToAdd],
     }) as StudyMaterialPostData;
-    console.log(
-      "🚀 ~ file: AddUserMeaningButton.tsx:78 ~ addUserMeaning ~ createdStudyMaterialData:",
-      createdStudyMaterialData
-    );
 
     createStudyMaterials({ studyMaterialsData: createdStudyMaterialData });
   };
 
+  // TODO: modify to make this more generic (can update more than just alt meanings)
   const updateStudyMaterialsData: ActionFunction = (
     updateParams: ActionParams
   ) => {
@@ -67,6 +65,24 @@ export const useStudyMaterialsChange = () => {
     updateStudyMaterials({
       studyMaterialID: studyMaterialData.id,
       updatedStudyMaterials: updatedMaterialsWithAddedMeaning,
+    });
+  };
+
+  //   TODO: change so this is a generic delete function, not just for alt subject meaning
+  const deleteUserAltSubjectMeaning = (
+    studyMaterialsResponse: StudyMaterialDataResponse,
+    meaningToDelete: string
+  ) => {
+    let updatedMaterialsWithRemovedMeaning =
+      updateMeaningSynonymsInStudyMaterial(
+        studyMaterialsResponse as StudyMaterial,
+        meaningToDelete,
+        "remove"
+      );
+
+    updateStudyMaterials({
+      studyMaterialID: studyMaterialsResponse.id,
+      updatedStudyMaterials: updatedMaterialsWithRemovedMeaning,
     });
   };
 
@@ -92,5 +108,6 @@ export const useStudyMaterialsChange = () => {
 
   return {
     addUserAltSubjectMeaning,
+    deleteUserAltSubjectMeaning,
   };
 };

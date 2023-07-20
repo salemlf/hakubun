@@ -7,14 +7,10 @@ import {
   IonAlert,
 } from "@ionic/react";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { useUpdateStudyMaterials } from "../../hooks/misc/useUpdateStudyMaterials";
-import { updateMeaningSynonymsInStudyMaterial } from "../../services/MiscService";
+import { useStudyMaterialsChange } from "../../hooks/misc/useStudyMaterialsChange";
 import { generateUUID } from "../../services/MiscService";
 import { Subject } from "../../types/Subject";
-import {
-  StudyMaterial,
-  StudyMaterialDataResponse,
-} from "../../types/MiscTypes";
+import { StudyMaterialDataResponse } from "../../types/MiscTypes";
 
 import { closeCircle } from "ionicons/icons";
 import styled from "styled-components/macro";
@@ -37,28 +33,14 @@ type ChipProps = {
   userMeaningsWithKeys: UserMeaningsWithKeys[];
 };
 
-// TODO: check that uuids are being generated properly, getting warning that key props aren't unique
 const Chips = ({ studyMaterialsResponse, userMeaningsWithKeys }: ChipProps) => {
   const [selectedMeaning, setSelectedMeaning] = useState("");
-  const { mutate: updateStudyMaterials } = useUpdateStudyMaterials();
+
+  const { deleteUserAltSubjectMeaning } = useStudyMaterialsChange();
 
   type MeaningWithUUID = {
     meaning: string;
     uuid: string;
-  };
-
-  const deleteUserMeaning = () => {
-    let updatedMaterialsWithRemovedMeaning =
-      updateMeaningSynonymsInStudyMaterial(
-        studyMaterialsResponse as StudyMaterial,
-        selectedMeaning,
-        "remove"
-      );
-
-    updateStudyMaterials({
-      studyMaterialID: studyMaterialsResponse.id,
-      updatedStudyMaterials: updatedMaterialsWithRemovedMeaning,
-    });
   };
 
   return (
@@ -88,10 +70,10 @@ const Chips = ({ studyMaterialsResponse, userMeaningsWithKeys }: ChipProps) => {
                   text: "Delete",
                   role: "destructive",
                   handler: () => {
-                    // *testing
-                    console.log("Deleting meaning...");
-                    // *testing
-                    deleteUserMeaning();
+                    deleteUserAltSubjectMeaning(
+                      studyMaterialsResponse,
+                      selectedMeaning
+                    );
                   },
                 },
               ]}
