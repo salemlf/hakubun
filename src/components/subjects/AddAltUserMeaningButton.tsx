@@ -2,13 +2,7 @@ import { IonIcon, IonLabel, IonSkeletonText } from "@ionic/react";
 import { addOutline } from "ionicons/icons";
 import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { useUpdateStudyMaterials } from "../../hooks/misc/useUpdateStudyMaterials";
-import { useCreateStudyMaterials } from "../../hooks/misc/useCreateStudyMaterials";
-import {
-  constructStudyMaterialData,
-  updateMeaningSynonymsInStudyMaterial,
-} from "../../services/MiscService";
-import { StudyMaterialPostData } from "../../types/MiscTypes";
+import { useStudyMaterialsChange } from "../../hooks/misc/useStudyMaterialsChange";
 
 import { AddChip, Alert } from "../styles/BaseStyledComponents";
 
@@ -22,50 +16,7 @@ export const AddAltUserMeaningButton = ({ subject }: Props) => {
     data: studyMaterialData,
     error: studyMaterialErr,
   } = useStudyMaterialsBySubjIDs([subject.id]);
-
-  const { mutate: updateStudyMaterials } = useUpdateStudyMaterials();
-  const { mutate: createStudyMaterials } = useCreateStudyMaterials();
-
-  const addUserMeaning = (userMeaningToAdd: string) => {
-    // *testing
-    console.log(
-      "🚀 ~ file: AddUserMeaningButton.tsx:102 ~ addUserMeaning ~ studyMaterialData:",
-      studyMaterialData
-    );
-    // *testing
-
-    if (studyMaterialData && !Array.isArray(studyMaterialData)) {
-      let updatedMaterialsWithAddedMeaning =
-        updateMeaningSynonymsInStudyMaterial(
-          studyMaterialData,
-          userMeaningToAdd,
-          "add"
-        );
-      // *testing
-      console.log(
-        "🚀 ~ file: AddUserMeaningButton.tsx:107 ~ addUserMeaning ~ updatedMaterialsWithAddedMeaning:",
-        updatedMaterialsWithAddedMeaning
-      );
-      // *testing
-
-      updateStudyMaterials({
-        studyMaterialID: studyMaterialData.id,
-        updatedStudyMaterials: updatedMaterialsWithAddedMeaning,
-      });
-    } else {
-      let createdStudyMaterialData = constructStudyMaterialData({
-        subject_id: subject.id,
-        meaning_synonyms: [userMeaningToAdd],
-      }) as StudyMaterialPostData;
-      console.log(
-        "🚀 ~ file: AddUserMeaningButton.tsx:78 ~ addUserMeaning ~ createdStudyMaterialData:",
-        createdStudyMaterialData
-      );
-      // TODO: data doesn't exist, call constructStudyMaterialData and then do post using subject id to create
-      // console.log("NOT IMPLEMENTED - Need to construct data");
-      createStudyMaterials({ studyMaterialsData: createdStudyMaterialData });
-    }
-  };
+  const { addUserAltSubjectMeaning } = useStudyMaterialsChange();
 
   return (
     <>
@@ -105,8 +56,13 @@ export const AddAltUserMeaningButton = ({ subject }: Props) => {
                   );
                   console.log("Adding meaning...");
                   // *testing
-                  // TODO: call function to add meaning
-                  addUserMeaning(alertData.meaning);
+
+                  let addedMeaning = alertData.meaning;
+                  addUserAltSubjectMeaning(
+                    subject,
+                    studyMaterialData,
+                    addedMeaning
+                  );
                 },
               },
             ]}
