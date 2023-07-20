@@ -244,6 +244,7 @@ export const UserMeaningNote = ({ subject }: Props) => {
           ) : (
             <AddButtonContainer>
               <AddChip
+                tabIndex={0}
                 id="present-user-meaning-note-add"
                 onClick={(e: any) => {
                   console.log("ADD USER MEANING CLICKED! ");
