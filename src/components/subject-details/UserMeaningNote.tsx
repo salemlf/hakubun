@@ -109,11 +109,18 @@ const useAutosizeTextArea = (
 
 type NoteProps = {
   meaningNote: string;
+  beganEditing: boolean;
+  setEditingInProgress: (isEditing: boolean) => void;
 };
 
 // TODO: on trash button click -> confirm note deletion
-const Note = ({ meaningNote }: NoteProps) => {
-  const [isEditable, setIsEditable] = useState(false);
+// TODO: update meaning note value in API
+const Note = ({
+  meaningNote,
+  setEditingInProgress,
+  beganEditing,
+}: NoteProps) => {
+  const [isEditable, setIsEditable] = useState(beganEditing);
   const [textValue, setTextValue] = useState(meaningNote);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(textareaRef.current, textValue);
@@ -130,6 +137,20 @@ const Note = ({ meaningNote }: NoteProps) => {
     let val = evt.target?.value;
 
     setTextValue(val);
+  };
+
+  type CompleteEditParams = {
+    saveEdit: boolean;
+  };
+  const completeEditing = ({ saveEdit }: CompleteEditParams) => {
+    if (saveEdit) {
+      // TODO: if saveEdit, update meaning note in API
+      console.log("TODO: save the edit!");
+    } else {
+      setTextValue(meaningNote);
+    }
+    setEditingInProgress(false);
+    setIsEditable(false);
   };
 
   return (
@@ -151,12 +172,15 @@ const Note = ({ meaningNote }: NoteProps) => {
           <>
             <CancelButton
               aria-label="Cancel"
-              onClick={() => setTextValue(meaningNote)}
+              onClick={() => completeEditing({ saveEdit: false })}
             >
               <IonIcon src={CancelIcon} />
             </CancelButton>
             <SaveButton aria-label="Save">
-              <IonIcon src={SaveIcon} onClick={() => setIsEditable(false)} />
+              <IonIcon
+                src={SaveIcon}
+                onClick={() => completeEditing({ saveEdit: true })}
+              />
             </SaveButton>
           </>
         ) : (
@@ -185,10 +209,14 @@ export const UserMeaningNote = ({ subject }: Props) => {
     error: studyMaterialErr,
   } = useStudyMaterialsBySubjIDs([subject.id]);
 
+  const [editingInProgress, setEditingInProgress] = useState(false);
+
+  // *testing
   console.log(
     "🚀 ~ file: UserMeaningNote.tsx:178 ~ UserMeaningNote ~ studyMaterialData:",
     studyMaterialData
   );
+  // *testing
 
   const meaningNoteNotEmpty = (
     studyMaterialData: StudyMaterialDataResponse
@@ -205,14 +233,21 @@ export const UserMeaningNote = ({ subject }: Props) => {
     <>
       {!studyMaterialLoading ? (
         <>
-          {meaningNoteNotEmpty(studyMaterialData) ? (
-            <Note meaningNote={studyMaterialData.meaning_note} />
+          {meaningNoteNotEmpty(studyMaterialData) || editingInProgress ? (
+            <Note
+              meaningNote={studyMaterialData.meaning_note}
+              beganEditing={editingInProgress}
+              setEditingInProgress={(isEditing: boolean) =>
+                setEditingInProgress(isEditing)
+              }
+            />
           ) : (
             <AddButtonContainer>
               <AddChip
                 id="present-user-meaning-note-add"
                 onClick={(e: any) => {
                   console.log("ADD USER MEANING CLICKED! ");
+                  setEditingInProgress(true);
                 }}
               >
                 <IonLabel>Add Meaning Note</IonLabel>
