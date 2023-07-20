@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IonIcon, IonSkeletonText } from "@ionic/react";
 import NoteIcon from "../../images/note.svg";
 import PencilIcon from "../../images/pencil.svg";
@@ -73,7 +73,29 @@ const Textarea = styled.textarea`
   resize: none;
   width: 100%;
   background-color: var(--light-grey);
+  line-height: 1;
+  padding: 3px 0;
+  /* padding-top: 5px; */
+  margin: 0;
+  display: block;
+  border: none;
 `;
+
+// based on info in this article, who knew an expanding height textbox would be so high-maintenance lol
+// article: https://medium.com/@oherterich/creating-a-textarea-with-dynamic-height-using-react-and-typescript-5ed2d78d9848
+const useAutosizeTextArea = (
+  textAreaRef: HTMLTextAreaElement | null,
+  value: string
+) => {
+  useEffect(() => {
+    if (textAreaRef) {
+      textAreaRef.style.height = "0px";
+      let scrollHeight = textAreaRef.scrollHeight;
+
+      textAreaRef.style.height = scrollHeight + "px";
+    }
+  }, [textAreaRef, value]);
+};
 
 type NoteProps = {
   studyMaterialsResponse: StudyMaterialDataResponse;
@@ -83,9 +105,22 @@ type NoteProps = {
 // TODO: on trash button click -> confirm note deletion
 const Note = ({ studyMaterialsResponse }: NoteProps) => {
   const [isEditable, setIsEditable] = useState(false);
+  const [textValue, setTextValue] = useState(
+    studyMaterialsResponse.meaning_note!
+  );
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  useAutosizeTextArea(textareaRef.current, textValue);
+  useEffect(() => {
+    if (isEditable && textareaRef.current) {
+      textareaRef.current.focus();
+      textareaRef.current.selectionStart = textareaRef.current.value.length;
+    }
+  }, [isEditable]);
 
-  const startEditing = () => {
-    setIsEditable(true);
+  const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+    let val = evt.target?.value;
+
+    setTextValue(val);
   };
 
   return (
@@ -94,20 +129,13 @@ const Note = ({ studyMaterialsResponse }: NoteProps) => {
         <NoteIconStyled src={NoteIcon} />
         <NoteHintHeading>Meaning Note</NoteHintHeading>
       </IconHeadingContainer>
-      {isEditable ? (
-        <Textarea
-          ref={(ref) => ref && ref.focus()}
-          onFocus={(e) =>
-            e.currentTarget.setSelectionRange(
-              e.currentTarget.value.length,
-              e.currentTarget.value.length
-            )
-          }
-          defaultValue={studyMaterialsResponse.meaning_note!}
-        ></Textarea>
-      ) : (
-        <div>{studyMaterialsResponse.meaning_note}</div>
-      )}
+      <Textarea
+        onChange={handleChange}
+        ref={textareaRef}
+        rows={1}
+        value={textValue}
+        disabled={isEditable ? undefined : true}
+      />
 
       <ButtonContainer>
         {isEditable ? (
@@ -124,7 +152,7 @@ const Note = ({ studyMaterialsResponse }: NoteProps) => {
             <TrashButton aria-label="Delete">
               <IonIcon src={TrashIcon} />
             </TrashButton>
-            <PencilButton onClick={() => startEditing()} aria-label="Edit">
+            <PencilButton onClick={() => setIsEditable(true)} aria-label="Edit">
               <IonIcon src={PencilIcon} />
             </PencilButton>
           </>
