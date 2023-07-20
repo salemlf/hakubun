@@ -1,4 +1,4 @@
-import { IonCol, IonGrid, IonRow } from "@ionic/react";
+import { IonAlert, IonChip, IonCol, IonGrid, IonRow } from "@ionic/react";
 import styled from "styled-components/macro";
 
 export const FullWidthGrid = styled(IonGrid)`
@@ -48,5 +48,23 @@ export const IconHeadingContainer = styled.div`
     width: 1.5rem;
     height: 1.5rem;
     margin-right: 5px;
+  }
+`;
+
+export const AddChip = styled(IonChip)`
+  --background: #6930c3;
+  --color: white;
+
+  ion-icon {
+    color: white;
+  }
+`;
+
+// TODO: modify so can see textbox before click (has an outline)
+export const Alert = styled(IonAlert)`
+  @media (prefers-color-scheme: dark) {
+    .alert-message {
+      color: white;
+    }
   }
 `;

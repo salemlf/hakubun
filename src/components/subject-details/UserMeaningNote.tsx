@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { IonIcon, IonSkeletonText } from "@ionic/react";
+import { IonIcon, IonLabel, IonSkeletonText } from "@ionic/react";
+import { addOutline } from "ionicons/icons";
 import NoteIcon from "../../images/note.svg";
 import PencilIcon from "../../images/pencil.svg";
 import TrashIcon from "../../images/trash.svg";
@@ -7,17 +8,19 @@ import SaveIcon from "../../images/save.svg";
 import CancelIcon from "../../images/cancel.svg";
 import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { StudyMaterialDataResponse } from "../../types/MiscTypes";
-import styled from "styled-components/macro";
+
 import {
   NoteHintContainer,
   NoteHintHeading,
   IconHeadingContainer,
+  Alert,
+  AddChip,
 } from "../styles/BaseStyledComponents";
+import styled from "styled-components/macro";
 
 const NoteContainer = styled(NoteHintContainer)`
   position: relative;
-  padding-bottom: 15px;
+  padding-bottom: 18px;
 `;
 
 const NoteIconStyled = styled(IonIcon)`
@@ -75,10 +78,16 @@ const Textarea = styled.textarea`
   background-color: var(--light-grey);
   line-height: 1;
   padding: 3px 0;
-  /* padding-top: 5px; */
   margin: 0;
   display: block;
   border: none;
+`;
+
+const AddButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding-top: 3px;
 `;
 
 // based on info in this article, who knew an expanding height textbox would be so high-maintenance lol
@@ -98,16 +107,13 @@ const useAutosizeTextArea = (
 };
 
 type NoteProps = {
-  studyMaterialsResponse: StudyMaterialDataResponse;
+  meaningNote: string;
 };
 
-// TODO: on cancel button click -> save without changes
 // TODO: on trash button click -> confirm note deletion
-const Note = ({ studyMaterialsResponse }: NoteProps) => {
+const Note = ({ meaningNote }: NoteProps) => {
   const [isEditable, setIsEditable] = useState(false);
-  const [textValue, setTextValue] = useState(
-    studyMaterialsResponse.meaning_note!
-  );
+  const [textValue, setTextValue] = useState(meaningNote);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(textareaRef.current, textValue);
   useEffect(() => {
@@ -117,7 +123,9 @@ const Note = ({ studyMaterialsResponse }: NoteProps) => {
     }
   }, [isEditable]);
 
-  const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextAreaUpdate = (
+    evt: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     let val = evt.target?.value;
 
     setTextValue(val);
@@ -130,7 +138,7 @@ const Note = ({ studyMaterialsResponse }: NoteProps) => {
         <NoteHintHeading>Meaning Note</NoteHintHeading>
       </IconHeadingContainer>
       <Textarea
-        onChange={handleChange}
+        onChange={handleTextAreaUpdate}
         ref={textareaRef}
         rows={1}
         value={textValue}
@@ -140,7 +148,10 @@ const Note = ({ studyMaterialsResponse }: NoteProps) => {
       <ButtonContainer>
         {isEditable ? (
           <>
-            <CancelButton aria-label="Cancel">
+            <CancelButton
+              aria-label="Cancel"
+              onClick={() => setTextValue(meaningNote)}
+            >
               <IonIcon src={CancelIcon} />
             </CancelButton>
             <SaveButton aria-label="Save">
@@ -173,14 +184,31 @@ export const UserMeaningNote = ({ subject }: Props) => {
     error: studyMaterialErr,
   } = useStudyMaterialsBySubjIDs([subject.id]);
 
+  console.log(
+    "🚀 ~ file: UserMeaningNote.tsx:178 ~ UserMeaningNote ~ studyMaterialData:",
+    studyMaterialData
+  );
+
   return (
     <>
       {!studyMaterialLoading ? (
         <>
-          {studyMaterialData && studyMaterialData.meaning_note ? (
-            <Note studyMaterialsResponse={studyMaterialData} />
+          {studyMaterialData &&
+          !Array.isArray(studyMaterialData) &&
+          studyMaterialData.meaning_note !== null ? (
+            <Note meaningNote={studyMaterialData.meaning_note} />
           ) : (
-            <p>Button to add goes here</p>
+            <AddButtonContainer>
+              <AddChip
+                id="present-user-meaning-note-add"
+                onClick={(e: any) => {
+                  console.log("ADD USER MEANING CLICKED! ");
+                }}
+              >
+                <IonLabel>Add Meaning Note</IonLabel>
+                <IonIcon icon={addOutline}></IonIcon>
+              </AddChip>
+            </AddButtonContainer>
           )}
         </>
       ) : (

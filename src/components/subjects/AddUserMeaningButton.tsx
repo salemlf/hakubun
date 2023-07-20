@@ -8,7 +8,6 @@ import {
 import { addOutline } from "ionicons/icons";
 import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import styled from "styled-components/macro";
 import { useUpdateStudyMaterials } from "../../hooks/misc/useUpdateStudyMaterials";
 import { useCreateStudyMaterials } from "../../hooks/misc/useCreateStudyMaterials";
 import {
@@ -17,22 +16,7 @@ import {
 } from "../../services/MiscService";
 import { StudyMaterialPostData } from "../../types/MiscTypes";
 
-const AddChip = styled(IonChip)`
-  --background: #6930c3;
-  --color: white;
-
-  ion-icon {
-    color: white;
-  }
-`;
-
-const Alert = styled(IonAlert)`
-  @media (prefers-color-scheme: dark) {
-    .alert-message {
-      color: white;
-    }
-  }
-`;
+import { AddChip, Alert } from "../styles/BaseStyledComponents";
 
 type Props = {
   subject: Subject;
