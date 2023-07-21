@@ -1,0 +1,9 @@
+// TODO: add other necessary global styles for items that can't easily be modified with styled components
+
+.custom-alert .alert-wrapper {
+  @media (prefers-color-scheme: dark) {
+    .alert-message {
+      color: white;
+    }
+  }
+}

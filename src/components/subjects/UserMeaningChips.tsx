@@ -1,10 +1,10 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import {
   IonChip,
   IonLabel,
   IonIcon,
   IonSkeletonText,
-  IonAlert,
+  useIonAlert,
 } from "@ionic/react";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { useStudyMaterialsChange } from "../../hooks/misc/useStudyMaterialsChange";
@@ -13,15 +13,6 @@ import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse } from "../../types/MiscTypes";
 
 import { closeCircle } from "ionicons/icons";
-import styled from "styled-components/macro";
-
-const Alert = styled(IonAlert)`
-  @media (prefers-color-scheme: dark) {
-    .alert-message {
-      color: white;
-    }
-  }
-`;
 
 type UserMeaningsWithKeys = {
   meaning: string;
@@ -34,9 +25,8 @@ type ChipProps = {
 };
 
 const Chips = ({ studyMaterialsResponse, userMeaningsWithKeys }: ChipProps) => {
-  const [selectedMeaning, setSelectedMeaning] = useState("");
-
   const { deleteUserAltSubjectMeaning } = useStudyMaterialsChange();
+  const [presentAlert] = useIonAlert();
 
   type MeaningWithUUID = {
     meaning: string;
@@ -50,42 +40,33 @@ const Chips = ({ studyMaterialsResponse, userMeaningsWithKeys }: ChipProps) => {
           <Fragment key={meaningWithUUID.uuid}>
             <IonChip
               onClick={(e: any) => {
-                setSelectedMeaning(meaningWithUUID.meaning);
+                presentAlert({
+                  header: "Delete Meaning",
+                  message: `Delete user meaning ${meaningWithUUID.meaning}?`,
+                  cssClass: "custom-alert",
+                  buttons: [
+                    {
+                      text: "Cancel",
+                      role: "cancel",
+                    },
+                    {
+                      text: "Delete",
+                      role: "destructive",
+                      handler: () => {
+                        let meaningToDelete = meaningWithUUID.meaning;
+                        deleteUserAltSubjectMeaning(
+                          studyMaterialsResponse,
+                          meaningToDelete
+                        );
+                      },
+                    },
+                  ],
+                });
               }}
-              id={`present-${meaningWithUUID.uuid}`}
             >
               <IonLabel>{meaningWithUUID.meaning}</IonLabel>
               <IonIcon icon={closeCircle}></IonIcon>
             </IonChip>
-            <Alert
-              header="Delete Meaning"
-              trigger={`present-${meaningWithUUID.uuid}`}
-              message={`Delete user meaning ${meaningWithUUID.meaning}?`}
-              buttons={[
-                {
-                  text: "Cancel",
-                  role: "cancel",
-                },
-                {
-                  text: "Delete",
-                  role: "destructive",
-                  handler: () => {
-                    deleteUserAltSubjectMeaning(
-                      studyMaterialsResponse,
-                      selectedMeaning
-                    );
-                  },
-                },
-              ]}
-              onDidDismiss={({ detail }) => {
-                // *testing
-                console.log(
-                  "🚀 ~ file: UserMeaningChips.tsx:119 ~ detail:",
-                  detail
-                );
-                // *testing
-              }}
-            ></Alert>
           </Fragment>
         );
       })}
