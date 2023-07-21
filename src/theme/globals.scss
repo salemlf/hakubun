@@ -7,3 +7,15 @@
     }
   }
 }
+
+ion-toast.custom-toast.warning-toast {
+  --background: var(--ion-color-warning);
+  --color: black;
+  transform: translateY(-85px);
+
+  &::part(button) {
+    border-left: 1px solid black;
+    color: black;
+    font-size: 15px;
+  }
+}

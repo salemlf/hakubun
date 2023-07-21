@@ -2,7 +2,6 @@ import {
   SrsLevelName,
   StudyMaterial,
   StudyMaterialPostDataWithID,
-  NoteActionType,
 } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
 import { PopoverMessageType, ReviewType } from "../types/ReviewSessionTypes";
@@ -198,67 +197,36 @@ export const getUpdatedNote = (note: string, action: "add" | "remove") => {
 type UpdateStudyMaterialProps = {
   studyMaterial: StudyMaterial;
   action: "add" | "remove";
-  meaningNoteToAdd?: string;
-  meaningToAdd?: string;
-  readingNoteToAdd?: string;
+  meaningToUpdate?: string;
+  meaningNoteToUpdate?: string;
+  readingNoteToUpdate?: string;
 };
 
 export const updateValsInStudyMaterialData = ({
   studyMaterial,
   action,
-  meaningToAdd,
-  meaningNoteToAdd,
-  readingNoteToAdd,
+  meaningToUpdate,
+  meaningNoteToUpdate,
+  readingNoteToUpdate,
 }: UpdateStudyMaterialProps): StudyMaterial => {
   return {
-    meaning_synonyms: meaningToAdd
-      ? getUpdatedAltMeanings(studyMaterial, meaningToAdd, action)
-      : studyMaterial.meaning_synonyms,
-    meaning_note: meaningNoteToAdd
-      ? getUpdatedNote(meaningNoteToAdd, action)
-      : studyMaterial.meaning_note,
-    reading_note: readingNoteToAdd
-      ? getUpdatedNote(readingNoteToAdd, action)
-      : studyMaterial.reading_note,
+    meaning_synonyms:
+      meaningToUpdate !== undefined
+        ? getUpdatedAltMeanings(studyMaterial, meaningToUpdate, action)
+        : studyMaterial.meaning_synonyms,
+    meaning_note:
+      meaningNoteToUpdate !== undefined
+        ? getUpdatedNote(meaningNoteToUpdate, action)
+        : studyMaterial.meaning_note,
+    reading_note:
+      readingNoteToUpdate !== undefined
+        ? getUpdatedNote(readingNoteToUpdate, action)
+        : studyMaterial.reading_note,
     created_at: studyMaterial.created_at,
     hidden: studyMaterial.hidden,
     subject_id: studyMaterial.subject_id,
     subject_type: studyMaterial.subject_type,
   };
-};
-
-// TODO: prob delete
-export const updateMeaningSynonymsInStudyMaterial = (
-  studyMaterial: StudyMaterial,
-  meaning: string,
-  action: "add" | "remove"
-): StudyMaterial => {
-  let newArray;
-  if (action == "add") {
-    newArray = [...studyMaterial.meaning_synonyms, meaning];
-  } else {
-    newArray = studyMaterial.meaning_synonyms.filter(
-      (string) => string !== meaning
-    );
-  }
-  return { ...studyMaterial, meaning_synonyms: newArray };
-};
-
-const noteTypeDict: { [index: string]: string } = {
-  meaning: "meaning_note",
-  reading: "reading_note",
-};
-
-// TODO: prob delete
-export const updateMeaningNoteInStudyMaterial = (
-  studyMaterial: StudyMaterial,
-  note: string,
-  action: NoteActionType,
-  noteType: "meaning" | "reading"
-): StudyMaterial => {
-  let updatedMeaning = action == "add" ? note : null;
-  let noteKey = noteTypeDict[noteType as keyof StudyMaterial];
-  return { ...studyMaterial, [noteKey]: updatedMeaning };
 };
 
 export const generateUUID = (): string => {

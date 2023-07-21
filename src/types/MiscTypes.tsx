@@ -80,3 +80,5 @@ export interface StudyMaterialPostData {
 export interface StudyMaterialPutBody {
   study_material: StudyMaterialPutData;
 }
+
+export type StudyMaterialsChangeActionType = "add" | "remove";

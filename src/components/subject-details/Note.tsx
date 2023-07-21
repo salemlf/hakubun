@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import { IonIcon } from "@ionic/react";
+import { IonIcon, useIonAlert } from "@ionic/react";
+import { useStudyMaterialsChange } from "../../hooks/misc/useStudyMaterialsChange";
+
 import NoteIcon from "../../images/note.svg";
 import PencilIcon from "../../images/pencil.svg";
 import TrashIcon from "../../images/trash.svg";
 import SaveIcon from "../../images/save.svg";
 import CancelIcon from "../../images/cancel.svg";
-
 import {
   NoteHintContainer,
   NoteHintHeading,
   IconHeadingContainer,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components/macro";
+import { StudyMaterialDataResponse } from "../../types/MiscTypes";
+import { Subject } from "../../types/Subject";
 
 const NoteContainer = styled(NoteHintContainer)`
   position: relative;
@@ -80,6 +83,7 @@ const Textarea = styled.textarea`
 
 // based on info in this article, who knew an expanding height textbox would be so high-maintenance lol
 // article: https://medium.com/@oherterich/creating-a-textarea-with-dynamic-height-using-react-and-typescript-5ed2d78d9848
+// TODO: investigate as this doesn't work perfectly, gets in a messed up height state sometimes (text cut off)
 const useAutosizeTextArea = (
   textAreaRef: HTMLTextAreaElement | null,
   value: string
@@ -94,20 +98,24 @@ const useAutosizeTextArea = (
   }, [textAreaRef, value]);
 };
 
+// TODO: change so just passing in studyMaterial, not meaningNote also
 type Props = {
+  subject: Subject;
+  studyMaterial: StudyMaterialDataResponse;
   meaningNote: string;
   beganEditing: boolean;
   setEditingInProgress: (isEditing: boolean) => void;
 };
 
-// TODO: on trash button click -> confirm note deletion
-// TODO: update meaning note value in API
 // TODO: make a generic version of this component so can be used for user reading note also
 export const Note = ({
+  subject,
+  studyMaterial,
   meaningNote,
   setEditingInProgress,
   beganEditing,
 }: Props) => {
+  const { addMeaningNote, removeMeaningNote } = useStudyMaterialsChange();
   const [isEditable, setIsEditable] = useState(beganEditing);
   const [textValue, setTextValue] = useState(meaningNote);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -118,6 +126,7 @@ export const Note = ({
       textareaRef.current.selectionStart = textareaRef.current.value.length;
     }
   }, [isEditable]);
+  const [presentAlert] = useIonAlert();
 
   const handleTextAreaUpdate = (
     evt: React.ChangeEvent<HTMLTextAreaElement>
@@ -128,11 +137,21 @@ export const Note = ({
 
   type CompleteEditParams = {
     saveEdit: boolean;
+    remove: boolean;
   };
-  const completeEditing = ({ saveEdit }: CompleteEditParams) => {
+
+  const completeEditing = ({ saveEdit, remove }: CompleteEditParams) => {
     if (saveEdit) {
-      // TODO: if saveEdit, update meaning note in API
-      console.log("TODO: save the edit!");
+      // *testing
+      console.log(
+        "🚀 ~ file: Note.tsx:159 ~ completeEditing ~ textValue:",
+        textValue
+      );
+      // *testing
+
+      remove
+        ? removeMeaningNote(subject, studyMaterial)
+        : addMeaningNote(subject, studyMaterial, textValue);
     } else {
       setTextValue(meaningNote);
     }
@@ -159,21 +178,47 @@ export const Note = ({
           <>
             <CancelButton
               aria-label="Cancel"
-              onClick={() => completeEditing({ saveEdit: false })}
+              onClick={() =>
+                completeEditing({ saveEdit: false, remove: false })
+              }
             >
               <IonIcon src={CancelIcon} />
             </CancelButton>
             <SaveButton aria-label="Save">
               <IonIcon
                 src={SaveIcon}
-                onClick={() => completeEditing({ saveEdit: true })}
+                onClick={() =>
+                  completeEditing({ saveEdit: true, remove: false })
+                }
               />
             </SaveButton>
           </>
         ) : (
           <>
             <TrashButton aria-label="Delete">
-              <IonIcon src={TrashIcon} />
+              <IonIcon
+                src={TrashIcon}
+                onClick={() =>
+                  presentAlert({
+                    header: "Delete Meaning",
+                    message: "Delete meaning note?",
+                    cssClass: "custom-alert",
+                    buttons: [
+                      {
+                        text: "Cancel",
+                        role: "cancel",
+                      },
+                      {
+                        text: "Delete",
+                        role: "destructive",
+                        handler: () => {
+                          completeEditing({ saveEdit: true, remove: true });
+                        },
+                      },
+                    ],
+                  })
+                }
+              />
             </TrashButton>
             <PencilButton onClick={() => setIsEditable(true)} aria-label="Edit">
               <IonIcon src={PencilIcon} />

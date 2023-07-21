@@ -20,11 +20,16 @@ type UserMeaningsWithKeys = {
 };
 
 type ChipProps = {
+  subject: Subject;
   studyMaterialsResponse: StudyMaterialDataResponse;
   userMeaningsWithKeys: UserMeaningsWithKeys[];
 };
 
-const Chips = ({ studyMaterialsResponse, userMeaningsWithKeys }: ChipProps) => {
+const Chips = ({
+  subject,
+  studyMaterialsResponse,
+  userMeaningsWithKeys,
+}: ChipProps) => {
   const { deleteUserAltSubjectMeaning } = useStudyMaterialsChange();
   const [presentAlert] = useIonAlert();
 
@@ -55,6 +60,7 @@ const Chips = ({ studyMaterialsResponse, userMeaningsWithKeys }: ChipProps) => {
                       handler: () => {
                         let meaningToDelete = meaningWithUUID.meaning;
                         deleteUserAltSubjectMeaning(
+                          subject,
                           studyMaterialsResponse,
                           meaningToDelete
                         );
@@ -100,6 +106,7 @@ export const UserMeaningChips = ({ subject }: Props) => {
         <>
           {studyMaterialData && studyMaterialData.meaning_synonyms && (
             <Chips
+              subject={subject}
               studyMaterialsResponse={studyMaterialData}
               userMeaningsWithKeys={createUserMeaningKeys(studyMaterialData)}
             />

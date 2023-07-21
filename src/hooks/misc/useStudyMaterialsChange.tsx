@@ -78,7 +78,6 @@ export const useStudyMaterialsChange = () => {
     createStudyMaterials({ studyMaterialsData: createdStudyMaterialData });
   };
 
-  // TODO: modify to make this more generic (can update more than just alt meanings)
   const updateStudyMaterialsData: ActionUpdateFunction = (
     updateParams: ActionUpdateParams
   ) => {
@@ -92,15 +91,24 @@ export const useStudyMaterialsChange = () => {
 
     let updatedStudyMaterialData = updateValsInStudyMaterialData({
       studyMaterial: studyMaterialData as StudyMaterial,
-      ...(userMeaningToUpdate && { meaningToAdd: userMeaningToUpdate }),
-      ...(meaningNoteToUpdate && { meaning_note: meaningNoteToUpdate }),
-      ...(readingNoteToUpdate && { reading_note: readingNoteToUpdate }),
+      ...(userMeaningToUpdate !== undefined && {
+        meaningToUpdate: userMeaningToUpdate,
+      }),
+      ...(meaningNoteToUpdate !== undefined && {
+        meaningNoteToUpdate: meaningNoteToUpdate,
+      }),
+      ...(readingNoteToUpdate !== undefined && {
+        readingNoteToUpdate: readingNoteToUpdate,
+      }),
       action: actionType,
     });
+
+    // *testing
     console.log(
       "🚀 ~ file: useStudyMaterialsChange.tsx:69 ~ useStudyMaterialsChange ~ updatedStudyMaterialData:",
       updatedStudyMaterialData
     );
+    // *testing
 
     updateStudyMaterials({
       studyMaterialID: studyMaterialData.id,
@@ -163,8 +171,7 @@ export const useStudyMaterialsChange = () => {
 
   const removeMeaningNote = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse,
-    meaningNoteToUpdate: string
+    studyMaterialData: StudyMaterialDataResponse
   ) => {
     let dataChangeMethod: StudyMaterialsChangeMethod =
       getDataChangeMethod(studyMaterialData);
@@ -172,7 +179,7 @@ export const useStudyMaterialsChange = () => {
     studyMaterialsActionDictionary[dataChangeMethod]({
       subject,
       studyMaterialData,
-      meaningNoteToUpdate,
+      meaningNoteToUpdate: "",
       actionType: "remove",
     });
   };

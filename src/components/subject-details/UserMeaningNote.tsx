@@ -54,6 +54,8 @@ export const UserMeaningNote = ({ subject }: Props) => {
         <>
           {meaningNoteNotEmpty(studyMaterialData) || editingInProgress ? (
             <Note
+              subject={subject}
+              studyMaterial={studyMaterialData}
               meaningNote={studyMaterialData.meaning_note}
               beganEditing={editingInProgress}
               setEditingInProgress={(isEditing: boolean) =>
