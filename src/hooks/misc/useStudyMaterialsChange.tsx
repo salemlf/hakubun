@@ -4,26 +4,42 @@ import {
   StudyMaterial,
   StudyMaterialDataResponse,
   StudyMaterialPostData,
+  StudyMaterialsChangeActionType,
 } from "../../types/MiscTypes";
 import {
   constructStudyMaterialData,
-  updateMeaningSynonymsInStudyMaterial,
+  updateValsInStudyMaterialData,
 } from "../../services/MiscService";
 import { Subject } from "../../types/Subject";
 
 type StudyMaterialsChangeMethod = "create" | "update";
 
 type ActionDictionary = {
-  [key in StudyMaterialsChangeMethod]: ActionFunction;
+  [key in StudyMaterialsChangeMethod]:
+    | ActionUpdateFunction
+    | ActionCreateFunction;
 };
 
+// TODO: create type definition that makes at least one of optional params required
 interface ActionParams {
-  subject: Subject;
+  subject?: Subject;
   studyMaterialData: StudyMaterialDataResponse;
-  userMeaningToAdd: string;
+  userMeaningToUpdate?: string;
+  meaningNoteToUpdate?: string;
+  readingNoteToUpdate?: string;
 }
 
-type ActionFunction = (params: ActionParams) => void;
+interface ActionCreateParams extends ActionParams {
+  subject: Subject;
+}
+
+interface ActionUpdateParams extends ActionParams {
+  actionType: StudyMaterialsChangeActionType;
+}
+
+type ActionUpdateFunction = (params: ActionUpdateParams) => void;
+
+type ActionCreateFunction = (params: ActionCreateParams) => void;
 
 export const useStudyMaterialsChange = () => {
   const { mutate: createStudyMaterials } = useCreateStudyMaterials();
@@ -37,52 +53,74 @@ export const useStudyMaterialsChange = () => {
       : "create";
   };
 
-  const createStudyMaterialsData: ActionFunction = (
-    createParams: ActionParams
+  const createStudyMaterialsData: ActionCreateFunction = (
+    createParams: ActionCreateParams
   ) => {
-    let { subject, userMeaningToAdd } = createParams;
+    let {
+      subject,
+      userMeaningToUpdate,
+      meaningNoteToUpdate,
+      readingNoteToUpdate,
+    } = createParams;
 
     let createdStudyMaterialData = constructStudyMaterialData({
       subject_id: subject.id,
-      meaning_synonyms: [userMeaningToAdd],
+      ...(userMeaningToUpdate && { meaning_synonyms: [userMeaningToUpdate] }),
+      ...(meaningNoteToUpdate && { meaning_note: meaningNoteToUpdate }),
+      ...(readingNoteToUpdate && { reading_note: readingNoteToUpdate }),
     }) as StudyMaterialPostData;
+
+    console.log(
+      "🚀 ~ file: useStudyMaterialsChange.tsx:54 ~ createdStudyMaterialData:",
+      createdStudyMaterialData
+    );
 
     createStudyMaterials({ studyMaterialsData: createdStudyMaterialData });
   };
 
   // TODO: modify to make this more generic (can update more than just alt meanings)
-  const updateStudyMaterialsData: ActionFunction = (
-    updateParams: ActionParams
+  const updateStudyMaterialsData: ActionUpdateFunction = (
+    updateParams: ActionUpdateParams
   ) => {
-    let { studyMaterialData, userMeaningToAdd } = updateParams;
-
-    let updatedMaterialsWithAddedMeaning = updateMeaningSynonymsInStudyMaterial(
+    let {
       studyMaterialData,
-      userMeaningToAdd,
-      "add"
+      userMeaningToUpdate,
+      meaningNoteToUpdate,
+      readingNoteToUpdate,
+      actionType,
+    } = updateParams;
+
+    let updatedStudyMaterialData = updateValsInStudyMaterialData({
+      studyMaterial: studyMaterialData as StudyMaterial,
+      ...(userMeaningToUpdate && { meaningToAdd: userMeaningToUpdate }),
+      ...(meaningNoteToUpdate && { meaning_note: meaningNoteToUpdate }),
+      ...(readingNoteToUpdate && { reading_note: readingNoteToUpdate }),
+      action: actionType,
+    });
+    console.log(
+      "🚀 ~ file: useStudyMaterialsChange.tsx:69 ~ useStudyMaterialsChange ~ updatedStudyMaterialData:",
+      updatedStudyMaterialData
     );
 
     updateStudyMaterials({
       studyMaterialID: studyMaterialData.id,
-      updatedStudyMaterials: updatedMaterialsWithAddedMeaning,
+      updatedStudyMaterials: updatedStudyMaterialData,
     });
   };
 
-  //   TODO: change so this is a generic delete function, not just for alt subject meaning
   const deleteUserAltSubjectMeaning = (
-    studyMaterialsResponse: StudyMaterialDataResponse,
+    subject: Subject,
+    studyMaterialData: StudyMaterialDataResponse,
     meaningToDelete: string
   ) => {
-    let updatedMaterialsWithRemovedMeaning =
-      updateMeaningSynonymsInStudyMaterial(
-        studyMaterialsResponse as StudyMaterial,
-        meaningToDelete,
-        "remove"
-      );
+    let dataChangeMethod: StudyMaterialsChangeMethod =
+      getDataChangeMethod(studyMaterialData);
 
-    updateStudyMaterials({
-      studyMaterialID: studyMaterialsResponse.id,
-      updatedStudyMaterials: updatedMaterialsWithRemovedMeaning,
+    studyMaterialsActionDictionary[dataChangeMethod]({
+      subject,
+      studyMaterialData,
+      userMeaningToUpdate: meaningToDelete,
+      actionType: "remove",
     });
   };
 
@@ -94,7 +132,7 @@ export const useStudyMaterialsChange = () => {
   const addUserAltSubjectMeaning = (
     subject: Subject,
     studyMaterialData: StudyMaterialDataResponse,
-    userMeaningToAdd: string
+    userMeaningToUpdate: string
   ) => {
     let dataChangeMethod: StudyMaterialsChangeMethod =
       getDataChangeMethod(studyMaterialData);
@@ -102,12 +140,47 @@ export const useStudyMaterialsChange = () => {
     studyMaterialsActionDictionary[dataChangeMethod]({
       subject,
       studyMaterialData,
-      userMeaningToAdd,
+      userMeaningToUpdate,
+      actionType: "add",
+    });
+  };
+
+  const addMeaningNote = (
+    subject: Subject,
+    studyMaterialData: StudyMaterialDataResponse,
+    meaningNoteToUpdate: string
+  ) => {
+    let dataChangeMethod: StudyMaterialsChangeMethod =
+      getDataChangeMethod(studyMaterialData);
+
+    studyMaterialsActionDictionary[dataChangeMethod]({
+      subject,
+      studyMaterialData,
+      meaningNoteToUpdate,
+      actionType: "add",
+    });
+  };
+
+  const removeMeaningNote = (
+    subject: Subject,
+    studyMaterialData: StudyMaterialDataResponse,
+    meaningNoteToUpdate: string
+  ) => {
+    let dataChangeMethod: StudyMaterialsChangeMethod =
+      getDataChangeMethod(studyMaterialData);
+
+    studyMaterialsActionDictionary[dataChangeMethod]({
+      subject,
+      studyMaterialData,
+      meaningNoteToUpdate,
+      actionType: "remove",
     });
   };
 
   return {
     addUserAltSubjectMeaning,
     deleteUserAltSubjectMeaning,
+    addMeaningNote,
+    removeMeaningNote,
   };
 };

@@ -2,6 +2,7 @@ import {
   SrsLevelName,
   StudyMaterial,
   StudyMaterialPostDataWithID,
+  NoteActionType,
 } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
 import { PopoverMessageType, ReviewType } from "../types/ReviewSessionTypes";
@@ -160,8 +161,8 @@ export const playAudioIfAvailable = (
 
 export const constructStudyMaterialData = ({
   subject_id,
-  meaning_note = null,
   meaning_synonyms = [],
+  meaning_note = null,
   reading_note = null,
 }: StudyMaterialPostDataWithID) => {
   return {
@@ -174,6 +175,59 @@ export const constructStudyMaterialData = ({
   };
 };
 
+export const getUpdatedAltMeanings = (
+  studyMaterial: StudyMaterial,
+  meaning: string,
+  action: "add" | "remove"
+) => {
+  let updatedMeanings;
+  if (action == "add") {
+    updatedMeanings = [...studyMaterial.meaning_synonyms, meaning];
+  } else {
+    updatedMeanings = studyMaterial.meaning_synonyms.filter(
+      (string) => string !== meaning
+    );
+  }
+  return updatedMeanings;
+};
+
+export const getUpdatedNote = (note: string, action: "add" | "remove") => {
+  return action == "add" ? note : null;
+};
+
+type UpdateStudyMaterialProps = {
+  studyMaterial: StudyMaterial;
+  action: "add" | "remove";
+  meaningNoteToAdd?: string;
+  meaningToAdd?: string;
+  readingNoteToAdd?: string;
+};
+
+export const updateValsInStudyMaterialData = ({
+  studyMaterial,
+  action,
+  meaningToAdd,
+  meaningNoteToAdd,
+  readingNoteToAdd,
+}: UpdateStudyMaterialProps): StudyMaterial => {
+  return {
+    meaning_synonyms: meaningToAdd
+      ? getUpdatedAltMeanings(studyMaterial, meaningToAdd, action)
+      : studyMaterial.meaning_synonyms,
+    meaning_note: meaningNoteToAdd
+      ? getUpdatedNote(meaningNoteToAdd, action)
+      : studyMaterial.meaning_note,
+    reading_note: readingNoteToAdd
+      ? getUpdatedNote(readingNoteToAdd, action)
+      : studyMaterial.reading_note,
+    created_at: studyMaterial.created_at,
+    hidden: studyMaterial.hidden,
+    subject_id: studyMaterial.subject_id,
+    subject_type: studyMaterial.subject_type,
+  };
+};
+
+// TODO: prob delete
 export const updateMeaningSynonymsInStudyMaterial = (
   studyMaterial: StudyMaterial,
   meaning: string,
@@ -188,6 +242,23 @@ export const updateMeaningSynonymsInStudyMaterial = (
     );
   }
   return { ...studyMaterial, meaning_synonyms: newArray };
+};
+
+const noteTypeDict: { [index: string]: string } = {
+  meaning: "meaning_note",
+  reading: "reading_note",
+};
+
+// TODO: prob delete
+export const updateMeaningNoteInStudyMaterial = (
+  studyMaterial: StudyMaterial,
+  note: string,
+  action: NoteActionType,
+  noteType: "meaning" | "reading"
+): StudyMaterial => {
+  let updatedMeaning = action == "add" ? note : null;
+  let noteKey = noteTypeDict[noteType as keyof StudyMaterial];
+  return { ...studyMaterial, [noteKey]: updatedMeaning };
 };
 
 export const generateUUID = (): string => {
