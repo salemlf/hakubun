@@ -134,8 +134,7 @@ const Note = ({
   const handleTextAreaUpdate = (
     evt: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    let val = evt.target?.value;
-
+    let val = evt.target ? evt.target.value : "";
     setTextValue(val);
   };
 
