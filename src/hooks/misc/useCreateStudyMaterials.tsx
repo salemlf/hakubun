@@ -13,7 +13,8 @@ export const useCreateStudyMaterials = () => {
       WaniKaniAPI.postStudyMaterials(studyMaterialsData),
 
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries(["study-materials-by-subj-ids"]);
+      // by returning instead of just calling, we keep query in a loading state while queries are invalidated
+      return queryClient.invalidateQueries(["study-materials-by-subj-ids"]);
     },
   });
 };
