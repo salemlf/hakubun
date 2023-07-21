@@ -31,7 +31,7 @@ const ButtonContainer = styled.div`
   justify-content: flex-end;
   position: absolute;
   right: 5px;
-  bottom: -16px;
+  bottom: -20px;
 `;
 
 const EditingButton = styled.button`
@@ -70,12 +70,22 @@ const CancelButton = styled(EditingButton)`
   margin-right: 15px;
 `;
 
-const Textarea = styled.textarea`
+const EditableNote = styled.textarea`
   resize: none;
   width: 100%;
   background-color: var(--light-grey);
   line-height: 1;
-  padding: 3px 0;
+  padding: 3px 2px;
+  margin: 0;
+  display: block;
+  border: none;
+`;
+
+const NoteContents = styled.div`
+  width: 100%;
+  background-color: var(--light-grey);
+  line-height: 1;
+  padding: 3px 2px;
   margin: 0;
   display: block;
   border: none;
@@ -83,13 +93,14 @@ const Textarea = styled.textarea`
 
 // based on info in this article, who knew an expanding height textbox would be so high-maintenance lol
 // article: https://medium.com/@oherterich/creating-a-textarea-with-dynamic-height-using-react-and-typescript-5ed2d78d9848
-// TODO: investigate as this doesn't work perfectly, gets in a messed up height state sometimes (text cut off)
 const useAutosizeTextArea = (
   textAreaRef: HTMLTextAreaElement | null,
   value: string
 ) => {
   useEffect(() => {
+    console.log("[textAreaRef, value] useEffect ran");
     if (textAreaRef) {
+      console.log("[textAreaRef, value] useEffect changes made");
       textAreaRef.style.height = "0px";
       let scrollHeight = textAreaRef.scrollHeight;
 
@@ -126,6 +137,7 @@ export const Note = ({
       textareaRef.current.selectionStart = textareaRef.current.value.length;
     }
   }, [isEditable]);
+
   const [presentAlert] = useIonAlert();
 
   const handleTextAreaUpdate = (
@@ -142,21 +154,21 @@ export const Note = ({
 
   const completeEditing = ({ saveEdit, remove }: CompleteEditParams) => {
     if (saveEdit) {
-      // *testing
-      console.log(
-        "🚀 ~ file: Note.tsx:159 ~ completeEditing ~ textValue:",
-        textValue
-      );
-      // *testing
-
       remove
         ? removeMeaningNote(subject, studyMaterial)
         : addMeaningNote(subject, studyMaterial, textValue);
+
+      // TODO: this is a meh workaround to avoid the add button flashing while waiting for the mutation to complete
+      // TODO: possibly modify to wait for settled promise in useStudyMaterials
+      setTimeout(() => {
+        setEditingInProgress(false);
+        setIsEditable(false);
+      }, 1000);
     } else {
       setTextValue(meaningNote);
+      setEditingInProgress(false);
+      setIsEditable(false);
     }
-    setEditingInProgress(false);
-    setIsEditable(false);
   };
 
   return (
@@ -165,14 +177,17 @@ export const Note = ({
         <NoteIconStyled src={NoteIcon} />
         <NoteHintHeading>Meaning Note</NoteHintHeading>
       </IconHeadingContainer>
-      <Textarea
-        onChange={handleTextAreaUpdate}
-        ref={textareaRef}
-        rows={1}
-        value={textValue}
-        disabled={isEditable ? undefined : true}
-      />
-
+      {isEditable ? (
+        <EditableNote
+          onChange={handleTextAreaUpdate}
+          ref={textareaRef}
+          rows={1}
+          value={textValue}
+          disabled={isEditable ? undefined : true}
+        />
+      ) : (
+        <NoteContents>{textValue}</NoteContents>
+      )}
       <ButtonContainer>
         {isEditable ? (
           <>

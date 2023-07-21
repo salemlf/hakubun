@@ -53,6 +53,7 @@ export const useStudyMaterialsChange = () => {
       : "create";
   };
 
+  // TODO: change to return a promise (likely resolved within createStudyMaterials onSettled)
   const createStudyMaterialsData: ActionCreateFunction = (
     createParams: ActionCreateParams
   ) => {
@@ -78,6 +79,7 @@ export const useStudyMaterialsChange = () => {
     createStudyMaterials({ studyMaterialsData: createdStudyMaterialData });
   };
 
+  // TODO: change to return a promise (likely resolved within createStudyMaterials onSettled)
   const updateStudyMaterialsData: ActionUpdateFunction = (
     updateParams: ActionUpdateParams
   ) => {
