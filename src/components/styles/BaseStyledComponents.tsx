@@ -64,6 +64,11 @@ export const AddChip = styled(IonChip)`
     color: white;
     margin-left: 2px;
   }
+
+  &:focus {
+    outline: 4px solid var(--ion-color-tertiary);
+    --outline: 4px solid var(--ion-color-tertiary);
+  }
 `;
 
 // TODO: modify so can see textbox before click (has an outline)

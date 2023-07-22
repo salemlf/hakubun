@@ -16,6 +16,7 @@ type Props = {
   subject: Subject;
 };
 
+// TODO: make click event trigger on enter OR just turn into a button (the name lies)
 export const AddAltUserMeaningButton = ({ subject }: Props) => {
   const {
     isLoading: studyMaterialLoading,
@@ -31,6 +32,7 @@ export const AddAltUserMeaningButton = ({ subject }: Props) => {
       {!studyMaterialLoading ? (
         <>
           <AddChip
+            tabIndex={0}
             id="present-user-meaning-add"
             onClick={(e: any) => {
               presentAlert({

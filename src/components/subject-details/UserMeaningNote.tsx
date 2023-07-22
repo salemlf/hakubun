@@ -20,6 +20,7 @@ type Props = {
   subject: Subject;
 };
 
+// TODO: make add meaning click event trigger on enter OR just turn into a button
 // TODO: make a generic version of this component so can be used for user reading note also
 export const UserMeaningNote = ({ subject }: Props) => {
   const {

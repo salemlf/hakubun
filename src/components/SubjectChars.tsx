@@ -25,6 +25,8 @@ const DivWithTxt = styled(CharDiv)`
   user-select: text;
   -webkit-user-select: text;
   -moz-user-select: text;
+  -ms-user-select: text;
+
   p {
     margin: 0;
     color: white;
@@ -37,6 +39,7 @@ const DivWithImage = styled(CharDiv)`
   user-select: auto;
   -webkit-user-select: auto;
   -moz-user-select: auto;
+  -ms-user-select: auto;
   background-color: ${({ withBgColor }) =>
     withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
 

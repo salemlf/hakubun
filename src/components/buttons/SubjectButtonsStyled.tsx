@@ -40,6 +40,11 @@ export const BtnWithTxt = styled(DefaultBtn)<TxtBtnProps>`
 `;
 
 export const SubjBtnDetailsTxt = styled.p`
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+
   margin: 0;
   font-size: 0.75rem;
 

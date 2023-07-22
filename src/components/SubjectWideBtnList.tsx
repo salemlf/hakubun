@@ -25,6 +25,11 @@ const Characters = styled(SubjectChars)`
 
 const ReadingAndMeaningContainer = styled.div`
   text-align: right;
+
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 `;
 
 const ReadingAndMeaningTxt = styled.p`
@@ -79,6 +84,11 @@ const SubjectItemContainer = styled.button<ItemContainerProps>`
   padding: 5px 8px;
   margin-bottom: 2px;
   border-radius: 10px;
+
+  &:focus {
+    outline: 4px solid var(--ion-color-tertiary);
+    --outline: 4px solid var(--ion-color-tertiary);
+  }
 `;
 
 type Props = {

@@ -12,9 +12,22 @@ import { generateUUID } from "../../services/MiscService";
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse } from "../../types/MiscTypes";
 
+import styled from "styled-components/macro";
 import { closeCircle } from "ionicons/icons";
 
-type UserMeaningsWithKeys = {
+const Chip = styled(IonChip)`
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+
+  &:focus {
+    outline: 4px solid var(--ion-color-tertiary);
+    --outline: 4px solid var(--ion-color-tertiary);
+  }
+`;
+
+type MeaningWithUUID = {
   meaning: string;
   uuid: string;
 };
@@ -22,57 +35,58 @@ type UserMeaningsWithKeys = {
 type ChipProps = {
   subject: Subject;
   studyMaterialsResponse: StudyMaterialDataResponse;
-  userMeaningsWithKeys: UserMeaningsWithKeys[];
+  userMeaningsWithUUIDs: MeaningWithUUID[];
 };
 
+// TODO: make click event trigger on enter OR just turn into a button
 const Chips = ({
   subject,
   studyMaterialsResponse,
-  userMeaningsWithKeys,
+  userMeaningsWithUUIDs,
 }: ChipProps) => {
   const { deleteUserAltSubjectMeaning } = useStudyMaterialsChange();
   const [presentAlert] = useIonAlert();
 
-  type MeaningWithUUID = {
-    meaning: string;
-    uuid: string;
+  const deleteMeaningAlert = (meaningWithUUID: MeaningWithUUID) => {
+    presentAlert({
+      header: "Delete Meaning",
+      message: `Delete user meaning ${meaningWithUUID.meaning}?`,
+      cssClass: "custom-alert",
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+        },
+        {
+          text: "Delete",
+          role: "destructive",
+          handler: () => {
+            let meaningToDelete = meaningWithUUID.meaning;
+            deleteUserAltSubjectMeaning(
+              subject,
+              studyMaterialsResponse,
+              meaningToDelete
+            );
+          },
+        },
+      ],
+    });
   };
 
   return (
     <>
-      {userMeaningsWithKeys.map((meaningWithUUID: MeaningWithUUID) => {
+      {userMeaningsWithUUIDs.map((meaningWithUUID: MeaningWithUUID) => {
         return (
           <Fragment key={meaningWithUUID.uuid}>
-            <IonChip
+            <Chip
+              tabIndex={0}
               onClick={(e: any) => {
-                presentAlert({
-                  header: "Delete Meaning",
-                  message: `Delete user meaning ${meaningWithUUID.meaning}?`,
-                  cssClass: "custom-alert",
-                  buttons: [
-                    {
-                      text: "Cancel",
-                      role: "cancel",
-                    },
-                    {
-                      text: "Delete",
-                      role: "destructive",
-                      handler: () => {
-                        let meaningToDelete = meaningWithUUID.meaning;
-                        deleteUserAltSubjectMeaning(
-                          subject,
-                          studyMaterialsResponse,
-                          meaningToDelete
-                        );
-                      },
-                    },
-                  ],
-                });
+                deleteMeaningAlert(meaningWithUUID);
               }}
             >
               <IonLabel>{meaningWithUUID.meaning}</IonLabel>
               <IonIcon icon={closeCircle}></IonIcon>
-            </IonChip>
+            </Chip>
           </Fragment>
         );
       })}
@@ -108,7 +122,7 @@ export const UserMeaningChips = ({ subject }: Props) => {
             <Chips
               subject={subject}
               studyMaterialsResponse={studyMaterialData}
-              userMeaningsWithKeys={createUserMeaningKeys(studyMaterialData)}
+              userMeaningsWithUUIDs={createUserMeaningKeys(studyMaterialData)}
             />
           )}
         </>
