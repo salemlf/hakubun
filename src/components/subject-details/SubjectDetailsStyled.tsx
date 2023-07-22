@@ -54,7 +54,7 @@ export const SubjDetailTxt = styled.p`
 `;
 
 export const SubjDetailSection = styled.div`
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   width: 100%;
 `;
 
