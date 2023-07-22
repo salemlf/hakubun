@@ -58,9 +58,10 @@ export const SubjDetailSection = styled.div`
   width: 100%;
 `;
 
-export const ReadingsStyle = styled(IonCol)`
+export const ReadingsStyle = styled.div`
   padding: 0;
-  padding-top: 0;
+  display: flex;
+  gap: 8px;
   user-select: text;
   -webkit-user-select: text;
   -moz-user-select: text;

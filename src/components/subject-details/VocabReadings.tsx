@@ -31,6 +31,10 @@ const VocabReadingContainer = styled.div`
   align-items: center;
 `;
 
+const ReadingHeader = styled.h5`
+  margin: 5px 0;
+`;
+
 const ReadingTxt = styled.p`
   margin: 5px 0;
 `;
@@ -51,9 +55,9 @@ export const VocabReadings = ({
   // TODO: test layout with multiple pronunciations
   return hasReadings ? (
     <ReadingContainer>
+      {!hideReadingTxt && <ReadingHeader>Readings</ReadingHeader>}
       <IonRow>
         <ReadingsStyle>
-          {!hideReadingTxt && <strong>Readings: </strong>}
           {readings && readings.length
             ? readings.map((vocabReading: SubjectReading, index: number) => {
                 return (
