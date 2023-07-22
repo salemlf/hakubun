@@ -46,16 +46,15 @@ const TabsStyled = styled(IonTabs)`
     position: relative;
     margin: 0 auto;
     border-top: none;
+    gap: 5px;
   }
 
   ion-tab-button {
     border-radius: 30px;
-    border: 2px solid transparent;
-    --border: 2px solid transparent;
 
     &:focus {
-      --border: 2px solid white;
-      border: 2px solid white;
+      outline: 2px solid white;
+      --outline: 2px solid white;
     }
   }
 `;

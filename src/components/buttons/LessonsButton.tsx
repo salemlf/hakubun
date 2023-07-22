@@ -10,6 +10,10 @@ import styled from "styled-components/macro";
 
 const LessonsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-lesson);
+  &:focus {
+    outline: 4px solid var(--ion-color-tertiary);
+    --outline: 4px solid var(--ion-color-tertiary);
+  }
 `;
 
 const LessonButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`

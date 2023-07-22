@@ -32,6 +32,11 @@ export const BtnWithTxt = styled(DefaultBtn)<TxtBtnProps>`
     subjType === "radical" ? `var(--wanikani-blue)` : `var(--wanikani-pink)`};
   background-color: ${({ lockedStyle }) =>
     lockedStyle && `var(--ion-color-step-300)`};
+
+  &:focus {
+    outline: 4px solid var(--ion-color-tertiary);
+    --outline: 4px solid var(--ion-color-tertiary);
+  }
 `;
 
 export const SubjBtnDetailsTxt = styled.p`
@@ -50,6 +55,11 @@ export const BtnWithImage = styled(DefaultBtn)`
   img {
     width: 2rem;
     filter: brightness(0) invert(1);
+  }
+
+  &:focus {
+    outline: 4px solid var(--ion-color-tertiary);
+    --outline: 4px solid var(--ion-color-tertiary);
   }
 `;
 
@@ -77,6 +87,11 @@ export const BaseReviewLessonButton = styled(IonButton)`
     left: 0;
     color: white;
     font-weight: 600;
+  }
+
+  &:focus {
+    outline: 4px solid var(--ion-color-tertiary);
+    --outline: 4px solid var(--ion-color-tertiary);
   }
 `;
 

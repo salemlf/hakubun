@@ -11,6 +11,10 @@ import {
 
 const ReviewsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-review);
+  &:focus {
+    outline: 4px solid var(--ion-color-tertiary);
+    --outline: 4px solid var(--ion-color-tertiary);
+  }
 `;
 
 const ReviewsButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`
