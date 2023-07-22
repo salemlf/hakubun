@@ -4,8 +4,7 @@ import {
   motion,
   useMotionValue,
   useTransform,
-  useAnimate,
-  LayoutGroup,
+  AnimatePresence,
 } from "framer-motion";
 
 import { ReviewCharAndType } from "./ReviewCharAndType";
@@ -25,25 +24,28 @@ import RetryIcon from "../../images/retry.svg";
 import NextIcon from "../../images/next-item.svg";
 import styled from "styled-components/macro";
 
+const TestReviewCardContainer = styled(motion.div)`
+  border-radius: 10px;
+  margin: 10px;
+  display: flex;
+  max-width: 1400px;
+  will-change: "transform";
+  touch-action: none;
+`;
+
 type ReviewItemProps = {
   subjtype: SubjectType;
 };
 
-const ReviewCardContainer = styled(IonRow)`
-  border-radius: 10px;
-  position: relative;
-  display: flex;
-  max-width: 1400px;
-`;
-
 const ReviewCard = styled(motion.div)<ReviewItemProps>`
+  position: relative;
   padding: 50px 0 100px 0;
   border-radius: 10px;
   width: 100%;
-  height: 100%;
   background-color: ${({ subjtype }) => getSubjectColor(subjtype)};
   will-change: "transform";
   cursor: grab;
+  touch-action: none;
 `;
 
 const SwipeOverlay = styled(motion.div)`
@@ -94,16 +96,13 @@ const RetryCardOverlay = styled(SwipeOverlay)`
   }
 `;
 
-type Props = {
+type CardProps = {
   currentReviewItem: ReviewQueueItem;
 };
 
 // TODO: also use animations when keyboard shortcuts are used
-export const ReviewItemCard = ({ currentReviewItem }: Props) => {
+const Card = ({ currentReviewItem }: CardProps) => {
   const [userAnswer, setUserAnswer] = useState("");
-  const [reviewCardRef, animateCard] = useAnimate();
-  const [nextOverlayRef, animateNextOverlay] = useAnimate();
-  const [retryOverlayRef, animateRetryOverlay] = useAnimate();
   useKeyDown(() => nextBtnClicked(), ["F12"]);
   useKeyDown(() => handleRetryClick(currentReviewItem, setUserAnswer), ["F6"]);
   const {
@@ -115,7 +114,10 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
   const x = useMotionValue(0);
   const opacityLeft = useTransform(x, [-100, 0], [1, 0]);
   const opacityRight = useTransform(x, [0, 100], [0, 1]);
-  const rotate = useTransform(x, [-300, 300], [-10, 10]);
+  const [exitX, setExitX] = useState(0);
+  const rotate = useTransform(x, [-300, 0, 300], [-20, 0, 20], {
+    clamp: false,
+  });
 
   const nextBtnClicked = () => {
     // *testing
@@ -130,92 +132,138 @@ export const ReviewItemCard = ({ currentReviewItem }: Props) => {
     if (isValidInfo.isValid === false) {
       displayInvalidAnswerMsg(isValidInfo.message);
     } else {
-      animateCard(reviewCardRef.current, { x: "150%" }, { duration: 0.2 });
-      animateNextOverlay(nextOverlayRef.current, { opacity: 0 });
-      setTimeout(
-        () => handleNextClick(currentReviewItem, userAnswer, setUserAnswer),
-        200
-      );
+      setExitX(300);
+      handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
     }
   };
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
     if (info.offset.x > 200) {
-      console.log("RIGHT");
       nextBtnClicked();
-      // handleNextClick(currentReviewItem, userAnswer, setUserAnswer)
     } else if (info.offset.x < -200) {
-      console.log("LEFT");
       if (queueState.showRetryButton) {
-        animateCard(reviewCardRef.current, { x: "-150%" }, { duration: 0.2 });
-        setTimeout(
-          () => handleRetryClick(currentReviewItem, setUserAnswer),
-          200
-        );
-        animateRetryOverlay(retryOverlayRef.current, { opacity: 0 });
-        //  handleRetryClick(currentReviewItem, setUserAnswer)
+        setExitX(-300);
+        handleRetryClick(currentReviewItem, setUserAnswer);
       } else {
         // TODO: show some visual indication of this
         console.log("RETRY NOT AVAILABLE!");
-        // animateCard(reviewCardRef.current, { x: "150%" }, { duration: 0.2 });
       }
     }
   };
 
+  const reviewItemVariants = {
+    initial: {
+      x: 0,
+      y: 0,
+      opacity: 0,
+    },
+    animate: {
+      scale: 1,
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 1.3,
+      },
+    },
+    exit: (custom: number) => ({
+      x: custom,
+      opacity: 0,
+      scale: 0.5,
+      transition: {
+        duration: 0.2,
+      },
+    }),
+  };
+
+  const overlayVariants = {
+    initial: {
+      opacity: 0,
+    },
+  };
+
+  // const retryItemVariants = {
+  //   initial: {
+  //     opacity: 0,
+  //   },
+  //   exit: (custom: number) => ({
+  //     x: custom,
+  //     scale: 0.5,
+  //     transition: {
+  //       duration: 0.2,
+  //     },
+  //   }),
+  // };
+
   return (
-    <ReviewCardContainer>
-      <LayoutGroup>
-        <ReviewCard
-          subjtype={currentReviewItem.object as SubjectType}
-          ref={reviewCardRef}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
-          onDragEnd={handleDragEnd}
-          style={{
-            x,
-            rotate: rotate,
-          }}
-          dragDirectionLock={true}
-          whileTap={{ cursor: "grabbing" }}
-        >
-          <ReviewCharAndType currentReviewItem={currentReviewItem} />
-          <ReviewInputAndButtons
-            currentReviewItem={currentReviewItem}
-            userAnswer={userAnswer}
-            setUserAnswer={setUserAnswer}
-            nextBtnClicked={nextBtnClicked}
-          />
-          <ReviewItemBottomSheet
-            currentReviewItem={currentReviewItem}
-            reviewType={currentReviewItem.review_type}
-          />
-        </ReviewCard>
-        <RetryCardOverlay
-          ref={retryOverlayRef}
-          style={{
-            x,
-            opacity: opacityLeft,
-            rotate: rotate,
-          }}
-        >
-          <SwipeIcon>
-            <IonIcon icon={RetryIcon}></IonIcon>
-          </SwipeIcon>
-        </RetryCardOverlay>
-        <NextCardOverlay
-          ref={nextOverlayRef}
-          style={{
-            x,
-            opacity: opacityRight,
-            rotate: rotate,
-          }}
-        >
-          <SwipeIcon>
-            <IonIcon icon={NextIcon}></IonIcon>
-          </SwipeIcon>
-        </NextCardOverlay>
-      </LayoutGroup>
-    </ReviewCardContainer>
+    <ReviewCard
+      subjtype={currentReviewItem.object as SubjectType}
+      style={{
+        top: 0,
+        x,
+        rotate,
+      }}
+      drag="x"
+      dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
+      onDragEnd={handleDragEnd}
+      variants={reviewItemVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      custom={exitX}
+      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      whileTap={{ cursor: "grabbing" }}
+      dragElastic={0.3}
+    >
+      <ReviewCharAndType currentReviewItem={currentReviewItem} />
+      <ReviewInputAndButtons
+        currentReviewItem={currentReviewItem}
+        userAnswer={userAnswer}
+        setUserAnswer={setUserAnswer}
+        nextBtnClicked={nextBtnClicked}
+      />
+      <ReviewItemBottomSheet
+        currentReviewItem={currentReviewItem}
+        reviewType={currentReviewItem.review_type}
+      />
+      <RetryCardOverlay
+        variants={overlayVariants}
+        initial="initial"
+        style={{
+          opacity: opacityLeft,
+        }}
+      >
+        <SwipeIcon>
+          <IonIcon icon={RetryIcon}></IonIcon>
+        </SwipeIcon>
+      </RetryCardOverlay>
+      <NextCardOverlay
+        variants={overlayVariants}
+        initial="initial"
+        custom={exitX}
+        style={{
+          opacity: opacityRight,
+        }}
+      >
+        <SwipeIcon>
+          <IonIcon icon={NextIcon}></IonIcon>
+        </SwipeIcon>
+      </NextCardOverlay>
+    </ReviewCard>
+  );
+};
+
+type ReviewCardsProps = {
+  currentReviewItem: ReviewQueueItem;
+};
+export const ReviewCards = ({ currentReviewItem }: ReviewCardsProps) => {
+  return (
+    <TestReviewCardContainer>
+      <AnimatePresence>
+        <Card
+          key={currentReviewItem.itemID}
+          currentReviewItem={currentReviewItem}
+        />
+      </AnimatePresence>
+    </TestReviewCardContainer>
   );
 };

@@ -3,7 +3,7 @@ import { IonContent, IonGrid, IonPage } from "@ionic/react";
 import styled from "styled-components/macro";
 import { useReviewQueue } from "../hooks/useReviewQueue";
 import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
-import { ReviewItemCard } from "../components/reviews/ReviewItemCard";
+import { ReviewCards } from "../components/reviews/ReviewCards";
 import { ReviewSummary } from "../components/reviews/ReviewSummary";
 
 const Page = styled(IonPage)`
@@ -44,7 +44,8 @@ export const ReviewSessionQueue = () => {
           {!queueDataState.isLoading &&
             reviewQueue.length !== queueDataState.currQueueIndex &&
             currentReviewItem && (
-              <ReviewItemCard currentReviewItem={currentReviewItem} />
+              // <ReviewItemCard currentReviewItem={currentReviewItem} />
+              <ReviewCards currentReviewItem={currentReviewItem} />
             )}
           {!queueDataState.isLoading &&
             reviewQueue.length === queueDataState.currQueueIndex && (
