@@ -51,26 +51,6 @@ export const IconHeadingContainer = styled.div`
   }
 `;
 
-export const AddChip = styled(IonChip)`
-  --background: #6930c3;
-  --color: white;
-
-  padding-bottom: 0px;
-  padding-inline: 8px;
-  padding-top: 0px;
-  margin: 0;
-
-  ion-icon {
-    color: white;
-    margin-left: 2px;
-  }
-
-  &:focus {
-    outline: 2px solid white;
-    --outline: 2px solid white;
-  }
-`;
-
 // TODO: modify so can see textbox before click (has an outline)
 export const Alert = styled(IonAlert)`
   @media (prefers-color-scheme: dark) {
@@ -81,7 +61,6 @@ export const Alert = styled(IonAlert)`
 `;
 
 export const Chip = styled.button`
-  background-color: var(--light-greyish-purple);
   padding: 8px;
   border-radius: 16px;
   display: flex;
@@ -100,5 +79,7 @@ export const Chip = styled.button`
 
   ion-icon {
     margin-left: 5px;
+    width: 1.25em;
+    height: 1.25em;
   }
 `;

@@ -6,7 +6,7 @@ import { StudyMaterialDataResponse } from "../../types/MiscTypes";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 
 import styled from "styled-components/macro";
-import { AddChip } from "../styles/BaseStyledComponents";
+import { Chip } from "../styles/BaseStyledComponents";
 import { addOutline } from "ionicons/icons";
 
 const AddButtonContainer = styled.div`
@@ -16,11 +16,14 @@ const AddButtonContainer = styled.div`
   padding-top: 3px;
 `;
 
+const AddButton = styled(Chip)`
+  background-color: var(--ion-color-secondary);
+`;
+
 type Props = {
   subject: Subject;
 };
 
-// TODO: make add meaning click event trigger on enter OR just turn into a button
 // TODO: make a generic version of this component so can be used for user reading note also
 export const UserMeaningNote = ({ subject }: Props) => {
   const {
@@ -66,17 +69,14 @@ export const UserMeaningNote = ({ subject }: Props) => {
             />
           ) : (
             <AddButtonContainer>
-              <AddChip
-                tabIndex={0}
-                id="present-user-meaning-note-add"
+              <AddButton
                 onClick={(e: any) => {
-                  console.log("ADD USER MEANING CLICKED! ");
                   setEditingInProgress(true);
                 }}
               >
-                <IonLabel>Add Meaning Note</IonLabel>
+                Add Meaning Note
                 <IonIcon icon={addOutline}></IonIcon>
-              </AddChip>
+              </AddButton>
             </AddButtonContainer>
           )}
         </>
