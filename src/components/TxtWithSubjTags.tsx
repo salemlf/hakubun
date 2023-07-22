@@ -15,6 +15,19 @@ type TagRegexes = {
   japaneseReadingRegEx: RegExp;
 };
 
+type TagProps = {
+  tagType: TagType;
+};
+
+const Tag = styled.span<TagProps>`
+  color: white;
+  padding: 4px 10px;
+  background: ${({ tagType }) => getTagColor(tagType)};
+  filter: url("#goo");
+  display: inline;
+  box-decoration-break: clone;
+`;
+
 const TaggedTxt = styled(SubjDetailTxt)`
   line-height: 1.75;
   user-select: text;
@@ -23,16 +36,32 @@ const TaggedTxt = styled(SubjDetailTxt)`
   -ms-user-select: text;
 `;
 
-type TagProps = {
-  tagType: TagType;
+// this is used so there's no icky wrapping for words where color is cut off/no border-radius on one side
+// see this article for reference
+const Goo = () => {
+  return (
+    <svg
+      style={{ visibility: "hidden", position: "absolute" }}
+      width="0"
+      height="0"
+      xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+    >
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
+            result="goo"
+          />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+        </filter>
+      </defs>
+    </svg>
+  );
 };
-
-const Tag = styled.span<TagProps>`
-  color: white;
-  padding: 4px;
-  border-radius: 10px;
-  background-color: ${({ tagType }) => getTagColor(tagType)};
-`;
 
 // TODO: improve so not so repetitive
 const createSubjectTags = (
@@ -47,9 +76,12 @@ const createSubjectTags = (
     currUUIDArrIndex++;
 
     return (
-      <Tag key={`radical-tag${uuid}`} tagType="radical">
-        {match}
-      </Tag>
+      <>
+        <Tag key={`radical-tag${uuid}`} tagType="radical">
+          {match}
+        </Tag>
+        <Goo />
+      </>
     );
   });
 
@@ -60,9 +92,12 @@ const createSubjectTags = (
       let uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
       return (
-        <Tag key={`kanji-tag${uuid}`} tagType="kanji">
-          {match}
-        </Tag>
+        <>
+          <Tag key={`kanji-tag${uuid}`} tagType="kanji">
+            {match}
+          </Tag>
+          <Goo />
+        </>
       );
     }
   );
@@ -74,9 +109,12 @@ const createSubjectTags = (
       let uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
       return (
-        <Tag key={`vocabulary-tag${uuid}`} tagType="vocabulary">
-          {match}
-        </Tag>
+        <>
+          <Tag key={`vocabulary-tag${uuid}`} tagType="vocabulary">
+            {match}
+          </Tag>
+          <Goo />
+        </>
       );
     }
   );
@@ -89,9 +127,12 @@ const createSubjectTags = (
       currUUIDArrIndex++;
 
       return (
-        <Tag key={`ja-reading-tag${uuid}`} tagType="reading">
-          {match}
-        </Tag>
+        <>
+          <Tag key={`ja-reading-tag${uuid}`} tagType="reading">
+            {match}
+          </Tag>
+          <Goo />
+        </>
       );
     }
   );
@@ -111,9 +152,12 @@ const createSubjectTags = (
       currUUIDArrIndex++;
 
       return (
-        <Tag key={`reading-tag${uuid}`} tagType="reading">
-          {match}
-        </Tag>
+        <>
+          <Tag key={`reading-tag${uuid}`} tagType="reading">
+            {match}
+          </Tag>
+          <Goo />
+        </>
       );
     }
   );
@@ -126,9 +170,12 @@ const createSubjectTags = (
       currUUIDArrIndex++;
 
       return (
-        <Tag key={`meaning-tag${uuid}`} tagType="meaning">
-          {match}
-        </Tag>
+        <>
+          <Tag key={`meaning-tag${uuid}`} tagType="meaning">
+            {match}
+          </Tag>
+          <Goo />
+        </>
       );
     }
   );
