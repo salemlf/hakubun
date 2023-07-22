@@ -12,6 +12,7 @@ type TagRegexes = {
   readingRegEx: RegExp;
   meaningRegEx: RegExp;
   japaneseRegEx: RegExp;
+  japaneseReadingRegEx: RegExp;
 };
 
 const TaggedTxt = styled(SubjDetailTxt)`
@@ -34,17 +35,14 @@ const Tag = styled.span<TagProps>`
 `;
 
 // TODO: improve so not so repetitive
-const createSubjectTags = (text: string, uuidsArr: string[]) => {
-  let radRegEx = new RegExp(`<radical>(.+?)<\/radical>`, "g");
-  let kanjiRegEx = new RegExp(`<kanji>(.+?)<\/kanji>`, "g");
-  let vocabRegEx = new RegExp(`<vocabulary>(.+?)<\/vocabulary>`, "g");
-  let readingRegEx = new RegExp(`<reading>(.+?)<\/reading>`, "g");
-  let meaningRegEx = new RegExp(`<meaning>(.+?)<\/meaning>`, "g");
-  let japaneseRegEx = new RegExp(`<ja>(.+?)<\/ja>`, "g");
-
+const createSubjectTags = (
+  text: string,
+  regexForTags: TagRegexes,
+  uuidsArr: string[]
+) => {
   let currUUIDArrIndex = 0;
 
-  let replaced = reactStringReplace(text, radRegEx, (match, i) => {
+  let replaced = reactStringReplace(text, regexForTags.radRegEx, (match, i) => {
     let uuid = uuidsArr[currUUIDArrIndex];
     currUUIDArrIndex++;
 
@@ -55,50 +53,85 @@ const createSubjectTags = (text: string, uuidsArr: string[]) => {
     );
   });
 
-  replaced = reactStringReplace(replaced, kanjiRegEx, (match, i) => {
-    let uuid = uuidsArr[currUUIDArrIndex];
-    currUUIDArrIndex++;
-    return (
-      <Tag key={`kanji-tag${uuid}`} tagType="kanji">
-        {match}
-      </Tag>
-    );
-  });
+  replaced = reactStringReplace(
+    replaced,
+    regexForTags.kanjiRegEx,
+    (match, i) => {
+      let uuid = uuidsArr[currUUIDArrIndex];
+      currUUIDArrIndex++;
+      return (
+        <Tag key={`kanji-tag${uuid}`} tagType="kanji">
+          {match}
+        </Tag>
+      );
+    }
+  );
 
-  replaced = reactStringReplace(replaced, vocabRegEx, (match, i) => {
-    let uuid = uuidsArr[currUUIDArrIndex];
-    currUUIDArrIndex++;
-    return (
-      <Tag key={`vocabulary-tag${uuid}`} tagType="vocabulary">
-        {match}
-      </Tag>
-    );
-  });
+  replaced = reactStringReplace(
+    replaced,
+    regexForTags.vocabRegEx,
+    (match, i) => {
+      let uuid = uuidsArr[currUUIDArrIndex];
+      currUUIDArrIndex++;
+      return (
+        <Tag key={`vocabulary-tag${uuid}`} tagType="vocabulary">
+          {match}
+        </Tag>
+      );
+    }
+  );
+
+  replaced = reactStringReplace(
+    replaced,
+    regexForTags.japaneseReadingRegEx,
+    (match, i) => {
+      let uuid = uuidsArr[currUUIDArrIndex];
+      currUUIDArrIndex++;
+
+      return (
+        <Tag key={`ja-reading-tag${uuid}`} tagType="reading">
+          {match}
+        </Tag>
+      );
+    }
+  );
 
   // TODO: replacing with nothing rn, use different font?
-  replaced = reactStringReplace(replaced, japaneseRegEx, (match, i) => match);
+  replaced = reactStringReplace(
+    replaced,
+    regexForTags.japaneseRegEx,
+    (match, i) => match
+  );
 
-  replaced = reactStringReplace(replaced, readingRegEx, (match, i) => {
-    let uuid = uuidsArr[currUUIDArrIndex];
-    currUUIDArrIndex++;
+  replaced = reactStringReplace(
+    replaced,
+    regexForTags.readingRegEx,
+    (match, i) => {
+      let uuid = uuidsArr[currUUIDArrIndex];
+      currUUIDArrIndex++;
 
-    return (
-      <Tag key={`reading-tag${uuid}`} tagType="reading">
-        {match}
-      </Tag>
-    );
-  });
+      return (
+        <Tag key={`reading-tag${uuid}`} tagType="reading">
+          {match}
+        </Tag>
+      );
+    }
+  );
 
-  replaced = reactStringReplace(replaced, meaningRegEx, (match, i) => {
-    let uuid = uuidsArr[currUUIDArrIndex];
-    currUUIDArrIndex++;
+  replaced = reactStringReplace(
+    replaced,
+    regexForTags.meaningRegEx,
+    (match, i) => {
+      let uuid = uuidsArr[currUUIDArrIndex];
+      currUUIDArrIndex++;
 
-    return (
-      <Tag key={`meaning-tag${uuid}`} tagType="meaning">
-        {match}
-      </Tag>
-    );
-  });
+      return (
+        <Tag key={`meaning-tag${uuid}`} tagType="meaning">
+          {match}
+        </Tag>
+      );
+    }
+  );
 
   return replaced;
 };
@@ -121,20 +154,26 @@ type Props = {
 
 // TODO: also render links in this component?
 export const TxtWithSubjTags = ({ textWithTags }: Props) => {
-  const regexes = {
+  const tagRegexes = {
     radRegEx: new RegExp(`<radical>(.+?)<\/radical>`, "g"),
     kanjiRegEx: new RegExp(`<kanji>(.+?)<\/kanji>`, "g"),
     vocabRegEx: new RegExp(`<vocabulary>(.+?)<\/vocabulary>`, "g"),
     readingRegEx: new RegExp(`<reading>(.+?)<\/reading>`, "g"),
     meaningRegEx: new RegExp(`<meaning>(.+?)<\/meaning>`, "g"),
     japaneseRegEx: new RegExp(`<ja>(.+?)<\/ja>`, "g"),
+    japaneseReadingRegEx: new RegExp(
+      `<reading><ja>(.+?)<\/ja><\/reading>`,
+      "g"
+    ),
   };
 
-  let uuids = getKeyssForTags(textWithTags, regexes);
+  let uuids = getKeyssForTags(textWithTags, tagRegexes);
 
   return (
     <TaggedTxt>
-      {uuids.length ? createSubjectTags(textWithTags, uuids) : textWithTags}
+      {uuids.length
+        ? createSubjectTags(textWithTags, tagRegexes, uuids)
+        : textWithTags}
     </TaggedTxt>
   );
 };
