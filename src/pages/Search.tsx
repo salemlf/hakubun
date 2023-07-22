@@ -70,7 +70,6 @@ export const Search = () => {
               debounce={1500}
               searchIcon={SearchIcon}
               clearIcon={ClearIcon}
-              placeholder="Search Icon"
               onIonInput={(ev) => handleInput(ev)}
             ></SearchBar>
           </>
