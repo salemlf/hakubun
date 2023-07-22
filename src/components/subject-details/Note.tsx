@@ -47,6 +47,11 @@ const EditingButton = styled.button`
     justify-content: center;
     align-items: center;
   }
+
+  &:focus {
+    outline: 4px solid var(--ion-color-tertiary);
+    --outline: 4px solid var(--ion-color-tertiary);
+  }
 `;
 
 const TrashButton = styled(EditingButton)`
