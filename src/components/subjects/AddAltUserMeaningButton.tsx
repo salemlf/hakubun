@@ -10,7 +10,12 @@ import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { useStudyMaterialsChange } from "../../hooks/misc/useStudyMaterialsChange";
 
-import { AddChip } from "../styles/BaseStyledComponents";
+import styled from "styled-components/macro";
+import { Chip } from "../styles/BaseStyledComponents";
+
+const AddButton = styled(Chip)`
+  background-color: var(--ion-color-secondary);
+`;
 
 type Props = {
   subject: Subject;
@@ -31,8 +36,7 @@ export const AddAltUserMeaningButton = ({ subject }: Props) => {
     <>
       {!studyMaterialLoading ? (
         <>
-          <AddChip
-            tabIndex={0}
+          <AddButton
             id="present-user-meaning-add"
             onClick={(e: any) => {
               presentAlert({
@@ -97,9 +101,9 @@ export const AddAltUserMeaningButton = ({ subject }: Props) => {
               });
             }}
           >
-            <IonLabel>Add</IonLabel>
+            Add
             <IonIcon icon={addOutline}></IonIcon>
-          </AddChip>
+          </AddButton>
         </>
       ) : (
         <IonSkeletonText

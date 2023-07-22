@@ -7,6 +7,11 @@ import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse } from "../../types/MiscTypes";
 import { Chip } from "../styles/BaseStyledComponents";
 import { closeCircle } from "ionicons/icons";
+import styled from "styled-components/macro";
+
+const UserMeaningChip = styled(Chip)`
+  background-color: var(--light-greyish-purple);
+`;
 
 type MeaningWithUUID = {
   meaning: string;
@@ -58,14 +63,14 @@ const Chips = ({
       {userMeaningsWithUUIDs.map((meaningWithUUID: MeaningWithUUID) => {
         return (
           <Fragment key={meaningWithUUID.uuid}>
-            <Chip
+            <UserMeaningChip
               onClick={(e: any) => {
                 deleteMeaningAlert(meaningWithUUID);
               }}
             >
               {meaningWithUUID.meaning}
               <IonIcon icon={closeCircle}></IonIcon>
-            </Chip>
+            </UserMeaningChip>
           </Fragment>
         );
       })}
