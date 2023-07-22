@@ -86,8 +86,8 @@ const SubjectItemContainer = styled.button<ItemContainerProps>`
   border-radius: 10px;
 
   &:focus {
-    outline: 4px solid var(--ion-color-tertiary);
-    --outline: 4px solid var(--ion-color-tertiary);
+    outline: 2px solid white;
+    --outline: 2px solid white;
   }
 `;
 

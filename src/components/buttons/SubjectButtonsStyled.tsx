@@ -34,8 +34,8 @@ export const BtnWithTxt = styled(DefaultBtn)<TxtBtnProps>`
     lockedStyle && `var(--ion-color-step-300)`};
 
   &:focus {
-    outline: 4px solid var(--ion-color-tertiary);
-    --outline: 4px solid var(--ion-color-tertiary);
+    outline: 2px solid white;
+    --outline: 2px solid white;
   }
 `;
 
@@ -63,8 +63,8 @@ export const BtnWithImage = styled(DefaultBtn)`
   }
 
   &:focus {
-    outline: 4px solid var(--ion-color-tertiary);
-    --outline: 4px solid var(--ion-color-tertiary);
+    outline: 2px solid white;
+    --outline: 2px solid white;
   }
 `;
 
@@ -95,8 +95,8 @@ export const BaseReviewLessonButton = styled(IonButton)`
   }
 
   &:focus {
-    outline: 4px solid var(--ion-color-tertiary);
-    --outline: 4px solid var(--ion-color-tertiary);
+    outline: 2px solid white;
+    --outline: 2px solid white;
   }
 `;
 

@@ -66,8 +66,8 @@ export const AddChip = styled(IonChip)`
   }
 
   &:focus {
-    outline: 4px solid var(--ion-color-tertiary);
-    --outline: 4px solid var(--ion-color-tertiary);
+    outline: 2px solid white;
+    --outline: 2px solid white;
   }
 `;
 
