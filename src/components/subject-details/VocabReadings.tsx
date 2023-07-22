@@ -2,7 +2,11 @@ import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
 import { Vocabulary, SubjectReading } from "../../types/Subject";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
 import { useAudio } from "../../hooks/useAudio";
-import { ReadingsStyle, ReadingContainer } from "./SubjectDetailsStyled";
+import {
+  ReadingsStyle,
+  ReadingContainer,
+  SubjDetailSubHeading,
+} from "./SubjectDetailsStyled";
 import styled from "styled-components/macro";
 import SoundIcon from "../../images/sound.svg";
 import { getAudioForReading } from "../../services/MiscService";
@@ -31,10 +35,6 @@ const VocabReadingContainer = styled.div`
   align-items: center;
 `;
 
-const ReadingHeader = styled.h5`
-  margin: 5px 0;
-`;
-
 const ReadingTxt = styled.p`
   margin: 5px 0;
 `;
@@ -52,10 +52,9 @@ export const VocabReadings = ({
   let hasReadings = vocab.readings && vocab.readings.length !== 0;
   let readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
 
-  // TODO: test layout with multiple pronunciations
   return hasReadings ? (
     <ReadingContainer>
-      {!hideReadingTxt && <ReadingHeader>Readings</ReadingHeader>}
+      {!hideReadingTxt && <SubjDetailSubHeading>Readings</SubjDetailSubHeading>}
       <IonRow>
         <ReadingsStyle>
           {readings && readings.length
