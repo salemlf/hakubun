@@ -15,6 +15,7 @@ import {
 import styled from "styled-components/macro";
 import { StudyMaterialDataResponse } from "../../types/MiscTypes";
 import { Subject } from "../../types/Subject";
+import { capitalizeWord } from "../../services/MiscService";
 
 const NoteContainer = styled(NoteHintContainer)`
   position: relative;
@@ -98,9 +99,7 @@ const useAutosizeTextArea = (
   value: string
 ) => {
   useEffect(() => {
-    console.log("[textAreaRef, value] useEffect ran");
     if (textAreaRef) {
-      console.log("[textAreaRef, value] useEffect changes made");
       textAreaRef.style.height = "0px";
       let scrollHeight = textAreaRef.scrollHeight;
 
@@ -116,6 +115,7 @@ type Props = {
   meaningNote: string;
   beganEditing: boolean;
   setEditingInProgress: (isEditing: boolean) => void;
+  noteType: "meaning" | "reading";
 };
 
 // TODO: make a generic version of this component so can be used for user reading note also
@@ -125,6 +125,7 @@ export const Note = ({
   meaningNote,
   setEditingInProgress,
   beganEditing,
+  noteType,
 }: Props) => {
   const { addMeaningNote, removeMeaningNote } = useStudyMaterialsChange();
   const [isEditable, setIsEditable] = useState(beganEditing);
@@ -137,8 +138,8 @@ export const Note = ({
       textareaRef.current.selectionStart = textareaRef.current.value.length;
     }
   }, [isEditable]);
-
   const [presentAlert] = useIonAlert();
+  let noteTypeCapitalized = capitalizeWord(noteType);
 
   const handleTextAreaUpdate = (
     evt: React.ChangeEvent<HTMLTextAreaElement>
@@ -215,8 +216,8 @@ export const Note = ({
                 src={TrashIcon}
                 onClick={() =>
                   presentAlert({
-                    header: "Delete Meaning",
-                    message: "Delete meaning note?",
+                    header: `Delete ${noteTypeCapitalized}`,
+                    message: `Delete ${noteType} note?`,
                     cssClass: "custom-alert",
                     buttons: [
                       {

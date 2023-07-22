@@ -54,6 +54,7 @@ export const UserMeaningNote = ({ subject }: Props) => {
         <>
           {meaningNoteNotEmpty(studyMaterialData) || editingInProgress ? (
             <Note
+              noteType="meaning"
               subject={subject}
               studyMaterial={studyMaterialData}
               meaningNote={studyMaterialData.meaning_note}
