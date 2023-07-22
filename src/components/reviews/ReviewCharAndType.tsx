@@ -47,7 +47,8 @@ const MessageWrapper = styled.div<MsgWrapperProps>`
   align-items: center;
   position: absolute;
   display: ${({ displayMsg }) => (displayMsg ? `flex` : `none`)};
-  bottom: 1rem;
+  margin: 10px;
+  bottom: 0;
 `;
 
 type MessageProps = {
@@ -57,7 +58,7 @@ type MessageProps = {
 const Message = styled.span<MessageProps>`
   display: inline-block;
   min-width: 1em;
-  padding: 10px;
+  padding: 6px;
   border-radius: 15px;
   font-size: 1rem;
   text-align: center;

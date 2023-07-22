@@ -186,6 +186,26 @@ export const compareAssignmentsByAvailableDate = (
   );
 };
 
+const checkInvalidSubjectAnswer = (
+  currReviewItem: ReviewQueueItem,
+  userAnswer: string
+) => {
+  // - no answer entered
+  // - entered kanji/kana for meaning
+  // - entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
+
+  let subjectValidInfo = {
+    isValid: true,
+    message: "",
+  };
+
+  if (userAnswer === "") {
+    subjectValidInfo.isValid = false;
+    subjectValidInfo.message = "SHAKE-EDY SHAKE, PLEASE ENTER ANSWER!";
+  }
+  return subjectValidInfo;
+};
+
 // TODO: move to review service
 // TODO: finish implementing
 export const isUserAnswerValid = (
@@ -196,17 +216,12 @@ export const isUserAnswerValid = (
     "🚀 ~ file: SubjectAndAssignmentService.tsx:198 ~ userAnswer:",
     userAnswer
   );
-  let answerValidInfo = {
-    isValid: true,
-    message: "",
-  };
-  // TODO: return an object with boolean on whether or not valid answer, along with message (if answer isn't valid) on why invalid
-  if (userAnswer === "") {
-    return {
-      isValid: false,
-      message: "SHAKE-EDY SHAKE, PLEASE ENTER ANSWER!",
-    };
-  }
+  let subjectValidInfo = checkInvalidSubjectAnswer(currReviewItem, userAnswer);
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:233 ~ subjectValidInfo:",
+    subjectValidInfo
+  );
+
   /*
   examples of invalid answers
   -------------------
@@ -225,7 +240,7 @@ export const isUserAnswerValid = (
   - romaji that can't be converted to kana
   */
 
-  return answerValidInfo;
+  return subjectValidInfo;
 };
 
 // TODO: move to review service
