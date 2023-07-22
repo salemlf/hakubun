@@ -27,6 +27,7 @@ const AltMeaningsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 8px;
+  gap: 5px;
 `;
 
 const AltMeaningText = styled(SubjDetailTxt)`

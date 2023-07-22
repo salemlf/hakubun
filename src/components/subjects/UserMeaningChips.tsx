@@ -1,31 +1,12 @@
 import { Fragment } from "react";
-import {
-  IonChip,
-  IonLabel,
-  IonIcon,
-  IonSkeletonText,
-  useIonAlert,
-} from "@ionic/react";
+import { IonIcon, IonSkeletonText, useIonAlert } from "@ionic/react";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { useStudyMaterialsChange } from "../../hooks/misc/useStudyMaterialsChange";
 import { generateUUID } from "../../services/MiscService";
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse } from "../../types/MiscTypes";
-
-import styled from "styled-components/macro";
+import { Chip } from "../styles/BaseStyledComponents";
 import { closeCircle } from "ionicons/icons";
-
-const Chip = styled(IonChip)`
-  user-select: text;
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-
-  &:focus {
-    outline: 4px solid var(--ion-color-tertiary);
-    --outline: 4px solid var(--ion-color-tertiary);
-  }
-`;
 
 type MeaningWithUUID = {
   meaning: string;
@@ -38,7 +19,6 @@ type ChipProps = {
   userMeaningsWithUUIDs: MeaningWithUUID[];
 };
 
-// TODO: make click event trigger on enter OR just turn into a button
 const Chips = ({
   subject,
   studyMaterialsResponse,
@@ -79,12 +59,11 @@ const Chips = ({
         return (
           <Fragment key={meaningWithUUID.uuid}>
             <Chip
-              tabIndex={0}
               onClick={(e: any) => {
                 deleteMeaningAlert(meaningWithUUID);
               }}
             >
-              <IonLabel>{meaningWithUUID.meaning}</IonLabel>
+              {meaningWithUUID.meaning}
               <IonIcon icon={closeCircle}></IonIcon>
             </Chip>
           </Fragment>

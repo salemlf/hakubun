@@ -79,3 +79,26 @@ export const Alert = styled(IonAlert)`
     }
   }
 `;
+
+export const Chip = styled.button`
+  background-color: var(--light-greyish-purple);
+  padding: 8px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+
+  &:focus {
+    outline: 2px solid white;
+    --outline: 2px solid white;
+  }
+
+  ion-icon {
+    margin-left: 5px;
+  }
+`;
