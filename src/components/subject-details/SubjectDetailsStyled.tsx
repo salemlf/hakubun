@@ -61,6 +61,10 @@ export const SubjDetailSection = styled.div`
 export const ReadingsStyle = styled(IonCol)`
   padding: 0;
   padding-top: 0;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 `;
 
 export const ReadingContainer = styled(IonCol)`

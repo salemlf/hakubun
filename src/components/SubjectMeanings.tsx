@@ -31,6 +31,10 @@ const AltMeaningsContainer = styled.div`
 
 const AltMeaningText = styled(SubjDetailTxt)`
   margin-right: 5px;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 `;
 
 type PrimaryAndAltProps = {

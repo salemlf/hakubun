@@ -9,7 +9,11 @@ import styled from "styled-components/macro";
 
 const SubjectName = styled.h1`
   margin: 0;
-  word-break: break-all;
+  word-break: break-word;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 `;
 
 type Props = {

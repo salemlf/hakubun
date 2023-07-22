@@ -8,6 +8,10 @@ import { TagType } from "../types/MiscTypes";
 
 const TaggedTxt = styled(SubjDetailTxt)`
   line-height: 1.75;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 `;
 
 type TagProps = {

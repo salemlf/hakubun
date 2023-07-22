@@ -23,6 +23,10 @@ const SentenceGroup = styled(IonCol)`
 const ContextSentenceTxt = styled.p`
   margin-top: 0;
   margin-bottom: 2px;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 `;
 
 // TODO: improve styling
