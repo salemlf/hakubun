@@ -1,10 +1,9 @@
-import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
+import { IonRow, IonSkeletonText } from "@ionic/react";
 import { Kanji, Subject, Vocabulary } from "../../types/Subject";
 import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
 
 import { SubjectMeanings } from "../SubjectMeanings";
 import { AssignmentSrs } from "../AssignmentSrs";
-import { BasicCard } from "../cards/BasicCard";
 import { SubjSummaryRow } from "./SubjectDetailsStyled";
 import { SubjDetailsKanjiReadings } from "./SubjDetailsKanjiReadings";
 import { VocabReadings } from "./VocabReadings";
@@ -99,16 +98,22 @@ export const SubjectSummary = ({ subject }: Props) => {
     error: assignmentErr,
   } = useAssignmentBySubjID([subject.id]);
 
-  // TODO: change this from card
   if (assignmentLoading || assignmentErr) {
     return (
-      <BasicCard isLoading={true}>
-        <IonRow className="ion-align-items-center ion-justify-content-start">
-          <IonCol>
-            <IonSkeletonText animated={true}></IonSkeletonText>
-          </IonCol>
+      <>
+        <IonRow>
+          <IonSkeletonText
+            animated={true}
+            style={{ height: "50px" }}
+          ></IonSkeletonText>
         </IonRow>
-      </BasicCard>
+        <IonRow>
+          <IonSkeletonText
+            animated={true}
+            style={{ height: "50px" }}
+          ></IonSkeletonText>
+        </IonRow>
+      </>
     );
   }
 
