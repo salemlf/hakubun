@@ -71,10 +71,12 @@ export const useStudyMaterialsChange = () => {
       ...(readingNoteToUpdate && { reading_note: readingNoteToUpdate }),
     }) as StudyMaterialPostData;
 
+    // *testing
     console.log(
       "🚀 ~ file: useStudyMaterialsChange.tsx:54 ~ createdStudyMaterialData:",
       createdStudyMaterialData
     );
+    // *testing
 
     createStudyMaterials({ studyMaterialsData: createdStudyMaterialData });
   };
@@ -186,10 +188,43 @@ export const useStudyMaterialsChange = () => {
     });
   };
 
+  const addReadingNote = (
+    subject: Subject,
+    studyMaterialData: StudyMaterialDataResponse,
+    readingNoteToUpdate: string
+  ) => {
+    let dataChangeMethod: StudyMaterialsChangeMethod =
+      getDataChangeMethod(studyMaterialData);
+
+    studyMaterialsActionDictionary[dataChangeMethod]({
+      subject,
+      studyMaterialData,
+      readingNoteToUpdate,
+      actionType: "add",
+    });
+  };
+
+  const removeReadingNote = (
+    subject: Subject,
+    studyMaterialData: StudyMaterialDataResponse
+  ) => {
+    let dataChangeMethod: StudyMaterialsChangeMethod =
+      getDataChangeMethod(studyMaterialData);
+
+    studyMaterialsActionDictionary[dataChangeMethod]({
+      subject,
+      studyMaterialData,
+      readingNoteToUpdate: "",
+      actionType: "remove",
+    });
+  };
+
   return {
     addUserAltSubjectMeaning,
     deleteUserAltSubjectMeaning,
     addMeaningNote,
     removeMeaningNote,
+    addReadingNote,
+    removeReadingNote,
   };
 };
