@@ -1,8 +1,10 @@
-import { IonRow, IonCol } from "@ionic/react";
+import { IonRow, IonCol, IonIcon } from "@ionic/react";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "./subject-details/SubjectDetailsStyled";
+import { IconHeadingContainer } from "./styles/BaseStyledComponents";
+import ContextIcon from "../images/context.svg";
 
 import styled from "styled-components/macro";
 import { ContextSentence } from "../types/Subject";
@@ -36,7 +38,10 @@ type Props = {
 export const ContextSentences = ({ sentences }: Props) => {
   return (
     <SubjDetailSection>
-      <SubjDetailSubHeading>Context Sentences</SubjDetailSubHeading>
+      <IconHeadingContainer>
+        <IonIcon src={ContextIcon} />
+        <SubjDetailSubHeading>Context Sentences</SubjDetailSubHeading>
+      </IconHeadingContainer>
       <ContextSentenceContainer>
         {(sentences as ContextSentence[]).map(
           (sentence: ContextSentence, index: number) => {
