@@ -22,7 +22,7 @@ type TagProps = {
 
 const Tag = styled.span<TagProps>`
   color: white;
-  padding: 4px 10px;
+  padding: 4px 6px;
   background: ${({ tagType }) => getTagColor(tagType)};
   filter: url("#goo");
   display: inline;
@@ -38,7 +38,7 @@ const TaggedTxt = styled(SubjDetailTxt)`
 `;
 
 // this is used so there's no icky wrapping for words where color is cut off/no border-radius on one side
-// see this article for reference
+// see this codepen for reference: https://codepen.io/ines/pen/NXbmRO
 const Goo = () => {
   return (
     <svg
@@ -50,7 +50,7 @@ const Goo = () => {
     >
       <defs>
         <filter id="goo">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
           <feColorMatrix
             in="blur"
             mode="matrix"
