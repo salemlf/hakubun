@@ -6,7 +6,7 @@ import {
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { Hint } from "../subject-details/Hint";
 import { Subject, Vocabulary } from "../../types/Subject";
-import { UserNote } from "../subject-details/UserNote";
+import UserNote from "../UserNote/UserNote";
 import ReadingIcon from "../../images/reading.svg";
 import { IconHeadingContainer } from "../styles/BaseStyledComponents";
 

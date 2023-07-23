@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { IonIcon, IonSkeletonText } from "@ionic/react";
-import { Note } from "./Note";
+import { capitalizeWord } from "../../services/MiscService";
+import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
-import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
+import { Note } from "../subject-details/Note";
 
 import styled from "styled-components/macro";
 import { Chip } from "../styles/BaseStyledComponents";
 import { addOutline } from "ionicons/icons";
-import { capitalizeWord } from "../../services/MiscService";
 
 const AddButtonContainer = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ type Props = {
   isRadical?: boolean;
 };
 
-export const UserNote = ({ subject, noteType, isRadical = false }: Props) => {
+function UserNote({ subject, noteType, isRadical = false }: Props) {
   const {
     isLoading: studyMaterialLoading,
     data: studyMaterialData,
@@ -96,4 +96,6 @@ export const UserNote = ({ subject, noteType, isRadical = false }: Props) => {
       )}
     </>
   );
-};
+}
+
+export default UserNote;

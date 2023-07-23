@@ -4,7 +4,7 @@ import {
 } from "../subject-details/SubjectDetailsStyled";
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { Radical, Subject } from "../../types/Subject";
-import { UserNote } from "../subject-details/UserNote";
+import UserNote from "../UserNote/UserNote";
 import MeaningIcon from "../../images/meaning.svg";
 import { IconHeadingContainer } from "../styles/BaseStyledComponents";
 import { IonIcon } from "@ionic/react";

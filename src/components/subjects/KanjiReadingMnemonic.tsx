@@ -5,7 +5,7 @@ import {
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { Kanji, Subject } from "../../types/Subject";
 import { Hint } from "../subject-details/Hint";
-import { UserNote } from "../subject-details/UserNote";
+import UserNote from "../UserNote/UserNote";
 import ReadingIcon from "../../images/reading.svg";
 import { IconHeadingContainer } from "../styles/BaseStyledComponents";
 import { IonIcon } from "@ionic/react";

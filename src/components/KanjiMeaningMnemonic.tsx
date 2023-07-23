@@ -5,7 +5,7 @@ import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "./subject-details/SubjectDetailsStyled";
-import { UserNote } from "./subject-details/UserNote";
+import UserNote from "./UserNote/UserNote";
 import { TxtWithSubjTags } from "./TxtWithSubjTags";
 import MeaningIcon from "../images/meaning.svg";
 import { IconHeadingContainer } from "./styles/BaseStyledComponents";
