@@ -1,25 +1,24 @@
 import {
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
   IonContent,
   IonHeader,
   IonPage,
+  IonSkeletonText,
   IonTitle,
   IonToolbar,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonSkeletonText,
 } from "@ionic/react";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
+import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import {
   getCompletedReviewSessionData,
   getReviewsGroupedByResult,
 } from "../../services/ReviewService";
+import GroupedReviewSummaryResults from "./GroupedReviewSummaryResults";
 import { FullWidthGrid } from "../styles/BaseStyledComponents";
-
 import styled from "styled-components/macro";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { GroupedReviewSummaryResults } from "./GroupedReviewSummaryResults";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--light-greyish-purple);
@@ -80,7 +79,7 @@ const CardContent = styled(IonCardContent)`
   }
 `;
 
-export const ReviewSummary = () => {
+function ReviewSummary() {
   const { queueDataState } = useReviewQueue();
   let reviewQueue = queueDataState.reviewQueue;
   // *testing
@@ -178,4 +177,6 @@ export const ReviewSummary = () => {
       </IonContent>
     </Page>
   );
-};
+}
+
+export default ReviewSummary;

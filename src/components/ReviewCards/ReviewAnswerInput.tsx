@@ -96,12 +96,12 @@ type Props = {
 
 // TODO: remove next and retry buttons once gestures are implemented
 // TODO: add button to abandon session
-export const ReviewInputAndButtons = ({
+function ReviewAnswerInput({
   currentReviewItem,
   userAnswer,
   setUserAnswer,
   nextBtnClicked,
-}: Props) => {
+}: Props) {
   const { queueDataState, queueState, handleRetryClick } = useReviewQueue();
   let reviewType = currentReviewItem.review_type;
 
@@ -124,4 +124,6 @@ export const ReviewInputAndButtons = ({
       </InputRow>
     </>
   );
-};
+}
+
+export default ReviewAnswerInput;

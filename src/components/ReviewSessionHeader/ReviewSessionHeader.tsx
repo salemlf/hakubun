@@ -6,14 +6,14 @@ import {
   IonIcon,
 } from "@ionic/react";
 import { useIonRouter } from "@ionic/react";
-
-import HomeIcon from "../../images/home.svg";
-import styled from "styled-components/macro";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import {
   ReviewQueueItem,
   ReviewSessionDataState,
 } from "../../types/ReviewSessionTypes";
+
+import HomeIcon from "../../images/home.svg";
+import styled from "styled-components/macro";
 
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;
@@ -74,7 +74,7 @@ type Props = {
   currentReviewItem: ReviewQueueItem;
 };
 
-export const ReviewSessionHeader = ({ currentReviewItem }: Props) => {
+function ReviewSessionHeader({ currentReviewItem }: Props) {
   const router = useIonRouter();
 
   const { queueDataState } = useReviewQueue();
@@ -99,4 +99,6 @@ export const ReviewSessionHeader = ({ currentReviewItem }: Props) => {
       </Toolbar>
     </SessionHeader>
   );
-};
+}
+
+export default ReviewSessionHeader;

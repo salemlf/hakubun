@@ -8,7 +8,7 @@ type Props = {
 };
 
 // TODO: need updated srs level data to display actual info, test with fake data for now
-export const GroupedReviewSummaryResults = ({ subjData }: Props) => {
+function GroupedReviewSummaryResults({ subjData }: Props) {
   let subjectsByLevel = groupDataByProperty(subjData, "level");
   console.log(
     "🚀 ~ file: SummaryDataGrouped.tsx:12 ~ SummaryDataGrouped ~ subjectsByLevel:",
@@ -27,4 +27,6 @@ export const GroupedReviewSummaryResults = ({ subjData }: Props) => {
       <SubjCharacterList subjList={subjData} />
     </IonRow>
   );
-};
+}
+
+export default GroupedReviewSummaryResults;

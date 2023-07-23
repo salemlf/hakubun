@@ -8,7 +8,7 @@ type Props = {
 
 // while icon is *technically* centered already, doesn't appear to be since it's an arrow, so using ShiftBy component to slightly adjust
 // see this as reference: https://www.joshwcomeau.com/css/pixel-perfection/#going-the-extra-mile-3
-export const StartReviewBtn = ({ onStartReviewBtnClick }: Props) => {
+function StartReviewBtn({ onStartReviewBtnClick }: Props) {
   return (
     <>
       <ShiftBy y={-30}>
@@ -22,4 +22,6 @@ export const StartReviewBtn = ({ onStartReviewBtnClick }: Props) => {
       </ShiftBy>
     </>
   );
-};
+}
+
+export default StartReviewBtn;

@@ -14,10 +14,10 @@ import {
 import { useIonRouter } from "@ionic/react";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
 
-import { BasicCard } from "../components/cards/BasicCard";
-import { BatchSizeOption } from "../components/reviews/BatchSizeOption";
-import { AssignmentTypeSelector } from "../components/reviews/AssignmentTypeSelector";
-import { StartReviewBtn } from "../components/reviews/StartReviewBtn";
+import BasicCard from "../components/BasicCard/BasicCard";
+import BatchSizeOption from "../components/BatchSizeOption/BatchSizeOption";
+import AssignmentTypeSelector from "../components/AssignmentTypeSelector/AssignmentTypeSelector";
+import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
 
 import styled from "styled-components/macro";
 import { Assignment, AssignmentType } from "../types/Assignment";

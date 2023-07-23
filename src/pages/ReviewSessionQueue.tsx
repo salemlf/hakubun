@@ -2,9 +2,9 @@ import { IonContent, IonGrid, IonPage } from "@ionic/react";
 
 import styled from "styled-components/macro";
 import { useReviewQueue } from "../hooks/useReviewQueue";
-import { ReviewSessionHeader } from "../components/reviews/ReviewSessionHeader";
-import { ReviewCards } from "../components/reviews/ReviewCards";
-import { ReviewSummary } from "../components/reviews/ReviewSummary";
+import ReviewSessionHeader from "../components/ReviewSessionHeader/ReviewSessionHeader";
+import ReviewCards from "../components/ReviewCards/ReviewCards";
+import ReviewSummary from "../components/ReviewSummary/ReviewSummary";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);

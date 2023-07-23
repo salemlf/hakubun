@@ -1,28 +1,27 @@
 import { useState } from "react";
-import { IonRow, IonIcon } from "@ionic/react";
+import { IonIcon } from "@ionic/react";
 import {
   motion,
   useMotionValue,
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-
-import { ReviewCharAndType } from "./ReviewCharAndType";
-import { ReviewInputAndButtons } from "./ReviewInputAndButtons";
-import ReviewItemBottomSheet from "../ReviewItemBottomSheet/ReviewItemBottomSheet";
-import {
-  getSubjectColor,
-  isUserAnswerValid,
-} from "../../services/SubjectAndAssignmentService";
-import { SubjectType } from "../../types/Subject";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
-import { useReviewQueue } from "../../hooks/useReviewQueue";
-
-import { useKeyDown } from "../../hooks/useKeyDown";
 import { toHiragana } from "wanakana";
+
 import RetryIcon from "../../images/retry.svg";
 import NextIcon from "../../images/next-item.svg";
 import styled from "styled-components/macro";
+import { SubjectType } from "../../types/Subject";
+import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { useKeyDown } from "../../hooks/useKeyDown";
+import {
+  isUserAnswerValid,
+  getSubjectColor,
+} from "../../services/SubjectAndAssignmentService";
+import ReviewCharAndType from "./ReviewCharAndType";
+import ReviewAnswerInput from "./ReviewAnswerInput";
+import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
+import { useReviewQueue } from "../../hooks/useReviewQueue";
 
 const TestReviewCardContainer = styled(motion.div)`
   border-radius: 10px;
@@ -42,7 +41,9 @@ const ReviewCard = styled(motion.div)<ReviewItemProps>`
   padding: 50px 0 100px 0;
   border-radius: 10px;
   width: 100%;
-  background-color: ${({ subjtype }) => getSubjectColor(subjtype)};
+  background-color: ${({ subjtype }) => {
+    return getSubjectColor(subjtype);
+  }};
   will-change: "transform";
   cursor: grab;
   touch-action: none;
@@ -201,7 +202,7 @@ const Card = ({ currentReviewItem }: CardProps) => {
       dragElastic={0.3}
     >
       <ReviewCharAndType currentReviewItem={currentReviewItem} />
-      <ReviewInputAndButtons
+      <ReviewAnswerInput
         currentReviewItem={currentReviewItem}
         userAnswer={userAnswer}
         setUserAnswer={setUserAnswer}
@@ -238,10 +239,11 @@ const Card = ({ currentReviewItem }: CardProps) => {
   );
 };
 
-type ReviewCardsProps = {
+type Props = {
   currentReviewItem: ReviewQueueItem;
 };
-export const ReviewCards = ({ currentReviewItem }: ReviewCardsProps) => {
+
+function ReviewCards({ currentReviewItem }: Props) {
   return (
     <TestReviewCardContainer>
       <AnimatePresence>
@@ -252,4 +254,6 @@ export const ReviewCards = ({ currentReviewItem }: ReviewCardsProps) => {
       </AnimatePresence>
     </TestReviewCardContainer>
   );
-};
+}
+
+export default ReviewCards;

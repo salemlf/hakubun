@@ -98,7 +98,7 @@ type Props = {
 };
 
 // TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
-export const ReviewCharAndType = ({ currentReviewItem }: Props) => {
+function ReviewCharAndType({ currentReviewItem }: Props) {
   const { queueState } = useReviewQueue();
 
   let subjType = currentReviewItem.object as SubjectType;
@@ -131,4 +131,6 @@ export const ReviewCharAndType = ({ currentReviewItem }: Props) => {
       </ReviewTypeRow>
     </>
   );
-};
+}
+
+export default ReviewCharAndType;
