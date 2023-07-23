@@ -1,6 +1,45 @@
-import styles from "./StepProgressBar.module.scss";
 import { IonRow, IonSkeletonText } from "@ionic/react";
 import { Assignment } from "../../types/Assignment";
+import styled from "styled-components/macro";
+
+const ProgressWrapper = styled(IonRow)`
+  margin-top: 5px;
+  justify-content: center;
+`;
+
+const BarStepContainer = styled.div`
+  width: 100%;
+  max-width: 3rem;
+  height: 0.4rem;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  border-radius: 20px;
+
+  & :first-child {
+    border-radius: 20px 0px 0px 20px;
+  }
+
+  & :last-child {
+    border-radius: 0px 20px 20px 0px;
+  }
+
+  & :not(:last-child) {
+    border-right: 2px solid var(--light-greyish-purple);
+  }
+`;
+
+type BlockProps = {
+  isFilled: boolean;
+};
+
+// TODO: set background color if filled
+const StepBlock = styled.div<BlockProps>`
+  height: 100%;
+  background-color: #cce0d4;
+  width: 5rem;
+  ${({ isFilled }) => isFilled && "background-color: var(--ion-color-success)"}
+`;
 
 type WrapperProps = {
   assignment: Assignment | undefined;
@@ -9,7 +48,7 @@ type WrapperProps = {
 
 export const StepProgressBar = ({ assignment, locked }: WrapperProps) => {
   return (
-    <IonRow className={`${styles.progressContainer}`}>
+    <ProgressWrapper>
       {assignment || locked ? (
         <StepProgressBarStages
           stage={assignment?.srs_stage || 0}
@@ -18,16 +57,15 @@ export const StepProgressBar = ({ assignment, locked }: WrapperProps) => {
       ) : (
         <StepProgressBarLoading />
       )}
-    </IonRow>
+    </ProgressWrapper>
   );
 };
 
 const StepProgressBarLoading = () => {
   return (
-    <IonSkeletonText
-      className={`${styles.containerStyles}`}
-      animated={true}
-    ></IonSkeletonText>
+    <BarStepContainer>
+      <IonSkeletonText animated={true}></IonSkeletonText>
+    </BarStepContainer>
   );
 };
 
@@ -62,18 +100,11 @@ const StepProgressBarStages = ({ stage, passedAt }: Props) => {
     let divs = [];
     for (let i = 1; i <= 5; i++) {
       divs.push(
-        <div
-          className={
-            stagesComplete.has(i)
-              ? `${styles.block} ${styles.done}`
-              : `${styles.block}`
-          }
-          key={i}
-        ></div>
+        <StepBlock isFilled={stagesComplete.has(i)} key={i}></StepBlock>
       );
     }
     return divs;
   };
 
-  return <div className={`${styles.containerStyles}`}>{renderDivs()}</div>;
+  return <BarStepContainer>{renderDivs()}</BarStepContainer>;
 };
