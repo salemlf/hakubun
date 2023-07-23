@@ -1,39 +1,29 @@
 import { IonCol, IonSkeletonText } from "@ionic/react";
+import styled from "styled-components/macro";
 
-import styles from "./SrsStagesLoadingSkeleton.module.scss";
+const BtnSkeletonTxt = styled(IonSkeletonText)`
+  width: 100%;
+  margin: 0;
+  height: 3.75rem;
+`;
 
 export const SrsStagesLoadingSkeleton = () => {
   return (
     <>
       <IonCol size-xs="6" size-md="3">
-        <IonSkeletonText
-          animated={true}
-          className={`${styles.btn}`}
-        ></IonSkeletonText>
+        <BtnSkeletonTxt animated={true}></BtnSkeletonTxt>
       </IonCol>
       <IonCol size-xs="6" size-md="3">
-        <IonSkeletonText
-          animated={true}
-          className={`${styles.btn}`}
-        ></IonSkeletonText>
+        <BtnSkeletonTxt animated={true}></BtnSkeletonTxt>
       </IonCol>
       <IonCol size-xs="6" size-md="3">
-        <IonSkeletonText
-          animated={true}
-          className={`${styles.btn}`}
-        ></IonSkeletonText>
+        <BtnSkeletonTxt animated={true}></BtnSkeletonTxt>
       </IonCol>
       <IonCol size-xs="6" size-md="3">
-        <IonSkeletonText
-          animated={true}
-          className={`${styles.btn}`}
-        ></IonSkeletonText>
+        <BtnSkeletonTxt animated={true}></BtnSkeletonTxt>
       </IonCol>
       <IonCol size-xs="12" size-md="6">
-        <IonSkeletonText
-          animated={true}
-          className={`${styles.btn}`}
-        ></IonSkeletonText>
+        <BtnSkeletonTxt animated={true}></BtnSkeletonTxt>
       </IonCol>
     </>
   );
