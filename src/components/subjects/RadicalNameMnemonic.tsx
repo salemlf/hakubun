@@ -1,4 +1,3 @@
-import React from "react";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
@@ -6,6 +5,9 @@ import {
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { Radical, Subject } from "../../types/Subject";
 import { UserNote } from "../subject-details/UserNote";
+import MeaningIcon from "../../images/meaning.svg";
+import { IconHeadingContainer } from "../styles/BaseStyledComponents";
+import { IonIcon } from "@ionic/react";
 
 type Props = {
   radical: Radical;
@@ -14,7 +16,10 @@ type Props = {
 export const RadicalNameMnemonic = ({ radical }: Props) => {
   return (
     <SubjDetailSection>
-      <SubjDetailSubHeading>Name Mnemonic</SubjDetailSubHeading>
+      <IconHeadingContainer>
+        <IonIcon src={MeaningIcon} />
+        <SubjDetailSubHeading>Name Mnemonic</SubjDetailSubHeading>
+      </IconHeadingContainer>
       <TxtWithSubjTags textWithTags={radical.meaning_mnemonic} />
       <UserNote
         subject={radical as Subject}
