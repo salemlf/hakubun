@@ -180,19 +180,6 @@ const Card = ({ currentReviewItem }: CardProps) => {
     },
   };
 
-  // const retryItemVariants = {
-  //   initial: {
-  //     opacity: 0,
-  //   },
-  //   exit: (custom: number) => ({
-  //     x: custom,
-  //     scale: 0.5,
-  //     transition: {
-  //       duration: 0.2,
-  //     },
-  //   }),
-  // };
-
   return (
     <ReviewCard
       subjtype={currentReviewItem.object as SubjectType}
