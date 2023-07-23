@@ -27,7 +27,7 @@ export const NoteHintContainer = styled.div`
   background-color: var(--light-grey);
   border-radius: 15px;
   padding: 8px;
-  margin: 10px 0 5px 0;
+  margin: 10px 0;
 
   font-size: 0.9rem;
   line-height: 1.5;
