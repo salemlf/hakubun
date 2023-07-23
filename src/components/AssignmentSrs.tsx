@@ -1,18 +1,12 @@
+import { getTimeFromNow, getSrsNameBySrsLvl } from "../services/MiscService";
+import { getSrsLevelColor } from "../services/SubjectAndAssignmentService";
+import { Assignment } from "../types/Assignment";
+import { SrsLevelName } from "../types/MiscTypes";
 import {
   SubjSummaryCol,
   SubjSummaryRow,
 } from "./subject-details/SubjectDetailsStyled";
-
-import styles from "./AssignmentSrs.module.scss";
 import styled from "styled-components/macro";
-
-import {
-  getTimeFromNow,
-  getSrsNameBySrsLvl,
-  capitalizeWord,
-} from "../services/MiscService";
-
-import { Assignment } from "../types/Assignment";
 
 const AssignmentSrsContainer = styled(SubjSummaryCol)`
   justify-content: flex-end;
@@ -29,31 +23,46 @@ const StagesRow = styled(SubjSummaryRow)`
   gap: 10px;
 `;
 
+type LvlTxtProps = {
+  srsStage: SrsLevelName;
+};
+
+const SrsLvlTxt = styled.p<LvlTxtProps>`
+  color: white;
+  padding: 5px;
+  border-radius: 12px;
+  background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
+  text-transform: capitalize;
+`;
+
+const TimeTillTxt = styled.p`
+  padding: 5px;
+  border-radius: 12px;
+  background: var(--ion-color-tertiary);
+  color: var(--dark-greyish-purple);
+`;
+
 type Props = {
   assignment: Assignment | undefined;
 };
 
 export const AssignmentSrs = ({ assignment }: Props) => {
-  const getTimeTill = () => {
-    let availTime = assignment!.available_at;
-    return getTimeFromNow(availTime);
-  };
+  // TODO: display locked icon
+  let srsLevelName = assignment
+    ? getSrsNameBySrsLvl(assignment.srs_stage)
+    : "locked";
 
-  const getSrsLvl = () => {
-    if (assignment) {
-      return getSrsNameBySrsLvl(assignment.srs_stage);
-    }
-    // TODO: display locked icon instead
-    return "locked";
-  };
+  let timeTillReview = assignment
+    ? getTimeFromNow(assignment.available_at)
+    : "N/A";
 
   return (
     <AssignmentSrsContainer>
       <StagesRow>
-        {assignment && <p className={`${styles.timeTill}`}>{getTimeTill()}</p>}
-        <p className={`${styles.srsLevel} ${styles[getSrsLvl()]}`}>
-          {capitalizeWord(getSrsLvl())}
-        </p>
+        <TimeTillTxt>{timeTillReview}</TimeTillTxt>
+        <SrsLvlTxt srsStage={srsLevelName as SrsLevelName}>
+          {srsLevelName}
+        </SrsLvlTxt>
       </StagesRow>
     </AssignmentSrsContainer>
   );
