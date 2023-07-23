@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import reactStringReplace from "react-string-replace";
 import { SubjDetailTxt } from "./subject-details/SubjectDetailsStyled";
 import { getTagColor } from "../services/SubjectAndAssignmentService";
@@ -76,12 +77,10 @@ const createSubjectTags = (
     currUUIDArrIndex++;
 
     return (
-      <>
-        <Tag key={`radical-tag${uuid}`} tagType="radical">
-          {match}
-        </Tag>
+      <Fragment key={`radical-tag${uuid}`}>
+        <Tag tagType="radical">{match}</Tag>
         <Goo />
-      </>
+      </Fragment>
     );
   });
 
@@ -92,12 +91,10 @@ const createSubjectTags = (
       let uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
       return (
-        <>
-          <Tag key={`kanji-tag${uuid}`} tagType="kanji">
-            {match}
-          </Tag>
+        <Fragment key={`kanji-tag${uuid}`}>
+          <Tag tagType="kanji">{match}</Tag>
           <Goo />
-        </>
+        </Fragment>
       );
     }
   );
@@ -109,12 +106,10 @@ const createSubjectTags = (
       let uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
       return (
-        <>
-          <Tag key={`vocabulary-tag${uuid}`} tagType="vocabulary">
-            {match}
-          </Tag>
+        <Fragment key={`vocabulary-tag${uuid}`}>
+          <Tag tagType="vocabulary">{match}</Tag>
           <Goo />
-        </>
+        </Fragment>
       );
     }
   );
@@ -127,12 +122,10 @@ const createSubjectTags = (
       currUUIDArrIndex++;
 
       return (
-        <>
-          <Tag key={`ja-reading-tag${uuid}`} tagType="reading">
-            {match}
-          </Tag>
+        <Fragment key={`ja-reading-tag${uuid}`}>
+          <Tag tagType="reading">{match}</Tag>
           <Goo />
-        </>
+        </Fragment>
       );
     }
   );
@@ -152,12 +145,10 @@ const createSubjectTags = (
       currUUIDArrIndex++;
 
       return (
-        <>
-          <Tag key={`reading-tag${uuid}`} tagType="reading">
-            {match}
-          </Tag>
+        <Fragment key={`reading-tag${uuid}`}>
+          <Tag tagType="reading">{match}</Tag>
           <Goo />
-        </>
+        </Fragment>
       );
     }
   );
@@ -170,12 +161,10 @@ const createSubjectTags = (
       currUUIDArrIndex++;
 
       return (
-        <>
-          <Tag key={`meaning-tag${uuid}`} tagType="meaning">
-            {match}
-          </Tag>
+        <Fragment key={`meaning-tag${uuid}`}>
+          <Tag tagType="meaning">{match}</Tag>
           <Goo />
-        </>
+        </Fragment>
       );
     }
   );
@@ -184,7 +173,7 @@ const createSubjectTags = (
 };
 
 // TODO: move generation of keys outside this component
-const getKeyssForTags = (textWithTags: string, regexForTags: TagRegexes) => {
+const getKeysForTags = (textWithTags: string, regexForTags: TagRegexes) => {
   let numUUIDsNeeded = 0;
 
   Object.entries(regexForTags).forEach(([key, regex]) => {
@@ -214,7 +203,7 @@ export const TxtWithSubjTags = ({ textWithTags }: Props) => {
     ),
   };
 
-  let uuids = getKeyssForTags(textWithTags, tagRegexes);
+  let uuids = getKeysForTags(textWithTags, tagRegexes);
 
   return (
     <TaggedTxt>
