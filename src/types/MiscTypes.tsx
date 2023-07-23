@@ -9,6 +9,8 @@ export interface ResponseStructure {
 
 export type SrsLevelName =
   | "initiate"
+  | "locked"
+  | "initiate"
   | "apprentice"
   | "guru"
   | "master"

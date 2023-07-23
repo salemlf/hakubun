@@ -7,7 +7,7 @@ import {
   SubjectType,
 } from "../types/Subject";
 import { Assignment, AssignmentType } from "../types/Assignment";
-import { StudyMaterial, TagType } from "../types/MiscTypes";
+import { SrsLevelName, StudyMaterial, TagType } from "../types/MiscTypes";
 import { capitalizeWord } from "./MiscService";
 import { toKana } from "wanakana";
 import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
@@ -23,6 +23,7 @@ export const getAssignmentStatuses = (assignments: Assignment[]) => {
   );
 };
 
+// TODO: modify to note use capitalizeWord, will do that in component
 export const getSubjectDisplayName = (subj: Subject) => {
   let subjType = subj["object"];
 
@@ -79,6 +80,7 @@ export const findAssignmentWithSubjID = (
   );
 };
 
+// TODO: move into misc service
 export const findStudyMaterialWithSubjID = (
   studyMaterials: StudyMaterial[],
   subject: Subject
@@ -144,11 +146,6 @@ const subjColors: { [index: string]: string } = {
   kana_vocabulary: `var(--wanikani-vocab)`,
 };
 
-const reviewColors: { [index: string]: string } = {
-  reading: `var(--ion-color-primary)`,
-  meaning: `var(--ion-color-secondary)`,
-};
-
 const tagColors: { [index: string]: string } = {
   reading: `var(--wanikani-reading)`,
   meaning: `var(--deep-purple-accent)`,
@@ -160,12 +157,33 @@ export const getSubjectColor = (subjType: SubjectType) => {
   return subjColors[subjType as keyof {}];
 };
 
+// TODO: move into ReviewService
+const reviewColors: { [index: string]: string } = {
+  reading: `var(--ion-color-primary)`,
+  meaning: `var(--ion-color-secondary)`,
+};
+
+// TODO: move into ReviewService
 export const getReviewTypeColor = (reviewType: ReviewType) => {
   return reviewColors[reviewType as keyof {}];
 };
 
 export const getTagColor = (tagType: TagType) => {
   return subjAndTagColors[tagType as keyof {}];
+};
+
+const srsLevelColors: { [index: string]: string } = {
+  locked: `var(--light-greyish-purple)`,
+  initiate: `var(--ion-color-primary)`,
+  apprentice: `var(--wanikani-apprentice)`,
+  guru: `var(--wanikani-guru)`,
+  master: `var(--wanikani-master)`,
+  enlightened: `var(--wanikani-enlightened)`,
+  burned: `var(--wanikani-burned)`,
+};
+
+export const getSrsLevelColor = (srsLevel: SrsLevelName) => {
+  return srsLevelColors[srsLevel as keyof {}];
 };
 
 export const getSubjIDsFromAssignments = (assignments: Assignment[]) => {
@@ -186,6 +204,7 @@ export const compareAssignmentsByAvailableDate = (
   );
 };
 
+// TODO: move to review service
 const checkInvalidSubjectAnswer = (
   currReviewItem: ReviewQueueItem,
   userAnswer: string

@@ -1,10 +1,44 @@
-import { IonCol, IonRow, IonButton, IonGrid } from "@ionic/react";
-
+import { IonCol, IonRow, IonGrid } from "@ionic/react";
+import { getSrsLevelColor } from "../services/SubjectAndAssignmentService";
 import { useAssignmentsByStage } from "../hooks/useAssignmentsByStage";
-
+import { SrsLevelName } from "../types/MiscTypes";
 import { SrsStagesLoadingSkeleton } from "./loading-skeletons/SrsStagesLoadingSkeleton";
+import styled from "styled-components/macro";
 
-import styles from "./SrsStages.module.scss";
+type ButtonProps = {
+  srsStage: SrsLevelName;
+};
+
+const SrsButtonContainer = styled(IonGrid)`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0;
+`;
+
+const ButtonRowContainer = styled(IonRow)`
+  width: 100%;
+`;
+
+const SrsStageButton = styled.button<ButtonProps>`
+  width: 100%;
+  margin: 0;
+  height: 3.5rem;
+  color: white;
+  background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
+`;
+
+const NumItemsInStage = styled.p`
+  margin: 5px 0;
+  font-size: 1rem;
+  font-weight: 700;
+`;
+
+const StageName = styled.p`
+  margin: 5px 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+`;
 
 export const SrsStages = () => {
   const {
@@ -45,71 +79,67 @@ export const SrsStages = () => {
     burnedStageDataLoading;
 
   if (stagesLoading) {
-    <IonGrid>
-      <IonRow>
+    <SrsButtonContainer>
+      <ButtonRowContainer>
         <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
-      </IonRow>
-    </IonGrid>;
+      </ButtonRowContainer>
+    </SrsButtonContainer>;
   }
 
   return (
-    <IonGrid className={`${styles.btnContainer}`}>
-      <IonRow className={`${styles.rowContainer}`}>
+    <SrsButtonContainer>
+      <ButtonRowContainer>
         <IonCol size-xs="6" size-md="3">
-          <IonButton className={`${styles.btn} ${styles.apprentice}`}>
+          <SrsStageButton srsStage="apprentice">
             <div>
               {apprenticeStageData && (
-                <p className={`${styles.stageNum}`}>
-                  {apprenticeStageData.length}
-                </p>
+                <NumItemsInStage>{apprenticeStageData.length}</NumItemsInStage>
               )}
-              <p className={`${styles.stageTxt}`}>Apprentice</p>
+              <StageName>Apprentice</StageName>
             </div>
-          </IonButton>
+          </SrsStageButton>
         </IonCol>
         <IonCol size-xs="6" size-md="3">
-          <IonButton className={`${styles.btn} ${styles.guru}`}>
+          <SrsStageButton srsStage="guru">
             <div>
               {guruStageData && (
-                <p className={`${styles.stageNum}`}>{guruStageData.length}</p>
+                <NumItemsInStage>{guruStageData.length}</NumItemsInStage>
               )}
-              <p className={`${styles.stageTxt}`}>Guru</p>
+              <StageName>Guru</StageName>
             </div>
-          </IonButton>
+          </SrsStageButton>
         </IonCol>
         <IonCol size-xs="6" size-md="3">
-          <IonButton className={`${styles.btn} ${styles.master}`}>
+          <SrsStageButton srsStage="master">
             <div>
               {masterStageData && (
-                <p className={`${styles.stageNum}`}>{masterStageData.length}</p>
+                <NumItemsInStage>{masterStageData.length}</NumItemsInStage>
               )}
-              <p className={`${styles.stageTxt}`}>Master</p>
+              <StageName>Master</StageName>
             </div>
-          </IonButton>
+          </SrsStageButton>
         </IonCol>
         <IonCol size-xs="6" size-md="3">
-          <IonButton className={`${styles.btn} ${styles.enlightened}`}>
+          <SrsStageButton srsStage="enlightened">
             <div>
               {enlightenedStageData && (
-                <p className={`${styles.stageNum}`}>
-                  {enlightenedStageData.length}
-                </p>
+                <NumItemsInStage>{enlightenedStageData.length}</NumItemsInStage>
               )}
-              <p className={`${styles.stageTxt}`}>Enlightened</p>
+              <StageName>Enlightened</StageName>
             </div>
-          </IonButton>
+          </SrsStageButton>
         </IonCol>
         <IonCol size-xs="12" size-md="6">
-          <IonButton className={`${styles.btn} ${styles.burned}`}>
+          <SrsStageButton srsStage="burned">
             <div>
               {burnedStageData && (
-                <p className={`${styles.stageNum}`}>{burnedStageData.length}</p>
+                <NumItemsInStage>{burnedStageData.length}</NumItemsInStage>
               )}
-              <p className={`${styles.stageTxt}`}>Burned</p>
+              <StageName>Burned</StageName>
             </div>
-          </IonButton>
+          </SrsStageButton>
         </IonCol>
-      </IonRow>
-    </IonGrid>
+      </ButtonRowContainer>
+    </SrsButtonContainer>
   );
 };
