@@ -1,3 +1,4 @@
+import { IonIcon } from "@ionic/react";
 import { Kanji, Subject } from "../types/Subject";
 import { Hint } from "./subject-details/Hint";
 import {
@@ -8,7 +9,6 @@ import { UserNote } from "./subject-details/UserNote";
 import { TxtWithSubjTags } from "./TxtWithSubjTags";
 import MeaningIcon from "../images/meaning.svg";
 import { IconHeadingContainer } from "./styles/BaseStyledComponents";
-import { IonIcon } from "@ionic/react";
 
 type Props = {
   kanji: Kanji;
