@@ -19,6 +19,7 @@ const AddButtonContainer = styled.div`
 
 const AddButton = styled(Chip)`
   background-color: var(--ion-color-secondary);
+  font-size: 0.9rem;
 `;
 
 type NoteKey = "meaning_note" | "reading_note";

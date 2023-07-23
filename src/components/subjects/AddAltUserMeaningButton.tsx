@@ -15,6 +15,7 @@ import { Chip } from "../styles/BaseStyledComponents";
 
 const AddButton = styled(Chip)`
   background-color: var(--ion-color-secondary);
+  font-size: 0.9rem;
 `;
 
 type Props = {
