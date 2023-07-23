@@ -168,7 +168,6 @@ const Card = ({ currentReviewItem }: CardProps) => {
     exit: (custom: number) => ({
       x: custom,
       opacity: 0,
-      scale: 0.5,
       transition: {
         duration: 0.2,
       },
