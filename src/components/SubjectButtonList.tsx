@@ -5,7 +5,7 @@ import {
 
 import { Subject } from "../types/Subject";
 import { Assignment } from "../types/Assignment";
-import { SubjectButton } from "./buttons/SubjectButton";
+import SubjectButton from "./SubjectButton/SubjectButton";
 import { SubjRow, SubjCol } from "./styles/BaseStyledComponents";
 
 type Props = {

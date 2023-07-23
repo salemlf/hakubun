@@ -21,6 +21,7 @@ type ReviewTypeProps = {
   reviewType: ReviewType;
 };
 
+// TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
 const ReviewTypeRow = styled(IonRow)<ReviewTypeProps>`
   justify-content: center;
   width: 100%;
@@ -96,6 +97,7 @@ type Props = {
   currentReviewItem: ReviewQueueItem;
 };
 
+// TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
 export const ReviewCharAndType = ({ currentReviewItem }: Props) => {
   const { queueState } = useReviewQueue();
 

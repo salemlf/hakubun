@@ -14,13 +14,13 @@ import {
 import styles from "./Home.module.scss";
 
 import { useUserAuth } from "../contexts/AuthContext";
-import { ProgressBar } from "../components/progress/ProgressBar";
-import Header from "../components/Header";
-import LessonsButton from "../components/buttons/LessonsButton";
-import ReviewsButton from "../components/buttons/ReviewsButton";
-import { RadicalForLvlCard } from "../components/cards/RadicalForLvlCard";
-import { KanjiContainer } from "../components/cards/KanjiForLvlCard";
-import { SrsStages } from "../components/SrsStages";
+import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
+import HomeHeader from "../components/HomeHeader";
+import LessonsButton from "../components/LessonsButton/LessonsButton";
+import ReviewsButton from "../components/ReviewsButton/ReviewsButton";
+import RadicalForLvlCard from "../components/RadicalForLvlCard/RadicalForLvlCard";
+import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
+import SrsStages from "../components/SrsStages/SrsStages";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
@@ -51,7 +51,7 @@ const Home = () => {
 
   return (
     <IonPage>
-      <Header></Header>
+      <HomeHeader></HomeHeader>
       <IonContent className={`${styles.contentPadding}`}>
         <IonGrid>
           {!homeLoading ? (
@@ -66,7 +66,7 @@ const Home = () => {
               </IonRow>
               <IonRow>
                 <IonCol>
-                  <ProgressBar level={level}></ProgressBar>
+                  <LevelProgressBar level={level} />
                 </IonCol>
               </IonRow>
               <IonRow class="ion-justify-content-start">
@@ -76,7 +76,7 @@ const Home = () => {
               </IonRow>
               <IonRow class="ion-justify-content-start">
                 <IonCol>
-                  <KanjiContainer level={level}></KanjiContainer>
+                  <KanjiForLvlCard level={level}></KanjiForLvlCard>
                 </IonCol>
               </IonRow>
               <IonRow class="ion-justify-content-start">

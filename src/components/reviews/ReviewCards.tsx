@@ -9,7 +9,7 @@ import {
 
 import { ReviewCharAndType } from "./ReviewCharAndType";
 import { ReviewInputAndButtons } from "./ReviewInputAndButtons";
-import { ReviewItemBottomSheet } from "./ReviewItemBottomSheet";
+import ReviewItemBottomSheet from "../ReviewItemBottomSheet/ReviewItemBottomSheet";
 import {
   getSubjectColor,
   isUserAnswerValid,

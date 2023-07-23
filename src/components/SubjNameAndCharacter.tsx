@@ -20,6 +20,7 @@ type Props = {
   subject: Subject;
 };
 
+// TODO: switch to CSS text-transform: capitalize instead of capitalizeWord for SubjectName
 export const SubjNameAndCharacter = ({ subject }: Props) => {
   // TODO: display loading skeletons
   return (

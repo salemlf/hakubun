@@ -40,6 +40,7 @@ type RadInfoProps = {
   radical: Radical;
 };
 
+// TODO: switch to CSS text-transform: capitalize instead of capitalizeWord for ReadingAndMeaningTxt
 const RadicalInfo = ({ radical }: RadInfoProps) => {
   return (
     <ReadingAndMeaningContainer>

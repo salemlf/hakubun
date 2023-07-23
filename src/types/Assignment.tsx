@@ -28,5 +28,3 @@ export interface Assignment extends PreFlattenedAssignment {
 export interface AssignmentData extends ResponseStructure {
   id: number;
 }
-
-export const assignmentBatchSizes = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];

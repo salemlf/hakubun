@@ -4,7 +4,7 @@ import { capitalizeWord } from "../../services/MiscService";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
-import { Note } from "../subject-details/Note";
+import Note from "./Note";
 
 import styled from "styled-components/macro";
 import { Chip } from "../styles/BaseStyledComponents";

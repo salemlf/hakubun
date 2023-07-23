@@ -82,6 +82,7 @@ export const getSrsNameBySrsLvl = (srsNum: number) => {
   );
 };
 
+// TODO: remove once not used anymore
 export const capitalizeWord = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };

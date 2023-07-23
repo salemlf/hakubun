@@ -44,6 +44,7 @@ type PrimaryAndAltProps = {
   hasAltMeanings: boolean;
 };
 
+// TODO: switch to CSS text-transform: capitalize instead of capitalizeWord for primaryMeaning
 const PrimaryAndAltMeanings = ({
   subject,
   altMeanings,
