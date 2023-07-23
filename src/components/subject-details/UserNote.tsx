@@ -38,9 +38,10 @@ const userNoteNotEmpty = (
 type Props = {
   subject: Subject;
   noteType: UserNoteType;
+  isRadical?: boolean;
 };
 
-export const UserNote = ({ subject, noteType }: Props) => {
+export const UserNote = ({ subject, noteType, isRadical = false }: Props) => {
   const {
     isLoading: studyMaterialLoading,
     data: studyMaterialData,
@@ -51,7 +52,10 @@ export const UserNote = ({ subject, noteType }: Props) => {
 
   let studyMaterialPropKey: NoteKey =
     noteType === "meaning" ? "meaning_note" : "reading_note";
-  let noteTypeCapitalized = capitalizeWord(noteType);
+
+  let addButtonTxt = !isRadical
+    ? `Add ${capitalizeWord(noteType)} Note`
+    : `Add Note`;
 
   return (
     <>
@@ -68,6 +72,7 @@ export const UserNote = ({ subject, noteType }: Props) => {
               setEditingInProgress={(isEditing: boolean) =>
                 setEditingInProgress(isEditing)
               }
+              isRadical={isRadical}
             />
           ) : (
             <AddButtonContainer>
@@ -76,7 +81,7 @@ export const UserNote = ({ subject, noteType }: Props) => {
                   setEditingInProgress(true);
                 }}
               >
-                Add {noteTypeCapitalized} Note
+                {addButtonTxt}
                 <IonIcon icon={addOutline}></IonIcon>
               </AddButton>
             </AddButtonContainer>

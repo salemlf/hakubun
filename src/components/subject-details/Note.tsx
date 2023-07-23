@@ -8,94 +8,23 @@ import TrashIcon from "../../images/trash.svg";
 import SaveIcon from "../../images/save.svg";
 import CancelIcon from "../../images/cancel.svg";
 import {
-  NoteHintContainer,
   NoteHintHeading,
   IconHeadingContainer,
 } from "../styles/BaseStyledComponents";
-import styled from "styled-components/macro";
 import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
 import { Subject } from "../../types/Subject";
 import { capitalizeWord } from "../../services/MiscService";
-
-const NoteContainer = styled(NoteHintContainer)`
-  position: relative;
-  padding-bottom: 18px;
-`;
-
-const NoteIconStyled = styled(IonIcon)`
-  margin-right: 5px;
-  vertical-align: text-top;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  position: absolute;
-  right: 5px;
-  bottom: -20px;
-`;
-
-const EditingButton = styled.button`
-  padding: 7px;
-  border-radius: 50%;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-
-  ion-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  &:focus {
-    outline: 2px solid white;
-    --outline: 2px solid white;
-  }
-`;
-
-const TrashButton = styled(EditingButton)`
-  background-color: var(--ion-color-danger-tint);
-  color: white;
-  margin-right: 15px;
-`;
-
-const PencilButton = styled(EditingButton)`
-  background-color: var(--ion-color-primary);
-  color: white;
-`;
-
-const SaveButton = styled(EditingButton)`
-  background-color: var(--ion-color-tertiary);
-  color: black;
-`;
-
-const CancelButton = styled(EditingButton)`
-  background-color: var(--ion-color-warning);
-  color: black;
-  margin-right: 15px;
-`;
-
-const EditableNote = styled.textarea`
-  resize: none;
-  width: 100%;
-  background-color: var(--light-grey);
-  line-height: 1;
-  padding: 3px 2px;
-  margin: 0;
-  display: block;
-  border: none;
-`;
-
-const NoteContents = styled.div`
-  width: 100%;
-  background-color: var(--light-grey);
-  line-height: 1;
-  padding: 3px 2px;
-  margin: 0;
-  display: block;
-  border: none;
-`;
+import {
+  EditableNote,
+  NoteContents,
+  NoteContainer,
+  NoteIconStyled,
+  ButtonContainer,
+  TrashButton,
+  PencilButton,
+  SaveButton,
+  CancelButton,
+} from "./NoteStyles";
 
 // based on info in this article, who knew an expanding height textbox would be so high-maintenance lol
 // article: https://medium.com/@oherterich/creating-a-textarea-with-dynamic-height-using-react-and-typescript-5ed2d78d9848
@@ -120,6 +49,28 @@ type Props = {
   beganEditing: boolean;
   setEditingInProgress: (isEditing: boolean) => void;
   noteType: UserNoteType;
+  isRadical: boolean;
+};
+
+const generateNoteHeadingsAngMsg = (
+  isRadical: boolean,
+  noteType: UserNoteType
+) => {
+  let noteTypeCapitalized = capitalizeWord(noteType);
+
+  if (isRadical) {
+    return {
+      noteHeadingTxt: "Note",
+      alertHeadingTxt: "Delete Note",
+      alertHeadingMsg: "Delete radical name note?",
+    };
+  } else {
+    return {
+      noteHeadingTxt: `${noteTypeCapitalized} Note`,
+      alertHeadingTxt: `Delete ${noteTypeCapitalized}`,
+      alertHeadingMsg: `Delete ${noteType} note?`,
+    };
+  }
 };
 
 // TODO: make a generic version of this component so can be used for user reading note also
@@ -130,6 +81,7 @@ export const Note = ({
   setEditingInProgress,
   beganEditing,
   noteType,
+  isRadical,
 }: Props) => {
   const {
     addMeaningNote,
@@ -149,7 +101,8 @@ export const Note = ({
     }
   }, [isEditable]);
   const [presentAlert] = useIonAlert();
-  let noteTypeCapitalized = capitalizeWord(noteType);
+
+  let noteHeadingsAndMsg = generateNoteHeadingsAngMsg(isRadical, noteType);
 
   const handleTextAreaUpdate = (
     evt: React.ChangeEvent<HTMLTextAreaElement>
@@ -194,7 +147,7 @@ export const Note = ({
     <NoteContainer>
       <IconHeadingContainer>
         <NoteIconStyled src={NoteIcon} />
-        <NoteHintHeading>{noteTypeCapitalized} Note</NoteHintHeading>
+        <NoteHintHeading>{noteHeadingsAndMsg.noteHeadingTxt}</NoteHintHeading>
       </IconHeadingContainer>
       {isEditable ? (
         <EditableNote
@@ -234,8 +187,8 @@ export const Note = ({
                 src={TrashIcon}
                 onClick={() =>
                   presentAlert({
-                    header: `Delete ${noteTypeCapitalized}`,
-                    message: `Delete ${noteType} note?`,
+                    header: noteHeadingsAndMsg.alertHeadingTxt,
+                    message: noteHeadingsAndMsg.alertHeadingMsg,
                     cssClass: "custom-alert",
                     buttons: [
                       {
