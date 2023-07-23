@@ -45,8 +45,8 @@ export const IconHeadingContainer = styled.div`
   margin-bottom: 5px;
 
   ion-icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.5em;
+    height: 1.5em;
     margin-right: 5px;
   }
 `;

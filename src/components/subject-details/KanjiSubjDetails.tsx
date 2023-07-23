@@ -19,6 +19,7 @@ type Props = {
   kanji: Kanji;
 };
 
+// TODO: sort vocabFoundSubjData by level ascending so items display that way
 export const KanjiSubjDetails = ({ kanji }: Props) => {
   let findSimilar = kanji.visually_similar_subject_ids.length !== 0;
   let findVocab = kanji.amalgamation_subject_ids.length !== 0;
