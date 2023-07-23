@@ -14,7 +14,7 @@ const AddButtonContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-  padding-top: 3px;
+  margin-top: 8px;
 `;
 
 const AddButton = styled(Chip)`
