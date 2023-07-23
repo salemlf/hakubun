@@ -55,6 +55,8 @@ const CorrectItemsHeader = styled(CardHeader)`
 
 const CardTitle = styled(IonCardTitle)`
   font-size: 1.25rem;
+  --color: white;
+  color: white;
 `;
 
 const IncorrectItemsHeader = styled(CardHeader)`
