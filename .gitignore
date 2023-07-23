@@ -27,3 +27,6 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
+
+# config for new component tool used 
+.new-component-config.json
