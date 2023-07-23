@@ -1,18 +1,20 @@
 import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
-
-import { BasicCard } from "./BasicCard";
-import { SubjectButton } from "../buttons/SubjectButton";
-import { StepProgressBar } from "../progress/StepProgressBar";
-
-import { Subject } from "../../types/Subject";
-import styles from "./KanjiForLvlCard.module.scss";
-
-import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
-import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
 import {
   isAssignmentLocked,
   findAssignmentWithSubjID,
 } from "../../services/SubjectAndAssignmentService";
+import { Subject } from "../../types/Subject";
+import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
+import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
+import { StepProgressBar } from "../progress/StepProgressBar";
+import SubjectButton from "../SubjectButton/SubjectButton";
+import { BasicCard } from "./BasicCard";
+
+import styled from "styled-components/macro";
+
+const KanjiItemContainer = styled(IonCol)`
+  margin-bottom: 10px;
+`;
 
 interface Props {
   level: number | undefined;
@@ -72,11 +74,7 @@ export const KanjiContainer = ({ level }: Props) => {
       <IonRow class="ion-align-items-center ion-justify-content-start">
         {(subjectsData as Subject[]).map((kanjiItem: any) => {
           return (
-            <IonCol
-              key={`col_${kanjiItem.id}`}
-              size="2"
-              className={`${styles.kanjiItemContainer}`}
-            >
+            <KanjiItemContainer key={`col_${kanjiItem.id}`} size="2">
               {assignmentsData && (
                 <>
                   <SubjectButton
@@ -98,7 +96,7 @@ export const KanjiContainer = ({ level }: Props) => {
                   />
                 </>
               )}
-            </IonCol>
+            </KanjiItemContainer>
           );
         })}
       </IonRow>
