@@ -34,6 +34,10 @@ const AltMeaningsAndPartsOfSpeechRow = styled(SubjSummaryRow)`
   align-items: flex-end;
 `;
 
+const PartsOfSpeechContainer = styled.div`
+  width: 100%;
+`;
+
 const ReadingsAndSrsRow = styled(SubjSummaryRow)`
   justify-content: space-between;
   align-items: center;
@@ -76,8 +80,10 @@ const VocabSummary = ({ subject, assignment }: SubjSummaryProps) => {
     <>
       <AltMeaningsAndPartsOfSpeechRow>
         <SubjectMeanings subject={subject} />
-        <PartsOfSpeech vocab={subject as Vocabulary} />
       </AltMeaningsAndPartsOfSpeechRow>
+      <PartsOfSpeechContainer>
+        <PartsOfSpeech vocab={subject as Vocabulary} />
+      </PartsOfSpeechContainer>
       <ReadingsAndSrsRow>
         <VocabReadings vocab={subject as Vocabulary} />
         <AssignmentSrs assignment={assignment} />

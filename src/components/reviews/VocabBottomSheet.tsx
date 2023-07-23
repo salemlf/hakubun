@@ -47,8 +47,7 @@ export const VocabBottomSheet = ({
             />
           </SubjDetailSection>
           <SubjDetailSection>
-            <SubjDetailSubHeading>Parts of Speech</SubjDetailSubHeading>
-            <PartsOfSpeech vocab={reviewItem as Vocabulary} alignLeft={true} />
+            <PartsOfSpeech vocab={reviewItem as Vocabulary} />
           </SubjDetailSection>
           <VocabMeaningExplanation vocab={reviewItem as Vocabulary} />
         </>
