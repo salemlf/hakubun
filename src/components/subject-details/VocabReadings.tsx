@@ -17,6 +17,8 @@ type AudioProps = {
 
 const Btn = styled.button`
   background-color: transparent;
+  width: 1em;
+  height: 1em;
 `;
 
 const AudioBtn = ({ url }: AudioProps) => {
