@@ -82,3 +82,5 @@ export interface StudyMaterialPutBody {
 }
 
 export type StudyMaterialsChangeActionType = "add" | "remove";
+
+export type UserNoteType = "meaning" | "reading";

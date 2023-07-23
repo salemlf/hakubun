@@ -5,7 +5,7 @@ import {
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { Hint } from "../subject-details/Hint";
 import { Subject, Vocabulary } from "../../types/Subject";
-import { UserMeaningNote } from "../subject-details/UserMeaningNote";
+import { UserNote } from "../subject-details/UserNote";
 
 type Props = {
   vocab: Vocabulary;
@@ -16,8 +16,8 @@ export const VocabMeaningExplanation = ({ vocab }: Props) => {
     <SubjDetailSection>
       <SubjDetailSubHeading>Meaning Explanation</SubjDetailSubHeading>
       <TxtWithSubjTags textWithTags={vocab.meaning_mnemonic} />
-      {vocab.reading_hint && <Hint hint={vocab.reading_hint} />}
-      <UserMeaningNote subject={vocab as Subject} />
+      {vocab.meaning_hint && <Hint hint={vocab.meaning_hint} />}
+      <UserNote subject={vocab as Subject} noteType="meaning" />
     </SubjDetailSection>
   );
 };
