@@ -6,6 +6,9 @@ import {
 } from "./subject-details/SubjectDetailsStyled";
 import { UserNote } from "./subject-details/UserNote";
 import { TxtWithSubjTags } from "./TxtWithSubjTags";
+import MeaningIcon from "../images/meaning.svg";
+import { IconHeadingContainer } from "./styles/BaseStyledComponents";
+import { IonIcon } from "@ionic/react";
 
 type Props = {
   kanji: Kanji;
@@ -14,7 +17,10 @@ type Props = {
 export const KanjiMeaningMnemonic = ({ kanji }: Props) => {
   return (
     <SubjDetailSection>
-      <SubjDetailSubHeading>Meaning Mnemonic</SubjDetailSubHeading>
+      <IconHeadingContainer>
+        <IonIcon src={MeaningIcon} />
+        <SubjDetailSubHeading>Meaning Mnemonic</SubjDetailSubHeading>
+      </IconHeadingContainer>
       <TxtWithSubjTags textWithTags={kanji.meaning_mnemonic} />
       {kanji.meaning_hint && <Hint hint={kanji.meaning_hint} />}
       <UserNote subject={kanji as Subject} noteType="meaning" />

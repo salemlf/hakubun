@@ -41,7 +41,7 @@ export const NoteHintHeading = styled.h6`
 
 export const IconHeadingContainer = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   margin-bottom: 5px;
 
   ion-icon {
