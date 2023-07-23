@@ -1,15 +1,16 @@
 import { IonRow, IonCol, IonSkeletonText } from "@ionic/react";
-
 import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
-
-import { BasicCard } from ".././cards/BasicCard";
-import { SubjectButton } from "../buttons/SubjectButton";
-import { StepProgressBar } from "../progress/StepProgressBar";
-
-import styles from "./RadicalForLvlCard.module.scss";
 import { useRadicalSubjectsForLvl } from "../../hooks/useRadicalSubjectsForLvl";
 import { useRadicalAssignmentsForLvl } from "../../hooks/useRadicalAssignmentsForLvl";
+import { BasicCard } from ".././cards/BasicCard";
+import SubjectButton from "../SubjectButton/SubjectButton";
+import { StepProgressBar } from "../progress/StepProgressBar";
+import styled from "styled-components/macro";
+
+const RadicalItemContainer = styled(IonCol)`
+  margin-bottom: 10px;
+`;
 
 interface Props {
   level: number | undefined;
@@ -58,11 +59,7 @@ export const RadicalForLvlCard = ({ level }: Props) => {
       <IonRow class="ion-align-items-center ion-justify-content-start">
         {(subjectCurrLvlData as Subject[]).map((radical: Subject) => {
           return (
-            <IonCol
-              key={`col_${radical.id}`}
-              size="2"
-              className={`${styles.radItemContainer}`}
-            >
+            <RadicalItemContainer key={`col_${radical.id}`} size="2">
               <SubjectButton
                 subject={radical}
                 assignment={assignmentCurrLvlData.find(
@@ -80,7 +77,7 @@ export const RadicalForLvlCard = ({ level }: Props) => {
                 )}
                 locked={false}
               />
-            </IonCol>
+            </RadicalItemContainer>
           );
         })}
       </IonRow>
