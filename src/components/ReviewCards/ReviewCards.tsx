@@ -4,7 +4,8 @@ import {
   motion,
   useMotionValue,
   useTransform,
-  AnimatePresence,
+  useWillChange,
+  useAnimate,
 } from "framer-motion";
 import { toHiragana } from "wanakana";
 
@@ -58,6 +59,8 @@ const SwipeOverlay = styled(motion.div)`
   border-radius: 10px;
   pointer-events: none;
   flex-grow: 1;
+  touch-action: none;
+  opacity: 0;
 `;
 
 const SwipeIcon = styled(motion.div)`
@@ -101,11 +104,10 @@ type CardProps = {
   currentReviewItem: ReviewQueueItem;
 };
 
-// TODO: also use animations when keyboard shortcuts are used
 const Card = ({ currentReviewItem }: CardProps) => {
   const [userAnswer, setUserAnswer] = useState("");
-  useKeyDown(() => nextBtnClicked(), ["F12"]);
-  useKeyDown(() => handleRetryClick(currentReviewItem, setUserAnswer), ["F6"]);
+  useKeyDown(() => attemptToAdvance(), ["F12"]);
+  useKeyDown(() => retryTriggered(), ["F6"]);
   const {
     handleNextClick,
     handleRetryClick,
@@ -113,19 +115,24 @@ const Card = ({ currentReviewItem }: CardProps) => {
     displayInvalidAnswerMsg,
   } = useReviewQueue();
   const x = useMotionValue(0);
+  const [reviewCardRef, animateCard] = useAnimate();
+
+  const exitTimeMs = 500;
+  const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
   const opacityLeft = useTransform(x, [-100, 0], [1, 0]);
   const opacityRight = useTransform(x, [0, 100], [0, 1]);
-  const [exitX, setExitX] = useState(0);
-  const rotate = useTransform(x, [-300, 0, 300], [-20, 0, 20], {
-    clamp: false,
-  });
+  const willChange = useWillChange();
 
-  const nextBtnClicked = () => {
-    // *testing
-    console.log("userAnswer: ", userAnswer);
-    console.log("nextBtnClicked called!");
-    // *testing
+  const rotate = useTransform(x, [-300, 0, 300], [-20, 0, 20]);
 
+  const retryTriggered = () => {
+    setTimeout(() => {
+      x.set(0);
+      handleRetryClick(currentReviewItem, setUserAnswer);
+    }, exitTimeMs);
+  };
+
+  const attemptToAdvance = () => {
     currentReviewItem.review_type === "reading" &&
       setUserAnswer(toHiragana(userAnswer));
 
@@ -133,18 +140,25 @@ const Card = ({ currentReviewItem }: CardProps) => {
     if (isValidInfo.isValid === false) {
       displayInvalidAnswerMsg(isValidInfo.message);
     } else {
-      setExitX(300);
-      handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
+      animateCard(
+        reviewCardRef.current,
+        { x: "150%" },
+        { duration: exitTimeDecimal }
+      );
+
+      setTimeout(() => {
+        x.set(0);
+        handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
+      }, exitTimeMs);
     }
   };
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
     if (info.offset.x > 200) {
-      nextBtnClicked();
+      attemptToAdvance();
     } else if (info.offset.x < -200) {
       if (queueState.showRetryButton) {
-        setExitX(-300);
-        handleRetryClick(currentReviewItem, setUserAnswer);
+        retryTriggered();
       } else {
         // TODO: show some visual indication of this
         console.log("RETRY NOT AVAILABLE!");
@@ -152,69 +166,39 @@ const Card = ({ currentReviewItem }: CardProps) => {
     }
   };
 
-  const reviewItemVariants = {
-    initial: {
-      x: 0,
-      y: 0,
-      opacity: 0,
-    },
-    animate: {
-      scale: 1,
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 1.3,
-      },
-    },
-    exit: (custom: number) => ({
-      x: custom,
-      opacity: 0,
-      transition: {
-        duration: 0.2,
-      },
-    }),
-  };
-
-  const overlayVariants = {
-    initial: {
-      opacity: 0,
-    },
-  };
-
   return (
     <ReviewCard
+      ref={reviewCardRef}
       subjtype={currentReviewItem.object as SubjectType}
+      initial={{ y: "-150%" }}
       style={{
-        top: 0,
         x,
         rotate,
+        willChange,
       }}
       drag="x"
-      dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", duration: 1, bounce: 0.5 }}
+      dragSnapToOrigin={true}
+      dragConstraints={{ left: 0, right: 0 }}
+      dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
       onDragEnd={handleDragEnd}
-      variants={reviewItemVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      custom={exitX}
-      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      dragDirectionLock={true}
       whileTap={{ cursor: "grabbing" }}
-      dragElastic={0.3}
+      dragElastic={0.5}
     >
       <ReviewCharAndType currentReviewItem={currentReviewItem} />
       <ReviewAnswerInput
         currentReviewItem={currentReviewItem}
         userAnswer={userAnswer}
         setUserAnswer={setUserAnswer}
-        nextBtnClicked={nextBtnClicked}
+        nextBtnClicked={attemptToAdvance}
       />
       <ReviewItemBottomSheet
         currentReviewItem={currentReviewItem}
         reviewType={currentReviewItem.review_type}
       />
       <RetryCardOverlay
-        variants={overlayVariants}
-        initial="initial"
         style={{
           opacity: opacityLeft,
         }}
@@ -224,9 +208,6 @@ const Card = ({ currentReviewItem }: CardProps) => {
         </SwipeIcon>
       </RetryCardOverlay>
       <NextCardOverlay
-        variants={overlayVariants}
-        initial="initial"
-        custom={exitX}
         style={{
           opacity: opacityRight,
         }}
@@ -246,12 +227,10 @@ type Props = {
 function ReviewCards({ currentReviewItem }: Props) {
   return (
     <TestReviewCardContainer>
-      <AnimatePresence>
-        <Card
-          key={currentReviewItem.itemID}
-          currentReviewItem={currentReviewItem}
-        />
-      </AnimatePresence>
+      <Card
+        key={currentReviewItem.itemID}
+        currentReviewItem={currentReviewItem}
+      />
     </TestReviewCardContainer>
   );
 }

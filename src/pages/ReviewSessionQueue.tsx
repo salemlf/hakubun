@@ -24,6 +24,7 @@ const Grid = styled(IonGrid)`
   margin: 10px;
 `;
 
+// TODO: add button to abandon session
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 // TODO: fix the excessive number of rerenders happening for this page
 export const ReviewSessionQueue = () => {
