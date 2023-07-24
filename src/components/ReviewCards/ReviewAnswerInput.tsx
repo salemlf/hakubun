@@ -94,15 +94,13 @@ type Props = {
   nextBtnClicked: () => void;
 };
 
-// TODO: remove next and retry buttons once gestures are implemented
-// TODO: add button to abandon session
 function ReviewAnswerInput({
   currentReviewItem,
   userAnswer,
   setUserAnswer,
   nextBtnClicked,
 }: Props) {
-  const { queueDataState, queueState, handleRetryClick } = useReviewQueue();
+  const { queueState } = useReviewQueue();
   let reviewType = currentReviewItem.review_type;
 
   return (
