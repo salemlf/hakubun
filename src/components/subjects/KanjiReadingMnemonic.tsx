@@ -4,7 +4,7 @@ import {
 } from "../subject-details/SubjectDetailsStyled";
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { Kanji, Subject } from "../../types/Subject";
-import { Hint } from "../subject-details/Hint";
+import Hint from "../Hint/Hint";
 import UserNote from "../UserNote/UserNote";
 import ReadingIcon from "../../images/reading.svg";
 import { IconHeadingContainer } from "../styles/BaseStyledComponents";

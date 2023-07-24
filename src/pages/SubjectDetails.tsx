@@ -9,9 +9,9 @@ import {
 
 import { useSubjectByID } from "../hooks/useSubjectByID";
 
-import { SubjectSummary } from "../components/subject-details/SubjectSummary";
+import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
 import { RadicalSubjDetails } from "../components/subject-details/RadicalSubjDetails";
-import { KanjiSubjDetails } from "../components/subject-details/KanjiSubjDetails";
+import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
 import { VocabSubjDetails } from "../components/subject-details/VocabSubjDetails";
 import { SubjectHeader } from "../components/subject-details/SubjectHeader";
 

@@ -6,7 +6,7 @@ import {
 } from "../subject-details/SubjectDetailsStyled";
 import { SubjectMeanings } from "../SubjectMeanings";
 import { KanjiUsedInVocab } from "../subjects/KanjiUsedInVocab";
-import { PartsOfSpeech } from "../subject-details/PartsOfSpeech";
+import PartsOfSpeech from "../PartsOfSpeech/PartsOfSpeech";
 import { VocabMeaningExplanation } from "../subjects/VocabMeaningExplanation";
 import { VocabReadingExplanation } from "../subjects/VocabReadingExplanation";
 import { VocabReadings } from "../subject-details/VocabReadings";

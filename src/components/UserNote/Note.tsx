@@ -24,7 +24,7 @@ import {
   PencilButton,
   SaveButton,
   CancelButton,
-} from "../subject-details/NoteStyles";
+} from "./NoteStyles";
 
 // based on info in this article, who knew an expanding height textbox would be so high-maintenance lol
 // article: https://medium.com/@oherterich/creating-a-textarea-with-dynamic-height-using-react-and-typescript-5ed2d78d9848

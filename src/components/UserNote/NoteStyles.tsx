@@ -23,7 +23,6 @@ export const ButtonContainer = styled.div`
 export const EditingButton = styled.button`
   padding: 7px;
   border-radius: 50%;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 
   ion-icon {
     width: 1.25rem;

@@ -1,6 +1,6 @@
 import { IonIcon } from "@ionic/react";
 import { Kanji, Subject } from "../types/Subject";
-import { Hint } from "./subject-details/Hint";
+import Hint from "./Hint/Hint";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,

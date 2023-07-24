@@ -3,7 +3,7 @@ import { IonSkeletonText } from "@ionic/react";
 import {
   SubjDetailSubHeading,
   SubjDetailSection,
-} from "./SubjectDetailsStyled";
+} from "../subject-details/SubjectDetailsStyled";
 
 import { Kanji } from "../../types/Subject";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
@@ -14,7 +14,7 @@ type Props = {
   kanji: Kanji;
 };
 
-export const VisuallySimilarKanji = ({ kanji }: Props) => {
+function VisuallySimilarKanji({ kanji }: Props) {
   const {
     isLoading: similarKanjiSubjLoading,
     data: similarKanjiSubjData,
@@ -51,4 +51,6 @@ export const VisuallySimilarKanji = ({ kanji }: Props) => {
       />
     </SubjDetailSection>
   );
-};
+}
+
+export default VisuallySimilarKanji;

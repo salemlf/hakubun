@@ -1,26 +1,22 @@
 import { IonRow, IonSkeletonText } from "@ionic/react";
-
+import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Kanji } from "../../types/Subject";
+import { KanjiMeaningMnemonic } from "../KanjiMeaningMnemonic";
+import { RadicalCombination } from "../RadicalCombination";
+import { SubjectWideBtnList } from "../SubjectWideBtnList";
+import VisuallySimilarKanji from "./VisuallySimilarKanji";
+import { KanjiReadingMnemonic } from "../subjects/KanjiReadingMnemonic";
 import {
   SubjInfoContainer,
-  SubjDetailSubHeading,
   SubjDetailSection,
-} from "./SubjectDetailsStyled";
-
-import { VisuallySimilarKanji } from "./VisuallySimilarKanji";
-import { SubjectWideBtnList } from "../SubjectWideBtnList";
-import { RadicalCombination } from "../RadicalCombination";
-import { KanjiMeaningMnemonic } from "../KanjiMeaningMnemonic";
-import { KanjiReadingMnemonic } from "../subjects/KanjiReadingMnemonic";
-
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+  SubjDetailSubHeading,
+} from "../subject-details/SubjectDetailsStyled";
 
 type Props = {
   kanji: Kanji;
 };
 
-// TODO: sort vocabFoundSubjData by level ascending so items display that way
-export const KanjiSubjDetails = ({ kanji }: Props) => {
+function KanjiSubjDetails({ kanji }: Props) {
   let findSimilar = kanji.visually_similar_subject_ids.length !== 0;
   let findVocab = kanji.amalgamation_subject_ids.length !== 0;
 
@@ -59,4 +55,6 @@ export const KanjiSubjDetails = ({ kanji }: Props) => {
       </SubjDetailSection>
     </SubjInfoContainer>
   );
-};
+}
+
+export default KanjiSubjDetails;

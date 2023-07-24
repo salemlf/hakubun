@@ -1,11 +1,14 @@
-import { SubjDetailSubHeading, SubjDetailTxt } from "./SubjectDetailsStyled";
 import { Vocabulary } from "../../types/Subject";
+import {
+  SubjDetailSubHeading,
+  SubjDetailTxt,
+} from "../subject-details/SubjectDetailsStyled";
 
 type Props = {
   vocab: Vocabulary;
 };
 
-export const PartsOfSpeech = ({ vocab }: Props) => {
+function PartsOfSpeech({ vocab }: Props) {
   let partsOfSpeech = vocab.parts_of_speech;
 
   return (
@@ -22,4 +25,6 @@ export const PartsOfSpeech = ({ vocab }: Props) => {
       </SubjDetailTxt>
     </>
   );
-};
+}
+
+export default PartsOfSpeech;

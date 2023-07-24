@@ -4,7 +4,7 @@ import {
   SubjDetailSubHeading,
 } from "../subject-details/SubjectDetailsStyled";
 import { TxtWithSubjTags } from "../TxtWithSubjTags";
-import { Hint } from "../subject-details/Hint";
+import Hint from "../Hint/Hint";
 import { Subject, Vocabulary } from "../../types/Subject";
 import UserNote from "../UserNote/UserNote";
 import ReadingIcon from "../../images/reading.svg";

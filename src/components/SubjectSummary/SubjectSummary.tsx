@@ -1,16 +1,14 @@
 import { IonRow, IonSkeletonText } from "@ionic/react";
-import { Kanji, Subject, Vocabulary } from "../../types/Subject";
-import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
-
-import { SubjectMeanings } from "../SubjectMeanings";
-import { AssignmentSrs } from "../AssignmentSrs";
-import { SubjSummaryRow } from "./SubjectDetailsStyled";
-import { SubjDetailsKanjiReadings } from "./SubjDetailsKanjiReadings";
-import { VocabReadings } from "./VocabReadings";
-import { PartsOfSpeech } from "./PartsOfSpeech";
-
 import styled from "styled-components/macro";
+import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
 import { Assignment } from "../../types/Assignment";
+import { Subject, Kanji, Vocabulary } from "../../types/Subject";
+import { AssignmentSrs } from "../AssignmentSrs";
+import PartsOfSpeech from "../PartsOfSpeech";
+import { SubjectMeanings } from "../SubjectMeanings";
+import { SubjDetailsKanjiReadings } from "../subject-details/SubjDetailsKanjiReadings";
+import { SubjSummaryRow } from "../subject-details/SubjectDetailsStyled";
+import { VocabReadings } from "../subject-details/VocabReadings";
 
 const SummaryContainer = styled(IonRow)`
   display: flex;
@@ -41,10 +39,6 @@ const ReadingsAndSrsRow = styled(SubjSummaryRow)`
   justify-content: space-between;
   align-items: center;
 `;
-
-type Props = {
-  subject: Subject;
-};
 
 type SubjSummaryProps = {
   subject: Subject;
@@ -91,7 +85,11 @@ const VocabSummary = ({ subject, assignment }: SubjSummaryProps) => {
   );
 };
 
-export const SubjectSummary = ({ subject }: Props) => {
+type Props = {
+  subject: Subject;
+};
+
+function SubjectSummary({ subject }: Props) {
   const {
     isLoading: assignmentLoading,
     data: assignment,
@@ -130,4 +128,6 @@ export const SubjectSummary = ({ subject }: Props) => {
       )}
     </SummaryContainer>
   );
-};
+}
+
+export default SubjectSummary;

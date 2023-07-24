@@ -1,17 +1,17 @@
-import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import { IonIcon } from "@ionic/react";
-import hintIcon from "../../images/hint.svg";
+import { TxtWithSubjTags } from "../TxtWithSubjTags";
 import {
+  IconHeadingContainer,
   NoteHintContainer,
   NoteHintHeading,
-  IconHeadingContainer,
 } from "../styles/BaseStyledComponents";
+import hintIcon from "../../images/hint.svg";
 
 type Props = {
   hint: string;
 };
 
-export const Hint = ({ hint }: Props) => {
+function Hint({ hint }: Props) {
   return (
     <NoteHintContainer>
       <IconHeadingContainer>
@@ -21,4 +21,6 @@ export const Hint = ({ hint }: Props) => {
       <TxtWithSubjTags textWithTags={hint} />
     </NoteHintContainer>
   );
-};
+}
+
+export default Hint;
