@@ -79,7 +79,10 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
       location.pathname === "/review/session" &&
       queueState.isBottomSheetVisible
     ) {
-      setIsBottomSheetVisible(true);
+      // using timeout otherwise it gets all weird with the input state being disabled at same time
+      setTimeout(() => {
+        setIsBottomSheetVisible(true);
+      }, 500);
     } else {
       setIsBottomSheetVisible(false);
     }
