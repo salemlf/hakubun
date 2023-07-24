@@ -23,9 +23,14 @@ type ButtonProps = {
 const SrsStageButton = styled.button<ButtonProps>`
   width: 100%;
   margin: 0;
-  height: 3.5rem;
+  padding: 10px 0;
   color: white;
+  border-radius: 6px;
   background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
+  &:focus {
+    outline: 2px solid white;
+    --outline: 2px solid white;
+  }
 `;
 
 const NumItemsInStage = styled.p`
