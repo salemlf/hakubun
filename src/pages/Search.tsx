@@ -4,7 +4,7 @@ import Fuse from "fuse.js";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
 import styled from "styled-components/macro";
-import { useAllSubjects } from "../hooks/subjects/useAllSubjects";
+import { useAllSubjects } from "../hooks/useAllSubjects";
 import { Subject } from "../types/Subject";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
 

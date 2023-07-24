@@ -10,10 +10,10 @@ import {
 import { useSubjectByID } from "../hooks/useSubjectByID";
 
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
-import { RadicalSubjDetails } from "../components/subject-details/RadicalSubjDetails";
+import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";
 import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
-import { VocabSubjDetails } from "../components/subject-details/VocabSubjDetails";
-import { SubjectHeader } from "../components/subject-details/SubjectHeader";
+import VocabSubjDetails from "../components/VocabSubjDetails/VocabSubjDetails";
+import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
 
 import styles from "./SubjectDetails.module.scss";
 import styled from "styled-components/macro";

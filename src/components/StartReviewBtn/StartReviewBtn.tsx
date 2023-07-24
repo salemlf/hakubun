@@ -1,6 +1,6 @@
 import { IonFab, IonFabButton, IonIcon } from "@ionic/react";
 import startIcon from "../../images/start.svg";
-import { ShiftBy } from "../ShiftBy";
+import ShiftBy from "../ShiftBy/ShiftBy";
 
 type Props = {
   onStartReviewBtnClick: () => void;

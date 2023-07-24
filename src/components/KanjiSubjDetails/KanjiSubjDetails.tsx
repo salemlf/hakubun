@@ -1,16 +1,16 @@
 import { IonRow, IonSkeletonText } from "@ionic/react";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Kanji } from "../../types/Subject";
-import { KanjiMeaningMnemonic } from "../KanjiMeaningMnemonic";
-import { RadicalCombination } from "../RadicalCombination";
-import { SubjectWideBtnList } from "../SubjectWideBtnList";
+import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic/KanjiMeaningMnemonic";
+import RadicalCombination from "../RadicalCombination/RadicalCombination";
+import SubjectWideBtnList from "../SubjectWideBtnList/SubjectWideBtnList";
 import VisuallySimilarKanji from "./VisuallySimilarKanji";
-import { KanjiReadingMnemonic } from "../subjects/KanjiReadingMnemonic";
+import KanjiReadingMnemonic from "../KanjiReadingMnemonic/KanjiReadingMnemonic";
 import {
   SubjInfoContainer,
   SubjDetailSection,
   SubjDetailSubHeading,
-} from "../subject-details/SubjectDetailsStyled";
+} from "../../styles/SubjectDetailsStyled";
 
 type Props = {
   kanji: Kanji;

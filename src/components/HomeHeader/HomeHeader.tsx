@@ -9,7 +9,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useUserAuth } from "../../contexts/AuthContext";
-import { LvlBadge } from "../LvlBadge";
+import LvlBadge from "../LvlBadge/LvlBadge";
 import SettingsIcon from "../../images/settings.svg";
 import styled from "styled-components/macro";
 

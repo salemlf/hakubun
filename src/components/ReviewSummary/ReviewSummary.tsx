@@ -17,7 +17,7 @@ import {
   getReviewsGroupedByResult,
 } from "../../services/ReviewService";
 import GroupedReviewSummaryResults from "./GroupedReviewSummaryResults";
-import { FullWidthGrid } from "../styles/BaseStyledComponents";
+import { FullWidthGrid } from "../../styles/BaseStyledComponents";
 import styled from "styled-components/macro";
 
 const Page = styled(IonPage)`

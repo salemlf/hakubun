@@ -2,7 +2,7 @@ import { Vocabulary } from "../../types/Subject";
 import {
   SubjDetailSubHeading,
   SubjDetailTxt,
-} from "../subject-details/SubjectDetailsStyled";
+} from "../../styles/SubjectDetailsStyled";
 
 type Props = {
   vocab: Vocabulary;

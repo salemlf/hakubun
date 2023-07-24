@@ -1,10 +1,10 @@
 import { IonIcon } from "@ionic/react";
-import { TxtWithSubjTags } from "../TxtWithSubjTags";
+import TxtWithSubjTags from "../TxtWithSubjTags/TxtWithSubjTags";
 import {
   IconHeadingContainer,
   NoteHintContainer,
   NoteHintHeading,
-} from "../styles/BaseStyledComponents";
+} from "../../styles/BaseStyledComponents";
 import hintIcon from "../../images/hint.svg";
 
 type Props = {

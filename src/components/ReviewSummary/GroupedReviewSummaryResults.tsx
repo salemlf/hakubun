@@ -1,7 +1,7 @@
 import { IonRow } from "@ionic/react";
 import { Subject } from "../../types/Subject";
 import { groupDataByProperty } from "../../services/ReviewService";
-import { SubjCharacterList } from "../subjects/SubjCharacterList";
+import SubjCharacterList from "./SubjCharacterList";
 
 type Props = {
   subjData: Subject[];

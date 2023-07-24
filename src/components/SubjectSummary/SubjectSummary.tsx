@@ -3,12 +3,12 @@ import styled from "styled-components/macro";
 import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
 import { Assignment } from "../../types/Assignment";
 import { Subject, Kanji, Vocabulary } from "../../types/Subject";
-import { AssignmentSrs } from "../AssignmentSrs";
+import AssignmentSrs from "./AssignmentSrs";
 import PartsOfSpeech from "../PartsOfSpeech";
-import { SubjectMeanings } from "../SubjectMeanings";
-import { SubjDetailsKanjiReadings } from "../subject-details/SubjDetailsKanjiReadings";
-import { SubjSummaryRow } from "../subject-details/SubjectDetailsStyled";
-import { VocabReadings } from "../subject-details/VocabReadings";
+import SubjectMeanings from "../SubjectMeanings/SubjectMeanings";
+import SubjDetailsKanjiReadings from "./SubjDetailsKanjiReadings";
+import { SubjSummaryRow } from "../../styles/SubjectDetailsStyled";
+import VocabReadings from "../VocabReadings/VocabReadings";
 
 const SummaryContainer = styled(IonRow)`
   display: flex;

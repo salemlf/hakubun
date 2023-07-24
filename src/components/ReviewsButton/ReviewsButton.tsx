@@ -5,7 +5,7 @@ import {
   BaseReviewLessonButton,
   BaseReviewLessonButtonBadge,
   BaseReviewLessonButtonSkeleton,
-} from "../styles/SubjectButtonsStyled";
+} from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components/macro";
 
 const ReviewsButtonStyled = styled(BaseReviewLessonButton)`

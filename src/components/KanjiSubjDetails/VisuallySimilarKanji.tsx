@@ -3,12 +3,12 @@ import { IonSkeletonText } from "@ionic/react";
 import {
   SubjDetailSubHeading,
   SubjDetailSection,
-} from "../subject-details/SubjectDetailsStyled";
+} from "../../styles/SubjectDetailsStyled";
 
 import { Kanji } from "../../types/Subject";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
-import { SubjectButtonList } from "../SubjectButtonList";
+import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
 
 type Props = {
   kanji: Kanji;

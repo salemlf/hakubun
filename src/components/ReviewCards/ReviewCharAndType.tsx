@@ -1,21 +1,20 @@
 import { IonCol, IonRow } from "@ionic/react";
-import { SubjectType } from "../../types/Subject";
 import {
   getReviewTypeColor,
   getSubjectColor,
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
-import { SubjectChars } from "../SubjectChars";
-
-import styled from "styled-components/macro";
 import { capitalizeWord, getPopoverMsgColor } from "../../services/MiscService";
+import { useReviewQueue } from "../../hooks/useReviewQueue";
+import { SubjectType } from "../../types/Subject";
 import {
   PopoverInfo,
   PopoverMessageType,
   ReviewQueueItem,
   ReviewType,
 } from "../../types/ReviewSessionTypes";
-import { useReviewQueue } from "../../hooks/useReviewQueue";
+import SubjectChars from "../SubjectChars/SubjectChars";
+import styled from "styled-components/macro";
 
 type ReviewTypeProps = {
   reviewType: ReviewType;

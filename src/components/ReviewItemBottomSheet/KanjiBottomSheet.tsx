@@ -1,15 +1,15 @@
 import { IonRow } from "@ionic/react";
 import { BottomSheetSubjectProps } from "../../types/ReviewSessionTypes";
 import { Kanji, Subject } from "../../types/Subject";
-import { KanjiMeaningMnemonic } from "../KanjiMeaningMnemonic";
-import { RadicalCombination } from "../RadicalCombination";
-import { SubjectMeanings } from "../SubjectMeanings";
+import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic/KanjiMeaningMnemonic";
+import RadicalCombination from "../RadicalCombination/RadicalCombination";
+import SubjectMeanings from "../SubjectMeanings/SubjectMeanings";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
-} from "../subject-details/SubjectDetailsStyled";
-import { ReadingsForKanji } from "../subjects/ReadingsForKanji";
-import { KanjiReadingMnemonic } from "../subjects/KanjiReadingMnemonic";
+} from "../../styles/SubjectDetailsStyled";
+import ReadingsForKanji from "../ReadingsForKanji/ReadingsForKanji";
+import KanjiReadingMnemonic from "../KanjiReadingMnemonic/KanjiReadingMnemonic";
 
 // TODO: add stroke order to radicals segment
 function KanjiBottomSheet({

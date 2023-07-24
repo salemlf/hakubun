@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { IonIcon, useIonAlert } from "@ionic/react";
-import { useStudyMaterialsChange } from "../../hooks/misc/useStudyMaterialsChange";
+import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
 
 import NoteIcon from "../../images/note.svg";
 import PencilIcon from "../../images/pencil.svg";
@@ -10,7 +10,7 @@ import CancelIcon from "../../images/cancel.svg";
 import {
   NoteHintHeading,
   IconHeadingContainer,
-} from "../styles/BaseStyledComponents";
+} from "../../styles/BaseStyledComponents";
 import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
 import { Subject } from "../../types/Subject";
 import { capitalizeWord } from "../../services/MiscService";

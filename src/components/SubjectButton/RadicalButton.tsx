@@ -1,14 +1,14 @@
-import ImageFallback from "../ImageFallback";
+import ImageFallback from "../ImageFallback/ImageFallback";
 import {
   BtnWithTxt,
   BtnWithImage,
   SubjBtnDetailsTxt,
   SubjInfoCol,
-} from "../styles/SubjectButtonsStyled";
+} from "../../styles/SubjectButtonsStyled";
 
 import { Subject } from "../../types/Subject";
 import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService";
-import { SubjectChars } from "../SubjectChars";
+import SubjectChars from "../SubjectChars/SubjectChars";
 
 // TODO: change to use size sm, md, lg?
 type Props = {

@@ -4,8 +4,8 @@ import {
   BtnWithTxt,
   SubjBtnDetailsTxt,
   SubjInfoCol,
-} from "../styles/SubjectButtonsStyled";
-import { SubjectChars } from "../SubjectChars";
+} from "../../styles/SubjectButtonsStyled";
+import SubjectChars from "../SubjectChars/SubjectChars";
 import {
   getPrimaryReading,
   getSubjectDisplayName,

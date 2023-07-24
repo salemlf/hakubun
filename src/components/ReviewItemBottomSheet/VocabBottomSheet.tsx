@@ -3,14 +3,14 @@ import { Subject, Vocabulary } from "../../types/Subject";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
-} from "../subject-details/SubjectDetailsStyled";
-import { SubjectMeanings } from "../SubjectMeanings";
-import { KanjiUsedInVocab } from "../subjects/KanjiUsedInVocab";
+} from "../../styles/SubjectDetailsStyled";
+import SubjectMeanings from "../SubjectMeanings/SubjectMeanings";
+import KanjiUsedInVocab from "../KanjiUsedInVocab/KanjiUsedInVocab";
 import PartsOfSpeech from "../PartsOfSpeech/PartsOfSpeech";
-import { VocabMeaningExplanation } from "../subjects/VocabMeaningExplanation";
-import { VocabReadingExplanation } from "../subjects/VocabReadingExplanation";
-import { VocabReadings } from "../subject-details/VocabReadings";
-import { ContextSentences } from "../ContextSentences";
+import VocabMeaningExplanation from "../VocabMeaningExplanation/VocabMeaningExplanation";
+import VocabReadingExplanation from "../VocabReadingExplanation/VocabReadingExplanation";
+import VocabReadings from "../VocabReadings/VocabReadings";
+import ContextSentences from "../ContextSentences/ContextSentences";
 
 import styled from "styled-components/macro";
 

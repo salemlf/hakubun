@@ -1,5 +1,5 @@
 import { IonIcon } from "@ionic/react";
-import { NoteHintContainer } from "../styles/BaseStyledComponents";
+import { NoteHintContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components/macro";
 
 export const NoteContainer = styled(NoteHintContainer)`

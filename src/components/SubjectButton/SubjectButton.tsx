@@ -1,6 +1,6 @@
 import { IonRow, useIonPopover, useIonRouter } from "@ionic/react";
 import { Subject } from "../../types/Subject";
-import { SubjCardPopover } from "../SubjCardPopover";
+import SubjCardPopover from "./SubjCardPopover";
 import RadicalButton from "./RadicalButton";
 import KanjiButton from "./KanjiButton";
 import SubjectButtonLoading from "./SubjectButtonLoading";

@@ -1,7 +1,7 @@
 import { BottomSheetSubjectProps } from "../../types/ReviewSessionTypes";
 import { Radical, Subject } from "../../types/Subject";
-import { SubjectMeanings } from "../SubjectMeanings";
-import { RadicalNameMnemonic } from "../subjects/RadicalNameMnemonic";
+import SubjectMeanings from "../SubjectMeanings/SubjectMeanings";
+import RadicalNameMnemonic from "../RadicalNameMnemonic/RadicalNameMnemonic";
 
 function RadicalBottomSheet({
   reviewItem,

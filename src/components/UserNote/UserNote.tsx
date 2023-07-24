@@ -7,7 +7,7 @@ import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
 import Note from "./Note";
 
 import styled from "styled-components/macro";
-import { Chip } from "../styles/BaseStyledComponents";
+import { Chip } from "../../styles/BaseStyledComponents";
 import { addOutline } from "ionicons/icons";
 
 const AddButtonContainer = styled.div`
