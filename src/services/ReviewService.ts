@@ -1,4 +1,4 @@
-import { toKana } from "wanakana";
+import { toKana, isKanji } from "wanakana";
 import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
 import { SubjectMeaning, SubjectReading } from "../types/Subject";
 import Fuse from "fuse.js";
@@ -270,9 +270,6 @@ const checkInvalidSubjectAnswer = (
   userAnswer: string
 ) => {
   // - no answer entered
-  // - entered kanji/kana for meaning
-  // - entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
-
   let subjectValidInfo = {
     isValid: true,
     message: "",
@@ -280,8 +277,17 @@ const checkInvalidSubjectAnswer = (
 
   if (userAnswer === "") {
     subjectValidInfo.isValid = false;
-    subjectValidInfo.message = "SHAKE-EDY SHAKE, PLEASE ENTER ANSWER!";
+    subjectValidInfo.message = "PLEASE ENTER ANSWER!";
   }
+
+  // TODO: finish adding cases
+  // TODO: case for entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
+  else if (isKanji(userAnswer)) {
+    console.log("INVALID INPUT!");
+    subjectValidInfo.isValid = false;
+    subjectValidInfo.message = "UNACCEPTABLE CHARACTER(S) ENTERED";
+  }
+
   return subjectValidInfo;
 };
 
@@ -305,17 +311,17 @@ export const isUserAnswerValid = (
   -------------------
   any subject
   - no answer entered
-  - entered kanji/kana for meaning
   - entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
   
   kanji
   - entered onyomi instead of kunyomi, or vice versa
 
   meaning review type
-  - entered kanji/kana
+  - entered kanji/kana (or just japanese in general)
+  - entered romaji equivalent for reading answer (got confused and thought it was a reading question)
 
   reading review type
-  - romaji that can't be converted to kana
+  - romaji that can't be converted to kana (try using isKana from wanakana)
   */
 
   return subjectValidInfo;
