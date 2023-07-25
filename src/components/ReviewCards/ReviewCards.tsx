@@ -113,14 +113,14 @@ const Card = ({ currentReviewItem }: CardProps) => {
   } = useReviewQueue();
   const x = useMotionValue(0);
   const [reviewCardRef, animateCard] = useAnimate();
-
-  const exitTimeMs = 500;
-  const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
   const opacityLeft = useTransform(x, [-100, 0], [1, 0]);
   const opacityRight = useTransform(x, [0, 100], [0, 1]);
   const willChange = useWillChange();
-
   const rotate = useTransform(x, [-300, 0, 300], [-20, 0, 20]);
+  const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
+
+  const exitTimeMs = 500;
+  const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
 
   const retryTriggered = () => {
     setTimeout(() => {
@@ -136,6 +136,7 @@ const Card = ({ currentReviewItem }: CardProps) => {
     let isValidInfo = isUserAnswerValid(currentReviewItem, userAnswer);
     if (isValidInfo.isValid === false) {
       displayInvalidAnswerMsg(isValidInfo.message);
+      setShakeInputTrigger((shakeInputTrigger) => shakeInputTrigger + 1);
     } else {
       animateCard(
         reviewCardRef.current,
@@ -186,6 +187,7 @@ const Card = ({ currentReviewItem }: CardProps) => {
     >
       <ReviewCharAndType currentReviewItem={currentReviewItem} />
       <ReviewAnswerInput
+        shakeInputTrigger={shakeInputTrigger}
         currentReviewItem={currentReviewItem}
         userAnswer={userAnswer}
         setUserAnswer={setUserAnswer}

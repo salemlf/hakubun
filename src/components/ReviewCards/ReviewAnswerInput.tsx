@@ -1,61 +1,16 @@
-import React, { createElement, useEffect, useRef } from "react";
-import { IonRow } from "@ionic/react";
-import { toHiragana } from "wanakana";
+import { SetStateAction, useEffect, useRef } from "react";
+import { motion, useAnimate } from "framer-motion";
+import WanakanaInput from "./WanakanaInput";
 
 import styled from "styled-components/macro";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 
-const InputRow = styled(IonRow)`
+const InputRow = styled(motion.div)`
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
 `;
-
-const translateInputValue = (string: string, translateToHiragana: boolean) => {
-  if (translateToHiragana) {
-    return toHiragana(string, { IMEMode: true });
-  }
-  return string;
-};
-
-type InputProps = {
-  [key: string]: any;
-  value: string;
-  onChange: (e: any) => void;
-  translateToHiragana: boolean;
-};
-
-const WanakanaInput = ({
-  value,
-  onChange,
-  translateToHiragana,
-  ...props
-}: InputProps) => {
-  const inputRef = useRef(document.createElement("input"));
-  const translatedVal = translateInputValue(value, translateToHiragana);
-  // TODO: change this, a mehhh workaround for autofocusing
-  useEffect(() => {
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 500);
-  });
-
-  const handleChange = (e: any) => {
-    let updatedValue = translateInputValue(e.target.value, translateToHiragana);
-    inputRef.current.value = updatedValue;
-    onChange(e);
-  };
-
-  return createElement("input", {
-    ref: inputRef,
-    value: translatedVal,
-    onChange: handleChange,
-    autoCorrect: "off",
-    autoCapitalize: "none",
-    ...props,
-  });
-};
 
 const AnswerInput = styled(WanakanaInput)`
   width: 100%;
@@ -69,8 +24,9 @@ const AnswerInput = styled(WanakanaInput)`
 type Props = {
   currentReviewItem: ReviewQueueItem;
   userAnswer: string;
-  setUserAnswer: (value: React.SetStateAction<string>) => void;
+  setUserAnswer: (value: SetStateAction<string>) => void;
   nextBtnClicked: () => void;
+  shakeInputTrigger: number;
 };
 
 function ReviewAnswerInput({
@@ -78,28 +34,47 @@ function ReviewAnswerInput({
   userAnswer,
   setUserAnswer,
   nextBtnClicked,
+  shakeInputTrigger,
 }: Props) {
   const { queueState } = useReviewQueue();
   let reviewType = currentReviewItem.review_type;
+  const inputRef = useRef<HTMLInputElement>();
+  const [inputContainerRef, animate] = useAnimate();
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
+
+  useEffect(() => {
+    if (shakeInputTrigger) {
+      animate(inputContainerRef.current, {
+        x: [-5, 5, -5, 5, -5, 5, -5, 5, -5, 5, -5, 5, 0],
+        transition: {
+          duration: 0.5,
+        },
+      });
+    }
+  }, [shakeInputTrigger]);
 
   return (
-    <>
-      <InputRow>
-        <AnswerInput
-          type="text"
-          value={userAnswer}
-          onKeyDown={(e: any) => {
-            if (e.key === "Enter") {
-              nextBtnClicked();
-            }
-          }}
-          translateToHiragana={reviewType === "reading"}
-          onChange={(e: any) => setUserAnswer(e.target.value)}
-          disabled={queueState.isSecondClick}
-          placeholder={reviewType === "reading" ? "答え" : ""}
-        />
-      </InputRow>
-    </>
+    <InputRow ref={inputContainerRef}>
+      <AnswerInput
+        inputRef={inputRef}
+        type="text"
+        value={userAnswer}
+        onKeyDown={(e: any) => {
+          if (e.key === "Enter") {
+            nextBtnClicked();
+          }
+        }}
+        translateToHiragana={reviewType === "reading"}
+        onChange={(e: any) => setUserAnswer(e.target.value)}
+        disabled={queueState.isSecondClick}
+        placeholder={reviewType === "reading" ? "答え" : ""}
+      />
+    </InputRow>
   );
 }
 
