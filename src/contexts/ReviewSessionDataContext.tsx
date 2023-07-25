@@ -16,12 +16,10 @@ import {
   flattenData,
   shuffleArray,
   getAudioForReading,
+  findStudyMaterialWithSubjID,
 } from "../services/MiscService";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
-import {
-  findAssignmentWithSubjID,
-  findStudyMaterialWithSubjID,
-} from "../services/SubjectAndAssignmentService";
+import { findAssignmentWithSubjID } from "../services/SubjectAndAssignmentService";
 
 const initialState: ReviewSessionDataState = {
   isLoading: false,

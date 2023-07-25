@@ -8,21 +8,18 @@ import {
   useAnimate,
 } from "framer-motion";
 import { toHiragana } from "wanakana";
-
-import RetryIcon from "../../images/retry.svg";
-import NextIcon from "../../images/next-item.svg";
-import styled from "styled-components/macro";
 import { SubjectType } from "../../types/Subject";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { isUserAnswerValid } from "../../services/ReviewService";
 import { useKeyDown } from "../../hooks/useKeyDown";
-import {
-  isUserAnswerValid,
-  getSubjectColor,
-} from "../../services/SubjectAndAssignmentService";
+import { useReviewQueue } from "../../hooks/useReviewQueue";
 import ReviewCharAndType from "./ReviewCharAndType";
 import ReviewAnswerInput from "./ReviewAnswerInput";
 import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
-import { useReviewQueue } from "../../hooks/useReviewQueue";
+import RetryIcon from "../../images/retry.svg";
+import NextIcon from "../../images/next-item.svg";
+import styled from "styled-components/macro";
 
 const TestReviewCardContainer = styled(motion.div)`
   border-radius: 10px;

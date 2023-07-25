@@ -1,16 +1,12 @@
-import Fuse from "fuse.js";
 import {
   ReadingType,
   Subject,
-  SubjectMeaning,
   SubjectReading,
   SubjectType,
 } from "../types/Subject";
 import { Assignment, AssignmentType } from "../types/Assignment";
 import { SrsLevelName, StudyMaterial, TagType } from "../types/MiscTypes";
 import { capitalizeWord } from "./MiscService";
-import { toKana } from "wanakana";
-import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(
@@ -77,16 +73,6 @@ export const findAssignmentWithSubjID = (
 ) => {
   return assignmentsData.find(
     (assignment: Assignment) => assignment.subject_id === subject.id
-  );
-};
-
-// TODO: move into misc service
-export const findStudyMaterialWithSubjID = (
-  studyMaterials: StudyMaterial[],
-  subject: Subject
-) => {
-  return studyMaterials.find(
-    (studyMaterial: StudyMaterial) => studyMaterial.subject_id === subject.id
   );
 };
 
@@ -157,17 +143,6 @@ export const getSubjectColor = (subjType: SubjectType) => {
   return subjColors[subjType as keyof {}];
 };
 
-// TODO: move into ReviewService
-const reviewColors: { [index: string]: string } = {
-  reading: `var(--ion-color-primary)`,
-  meaning: `var(--ion-color-secondary)`,
-};
-
-// TODO: move into ReviewService
-export const getReviewTypeColor = (reviewType: ReviewType) => {
-  return reviewColors[reviewType as keyof {}];
-};
-
 export const getTagColor = (tagType: TagType) => {
   return subjAndTagColors[tagType as keyof {}];
 };
@@ -202,128 +177,4 @@ export const compareAssignmentsByAvailableDate = (
     new Date(assignment1.available_at).getTime() -
     new Date(assignment2.available_at).getTime()
   );
-};
-
-// TODO: move to review service
-const checkInvalidSubjectAnswer = (
-  currReviewItem: ReviewQueueItem,
-  userAnswer: string
-) => {
-  // - no answer entered
-  // - entered kanji/kana for meaning
-  // - entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
-
-  let subjectValidInfo = {
-    isValid: true,
-    message: "",
-  };
-
-  if (userAnswer === "") {
-    subjectValidInfo.isValid = false;
-    subjectValidInfo.message = "SHAKE-EDY SHAKE, PLEASE ENTER ANSWER!";
-  }
-  return subjectValidInfo;
-};
-
-// TODO: move to review service
-// TODO: finish implementing
-export const isUserAnswerValid = (
-  currReviewItem: ReviewQueueItem,
-  userAnswer: string
-) => {
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:198 ~ userAnswer:",
-    userAnswer
-  );
-  let subjectValidInfo = checkInvalidSubjectAnswer(currReviewItem, userAnswer);
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:233 ~ subjectValidInfo:",
-    subjectValidInfo
-  );
-
-  /*
-  examples of invalid answers
-  -------------------
-  any subject
-  - no answer entered
-  - entered kanji/kana for meaning
-  - entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
-  
-  kanji
-  - entered onyomi instead of kunyomi, or vice versa
-
-  meaning review type
-  - entered kanji/kana
-
-  reading review type
-  - romaji that can't be converted to kana
-  */
-
-  return subjectValidInfo;
-};
-
-// TODO: move to review service
-export const isUserMeaningAnswerCorrect = (
-  reviewItem: ReviewQueueItem,
-  userAnswer: string
-) => {
-  let answers = reviewItem["meanings"] as SubjectMeaning[];
-  let userSynonyms = reviewItem["meaning_synonyms"];
-  let acceptedAnswers = answers.filter((answer) => answer.accepted_answer);
-
-  let answersWithSynonyms = [...acceptedAnswers, { synonyms: userSynonyms }];
-  // *testing
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:200 ~ answersWithSynonyms:",
-    answersWithSynonyms
-  );
-  // *testing
-
-  // TODO: update this based on user settings once those are implemented, allow strict meanings (0.0 threshold, and prob just apply to vocab)
-  // meanings allow some typos/mistakes
-  let options = {
-    keys: ["meaning", "synonyms"],
-    threshold: 0.1,
-    distance: 20,
-  };
-  let fuse = new Fuse(answersWithSynonyms, options);
-  let meaningsMatched = fuse.search(userAnswer);
-  return meaningsMatched.length !== 0;
-};
-
-// TODO: move to review service
-export const isUserReadingAnswerCorrect = (
-  reviewItem: ReviewQueueItem,
-  userAnswer: string
-) => {
-  // so "ん" is converted properly
-  let userReading = toKana(userAnswer);
-  let answers = reviewItem["readings"] as SubjectReading[];
-
-  let acceptedAnswers = answers.filter((answer) => answer.accepted_answer);
-  // *testing
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:193 ~ acceptedAnswers:",
-    acceptedAnswers
-  );
-  // *testing
-
-  // readings shouldn't allow any typos/mistakes
-  let isCorrectReading = acceptedAnswers.some(
-    (subjReading) => subjReading.reading === userReading
-  );
-  return isCorrectReading;
-};
-
-// TODO: move to review service
-export const isUserAnswerCorrect = (
-  reviewItem: ReviewQueueItem,
-  userAnswer: string
-) => {
-  let reviewType = reviewItem.review_type as string;
-  if (reviewType === "reading") {
-    return isUserReadingAnswerCorrect(reviewItem, userAnswer);
-  } else {
-    return isUserMeaningAnswerCorrect(reviewItem, userAnswer);
-  }
 };

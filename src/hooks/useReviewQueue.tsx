@@ -10,11 +10,9 @@ import {
   getSrsNameBySrsLvl,
   playAudioIfAvailable,
 } from "../services/MiscService";
-import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
-import {
-  isUserAnswerCorrect,
-  isUserAnswerValid,
-} from "../services/SubjectAndAssignmentService";
+import { ReviewQueueItem } from "../types/ReviewSessionTypes";
+
+import { isUserAnswerCorrect } from "../services/ReviewService";
 import {
   calculateSRSLevel,
   checkIfReviewIsComplete,

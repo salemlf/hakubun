@@ -5,7 +5,7 @@ import {
 } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
 import { PopoverMessageType, ReviewType } from "../types/ReviewSessionTypes";
-import { PronunciationAudio, SubjectReading } from "../types/Subject";
+import { PronunciationAudio, Subject, SubjectReading } from "../types/Subject";
 import { nanoid } from "nanoid";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
@@ -228,6 +228,15 @@ export const updateValsInStudyMaterialData = ({
     subject_id: studyMaterial.subject_id,
     subject_type: studyMaterial.subject_type,
   };
+};
+
+export const findStudyMaterialWithSubjID = (
+  studyMaterials: StudyMaterial[],
+  subject: Subject
+) => {
+  return studyMaterials.find(
+    (studyMaterial: StudyMaterial) => studyMaterial.subject_id === subject.id
+  );
 };
 
 export const generateUUID = (): string => {

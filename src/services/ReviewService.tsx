@@ -1,5 +1,16 @@
+import { toKana } from "wanakana";
 import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
-import { Subject } from "../types/Subject";
+import { SubjectMeaning, SubjectReading } from "../types/Subject";
+import Fuse from "fuse.js";
+
+const reviewColors: { [index: string]: string } = {
+  reading: `var(--ion-color-primary)`,
+  meaning: `var(--ion-color-secondary)`,
+};
+
+export const getReviewTypeColor = (reviewType: ReviewType) => {
+  return reviewColors[reviewType as keyof {}];
+};
 
 export const checkIfReviewIsComplete = (
   reviewItemToMatch: ReviewQueueItem,
@@ -189,4 +200,123 @@ export const groupDataByProperty = function (dataToGroup: any[], key: string) {
 
     return objWithGroups;
   }, {});
+};
+
+export const isUserReadingAnswerCorrect = (
+  reviewItem: ReviewQueueItem,
+  userAnswer: string
+) => {
+  // so "ん" is converted properly
+  let userReading = toKana(userAnswer);
+  let answers = reviewItem["readings"] as SubjectReading[];
+
+  let acceptedAnswers = answers.filter((answer) => answer.accepted_answer);
+  // *testing
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:193 ~ acceptedAnswers:",
+    acceptedAnswers
+  );
+  // *testing
+
+  // readings shouldn't allow any typos/mistakes
+  let isCorrectReading = acceptedAnswers.some(
+    (subjReading) => subjReading.reading === userReading
+  );
+  return isCorrectReading;
+};
+
+export const isUserMeaningAnswerCorrect = (
+  reviewItem: ReviewQueueItem,
+  userAnswer: string
+) => {
+  let answers = reviewItem["meanings"] as SubjectMeaning[];
+  let userSynonyms = reviewItem["meaning_synonyms"];
+  let acceptedAnswers = answers.filter((answer) => answer.accepted_answer);
+
+  let answersWithSynonyms = [...acceptedAnswers, { synonyms: userSynonyms }];
+  // *testing
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:200 ~ answersWithSynonyms:",
+    answersWithSynonyms
+  );
+  // *testing
+
+  // TODO: update this based on user settings once those are implemented, allow strict meanings (0.0 threshold, and prob just apply to vocab)
+  // meanings allow some typos/mistakes
+  let options = {
+    keys: ["meaning", "synonyms"],
+    threshold: 0.1,
+    distance: 20,
+  };
+  let fuse = new Fuse(answersWithSynonyms, options);
+  let meaningsMatched = fuse.search(userAnswer);
+  return meaningsMatched.length !== 0;
+};
+
+export const isUserAnswerCorrect = (
+  reviewItem: ReviewQueueItem,
+  userAnswer: string
+) => {
+  let reviewType = reviewItem.review_type as string;
+  if (reviewType === "reading") {
+    return isUserReadingAnswerCorrect(reviewItem, userAnswer);
+  } else {
+    return isUserMeaningAnswerCorrect(reviewItem, userAnswer);
+  }
+};
+
+const checkInvalidSubjectAnswer = (
+  currReviewItem: ReviewQueueItem,
+  userAnswer: string
+) => {
+  // - no answer entered
+  // - entered kanji/kana for meaning
+  // - entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
+
+  let subjectValidInfo = {
+    isValid: true,
+    message: "",
+  };
+
+  if (userAnswer === "") {
+    subjectValidInfo.isValid = false;
+    subjectValidInfo.message = "SHAKE-EDY SHAKE, PLEASE ENTER ANSWER!";
+  }
+  return subjectValidInfo;
+};
+
+// TODO: finish implementing
+export const isUserAnswerValid = (
+  currReviewItem: ReviewQueueItem,
+  userAnswer: string
+) => {
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:198 ~ userAnswer:",
+    userAnswer
+  );
+  let subjectValidInfo = checkInvalidSubjectAnswer(currReviewItem, userAnswer);
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.tsx:233 ~ subjectValidInfo:",
+    subjectValidInfo
+  );
+
+  /*
+  examples of invalid answers
+  -------------------
+  any subject
+  - no answer entered
+  - entered kanji/kana for meaning
+  - entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
+  
+  kanji
+  - entered onyomi instead of kunyomi, or vice versa
+
+  meaning review type
+  - entered kanji/kana
+
+  reading review type
+  - romaji that can't be converted to kana
+  */
+
+  return subjectValidInfo;
 };

@@ -1,9 +1,9 @@
 import { IonCol, IonRow } from "@ionic/react";
 import {
-  getReviewTypeColor,
   getSubjectColor,
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
+import { getReviewTypeColor } from "../../services/ReviewService";
 import { capitalizeWord, getPopoverMsgColor } from "../../services/MiscService";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { SubjectType } from "../../types/Subject";
