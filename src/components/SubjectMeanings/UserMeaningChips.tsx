@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { IonIcon, IonSkeletonText, useIonAlert } from "@ionic/react";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
-import { generateUUID } from "../../services/MiscService";
+import { generateUUID } from "../../utils";
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse } from "../../types/MiscTypes";
 import { Chip } from "../../styles/BaseStyledComponents";
