@@ -1,31 +1,10 @@
 import React, { createElement, useEffect, useRef } from "react";
-import { IonGrid, IonRow, IonCol, IonInput } from "@ionic/react";
+import { IonRow } from "@ionic/react";
 import { toHiragana } from "wanakana";
 
 import styled from "styled-components/macro";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
-
-const ButtonCol = styled(IonCol)`
-  text-align: center;
-  button {
-    font-size: 1.5rem;
-  }
-`;
-
-const BaseBtn = styled.button`
-  padding: 10px;
-  border-radius: 12px;
-`;
-
-const PreviousBtn = styled(BaseBtn)`
-  background-color: var(--ion-color-primary);
-`;
-
-const NextBtn = styled(BaseBtn)`
-  background-color: var(--ion-color-tertiary);
-  color: black;
-`;
 
 const InputRow = styled(IonRow)`
   width: 100%;
