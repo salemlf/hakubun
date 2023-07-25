@@ -1,4 +1,4 @@
-import { createElement, useEffect, useRef } from "react";
+import { createElement } from "react";
 import { toHiragana } from "wanakana";
 
 const translateInputValue = (string: string, translateToHiragana: boolean) => {
@@ -13,24 +13,18 @@ type Props = {
   value: string;
   onChange: (e: any) => void;
   translateToHiragana: boolean;
+  inputRef: React.MutableRefObject<HTMLInputElement>;
+  // !added
 };
 
 function WanakanaInput({
   value,
+  inputRef,
   onChange,
   translateToHiragana,
   ...props
 }: Props) {
-  const inputRef = useRef(document.createElement("input"));
   const translatedVal = translateInputValue(value, translateToHiragana);
-  // TODO: change this, a mehhh workaround for autofocusing
-  useEffect(() => {
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 500);
-  });
 
   const handleChange = (e: any) => {
     let updatedValue = translateInputValue(e.target.value, translateToHiragana);
