@@ -223,6 +223,7 @@ type Props = {
   currentReviewItem: ReviewQueueItem;
 };
 
+// TODO: change to just use queueDataState.reviewQueue[queueDataState.currQueueIndex] instead of prop?
 function ReviewCards({ currentReviewItem }: Props) {
   return (
     <TestReviewCardContainer>

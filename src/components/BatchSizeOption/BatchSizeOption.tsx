@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IonItem, IonList, IonSelect, IonSelectOption } from "@ionic/react";
 import { Assignment } from "../../types/Assignment";
-import { assignmentBatchSizes } from "../../constants";
+import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 
 type Props = {
   availForReview: Assignment[];
@@ -15,7 +15,7 @@ function BatchSizeOption({
   onBatchSizeChange,
 }: Props) {
   const [batchSize, setBatchSize] = useState(defaultSize);
-  let availBatchSizes = assignmentBatchSizes.filter(
+  let availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter(
     (batchSize) => batchSize <= availForReview.length
   );
 

@@ -3,6 +3,7 @@ import reactStringReplace from "react-string-replace";
 import { generateXNumUUIDs } from "../../utils";
 import { getTagColor } from "../../services/SubjectAndAssignmentService";
 import { TagType } from "../../types/MiscTypes";
+import { TAG_REGEXES } from "../../constants";
 import { SubjDetailTxt } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components/macro";
 
@@ -189,25 +190,12 @@ type Props = {
 };
 
 function TxtWithSubjTags({ textWithTags }: Props) {
-  const tagRegexes = {
-    radRegEx: new RegExp(`<radical>(.+?)<\/radical>`, "g"),
-    kanjiRegEx: new RegExp(`<kanji>(.+?)<\/kanji>`, "g"),
-    vocabRegEx: new RegExp(`<vocabulary>(.+?)<\/vocabulary>`, "g"),
-    readingRegEx: new RegExp(`<reading>(.+?)<\/reading>`, "g"),
-    meaningRegEx: new RegExp(`<meaning>(.+?)<\/meaning>`, "g"),
-    japaneseRegEx: new RegExp(`<ja>(.+?)<\/ja>`, "g"),
-    japaneseReadingRegEx: new RegExp(
-      `<reading><ja>(.+?)<\/ja><\/reading>`,
-      "g"
-    ),
-  };
-
-  let uuids = getKeysForTags(textWithTags, tagRegexes);
+  let uuids = getKeysForTags(textWithTags, TAG_REGEXES);
 
   return (
     <TaggedTxt>
       {uuids.length
-        ? createSubjectTags(textWithTags, tagRegexes, uuids)
+        ? createSubjectTags(textWithTags, TAG_REGEXES, uuids)
         : textWithTags}
     </TaggedTxt>
   );
