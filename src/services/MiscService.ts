@@ -106,6 +106,31 @@ export const flattenCollectionOfOne = (data: Collection) => {
   return flattenedInnerData;
 };
 
+export const flattenPagesOfData = (data: any) => {
+  let flattenedData = data.pages.map((elem: any) => {
+    return [...elem.data];
+  });
+
+  let flattenedPages = flattenedData.flat(1);
+  return flattenedPages;
+};
+
+export const flattenSearchResults = (data: any) => {
+  let flattenedResults = data.map((elem: any) => {
+    const { item } = elem;
+    let flattenedSearchResult = {
+      ...item,
+      ...item.data,
+      data_updated_at: item.data.created_at,
+    };
+    delete flattenedSearchResult.data;
+
+    return flattenedSearchResult;
+  });
+
+  return flattenedResults;
+};
+
 export const shuffleArray = (array: any[]) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
