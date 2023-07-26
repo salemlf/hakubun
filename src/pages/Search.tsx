@@ -7,6 +7,7 @@ import styled from "styled-components/macro";
 import { useAllSubjects } from "../hooks/useAllSubjects";
 import { Subject } from "../types/Subject";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
+import { flattenSearchResults } from "../services/MiscService";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -28,7 +29,6 @@ const List = styled(IonList)`
 `;
 
 // TODO: move searchbar so it's right above keyboard/at bottom of screen
-// TODO: paginate search results
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useState("");
@@ -36,22 +36,35 @@ export const Search = () => {
   const options = {
     threshold: 0.1,
     distance: 20,
-    keys: ["slug", "meanings.meaning"],
+    keys: ["data.slug", "data.meanings.meaning"],
   };
 
   const {
     isLoading: allSubjectsLoading,
     data: allSubjectsData,
     error: allSubjectsErr,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   } = useAllSubjects();
 
   useEffect(() => {
     if (allSubjectsData) {
-      const fuse = new Fuse(allSubjectsData, options);
+      const fuse = new Fuse(
+        allSubjectsData as unknown as readonly unknown[],
+        options
+      );
       const results = fuse.search(query);
-      setResults(results);
+      let flattenedSearch = flattenSearchResults(results);
+      setResults(flattenedSearch);
     }
   }, [allSubjectsData, query]);
+
+  useEffect(() => {
+    if (allSubjectsData && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [allSubjectsData]);
 
   const handleInput = (ev: Event) => {
     let enteredQuery = "";
@@ -67,7 +80,7 @@ export const Search = () => {
         <IonContent>
           <>
             <SearchBar
-              debounce={1500}
+              debounce={1800}
               searchIcon={SearchIcon}
               clearIcon={ClearIcon}
               onIonInput={(ev) => handleInput(ev)}
@@ -77,8 +90,8 @@ export const Search = () => {
             <List>
               {results.map((subject: any) => (
                 <SubjectWideButton
-                  subject={subject.item}
-                  key={subject.item.id}
+                  subject={subject}
+                  key={subject.id}
                   findImages={true}
                 />
               ))}
