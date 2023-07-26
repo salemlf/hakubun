@@ -303,9 +303,8 @@ export const isUserAnswerCorrect = (
   let reviewType = reviewItem.review_type as string;
   if (reviewType === "reading") {
     return isUserReadingAnswerCorrect(reviewItem, userAnswer);
-  } else {
-    return isUserMeaningAnswerCorrect(reviewItem, userAnswer);
   }
+  return isUserMeaningAnswerCorrect(reviewItem, userAnswer);
 };
 
 const checkInvalidSubjectAnswer = (
@@ -417,7 +416,6 @@ const checkInvalidReadingAnswer = (
   };
 };
 
-// TODO: Clean up how this logic is structured, not crazy bout it
 export const isUserAnswerValid = (
   currReviewItem: ReviewQueueItem,
   userAnswer: string
@@ -432,24 +430,15 @@ export const isUserAnswerValid = (
   }
 
   let isMeaningReviewType = currReviewItem.review_type === "meaning";
-  if (isMeaningReviewType) {
-    let meaningValidInfo = checkInvalidMeaningAnswer(
-      currReviewItem,
-      userAnswer
-    );
+  let validationFunction = isMeaningReviewType
+    ? checkInvalidMeaningAnswer
+    : checkInvalidReadingAnswer;
+  let validationInfo = validationFunction(currReviewItem, userAnswer);
 
-    if (!meaningValidInfo.isValid) {
-      return meaningValidInfo;
-    }
-  } else {
-    let readingValidInfo = checkInvalidReadingAnswer(
-      currReviewItem,
-      userAnswer
-    );
-    if (!readingValidInfo.isValid) {
-      return readingValidInfo;
-    }
+  if (!validationInfo.isValid) {
+    return validationInfo;
   }
+
   return {
     isValid: true,
     message: "",
