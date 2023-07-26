@@ -80,3 +80,8 @@ export type BottomSheetSubjectProps = {
   reviewItem: ReviewQueueItem;
   selectedSegment: ReviewType | string;
 };
+
+export type ReviewAnswerValidResult = {
+  isValid: boolean;
+  message: string;
+};

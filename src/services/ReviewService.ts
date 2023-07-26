@@ -1,6 +1,11 @@
-import { toKana, isKanji } from "wanakana";
-import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
+import { toKana, isKanji, isJapanese, toRomaji, isKana } from "wanakana";
+import {
+  ReviewAnswerValidResult,
+  ReviewQueueItem,
+  ReviewType,
+} from "../types/ReviewSessionTypes";
 import { SubjectMeaning, SubjectReading } from "../types/Subject";
+import { INVALID_ANSWER_CHARS } from "../constants";
 import Fuse from "fuse.js";
 
 const reviewColors: { [index: string]: string } = {
@@ -202,15 +207,54 @@ export const groupDataByProperty = function (dataToGroup: any[], key: string) {
   }, {});
 };
 
+type AnswersForReviewsParams = {
+  reviewItem: ReviewQueueItem;
+  acceptedAnswersOnly: boolean;
+};
+
+export const getAnswersForMeaningReviews = ({
+  reviewItem,
+  acceptedAnswersOnly,
+}: AnswersForReviewsParams) => {
+  let answers = reviewItem["meanings"];
+
+  if (answers === undefined) {
+    return [];
+  }
+
+  return acceptedAnswersOnly
+    ? [
+        ...answers.filter((answer) => answer.accepted_answer),
+        reviewItem["meaning_synonyms"],
+      ]
+    : [...answers, reviewItem["meaning_synonyms"]];
+};
+
+export const getAnswersForReadingReviews = ({
+  reviewItem,
+  acceptedAnswersOnly,
+}: AnswersForReviewsParams) => {
+  let answers = reviewItem["readings"];
+  if (answers === undefined) {
+    return [];
+  }
+
+  return acceptedAnswersOnly
+    ? answers.filter((answer) => answer.accepted_answer)
+    : answers;
+};
+
 export const isUserReadingAnswerCorrect = (
   reviewItem: ReviewQueueItem,
   userAnswer: string
 ) => {
   // so "ん" is converted properly
   let userReading = toKana(userAnswer);
-  let answers = reviewItem["readings"] as SubjectReading[];
 
-  let acceptedAnswers = answers.filter((answer) => answer.accepted_answer);
+  let acceptedAnswers = getAnswersForReadingReviews({
+    reviewItem: reviewItem,
+    acceptedAnswersOnly: true,
+  });
   // *testing
   console.log(
     "🚀 ~ file: SubjectAndAssignmentService.tsx:193 ~ acceptedAnswers:",
@@ -229,11 +273,10 @@ export const isUserMeaningAnswerCorrect = (
   reviewItem: ReviewQueueItem,
   userAnswer: string
 ) => {
-  let answers = reviewItem["meanings"] as SubjectMeaning[];
-  let userSynonyms = reviewItem["meaning_synonyms"];
-  let acceptedAnswers = answers.filter((answer) => answer.accepted_answer);
-
-  let answersWithSynonyms = [...acceptedAnswers, { synonyms: userSynonyms }];
+  let answersWithSynonyms = getAnswersForMeaningReviews({
+    reviewItem: reviewItem,
+    acceptedAnswersOnly: true,
+  });
   // *testing
   console.log(
     "🚀 ~ file: SubjectAndAssignmentService.tsx:200 ~ answersWithSynonyms:",
@@ -266,63 +309,149 @@ export const isUserAnswerCorrect = (
 };
 
 const checkInvalidSubjectAnswer = (
-  currReviewItem: ReviewQueueItem,
   userAnswer: string
-) => {
-  // - no answer entered
-  let subjectValidInfo = {
+): ReviewAnswerValidResult => {
+  // no answer entered
+  if (userAnswer === "") {
+    return {
+      isValid: false,
+      message: "Answer cannot be empty",
+    };
+  }
+  // invalid character entered
+  else if (isKanji(userAnswer) || INVALID_ANSWER_CHARS.test(userAnswer)) {
+    return {
+      isValid: false,
+      message: "Unacceptable character(s) entered",
+    };
+  }
+
+  return {
     isValid: true,
     message: "",
   };
-
-  if (userAnswer === "") {
-    subjectValidInfo.isValid = false;
-    subjectValidInfo.message = "PLEASE ENTER ANSWER!";
-  }
-
-  // TODO: finish adding cases
-  // TODO: case for entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
-  else if (isKanji(userAnswer)) {
-    console.log("INVALID INPUT!");
-    subjectValidInfo.isValid = false;
-    subjectValidInfo.message = "UNACCEPTABLE CHARACTER(S) ENTERED";
-  }
-
-  return subjectValidInfo;
 };
 
-// TODO: finish implementing
+const checkInvalidMeaningAnswer = (
+  currReviewItem: ReviewQueueItem,
+  userAnswer: string
+): ReviewAnswerValidResult => {
+  // entered japanese when english meaning was asked for
+  if (isJapanese(userAnswer)) {
+    return {
+      isValid: false,
+      message: "Japanese shouldn't be entered for subject meaning",
+    };
+  }
+
+  let acceptedReadings = getAnswersForReadingReviews({
+    reviewItem: currReviewItem,
+    acceptedAnswersOnly: true,
+  });
+
+  let isAccidentalReadingAnswer = acceptedReadings.some(
+    (subjReading) => toRomaji(subjReading.reading) === userAnswer
+  );
+
+  // entered romaji equivalent for reading answer (got confused and thought it was a reading question)
+  if (isAccidentalReadingAnswer) {
+    return {
+      isValid: false,
+      message:
+        "Are you trying to enter the the reading answer? We're looking for the meaning :p",
+    };
+  }
+
+  return {
+    isValid: true,
+    message: "",
+  };
+};
+
+const checkInvalidReadingAnswer = (
+  currReviewItem: ReviewQueueItem,
+  userAnswer: string
+): ReviewAnswerValidResult => {
+  let attemptToKanaConvert = toKana(userAnswer);
+
+  // romaji that can't be converted to kana
+  if (!isKana(attemptToKanaConvert)) {
+    return {
+      isValid: false,
+      message: "Input can't be converted to kana!",
+    };
+  }
+
+  // entered onyomi instead of kunyomi, or vice versa
+  if (
+    currReviewItem.object === "kanji" &&
+    !isUserMeaningAnswerCorrect(currReviewItem, userAnswer)
+  ) {
+    let allReadings = getAnswersForReadingReviews({
+      reviewItem: currReviewItem,
+      acceptedAnswersOnly: false,
+    });
+
+    let readingExists = allReadings.find(
+      (subjReading) => subjReading.reading === userAnswer
+    );
+
+    if (readingExists) {
+      // could be multiple, but just returning the first
+      let correctAnswer = allReadings.find((answer) => answer.accepted_answer);
+
+      // I don't think the second message should ever appear for kanji? But not positive, so accounting for it
+      return {
+        isValid: false,
+        message:
+          correctAnswer && correctAnswer.type
+            ? `Wankani is looking for the ${correctAnswer.type} reading`
+            : `Hmm, Wanikani is looking for a different reading...`,
+      };
+    }
+  }
+
+  return {
+    isValid: true,
+    message: "",
+  };
+};
+
+// TODO: Clean up how this logic is structured, not crazy bout it
 export const isUserAnswerValid = (
   currReviewItem: ReviewQueueItem,
   userAnswer: string
-) => {
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:198 ~ userAnswer:",
-    userAnswer
-  );
-  let subjectValidInfo = checkInvalidSubjectAnswer(currReviewItem, userAnswer);
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:233 ~ subjectValidInfo:",
-    subjectValidInfo
-  );
+): ReviewAnswerValidResult => {
+  // *testing
+  console.log("🚀 ~ file: ReviewService.ts:438 ~ userAnswer:", userAnswer);
+  // *testing
 
-  /*
-  examples of invalid answers
-  -------------------
-  any subject
-  - no answer entered
-  - entered unacceptable character in input (kanji, special char, symbol, number, etc... Basically anything other than kana, romaji, or "normal English letters" - apostrophes, -, and some other chars should be allowed)
-  
-  kanji
-  - entered onyomi instead of kunyomi, or vice versa
+  let subjectValidInfo = checkInvalidSubjectAnswer(userAnswer);
+  if (!subjectValidInfo.isValid) {
+    return subjectValidInfo;
+  }
 
-  meaning review type
-  - entered kanji/kana (or just japanese in general)
-  - entered romaji equivalent for reading answer (got confused and thought it was a reading question)
+  let isMeaningReviewType = currReviewItem.review_type === "meaning";
+  if (isMeaningReviewType) {
+    let meaningValidInfo = checkInvalidMeaningAnswer(
+      currReviewItem,
+      userAnswer
+    );
 
-  reading review type
-  - romaji that can't be converted to kana (try using isKana from wanakana)
-  */
-
-  return subjectValidInfo;
+    if (!meaningValidInfo.isValid) {
+      return meaningValidInfo;
+    }
+  } else {
+    let readingValidInfo = checkInvalidReadingAnswer(
+      currReviewItem,
+      userAnswer
+    );
+    if (!readingValidInfo.isValid) {
+      return readingValidInfo;
+    }
+  }
+  return {
+    isValid: true,
+    message: "",
+  };
 };
