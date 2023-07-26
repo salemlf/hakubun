@@ -94,10 +94,14 @@ const SubjectCharactersCol = styled(IonCol)<CharColProps>`
 
 type Props = {
   currentReviewItem: ReviewQueueItem;
+  disableTextSelection?: boolean;
 };
 
 // TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
-function ReviewCharAndType({ currentReviewItem }: Props) {
+function ReviewCharAndType({
+  currentReviewItem,
+  disableTextSelection = false,
+}: Props) {
   const { queueState } = useReviewQueue();
 
   let subjType = currentReviewItem.object as SubjectType;
@@ -113,6 +117,7 @@ function ReviewCharAndType({ currentReviewItem }: Props) {
       <SubjectCharRow>
         <SubjectCharactersCol subjType={subjType}>
           <SubjectChars
+            disableTextSelection={disableTextSelection}
             subject={currentReviewItem}
             fontSize="4rem"
             withBgColor={true}

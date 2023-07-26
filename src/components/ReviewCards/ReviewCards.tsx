@@ -185,7 +185,10 @@ const Card = ({ currentReviewItem }: CardProps) => {
       whileTap={{ cursor: "grabbing" }}
       dragElastic={0.5}
     >
-      <ReviewCharAndType currentReviewItem={currentReviewItem} />
+      <ReviewCharAndType
+        currentReviewItem={currentReviewItem}
+        disableTextSelection={true}
+      />
       <ReviewAnswerInput
         shakeInputTrigger={shakeInputTrigger}
         currentReviewItem={currentReviewItem}

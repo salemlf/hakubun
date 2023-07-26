@@ -7,6 +7,7 @@ type CharDivProps = {
   withBgColor: boolean;
   subjType: SubjectType;
   fontSize: string;
+  disableTextSelection: boolean;
 };
 
 const CharDiv = styled.div<CharDivProps>`
@@ -20,11 +21,15 @@ const CharDiv = styled.div<CharDivProps>`
   text-align: center;
 `;
 
-const DivWithTxt = styled(CharDiv)`
-  user-select: text;
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
+const DivWithTxt = styled(CharDiv)<CharDivProps>`
+  user-select: ${({ disableTextSelection }) =>
+    disableTextSelection ? `none` : `text`};
+  -webkit-user-select: ${({ disableTextSelection }) =>
+    disableTextSelection ? `none` : `text`};
+  -moz-user-select: ${({ disableTextSelection }) =>
+    disableTextSelection ? `none` : `text`};
+  -ms-user-select: ${({ disableTextSelection }) =>
+    disableTextSelection ? `none` : `text`};
 
   p {
     margin: 0;
@@ -34,11 +39,16 @@ const DivWithTxt = styled(CharDiv)`
   }
 `;
 
-const DivWithImage = styled(CharDiv)`
-  user-select: auto;
-  -webkit-user-select: auto;
-  -moz-user-select: auto;
-  -ms-user-select: auto;
+const DivWithImage = styled(CharDiv)<CharDivProps>`
+  user-select: ${({ disableTextSelection }) =>
+    disableTextSelection ? `none` : `auto`};
+  -webkit-user-select: ${({ disableTextSelection }) =>
+    disableTextSelection ? `none` : `auto`};
+  -moz-user-select: ${({ disableTextSelection }) =>
+    disableTextSelection ? `none` : `auto`};
+  -ms-user-select: ${({ disableTextSelection }) =>
+    disableTextSelection ? `none` : `auto`};
+
   background-color: ${({ withBgColor }) =>
     withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
 
@@ -53,15 +63,22 @@ type Props = {
   subject: Subject;
   fontSize: string;
   withBgColor?: boolean;
+  disableTextSelection?: boolean;
 };
 
-function SubjectChars({ subject, fontSize, withBgColor = false }: Props) {
+function SubjectChars({
+  subject,
+  fontSize,
+  withBgColor = false,
+  disableTextSelection = false,
+}: Props) {
   let subjType = subject.object as SubjectType;
 
   return (
     <>
       {subject.useImage ? (
         <DivWithImage
+          disableTextSelection={disableTextSelection}
           withBgColor={withBgColor}
           subjType={subjType}
           fontSize={fontSize}
@@ -73,6 +90,7 @@ function SubjectChars({ subject, fontSize, withBgColor = false }: Props) {
         </DivWithImage>
       ) : (
         <DivWithTxt
+          disableTextSelection={disableTextSelection}
           withBgColor={withBgColor}
           subjType={subjType}
           fontSize={fontSize}
