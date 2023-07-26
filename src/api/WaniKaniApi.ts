@@ -197,17 +197,14 @@ export const WaniKaniAPI = {
     return response.data;
   },
 
-  getAllSubjects: async function () {
-    let url = `${baseUrl}subjects`;
+  getAllSubjects: async function (nextUrl: string | null = null) {
+    let url = nextUrl ? nextUrl : `${baseUrl}subjects`;
 
-    // const response: AxiosResponse = await api.request({
-    //   url: url,
-    //   method: "GET",
-    // });
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "GET",
+    });
 
-    let subjects = await PagingAPI.iterateOverPages(url, []);
-    let subjectsCombined = PagingAPI.combinePages(subjects);
-
-    return subjectsCombined;
+    return response.data;
   },
 };
