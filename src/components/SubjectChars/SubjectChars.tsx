@@ -53,7 +53,7 @@ const DivWithImage = styled(CharDiv)<CharDivProps>`
     withBgColor ? ({ subjType }) => getSubjectColor(subjType) : `unset`};
 
   img {
-    margin: ${({ fontSize }) => `calc(${fontSize} * 0.33) 0`};
+    margin: 0.45em 0;
     filter: brightness(0) invert(1);
     width: ${({ fontSize }) => fontSize};
   }
