@@ -14,6 +14,7 @@ const AssignmentTypeFieldset = styled.fieldset`
   border: none;
   padding-left: 12px;
   gap: 10px;
+  margin-bottom: 10px;
 `;
 
 const AssignmentTypeLegend = styled.legend`
