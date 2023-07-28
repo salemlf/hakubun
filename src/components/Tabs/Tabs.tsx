@@ -12,39 +12,14 @@ import { Orientation, Node } from "@react-types/shared";
 import { TabListState } from "@react-stately/tabs";
 import styled from "styled-components/macro";
 
-const Wrapper = styled.div`
-  [role="tablist"] {
-    display: flex;
-    margin: 10px 5px;
-  }
-
-  [role="tab"] {
-    padding: 8px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: default;
-    outline: none;
-    border-radius: 20px;
-    color: #444;
-    transition: color 150ms;
-    flex-grow: 1;
-    text-align: center;
-  }
-
-  [role="tab"][aria-selected="true"] {
-    color: white;
-    background-color: var(--ion-color-secondary);
-  }
-`;
-
 const TabItemsContainer = styled.div`
-  display: inline-block;
+  display: flex;
   position: relative;
+  margin: 10px;
   border: 2px solid lightgray;
   padding: 4px 2px;
   border-radius: 24px;
   z-index: 0;
-  width: 100%;
   justify-content: space-evenly;
 
   [role="tablist"] {
@@ -58,8 +33,15 @@ const TabItemsContainer = styled.div`
     cursor: default;
     outline: none;
     border-radius: 20px;
-    color: #444;
+    color: white;
     transition: color 150ms;
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  [role="tab"][aria-selected="true"] {
+    color: white;
+    background-color: var(--ion-color-secondary);
   }
 
   [role="tabpanel"] {
@@ -73,7 +55,7 @@ function Tabs(props: AriaTabListProps<AriaTabProps>) {
   let { tabListProps } = useTabList(props, state, ref);
 
   return (
-    <Wrapper className={`${props.orientation || ""}`}>
+    <div className={`${props.orientation || ""}`}>
       <TabItemsContainer {...tabListProps} ref={ref}>
         {[...state.collection].map((item: Node<AriaTabProps>) => (
           <Tab
@@ -85,7 +67,7 @@ function Tabs(props: AriaTabListProps<AriaTabProps>) {
         ))}
       </TabItemsContainer>
       <TabPanel key={state.selectedItem?.key} state={state} />
-    </Wrapper>
+    </div>
   );
 }
 
