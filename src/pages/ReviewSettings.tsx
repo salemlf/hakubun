@@ -28,6 +28,8 @@ import {
 } from "../services/SubjectAndAssignmentService";
 
 import { useReviewQueue } from "../hooks/useReviewQueue";
+import Tabs from "../components/Tabs/Tabs";
+import { Item } from "react-stately";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -140,28 +142,39 @@ export const ReviewSettings = () => {
             !availForReviewErr &&
             availForReviewData && (
               <>
-                <IonRow>
-                  <IonCol>
-                    <BasicCard isLoading={false}>
-                      <BatchSizeOption
-                        availForReview={availForReviewData}
-                        defaultSize={defaultBatchSize}
-                        onBatchSizeChange={(updatedBatchSize) =>
-                          setBatchSize(updatedBatchSize)
-                        }
+                <Tabs aria-label="History of Ancient Rome">
+                  <Item key="basic" title="Basic">
+                    <IonRow>
+                      <IonCol>
+                        <BasicCard isLoading={false}>
+                          <BatchSizeOption
+                            availForReview={availForReviewData}
+                            defaultSize={defaultBatchSize}
+                            onBatchSizeChange={(updatedBatchSize) =>
+                              setBatchSize(updatedBatchSize)
+                            }
+                          />
+                          <AssignmentTypeSelector
+                            availForReviewData={
+                              availForReviewData as Assignment[]
+                            }
+                            onSelectedAssignTypeChange={
+                              onSelectedAssignTypeChange
+                            }
+                          />
+                        </BasicCard>
+                      </IonCol>
+                    </IonRow>
+                    <IonRow>
+                      <StartReviewBtn
+                        onStartReviewBtnClick={onStartReviewBtnClick}
                       />
-                      <AssignmentTypeSelector
-                        availForReviewData={availForReviewData as Assignment[]}
-                        onSelectedAssignTypeChange={onSelectedAssignTypeChange}
-                      />
-                    </BasicCard>
-                  </IonCol>
-                </IonRow>
-                <IonRow>
-                  <StartReviewBtn
-                    onStartReviewBtnClick={onStartReviewBtnClick}
-                  />
-                </IonRow>
+                    </IonRow>
+                  </Item>
+                  <Item key="adv" title="Advanced">
+                    Nothing here rn :p
+                  </Item>
+                </Tabs>
               </>
             )}
         </IonGrid>
