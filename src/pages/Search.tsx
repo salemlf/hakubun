@@ -26,9 +26,9 @@ const List = styled(IonList)`
   --background: none;
   background: none;
   margin: 0 8px;
+  padding: 8px 5px;
 `;
 
-// TODO: move searchbar so it's right above keyboard/at bottom of screen
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useState("");
