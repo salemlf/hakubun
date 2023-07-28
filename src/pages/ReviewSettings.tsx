@@ -4,7 +4,6 @@ import {
   IonGrid,
   IonPage,
   IonRow,
-  IonCol,
   IonHeader,
   IonBackButton,
   IonButtons,
@@ -12,24 +11,21 @@ import {
   IonTitle,
 } from "@ionic/react";
 import { useIonRouter } from "@ionic/react";
-import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
-
-import BasicCard from "../components/BasicCard/BasicCard";
-import BatchSizeOption from "../components/BatchSizeOption/BatchSizeOption";
-import AssignmentTypeSelector from "../components/AssignmentTypeSelector/AssignmentTypeSelector";
-import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
-
-import styled from "styled-components/macro";
-import { Assignment, AssignmentType } from "../types/Assignment";
+import { Item } from "react-stately";
 import {
   compareAssignmentsByAvailableDate,
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
 } from "../services/SubjectAndAssignmentService";
-
+import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
 import { useReviewQueue } from "../hooks/useReviewQueue";
+import { Assignment, AssignmentType } from "../types/Assignment";
+import BatchSizeOption from "../components/BatchSizeOption/BatchSizeOption";
+import AssignmentTypeSelector from "../components/AssignmentTypeSelector/AssignmentTypeSelector";
+import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
 import Tabs from "../components/Tabs/Tabs";
-import { Item } from "react-stately";
+import Card from "../components/Card/Card";
+import styled from "styled-components/macro";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -129,53 +125,53 @@ export const ReviewSettings = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home"></IonBackButton>
           </IonButtons>
-          <Title>Review</Title>
+          <Title>Review Settings</Title>
         </IonToolbar>
       </HeaderContainer>
       <IonContent>
         <IonGrid>
-          {availForReviewLoading && <BasicCard isLoading={true}></BasicCard>}
+          {availForReviewLoading && <h1>Loading...</h1>}
           {!availForReviewLoading && availForReviewErr && (
             <div>{`Error: ${availForReviewErr}`}</div>
           )}
           {!availForReviewLoading &&
             !availForReviewErr &&
             availForReviewData && (
-              <>
-                <Tabs aria-label="History of Ancient Rome">
-                  <Item key="basic" title="Basic">
-                    <IonRow>
-                      <IonCol>
-                        <BasicCard isLoading={false}>
-                          <BatchSizeOption
-                            availForReview={availForReviewData}
-                            defaultSize={defaultBatchSize}
-                            onBatchSizeChange={(updatedBatchSize) =>
-                              setBatchSize(updatedBatchSize)
-                            }
-                          />
-                          <AssignmentTypeSelector
-                            availForReviewData={
-                              availForReviewData as Assignment[]
-                            }
-                            onSelectedAssignTypeChange={
-                              onSelectedAssignTypeChange
-                            }
-                          />
-                        </BasicCard>
-                      </IonCol>
-                    </IonRow>
-                    <IonRow>
-                      <StartReviewBtn
-                        onStartReviewBtnClick={onStartReviewBtnClick}
-                      />
-                    </IonRow>
-                  </Item>
-                  <Item key="adv" title="Advanced">
-                    Nothing here rn :p
-                  </Item>
-                </Tabs>
-              </>
+              <Tabs aria-label="History of Ancient Rome">
+                <Item
+                  key="basic"
+                  title="Basic"
+                  aria-label="Basic Review Settings"
+                >
+                  <Card>
+                    <BatchSizeOption
+                      availForReview={availForReviewData}
+                      defaultSize={defaultBatchSize}
+                      onBatchSizeChange={(updatedBatchSize) =>
+                        setBatchSize(updatedBatchSize)
+                      }
+                    />
+                    <AssignmentTypeSelector
+                      availForReviewData={availForReviewData as Assignment[]}
+                      onSelectedAssignTypeChange={onSelectedAssignTypeChange}
+                    />
+                  </Card>
+                  <IonRow>
+                    <StartReviewBtn
+                      onStartReviewBtnClick={onStartReviewBtnClick}
+                    />
+                  </IonRow>
+                </Item>
+                <Item
+                  key="adv"
+                  title="Advanced"
+                  aria-label="Advanced Review Settings"
+                >
+                  <Card>
+                    <p>Nothing here rn :p</p>
+                  </Card>
+                </Item>
+              </Tabs>
             )}
         </IonGrid>
       </IonContent>
