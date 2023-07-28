@@ -14,7 +14,8 @@ import styled from "styled-components/macro";
 
 const Wrapper = styled.div`
   [role="tablist"] {
-    display: inline-flex;
+    display: flex;
+    margin: 10px 5px;
   }
 
   [role="tab"] {
