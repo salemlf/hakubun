@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import {
   checkIfAssignmentTypeInQueue,
@@ -6,6 +5,7 @@ import {
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
 import { useToggle } from "../../hooks/useToggle";
+import styled from "styled-components";
 
 const AssignmentTypeFieldset = styled.fieldset`
   display: flex;
@@ -20,7 +20,7 @@ const AssignmentTypeLegend = styled.legend`
   font-size: 1.25rem;
   color: white;
   padding-top: 0;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 `;
 
 type AssignTypeOptionProps = {

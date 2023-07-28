@@ -6,6 +6,7 @@ import styled from "styled-components/macro";
 
 const Select = styled(IonSelect)`
   font-size: 1.25rem;
+  min-height: 48px;
 `;
 
 type Props = {
