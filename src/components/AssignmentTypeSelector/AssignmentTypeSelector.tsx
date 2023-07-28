@@ -17,7 +17,7 @@ const AssignmentTypeFieldset = styled.fieldset`
 `;
 
 const AssignmentTypeLegend = styled.legend`
-  font-size: 1rem;
+  font-size: 1.25rem;
   color: white;
   padding-top: 0;
   margin-bottom: 5px;
