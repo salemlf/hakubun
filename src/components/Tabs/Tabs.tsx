@@ -55,7 +55,7 @@ function Tabs(props: AriaTabListProps<AriaTabProps>) {
   let { tabListProps } = useTabList(props, state, ref);
 
   return (
-    <div className={`${props.orientation || ""}`}>
+    <div className={`${props.orientation || undefined}`}>
       <TabItemsContainer {...tabListProps} ref={ref}>
         {[...state.collection].map((item: Node<AriaTabProps>) => (
           <Tab
