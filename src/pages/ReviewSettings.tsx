@@ -25,6 +25,7 @@ import AssignmentTypeSelector from "../components/AssignmentTypeSelector/Assignm
 import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
 import Tabs from "../components/Tabs/Tabs";
 import Card from "../components/Card/Card";
+import AssignmentSelector from "../components/AssignmentSelector/AssignmentSelector";
 import styled from "styled-components/macro";
 
 const Page = styled(IonPage)`
@@ -104,7 +105,9 @@ export const ReviewSettings = () => {
       compareAssignmentsByAvailableDate
     );
 
-    let assignmentBatchToReview = sortedToReview.slice(0, batchSize);
+    // TODO: change back, temporarily changing batch size to 2 for testing
+    // let assignmentBatchToReview = sortedToReview.slice(0, batchSize);
+    let assignmentBatchToReview = sortedToReview.slice(0, 2);
     // *testing
     console.log(
       "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentBatchToReview:",
@@ -137,41 +140,46 @@ export const ReviewSettings = () => {
           {!availForReviewLoading &&
             !availForReviewErr &&
             availForReviewData && (
-              <Tabs aria-label="History of Ancient Rome">
-                <Item
-                  key="basic"
-                  title="Basic"
-                  aria-label="Basic Review Settings"
-                >
-                  <Card>
-                    <BatchSizeOption
-                      availForReview={availForReviewData}
-                      defaultSize={defaultBatchSize}
-                      onBatchSizeChange={(updatedBatchSize) =>
-                        setBatchSize(updatedBatchSize)
-                      }
-                    />
-                    <AssignmentTypeSelector
-                      availForReviewData={availForReviewData as Assignment[]}
-                      onSelectedAssignTypeChange={onSelectedAssignTypeChange}
-                    />
-                  </Card>
-                  <IonRow>
-                    <StartReviewBtn
-                      onStartReviewBtnClick={onStartReviewBtnClick}
-                    />
-                  </IonRow>
-                </Item>
-                <Item
-                  key="adv"
-                  title="Advanced"
-                  aria-label="Advanced Review Settings"
-                >
-                  <Card>
-                    <p>Nothing here rn :p</p>
-                  </Card>
-                </Item>
-              </Tabs>
+              <>
+                <Tabs aria-label="History of Ancient Rome">
+                  <Item
+                    key="basic"
+                    title="Basic"
+                    aria-label="Basic Review Settings"
+                  >
+                    <Card>
+                      <BatchSizeOption
+                        availForReview={availForReviewData}
+                        defaultSize={defaultBatchSize}
+                        onBatchSizeChange={(updatedBatchSize) =>
+                          setBatchSize(updatedBatchSize)
+                        }
+                      />
+                      <AssignmentTypeSelector
+                        availForReviewData={availForReviewData as Assignment[]}
+                        onSelectedAssignTypeChange={onSelectedAssignTypeChange}
+                      />
+                    </Card>
+                  </Item>
+                  <Item
+                    key="adv"
+                    title="Advanced"
+                    aria-label="Advanced Review Settings"
+                  >
+                    <Card>
+                      <AssignmentSelector
+                        assigmentsReadyToReview={availForReviewData}
+                      ></AssignmentSelector>
+                      <p>Nothing here rn :p</p>
+                    </Card>
+                  </Item>
+                </Tabs>
+                <IonRow>
+                  <StartReviewBtn
+                    onStartReviewBtnClick={onStartReviewBtnClick}
+                  />
+                </IonRow>
+              </>
             )}
         </IonGrid>
       </IonContent>
