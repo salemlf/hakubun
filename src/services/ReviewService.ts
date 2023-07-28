@@ -212,6 +212,22 @@ type AnswersForReviewsParams = {
   acceptedAnswersOnly: boolean;
 };
 
+interface AcceptableAnswer {
+  meaning: string;
+  primary: boolean;
+  accepted_answer: boolean;
+}
+
+function convertUserMeaningsToAcceptableAnswers(
+  input: string[]
+): AcceptableAnswer[] {
+  return input.map((word) => ({
+    meaning: word,
+    primary: false,
+    accepted_answer: true,
+  }));
+}
+
 export const getAnswersForMeaningReviews = ({
   reviewItem,
   acceptedAnswersOnly,
@@ -222,12 +238,16 @@ export const getAnswersForMeaningReviews = ({
     return [];
   }
 
+  let acceptableUserAnswers = convertUserMeaningsToAcceptableAnswers(
+    reviewItem["meaning_synonyms"]
+  );
+
   return acceptedAnswersOnly
     ? [
         ...answers.filter((answer) => answer.accepted_answer),
-        reviewItem["meaning_synonyms"],
+        ...acceptableUserAnswers,
       ]
-    : [...answers, reviewItem["meaning_synonyms"]];
+    : [...answers, ...acceptableUserAnswers];
 };
 
 export const getAnswersForReadingReviews = ({
@@ -244,6 +264,7 @@ export const getAnswersForReadingReviews = ({
     : answers;
 };
 
+// TODO: update so user-added readings are also checked
 export const isUserReadingAnswerCorrect = (
   reviewItem: ReviewQueueItem,
   userAnswer: string
@@ -384,7 +405,7 @@ const checkInvalidReadingAnswer = (
   // entered onyomi instead of kunyomi, or vice versa
   if (
     currReviewItem.object === "kanji" &&
-    !isUserMeaningAnswerCorrect(currReviewItem, userAnswer)
+    !isUserReadingAnswerCorrect(currReviewItem, userAnswer)
   ) {
     let allReadings = getAnswersForReadingReviews({
       reviewItem: currReviewItem,
