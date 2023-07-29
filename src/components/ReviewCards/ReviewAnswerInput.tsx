@@ -12,13 +12,17 @@ const InputRow = styled(motion.div)`
   flex-wrap: wrap;
 `;
 
-const AnswerInput = styled(WanakanaInput)`
+type AnswerInputProps = {
+  inputColor: string;
+};
+
+const AnswerInput = styled(WanakanaInput)<AnswerInputProps>`
   width: 100%;
   padding: 12px;
   text-align: center;
   font-size: 1.25rem;
-  background-color: var(--offwhite-color);
   color: black;
+  background-color: ${({ inputColor }) => inputColor};
 `;
 
 type Props = {
@@ -40,6 +44,11 @@ function ReviewAnswerInput({
   let reviewType = currentReviewItem.review_type;
   const inputRef = useRef<HTMLInputElement>();
   const [inputContainerRef, animate] = useAnimate();
+  let inputColor = queueState.isSecondClick
+    ? currentReviewItem.is_correct_answer
+      ? "var(--ion-color-tertiary)"
+      : "var(--ion-color-danger)"
+    : "var(--offwhite-color)";
 
   useEffect(() => {
     if (inputRef.current) {
@@ -61,6 +70,7 @@ function ReviewAnswerInput({
   return (
     <InputRow ref={inputContainerRef}>
       <AnswerInput
+        inputColor={inputColor}
         inputRef={inputRef}
         type="text"
         value={userAnswer}

@@ -14,7 +14,6 @@ type Props = {
   onChange: (e: any) => void;
   translateToHiragana: boolean;
   inputRef: React.MutableRefObject<HTMLInputElement>;
-  // !added
 };
 
 function WanakanaInput({

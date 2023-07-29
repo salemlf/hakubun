@@ -15,7 +15,6 @@ import { useReviewQueue } from "../../hooks/useReviewQueue";
 import ReviewCharAndType from "./ReviewCharAndType";
 import ReviewAnswerInput from "./ReviewAnswerInput";
 import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
-import Popover from "../Popover";
 
 import RetryIcon from "../../images/retry.svg";
 import NextIcon from "../../images/next-item.svg";
@@ -48,7 +47,6 @@ const Card = ({ currentReviewItem }: CardProps) => {
   const willChange = useWillChange();
   const rotate = useTransform(x, [-300, 0, 300], [-20, 0, 20]);
   const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
-
   const exitTimeMs = 500;
   const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
 
@@ -95,66 +93,62 @@ const Card = ({ currentReviewItem }: CardProps) => {
   };
 
   return (
-    <ReviewCard
-      ref={reviewCardRef}
-      subjtype={currentReviewItem.object as SubjectType}
-      initial={{ y: "-150%" }}
-      style={{
-        x,
-        rotate,
-        willChange,
-      }}
-      drag="x"
-      animate={{ y: 0 }}
-      transition={{ type: "spring", duration: 1, bounce: 0.5 }}
-      dragSnapToOrigin={true}
-      dragConstraints={{ left: 0, right: 0 }}
-      dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
-      onDragEnd={handleDragEnd}
-      dragDirectionLock={true}
-      whileTap={{ cursor: "grabbing" }}
-      dragElastic={0.5}
-    >
-      <ReviewCharAndType
-        currentReviewItem={currentReviewItem}
-        disableTextSelection={true}
-      />
-      <ReviewAnswerInput
-        shakeInputTrigger={shakeInputTrigger}
-        currentReviewItem={currentReviewItem}
-        userAnswer={userAnswer}
-        setUserAnswer={setUserAnswer}
-        nextBtnClicked={attemptToAdvance}
-      />
-      <ReviewItemBottomSheet
-        currentReviewItem={currentReviewItem}
-        reviewType={currentReviewItem.review_type}
-      />
-      <RetryCardOverlay
+    <>
+      <ReviewCard
+        ref={reviewCardRef}
+        subjtype={currentReviewItem.object as SubjectType}
+        initial={{ y: "-150%" }}
         style={{
-          opacity: opacityLeft,
+          x,
+          rotate,
+          willChange,
         }}
+        drag="x"
+        animate={{ y: 0 }}
+        transition={{ type: "spring", duration: 1, bounce: 0.5 }}
+        dragSnapToOrigin={true}
+        dragConstraints={{ left: 0, right: 0 }}
+        dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
+        onDragEnd={handleDragEnd}
+        dragDirectionLock={true}
+        whileTap={{ cursor: "grabbing" }}
+        dragElastic={0.5}
       >
-        <SwipeIcon>
-          <IonIcon icon={RetryIcon}></IonIcon>
-        </SwipeIcon>
-      </RetryCardOverlay>
-      <NextCardOverlay
-        style={{
-          opacity: opacityRight,
-        }}
-      >
-        <SwipeIcon>
-          <IonIcon icon={NextIcon}></IonIcon>
-        </SwipeIcon>
-      </NextCardOverlay>
-      <Popover
-        triggerRef={reviewCardRef}
-        isPopoverOpen={queueState.isSecondClick}
-      >
-        <p>Popover content</p>
-      </Popover>
-    </ReviewCard>
+        <ReviewCharAndType
+          currentReviewItem={currentReviewItem}
+          disableTextSelection={true}
+        />
+        <ReviewAnswerInput
+          shakeInputTrigger={shakeInputTrigger}
+          currentReviewItem={currentReviewItem}
+          userAnswer={userAnswer}
+          setUserAnswer={setUserAnswer}
+          nextBtnClicked={attemptToAdvance}
+        />
+        <ReviewItemBottomSheet
+          currentReviewItem={currentReviewItem}
+          reviewType={currentReviewItem.review_type}
+        />
+        <RetryCardOverlay
+          style={{
+            opacity: opacityLeft,
+          }}
+        >
+          <SwipeIcon>
+            <IonIcon icon={RetryIcon}></IonIcon>
+          </SwipeIcon>
+        </RetryCardOverlay>
+        <NextCardOverlay
+          style={{
+            opacity: opacityRight,
+          }}
+        >
+          <SwipeIcon>
+            <IonIcon icon={NextIcon}></IonIcon>
+          </SwipeIcon>
+        </NextCardOverlay>
+      </ReviewCard>
+    </>
   );
 };
 
