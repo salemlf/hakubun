@@ -4,10 +4,9 @@ import {
   RefObject,
   cloneElement,
   useRef,
-  useState,
 } from "react";
-import { DismissButton, Overlay, useButton, usePopover } from "react-aria";
-import type { AriaPopoverProps, Placement } from "react-aria";
+import { DismissButton, Overlay, usePopover } from "react-aria";
+import type { AriaPopoverProps } from "react-aria";
 import type { OverlayTriggerState } from "react-stately";
 import { useOverlayTrigger } from "react-aria";
 import { useOverlayTriggerState } from "react-stately";
