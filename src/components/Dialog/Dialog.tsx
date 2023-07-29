@@ -7,6 +7,7 @@ interface DialogProps extends AriaDialogProps {
   children: React.ReactNode;
 }
 
+// TODO: this is causing a Uncaught InternalError: too much recursion bug trying to focus last descendent, fix
 function Dialog({ title, children, ...props }: DialogProps) {
   let ref = useRef(null);
   let { dialogProps, titleProps } = useDialog(props, ref);
