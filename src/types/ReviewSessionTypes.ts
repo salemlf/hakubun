@@ -49,7 +49,6 @@ export type PopoverInfo = {
 };
 
 export type ReviewSessionQueueState = {
-  // currReviewCardIndex: number;
   isSecondClick: boolean;
   isBottomSheetVisible: boolean;
   showRetryButton: boolean;

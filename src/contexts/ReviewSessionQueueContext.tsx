@@ -7,8 +7,8 @@ import {
 } from "../types/ReviewSessionTypes";
 import { useReviewSessionData } from "./ReviewSessionDataContext";
 
+// TODO: break this context into smaller contexts? Popover message should prob be elsewhere
 const initialState: ReviewSessionQueueState = {
-  // currReviewCardIndex: 0,
   isSecondClick: false,
   isBottomSheetVisible: false,
   showRetryButton: false,
