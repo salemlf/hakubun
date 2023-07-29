@@ -1,4 +1,4 @@
-import { IonAlert, IonChip, IonCol, IonGrid, IonRow } from "@ionic/react";
+import { IonAlert, IonCol, IonGrid, IonRow } from "@ionic/react";
 import styled from "styled-components/macro";
 
 export const FullWidthGrid = styled(IonGrid)`
