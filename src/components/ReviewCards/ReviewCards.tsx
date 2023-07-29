@@ -20,6 +20,7 @@ import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
 import RetryIcon from "../../images/retry.svg";
 import NextIcon from "../../images/next-item.svg";
 import styled from "styled-components/macro";
+import Popover from "../Popover";
 
 const TestReviewCardContainer = styled(motion.div)`
   border-radius: 10px;
@@ -218,6 +219,12 @@ const Card = ({ currentReviewItem }: CardProps) => {
           <IonIcon icon={NextIcon}></IonIcon>
         </SwipeIcon>
       </NextCardOverlay>
+      <Popover
+        triggerRef={reviewCardRef}
+        isPopoverOpen={queueState.isSecondClick}
+      >
+        <p>Popover content</p>
+      </Popover>
     </ReviewCard>
   );
 };
