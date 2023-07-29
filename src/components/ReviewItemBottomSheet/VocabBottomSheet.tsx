@@ -1,9 +1,5 @@
 import { BottomSheetSubjectProps } from "../../types/ReviewSessionTypes";
 import { Subject, Vocabulary } from "../../types/Subject";
-import {
-  SubjDetailSection,
-  SubjDetailSubHeading,
-} from "../../styles/SubjectDetailsStyled";
 import SubjectMeanings from "../SubjectMeanings/SubjectMeanings";
 import KanjiUsedInVocab from "../KanjiUsedInVocab/KanjiUsedInVocab";
 import PartsOfSpeech from "../PartsOfSpeech/PartsOfSpeech";
@@ -12,6 +8,11 @@ import VocabReadingExplanation from "../VocabReadingExplanation/VocabReadingExpl
 import VocabReadings from "../VocabReadings/VocabReadings";
 import ContextSentences from "../ContextSentences/ContextSentences";
 
+import { BottomSheetContainer } from "../../styles/BaseStyledComponents";
+import {
+  SubjDetailSection,
+  SubjDetailSubHeading,
+} from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components/macro";
 
 const ReadingHeading = styled(SubjDetailSubHeading)`
@@ -26,6 +27,10 @@ function VocabBottomSheet({
   reviewItem,
   selectedSegment,
 }: BottomSheetSubjectProps) {
+  console.log(
+    "🚀 ~ file: VocabBottomSheet.tsx:29 ~ selectedSegment:",
+    selectedSegment
+  );
   let findComponents =
     reviewItem.component_subject_ids &&
     reviewItem.component_subject_ids.length !== 0;
@@ -40,16 +45,18 @@ function VocabBottomSheet({
       )}
       {selectedSegment === "meaning" && (
         <>
-          <SubjDetailSection>
-            <SubjectMeanings
-              subject={reviewItem as Subject}
-              showPrimaryMeaning={true}
-            />
-          </SubjDetailSection>
-          <SubjDetailSection>
+          <SubjectMeanings
+            subject={reviewItem as Subject}
+            showPrimaryMeaning={true}
+          />
+          <BottomSheetContainer>
             <PartsOfSpeech vocab={reviewItem as Vocabulary} />
-          </SubjDetailSection>
+          </BottomSheetContainer>
           <VocabMeaningExplanation vocab={reviewItem as Vocabulary} />
+          {reviewItem.object === "kana_vocabulary" &&
+            reviewItem.context_sentences && (
+              <ContextSentences sentences={reviewItem.context_sentences} />
+            )}
         </>
       )}
       {selectedSegment === "reading" && (

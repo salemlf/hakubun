@@ -136,8 +136,9 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
                     <IonLabel>Breakdown</IonLabel>
                   </IonSegmentButton>
                 )}
-                {(currentReviewItem.object == "vocabulary" ||
-                  currentReviewItem.object == "kanji") && (
+                {(currentReviewItem.object == "kanji" ||
+                  currentReviewItem.object == "vocabulary" ||
+                  currentReviewItem.object == "kana_vocabulary") && (
                   <IonSegmentButton value="meaning">
                     <IonLabel>Meaning</IonLabel>
                   </IonSegmentButton>
@@ -166,8 +167,8 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
                   selectedSegment={selectedSegment}
                 />
               )}
-              {/* // TODO: create a version of this for kana vocab */}
-              {currentReviewItem.object == "vocabulary" && (
+              {(currentReviewItem.object == "vocabulary" ||
+                currentReviewItem.object == "kana_vocabulary") && (
                 <VocabBottomSheet
                   reviewItem={currentReviewItem}
                   selectedSegment={selectedSegment}

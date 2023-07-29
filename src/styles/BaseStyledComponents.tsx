@@ -83,3 +83,10 @@ export const Chip = styled.button`
     height: 1.25em;
   }
 `;
+
+export const BottomSheetContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 12px;
+`;
