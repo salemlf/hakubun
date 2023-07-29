@@ -21,6 +21,10 @@
   }
 }
 
+ion-toast {
+  z-index: 2000 !important;
+}
+
 ion-toast.custom-toast.warning-toast {
   --background: var(--ion-color-warning);
   --color: black;

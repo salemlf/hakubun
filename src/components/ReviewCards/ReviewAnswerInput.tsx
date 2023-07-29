@@ -13,7 +13,7 @@ const InputRow = styled(motion.div)`
 `;
 
 type AnswerInputProps = {
-  inputColor: string;
+  inputcolor: string;
 };
 
 const AnswerInput = styled(WanakanaInput)<AnswerInputProps>`
@@ -22,7 +22,7 @@ const AnswerInput = styled(WanakanaInput)<AnswerInputProps>`
   text-align: center;
   font-size: 1.25rem;
   color: black;
-  background-color: ${({ inputColor }) => inputColor};
+  background-color: ${({ inputcolor }) => inputcolor};
 `;
 
 type Props = {
@@ -70,7 +70,7 @@ function ReviewAnswerInput({
   return (
     <InputRow ref={inputContainerRef}>
       <AnswerInput
-        inputColor={inputColor}
+        inputcolor={inputColor}
         inputRef={inputRef}
         type="text"
         value={userAnswer}
