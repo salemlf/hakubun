@@ -23,7 +23,8 @@ import { Assignment, AssignmentType } from "../types/Assignment";
 import BatchSizeOption from "../components/BatchSizeOption/BatchSizeOption";
 import AssignmentTypeSelector from "../components/AssignmentTypeSelector/AssignmentTypeSelector";
 import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
-import Tabs from "../components/Tabs/Tabs";
+// import Tabs from "../components/Tabs/Tabs";
+import AnimatedTabs from "../components/Tabs/Tabs";
 import Card from "../components/Card/Card";
 import AssignmentSelector from "../components/AssignmentSelector/AssignmentSelector";
 import styled from "styled-components/macro";
@@ -139,39 +140,39 @@ export const ReviewSettings = () => {
             !availForReviewErr &&
             availForReviewData && (
               <>
-                <Tabs aria-label="History of Ancient Rome">
+                {/* <Tabs aria-label="History of Ancient Rome">
                   <Item
                     key="basic"
                     title="Basic"
                     aria-label="Basic Review Settings"
-                  >
-                    <Card>
-                      <BatchSizeOption
-                        availForReview={availForReviewData}
-                        defaultSize={defaultBatchSize}
-                        onBatchSizeChange={(updatedBatchSize) =>
-                          setBatchSize(updatedBatchSize)
-                        }
-                      />
-                      <AssignmentTypeSelector
-                        availForReviewData={availForReviewData as Assignment[]}
-                        onSelectedAssignTypeChange={onSelectedAssignTypeChange}
-                      />
-                    </Card>
-                  </Item>
-                  <Item
+                  > */}
+                <Card>
+                  <BatchSizeOption
+                    availForReview={availForReviewData}
+                    defaultSize={defaultBatchSize}
+                    onBatchSizeChange={(updatedBatchSize) =>
+                      setBatchSize(updatedBatchSize)
+                    }
+                  />
+                  <AssignmentTypeSelector
+                    availForReviewData={availForReviewData as Assignment[]}
+                    onSelectedAssignTypeChange={onSelectedAssignTypeChange}
+                  />
+                </Card>
+                {/* </Item> */}
+                {/* <Item
                     key="adv"
                     title="Advanced"
                     aria-label="Advanced Review Settings"
-                  >
-                    <Card>
-                      <AssignmentSelector
-                        assigmentsReadyToReview={availForReviewData}
-                      ></AssignmentSelector>
-                      <p>Nothing here rn :p</p>
-                    </Card>
-                  </Item>
-                </Tabs>
+                  > */}
+                <Card>
+                  <AssignmentSelector
+                    assigmentsReadyToReview={availForReviewData}
+                  ></AssignmentSelector>
+                  <p>Nothing here rn :p</p>
+                </Card>
+                {/* </Item>
+                </Tabs> */}
                 <IonRow>
                   <StartReviewBtn
                     onStartReviewBtnClick={onStartReviewBtnClick}
