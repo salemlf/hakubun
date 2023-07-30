@@ -16,28 +16,35 @@ import {
 import { TabData } from "../../types/MiscTypes";
 import styled from "styled-components/macro";
 
+type TabColors = {
+  bgColor: string;
+  selectionColor: string;
+};
+
 const TabsStyled = styled(Tabs)`
   width: fit-content;
 `;
 
-const TabContainer = styled.div`
+const TabContainer = styled.div<TabColors>`
   position: relative;
-  background-color: var(--ion-color-primary);
+  background-color: ${({ bgColor }) => bgColor};
   padding: 3px 0;
 `;
 
 const TabListStyled = styled(TabList)`
   display: flex;
   margin-left: 0.25rem;
+  justify-content: space-evenly;
 `;
 
-const TabStyled = styled(Tab)`
+// TODO: base hover color off selectionColor
+const TabStyled = styled(Tab)<TabColors>`
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   outline-style: none;
-  color: var(--darkest-purple);
+  color: ${({ selectionColor }) => selectionColor};
   transition-property: background-color, border-color, color, fill, stroke,
     opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -55,7 +62,7 @@ const TabStyled = styled(Tab)`
   }
 `;
 
-const FocusRing = styled(motion.span)`
+const FocusRing = styled(motion.span)<TabColors>`
   position: absolute;
   top: 0;
   right: 0;
@@ -63,13 +70,12 @@ const FocusRing = styled(motion.span)`
   left: 0;
   z-index: 10;
   border-radius: 9999px;
-  box-shadow: 0 0 0 0 calc(2px + 0) white;
+  box-shadow: ${({ bgColor }) => `0 0 0 0 calc(2px + 0) ${bgColor}`};
   --ring-color: var(--darkest-purple);
   --ring-offset-width: 2px;
-  box-shadow: 0 0 0 0 white, 0 0 black;
 `;
 
-const Selector = styled(motion.span)`
+const Selector = styled(motion.span)<TabColors>`
   position: absolute;
   top: 0;
   right: 0;
@@ -77,7 +83,7 @@ const Selector = styled(motion.span)`
   left: 0;
   z-index: 10;
   border-radius: 9999px;
-  background-color: var(--ion-color-primary);
+  background-color: ${({ bgColor }) => bgColor};
   mix-blend-mode: difference;
 `;
 
@@ -114,13 +120,20 @@ const TabPanelStyled = styled(TabPanel)`
 
 type Props = {
   tabs: TabData[];
+  tabBgColor?: string;
+  tabSelectionColor?: string;
 };
 
 // based off of Devon Govett's react aria framer motion example, p cool shit
-function SwipeableTabs({ tabs }: Props) {
+function SwipeableTabs({ tabs, tabBgColor, tabSelectionColor }: Props) {
   const [selectedKey, setSelectedKey] = useState<string>(tabs[0].id);
   const tabListRef = useRef<HTMLDivElement | undefined>();
   const tabPanelsRef = useRef<HTMLDivElement | undefined>();
+
+  let bgColor = tabBgColor ? tabBgColor : "var(--ion-color-primary)";
+  let selectionColor = tabSelectionColor
+    ? tabSelectionColor
+    : "var(--darkest-purple)";
 
   // Track the scroll position of the tab panel container.
   const { scrollXProgress } = useScroll({
@@ -235,16 +248,20 @@ function SwipeableTabs({ tabs }: Props) {
 
   return (
     <TabsStyled selectedKey={selectedKey} onSelectionChange={onSelectionChange}>
-      <TabContainer>
+      <TabContainer bgColor={bgColor} selectionColor={selectionColor}>
         <TabListStyled ref={tabListRef as any} items={tabs}>
           {(tab: any) => (
-            <TabStyled>
+            <TabStyled bgColor={bgColor} selectionColor={selectionColor}>
               {({ isSelected, isFocusVisible }) => (
                 <>
                   {tab.label}
                   {isFocusVisible && isSelected && (
                     // Focus ring.
-                    <FocusRing style={{ x, width }} />
+                    <FocusRing
+                      style={{ x, width }}
+                      bgColor={bgColor}
+                      selectionColor={selectionColor}
+                    />
                   )}
                 </>
               )}
@@ -252,7 +269,11 @@ function SwipeableTabs({ tabs }: Props) {
           )}
         </TabListStyled>
         {/* Selection indicator. */}
-        <Selector style={{ x, width }} />
+        <Selector
+          style={{ x, width }}
+          bgColor={bgColor}
+          selectionColor={selectionColor}
+        />
       </TabContainer>
       <TabPanels ref={tabPanelsRef as any}>
         <Collection items={tabs}>

@@ -1,9 +1,7 @@
 import { useState } from "react";
 import {
   IonContent,
-  IonGrid,
   IonPage,
-  IonRow,
   IonHeader,
   IonBackButton,
   IonButtons,
@@ -18,12 +16,8 @@ import {
 } from "../services/SubjectAndAssignmentService";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
 import { useReviewQueue } from "../hooks/useReviewQueue";
-import { Assignment, AssignmentType } from "../types/Assignment";
-import BatchSizeOption from "../components/BatchSizeOption/BatchSizeOption";
-import AssignmentTypeSelector from "../components/AssignmentTypeSelector/AssignmentTypeSelector";
+import { AssignmentType } from "../types/Assignment";
 import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
-import Card from "../components/Card/Card";
-import AssignmentSelector from "../components/AssignmentSelector/AssignmentSelector";
 import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
 import BasicReviewSettings from "../components/BasicReviewSettings/BasicReviewSettings";
 import AdvancedReviewSettings from "../components/AdvancedReviewSettings/AdvancedReviewSettings";
@@ -161,6 +155,7 @@ export const ReviewSettings = () => {
                   ),
                 },
               ]}
+              tabBgColor="var(--wanikani-review)"
             />
             <StartReviewBtn onStartReviewBtnClick={onStartReviewBtnClick} />
           </>
