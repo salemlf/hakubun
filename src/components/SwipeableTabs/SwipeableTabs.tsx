@@ -16,18 +16,21 @@ import {
 import { TabData } from "../../types/MiscTypes";
 import styled from "styled-components/macro";
 
-type TabColors = {
-  bgColor: string;
-  selectionColor: string;
+type CustomSelectColor = {
+  selectioncolor: string;
+};
+
+type CustomBgColor = {
+  bgcolor: string;
 };
 
 const TabsStyled = styled(Tabs)`
   width: fit-content;
 `;
 
-const TabContainer = styled.div<TabColors>`
+const TabContainer = styled.div<CustomBgColor>`
   position: relative;
-  background-color: ${({ bgColor }) => bgColor};
+  background-color: ${({ bgcolor }) => bgcolor};
   padding: 3px 0;
 `;
 
@@ -37,14 +40,14 @@ const TabListStyled = styled(TabList)`
   justify-content: space-evenly;
 `;
 
-// TODO: base hover color off selectionColor
-const TabStyled = styled(Tab)<TabColors>`
+// TODO: base hover color off selectioncolor
+const TabStyled = styled(Tab)<CustomSelectColor>`
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   outline-style: none;
-  color: ${({ selectionColor }) => selectionColor};
+  color: ${({ selectioncolor }) => selectioncolor};
   transition-property: background-color, border-color, color, fill, stroke,
     opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -62,7 +65,7 @@ const TabStyled = styled(Tab)<TabColors>`
   }
 `;
 
-const FocusRing = styled(motion.span)<TabColors>`
+const FocusRing = styled(motion.span)<CustomBgColor>`
   position: absolute;
   top: 0;
   right: 0;
@@ -70,12 +73,12 @@ const FocusRing = styled(motion.span)<TabColors>`
   left: 0;
   z-index: 10;
   border-radius: 9999px;
-  box-shadow: ${({ bgColor }) => `0 0 0 0 calc(2px + 0) ${bgColor}`};
+  box-shadow: ${({ bgcolor }) => `0 0 0 0 calc(2px + 0) ${bgcolor}`};
   --ring-color: var(--darkest-purple);
   --ring-offset-width: 2px;
 `;
 
-const Selector = styled(motion.span)<TabColors>`
+const Selector = styled(motion.span)<CustomBgColor>`
   position: absolute;
   top: 0;
   right: 0;
@@ -83,7 +86,7 @@ const Selector = styled(motion.span)<TabColors>`
   left: 0;
   z-index: 10;
   border-radius: 9999px;
-  background-color: ${({ bgColor }) => bgColor};
+  background-color: ${({ bgcolor }) => bgcolor};
   mix-blend-mode: difference;
 `;
 
@@ -124,6 +127,7 @@ type Props = {
   tabSelectionColor?: string;
 };
 
+// TODO: pass in selected tab, default to first one if not defined
 // based off of Devon Govett's react aria framer motion example, p cool shit
 function SwipeableTabs({ tabs, tabBgColor, tabSelectionColor }: Props) {
   const [selectedKey, setSelectedKey] = useState<string>(tabs[0].id);
@@ -248,20 +252,16 @@ function SwipeableTabs({ tabs, tabBgColor, tabSelectionColor }: Props) {
 
   return (
     <TabsStyled selectedKey={selectedKey} onSelectionChange={onSelectionChange}>
-      <TabContainer bgColor={bgColor} selectionColor={selectionColor}>
+      <TabContainer bgcolor={bgColor}>
         <TabListStyled ref={tabListRef as any} items={tabs}>
           {(tab: any) => (
-            <TabStyled bgColor={bgColor} selectionColor={selectionColor}>
+            <TabStyled selectioncolor={selectionColor}>
               {({ isSelected, isFocusVisible }) => (
                 <>
                   {tab.label}
                   {isFocusVisible && isSelected && (
                     // Focus ring.
-                    <FocusRing
-                      style={{ x, width }}
-                      bgColor={bgColor}
-                      selectionColor={selectionColor}
-                    />
+                    <FocusRing style={{ x, width }} bgcolor={bgColor} />
                   )}
                 </>
               )}
@@ -269,11 +269,7 @@ function SwipeableTabs({ tabs, tabBgColor, tabSelectionColor }: Props) {
           )}
         </TabListStyled>
         {/* Selection indicator. */}
-        <Selector
-          style={{ x, width }}
-          bgColor={bgColor}
-          selectionColor={selectionColor}
-        />
+        <Selector style={{ x, width }} bgcolor={bgColor} />
       </TabContainer>
       <TabPanels ref={tabPanelsRef as any}>
         <Collection items={tabs}>
