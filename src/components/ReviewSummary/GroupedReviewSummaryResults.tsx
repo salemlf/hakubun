@@ -19,6 +19,8 @@ function GroupedReviewSummaryResults({ subjData }: Props) {
   let dataGroupedByLevelAndSRS = [];
   for (const level in subjectsByLevel) {
     console.log(`Level: ${level}: `, subjectsByLevel[level]);
+
+    // TODO: need assignment data to group this
     let groupedBySRS = groupDataByProperty(subjectsByLevel[level], "srs_stage");
   }
 

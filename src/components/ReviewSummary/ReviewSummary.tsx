@@ -13,6 +13,7 @@ import {
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import {
+  createReviewPostData,
   getCompletedReviewSessionData,
   getReviewsGroupedByResult,
 } from "../../services/ReviewService";
@@ -89,6 +90,17 @@ function ReviewSummary() {
   );
   // *testing
   let reviewData = getCompletedReviewSessionData(reviewQueue);
+  // !added
+  console.log(
+    "🚀 ~ file: ReviewSummary.tsx:92 ~ ReviewSummary ~ reviewData:",
+    reviewData
+  );
+  let reviewPostDataArr = createReviewPostData(reviewData);
+  console.log(
+    "🚀 ~ file: ReviewSummary.tsx:99 ~ ReviewSummary ~ reviewPostDataArr:",
+    reviewPostDataArr
+  );
+  // !added
   let reviewsByResult = getReviewsGroupedByResult(reviewData);
   let numCorrect = reviewsByResult.correct.length;
   let numWrong = reviewsByResult.incorrect.length;

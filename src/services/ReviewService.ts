@@ -465,3 +465,20 @@ export const isUserAnswerValid = (
     message: "",
   };
 };
+
+export const createReviewPostData = (reviewedItems: ReviewQueueItem[]) => {
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewService.ts:471 ~ createReviewPostData ~ reviewedItems:",
+    reviewedItems
+  );
+  // *testing
+
+  return reviewedItems.map((reviewedItem) => ({
+    review: {
+      assignment_id: reviewedItem.assignment_id,
+      incorrect_meaning_answers: reviewedItem.incorrect_meaning_answers,
+      incorrect_reading_answers: reviewedItem.incorrect_reading_answers,
+    },
+  }));
+};

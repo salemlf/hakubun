@@ -1,4 +1,5 @@
 import { Subject } from "./Subject";
+import { RequireAtLeastOne } from "./Global";
 
 export type ReviewType = "reading" | "meaning";
 
@@ -83,4 +84,21 @@ export type BottomSheetSubjectProps = {
 export type ReviewAnswerValidResult = {
   isValid: boolean;
   message: string;
+};
+
+interface ReviewPostItemOptional {
+  assignment_id?: number;
+  subject_id?: number;
+  incorrect_meaning_answers: number;
+  incorrect_reading_answers: number;
+  created_at?: Date;
+}
+
+export type ReviewPostItem = RequireAtLeastOne<
+  ReviewPostItemOptional,
+  "assignment_id" | "subject_id"
+>;
+
+export type ReviewPostData = {
+  review: ReviewPostItem;
 };
