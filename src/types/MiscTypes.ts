@@ -86,3 +86,9 @@ export interface StudyMaterialPutBody {
 export type StudyMaterialsChangeActionType = "add" | "remove";
 
 export type UserNoteType = "meaning" | "reading";
+
+export type TabData = {
+  id: string;
+  label: string;
+  tabContents: React.ReactNode;
+};
