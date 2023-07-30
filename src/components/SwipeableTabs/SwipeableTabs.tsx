@@ -1,145 +1,29 @@
-// import { RefObject, useCallback, useEffect, useRef, useState } from "react";
-// import { useTabListState } from "react-stately";
-// import {
-//   useTab,
-//   useTabList,
-//   useTabPanel,
-//   AriaTabListProps,
-//   AriaTabProps,
-//   AriaTabPanelProps,
-//   TabPanelAria,
-// } from "react-aria";
-// import { Orientation, Node } from "@react-types/shared";
-// import { TabListState } from "@react-stately/tabs";
-// import {
-//   useTransform,
-//   motion,
-//   animate,
-//   useScroll,
-//   AnimationPlaybackControls,
-// } from "framer-motion";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import {
   Tabs,
   TabList,
   Tab,
   TabPanel,
   Collection,
-  TabListProps,
-  TabPanelProps,
-  TabProps,
 } from "react-aria-components";
-import { TargetAndTransition, useTransform } from "framer-motion";
-import { motion, animate, useScroll } from "framer-motion";
-import React, {
-  RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import {
+  TargetAndTransition,
+  useTransform,
+  motion,
+  animate,
+  useScroll,
+} from "framer-motion";
+import { TabData } from "../../types/MiscTypes";
 import styled from "styled-components/macro";
 
-// const TabItemsContainer = styled.div`
-//   display: flex;
-//   position: relative;
-//   margin: 10px;
-//   border: 2px solid lightgray;
-//   padding: 4px 2px;
-//   border-radius: 24px;
-//   z-index: 0;
-//   justify-content: space-evenly;
-
-//   [role="tablist"] {
-//     display: inline-flex;
-//   }
-
-//   [role="tab"] {
-//     padding: 8px 20px;
-//     font-size: 14px;
-//     font-weight: 600;
-//     cursor: default;
-//     outline: none;
-//     border-radius: 20px;
-//     color: white;
-//     transition: color 150ms;
-//     flex-grow: 1;
-//     text-align: center;
-//   }
-
-//   [role="tab"][aria-selected="true"] {
-//     color: white;
-//     background-color: var(--ion-color-secondary);
-//   }
-
-//   [role="tabpanel"] {
-//     padding: 18px 24px;
-//   }
-// `;
-
-// function Tabs(props: AriaTabListProps<AriaTabProps>) {
-//   let state = useTabListState(props);
-//   let ref = useRef(null);
-//   let { tabListProps } = useTabList(props, state, ref);
-
-//   return (
-//     <div className={`${props.orientation || undefined}`}>
-//       <TabItemsContainer {...tabListProps} ref={ref}>
-//         {[...state.collection].map((item: Node<AriaTabProps>) => (
-//           <Tab
-//             key={item.key}
-//             item={item}
-//             state={state}
-//             orientation={props.orientation}
-//           />
-//         ))}
-//       </TabItemsContainer>
-//       <TabPanel key={state.selectedItem?.key} state={state} />
-//     </div>
-//   );
-// }
-
-// function Tab({
-//   item,
-//   state,
-// }: {
-//   item: Node<AriaTabProps>;
-//   state: TabListState<AriaTabProps>;
-//   orientation?: Orientation;
-// }) {
-//   let { key, rendered } = item;
-//   let ref = useRef(null);
-//   let { tabProps } = useTab({ key }, state, ref);
-
-//   return (
-//     <div {...tabProps} ref={ref}>
-//       {rendered}
-//     </div>
-//   );
-// }
-
-// function TabPanel({
-//   state,
-//   ...props
-// }: AriaTabPanelProps & { state: TabListState<AriaTabProps> }) {
-//   let ref = useRef(null);
-//   let { tabPanelProps } = useTabPanel(props, state, ref);
-
-//   return (
-//     <div {...tabPanelProps} ref={ref}>
-//       {state.selectedItem?.props.children}
-//     </div>
-//   );
-// }
-
 const TabsStyled = styled(Tabs)`
-  margin-top: 3rem;
-  margin-bottom: 3rem;
   width: fit-content;
 `;
 
 const TabContainer = styled.div`
   position: relative;
-  background-color: white;
+  background-color: var(--ion-color-primary);
+  padding: 3px 0;
 `;
 
 const TabListStyled = styled(TabList)`
@@ -153,7 +37,7 @@ const TabStyled = styled(Tab)`
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   outline-style: none;
-  color: #000000;
+  color: var(--darkest-purple);
   transition-property: background-color, border-color, color, fill, stroke,
     opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -167,7 +51,7 @@ const TabStyled = styled(Tab)`
   }
 
   &:hover {
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(27, 15, 36, 0.8);
   }
 `;
 
@@ -179,10 +63,10 @@ const FocusRing = styled(motion.span)`
   left: 0;
   z-index: 10;
   border-radius: 9999px;
-  box-shadow: 0 0 0 0 calc(2px + 0) #3b82f680;
-  --ring-color: #000000;
+  box-shadow: 0 0 0 0 calc(2px + 0) white;
+  --ring-color: var(--darkest-purple);
   --ring-offset-width: 2px;
-  box-shadow: 0 0 0 0 #3b82f680, 0 0 #0000;
+  box-shadow: 0 0 0 0 white, 0 0 black;
 `;
 
 const Selector = styled(motion.span)`
@@ -193,7 +77,7 @@ const Selector = styled(motion.span)`
   left: 0;
   z-index: 10;
   border-radius: 9999px;
-  background-color: #ffffff;
+  background-color: var(--ion-color-primary);
   mix-blend-mode: difference;
 `;
 
@@ -205,7 +89,7 @@ const TabPanels = styled.div`
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 300;
-  color: #000000;
+  color: white;
   scroll-snap-type: x mandatory;
 
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -228,30 +112,12 @@ const TabPanelStyled = styled(TabPanel)`
   flex-shrink: 0;
 `;
 
-const TabSectionHeading = styled.h2`
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-`;
-
-interface TabData {
-  id: string;
-  label: string;
-}
-
-// const tabs: TabData[] = [
-//   { id: "world", label: "World" },
-//   { id: "ny", label: "N.Y." },
-//   { id: "business", label: "Business" },
-//   { id: "arts", label: "Arts" },
-//   { id: "science", label: "Science" },
-// ];
-
 type Props = {
   tabs: TabData[];
 };
 
-// TODO: modify so passing in tab contents also
-function AnimatedTabs({ tabs }: Props) {
+// based off of Devon Govett's react aria framer motion example, p cool shit
+function SwipeableTabs({ tabs }: Props) {
   const [selectedKey, setSelectedKey] = useState<string>(tabs[0].id);
   const tabListRef = useRef<HTMLDivElement | undefined>();
   const tabPanelsRef = useRef<HTMLDivElement | undefined>();
@@ -391,14 +257,7 @@ function AnimatedTabs({ tabs }: Props) {
       <TabPanels ref={tabPanelsRef as any}>
         <Collection items={tabs}>
           {(tab: any) => (
-            <TabPanelStyled shouldForceMount>
-              <TabSectionHeading>{tab.label} contents...</TabSectionHeading>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                sit amet nisl blandit, pellentesque eros eu, scelerisque eros.
-                Sed cursus urna at nunc lacinia dapibus.
-              </p>
-            </TabPanelStyled>
+            <TabPanelStyled shouldForceMount>{tab.tabContents}</TabPanelStyled>
           )}
         </Collection>
       </TabPanels>
@@ -406,4 +265,4 @@ function AnimatedTabs({ tabs }: Props) {
   );
 }
 
-export default AnimatedTabs;
+export default SwipeableTabs;
