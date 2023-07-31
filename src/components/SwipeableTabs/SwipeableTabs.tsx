@@ -219,8 +219,7 @@ function SwipeableTabs({
       if (animationRef.current || !tabElements.length) return;
       setSelectedTabKey(tabs[getIndex(x)].id);
     };
-
-    const unsubscribe = scrollXProgress.onChange(handleChange);
+    const unsubscribe = scrollXProgress.on("change", handleChange);
     return () => unsubscribe();
   }, [scrollXProgress, getIndex, tabElements]);
 
