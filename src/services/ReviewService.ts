@@ -364,22 +364,24 @@ const checkInvalidMeaningAnswer = (
     };
   }
 
-  let acceptedReadings = getAnswersForReadingReviews({
-    reviewItem: currReviewItem,
-    acceptedAnswersOnly: true,
-  });
+  if (!isUserMeaningAnswerCorrect(currReviewItem, userAnswer)) {
+    let acceptedReadings = getAnswersForReadingReviews({
+      reviewItem: currReviewItem,
+      acceptedAnswersOnly: true,
+    });
 
-  let isAccidentalReadingAnswer = acceptedReadings.some(
-    (subjReading) => toRomaji(subjReading.reading) === userAnswer
-  );
+    let isAccidentalReadingAnswer = acceptedReadings.some(
+      (subjReading) => toRomaji(subjReading.reading) === userAnswer
+    );
 
-  // entered romaji equivalent for reading answer (got confused and thought it was a reading question)
-  if (isAccidentalReadingAnswer) {
-    return {
-      isValid: false,
-      message:
-        "Are you trying to enter the the reading answer? We're looking for the meaning :p",
-    };
+    // entered romaji equivalent for reading answer (got confused and thought it was a reading question)
+    if (isAccidentalReadingAnswer) {
+      return {
+        isValid: false,
+        message:
+          "Are you trying to enter the the reading answer? We're looking for the meaning :p",
+      };
+    }
   }
 
   return {
