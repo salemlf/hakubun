@@ -21,6 +21,7 @@ import { ReviewSettings } from "../pages/ReviewSettings";
 import { ReviewSessionQueue } from "../pages/ReviewSessionQueue";
 import { Subjects } from "../pages/Subjects";
 import { Search } from "../pages/Search";
+import ReviewSummary from "../components/ReviewSummary/ReviewSummary";
 
 export const AppStack = () => {
   return (
@@ -91,6 +92,7 @@ export const Tabs = () => {
           component={ReviewSessionQueue}
           exact={true}
         />
+        <Route path="/review/summary" component={ReviewSummary} exact={true} />
         <Route exact={true} path="/" render={() => <Redirect to="/home" />} />
         <Redirect from="/authenticate" to="/home" exact={true} />
       </IonRouterOutlet>
