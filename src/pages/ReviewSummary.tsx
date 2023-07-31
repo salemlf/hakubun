@@ -17,7 +17,7 @@ const Page = styled(IonPage)`
   background-color: var(--light-greyish-purple);
 `;
 
-// TODO: move to pages folder
+// TODO: show button to redirect to Home instead of normal tab bar?
 function ReviewSummary() {
   const [reviewQueueItems, setReviewQueueItems] = useState<ReviewQueueItem[]>(
     []

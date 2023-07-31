@@ -28,12 +28,12 @@ export const useReviewQueue = () => {
     assignments: Assignment[],
     subjIDs: number[]
   ) => {
-    // ending the current review (if it exists)
-    dispatchQueueDataContext({
-      type: "END_REVIEW",
-    });
-    resetCurrReviewCardsState();
+    endReviewSession();
     createReviewItems(assignments, subjIDs, dispatchQueueDataContext);
+  };
+
+  const endReviewSession = () => {
+    resetCurrReviewCardsState();
   };
 
   const resetCurrReviewCardsState = () => {
@@ -88,10 +88,10 @@ export const useReviewQueue = () => {
     );
 
     // *testing
-    console.log(
-      "🚀 ~ file: useReviewQueue.tsx:40 ~ correctFirstClick ~ isReviewItemComplete:",
-      isReviewItemComplete
-    );
+    // console.log(
+    //   "🚀 ~ file: useReviewQueue.tsx:40 ~ correctFirstClick ~ isReviewItemComplete:",
+    //   isReviewItemComplete
+    // );
     // *testing
 
     playAudioIfAvailable(
@@ -111,10 +111,10 @@ export const useReviewQueue = () => {
         updatedReviewItem
       );
       // *testing
-      console.log(
-        "🚀 ~ file: useReviewQueue.tsx:127 ~ correctFirstClick ~ updatedReviewItem:",
-        updatedReviewItem
-      );
+      // console.log(
+      //   "🚀 ~ file: useReviewQueue.tsx:127 ~ correctFirstClick ~ updatedReviewItem:",
+      //   updatedReviewItem
+      // );
       // *testing
       displaySRSStatus(updatedReviewItem);
     }
@@ -194,10 +194,10 @@ export const useReviewQueue = () => {
     // *testing
     let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
     // *testing
-    console.log(
-      "🚀 ~ file: ReviewCard.tsx:141 ~ isCorrectAnswer:",
-      isCorrectAnswer
-    );
+    // console.log(
+    //   "🚀 ~ file: ReviewCard.tsx:141 ~ isCorrectAnswer:",
+    //   isCorrectAnswer
+    // );
     // *testing
 
     let moveToNextItem = queueState.isSecondClick;
@@ -206,11 +206,11 @@ export const useReviewQueue = () => {
       : handleWrongAnswer(currReviewItem, setUserAnswer, moveToNextItem);
 
     // *testing
-    console.log(
-      "🚀 ~ file: useReviewQueue.tsx:221 ~ useReviewQueue ~ currReviewItem:",
-      currReviewItem
-    );
-    console.log("queueDataState.reviewQueue: ", queueDataState.reviewQueue);
+    // console.log(
+    //   "🚀 ~ file: useReviewQueue.tsx:221 ~ useReviewQueue ~ currReviewItem:",
+    //   currReviewItem
+    // );
+    // console.log("queueDataState.reviewQueue: ", queueDataState.reviewQueue);
     // *testing
 
     dispatchQueueContext({ type: "SUBMIT_CHOICE" });
@@ -240,5 +240,6 @@ export const useReviewQueue = () => {
     handleRetryClick,
     createNewReviewSession,
     displayInvalidAnswerMsg,
+    endReviewSession,
   };
 };

@@ -200,11 +200,6 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
     action: ReviewSessionDataAction
   ) => {
     switch (action.type) {
-      // TODO: remove this, repetitive
-      case "END_REVIEW":
-        // TODO: change so removeItem called in function, not here
-        removeItem("reviewData");
-        return { ...state, reviewQueue: [] };
       case "RESET_REVIEW":
         // TODO: change so removeItem called in function, not here
         removeItem("reviewData");
