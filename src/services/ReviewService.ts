@@ -309,7 +309,7 @@ export const isUserMeaningAnswerCorrect = (
   // meanings allow some typos/mistakes
   let options = {
     keys: ["meaning", "synonyms"],
-    threshold: 0.1,
+    threshold: 0.2,
     distance: 20,
   };
   let fuse = new Fuse(answersWithSynonyms, options);
@@ -441,10 +441,6 @@ export const isUserAnswerValid = (
   currReviewItem: ReviewQueueItem,
   userAnswer: string
 ): ReviewAnswerValidResult => {
-  // *testing
-  console.log("🚀 ~ file: ReviewService.ts:438 ~ userAnswer:", userAnswer);
-  // *testing
-
   let subjectValidInfo = checkInvalidSubjectAnswer(userAnswer);
   if (!subjectValidInfo.isValid) {
     return subjectValidInfo;
@@ -467,18 +463,9 @@ export const isUserAnswerValid = (
 };
 
 export const createReviewPostData = (reviewedItems: ReviewQueueItem[]) => {
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewService.ts:471 ~ createReviewPostData ~ reviewedItems:",
-    reviewedItems
-  );
-  // *testing
-
   return reviewedItems.map((reviewedItem) => ({
-    review: {
-      assignment_id: reviewedItem.assignment_id,
-      incorrect_meaning_answers: reviewedItem.incorrect_meaning_answers,
-      incorrect_reading_answers: reviewedItem.incorrect_reading_answers,
-    },
+    assignment_id: reviewedItem.assignment_id,
+    incorrect_meaning_answers: reviewedItem.incorrect_meaning_answers,
+    incorrect_reading_answers: reviewedItem.incorrect_reading_answers,
   }));
 };
