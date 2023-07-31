@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../../api/WaniKaniApi";
-import { ReviewPostData } from "../../types/ReviewSessionTypes";
+import { ReviewPostItem } from "../../types/ReviewSessionTypes";
 
 type Props = {
-  reviewSessionData: ReviewPostData[];
+  reviewSessionData: ReviewPostItem;
 };
 
 export const useCreateReview = () => {
@@ -11,16 +11,12 @@ export const useCreateReview = () => {
   return useMutation({
     mutationFn: ({ reviewSessionData }: Props) =>
       WaniKaniAPI.postReview(reviewSessionData),
-
-    onSuccess: (data, variables, context) => {
-      // *testing
+    onSettled: (data, error, variables, context) => {
       console.log(
-        "🚀 ~ file: useCreateReview.ts:16 ~ useCreateReview ~ data:",
+        "🚀 ~ file: useCreateReview.ts:15 ~ useCreateReview ~ data:",
         data
       );
-      // *testing
-      // by returning instead of just calling, we keep query in a loading state while queries are invalidated
-      return queryClient.invalidateQueries(["create-review-post"]);
+      queryClient.invalidateQueries(["assignments-available-for-review"]);
     },
   });
 };
