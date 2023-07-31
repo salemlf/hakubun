@@ -9,7 +9,7 @@ import {
 } from "../types/MiscTypes";
 
 import { getSrsLvlBySrsName } from "../services/MiscService";
-import { ReviewPostData } from "../types/ReviewSessionTypes";
+import { ReviewPostItem } from "../types/ReviewSessionTypes";
 
 // TODO: make paging "automatic" where no need to add special case for it
 export const WaniKaniAPI = {
@@ -209,20 +209,20 @@ export const WaniKaniAPI = {
     return response.data;
   },
 
-  postReview: async function (reviewData: ReviewPostData[]) {
+  postReview: async function (reviewData: ReviewPostItem) {
+    // *testing
+    console.log("🚀 ~ file: WaniKaniApi.ts:213 ~ reviewData:", reviewData);
+    // *testing
     let url = `${baseUrl}reviews`;
 
     const response: AxiosResponse = await api.request({
       url: url,
       method: "POST",
-      data: reviewData,
+      data: {
+        review: reviewData,
+      },
     });
 
-    // return response.data;
-    let data = response.data;
-    // *testing
-    console.log("🚀 ~ file: WaniKaniApi.ts:223 ~ data:", data);
-    // *testing
-    return data;
+    return response.data;
   },
 };
