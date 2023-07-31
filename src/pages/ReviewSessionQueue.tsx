@@ -1,10 +1,9 @@
 import { IonContent, IonGrid, IonPage } from "@ionic/react";
-
-import styled from "styled-components/macro";
 import { useReviewQueue } from "../hooks/useReviewQueue";
 import ReviewSessionHeader from "../components/ReviewSessionHeader/ReviewSessionHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";
-import ReviewSummary from "../components/ReviewSummary/ReviewSummary";
+import { Redirect } from "react-router-dom";
+import styled from "styled-components/macro";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -29,7 +28,6 @@ const Grid = styled(IonGrid)`
 // TODO: fix the excessive number of rerenders happening for this page
 export const ReviewSessionQueue = () => {
   const { queueDataState } = useReviewQueue();
-
   let reviewQueue = queueDataState.reviewQueue;
   let currentReviewItem =
     queueDataState.reviewQueue[queueDataState.currQueueIndex];
@@ -45,12 +43,16 @@ export const ReviewSessionQueue = () => {
           {!queueDataState.isLoading &&
             reviewQueue.length !== queueDataState.currQueueIndex &&
             currentReviewItem && (
-              // <ReviewItemCard currentReviewItem={currentReviewItem} />
               <ReviewCards currentReviewItem={currentReviewItem} />
             )}
           {!queueDataState.isLoading &&
+            reviewQueue.length !== 0 &&
             reviewQueue.length === queueDataState.currQueueIndex && (
-              <ReviewSummary />
+              <Redirect
+                to={{
+                  pathname: "/review/summary",
+                }}
+              />
             )}
         </Grid>
       </IonContent>
