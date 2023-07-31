@@ -2,6 +2,7 @@ import { IonContent, IonGrid, IonPage } from "@ionic/react";
 import { TabData } from "../types/MiscTypes";
 import styled from "styled-components/macro";
 import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
+import { useState } from "react";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -27,9 +28,14 @@ const tabs: TabData[] = [
 ];
 
 export const Subjects = () => {
+  const [selectedTabKey, setSelectedTabKey] = useState<string>(tabs[0].id);
   return (
     <Page>
-      <SwipeableTabs tabs={tabs} />
+      <SwipeableTabs
+        tabs={tabs}
+        selectedTabKey={selectedTabKey}
+        setSelectedTabKey={setSelectedTabKey}
+      />
       {/* <IonContent>
           <IonGrid>
             <p>Subjects Page - TO DO</p>

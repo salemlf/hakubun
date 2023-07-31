@@ -51,6 +51,9 @@ const Title = styled(IonTitle)`
 `;
 
 export const ReviewSettings = () => {
+  // !added
+  const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
+  // !added
   const { createNewReviewSession } = useReviewQueue();
   const router = useIonRouter();
 
@@ -69,7 +72,6 @@ export const ReviewSettings = () => {
 
   // TODO: change to use user setting for default batch size once settings are implemented
   let defaultBatchSize = 5;
-
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
     Set<AssignmentType>
   >(new Set(initialAssignTypes));
@@ -132,6 +134,8 @@ export const ReviewSettings = () => {
         {!availForReviewLoading && !availForReviewErr && availForReviewData && (
           <>
             <SwipeableTabs
+              selectedTabKey={selectedTabKey}
+              setSelectedTabKey={setSelectedTabKey}
               tabs={[
                 {
                   id: "basic",
