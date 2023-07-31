@@ -77,7 +77,10 @@ export type ReviewSessionQueueDispatch = (
 
 export type BottomSheetSubjectProps = {
   reviewItem: ReviewQueueItem;
-  selectedSegment: ReviewType | string;
+  selectedTabKey: string;
+  setSelectedTabKey: React.Dispatch<React.SetStateAction<string>>;
+  tabBgColor: string;
+  tabSelectionColor: string;
 };
 
 export type ReviewAnswerValidResult = {

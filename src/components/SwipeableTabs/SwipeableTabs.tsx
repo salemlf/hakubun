@@ -25,13 +25,14 @@ type CustomBgColor = {
 };
 
 const TabsStyled = styled(Tabs)`
-  width: fit-content;
+  width: 100%;
 `;
 
 const TabContainer = styled.div<CustomBgColor>`
   position: relative;
   background-color: ${({ bgcolor }) => bgcolor};
   padding: 3px 0;
+  border-radius: 10px;
 `;
 
 const TabListStyled = styled(TabList)`
@@ -78,7 +79,7 @@ const FocusRing = styled(motion.span)<CustomBgColor>`
   --ring-offset-width: 2px;
 `;
 
-const Selector = styled(motion.span)<CustomBgColor>`
+const TabSelector = styled(motion.span)<CustomBgColor>`
   position: absolute;
   top: 0;
   right: 0;
@@ -88,6 +89,7 @@ const Selector = styled(motion.span)<CustomBgColor>`
   border-radius: 9999px;
   background-color: ${({ bgcolor }) => bgcolor};
   mix-blend-mode: difference;
+  margin: 4px 0;
 `;
 
 const TabPanels = styled.div`
@@ -112,8 +114,6 @@ const TabPanels = styled.div`
 `;
 
 const TabPanelStyled = styled(TabPanel)`
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
   border-radius: 0.25rem;
   outline-style: none;
   width: 100%;
@@ -279,7 +279,7 @@ function SwipeableTabs({
           )}
         </TabListStyled>
         {/* Selection indicator. */}
-        <Selector style={{ x, width }} bgcolor={bgColor} />
+        <TabSelector style={{ x, width }} bgcolor={bgColor} />
       </TabContainer>
       <TabPanels ref={tabPanelsRef as any}>
         <Collection items={tabs}>

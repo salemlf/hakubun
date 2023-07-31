@@ -3,18 +3,14 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
-  IonLabel,
   IonModal,
   IonPage,
-  IonRow,
-  IonSegment,
-  IonSegmentButton,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { useLocation } from "react-router";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
-import { Subject, SubjectType } from "../../types/Subject";
+import { Subject } from "../../types/Subject";
 import { ReviewQueueItem, ReviewType } from "../../types/ReviewSessionTypes";
 import BottomSheetHeader from "./BottomSheetHeader";
 import RadicalBottomSheet from "./RadicalBottomSheet";
@@ -40,37 +36,20 @@ const Toolbar = styled(IonToolbar)`
   padding-bottom: 8px;
 `;
 
-const BottomSheetContent = styled(IonRow)`
-  --ion-background-color: var(--light-greyish-purple);
-  background-color: var(--light-greyish-purple);
-  border-radius: 25px;
-  margin: 0;
-
-  display: flex;
-  justify-content: flex-start;
-  padding-inline-start: var(--ion-padding, 16px);
-  padding-inline-end: var(--ion-padding, 16px);
-  padding-top: var(--ion-padding, 16px);
-  padding-bottom: var(--ion-padding, 16px);
-`;
-
-const Segment = styled(IonSegment)`
-  margin-bottom: 10px;
-`;
-
 type Props = {
   currentReviewItem: ReviewQueueItem;
   reviewType: ReviewType;
 };
 
+// TODO: some duplicated logic for tab lists in these child components, improve
 function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
+  let initalValue = currentReviewItem.object == "radical" ? "name" : reviewType;
+  let selectedTabColor = "var(--darkest-purple)";
+  let tabsBgColor = "var(--offwhite-color)";
+  const [selectedTabKey, setSelectedTabKey] = useState<string>(initalValue);
   const location = useLocation();
   const { queueState } = useReviewQueue();
   const modal = useRef<HTMLIonModalElement>(null);
-  let initalValue = currentReviewItem.object == "radical" ? "name" : reviewType;
-  const [selectedSegment, setSelectedSegment] = useState<ReviewType | string>(
-    initalValue
-  );
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   // TODO: also reopen to previous breakpoint on return? Use something like modal.current.getCurrentBreakpoint()
@@ -87,23 +66,6 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
       setIsBottomSheetVisible(false);
     }
   }, [location.pathname, queueState.isBottomSheetVisible]);
-
-  useEffect(() => {
-    if (reviewType !== selectedSegment) {
-      let selected =
-        currentReviewItem.object == "radical" ? "name" : reviewType;
-      setSelectedSegment(selected);
-    }
-  }, [reviewType]);
-
-  const subjectsWithReadings: SubjectType[] = ["kanji", "vocabulary"];
-
-  const onSegmentClick = (e: any) => {
-    const segmentClicked = e.target.value;
-    if (segmentClicked !== selectedSegment) {
-      setSelectedSegment(segmentClicked);
-    }
-  };
 
   return (
     <IonModal
@@ -124,57 +86,34 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
         <BottomSheetHeader subject={currentReviewItem as Subject} />
         <IonContent className="ion-padding">
           <FullWidthGrid>
-            <BottomSheetContent>
-              <Segment value={selectedSegment} onClick={onSegmentClick}>
-                {currentReviewItem.object == "kanji" && (
-                  <IonSegmentButton value="radicals">
-                    <IonLabel>Radicals</IonLabel>
-                  </IonSegmentButton>
-                )}
-                {currentReviewItem.object == "vocabulary" && (
-                  <IonSegmentButton value="breakdown">
-                    <IonLabel>Breakdown</IonLabel>
-                  </IonSegmentButton>
-                )}
-                {(currentReviewItem.object == "kanji" ||
-                  currentReviewItem.object == "vocabulary" ||
-                  currentReviewItem.object == "kana_vocabulary") && (
-                  <IonSegmentButton value="meaning">
-                    <IonLabel>Meaning</IonLabel>
-                  </IonSegmentButton>
-                )}
-                {currentReviewItem.object == "radical" && (
-                  <IonSegmentButton value="name">
-                    <IonLabel>Name</IonLabel>
-                  </IonSegmentButton>
-                )}
-                {subjectsWithReadings.includes(currentReviewItem.object) && (
-                  <IonSegmentButton value="reading">
-                    <IonLabel>Reading</IonLabel>
-                  </IonSegmentButton>
-                )}
-              </Segment>
-
-              {currentReviewItem.object == "radical" && (
-                <RadicalBottomSheet
-                  reviewItem={currentReviewItem}
-                  selectedSegment={selectedSegment}
-                />
-              )}
-              {currentReviewItem.object == "kanji" && (
-                <KanjiBottomSheet
-                  reviewItem={currentReviewItem}
-                  selectedSegment={selectedSegment}
-                />
-              )}
-              {(currentReviewItem.object == "vocabulary" ||
-                currentReviewItem.object == "kana_vocabulary") && (
-                <VocabBottomSheet
-                  reviewItem={currentReviewItem}
-                  selectedSegment={selectedSegment}
-                />
-              )}
-            </BottomSheetContent>
+            {currentReviewItem.object == "radical" && (
+              <RadicalBottomSheet
+                tabBgColor={tabsBgColor}
+                tabSelectionColor={selectedTabColor}
+                reviewItem={currentReviewItem}
+                selectedTabKey={selectedTabKey}
+                setSelectedTabKey={setSelectedTabKey}
+              />
+            )}
+            {currentReviewItem.object == "kanji" && (
+              <KanjiBottomSheet
+                tabBgColor={tabsBgColor}
+                tabSelectionColor={selectedTabColor}
+                reviewItem={currentReviewItem}
+                selectedTabKey={selectedTabKey}
+                setSelectedTabKey={setSelectedTabKey}
+              />
+            )}
+            {(currentReviewItem.object == "vocabulary" ||
+              currentReviewItem.object == "kana_vocabulary") && (
+              <VocabBottomSheet
+                tabBgColor={tabsBgColor}
+                tabSelectionColor={selectedTabColor}
+                reviewItem={currentReviewItem}
+                selectedTabKey={selectedTabKey}
+                setSelectedTabKey={setSelectedTabKey}
+              />
+            )}
           </FullWidthGrid>
         </IonContent>
       </IonPage>

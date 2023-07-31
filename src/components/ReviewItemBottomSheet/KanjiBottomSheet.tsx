@@ -10,31 +10,49 @@ import {
 } from "../../styles/SubjectDetailsStyled";
 import ReadingsForKanji from "../ReadingsForKanji/ReadingsForKanji";
 import KanjiReadingMnemonic from "../KanjiReadingMnemonic/KanjiReadingMnemonic";
+import { TabData } from "../../types/MiscTypes";
+import SwipeableTabs from "../SwipeableTabs";
+import { BottomSheetContent } from "../../styles/BaseStyledComponents";
 
 // TODO: add stroke order to radicals segment
 function KanjiBottomSheet({
   reviewItem,
-  selectedSegment,
+  selectedTabKey,
+  setSelectedTabKey,
+  tabBgColor,
+  tabSelectionColor,
 }: BottomSheetSubjectProps) {
-  return (
-    <>
-      {selectedSegment === "radicals" && (
-        <RadicalCombination
-          kanji={reviewItem as Kanji}
-          displayQuestionTxt={true}
-        />
-      )}
-      {selectedSegment === "meaning" && (
-        <>
+  const tabs: TabData[] = [
+    {
+      id: "radicals",
+      label: "Radicals",
+      tabContents: (
+        <BottomSheetContent>
+          <RadicalCombination
+            kanji={reviewItem as Kanji}
+            displayQuestionTxt={true}
+          />
+        </BottomSheetContent>
+      ),
+    },
+    {
+      id: "meaning",
+      label: "Meaning",
+      tabContents: (
+        <BottomSheetContent>
           <SubjectMeanings
             subject={reviewItem as Subject}
             showPrimaryMeaning={true}
           />
           <KanjiMeaningMnemonic kanji={reviewItem as Kanji} />
-        </>
-      )}
-      {selectedSegment === "reading" && (
-        <>
+        </BottomSheetContent>
+      ),
+    },
+    {
+      id: "reading",
+      label: "Reading",
+      tabContents: (
+        <BottomSheetContent>
           <SubjDetailSection>
             <SubjDetailSubHeading>On'yomi Readings</SubjDetailSubHeading>
             <IonRow>
@@ -56,9 +74,21 @@ function KanjiBottomSheet({
             </IonRow>
           </SubjDetailSection>
           <KanjiReadingMnemonic kanji={reviewItem as Kanji} />
-        </>
-      )}
-    </>
+        </BottomSheetContent>
+      ),
+    },
+  ];
+
+  // !added
+
+  return (
+    <SwipeableTabs
+      tabs={tabs}
+      selectedTabKey={selectedTabKey}
+      setSelectedTabKey={setSelectedTabKey}
+      tabBgColor={tabBgColor}
+      tabSelectionColor={tabSelectionColor}
+    />
   );
 }
 

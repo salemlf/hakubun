@@ -90,3 +90,18 @@ export const BottomSheetContainer = styled.div`
   width: 100%;
   margin-bottom: 12px;
 `;
+
+// TODO: change to use plain html styled div instead of IonRow
+export const BottomSheetContent = styled(IonRow)`
+  --ion-background-color: var(--light-greyish-purple);
+  background-color: var(--light-greyish-purple);
+  border-radius: 25px;
+  margin: 0;
+
+  display: flex;
+  justify-content: flex-start;
+  padding-inline-start: var(--ion-padding, 16px);
+  padding-inline-end: var(--ion-padding, 16px);
+  padding-top: var(--ion-padding, 16px);
+  padding-bottom: var(--ion-padding, 16px);
+`;
