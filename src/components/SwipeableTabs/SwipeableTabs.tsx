@@ -125,12 +125,19 @@ type Props = {
   tabs: TabData[];
   tabBgColor?: string;
   tabSelectionColor?: string;
+  selectedTabKey: string;
+  setSelectedTabKey: React.Dispatch<React.SetStateAction<string>>;
 };
 
-// TODO: pass in selected tab, default to first one if not defined
+// TODO: modify so using useTabList instead of components since useTabList not in beta
 // based off of Devon Govett's react aria framer motion example, p cool shit
-function SwipeableTabs({ tabs, tabBgColor, tabSelectionColor }: Props) {
-  const [selectedKey, setSelectedKey] = useState<string>(tabs[0].id);
+function SwipeableTabs({
+  tabs,
+  tabBgColor,
+  tabSelectionColor,
+  selectedTabKey,
+  setSelectedTabKey,
+}: Props) {
   const tabListRef = useRef<HTMLDivElement | undefined>();
   const tabPanelsRef = useRef<HTMLDivElement | undefined>();
 
@@ -201,7 +208,7 @@ function SwipeableTabs({ tabs, tabBgColor, tabSelectionColor }: Props) {
   useEffect(() => {
     const handleChange = (x: number) => {
       if (animationRef.current || !tabElements.length) return;
-      setSelectedKey(tabs[getIndex(x)].id);
+      setSelectedTabKey(tabs[getIndex(x)].id);
     };
 
     const unsubscribe = scrollXProgress.onChange(handleChange);
@@ -213,7 +220,7 @@ function SwipeableTabs({ tabs, tabBgColor, tabSelectionColor }: Props) {
   const animationRef = useRef<any>();
   const onSelectionChange = (selectedKey: React.Key) => {
     let selectedAsStr = selectedKey as string;
-    setSelectedKey(selectedAsStr);
+    setSelectedTabKey(selectedAsStr);
 
     // If the scroll position is already moving but we aren't animating
     // then the key changed as a result of a user scrolling. Ignore.
@@ -251,7 +258,10 @@ function SwipeableTabs({ tabs, tabBgColor, tabSelectionColor }: Props) {
   };
 
   return (
-    <TabsStyled selectedKey={selectedKey} onSelectionChange={onSelectionChange}>
+    <TabsStyled
+      selectedKey={selectedTabKey}
+      onSelectionChange={onSelectionChange}
+    >
       <TabContainer bgcolor={bgColor}>
         <TabListStyled ref={tabListRef as any} items={tabs}>
           {(tab: any) => (
