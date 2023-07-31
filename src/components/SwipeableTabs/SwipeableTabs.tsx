@@ -24,15 +24,22 @@ type CustomBgColor = {
   bgcolor: string;
 };
 
+type TabContainerStyles = {
+  bgcolor: string;
+  roundedcontainer: boolean;
+};
+
 const TabsStyled = styled(Tabs)`
   width: 100%;
 `;
 
-const TabContainer = styled.div<CustomBgColor>`
+const TabContainer = styled.div<TabContainerStyles>`
   position: relative;
   background-color: ${({ bgcolor }) => bgcolor};
   padding: 3px 0;
-  border-radius: 10px;
+  /* border-radius: 10px; */
+  border-radius: ${({ roundedcontainer }) =>
+    roundedcontainer ? ".5rem" : "0"};
 `;
 
 const TabListStyled = styled(TabList)`
@@ -123,20 +130,22 @@ const TabPanelStyled = styled(TabPanel)`
 
 type Props = {
   tabs: TabData[];
-  tabBgColor?: string;
-  tabSelectionColor?: string;
   selectedTabKey: string;
   setSelectedTabKey: React.Dispatch<React.SetStateAction<string>>;
+  tabBgColor?: string;
+  tabSelectionColor?: string;
+  roundedContainer?: boolean;
 };
 
 // TODO: modify so using useTabList instead of components since useTabList not in beta
 // based off of Devon Govett's react aria framer motion example, p cool shit
 function SwipeableTabs({
   tabs,
-  tabBgColor,
-  tabSelectionColor,
   selectedTabKey,
   setSelectedTabKey,
+  tabBgColor,
+  tabSelectionColor,
+  roundedContainer = true,
 }: Props) {
   const tabListRef = useRef<HTMLDivElement | undefined>();
   const tabPanelsRef = useRef<HTMLDivElement | undefined>();
@@ -262,7 +271,7 @@ function SwipeableTabs({
       selectedKey={selectedTabKey}
       onSelectionChange={onSelectionChange}
     >
-      <TabContainer bgcolor={bgColor}>
+      <TabContainer bgcolor={bgColor} roundedcontainer={roundedContainer}>
         <TabListStyled ref={tabListRef as any} items={tabs}>
           {(tab: any) => (
             <TabStyled selectioncolor={selectionColor}>

@@ -12,6 +12,7 @@ type Props = {
   displayQuestionTxt?: boolean;
 };
 
+// TODO: sort so in same order as usage
 function KanjiUsedInVocab({ kanjiIDs, displayQuestionTxt = false }: Props) {
   const {
     isLoading: kanjiUsedSubjLoading,

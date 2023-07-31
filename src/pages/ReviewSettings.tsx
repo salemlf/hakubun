@@ -160,6 +160,7 @@ export const ReviewSettings = () => {
                 },
               ]}
               tabBgColor="var(--wanikani-review)"
+              roundedContainer={false}
             />
             <StartReviewBtn onStartReviewBtnClick={onStartReviewBtnClick} />
           </>
