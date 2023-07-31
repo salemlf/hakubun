@@ -32,6 +32,7 @@ type CardProps = {
 
 const Card = ({ currentReviewItem }: CardProps) => {
   const [userAnswer, setUserAnswer] = useState("");
+  // TODO: display these shortcuts on page so user knows about them
   useKeyDown(() => attemptToAdvance(), ["F12"]);
   useKeyDown(() => retryTriggered(), ["F6"]);
   const {
@@ -51,10 +52,15 @@ const Card = ({ currentReviewItem }: CardProps) => {
   const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
 
   const retryTriggered = () => {
-    setTimeout(() => {
-      x.set(0);
-      handleRetryClick(currentReviewItem, setUserAnswer);
-    }, exitTimeMs);
+    if (queueState.showRetryButton) {
+      setTimeout(() => {
+        x.set(0);
+        handleRetryClick(currentReviewItem, setUserAnswer);
+      }, exitTimeMs);
+    } else {
+      // TODO: show some visual indication of this
+      console.log("RETRY NOT AVAILABLE!");
+    }
   };
 
   const attemptToAdvance = () => {
@@ -83,12 +89,7 @@ const Card = ({ currentReviewItem }: CardProps) => {
     if (info.offset.x > 200) {
       attemptToAdvance();
     } else if (info.offset.x < -200) {
-      if (queueState.showRetryButton) {
-        retryTriggered();
-      } else {
-        // TODO: show some visual indication of this
-        console.log("RETRY NOT AVAILABLE!");
-      }
+      retryTriggered();
     }
   };
 
