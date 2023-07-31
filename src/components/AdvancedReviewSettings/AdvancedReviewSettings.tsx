@@ -10,7 +10,7 @@ function AdvancedReviewSettings({ availForReviewData }: Props) {
   return (
     <Card>
       <AssignmentSelector
-        assigmentsReadyToReview={availForReviewData}
+        assignmentsReadyToReview={availForReviewData}
       ></AssignmentSelector>
     </Card>
   );
