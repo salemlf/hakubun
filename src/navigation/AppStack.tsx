@@ -21,7 +21,7 @@ import { ReviewSettings } from "../pages/ReviewSettings";
 import { ReviewSessionQueue } from "../pages/ReviewSessionQueue";
 import { Subjects } from "../pages/Subjects";
 import { Search } from "../pages/Search";
-import ReviewSummary from "../components/ReviewSummary/ReviewSummary";
+import ReviewSummary from "../pages/ReviewSummary";
 
 export const AppStack = () => {
   return (
