@@ -7,15 +7,17 @@ type ButtonContainerProps = {
   isPressed: boolean;
 };
 
-const ButtonContainer = styled.span<ButtonContainerProps>`
-  display: inline-block;
+const ButtonContainer = styled.button<ButtonContainerProps>`
   border-radius: 6px;
   background-color: ${({ isPressed }) =>
     isPressed ? "var(--ion-color-primary-shade)" : `var(--ion-color-primary)`};
   color: white;
-  padding: 4px 8px;
+  padding: 6px 8px;
   cursor: pointer;
   user-select: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
