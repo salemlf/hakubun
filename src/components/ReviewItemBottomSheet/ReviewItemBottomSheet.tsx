@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   IonContent,
   IonGrid,
@@ -43,10 +43,16 @@ type Props = {
 
 // TODO: some duplicated logic for tab lists in these child components, improve
 function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
-  let initalValue = currentReviewItem.object == "radical" ? "name" : reviewType;
+  // let initalValue = currentReviewItem.object == "radical" ? "name" : reviewType as string;
   let selectedTabColor = "var(--darkest-purple)";
   let tabsBgColor = "var(--offwhite-color)";
-  const [selectedTabKey, setSelectedTabKey] = useState<string>(initalValue);
+  // const [selectedTabKey, setSelectedTabKey] = useState<string>(
+  //   reviewType as string
+  // );
+
+  const [selectedTabKey, setSelectedTabKey] = useState<React.Key>(
+    reviewType as React.Key
+  );
   const location = useLocation();
   const { queueState } = useReviewQueue();
   const modal = useRef<HTMLIonModalElement>(null);
@@ -66,6 +72,14 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
       setIsBottomSheetVisible(false);
     }
   }, [location.pathname, queueState.isBottomSheetVisible]);
+
+  useEffect(() => {
+    console.log("reviewType or currentReviewItem changed!");
+    setSelectedTabKey(
+      currentReviewItem.object == "radical" ? "name" : (reviewType as React.Key)
+    );
+    console.log("selectedTabKey: ", selectedTabKey);
+  }, [reviewType, currentReviewItem]);
 
   return (
     <IonModal

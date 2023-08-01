@@ -84,6 +84,12 @@ function VocabBottomSheet({
   tabBgColor,
   tabSelectionColor,
 }: BottomSheetSubjectProps) {
+  // *testing
+  console.log(
+    "🚀 ~ file: VocabBottomSheet.tsx:87 ~ selectedTabKey:",
+    selectedTabKey
+  );
+  // *testing
   const tabsInCommon: TabData[] = [
     {
       id: "meaning",

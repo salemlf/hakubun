@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   IonContent,
   IonPage,
@@ -52,7 +52,10 @@ const Title = styled(IonTitle)`
 
 export const ReviewSettings = () => {
   // !added
-  const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
+  // const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
+  const [selectedTabKey, setSelectedTabKey] = useState<React.Key>(
+    "basic" as React.Key
+  );
   // !added
   const { createNewReviewSession } = useReviewQueue();
   const router = useIonRouter();
@@ -102,7 +105,9 @@ export const ReviewSettings = () => {
       compareAssignmentsByAvailableDate
     );
 
-    let assignmentBatchToReview = sortedToReview.slice(0, batchSize);
+    // TODO: change back, temporarily changing batch size to 2 for testing
+    // let assignmentBatchToReview = sortedToReview.slice(0, batchSize);
+    let assignmentBatchToReview = sortedToReview.slice(0, 1);
     // *testing
     console.log(
       "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentBatchToReview:",

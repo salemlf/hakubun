@@ -1,4 +1,10 @@
-import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Tabs,
   TabList,
@@ -131,8 +137,10 @@ const TabPanelStyled = styled(TabPanel)`
 
 type Props = {
   tabs: TabData[];
-  selectedTabKey: string;
-  setSelectedTabKey: React.Dispatch<React.SetStateAction<string>>;
+  // selectedTabKey: string;
+  selectedTabKey: React.Key;
+  // setSelectedTabKey: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedTabKey: React.Dispatch<React.SetStateAction<React.Key>>;
   tabBgColor?: string;
   tabSelectionColor?: string;
   roundedContainer?: boolean;
@@ -148,6 +156,12 @@ function SwipeableTabs({
   tabSelectionColor,
   roundedContainer = true,
 }: Props) {
+  // *testing
+  console.log(
+    "🚀 ~ file: SwipeableTabs.tsx:151 ~ selectedTabKey:",
+    selectedTabKey
+  );
+  // *testing
   const tabListRef = useRef<HTMLDivElement | undefined>();
   const tabPanelsRef = useRef<HTMLDivElement | undefined>();
 
@@ -218,7 +232,7 @@ function SwipeableTabs({
   useEffect(() => {
     const handleChange = (x: number) => {
       if (animationRef.current || !tabElements.length) return;
-      setSelectedTabKey(tabs[getIndex(x)].id);
+      setSelectedTabKey(tabs[getIndex(x)].id as React.Key);
     };
     const unsubscribe = scrollXProgress.on("change", handleChange);
     return () => unsubscribe();
@@ -229,7 +243,11 @@ function SwipeableTabs({
   const animationRef = useRef<any>();
   const onSelectionChange = (selectedKey: React.Key) => {
     let selectedAsStr = selectedKey as string;
-    setSelectedTabKey(selectedAsStr);
+    console.log(
+      "🚀 ~ file: SwipeableTabs.tsx:232 ~ onSelectionChange ~ selectedAsStr:",
+      selectedAsStr
+    );
+    setSelectedTabKey(selectedAsStr as React.Key);
 
     // If the scroll position is already moving but we aren't animating
     // then the key changed as a result of a user scrolling. Ignore.

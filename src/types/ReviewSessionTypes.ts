@@ -1,5 +1,6 @@
 import { Subject } from "./Subject";
 import { RequireAtLeastOne } from "./Global";
+import React from "react";
 
 export type ReviewType = "reading" | "meaning";
 
@@ -77,8 +78,10 @@ export type ReviewSessionQueueDispatch = (
 
 export type BottomSheetSubjectProps = {
   reviewItem: ReviewQueueItem;
-  selectedTabKey: string;
-  setSelectedTabKey: React.Dispatch<React.SetStateAction<string>>;
+  // selectedTabKey: string;
+  selectedTabKey: React.Key;
+  // setSelectedTabKey: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedTabKey: React.Dispatch<React.SetStateAction<React.Key>>;
   tabBgColor: string;
   tabSelectionColor: string;
 };
