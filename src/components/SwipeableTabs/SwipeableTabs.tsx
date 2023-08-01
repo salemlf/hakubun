@@ -102,8 +102,8 @@ const TabSelector = styled(motion.span)<CustomBgColor>`
 const TabPanels = styled.div`
   display: flex;
   overflow: auto;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 16px;
+  margin-bottom: 16px;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 300;
@@ -126,6 +126,7 @@ const TabPanelStyled = styled(TabPanel)`
   width: 100%;
   scroll-snap-align: start;
   flex-shrink: 0;
+  margin: 0 5px;
 `;
 
 type Props = {
