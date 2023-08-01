@@ -41,6 +41,7 @@ type Props = {
   reviewType: ReviewType;
 };
 
+// TODO: setting selected tab programmatically no working, figure out why
 // TODO: some duplicated logic for tab lists in these child components, improve
 function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
   // let initalValue = currentReviewItem.object == "radical" ? "name" : reviewType as string;
@@ -74,12 +75,12 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
   }, [location.pathname, queueState.isBottomSheetVisible]);
 
   useEffect(() => {
-    console.log("reviewType or currentReviewItem changed!");
-    setSelectedTabKey(
-      currentReviewItem.object == "radical" ? "name" : (reviewType as React.Key)
-    );
-    console.log("selectedTabKey: ", selectedTabKey);
-  }, [reviewType, currentReviewItem]);
+    if ((reviewType as React.Key) !== selectedTabKey) {
+      let selected =
+        currentReviewItem.object == "radical" ? "name" : reviewType;
+      setSelectedTabKey(selected as React.Key);
+    }
+  }, [reviewType]);
 
   return (
     <IonModal

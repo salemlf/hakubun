@@ -43,7 +43,6 @@ const TabContainer = styled.div<TabContainerStyles>`
   position: relative;
   background-color: ${({ bgcolor }) => bgcolor};
   padding: 3px 0;
-  /* border-radius: 10px; */
   border-radius: ${({ roundedcontainer }) =>
     roundedcontainer ? ".5rem" : "0"};
 `;
@@ -67,7 +66,6 @@ const TabStyled = styled(Tab)<CustomSelectColor>`
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
   cursor: default;
-  /* touch-action: none; */
 
   @media (min-width: 640px) {
     font-size: 0.875rem;
@@ -137,9 +135,7 @@ const TabPanelStyled = styled(TabPanel)`
 
 type Props = {
   tabs: TabData[];
-  // selectedTabKey: string;
   selectedTabKey: React.Key;
-  // setSelectedTabKey: React.Dispatch<React.SetStateAction<string>>;
   setSelectedTabKey: React.Dispatch<React.SetStateAction<React.Key>>;
   tabBgColor?: string;
   tabSelectionColor?: string;
@@ -242,12 +238,12 @@ function SwipeableTabs({
   // the scroll position to the newly selected tab panel.
   const animationRef = useRef<any>();
   const onSelectionChange = (selectedKey: React.Key) => {
-    let selectedAsStr = selectedKey as string;
-    console.log(
-      "🚀 ~ file: SwipeableTabs.tsx:232 ~ onSelectionChange ~ selectedAsStr:",
-      selectedAsStr
-    );
-    setSelectedTabKey(selectedAsStr as React.Key);
+    // let selectedAsStr = selectedKey as string;
+    // console.log(
+    //   "🚀 ~ file: SwipeableTabs.tsx:232 ~ onSelectionChange ~ selectedAsStr:",
+    //   selectedAsStr
+    // );
+    setSelectedTabKey(selectedKey);
 
     // If the scroll position is already moving but we aren't animating
     // then the key changed as a result of a user scrolling. Ignore.
