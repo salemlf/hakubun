@@ -10,12 +10,19 @@ import {
   SubjDetailSubHeading,
   ReadingsStyle,
 } from "../../styles/SubjectDetailsStyled";
+import Button from "../Button/Button";
 
 type AudioProps = {
   url: string;
 };
 
-const Btn = styled.button`
+// const Btn = styled.button`
+//   background-color: transparent;
+//   width: 1em;
+//   height: 1em;
+// `;
+
+const Btn = styled(Button)`
   background-color: transparent;
   width: 1em;
   height: 1em;
@@ -25,7 +32,7 @@ const AudioBtn = ({ url }: AudioProps) => {
   const [playing, toggle] = useAudio(url);
 
   return (
-    <Btn onClick={toggle}>
+    <Btn onPress={toggle}>
       <IonIcon icon={SoundIcon} />
     </Btn>
   );
@@ -39,6 +46,7 @@ const VocabReadingContainer = styled.div`
 
 const ReadingTxt = styled.p`
   margin: 5px 0;
+  font-size: 1rem;
 `;
 
 type VocabReadingProps = {

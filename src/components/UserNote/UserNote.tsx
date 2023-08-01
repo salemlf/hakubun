@@ -78,7 +78,7 @@ function UserNote({ subject, noteType, isRadical = false }: Props) {
           ) : (
             <AddButtonContainer>
               <AddButton
-                onClick={(e: any) => {
+                onPress={(e: any) => {
                   setEditingInProgress(true);
                 }}
               >

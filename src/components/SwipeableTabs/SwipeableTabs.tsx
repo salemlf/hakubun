@@ -61,7 +61,7 @@ const TabStyled = styled(Tab)<CustomSelectColor>`
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
   cursor: default;
-  touch-action: none;
+  /* touch-action: none; */
 
   @media (min-width: 640px) {
     font-size: 0.875rem;

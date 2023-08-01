@@ -1,5 +1,6 @@
 import { IonAlert, IonCol, IonGrid, IonRow } from "@ionic/react";
 import styled from "styled-components/macro";
+import Button from "../components/Button/Button";
 
 export const FullWidthGrid = styled(IonGrid)`
   margin-left: 0;
@@ -60,7 +61,7 @@ export const Alert = styled(IonAlert)`
   }
 `;
 
-export const Chip = styled.button`
+export const Chip = styled(Button)`
   padding: 8px;
   border-radius: 16px;
   display: flex;

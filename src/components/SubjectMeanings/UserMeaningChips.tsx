@@ -64,7 +64,7 @@ const Chips = ({
         return (
           <Fragment key={meaningWithUUID.uuid}>
             <UserMeaningChip
-              onClick={(e: any) => {
+              onPress={(e: any) => {
                 deleteMeaningAlert(meaningWithUUID);
               }}
             >

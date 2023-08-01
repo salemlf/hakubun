@@ -37,7 +37,7 @@ function AddAltUserMeaningButton({ subject }: Props) {
         <>
           <AddButton
             id="present-user-meaning-add"
-            onClick={(e: any) => {
+            onPress={(e: any) => {
               presentAlert({
                 header: "Add Meaning",
                 cssClass: "custom-alert",
