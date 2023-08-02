@@ -11,6 +11,7 @@ export const useCreateReview = () => {
   return useMutation({
     mutationFn: ({ reviewSessionData }: Props) =>
       WaniKaniAPI.postReview(reviewSessionData),
+    retry: 3,
     onSettled: (data, error, variables, context) => {
       // *testing
       console.log(
@@ -18,7 +19,9 @@ export const useCreateReview = () => {
         data
       );
       // *testing
-      queryClient.invalidateQueries(["assignments-available-for-review"]);
+      return queryClient.invalidateQueries([
+        "assignments-available-for-review",
+      ]);
     },
   });
 };

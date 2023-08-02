@@ -11,6 +11,7 @@ import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import { FullWidthGrid } from "../styles/BaseStyledComponents";
 import styled from "styled-components/macro";
+import { useLocation } from "react-router-dom";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--light-greyish-purple);
@@ -26,53 +27,21 @@ function ReviewSummary() {
   // TODO: change so not using "any" type
   const [reviewPostDataArr, setReviewPostDataArr] = useState<any>([]);
   const { endReviewSession, queueDataState } = useReviewQueue();
+  // !added
+  // TODO: use passed in data from review queue page
+  const location = useLocation();
+  const dataTest = location.state;
+  console.log(
+    "🚀 ~ file: ReviewSummary.tsx:33 ~ ReviewSummary ~ dataTest:",
+    dataTest
+  );
+  // !added
   useEffect(() => {
     // *testing
-    console.log("Running Review summary useEffect!");
+    console.log("Ending review session in review summary useEffect!");
     // *testing
-
-    let reviewQueue = queueDataState.reviewQueue;
-    // TODO: call
-    let reviewData = getCompletedReviewSessionData(reviewQueue);
-    setReviewQueueItems(reviewData);
-
-    let reviewPostData = createReviewPostData(reviewData);
-    setReviewPostDataArr(reviewPostData);
-
-    // *testing
-    console.log(
-      "🚀 ~ file: ReviewSummary.tsx:121 ~ useEffect ~ reviewPostData:",
-      reviewPostData
-    );
-    // *testing
-
-    submitReviews(reviewPostData);
-
     endReviewSession();
   }, []);
-
-  const submitReviews = (reviewPostData: ReviewPostItem[]) => {
-    let tempArr: any = [];
-
-    // TODO: take response and call setReviewPostDataArr with it so can be used for summary
-    reviewPostData.forEach((reviewItem: ReviewPostItem) => {
-      createReviews(
-        { reviewSessionData: reviewItem },
-        {
-          onSuccess: (data) => {
-            tempArr.push(data);
-          },
-        }
-      );
-    });
-
-    // *testing
-    console.log(
-      "🚀 ~ file: ReviewSummary.tsx:149 ~ submitReviews ~ tempArr:",
-      tempArr
-    );
-    // *testing
-  };
 
   // let reviewsByResult = getReviewsGroupedByResult(reviewData);
   // let numCorrect = reviewsByResult.correct.length;
