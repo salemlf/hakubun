@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { IonContent, IonPage } from "@ionic/react";
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonToolbar,
+  IonBackButton,
+  IonButtons,
+  IonTitle,
+} from "@ionic/react";
 import {
   getCompletedReviewSessionData,
   createReviewPostData,
@@ -16,6 +24,23 @@ import { useLocation } from "react-router-dom";
 const Page = styled(IonPage)`
   --ion-background-color: var(--light-greyish-purple);
   background-color: var(--light-greyish-purple);
+`;
+
+const HeaderContainer = styled(IonHeader)`
+  background: var(--wanikani-review);
+  --ion-toolbar-background: var(--wanikani-review);
+  padding: 10px 0;
+  box-shadow: none;
+`;
+
+const Title = styled(IonTitle)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0 90px 1px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 `;
 
 // TODO: show button to redirect to Home instead of normal tab bar?
@@ -84,6 +109,14 @@ function ReviewSummary() {
   // TODO: display page content and header once all reviews have been submitted
   return (
     <Page>
+      <HeaderContainer>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/home"></IonBackButton>
+          </IonButtons>
+          <Title>Review Settings</Title>
+        </IonToolbar>
+      </HeaderContainer>
       {/* TODO: pass in actual percentage (or just pass in data and calculate in component)*/}
       <ResultsHeader percentageCorrect={0} />
       <IonContent className="ion-padding">

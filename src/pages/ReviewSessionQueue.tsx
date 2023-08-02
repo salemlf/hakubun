@@ -2,7 +2,7 @@ import { IonContent, IonGrid, IonPage } from "@ionic/react";
 import { useReviewQueue } from "../hooks/useReviewQueue";
 import ReviewSessionHeader from "../components/ReviewSessionHeader/ReviewSessionHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import styled from "styled-components/macro";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ import {
   createReviewPostData,
   getCompletedReviewSessionData,
 } from "../services/ReviewService";
-import { ReviewPostItem, ReviewQueueItem } from "../types/ReviewSessionTypes";
+import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -103,15 +103,6 @@ export const ReviewSessionQueue = () => {
             currentReviewItem && (
               <ReviewCards currentReviewItem={currentReviewItem} />
             )}
-          {/* {!queueDataState.isLoading &&
-            reviewQueue.length !== 0 &&
-            reviewQueue.length === queueDataState.currQueueIndex && (
-              <Redirect
-                to={{
-                  pathname: "/review/summary",
-                }}
-              />
-            )} */}
         </Grid>
       </IonContent>
     </Page>

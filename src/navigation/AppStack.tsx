@@ -63,7 +63,11 @@ const TabsStyled = styled(IonTabs)`
 export const Tabs = () => {
   const location = useLocation();
   const [showTabs, setShowTabs] = useState(true);
-  const pagesToHideTabBar = ["/review/settings", "/review/session"];
+  const pagesToHideTabBar = [
+    "/review/settings",
+    "/review/session",
+    "review/summary",
+  ];
   let tabBarStyle = showTabs === true ? undefined : { display: "none" };
 
   useEffect(() => {
