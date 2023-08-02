@@ -50,6 +50,7 @@ const Title = styled(IonTitle)`
   text-align: center;
 `;
 
+// TODO: change so using react router to pass data to next page instead of context
 export const ReviewSettings = () => {
   // !added
   // const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
@@ -105,9 +106,7 @@ export const ReviewSettings = () => {
       compareAssignmentsByAvailableDate
     );
 
-    // TODO: change back, temporarily changing batch size to 2 for testing
-    // let assignmentBatchToReview = sortedToReview.slice(0, batchSize);
-    let assignmentBatchToReview = sortedToReview.slice(0, 1);
+    let assignmentBatchToReview = sortedToReview.slice(0, batchSize);
     // *testing
     console.log(
       "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentBatchToReview:",
@@ -138,9 +137,10 @@ export const ReviewSettings = () => {
         )}
         {!availForReviewLoading && !availForReviewErr && availForReviewData && (
           <>
-            <SwipeableTabs
-              selectedTabKey={selectedTabKey}
-              setSelectedTabKey={setSelectedTabKey}
+            {/* <SwipeableTabs
+              initialTabKey={selectedTabKey}
+              // selectedTabKey={selectedTabKey}
+              // setSelectedTabKey={setSelectedTabKey}
               tabs={[
                 {
                   id: "basic",
@@ -166,7 +166,7 @@ export const ReviewSettings = () => {
               ]}
               tabBgColor="var(--wanikani-review)"
               roundedContainer={false}
-            />
+            /> */}
             <StartReviewBtn onStartReviewBtnClick={onStartReviewBtnClick} />
           </>
         )}
