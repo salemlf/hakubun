@@ -19,9 +19,11 @@ import { useReviewQueue } from "../hooks/useReviewQueue";
 import { AssignmentType } from "../types/Assignment";
 import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
 import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
+// import Tabs from "../components/SwipeableTabs/SwipeableTabs";
 import BasicReviewSettings from "../components/BasicReviewSettings/BasicReviewSettings";
 import AdvancedReviewSettings from "../components/AdvancedReviewSettings/AdvancedReviewSettings";
 import styled from "styled-components/macro";
+import { Item } from "react-stately";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -54,9 +56,15 @@ const Title = styled(IonTitle)`
 export const ReviewSettings = () => {
   // !added
   // const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
+  const tabItems = [
+    { id: "basic", label: "Basic" },
+    { id: "advanced", label: "Advanced" },
+    { id: "super-advanced", label: "Super Duper Advanced" },
+  ];
   const [selectedTabKey, setSelectedTabKey] = useState<React.Key>(
-    "basic" as React.Key
+    tabItems[0].id as React.Key
   );
+
   // !added
   const { createNewReviewSession } = useReviewQueue();
   const router = useIonRouter();
@@ -137,13 +145,16 @@ export const ReviewSettings = () => {
         )}
         {!availForReviewLoading && !availForReviewErr && availForReviewData && (
           <>
+            {/* <Tabs selectedKey={selectedTabKey} items={tabItems}>
+              {(item: any) => <Item key={item.id}>{item.label}</Item>}
+            </Tabs> */}
             {/* <SwipeableTabs
               initialTabKey={selectedTabKey}
               // selectedTabKey={selectedTabKey}
               // setSelectedTabKey={setSelectedTabKey}
               tabs={[
                 {
-                  id: "basic",
+                  key: "basic",
                   label: "Basic",
                   tabContents: (
                     <BasicReviewSettings
@@ -155,7 +166,7 @@ export const ReviewSettings = () => {
                   ),
                 },
                 {
-                  id: "advanced",
+                  key: "advanced",
                   label: "Advanced",
                   tabContents: (
                     <AdvancedReviewSettings
@@ -167,6 +178,32 @@ export const ReviewSettings = () => {
               tabBgColor="var(--wanikani-review)"
               roundedContainer={false}
             /> */}
+            <SwipeableTabs
+              tabs={[
+                {
+                  key: "basic",
+                  label: "Basic",
+                  contents: (
+                    <BasicReviewSettings
+                      availForReviewData={availForReviewData}
+                      defaultBatchSize={defaultBatchSize}
+                      setBatchSize={setBatchSize}
+                      onSelectedAssignTypeChange={onSelectedAssignTypeChange}
+                    />
+                  ),
+                },
+                {
+                  key: "advanced",
+                  label: "Advanced",
+                  contents: (
+                    <AdvancedReviewSettings
+                      availForReviewData={availForReviewData}
+                    />
+                  ),
+                },
+              ]}
+              roundedContainer={false}
+            ></SwipeableTabs>
             <StartReviewBtn onStartReviewBtnClick={onStartReviewBtnClick} />
           </>
         )}

@@ -11,7 +11,7 @@ import {
 import ReadingsForKanji from "../ReadingsForKanji/ReadingsForKanji";
 import KanjiReadingMnemonic from "../KanjiReadingMnemonic/KanjiReadingMnemonic";
 import { TabData } from "../../types/MiscTypes";
-import SwipeableTabs from "../SwipeableTabs";
+// import SwipeableTabs from "../SwipeableTabs";
 import { BottomSheetContent } from "../../styles/BaseStyledComponents";
 
 // TODO: add stroke order to radicals segment
@@ -24,7 +24,7 @@ function KanjiBottomSheet({
 }: BottomSheetSubjectProps) {
   const tabs: TabData[] = [
     {
-      id: "radicals",
+      key: "radicals",
       label: "Radicals",
       tabContents: (
         <BottomSheetContent>
@@ -36,7 +36,7 @@ function KanjiBottomSheet({
       ),
     },
     {
-      id: "meaning",
+      key: "meaning",
       label: "Meaning",
       tabContents: (
         <BottomSheetContent>
@@ -49,7 +49,7 @@ function KanjiBottomSheet({
       ),
     },
     {
-      id: "reading",
+      key: "reading",
       label: "Reading",
       tabContents: (
         <BottomSheetContent>
@@ -82,13 +82,15 @@ function KanjiBottomSheet({
   // !added
 
   return (
-    <SwipeableTabs
-      tabs={tabs}
-      selectedTabKey={selectedTabKey}
-      setSelectedTabKey={setSelectedTabKey}
-      tabBgColor={tabBgColor}
-      tabSelectionColor={tabSelectionColor}
-    />
+    // <SwipeableTabs
+    //   tabs={tabs}
+    //   initialTabKey={selectedTabKey}
+    //   // selectedTabKey={selectedTabKey}
+    //   // setSelectedTabKey={setSelectedTabKey}
+    //   tabBgColor={tabBgColor}
+    //   tabSelectionColor={tabSelectionColor}
+    // />
+    <></>
   );
 }
 

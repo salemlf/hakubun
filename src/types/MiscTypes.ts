@@ -88,7 +88,13 @@ export type StudyMaterialsChangeActionType = "add" | "remove";
 export type UserNoteType = "meaning" | "reading";
 
 export type TabData = {
-  id: React.Key;
+  key: React.Key;
   label: string;
   tabContents: React.ReactNode;
+};
+
+export type TabInfo = {
+  key: React.Key;
+  label: string;
+  contents: React.ReactNode;
 };

@@ -54,6 +54,7 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<React.Key>(
     reviewType as React.Key
   );
+
   const location = useLocation();
   const { queueState } = useReviewQueue();
   const modal = useRef<HTMLIonModalElement>(null);
@@ -75,11 +76,11 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
   }, [location.pathname, queueState.isBottomSheetVisible]);
 
   useEffect(() => {
-    if ((reviewType as React.Key) !== selectedTabKey) {
-      let selected =
-        currentReviewItem.object == "radical" ? "name" : reviewType;
-      setSelectedTabKey(selected as React.Key);
-    }
+    // if ((reviewType as React.Key) !== selectedTabKey) {
+    //   let selected =
+    //     currentReviewItem.object == "radical" ? "name" : reviewType;
+    //   setSelectedTabKey(selected as React.Key);
+    // }
   }, [reviewType]);
 
   return (
