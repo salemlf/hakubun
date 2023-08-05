@@ -5,6 +5,8 @@ import HomeIcon from "../../images/home.svg";
 import SubjectsIcon from "../../images/subjects.svg";
 import SearchIcon from "../../images/search.svg";
 import styled from "styled-components/macro";
+import { NavLink, useLocation } from "react-router-dom";
+import React from "react";
 
 const TabBarContainer = styled(NavigationMenu.Root)`
   position: fixed;
@@ -33,12 +35,12 @@ const TabList = styled(NavigationMenu.List)`
 const TabButton = styled(NavigationMenu.Link)`
   display: block;
   text-decoration: none;
-  padding: 8px 12px;
+  padding: 10px 12px;
   outline: none;
   user-select: none;
   font-weight: 500;
   line-height: 1;
-  border-radius: 30px;
+  border-radius: 25px;
   font-size: 15px;
   color: white;
   display: flex;
@@ -58,6 +60,10 @@ const TabButton = styled(NavigationMenu.Link)`
   &:focus {
     outline: 2px solid white;
   }
+
+  &.active {
+    background-color: var(--ion-color-secondary-dark);
+  }
 `;
 
 const TabLabel = styled.p`
@@ -66,28 +72,55 @@ const TabLabel = styled.p`
   text-align: center;
 `;
 
+type PageLinkProps = {
+  pathName: string;
+  children: React.ReactNode;
+};
+
+const PageLink = ({ pathName, children, ...props }: PageLinkProps) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  console.log(
+    "🚀 ~ file: FloatingTabBar.tsx:91 ~ PageLink ~ currentPath:",
+    currentPath
+  );
+  // TODO: make this match subpaths also
+  const isActive = currentPath === pathName;
+  console.log(
+    "🚀 ~ file: FloatingTabBar.tsx:94 ~ PageLink ~ isActive:",
+    isActive
+  );
+
+  return (
+    <TabButton asChild active={isActive} {...props}>
+      <NavLink to={pathName}>{children}</NavLink>
+    </TabButton>
+  );
+};
+
 // TODO: view client-side routing info: https://www.radix-ui.com/docs/primitives/components/navigation-menu#with-client-side-routing
 function FloatingTabBar() {
   return (
     <TabBarContainer>
       <TabList>
         <NavigationMenu.Item>
-          <TabButton href="#">
+          <PageLink pathName="/subjects">
             <IonIcon src={SubjectsIcon} />
             <TabLabel>Subjects</TabLabel>
-          </TabButton>
+          </PageLink>
         </NavigationMenu.Item>
         <NavigationMenu.Item>
-          <TabButton href="#">
+          <PageLink pathName="/home">
             <IonIcon src={HomeIcon} />
             <TabLabel>Home</TabLabel>
-          </TabButton>
+          </PageLink>
         </NavigationMenu.Item>
         <NavigationMenu.Item>
-          <TabButton href="#">
+          <PageLink pathName="/search">
             <IonIcon src={SearchIcon} />
             <TabLabel>Search</TabLabel>
-          </TabButton>
+          </PageLink>
         </NavigationMenu.Item>
       </TabList>
     </TabBarContainer>
