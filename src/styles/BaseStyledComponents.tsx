@@ -1,4 +1,4 @@
-import { IonAlert, IonCol, IonGrid, IonRow } from "@ionic/react";
+import { IonAlert, IonCol, IonContent, IonGrid, IonRow } from "@ionic/react";
 import styled from "styled-components/macro";
 import Button from "../components/Button/Button";
 
@@ -105,4 +105,15 @@ export const BottomSheetContent = styled(IonRow)`
   padding-inline-end: var(--ion-padding, 16px);
   padding-top: var(--ion-padding, 16px);
   padding-bottom: var(--ion-padding, 16px);
+`;
+
+export const ContentWithTabBar = styled(IonContent)`
+  --padding-start: var(--ion-padding, 0px);
+  --padding-end: var(--ion-padding, 5px);
+  --padding-top: var(--ion-padding, 5px);
+  --padding-bottom: 4rem;
+  padding-inline-start: var(--ion-padding, 5px);
+  padding-inline-end: var(--ion-padding, 5px);
+  padding-top: var(--ion-padding, 5px);
+  padding-bottom: 4rem;
 `;

@@ -100,7 +100,8 @@ export const Tabs = () => {
         <Route exact={true} path="/" render={() => <Redirect to="/home" />} />
         <Redirect from="/authenticate" to="/home" exact={true} />
       </IonRouterOutlet>
-      <IonTabBar slot="bottom" style={tabBarStyle}>
+      {/* <IonTabBar slot="bottom" style={tabBarStyle}> */}
+      <IonTabBar slot="bottom" style={{ display: "none" }}>
         <IonTabButton tab="subjects" href="/subjects">
           <IonLabel>Subjects</IonLabel>
           <IonIcon icon={SubjectsIcon} />

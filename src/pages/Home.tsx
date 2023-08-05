@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useIonRouter } from "@ionic/react";
 import {
   IonPage,
-  IonContent,
   IonGrid,
   IonCol,
   IonRow,
@@ -10,8 +9,6 @@ import {
   IonSpinner,
   IonSkeletonText,
 } from "@ionic/react";
-
-import styles from "./Home.module.scss";
 
 import { useUserAuth } from "../contexts/AuthContext";
 import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
@@ -21,6 +18,8 @@ import ReviewsButton from "../components/ReviewsButton/ReviewsButton";
 import RadicalForLvlCard from "../components/RadicalForLvlCard/RadicalForLvlCard";
 import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
 import SrsStages from "../components/SrsStages/SrsStages";
+import FloatingTabBar from "../components/FloatingTabBar";
+import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
@@ -52,7 +51,7 @@ const Home = () => {
   return (
     <IonPage>
       <HomeHeader></HomeHeader>
-      <IonContent className={`${styles.contentPadding}`}>
+      <ContentWithTabBar>
         <IonGrid>
           {!homeLoading ? (
             <>
@@ -98,7 +97,8 @@ const Home = () => {
           )}
         </IonGrid>
         {homeLoading && <IonSpinner name="dots"></IonSpinner>}
-      </IonContent>
+      </ContentWithTabBar>
+      <FloatingTabBar />
     </IonPage>
   );
 };
