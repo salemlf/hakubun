@@ -1,12 +1,14 @@
 import { Children, cloneElement, ReactElement, ReactNode } from "react";
+import { RequireAtLeastOne } from "../../types/Global";
 
-// TODO: for x and y, modify to require at least one?
-type ShiftByProps = {
+type ShiftByPropsOptional = {
   [key: string]: any;
   children: ReactNode;
   x?: number;
   y?: number;
 };
+
+export type ShiftByProps = RequireAtLeastOne<ShiftByPropsOptional, "x" | "y">;
 
 function ShiftBy({ x = 0, y = 0, children, ...props }: ShiftByProps) {
   let styleAndSubstance = {
