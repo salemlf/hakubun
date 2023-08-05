@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   IonContent,
   IonGrid,
@@ -38,22 +38,12 @@ const Toolbar = styled(IonToolbar)`
 
 type Props = {
   currentReviewItem: ReviewQueueItem;
-  reviewType: ReviewType;
 };
 
-// TODO: setting selected tab programmatically no working, figure out why
 // TODO: some duplicated logic for tab lists in these child components, improve
-function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
-  // let initalValue = currentReviewItem.object == "radical" ? "name" : reviewType as string;
+function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   let selectedTabColor = "var(--darkest-purple)";
   let tabsBgColor = "var(--offwhite-color)";
-  // const [selectedTabKey, setSelectedTabKey] = useState<string>(
-  //   reviewType as string
-  // );
-
-  const [selectedTabKey, setSelectedTabKey] = useState<React.Key>(
-    reviewType as React.Key
-  );
 
   const location = useLocation();
   const { queueState } = useReviewQueue();
@@ -74,14 +64,6 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
       setIsBottomSheetVisible(false);
     }
   }, [location.pathname, queueState.isBottomSheetVisible]);
-
-  useEffect(() => {
-    // if ((reviewType as React.Key) !== selectedTabKey) {
-    //   let selected =
-    //     currentReviewItem.object == "radical" ? "name" : reviewType;
-    //   setSelectedTabKey(selected as React.Key);
-    // }
-  }, [reviewType]);
 
   return (
     <IonModal
@@ -107,8 +89,6 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
                 tabBgColor={tabsBgColor}
                 tabSelectionColor={selectedTabColor}
                 reviewItem={currentReviewItem}
-                selectedTabKey={selectedTabKey}
-                setSelectedTabKey={setSelectedTabKey}
               />
             )}
             {currentReviewItem.object == "kanji" && (
@@ -116,8 +96,6 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
                 tabBgColor={tabsBgColor}
                 tabSelectionColor={selectedTabColor}
                 reviewItem={currentReviewItem}
-                selectedTabKey={selectedTabKey}
-                setSelectedTabKey={setSelectedTabKey}
               />
             )}
             {(currentReviewItem.object == "vocabulary" ||
@@ -126,8 +104,6 @@ function ReviewItemBottomSheet({ currentReviewItem, reviewType }: Props) {
                 tabBgColor={tabsBgColor}
                 tabSelectionColor={selectedTabColor}
                 reviewItem={currentReviewItem}
-                selectedTabKey={selectedTabKey}
-                setSelectedTabKey={setSelectedTabKey}
               />
             )}
           </FullWidthGrid>

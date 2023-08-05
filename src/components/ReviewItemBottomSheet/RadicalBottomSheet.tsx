@@ -4,19 +4,17 @@ import SubjectMeanings from "../SubjectMeanings/SubjectMeanings";
 import RadicalNameMnemonic from "../RadicalNameMnemonic/RadicalNameMnemonic";
 import { TabData } from "../../types/MiscTypes";
 import { BottomSheetContent } from "../../styles/BaseStyledComponents";
-// import SwipeableTabs from "../SwipeableTabs";
+import SwipeableTabs from "../SwipeableTabs";
 
 function RadicalBottomSheet({
   reviewItem,
-  selectedTabKey,
-  setSelectedTabKey,
   tabBgColor,
   tabSelectionColor,
 }: BottomSheetSubjectProps) {
   const tabs: TabData[] = [
     {
-      key: "meaning",
-      label: "Meaning",
+      id: "name",
+      label: "Name",
       tabContents: (
         <BottomSheetContent>
           <SubjectMeanings
@@ -30,15 +28,12 @@ function RadicalBottomSheet({
   ];
 
   return (
-    // <SwipeableTabs
-    //   tabs={tabs}
-    //   initialTabKey={selectedTabKey}
-    //   // selectedTabKey={selectedTabKey}
-    //   // setSelectedTabKey={setSelectedTabKey}
-    //   tabBgColor={tabBgColor}
-    //   tabSelectionColor={tabSelectionColor}
-    // />
-    <></>
+    <SwipeableTabs
+      tabs={tabs}
+      defaultValue="name"
+      tabBgColor={tabBgColor}
+      tabSelectionColor={tabSelectionColor}
+    />
   );
 }
 

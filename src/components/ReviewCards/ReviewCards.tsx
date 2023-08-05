@@ -126,10 +126,7 @@ const Card = ({ currentReviewItem }: CardProps) => {
           setUserAnswer={setUserAnswer}
           nextBtnClicked={attemptToAdvance}
         />
-        <ReviewItemBottomSheet
-          currentReviewItem={currentReviewItem}
-          reviewType={currentReviewItem.review_type}
-        />
+        <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />
         <RetryCardOverlay
           style={{
             opacity: opacityLeft,

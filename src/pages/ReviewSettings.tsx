@@ -19,11 +19,9 @@ import { useReviewQueue } from "../hooks/useReviewQueue";
 import { AssignmentType } from "../types/Assignment";
 import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
 import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
-// import Tabs from "../components/SwipeableTabs/SwipeableTabs";
 import BasicReviewSettings from "../components/BasicReviewSettings/BasicReviewSettings";
 import AdvancedReviewSettings from "../components/AdvancedReviewSettings/AdvancedReviewSettings";
 import styled from "styled-components/macro";
-import { Item } from "react-stately";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -54,18 +52,6 @@ const Title = styled(IonTitle)`
 
 // TODO: change so using react router to pass data to next page instead of context
 export const ReviewSettings = () => {
-  // !added
-  // const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
-  const tabItems = [
-    { id: "basic", label: "Basic" },
-    { id: "advanced", label: "Advanced" },
-    { id: "super-advanced", label: "Super Duper Advanced" },
-  ];
-  const [selectedTabKey, setSelectedTabKey] = useState<React.Key>(
-    tabItems[0].id as React.Key
-  );
-
-  // !added
   const { createNewReviewSession } = useReviewQueue();
   const router = useIonRouter();
 
@@ -145,45 +131,12 @@ export const ReviewSettings = () => {
         )}
         {!availForReviewLoading && !availForReviewErr && availForReviewData && (
           <>
-            {/* <Tabs selectedKey={selectedTabKey} items={tabItems}>
-              {(item: any) => <Item key={item.id}>{item.label}</Item>}
-            </Tabs> */}
-            {/* <SwipeableTabs
-              initialTabKey={selectedTabKey}
-              // selectedTabKey={selectedTabKey}
-              // setSelectedTabKey={setSelectedTabKey}
-              tabs={[
-                {
-                  key: "basic",
-                  label: "Basic",
-                  tabContents: (
-                    <BasicReviewSettings
-                      availForReviewData={availForReviewData}
-                      defaultBatchSize={defaultBatchSize}
-                      setBatchSize={setBatchSize}
-                      onSelectedAssignTypeChange={onSelectedAssignTypeChange}
-                    />
-                  ),
-                },
-                {
-                  key: "advanced",
-                  label: "Advanced",
-                  tabContents: (
-                    <AdvancedReviewSettings
-                      availForReviewData={availForReviewData}
-                    />
-                  ),
-                },
-              ]}
-              tabBgColor="var(--wanikani-review)"
-              roundedContainer={false}
-            /> */}
             <SwipeableTabs
               tabs={[
                 {
-                  key: "basic",
+                  id: "basic",
                   label: "Basic",
-                  contents: (
+                  tabContents: (
                     <BasicReviewSettings
                       availForReviewData={availForReviewData}
                       defaultBatchSize={defaultBatchSize}
@@ -193,17 +146,17 @@ export const ReviewSettings = () => {
                   ),
                 },
                 {
-                  key: "advanced",
+                  id: "advanced",
                   label: "Advanced",
-                  contents: (
+                  tabContents: (
                     <AdvancedReviewSettings
                       availForReviewData={availForReviewData}
                     />
                   ),
                 },
               ]}
-              roundedContainer={false}
-            ></SwipeableTabs>
+              defaultValue="basic"
+            />
             <StartReviewBtn onStartReviewBtnClick={onStartReviewBtnClick} />
           </>
         )}

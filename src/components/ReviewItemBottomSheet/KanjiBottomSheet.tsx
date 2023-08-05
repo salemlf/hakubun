@@ -11,20 +11,19 @@ import {
 import ReadingsForKanji from "../ReadingsForKanji/ReadingsForKanji";
 import KanjiReadingMnemonic from "../KanjiReadingMnemonic/KanjiReadingMnemonic";
 import { TabData } from "../../types/MiscTypes";
-// import SwipeableTabs from "../SwipeableTabs";
 import { BottomSheetContent } from "../../styles/BaseStyledComponents";
+import SwipeableTabs from "../SwipeableTabs";
 
 // TODO: add stroke order to radicals segment
 function KanjiBottomSheet({
   reviewItem,
-  selectedTabKey,
-  setSelectedTabKey,
   tabBgColor,
   tabSelectionColor,
 }: BottomSheetSubjectProps) {
+  let reviewTypeStr = reviewItem.review_type as string;
   const tabs: TabData[] = [
     {
-      key: "radicals",
+      id: "radicals",
       label: "Radicals",
       tabContents: (
         <BottomSheetContent>
@@ -36,7 +35,7 @@ function KanjiBottomSheet({
       ),
     },
     {
-      key: "meaning",
+      id: "meaning",
       label: "Meaning",
       tabContents: (
         <BottomSheetContent>
@@ -49,7 +48,7 @@ function KanjiBottomSheet({
       ),
     },
     {
-      key: "reading",
+      id: "reading",
       label: "Reading",
       tabContents: (
         <BottomSheetContent>
@@ -79,18 +78,13 @@ function KanjiBottomSheet({
     },
   ];
 
-  // !added
-
   return (
-    // <SwipeableTabs
-    //   tabs={tabs}
-    //   initialTabKey={selectedTabKey}
-    //   // selectedTabKey={selectedTabKey}
-    //   // setSelectedTabKey={setSelectedTabKey}
-    //   tabBgColor={tabBgColor}
-    //   tabSelectionColor={tabSelectionColor}
-    // />
-    <></>
+    <SwipeableTabs
+      tabs={tabs}
+      defaultValue={reviewTypeStr}
+      tabBgColor={tabBgColor}
+      tabSelectionColor={tabSelectionColor}
+    />
   );
 }
 

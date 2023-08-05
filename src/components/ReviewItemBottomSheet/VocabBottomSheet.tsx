@@ -10,7 +10,6 @@ import VocabMeaningExplanation from "../VocabMeaningExplanation/VocabMeaningExpl
 import VocabReadingExplanation from "../VocabReadingExplanation/VocabReadingExplanation";
 import VocabReadings from "../VocabReadings/VocabReadings";
 import ContextSentences from "../ContextSentences/ContextSentences";
-// import SwipeableTabs, { TabsComponentRef } from "../SwipeableTabs";
 
 import {
   BottomSheetContainer,
@@ -23,6 +22,7 @@ import {
 import styled from "styled-components/macro";
 import { TabData } from "../../types/MiscTypes";
 import React, { useEffect, useRef, useState } from "react";
+import SwipeableTabs from "../SwipeableTabs";
 
 const ReadingHeading = styled(SubjDetailSubHeading)`
   margin-bottom: 0;
@@ -39,7 +39,7 @@ const getTabsForVocab = (
   let isKanaVocab = reviewItem.object === "kana_vocabulary";
 
   let breakdown: TabData = {
-    key: "breakdown",
+    id: "breakdown",
     label: "Breakdown",
     tabContents: (
       <BottomSheetContent>
@@ -51,7 +51,7 @@ const getTabsForVocab = (
     ),
   };
 
-  let reading = {
+  let reading: TabData = {
     id: "reading",
     label: "Reading",
     tabContents: (
@@ -80,58 +80,20 @@ const getTabsForVocab = (
 
 function VocabBottomSheet({
   reviewItem,
-  selectedTabKey,
-  setSelectedTabKey,
   tabBgColor,
   tabSelectionColor,
 }: BottomSheetSubjectProps) {
-  // !added
-  // const tabsComponentRef = useRef<TabsComponentRef>(null);
-
-  // useEffect(() => {
-  //   let reviewType = reviewItem.review_type as React.Key;
-  //   // if ((reviewType as React.Key) !== selectedTabKey) {
-  //   //   let selected =
-  //   //     currentReviewItem.object == "radical" ? "name" : reviewType;
-  //   //   setSelectedTabKey(selected as React.Key);
-  //   // }
-  //   // *testing
-  //   console.log("reviewType: ", reviewType);
-  //   tabsComponentRef.current &&
-  //     console.log(
-  //       "tabsComponentRef.current.selectedTabKey: ",
-  //       tabsComponentRef.current.selectedTabKeyFromParent
-  //     );
-  //   // *testing
-
-  //   if (
-  //     tabsComponentRef.current &&
-  //     reviewType !== tabsComponentRef.current.selectedTabKeyFromParent
-  //   ) {
-  //     console.log(
-  //       `Changing selectedTabKey from ${tabsComponentRef.current.selectedTabKeyFromParent} to ${reviewType}`
-  //     );
-  //     // tabsComponentRef.current.setSelectedTabKey(reviewType);
-  //     tabsComponentRef.current.onSelectionChangeFromParent(reviewType);
-  //   }
-  // }, [reviewItem.review_type]);
-
-  let [animals, setAnimals] = useState([
-    { id: 1, name: "Aardvark" },
-    { id: 2, name: "Kangaroo" },
-    { id: 3, name: "Snake" },
-  ]);
-  // !added
-
+  let reviewTypeStr = reviewItem.review_type as string;
   // *testing
   console.log(
-    "🚀 ~ file: VocabBottomSheet.tsx:87 ~ selectedTabKey:",
-    selectedTabKey
+    "🚀 ~ file: VocabBottomSheet.tsx:89 ~ reviewTypeStr:",
+    reviewTypeStr
   );
   // *testing
+
   const tabsInCommon: TabData[] = [
     {
-      key: "meaning",
+      id: "meaning",
       label: "Meaning",
       tabContents: (
         <BottomSheetContent>
@@ -155,17 +117,12 @@ function VocabBottomSheet({
   let tabs = getTabsForVocab(tabsInCommon, reviewItem);
 
   return (
-    // <SwipeableTabs
-    //   ref={tabsComponentRef}
-    //   tabs={tabs}
-    //   initialTabKey={selectedTabKey}
-    //   // selectedTabKey={selectedTabKey}
-    //   // setSelectedTabKey={setSelectedTabKey}
-    //   tabBgColor={tabBgColor}
-    //   tabSelectionColor={tabSelectionColor}
-    // />
-    // <Tabs selectedKey={selectedTabKey} />
-    <></>
+    <SwipeableTabs
+      tabs={tabs}
+      defaultValue={reviewTypeStr}
+      tabBgColor={tabBgColor}
+      tabSelectionColor={tabSelectionColor}
+    />
   );
 }
 
