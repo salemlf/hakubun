@@ -1,640 +1,5 @@
-// !start of first version
-// import React, {
-//   RefObject,
-//   forwardRef,
-//   useCallback,
-//   useEffect,
-//   useImperativeHandle,
-//   useRef,
-//   useState,
-// } from "react";
-// import {
-//   Tabs,
-//   TabList,
-//   Tab,
-//   TabPanel,
-//   Collection,
-// } from "react-aria-components";
-// import {
-//   TargetAndTransition,
-//   useTransform,
-//   motion,
-//   animate,
-//   useScroll,
-// } from "framer-motion";
-// import { TabData } from "../../types/MiscTypes";
-// import styled from "styled-components/macro";
-
-// type CustomSelectColor = {
-//   selectioncolor: string;
-// };
-
-// type CustomBgColor = {
-//   bgcolor: string;
-// };
-
-// type TabContainerStyles = {
-//   bgcolor: string;
-//   roundedcontainer: boolean;
-// };
-
-// const TabsStyled = styled(Tabs)`
-//   width: 100%;
-// `;
-
-// const TabContainer = styled.div<TabContainerStyles>`
-//   position: relative;
-//   background-color: ${({ bgcolor }) => bgcolor};
-//   padding: 3px 0;
-//   border-radius: ${({ roundedcontainer }) =>
-//     roundedcontainer ? ".5rem" : "0"};
-// `;
-
-// const TabListStyled = styled(TabList)`
-//   display: flex;
-//   margin-left: 0.25rem;
-//   justify-content: space-evenly;
-// `;
-
-// // TODO: base hover color off selectioncolor
-// const TabStyled = styled(Tab)<CustomSelectColor>`
-//   padding-top: 0.375rem;
-//   padding-bottom: 0.375rem;
-//   padding-left: 0.75rem;
-//   padding-right: 0.75rem;
-//   outline-style: none;
-//   color: ${({ selectioncolor }) => selectioncolor};
-//   transition-property: background-color, border-color, color, fill, stroke,
-//     opacity, box-shadow, transform;
-//   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-//   transition-duration: 300ms;
-//   cursor: default;
-
-//   @media (min-width: 640px) {
-//     font-size: 0.875rem;
-//     line-height: 1.25rem;
-//   }
-
-//   &:hover {
-//     color: rgba(27, 15, 36, 0.8);
-//   }
-// `;
-
-// const FocusRing = styled(motion.span)<CustomBgColor>`
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   bottom: 0;
-//   left: 0;
-//   z-index: 10;
-//   border-radius: 9999px;
-//   box-shadow: ${({ bgcolor }) => `0 0 0 0 calc(2px + 0) ${bgcolor}`};
-//   --ring-color: var(--darkest-purple);
-//   --ring-offset-width: 2px;
-// `;
-
-// const TabSelector = styled(motion.span)<CustomBgColor>`
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   bottom: 0;
-//   left: 0;
-//   z-index: 10;
-//   border-radius: 9999px;
-//   background-color: ${({ bgcolor }) => bgcolor};
-//   mix-blend-mode: difference;
-//   margin: 4px 0;
-// `;
-
-// const TabPanels = styled.div`
-//   display: flex;
-//   overflow: auto;
-//   margin-top: 16px;
-//   margin-bottom: 16px;
-//   font-size: 0.875rem;
-//   line-height: 1.25rem;
-//   font-weight: 300;
-//   color: white;
-//   scroll-snap-type: x mandatory;
-
-//   /* Hide scrollbar for Chrome, Safari and Opera */
-//   &::-webkit-scrollbar {
-//     display: none;
-//   }
-
-//   /* Hide scrollbar for IE, Edge and Firefox */
-//   -ms-overflow-style: none; /* IE and Edge */
-//   scrollbar-width: none; /* Firefox */
-// `;
-
-// const TabPanelStyled = styled(TabPanel)`
-//   border-radius: 0.25rem;
-//   outline-style: none;
-//   width: 100%;
-//   scroll-snap-align: start;
-//   flex-shrink: 0;
-//   margin: 0 5px;
-// `;
-
-// type TabsComponentProps = {
-//   tabs: TabData[];
-//   initialTabKey: React.Key;
-//   tabBgColor?: string;
-//   tabSelectionColor?: string;
-//   roundedContainer?: boolean;
-// };
-
-// export type TabsComponentRef = {
-//   onSelectionChangeFromParent: (selectedKey: React.Key) => void;
-//   selectedTabKeyFromParent: React.Key;
-// };
-
-// // TODO: modify so using useTabList instead of components since useTabList not in beta
-// // based off of Devon Govett's react aria framer motion example, p cool shit
-// const SwipeableTabs = forwardRef<TabsComponentRef, TabsComponentProps>(
-//   (
-//     {
-//       tabs,
-//       initialTabKey,
-//       tabBgColor,
-//       tabSelectionColor,
-//       roundedContainer = true,
-//     },
-//     ref
-//   ) => {
-//     // !added
-//     const [selectedTabKey, setSelectedTabKey] =
-//       useState<React.Key>(initialTabKey);
-
-//     useImperativeHandle(ref, () => ({
-//       onSelectionChangeFromParent: (selectedKey: React.Key) =>
-//         onSelectionChange(selectedKey),
-//       selectedTabKeyFromParent: selectedTabKey,
-//     }));
-//     // !added
-//     const tabListRef = useRef<HTMLDivElement | undefined>();
-//     const tabPanelsRef = useRef<HTMLDivElement | undefined>();
-
-//     let bgColor = tabBgColor ? tabBgColor : "var(--ion-color-primary)";
-//     let selectionColor = tabSelectionColor
-//       ? tabSelectionColor
-//       : "var(--darkest-purple)";
-
-//     // Track the scroll position of the tab panel container.
-//     const { scrollXProgress } = useScroll({
-//       container: tabPanelsRef as unknown as RefObject<HTMLElement>,
-//     });
-
-//     // Find all the tab elements so we can use their dimensions.
-//     const [tabElements, setTabElements] = useState<Element[]>([]);
-
-//     useEffect(() => {
-//       if (tabElements.length === 0 && tabListRef.current) {
-//         const tabs = tabListRef.current.querySelectorAll("[role=tab]");
-//         setTabElements(Array.from(tabs));
-//       }
-//     }, [tabElements]);
-
-//     // This function determines which tab should be selected
-//     // based on the scroll position.
-//     const getIndex = useCallback(
-//       (x: number) => {
-//         return Math.max(0, Math.floor((tabElements.length - 1) * x));
-//       },
-//       [tabElements]
-//     );
-
-//     // This function transforms the scroll position into the X position
-//     // or width of the selected tab indicator.
-//     const transform = (
-//       x: number,
-//       property: "offsetLeft" | "offsetWidth"
-//     ): number => {
-//       if (!tabElements.length) return 0;
-
-//       // Find the tab index for the scroll X position.
-//       const index = getIndex(x);
-
-//       // Get the difference between this tab and the next one.
-//       const difference =
-//         index < tabElements.length - 1
-//           ? tabElements[index + 1][property as keyof {}] -
-//             tabElements[index][property as keyof {}]
-//           : tabElements[index]["offsetWidth" as keyof {}];
-
-//       // Get the percentage between tabs.
-//       // This is the difference between the integer index and fractional one.
-//       const percent = (tabElements.length - 1) * x - index;
-
-//       // Linearly interpolate to calculate the position of the selection indicator.
-//       const value =
-//         tabElements[index][property as keyof {}] + difference * percent;
-
-//       // iOS scrolls weird when translateX is 0 for some reason. 🤷‍♂️
-//       return value || 0.1;
-//     };
-
-//     const x = useTransform(scrollXProgress, (x) => transform(x, "offsetLeft"));
-//     const width = useTransform(scrollXProgress, (x) =>
-//       transform(x, "offsetWidth")
-//     );
-
-//     // TODO: this is messing up actual selected item somehow
-//     // When the user scrolls, update the selected key
-//     // so that the correct tab panel becomes interactive.
-//     useEffect(() => {
-//       console.log("Scroll useEffect happening...");
-//       const handleChange = (x: number) => {
-//         if (animationRef.current || !tabElements.length) return;
-
-//         console.log(
-//           "🚀 ~ file: SwipeableTabs.tsx:568 ~ handleChange ~ tabs[getIndex(x)].key as React.Key:",
-//           tabs[getIndex(x)].key as React.Key
-//         );
-//         setSelectedTabKey(tabs[getIndex(x)].key as React.Key);
-//         // *testing
-//         console.log(
-//           "🚀 ~ file: SwipeableTabs.tsx:586 ~ handleChange ~ tabs:",
-//           tabs
-//         );
-//         console.log("tabs[getIndex(x)].key: ", tabs[getIndex(x)].key);
-//         // *testing
-//       };
-//       const unsubscribe = scrollXProgress.on("change", handleChange);
-//       return () => unsubscribe();
-//     }, [scrollXProgress, getIndex, tabElements]);
-
-//     // When the user clicks on a tab perform an animation of
-//     // the scroll position to the newly selected tab panel.
-//     const animationRef = useRef<any>();
-//     const onSelectionChange = (selectedKey: React.Key) => {
-//       console.log("onSelectionChange called in tabs component!");
-//       setSelectedTabKey(selectedKey);
-
-//       // If the scroll position is already moving but we aren't animating
-//       // then the key changed as a result of a user scrolling. Ignore.
-//       if (scrollXProgress.getVelocity() && !animationRef.current) {
-//         return;
-//       }
-
-//       const tabPanel = tabPanelsRef.current;
-//       const index = tabs.findIndex((tab) => tab.key === selectedKey);
-//       if (animationRef.current) {
-//         animationRef.current.stop();
-//       }
-//       if (tabPanel) {
-//         animationRef.current = animate<TargetAndTransition>(
-//           tabPanel.scrollLeft as any,
-//           (tabPanel.scrollWidth * (index / tabs.length)) as any,
-//           {
-//             type: "spring",
-//             bounce: 0.2,
-//             duration: 0.6,
-//             onUpdate: (v) => {
-//               (tabPanel.scrollLeft as any) = v;
-//             },
-//             onPlay: () => {
-//               // Disable scroll snap while the animation is going or weird things happen.
-//               tabPanel.style.scrollSnapType = "none";
-//             },
-//             onComplete: () => {
-//               tabPanel.style.scrollSnapType = "";
-//               animationRef.current = null;
-//             },
-//           }
-//         );
-//       }
-//     };
-
-//     return (
-//       <TabsStyled
-//         selectedKey={selectedTabKey}
-//         onSelectionChange={onSelectionChange}
-//       >
-//         <TabContainer bgcolor={bgColor} roundedcontainer={roundedContainer}>
-//           <TabListStyled ref={tabListRef as any} items={tabs}>
-//             {(tab: any) => (
-//               <TabStyled selectioncolor={selectionColor}>
-//                 {({ isSelected, isFocusVisible }) => (
-//                   <>
-//                     {tab.label}
-//                     {isFocusVisible && isSelected && (
-//                       // Focus ring.
-//                       <FocusRing style={{ x, width }} bgcolor={bgColor} />
-//                     )}
-//                   </>
-//                 )}
-//               </TabStyled>
-//             )}
-//           </TabListStyled>
-//           {/* Selection indicator. */}
-//           <TabSelector style={{ x, width }} bgcolor={bgColor} />
-//         </TabContainer>
-//         <TabPanels ref={tabPanelsRef as any}>
-//           <Collection items={tabs}>
-//             {(tab: any) => (
-//               <TabPanelStyled shouldForceMount>
-//                 {tab.tabContents}
-//               </TabPanelStyled>
-//             )}
-//           </Collection>
-//         </TabPanels>
-//       </TabsStyled>
-//     );
-//   }
-// );
-
-// export default SwipeableTabs;
-
-// !end of first version
-
-// ! start of second version
-// import { useTabListState } from "react-stately";
-// import React, { Key, useEffect, useRef, useState } from "react";
-// import {
-//   useTab,
-//   useTabList,
-//   useTabPanel,
-//   useFocusRing,
-//   mergeProps,
-// } from "react-aria";
-// import {
-//   TargetAndTransition,
-//   useTransform,
-//   motion,
-//   animate,
-//   useScroll,
-// } from "framer-motion";
-// import styled from "styled-components/macro";
-
-// type CustomSelectColor = {
-//   selectioncolor: string;
-// };
-
-// type CustomBgColor = {
-//   bgcolor: string;
-// };
-
-// type TabContainerStyles = {
-//   bgcolor: string;
-//   roundedcontainer: boolean;
-// };
-
-// const TabsStyled = styled.div`
-//   width: 100%;
-// `;
-
-// // const TabContainer = styled.div<TabContainerStyles>`
-// //   position: relative;
-// //   background-color: ${({ bgcolor }) => bgcolor};
-// //   padding: 3px 0;
-// //   border-radius: ${({ roundedcontainer }) =>
-// //     roundedcontainer ? ".5rem" : "0"};
-// // `;
-
-// const TabContainer = styled.div`
-//   position: relative;
-//   background-color: var(--ion-color-primary);
-//   padding: 3px 0;
-// `;
-
-// const TabListStyled = styled.div`
-//   display: flex;
-//   margin-left: 0.25rem;
-//   justify-content: space-evenly;
-// `;
-
-// // TODO: base hover color off selectioncolor
-// // const TabStyled = styled(Tab)<CustomSelectColor>`
-// //   padding-top: 0.375rem;
-// //   padding-bottom: 0.375rem;
-// //   padding-left: 0.75rem;
-// //   padding-right: 0.75rem;
-// //   outline-style: none;
-// //   color: ${({ selectioncolor }) => selectioncolor};
-// //   transition-property: background-color, border-color, color, fill, stroke,
-// //     opacity, box-shadow, transform;
-// //   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-// //   transition-duration: 300ms;
-// //   cursor: default;
-
-// //   @media (min-width: 640px) {
-// //     font-size: 0.875rem;
-// //     line-height: 1.25rem;
-// //   }
-
-// //   &:hover {
-// //     color: rgba(27, 15, 36, 0.8);
-// //   }
-// // `;
-
-// const TabStyled = styled.div`
-//   padding-top: 0.375rem;
-//   padding-bottom: 0.375rem;
-//   padding-left: 0.75rem;
-//   padding-right: 0.75rem;
-//   outline-style: none;
-//   color: white;
-//   transition-property: background-color, border-color, color, fill, stroke,
-//     opacity, box-shadow, transform;
-//   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-//   transition-duration: 300ms;
-//   cursor: default;
-
-//   @media (min-width: 640px) {
-//     font-size: 0.875rem;
-//     line-height: 1.25rem;
-//   }
-
-//   &:hover {
-//     color: rgba(27, 15, 36, 0.8);
-//   }
-// `;
-
-// // const FocusRing = styled(motion.span)<CustomBgColor>`
-// //   position: absolute;
-// //   top: 0;
-// //   right: 0;
-// //   bottom: 0;
-// //   left: 0;
-// //   z-index: 10;
-// //   border-radius: 9999px;
-// //   box-shadow: ${({ bgcolor }) => `0 0 0 0 calc(2px + 0) ${bgcolor}`};
-// //   --ring-color: var(--darkest-purple);
-// //   --ring-offset-width: 2px;
-// // `;
-
-// const FocusRing = styled(motion.span)`
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   bottom: 0;
-//   left: 0;
-//   z-index: 10;
-//   border-radius: 9999px;
-//   box-shadow: 0 0 0 0 calc(2px + 0) var(--ion-color-primary);
-//   --ring-color: var(--darkest-purple);
-//   --ring-offset-width: 2px;
-// `;
-
-// // const TabSelector = styled(motion.span)<CustomBgColor>`
-// //   position: absolute;
-// //   top: 0;
-// //   right: 0;
-// //   bottom: 0;
-// //   left: 0;
-// //   z-index: 10;
-// //   border-radius: 9999px;
-// //   background-color: ${({ bgcolor }) => bgcolor};
-// //   mix-blend-mode: difference;
-// //   margin: 4px 0;
-// // `;
-
-// const TabSelector = styled(motion.span)`
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   bottom: 0;
-//   left: 0;
-//   z-index: 10;
-//   border-radius: 9999px;
-//   background-color: var(--ion-color-primary);
-//   mix-blend-mode: difference;
-//   margin: 4px 0;
-// `;
-
-// const TabPanels = styled.div`
-//   display: flex;
-//   overflow: auto;
-//   margin-top: 16px;
-//   margin-bottom: 16px;
-//   font-size: 0.875rem;
-//   line-height: 1.25rem;
-//   font-weight: 300;
-//   color: white;
-//   scroll-snap-type: x mandatory;
-
-//   /* Hide scrollbar for Chrome, Safari and Opera */
-//   &::-webkit-scrollbar {
-//     display: none;
-//   }
-
-//   /* Hide scrollbar for IE, Edge and Firefox */
-//   -ms-overflow-style: none; /* IE and Edge */
-//   scrollbar-width: none; /* Firefox */
-// `;
-
-// const TabPanelStyled = styled.div`
-//   border-radius: 0.25rem;
-//   outline-style: none;
-//   width: 100%;
-//   scroll-snap-align: start;
-//   flex-shrink: 0;
-//   margin: 0 5px;
-// `;
-
-// // TODO: change from any
-// interface TabsProps {
-//   // children: React.ReactNode;
-//   children: any;
-//   // selectedKey: string;
-//   selectedKey: React.Key;
-//   items: Iterable<any>;
-//   // onSelectionChange: (key: Key) => any;
-// }
-
-// function Tabs(props: TabsProps) {
-//   let state = useTabListState(props);
-//   console.log("🚀 ~ file: SwipeableTabs.tsx:865 ~ Tabs ~ state:", state);
-//   let ref = useRef<HTMLDivElement>(null);
-//   let { tabListProps } = useTabList(props, state, ref);
-
-//   useEffect(() => {
-//     state.setSelectedKey(props.selectedKey);
-//   }, [props.selectedKey]);
-
-//   let [activeTabStyle, setActiveTabStyle] = useState({
-//     width: 0,
-//     transform: "translateX(0)",
-//   });
-
-//   useEffect(() => {
-//     let activeTab = ref.current?.querySelector(
-//       '[role="tab"][aria-selected="true"]'
-//     );
-//     // setActiveTabStyle({
-//     //   width: activeTab?.offsetWidth ?? 0,
-//     //   transform: `translateX(${activeTab?.offsetLeft}px)`
-//     // });
-
-//     // setActiveTabStyle({
-//     //   width: activeTab.offsetWidth ?? 0,
-//     //   transform: `translateX(${activeTab?.offsetLeft}px)`
-//     // });
-//   }, [state.selectedKey]);
-
-//   let { focusProps, isFocusVisible } = useFocusRing({
-//     within: true,
-//   });
-
-//   return (
-//     <TabsStyled className="tabs">
-//       <TabContainer className="tablist-container">
-//         <TabSelector
-//           className={`tab-selection ${isFocusVisible ? "focused" : ""}`}
-//           style={{ zIndex: -1, ...activeTabStyle }}
-//         />
-//         <TabListStyled {...mergeProps(tabListProps, focusProps)} ref={ref}>
-//           {[...state.collection].map((item) => (
-//             <Tab key={item.key} item={item} state={state} />
-//           ))}
-//         </TabListStyled>
-//       </TabContainer>
-//       <TabPanel key={state.selectedItem?.key} state={state} />
-//     </TabsStyled>
-//   );
-// }
-
-// interface TabProps {
-//   item: any;
-//   state: any;
-// }
-
-// function Tab({ item, state }: TabProps) {
-//   let ref = useRef<HTMLDivElement>(null);
-//   let { tabProps } = useTab(item, state, ref);
-
-//   return (
-//     <TabStyled {...tabProps} ref={ref}>
-//       {item.rendered}
-//     </TabStyled>
-//   );
-// }
-
-// interface TabPanelProps {
-//   // children?: React.ReactNode;
-//   state: any;
-// }
-
-// function TabPanel({ state, ...props }: TabPanelProps) {
-//   console.log("🚀 ~ file: SwipeableTabs.tsx:939 ~ TabPanel ~ state:", state);
-//   let ref = useRef<HTMLDivElement>(null);
-//   let { tabPanelProps } = useTabPanel(props, state, ref);
-
-//   return (
-//     <TabPanelStyled {...tabPanelProps} ref={ref}>
-//       {state.selectedItem?.props.children}
-//     </TabPanelStyled>
-//   );
-// }
-
-// export default Tabs;
-// !end of second version
-
-// !start of third version
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/tabs";
-import { TabInfo } from "../../types/MiscTypes";
+import * as Tabs from "@radix-ui/react-tabs";
 import {
   TargetAndTransition,
   useTransform,
@@ -642,6 +7,7 @@ import {
   animate,
   useScroll,
 } from "framer-motion";
+import { TabData } from "../../types/MiscTypes";
 import styled from "styled-components/macro";
 
 type CustomSelectColor = {
@@ -657,63 +23,48 @@ type TabContainerStyles = {
   roundedcontainer: boolean;
 };
 
-const TabsStyled = styled(Tabs)`
+const TabsStyled = styled(Tabs.Root)`
   width: 100%;
 `;
 
-// background-color: ${({ bgcolor }) => bgcolor};
 const TabContainer = styled.div<TabContainerStyles>`
   position: relative;
+  /* background-color: ${({ bgcolor }) => bgcolor}; */
   background-color: black;
   padding: 3px 0;
   border-radius: ${({ roundedcontainer }) =>
     roundedcontainer ? ".5rem" : "0"};
 `;
 
-const TabListStyled = styled(TabList)`
+const TabListStyled = styled(Tabs.List)`
   display: flex;
   margin-left: 0.25rem;
   justify-content: space-evenly;
 `;
 
-// padding-top: 0.375rem;
-//   padding-bottom: 0.375rem;
-//   padding-left: 0.75rem;
-//   padding-right: 0.75rem;
-//   outline-style: none;
-//   color: ${({ selectioncolor }) => selectioncolor};
-//   transition-property: background-color, border-color, color, fill, stroke,
-//     opacity, box-shadow, transform;
-//   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-//   transition-duration: 300ms;
-//   cursor: default;
-
-//   @media (min-width: 640px) {
-//     font-size: 0.875rem;
-//     line-height: 1.25rem;
-//   }
-
-//   &:hover {
-//     color: rgba(27, 15, 36, 0.8);
-//   }
 // TODO: base hover color off selectioncolor
-const TabStyled = styled(Tab)<CustomSelectColor>`
-  position: relative;
+const TabStyled = styled(Tabs.Trigger)<CustomSelectColor>`
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
-  color: #ffffff;
+  outline-style: none;
+  /* color: ${({ selectioncolor }) => selectioncolor}; */
   background-color: black;
-  /* background-color: var(--ion-color-primary); */
-  /* transition-property: background-color, border-color, color, fill, stroke,
-    opacity, box-shadow, transform; */
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+  cursor: default;
+
+  @media (min-width: 640px) {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  &:hover {
+    color: rgba(27, 15, 36, 0.8);
+  }
 `;
 
 const FocusRing = styled(motion.span)<CustomBgColor>`
@@ -729,7 +80,20 @@ const FocusRing = styled(motion.span)<CustomBgColor>`
   --ring-offset-width: 2px;
 `;
 
-const TabSelector = styled(motion.span)<CustomBgColor>`
+// const TabSelector = styled(motion.span)<CustomBgColor>`
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   z-index: 10;
+//   border-radius: 9999px;
+//   background-color: ${({ bgcolor }) => bgcolor};
+//   mix-blend-mode: difference;
+//   margin: 4px 0;
+// `;
+
+const Selector = styled(motion.span)`
   position: absolute;
   top: 0;
   right: 0;
@@ -737,12 +101,25 @@ const TabSelector = styled(motion.span)<CustomBgColor>`
   left: 0;
   z-index: 10;
   border-radius: 9999px;
-  background-color: ${({ bgcolor }) => bgcolor};
+  background-color: #ffffff;
   mix-blend-mode: difference;
   margin: 4px 0;
 `;
 
-const TabPanelsStyled = styled(TabPanels)`
+// const TabSelector = styled(motion.span)`
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   z-index: 10;
+//   border-radius: 9999px;
+//   background-color: ${({ bgcolor }) => bgcolor};
+//   mix-blend-mode: difference;
+//   margin: 4px 0;
+// `;
+
+const TabPanels = styled.div`
   display: flex;
   overflow: auto;
   margin-top: 16px;
@@ -763,7 +140,7 @@ const TabPanelsStyled = styled(TabPanels)`
   scrollbar-width: none; /* Firefox */
 `;
 
-const TabPanelStyled = styled(TabPanel)`
+const TabPanelStyled = styled(Tabs.Content)`
   border-radius: 0.25rem;
   outline-style: none;
   width: 100%;
@@ -772,19 +149,9 @@ const TabPanelStyled = styled(TabPanel)`
   margin: 0 5px;
 `;
 
-const Selector = styled(motion.span)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-  background-color: #ffffff;
-  mix-blend-mode: difference;
-`;
-
-type Props = {
-  tabs: TabInfo[];
+type TabsComponentProps = {
+  tabs: TabData[];
+  defaultValue: string;
   tabBgColor?: string;
   tabSelectionColor?: string;
   roundedContainer?: boolean;
@@ -792,30 +159,72 @@ type Props = {
 
 function SwipeableTabs({
   tabs,
+  defaultValue,
   tabBgColor,
   tabSelectionColor,
-  roundedContainer = true,
-}: Props) {
-  const [tabIndex, setTabIndex] = useState(0);
+  roundedContainer = false,
+}: TabsComponentProps) {
   let bgColor = tabBgColor ? tabBgColor : "var(--ion-color-primary)";
   let selectionColor = tabSelectionColor
     ? tabSelectionColor
     : "var(--darkest-purple)";
-
-  const tabListRef = useRef<HTMLDivElement | undefined>();
-  const tabPanelsRef = useRef<HTMLDivElement | undefined>();
+  const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultValue);
+  const tabListRef = useRef<HTMLDivElement | null>(null);
+  const tabPanelsRef = useRef<HTMLDivElement | null>(null);
   const { scrollXProgress } = useScroll({
-    container: tabPanelsRef as unknown as RefObject<HTMLElement>,
+    container: tabPanelsRef as RefObject<HTMLElement>,
   });
 
-  // This function determines which tab should be selected
-  // based on the scroll position.
+  // TODO: clean this up, a not ideal workaround for scrolling to default item
+  useEffect(() => {
+    if (tabListRef.current && tabPanelsRef.current) {
+      setTimeout(() => {
+        onSelectionChange(defaultValue);
+      }, 500);
+    }
+  }, [tabListRef, tabPanelsRef, defaultValue]);
+
+  // Find all the tab elements so we can use their dimensions.
+  const [tabElements, setTabElements] = useState<Element[]>([]);
+
   const getIndex = useCallback(
     (x: number) => {
-      return Math.max(0, Math.floor((tabs.length - 1) * x));
+      if (tabs.length <= 1) {
+        return 0;
+      }
+      let optionsToRoundTo: number[] = [];
+      for (let i = 0; i < tabs.length; i++) {
+        optionsToRoundTo.push(i / (tabs.length - 1));
+      }
+
+      let closestIndex = 0;
+      let closestDifference = Math.abs(optionsToRoundTo[0] - x);
+
+      for (let i = 1; i < optionsToRoundTo.length; i++) {
+        const currentDifference = Math.abs(optionsToRoundTo[i] - x);
+        if (currentDifference < closestDifference) {
+          closestIndex = i;
+          closestDifference = currentDifference;
+        }
+      }
+
+      return closestIndex;
     },
     [tabs]
   );
+
+  useEffect(() => {
+    if (tabElements.length === 0 && tabListRef.current) {
+      const tabs = tabListRef.current.querySelectorAll("[role=tab]");
+      // *testing
+      console.log(
+        "🚀 ~ file: SwipeableTabs.tsx:1361 ~ useEffect ~ tabs:",
+        tabs
+      );
+      // *testing
+      setTabElements(Array.from(tabs));
+    }
+  }, [tabElements]);
 
   // This function transforms the scroll position into the X position
   // or width of the selected tab indicator.
@@ -823,135 +232,135 @@ function SwipeableTabs({
     x: number,
     property: "offsetLeft" | "offsetWidth"
   ): number => {
-    if (!tabs.length) return 0;
+    if (!tabElements.length) return 0;
 
     // Find the tab index for the scroll X position.
     const index = getIndex(x);
 
     // Get the difference between this tab and the next one.
     const difference =
-      index < tabs.length - 1
-        ? tabs[index + 1][property as keyof {}] -
-          tabs[index][property as keyof {}]
-        : tabs[index]["offsetWidth" as keyof {}];
+      index < tabElements.length - 1
+        ? tabElements[index + 1][property as keyof {}] -
+          tabElements[index][property as keyof {}]
+        : tabElements[index]["offsetWidth" as keyof {}];
 
     // Get the percentage between tabs.
     // This is the difference between the integer index and fractional one.
-    const percent = (tabs.length - 1) * x - index;
+    const percent = (tabElements.length - 1) * x - index;
 
     // Linearly interpolate to calculate the position of the selection indicator.
-    const value = tabs[index][property as keyof {}] + difference * percent;
+    const value =
+      tabElements[index][property as keyof {}] + difference * percent;
 
     // iOS scrolls weird when translateX is 0 for some reason. 🤷‍♂️
     return value || 0.1;
   };
 
-  // const x = useTransform(scrollXProgress, (x) => transform(x, "offsetLeft"));
-  // const width = useTransform(scrollXProgress, (x) =>
-  //   transform(x, "offsetWidth")
-  // );
+  const x = useTransform(scrollXProgress, (x) => {
+    console.log("🚀 ~ file: SwipeableTabs.tsx:1419 ~ x:", x);
+    return transform(x, "offsetLeft");
+  });
+  const width = useTransform(scrollXProgress, (x) =>
+    transform(x, "offsetWidth")
+  );
 
   // TODO: this is messing up actual selected item somehow
   // When the user scrolls, update the selected key
   // so that the correct tab panel becomes interactive.
   useEffect(() => {
+    // *testing
     console.log("Scroll useEffect happening...");
+    // *testing
     const handleChange = (x: number) => {
-      if (animationRef.current || !tabs.length) return;
+      if (animationRef.current || !tabs.length) {
+        // *testing
+        console.log("RETURNING b/c animationRef.current || !tabs.length");
+        // *testing
+        return;
+      }
 
-      console.log(
-        "🚀 ~ file: SwipeableTabs.tsx:568 ~ handleChange ~ tabs[getIndex(x)].key as React.Key:",
-        tabs[getIndex(x)].key as React.Key
-      );
-      setTabIndex(getIndex(x));
+      setSelectedTabKey(tabs[getIndex(x)].id);
+
       // *testing
-      console.log(
-        "🚀 ~ file: SwipeableTabs.tsx:586 ~ handleChange ~ tabs:",
-        tabs
-      );
-      console.log("tabs[getIndex(x)].key: ", tabs[getIndex(x)].key);
+      console.log("tabs[getIndex(x)].key: ", tabs[getIndex(x)].id);
       // *testing
     };
     const unsubscribe = scrollXProgress.on("change", handleChange);
+
     return () => unsubscribe();
   }, [scrollXProgress, getIndex, tabs]);
 
   // When the user clicks on a tab perform an animation of
   // the scroll position to the newly selected tab panel.
   const animationRef = useRef<any>();
-  const onSelectionChange = (selectedIndex: number) => {
+  const onSelectionChange = (selectedTab: string) => {
     console.log("onSelectionChange called in tabs component!");
-    setTabIndex(selectedIndex);
+
+    setSelectedTabKey(selectedTab);
 
     // If the scroll position is already moving but we aren't animating
     // then the key changed as a result of a user scrolling. Ignore.
-    // if (scrollXProgress.getVelocity() && !animationRef.current) {
-    //   return;
-    // }
+    if (scrollXProgress.getVelocity() && !animationRef.current) {
+      return;
+    }
 
-    // const tabPanel = tabPanelsRef.current;
-    // if (animationRef.current) {
-    //   animationRef.current.stop();
-    // }
-    // if (tabPanel) {
-    //   animationRef.current = animate<TargetAndTransition>(
-    //     tabPanel.scrollLeft as any,
-    //     (tabPanel.scrollWidth * (selectedIndex / tabs.length)) as any,
-    //     {
-    //       type: "spring",
-    //       bounce: 0.2,
-    //       duration: 0.6,
-    //       onUpdate: (v) => {
-    //         (tabPanel.scrollLeft as any) = v;
-    //       },
-    //       onPlay: () => {
-    //         // Disable scroll snap while the animation is going or weird things happen.
-    //         tabPanel.style.scrollSnapType = "none";
-    //       },
-    //       onComplete: () => {
-    //         tabPanel.style.scrollSnapType = "";
-    //         animationRef.current = null;
-    //       },
-    //     }
-    //   );
-    // }
+    const tabPanel = tabPanelsRef.current;
+    if (animationRef.current) {
+      animationRef.current.stop();
+    }
+
+    const index = tabs.findIndex((tab) => tab.id === selectedTab);
+    if (tabPanel) {
+      animationRef.current = animate<TargetAndTransition>(
+        tabPanel.scrollLeft as any,
+        (tabPanel.scrollWidth * (index / tabs.length)) as any,
+        {
+          type: "spring",
+          bounce: 0.2,
+          duration: 0.6,
+          onUpdate: (v) => {
+            (tabPanel.scrollLeft as any) = v;
+          },
+          onPlay: () => {
+            // Disable scroll snap while the animation is going or weird things happen.
+            tabPanel.style.scrollSnapType = "none";
+          },
+          onComplete: () => {
+            tabPanel.style.scrollSnapType = "";
+            animationRef.current = null;
+          },
+        }
+      );
+    }
   };
 
-  // const handleTabsChange = (index: number) => {
-  //   setTabIndex(index);
-  // };
-
-  const getTabAtIndex = (index: number) => tabs[index];
-
   return (
-    // <TabsStyled index={tabIndex} onChange={onSelectionChange}>
-    <TabsStyled onChange={onSelectionChange}>
+    <TabsStyled value={selectedTabKey} onValueChange={onSelectionChange}>
       <TabContainer bgcolor={bgColor} roundedcontainer={roundedContainer}>
         <TabListStyled ref={tabListRef}>
-          {tabs.map((tab, index) => (
-            <TabStyled key={index} selectioncolor={selectionColor}>
+          {tabs.map((tab) => (
+            <TabStyled
+              key={tab.id}
+              value={tab.id}
+              selectioncolor={selectionColor}
+            >
               {tab.label}
-              {tabIndex === index && (
-                <Selector
-                  layoutId="bubble"
-                  className="absolute inset-0 z-10 bg-white mix-blend-difference"
-                  style={{ borderRadius: 9999 }}
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
-              )}
             </TabStyled>
           ))}
         </TabListStyled>
         {/* Selection indicator. */}
-        {/* <TabSelector style={{ x, width }} bgcolor={bgColor} /> */}
+        <Selector style={{ x, width }} />
       </TabContainer>
-      <TabPanelsStyled ref={tabPanelsRef}>
-        {tabs.map((tab, index) => (
-          <TabPanelStyled key={index}>{tab.contents}</TabPanelStyled>
+      <TabPanels ref={tabPanelsRef}>
+        {tabs.map((tab) => (
+          <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
+            {tab.tabContents}
+          </TabPanelStyled>
         ))}
-      </TabPanelsStyled>
+      </TabPanels>
     </TabsStyled>
   );
 }
+
 export default SwipeableTabs;
-// !start of third version
+// !end of fourth version
