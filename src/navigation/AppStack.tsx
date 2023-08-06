@@ -1,5 +1,3 @@
-import { IonTabs } from "@ionic/react";
-import styled from "styled-components/macro";
 import { Redirect, Switch } from "react-router";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
