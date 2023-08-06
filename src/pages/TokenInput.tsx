@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { useIonRouter } from "@ionic/react";
-
+import { useHistory } from "react-router";
 import {
   IonInput,
   IonContent,
@@ -11,7 +10,6 @@ import {
   IonButton,
   IonSkeletonText,
 } from "@ionic/react";
-
 import { useUserAuth } from "../contexts/AuthContext";
 
 const TokenInput = () => {
@@ -20,7 +18,7 @@ const TokenInput = () => {
   const [isAuthLoading, setIsAuthLoading] = useState(false);
   const [authErr, setAuthErr] = useState("");
   const [loading, setLoading] = useState(true);
-  const router = useIonRouter();
+  const history = useHistory();
 
   const auth = useUserAuth();
 
@@ -36,8 +34,7 @@ const TokenInput = () => {
     if (success) {
       console.log("Successfully logged in!");
       setAuthErr("");
-      // history.push("/home");
-      router.push("/home");
+      history.push("/home");
     } else {
       setAuthErr(
         "An error occurred retrieving your info, make sure your API token is correct"

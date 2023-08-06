@@ -1,13 +1,14 @@
-import { useMemo, useState, useEffect } from "react";
-import { IonContent, IonList, IonPage, IonSearchbar } from "@ionic/react";
+import { useState, useEffect } from "react";
+import { IonList, IonPage, IonSearchbar } from "@ionic/react";
 import Fuse from "fuse.js";
+import { flattenSearchResults } from "../services/MiscService";
+import { useAllSubjects } from "../hooks/useAllSubjects";
+import { SubjectWideButton } from "../components/SubjectWideBtnList";
+import FloatingTabBar from "../components/FloatingTabBar/FloatingTabBar";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
 import styled from "styled-components/macro";
-import { useAllSubjects } from "../hooks/useAllSubjects";
-import { Subject } from "../types/Subject";
-import { SubjectWideButton } from "../components/SubjectWideBtnList";
-import { flattenSearchResults } from "../services/MiscService";
+import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -76,31 +77,28 @@ export const Search = () => {
 
   return (
     <Page>
-      <>
-        <IonContent>
-          <>
-            <SearchBar
-              debounce={1800}
-              searchIcon={SearchIcon}
-              clearIcon={ClearIcon}
-              onIonInput={(ev) => handleInput(ev)}
-            ></SearchBar>
-          </>
-          {!allSubjectsLoading ? (
-            <List>
-              {results.map((subject: any) => (
-                <SubjectWideButton
-                  subject={subject}
-                  key={subject.id}
-                  findImages={true}
-                />
-              ))}
-            </List>
-          ) : (
-            <p>Loading...</p>
-          )}
-        </IonContent>
-      </>
+      <ContentWithTabBar>
+        <SearchBar
+          debounce={1800}
+          searchIcon={SearchIcon}
+          clearIcon={ClearIcon}
+          onIonInput={(ev) => handleInput(ev)}
+        ></SearchBar>
+        {!allSubjectsLoading ? (
+          <List>
+            {results.map((subject: any) => (
+              <SubjectWideButton
+                subject={subject}
+                key={subject.id}
+                findImages={true}
+              />
+            ))}
+          </List>
+        ) : (
+          <p>Loading...</p>
+        )}
+      </ContentWithTabBar>
+      <FloatingTabBar />
     </Page>
   );
 };

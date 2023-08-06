@@ -18,6 +18,8 @@ import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
 import styles from "./SubjectDetails.module.scss";
 import styled from "styled-components/macro";
 import { Kanji, Radical, Vocabulary } from "../types/Subject";
+import { ContentWithTabBar } from "../styles/BaseStyledComponents";
+import FloatingTabBar from "../components/FloatingTabBar";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -38,18 +40,16 @@ export const SubjectDetails = () => {
   return (
     <Page>
       {subjectLoading ? (
-        <>
-          <IonRow>
-            <IonSkeletonText
-              animated={true}
-              style={{ height: "50px" }}
-            ></IonSkeletonText>
-          </IonRow>
-        </>
+        <ContentWithTabBar>
+          <IonSkeletonText
+            animated={true}
+            style={{ height: "50px" }}
+          ></IonSkeletonText>
+        </ContentWithTabBar>
       ) : (
         <>
           {subject && <SubjectHeader subject={subject} />}
-          <IonContent>
+          <ContentWithTabBar>
             <IonGrid className={`${styles.fullWidthGrid}`}>
               {subject && <SubjectSummary subject={subject}></SubjectSummary>}
               {subject && subject?.object == "radical" && (
@@ -62,9 +62,10 @@ export const SubjectDetails = () => {
                 <VocabSubjDetails vocab={subject as Vocabulary} />
               )}
             </IonGrid>
-          </IonContent>
+          </ContentWithTabBar>
         </>
       )}
+      <FloatingTabBar />
     </Page>
   );
 };

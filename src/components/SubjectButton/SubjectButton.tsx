@@ -1,10 +1,11 @@
-import { IonRow, useIonPopover, useIonRouter } from "@ionic/react";
+import { IonRow, useIonPopover } from "@ionic/react";
 import { Subject } from "../../types/Subject";
 import SubjCardPopover from "./SubjCardPopover";
 import RadicalButton from "./RadicalButton";
 import KanjiButton from "./KanjiButton";
 import SubjectButtonLoading from "./SubjectButtonLoading";
 import { Assignment } from "../../types/Assignment";
+import { useHistory } from "react-router";
 
 // TODO: use a context around this or abstract things out, this many props is icky
 type SubjProps = {
@@ -24,13 +25,13 @@ function SubjectButton({
   isButtonLink = false,
   showDetails = true,
 }: SubjProps) {
-  const router = useIonRouter();
+  const history = useHistory();
 
   const handleDismiss = () => dismiss();
 
   const navigate = (route: string) => {
     handleDismiss();
-    router.push(route);
+    history.push(route);
   };
 
   const [present, dismiss] = useIonPopover(SubjCardPopover, {

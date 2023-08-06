@@ -1,7 +1,9 @@
-import { IonContent, IonGrid, IonPage } from "@ionic/react";
+import { IonGrid, IonPage } from "@ionic/react";
 import { TabData } from "../types/MiscTypes";
 import styled from "styled-components/macro";
 import SwipeableTabs from "../components/SwipeableTabs";
+import { ContentWithTabBar } from "../styles/BaseStyledComponents";
+import FloatingTabBar from "../components/FloatingTabBar";
 
 const Page = styled(IonPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -31,11 +33,12 @@ export const Subjects = () => {
   return (
     <Page>
       <SwipeableTabs tabs={tabs} defaultValue="1" />
-      <IonContent>
+      <ContentWithTabBar>
         <IonGrid>
           <p>Subjects Page - TO DO</p>
         </IonGrid>
-      </IonContent>
+      </ContentWithTabBar>
+      <FloatingTabBar />
     </Page>
   );
 };

@@ -1,4 +1,3 @@
-import { useIonRouter } from "@ionic/react";
 import { setBtnBackground } from "../../services/ImageSrcService";
 import { useNumReviews } from "../../hooks/useNumReviews";
 import {
@@ -7,6 +6,8 @@ import {
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components/macro";
+import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 const ReviewsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-review);
@@ -26,7 +27,7 @@ type Props = {
 };
 
 function ReviewsButton({ level }: Props) {
-  const router = useIonRouter();
+  const history = useHistory();
 
   const {
     isLoading: numReviewsLoading,
@@ -45,7 +46,7 @@ function ReviewsButton({ level }: Props) {
       title="Reviews"
       color="clear"
       // TODO: change so if no reviews -> doesn't redirect and displays a message
-      onClick={() => router.push("/review/settings")}
+      onClick={() => history.push("/review/settings")}
       style={{
         backgroundImage: `url(${
           numReviews

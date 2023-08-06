@@ -5,7 +5,6 @@ import {
   IonButton,
   IonIcon,
 } from "@ionic/react";
-import { useIonRouter } from "@ionic/react";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import {
   ReviewQueueItem,
@@ -14,6 +13,7 @@ import {
 
 import HomeIcon from "../../images/home.svg";
 import styled from "styled-components/macro";
+import { useHistory } from "react-router";
 
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;
@@ -75,7 +75,7 @@ type Props = {
 };
 
 function ReviewSessionHeader({ currentReviewItem }: Props) {
-  const router = useIonRouter();
+  const history = useHistory();
 
   const { queueDataState } = useReviewQueue();
 
@@ -87,7 +87,7 @@ function ReviewSessionHeader({ currentReviewItem }: Props) {
     <SessionHeader>
       <Toolbar>
         <IonButtons slot="start">
-          <HomeBtn onClick={() => router.push("/home", "root", "replace")}>
+          <HomeBtn onClick={() => history.push("/home")}>
             <HomeIconStyled icon={HomeIcon}></HomeIconStyled>
           </HomeBtn>
         </IonButtons>

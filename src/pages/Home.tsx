@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useIonRouter } from "@ionic/react";
 import {
   IonPage,
   IonGrid,
@@ -20,11 +19,12 @@ import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
 import SrsStages from "../components/SrsStages/SrsStages";
 import FloatingTabBar from "../components/FloatingTabBar";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
+import { useHistory } from "react-router";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
-  const router = useIonRouter();
+  const history = useHistory();
 
   const appContext = useUserAuth();
 
@@ -37,8 +37,7 @@ const Home = () => {
 
   const removeAuth = () => {
     appContext.logout();
-    // history.push("/authenticate");
-    router.push("/authenticate");
+    history.push("/authenticate");
   };
 
   const setUserDetails = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   IonContent,
   IonPage,
@@ -8,7 +8,7 @@ import {
   IonToolbar,
   IonTitle,
 } from "@ionic/react";
-import { useIonRouter } from "@ionic/react";
+import { useHistory } from "react-router";
 import {
   compareAssignmentsByAvailableDate,
   filterAssignmentsByType,
@@ -53,7 +53,7 @@ const Title = styled(IonTitle)`
 // TODO: change so using react router to pass data to next page instead of context
 export const ReviewSettings = () => {
   const { createNewReviewSession } = useReviewQueue();
-  const router = useIonRouter();
+  const history = useHistory();
 
   const {
     isLoading: availForReviewLoading,
@@ -111,7 +111,8 @@ export const ReviewSettings = () => {
     let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
 
     createNewReviewSession(assignmentBatchToReview, subjIDs);
-    router.push("/review/session");
+    // TODO: pass data to next page instead of caching in context?
+    history.push("/review/session");
   };
 
   return (

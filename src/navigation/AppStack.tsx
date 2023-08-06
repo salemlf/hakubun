@@ -1,7 +1,5 @@
 import { Redirect, Switch } from "react-router";
-
 import { BrowserRouter as Router, Route } from "react-router-dom";
-
 import Home from "../pages/Home";
 import { SubjectDetails } from "../pages/SubjectDetails";
 import { ReviewSettings } from "../pages/ReviewSettings";

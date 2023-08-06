@@ -14,6 +14,7 @@ import {
 } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
 import styled from "styled-components/macro";
+import { useHistory } from "react-router";
 
 const Characters = styled(SubjectChars)`
   display: flex;
@@ -95,15 +96,14 @@ type Props = {
 };
 
 export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
+  const history = useHistory();
   if (subject.object === "radical" && findImages) {
     let updatedSubj = setSubjectAvailImgs(subject);
     subject = updatedSubj;
   }
 
-  const router = useIonRouter();
-
   const onSubjBtnClick = (e: any) => {
-    router.push(`/subjects/${subject.id}`);
+    history.push(`/subjects/${subject.id}`);
   };
 
   return (

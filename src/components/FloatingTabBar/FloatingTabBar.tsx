@@ -1,5 +1,5 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-// TODO: change so relying on IonIcon
+// TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
 import HomeIcon from "../../images/home.svg";
 import SubjectsIcon from "../../images/subjects.svg";
@@ -81,17 +81,8 @@ const PageLink = ({ pathName, children, ...props }: PageLinkProps) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  console.log(
-    "🚀 ~ file: FloatingTabBar.tsx:91 ~ PageLink ~ currentPath:",
-    currentPath
-  );
   // TODO: make this match subpaths also
   const isActive = currentPath === pathName;
-  console.log(
-    "🚀 ~ file: FloatingTabBar.tsx:94 ~ PageLink ~ isActive:",
-    isActive
-  );
-
   return (
     <TabButton asChild active={isActive} {...props}>
       <NavLink to={pathName}>{children}</NavLink>
@@ -99,7 +90,6 @@ const PageLink = ({ pathName, children, ...props }: PageLinkProps) => {
   );
 };
 
-// TODO: view client-side routing info: https://www.radix-ui.com/docs/primitives/components/navigation-menu#with-client-side-routing
 function FloatingTabBar() {
   return (
     <TabBarContainer>
