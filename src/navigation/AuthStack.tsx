@@ -1,21 +1,43 @@
-import { BrowserRouter as Router, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Navigate,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import TokenInput from "../pages/TokenInput";
 
 // TODO: change so no need to specify every route to redirect from
 export const AuthStack = () => {
   return (
     <Router>
-      <Route path="/authenticate">
-        <TokenInput />
-      </Route>
-      <Route path="/" element={<Navigate replace to="/authenticate" />} />
-      <Route path="/home" element={<Navigate replace to="/authenticate" />} />
-      <Route
-        path="/subject"
-        element={<Navigate replace to="/authenticate" />}
-      />
-      <Route path="/search" element={<Navigate replace to="/authenticate" />} />
-      <Route path="/review" element={<Navigate replace to="/authenticate" />} />
+      <AuthRoutes />
     </Router>
+  );
+};
+
+const AuthRoutes = () => {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/authenticate" element={<TokenInput />} />
+        <Route path="/" element={<Navigate replace to="/authenticate" />} />
+        <Route path="/home" element={<Navigate replace to="/authenticate" />} />
+        <Route
+          path="/subject"
+          element={<Navigate replace to="/authenticate" />}
+        />
+        <Route
+          path="/search"
+          element={<Navigate replace to="/authenticate" />}
+        />
+        <Route
+          path="/review"
+          element={<Navigate replace to="/authenticate" />}
+        />
+      </Routes>
+    </AnimatePresence>
   );
 };
