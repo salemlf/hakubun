@@ -27,14 +27,7 @@ function SubjectButton({
 }: SubjProps) {
   const navigate = useNavigate();
 
-  const handleDismiss = () => dismiss();
-
-  const navigateToRoute = (route: string) => {
-    handleDismiss();
-    navigate(route);
-  };
-
-  const [present, dismiss] = useIonPopover(SubjCardPopover, {
+  const [present] = useIonPopover(SubjCardPopover, {
     size: "cover",
     subject,
     assignment,
@@ -43,12 +36,13 @@ function SubjectButton({
 
   const onClickEvent = (e: any) => {
     if (isButtonLink) {
-      navigateToRoute(`/subjects/${subject.id}`);
+      navigate(`/subjects/${subject.id}`);
     } else {
       present({
         event: e.nativeEvent,
         size: "auto",
         alignment: "center",
+        dismissOnSelect: true,
       });
     }
   };
