@@ -1,6 +1,4 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "Hakubun",
-	"webDir": "build",
-	"bundledWebRuntime": false
+  "appId": "io.ionic.starter",
+  "appName": "Hakubun"
 }
