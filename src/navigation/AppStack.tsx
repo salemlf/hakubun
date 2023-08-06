@@ -1,19 +1,8 @@
-import { useEffect, useState } from "react";
-import {
-  IonRouterOutlet,
-  IonLabel,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-  IonIcon,
-} from "@ionic/react";
-import HomeIcon from "../images/home.svg";
-import SubjectsIcon from "../images/subjects.svg";
-import SearchIcon from "../images/search.svg";
+import { IonTabs } from "@ionic/react";
 import styled from "styled-components/macro";
+import { Redirect, Switch } from "react-router";
 
-import { IonReactRouter } from "@ionic/react-router";
-import { Route, Redirect, useLocation } from "react-router";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Home from "../pages/Home";
 import { SubjectDetails } from "../pages/SubjectDetails";
@@ -25,9 +14,9 @@ import ReviewSummary from "../pages/ReviewSummary";
 
 export const AppStack = () => {
   return (
-    <IonReactRouter>
+    <Router>
       <Tabs />
-    </IonReactRouter>
+    </Router>
   );
 };
 
@@ -61,61 +50,21 @@ const TabsStyled = styled(IonTabs)`
 `;
 
 export const Tabs = () => {
-  const location = useLocation();
-  const [showTabs, setShowTabs] = useState(true);
-  const pagesToHideTabBar = [
-    "/review/settings",
-    "/review/session",
-    "review/summary",
-  ];
-  let tabBarStyle = showTabs === true ? undefined : { display: "none" };
-
-  useEffect(() => {
-    if (pagesToHideTabBar.includes(location.pathname)) {
-      setShowTabs(false);
-    } else {
-      setShowTabs(true);
-    }
-  }, [location.pathname]);
-
   return (
-    <TabsStyled>
-      <IonRouterOutlet>
-        <Route path="/:tab(home)" component={Home} exact={true} />
-        <Route path="/:tab(subjects)" component={Subjects} exact={true} />
-        <Route path="/:tab(search)" component={Search} exact={true} />
-        <Route path="/subjects/:id" component={SubjectDetails} />
-        <Route path="/home" component={Home} exact={true} />
-        <Route
-          path="/review/settings"
-          component={ReviewSettings}
-          exact={true}
-        />
-        <Route
-          path="/review/session"
-          component={ReviewSessionQueue}
-          exact={true}
-        />
-        <Route path="/review/summary" component={ReviewSummary} exact={true} />
-        <Route exact={true} path="/" render={() => <Redirect to="/home" />} />
-        <Redirect from="/authenticate" to="/home" exact={true} />
-      </IonRouterOutlet>
-      {/* <IonTabBar slot="bottom" style={tabBarStyle}> */}
-      <IonTabBar slot="bottom" style={{ display: "none" }}>
-        <IonTabButton tab="subjects" href="/subjects">
-          <IonLabel>Subjects</IonLabel>
-          <IonIcon icon={SubjectsIcon} />
-        </IonTabButton>
-
-        <IonTabButton tab="home" href="/home">
-          <IonLabel>Home</IonLabel>
-          <IonIcon icon={HomeIcon} />
-        </IonTabButton>
-        <IonTabButton tab="search" href="/search">
-          <IonLabel>Search</IonLabel>
-          <IonIcon icon={SearchIcon} />
-        </IonTabButton>
-      </IonTabBar>
-    </TabsStyled>
+    <Switch>
+      <Route path="/review/settings" component={ReviewSettings} exact={true} />
+      <Route
+        path="/review/session"
+        component={ReviewSessionQueue}
+        exact={true}
+      />
+      <Route path="/review/summary" component={ReviewSummary} exact={true} />
+      <Route path="/subjects" component={Subjects} exact={true} />
+      <Route path="/search" component={Search} exact={true} />
+      <Route path="/subjects/:id" component={SubjectDetails} />
+      <Route path="/home" component={Home} exact={true} />
+      <Route exact={true} path="/" render={() => <Redirect to="/home" />} />
+      <Redirect from="/authenticate" to="/home" exact={true} />
+    </Switch>
   );
 };
