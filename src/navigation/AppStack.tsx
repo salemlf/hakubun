@@ -39,7 +39,6 @@ const AppRoutes = () => {
     "review/summary",
   ];
 
-  // TODO: use style for FloatingTabBar
   let tabBarStyle = showTabs === true ? undefined : { display: "none" };
 
   useEffect(() => {

@@ -8,21 +8,28 @@ import {
   useScroll,
 } from "framer-motion";
 import { TabData } from "../../types/MiscTypes";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
-type CustomSelectColor = {
+interface CustomSelectColor {
   selectioncolor: string;
-};
+}
 
-type CustomBgColor = {
+interface CustomBgColor {
   bgcolor: string;
-};
+}
+
+interface SelectionColorRGBA {
+  selectioncolorrgba: string;
+}
 
 type TabContainerStyles = {
   bgcolor: string;
   roundedcontainer: boolean;
 };
+
+type BgColorSelectionAndHover = CustomSelectColor &
+  CustomBgColor &
+  SelectionColorRGBA;
 
 const TabsStyled = styled(Tabs.Root)`
   width: 100%;
@@ -30,8 +37,7 @@ const TabsStyled = styled(Tabs.Root)`
 
 const TabContainer = styled.div<TabContainerStyles>`
   position: relative;
-  /* background-color: ${({ bgcolor }) => bgcolor}; */
-  background-color: black;
+  background-color: ${({ bgcolor }) => bgcolor};
   padding: 3px 0;
   border-radius: ${({ roundedcontainer }) =>
     roundedcontainer ? ".5rem" : "0"};
@@ -44,20 +50,19 @@ const TabListStyled = styled(Tabs.List)`
 `;
 
 // TODO: base hover color off selectioncolor
-const TabStyled = styled(Tabs.Trigger)<CustomSelectColor>`
+const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   outline-style: none;
-  /* color: ${({ selectioncolor }) => selectioncolor}; */
-  background-color: black;
+  color: ${({ selectioncolor }) => selectioncolor};
+  background-color: ${({ bgcolor }) => bgcolor};
   transition-property: background-color, border-color, color, fill, stroke,
     opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
   cursor: default;
-  color: white;
 
   @media (min-width: 640px) {
     font-size: 0.875rem;
@@ -65,7 +70,7 @@ const TabStyled = styled(Tabs.Trigger)<CustomSelectColor>`
   }
 
   &:hover {
-    color: rgba(178, 174, 181, 0.8);
+    color: ${({ selectioncolorrgba }) => selectioncolorrgba};
   }
 `;
 
@@ -82,20 +87,7 @@ const FocusRing = styled(motion.span)<CustomBgColor>`
   --ring-offset-width: 2px;
 `;
 
-// const TabSelector = styled(motion.span)<CustomBgColor>`
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   bottom: 0;
-//   left: 0;
-//   z-index: 10;
-//   border-radius: 9999px;
-//   background-color: ${({ bgcolor }) => bgcolor};
-//   mix-blend-mode: difference;
-//   margin: 4px 0;
-// `;
-
-const Selector = styled(motion.span)`
+const Selector = styled(motion.span)<CustomBgColor>`
   position: absolute;
   top: 0;
   right: 0;
@@ -103,23 +95,10 @@ const Selector = styled(motion.span)`
   left: 0;
   z-index: 10;
   border-radius: 9999px;
-  background-color: #ffffff;
+  background-color: ${({ bgcolor }) => bgcolor};
   mix-blend-mode: difference;
   margin: 4px 0;
 `;
-
-// const TabSelector = styled(motion.span)`
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   bottom: 0;
-//   left: 0;
-//   z-index: 10;
-//   border-radius: 9999px;
-//   background-color: ${({ bgcolor }) => bgcolor};
-//   mix-blend-mode: difference;
-//   margin: 4px 0;
-// `;
 
 const TabPanels = styled.div`
   display: flex;
@@ -156,6 +135,7 @@ type TabsComponentProps = {
   defaultValue: string;
   tabBgColor?: string;
   tabSelectionColor?: string;
+  tabSelectionColorRGBA?: string;
   roundedContainer?: boolean;
 };
 
@@ -165,12 +145,17 @@ function SwipeableTabs({
   defaultValue,
   tabBgColor,
   tabSelectionColor,
-  roundedContainer = false,
+  tabSelectionColorRGBA,
+  roundedContainer = true,
 }: TabsComponentProps) {
   let bgColor = tabBgColor ? tabBgColor : "var(--ion-color-primary)";
   let selectionColor = tabSelectionColor
     ? tabSelectionColor
     : "var(--darkest-purple)";
+  let selectionColorRGBA = tabSelectionColorRGBA
+    ? tabSelectionColorRGBA
+    : "rgba(53, 32, 71, 0.8)";
+
   const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultValue);
   const tabListRef = useRef<HTMLDivElement | null>(null);
   const tabPanelsRef = useRef<HTMLDivElement | null>(null);
@@ -326,14 +311,16 @@ function SwipeableTabs({
             <TabStyled
               key={tab.id}
               value={tab.id}
+              bgcolor={bgColor}
               selectioncolor={selectionColor}
+              selectioncolorrgba={selectionColorRGBA}
             >
               {tab.label}
             </TabStyled>
           ))}
         </TabListStyled>
         {/* Selection indicator. */}
-        <Selector style={{ x, width }} />
+        <Selector style={{ x, width }} bgcolor={bgColor} />
       </TabContainer>
       <TabPanels ref={tabPanelsRef}>
         {tabs.map((tab) => (
@@ -347,4 +334,3 @@ function SwipeableTabs({
 }
 
 export default SwipeableTabs;
-// !end of fourth version

@@ -7,11 +7,8 @@ import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDeta
 import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
 import VocabSubjDetails from "../components/VocabSubjDetails/VocabSubjDetails";
 import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
-// import FloatingTabBar from "../components/FloatingTabBar";
 import AnimatedPage from "../components/AnimatedPage";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
-// import styles from "./SubjectDetails.module.scss";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const FullWidthGrid = styled(IonGrid)`
@@ -65,7 +62,6 @@ export const SubjectDetails = () => {
           </ContentWithTabBar>
         </>
       )}
-      {/* <FloatingTabBar /> */}
     </Page>
   );
 };

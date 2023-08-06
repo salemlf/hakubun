@@ -4,12 +4,10 @@ import Fuse from "fuse.js";
 import { flattenSearchResults } from "../services/MiscService";
 import { useAllSubjects } from "../hooks/useAllSubjects";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
-// import FloatingTabBar from "../components/FloatingTabBar/FloatingTabBar";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
@@ -99,7 +97,6 @@ export const Search = () => {
           <p>Loading...</p>
         )}
       </ContentWithTabBar>
-      {/* <FloatingTabBar /> */}
     </Page>
   );
 };

@@ -16,7 +16,6 @@ import ReviewsButton from "../components/ReviewsButton/ReviewsButton";
 import RadicalForLvlCard from "../components/RadicalForLvlCard/RadicalForLvlCard";
 import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
 import SrsStages from "../components/SrsStages/SrsStages";
-// import FloatingTabBar from "../components/FloatingTabBar";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import AnimatedPage from "../components/AnimatedPage";
 import { useNavigate } from "react-router-dom";
@@ -97,7 +96,6 @@ const Home = () => {
         </IonGrid>
         {homeLoading && <IonSpinner name="dots"></IonSpinner>}
       </ContentWithTabBar>
-      {/* <FloatingTabBar /> */}
     </AnimatedPage>
   );
 };
