@@ -5,9 +5,10 @@ import {
   BaseReviewLessonButtonBadge,
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
-import styled from "styled-components/macro";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const ReviewsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-review);

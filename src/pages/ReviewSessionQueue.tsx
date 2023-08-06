@@ -4,7 +4,6 @@ import ReviewSessionHeader from "../components/ReviewSessionHeader/ReviewSession
 import ReviewCards from "../components/ReviewCards/ReviewCards";
 import { useHistory } from "react-router-dom";
 
-import styled from "styled-components/macro";
 import { useEffect } from "react";
 import { useCreateReview } from "../hooks/useCreateReview";
 import {
@@ -13,7 +12,8 @@ import {
 } from "../services/ReviewService";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 import AnimatedPage from "../components/AnimatedPage";
-// import { AnimatedPage } from "../styles/BaseStyledComponents";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);

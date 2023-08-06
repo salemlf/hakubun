@@ -8,7 +8,8 @@ import {
   useScroll,
 } from "framer-motion";
 import { TabData } from "../../types/MiscTypes";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 type CustomSelectColor = {
   selectioncolor: string;
@@ -56,6 +57,7 @@ const TabStyled = styled(Tabs.Trigger)<CustomSelectColor>`
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
   cursor: default;
+  color: white;
 
   @media (min-width: 640px) {
     font-size: 0.875rem;
@@ -63,7 +65,7 @@ const TabStyled = styled(Tabs.Trigger)<CustomSelectColor>`
   }
 
   &:hover {
-    color: rgba(27, 15, 36, 0.8);
+    color: rgba(178, 174, 181, 0.8);
   }
 `;
 

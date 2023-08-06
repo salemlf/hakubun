@@ -6,9 +6,10 @@ import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
 import Note from "./Note";
 
-import styled from "styled-components/macro";
 import { Chip } from "../../styles/BaseStyledComponents";
 import { addOutline } from "ionicons/icons";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const AddButtonContainer = styled.div`
   display: flex;

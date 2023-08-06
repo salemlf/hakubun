@@ -12,8 +12,9 @@ import {
 } from "../../types/ReviewSessionTypes";
 
 import HomeIcon from "../../images/home.svg";
-import styled from "styled-components/macro";
 import { useHistory } from "react-router";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;

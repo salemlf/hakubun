@@ -1,5 +1,4 @@
 import { IonRow, IonSkeletonText } from "@ionic/react";
-import styled from "styled-components/macro";
 import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
 import { Assignment } from "../../types/Assignment";
 import { Subject, Kanji, Vocabulary } from "../../types/Subject";
@@ -9,6 +8,8 @@ import SubjectMeanings from "../SubjectMeanings/SubjectMeanings";
 import SubjDetailsKanjiReadings from "./SubjDetailsKanjiReadings";
 import { SubjSummaryRow } from "../../styles/SubjectDetailsStyled";
 import VocabReadings from "../VocabReadings/VocabReadings";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const SummaryContainer = styled(IonRow)`
   display: flex;

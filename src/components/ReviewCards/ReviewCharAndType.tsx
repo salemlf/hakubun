@@ -14,7 +14,8 @@ import {
   ReviewType,
 } from "../../types/ReviewSessionTypes";
 import SubjectChars from "../SubjectChars/SubjectChars";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 type ReviewTypeProps = {
   reviewType: ReviewType;

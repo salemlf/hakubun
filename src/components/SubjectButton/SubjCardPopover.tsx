@@ -3,8 +3,8 @@ import { getTimeFromNow } from "../../services/MiscService";
 import { Subject, SubjectType } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 import SubjectChars from "../SubjectChars/SubjectChars";
-
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 type Props = {
   subject: Subject;

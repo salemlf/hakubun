@@ -27,6 +27,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
+// TODO: change so not using setupIonicReact and IonApp
 setupIonicReact();
 const queryClient = new QueryClient({
   defaultOptions: {

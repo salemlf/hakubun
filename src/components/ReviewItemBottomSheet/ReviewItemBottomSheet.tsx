@@ -16,7 +16,8 @@ import BottomSheetHeader from "./BottomSheetHeader";
 import RadicalBottomSheet from "./RadicalBottomSheet";
 import KanjiBottomSheet from "./KanjiBottomSheet";
 import VocabBottomSheet from "./VocabBottomSheet";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const FullWidthGrid = styled(IonGrid)`
   margin-left: 0;

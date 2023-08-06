@@ -1,6 +1,5 @@
 import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
 import SoundIcon from "../../images/sound.svg";
-import styled from "styled-components/macro";
 import { useAudio } from "../../hooks/useAudio";
 import { getAudioForReading } from "../../services/MiscService";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
@@ -11,6 +10,8 @@ import {
   ReadingsStyle,
 } from "../../styles/SubjectDetailsStyled";
 import Button from "../Button/Button";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 type AudioProps = {
   url: string;

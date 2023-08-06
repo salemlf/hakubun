@@ -8,9 +8,9 @@ import { addOutline } from "ionicons/icons";
 import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
-
-import styled from "styled-components/macro";
 import { Chip } from "../../styles/BaseStyledComponents";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const AddButton = styled(Chip)`
   background-color: var(--ion-color-secondary);

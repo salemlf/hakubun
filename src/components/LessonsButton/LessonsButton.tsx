@@ -5,7 +5,8 @@ import {
   BaseReviewLessonButtonBadge,
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const LessonsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-lesson);

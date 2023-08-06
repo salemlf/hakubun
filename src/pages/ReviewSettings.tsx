@@ -20,8 +20,9 @@ import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
 import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
 import BasicReviewSettings from "../components/BasicReviewSettings/BasicReviewSettings";
 import AdvancedReviewSettings from "../components/AdvancedReviewSettings/AdvancedReviewSettings";
-import styled from "styled-components/macro";
 import AnimatedPage from "../components/AnimatedPage";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);

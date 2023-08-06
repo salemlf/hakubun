@@ -1,5 +1,6 @@
 import { IonHeader, IonTitle, IonToolbar } from "@ionic/react";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Percentage = styled.h2`
   font-size: 2rem;

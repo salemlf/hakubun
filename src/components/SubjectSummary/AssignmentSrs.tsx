@@ -6,7 +6,8 @@ import {
   SubjSummaryCol,
   SubjSummaryRow,
 } from "../../styles/SubjectDetailsStyled";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const AssignmentSrsContainer = styled(SubjSummaryCol)`
   justify-content: flex-end;

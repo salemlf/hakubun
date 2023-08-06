@@ -3,8 +3,9 @@ import { TabData } from "../types/MiscTypes";
 import SwipeableTabs from "../components/SwipeableTabs";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import FloatingTabBar from "../components/FloatingTabBar";
-import styled from "styled-components/macro";
 import AnimatedPage from "../components/AnimatedPage";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);

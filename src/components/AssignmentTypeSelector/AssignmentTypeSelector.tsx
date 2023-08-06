@@ -79,7 +79,8 @@ const AssignTypeOption = styled.label<AssignTypeOptionProps>`
     transition: 120ms transform ease-in-out;
     box-shadow: inset 1em 1em var(--form-control-color);
     /* Windows High Contrast Mode */
-    background-color: CanvasText;
+    /* background-color: CanvasText; */
+    background-color: white;
   }
 
   input[type="checkbox"]:checked::before {

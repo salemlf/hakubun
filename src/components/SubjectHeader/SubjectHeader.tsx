@@ -2,8 +2,9 @@ import { IonHeader } from "@ionic/react";
 import { Subject } from "../../types/Subject";
 import LvlBadge from "../LvlBadge/LvlBadge";
 import SubjNameAndCharacter from "./SubjNameAndCharacter";
-import styled from "styled-components/macro";
 import { Row } from "../../styles/SubjectDetailsStyled";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 // TODO: make subject name and char larger, then decrease size of level and subject cards on scrolldown
 const Container = styled(IonHeader)`

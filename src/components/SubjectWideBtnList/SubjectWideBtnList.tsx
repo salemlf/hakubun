@@ -13,8 +13,9 @@ import {
   Subject,
 } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
-import styled from "styled-components/macro";
 import { useHistory } from "react-router";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Characters = styled(SubjectChars)`
   display: flex;

@@ -1,7 +1,8 @@
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { SubjectType, Subject } from "../../types/Subject";
 import ImageFallback from "../ImageFallback/ImageFallback";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 type CharDivProps = {
   withBgColor: boolean;

@@ -1,10 +1,10 @@
 import { SetStateAction, useEffect, useRef } from "react";
 import { motion, useAnimate } from "framer-motion";
 import WanakanaInput from "./WanakanaInput";
-
-import styled from "styled-components/macro";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const InputRow = styled(motion.div)`
   width: 100%;

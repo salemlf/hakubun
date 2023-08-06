@@ -10,7 +10,8 @@ import type { AriaPopoverProps } from "react-aria";
 import type { OverlayTriggerState } from "react-stately";
 import { useOverlayTrigger } from "react-aria";
 import { useOverlayTriggerState } from "react-stately";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 // TODO: add styles to underlay (position: fixed; inset: 0;) depending on isModal state
 const Underlay = styled.div``;

@@ -10,7 +10,8 @@ import {
   SubjDetailTxt,
   SubjSummaryCol,
 } from "../../styles/SubjectDetailsStyled";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
   padding-left: 0;

@@ -1,5 +1,6 @@
 import { IonBadge } from "@ionic/react";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Badge = styled(IonBadge)`
   font-size: 1.75rem;

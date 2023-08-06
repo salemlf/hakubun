@@ -19,10 +19,10 @@ import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
-import styled from "styled-components/macro";
 import { TabData } from "../../types/MiscTypes";
-import React, { useEffect, useRef, useState } from "react";
 import SwipeableTabs from "../SwipeableTabs";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const ReadingHeading = styled(SubjDetailSubHeading)`
   margin-bottom: 0;

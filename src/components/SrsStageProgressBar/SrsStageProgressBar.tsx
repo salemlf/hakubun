@@ -1,6 +1,7 @@
 import { IonRow, IonSkeletonText } from "@ionic/react";
 import { Assignment } from "../../types/Assignment";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const ProgressWrapper = styled(IonRow)`
   margin-top: 5px;

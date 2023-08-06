@@ -17,9 +17,10 @@ import { ReviewQueueItem, ReviewPostItem } from "../types/ReviewSessionTypes";
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import { FullWidthGrid } from "../styles/BaseStyledComponents";
-import styled from "styled-components/macro";
 import { useLocation } from "react-router-dom";
 import AnimatedPage from "../components/AnimatedPage";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--light-greyish-purple);

@@ -1,5 +1,6 @@
 import { IonSkeletonText } from "@ionic/react";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const SubjectButtonSkeleton = styled(IonSkeletonText)`
   margin: 0;

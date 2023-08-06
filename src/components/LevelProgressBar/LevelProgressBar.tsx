@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import styled from "styled-components/macro";
 import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
 import { getAssignmentStatuses } from "../../services/SubjectAndAssignmentService";
 import { IonSkeletonText } from "@ionic/react";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const PillShapedBar = styled.div`
   border-radius: 18px;

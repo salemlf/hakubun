@@ -2,7 +2,8 @@ import { useState } from "react";
 import { IonItem, IonList, IonSelect, IonSelectOption } from "@ionic/react";
 import { Assignment } from "../../types/Assignment";
 import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Select = styled(IonSelect)`
   font-size: 1.25rem;

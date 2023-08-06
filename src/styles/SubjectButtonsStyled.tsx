@@ -1,7 +1,8 @@
-import styled from "styled-components/macro";
 import { Col } from "./SubjectDetailsStyled";
 import { SubjectType } from "../types/Subject";
 import { IonBadge, IonButton, IonSkeletonText } from "@ionic/react";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 type DefaultBtnProps = {
   bigBtn: boolean;

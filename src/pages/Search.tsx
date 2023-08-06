@@ -7,9 +7,10 @@ import { SubjectWideButton } from "../components/SubjectWideBtnList";
 import FloatingTabBar from "../components/FloatingTabBar/FloatingTabBar";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
-import styled from "styled-components/macro";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);

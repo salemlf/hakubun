@@ -6,7 +6,8 @@ import {
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
 import ContextIcon from "../../images/context.svg";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const ContextSentenceContainer = styled(IonRow)`
   display: flex;

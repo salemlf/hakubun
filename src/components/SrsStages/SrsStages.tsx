@@ -1,9 +1,10 @@
 import { IonCol, IonGrid, IonRow } from "@ionic/react";
 import { SrsLevelName } from "../../types/MiscTypes";
 import { getSrsLevelColor } from "../../services/SubjectAndAssignmentService";
-import styled from "styled-components/macro";
 import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
 import SrsStagesLoadingSkeleton from "./SrsStagesLoadingSkeleton";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const SrsButtonContainer = styled(IonGrid)`
   display: flex;

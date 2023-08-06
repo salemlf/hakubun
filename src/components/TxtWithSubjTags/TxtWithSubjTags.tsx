@@ -5,7 +5,8 @@ import { getTagColor } from "../../services/SubjectAndAssignmentService";
 import { TagType } from "../../types/MiscTypes";
 import { TAG_REGEXES } from "../../constants";
 import { SubjDetailTxt } from "../../styles/SubjectDetailsStyled";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 type TagRegexes = {
   radRegEx: RegExp;

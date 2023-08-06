@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const AnimatedPageContainer = styled(motion.main)`
   display: flex;

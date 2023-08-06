@@ -11,10 +11,12 @@ import {
 import { useUserAuth } from "../../contexts/AuthContext";
 import LvlBadge from "../LvlBadge/LvlBadge";
 import SettingsIcon from "../../images/settings.svg";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const SettingsImg = styled.img`
-  max-height: 100%;
+  width: 3em;
+  height: 3em;
 `;
 
 const Button = styled(IonButton)`

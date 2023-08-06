@@ -9,7 +9,8 @@ import { Subject } from "../../types/Subject";
 import SubjectButton from "../SubjectButton";
 import BasicCard from "../BasicCard";
 import SrsStageProgressBar from "../SrsStageProgressBar/SrsStageProgressBar";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const KanjiItemContainer = styled(IonCol)`
   margin-bottom: 10px;

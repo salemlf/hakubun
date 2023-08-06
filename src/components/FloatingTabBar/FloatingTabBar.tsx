@@ -4,9 +4,10 @@ import { IonIcon } from "@ionic/react";
 import HomeIcon from "../../images/home.svg";
 import SubjectsIcon from "../../images/subjects.svg";
 import SearchIcon from "../../images/search.svg";
-import styled from "styled-components/macro";
 import { NavLink, useLocation } from "react-router-dom";
 import React from "react";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const TabBarContainer = styled(NavigationMenu.Root)`
   position: fixed;

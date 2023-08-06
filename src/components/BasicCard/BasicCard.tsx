@@ -5,7 +5,8 @@ import {
   IonCardTitle,
   IonSkeletonText,
 } from "@ionic/react";
-import styled from "styled-components/macro";
+// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Card = styled(IonCard)`
   margin: 0;
