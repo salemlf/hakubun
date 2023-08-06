@@ -3,6 +3,7 @@ import {
   Route,
   Routes,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import Home from "../pages/Home";
 import { SubjectDetails } from "../pages/SubjectDetails";
@@ -22,25 +23,26 @@ export const AppStack = () => {
 
   return (
     <Router>
-      <AnimatePresence mode="wait">
-        <Routes>
-          <Route path="/review/settings" element={<ReviewSettings />} />
-          <Route
-            path="/review/session"
-            element={<ReviewSessionQueue />}
-          ></Route>
-          <Route path="/review/summary" element={<ReviewSummary />} />
-          <Route path="/subjects" element={<Subjects />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/subjects/:id" element={<SubjectDetails />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/" element={<Navigate replace to="/home" />} />
-          <Route
-            path="/authenticate"
-            element={<Navigate replace to="/home" />}
-          />
-        </Routes>
-      </AnimatePresence>
+      <AppRoutes />
     </Router>
+  );
+};
+
+const AppRoutes = () => {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/review/settings" element={<ReviewSettings />} />
+        <Route path="/review/session" element={<ReviewSessionQueue />}></Route>
+        <Route path="/review/summary" element={<ReviewSummary />} />
+        <Route path="/subjects" element={<Subjects />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/subjects/:id" element={<SubjectDetails />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Navigate replace to="/home" />} />
+        <Route path="/authenticate" element={<Navigate replace to="/home" />} />
+      </Routes>
+    </AnimatePresence>
   );
 };
