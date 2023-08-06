@@ -7,7 +7,6 @@ import {
   IonToolbar,
   IonTitle,
 } from "@ionic/react";
-import { useHistory } from "react-router";
 import {
   compareAssignmentsByAvailableDate,
   filterAssignmentsByType,
@@ -21,8 +20,8 @@ import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
 import BasicReviewSettings from "../components/BasicReviewSettings/BasicReviewSettings";
 import AdvancedReviewSettings from "../components/AdvancedReviewSettings/AdvancedReviewSettings";
 import AnimatedPage from "../components/AnimatedPage";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -53,7 +52,7 @@ const Title = styled(IonTitle)`
 // TODO: change so using react router to pass data to next page instead of context
 export const ReviewSettings = () => {
   const { createNewReviewSession } = useReviewQueue();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     isLoading: availForReviewLoading,
@@ -112,7 +111,7 @@ export const ReviewSettings = () => {
 
     createNewReviewSession(assignmentBatchToReview, subjIDs);
     // TODO: pass data to next page instead of caching in context?
-    history.push("/review/session");
+    navigate("/review/session");
   };
 
   return (

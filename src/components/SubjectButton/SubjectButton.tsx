@@ -5,7 +5,7 @@ import RadicalButton from "./RadicalButton";
 import KanjiButton from "./KanjiButton";
 import SubjectButtonLoading from "./SubjectButtonLoading";
 import { Assignment } from "../../types/Assignment";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 // TODO: use a context around this or abstract things out, this many props is icky
 type SubjProps = {
@@ -25,13 +25,13 @@ function SubjectButton({
   isButtonLink = false,
   showDetails = true,
 }: SubjProps) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleDismiss = () => dismiss();
 
-  const navigate = (route: string) => {
+  const navigateToRoute = (route: string) => {
     handleDismiss();
-    history.push(route);
+    navigate(route);
   };
 
   const [present, dismiss] = useIonPopover(SubjCardPopover, {
@@ -43,7 +43,7 @@ function SubjectButton({
 
   const onClickEvent = (e: any) => {
     if (isButtonLink) {
-      navigate(`/subjects/${subject.id}`);
+      navigateToRoute(`/subjects/${subject.id}`);
     } else {
       present({
         event: e.nativeEvent,

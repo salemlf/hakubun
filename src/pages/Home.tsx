@@ -18,13 +18,13 @@ import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
 import SrsStages from "../components/SrsStages/SrsStages";
 import FloatingTabBar from "../components/FloatingTabBar";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
-import { useHistory } from "react-router";
 import AnimatedPage from "../components/AnimatedPage";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const appContext = useUserAuth();
 
@@ -37,7 +37,7 @@ const Home = () => {
 
   const removeAuth = () => {
     appContext.logout();
-    history.push("/authenticate");
+    navigate("/authenticate");
   };
 
   const setUserDetails = () => {

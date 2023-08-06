@@ -1,5 +1,9 @@
-import { Redirect, Switch } from "react-router";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import Home from "../pages/Home";
 import { SubjectDetails } from "../pages/SubjectDetails";
 import { ReviewSettings } from "../pages/ReviewSettings";
@@ -19,29 +23,23 @@ export const AppStack = () => {
   return (
     <Router>
       <AnimatePresence mode="wait">
-        <Switch>
-          <Route
-            path="/review/settings"
-            component={ReviewSettings}
-            exact={true}
-          />
+        <Routes>
+          <Route path="/review/settings" element={<ReviewSettings />} />
           <Route
             path="/review/session"
-            component={ReviewSessionQueue}
-            exact={true}
-          />
+            element={<ReviewSessionQueue />}
+          ></Route>
+          <Route path="/review/summary" element={<ReviewSummary />} />
+          <Route path="/subjects" element={<Subjects />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/subjects/:id" element={<SubjectDetails />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Navigate replace to="/home" />} />
           <Route
-            path="/review/summary"
-            component={ReviewSummary}
-            exact={true}
+            path="/authenticate"
+            element={<Navigate replace to="/home" />}
           />
-          <Route path="/subjects" component={Subjects} exact={true} />
-          <Route path="/search" component={Search} exact={true} />
-          <Route path="/subjects/:id" component={SubjectDetails} />
-          <Route path="/home" component={Home} exact={true} />
-          <Route exact={true} path="/" render={() => <Redirect to="/home" />} />
-          <Redirect from="/authenticate" to="/home" exact={true} />
-        </Switch>
+        </Routes>
       </AnimatePresence>
     </Router>
   );

@@ -12,9 +12,9 @@ import {
 } from "../../types/ReviewSessionTypes";
 
 import HomeIcon from "../../images/home.svg";
-import { useHistory } from "react-router";
 // import styled from "styled-components/macro";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;
@@ -76,7 +76,7 @@ type Props = {
 };
 
 function ReviewSessionHeader({ currentReviewItem }: Props) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { queueDataState } = useReviewQueue();
 
@@ -88,7 +88,7 @@ function ReviewSessionHeader({ currentReviewItem }: Props) {
     <SessionHeader>
       <Toolbar>
         <IonButtons slot="start">
-          <HomeBtn onClick={() => history.push("/home")}>
+          <HomeBtn onClick={() => navigate("/home")}>
             <HomeIconStyled icon={HomeIcon}></HomeIconStyled>
           </HomeBtn>
         </IonButtons>

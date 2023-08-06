@@ -13,9 +13,8 @@ import {
   Subject,
 } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
-import { useHistory } from "react-router";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Characters = styled(SubjectChars)`
   display: flex;
@@ -97,14 +96,14 @@ type Props = {
 };
 
 export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   if (subject.object === "radical" && findImages) {
     let updatedSubj = setSubjectAvailImgs(subject);
     subject = updatedSubj;
   }
 
   const onSubjBtnClick = (e: any) => {
-    history.push(`/subjects/${subject.id}`);
+    navigate(`/subjects/${subject.id}`);
   };
 
   return (

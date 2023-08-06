@@ -5,8 +5,7 @@ import {
   BaseReviewLessonButtonBadge,
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
-import { useHistory } from "react-router";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import styled from "styled-components/macro";
 import styled from "styled-components";
 
@@ -28,7 +27,7 @@ type Props = {
 };
 
 function ReviewsButton({ level }: Props) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     isLoading: numReviewsLoading,
@@ -47,7 +46,7 @@ function ReviewsButton({ level }: Props) {
       title="Reviews"
       color="clear"
       // TODO: change so if no reviews -> doesn't redirect and displays a message
-      onClick={() => history.push("/review/settings")}
+      onClick={() => navigate("/review/settings")}
       style={{
         backgroundImage: `url(${
           numReviews

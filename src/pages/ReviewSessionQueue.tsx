@@ -1,10 +1,8 @@
+import { useEffect } from "react";
 import { IonContent, IonGrid } from "@ionic/react";
 import { useReviewQueue } from "../hooks/useReviewQueue";
 import ReviewSessionHeader from "../components/ReviewSessionHeader/ReviewSessionHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";
-import { useHistory } from "react-router-dom";
-
-import { useEffect } from "react";
 import { useCreateReview } from "../hooks/useCreateReview";
 import {
   createReviewPostData,
@@ -12,8 +10,8 @@ import {
 } from "../services/ReviewService";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 import AnimatedPage from "../components/AnimatedPage";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -40,7 +38,8 @@ export const ReviewSessionQueue = () => {
   const { queueDataState } = useReviewQueue();
   const { mutate: createReviews, mutateAsync: createReviewsAsync } =
     useCreateReview();
-  const history = useHistory();
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (
       !queueDataState.isLoading &&
@@ -81,7 +80,7 @@ export const ReviewSessionQueue = () => {
         reviewData,
         reviewResponses,
       };
-      history.push("/review/summary", reviewInfo);
+      navigate("/review/summary", { state: reviewInfo });
     });
   };
 

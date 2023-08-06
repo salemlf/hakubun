@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router";
 import {
   IonInput,
   IonContent,
@@ -11,6 +10,7 @@ import {
   IonSkeletonText,
 } from "@ionic/react";
 import { useUserAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const TokenInput = () => {
   // TODO: change token to useRef?
@@ -18,7 +18,7 @@ const TokenInput = () => {
   const [isAuthLoading, setIsAuthLoading] = useState(false);
   const [authErr, setAuthErr] = useState("");
   const [loading, setLoading] = useState(true);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const auth = useUserAuth();
 
@@ -34,7 +34,7 @@ const TokenInput = () => {
     if (success) {
       console.log("Successfully logged in!");
       setAuthErr("");
-      history.push("/home");
+      navigate("/home");
     } else {
       setAuthErr(
         "An error occurred retrieving your info, make sure your API token is correct"
@@ -45,7 +45,7 @@ const TokenInput = () => {
   };
 
   const onInput = (ev: Event) => {
-    const value = (ev.target as HTMLIonInputElement).value as string;
+    const value = (ev.target as HTMLInputElement).value as string;
     setToken(value);
   };
 
