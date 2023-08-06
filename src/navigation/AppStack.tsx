@@ -8,8 +8,14 @@ import { Subjects } from "../pages/Subjects";
 import { Search } from "../pages/Search";
 import ReviewSummary from "../pages/ReviewSummary";
 import { AnimatePresence } from "framer-motion";
+import { App } from "@capacitor/app";
 
 export const AppStack = () => {
+  // TODO: trigger some event for this, use listenerEvent.canGoBack
+  App.addListener("backButton", (listenerEvent) => {
+    console.log("Back button used! listenerEvent:", listenerEvent);
+  });
+
   return (
     <Router>
       <AnimatePresence mode="wait">
