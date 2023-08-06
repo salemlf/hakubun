@@ -20,7 +20,7 @@ export const AuthStack = () => {
 const AuthRoutes = () => {
   const location = useLocation();
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       <Routes location={location} key={location.pathname}>
         <Route path="/authenticate" element={<TokenInput />} />
         <Route path="/" element={<Navigate replace to="/authenticate" />} />

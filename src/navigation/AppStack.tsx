@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -5,6 +6,8 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
+import { App } from "@capacitor/app";
+import { AnimatePresence } from "framer-motion";
 import Home from "../pages/Home";
 import { SubjectDetails } from "../pages/SubjectDetails";
 import { ReviewSettings } from "../pages/ReviewSettings";
@@ -12,8 +15,7 @@ import { ReviewSessionQueue } from "../pages/ReviewSessionQueue";
 import { Subjects } from "../pages/Subjects";
 import { Search } from "../pages/Search";
 import ReviewSummary from "../pages/ReviewSummary";
-import { AnimatePresence } from "framer-motion";
-import { App } from "@capacitor/app";
+import FloatingTabBar from "../components/FloatingTabBar";
 
 export const AppStack = () => {
   // TODO: trigger some event for this, use listenerEvent.canGoBack
@@ -30,8 +32,26 @@ export const AppStack = () => {
 
 const AppRoutes = () => {
   const location = useLocation();
+  const [showTabs, setShowTabs] = useState(true);
+  const pagesToHideTabBar = [
+    "/review/settings",
+    "/review/session",
+    "review/summary",
+  ];
+
+  // TODO: use style for FloatingTabBar
+  let tabBarStyle = showTabs === true ? undefined : { display: "none" };
+
+  useEffect(() => {
+    if (pagesToHideTabBar.includes(location.pathname)) {
+      setShowTabs(false);
+    } else {
+      setShowTabs(true);
+    }
+  }, [location.pathname]);
+
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       <Routes location={location} key={location.pathname}>
         <Route path="/review/settings" element={<ReviewSettings />} />
         <Route path="/review/session" element={<ReviewSessionQueue />}></Route>
@@ -43,6 +63,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Navigate replace to="/home" />} />
         <Route path="/authenticate" element={<Navigate replace to="/home" />} />
       </Routes>
+      <FloatingTabBar styleProps={tabBarStyle} />
     </AnimatePresence>
   );
 };

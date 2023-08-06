@@ -2,7 +2,7 @@ import { IonGrid } from "@ionic/react";
 import { TabData } from "../types/MiscTypes";
 import SwipeableTabs from "../components/SwipeableTabs";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
-import FloatingTabBar from "../components/FloatingTabBar";
+// import FloatingTabBar from "../components/FloatingTabBar";
 import AnimatedPage from "../components/AnimatedPage";
 // import styled from "styled-components/macro";
 import styled from "styled-components";
@@ -40,7 +40,7 @@ export const Subjects = () => {
           <p>Subjects Page - TO DO</p>
         </IonGrid>
       </ContentWithTabBar>
-      <FloatingTabBar />
+      {/* <FloatingTabBar /> */}
     </Page>
   );
 };

@@ -6,7 +6,6 @@ import SubjectsIcon from "../../images/subjects.svg";
 import SearchIcon from "../../images/search.svg";
 import { NavLink, useLocation } from "react-router-dom";
 import React from "react";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const TabBarContainer = styled(NavigationMenu.Root)`
@@ -91,9 +90,13 @@ const PageLink = ({ pathName, children, ...props }: PageLinkProps) => {
   );
 };
 
-function FloatingTabBar() {
+type Props = {
+  styleProps: React.CSSProperties | undefined;
+};
+
+function FloatingTabBar({ styleProps }: Props) {
   return (
-    <TabBarContainer>
+    <TabBarContainer style={styleProps}>
       <TabList>
         <NavigationMenu.Item>
           <PageLink pathName="/subjects">

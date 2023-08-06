@@ -7,7 +7,7 @@ import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDeta
 import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
 import VocabSubjDetails from "../components/VocabSubjDetails/VocabSubjDetails";
 import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
-import FloatingTabBar from "../components/FloatingTabBar";
+// import FloatingTabBar from "../components/FloatingTabBar";
 import AnimatedPage from "../components/AnimatedPage";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 // import styles from "./SubjectDetails.module.scss";
@@ -65,7 +65,7 @@ export const SubjectDetails = () => {
           </ContentWithTabBar>
         </>
       )}
-      <FloatingTabBar />
+      {/* <FloatingTabBar /> */}
     </Page>
   );
 };
