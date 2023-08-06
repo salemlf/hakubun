@@ -1,27 +1,19 @@
 import { useParams } from "react-router-dom";
-import {
-  IonContent,
-  IonGrid,
-  IonPage,
-  IonRow,
-  IonSkeletonText,
-} from "@ionic/react";
-
+import { IonGrid, IonSkeletonText } from "@ionic/react";
 import { useSubjectByID } from "../hooks/useSubjectByID";
-
+import { Kanji, Radical, Vocabulary } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
 import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";
 import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
 import VocabSubjDetails from "../components/VocabSubjDetails/VocabSubjDetails";
 import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
-
+import FloatingTabBar from "../components/FloatingTabBar";
+import AnimatedPage from "../components/AnimatedPage";
+import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styles from "./SubjectDetails.module.scss";
 import styled from "styled-components/macro";
-import { Kanji, Radical, Vocabulary } from "../types/Subject";
-import { ContentWithTabBar } from "../styles/BaseStyledComponents";
-import FloatingTabBar from "../components/FloatingTabBar";
 
-const Page = styled(IonPage)`
+const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
   background-color: var(--dark-greyish-purple);
 `;

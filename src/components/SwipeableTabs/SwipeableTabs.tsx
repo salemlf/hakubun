@@ -157,6 +157,7 @@ type TabsComponentProps = {
   roundedContainer?: boolean;
 };
 
+// TODO: actually use the passed in tabBgColor, tabSelectionColor, and roundedContainer
 function SwipeableTabs({
   tabs,
   defaultValue,
@@ -216,12 +217,6 @@ function SwipeableTabs({
   useEffect(() => {
     if (tabElements.length === 0 && tabListRef.current) {
       const tabs = tabListRef.current.querySelectorAll("[role=tab]");
-      // *testing
-      console.log(
-        "🚀 ~ file: SwipeableTabs.tsx:1361 ~ useEffect ~ tabs:",
-        tabs
-      );
-      // *testing
       setTabElements(Array.from(tabs));
     }
   }, [tabElements]);
@@ -257,7 +252,6 @@ function SwipeableTabs({
   };
 
   const x = useTransform(scrollXProgress, (x) => {
-    console.log("🚀 ~ file: SwipeableTabs.tsx:1419 ~ x:", x);
     return transform(x, "offsetLeft");
   });
   const width = useTransform(scrollXProgress, (x) =>
@@ -268,22 +262,12 @@ function SwipeableTabs({
   // When the user scrolls, update the selected key
   // so that the correct tab panel becomes interactive.
   useEffect(() => {
-    // *testing
-    console.log("Scroll useEffect happening...");
-    // *testing
     const handleChange = (x: number) => {
       if (animationRef.current || !tabs.length) {
-        // *testing
-        console.log("RETURNING b/c animationRef.current || !tabs.length");
-        // *testing
         return;
       }
 
       setSelectedTabKey(tabs[getIndex(x)].id);
-
-      // *testing
-      console.log("tabs[getIndex(x)].key: ", tabs[getIndex(x)].id);
-      // *testing
     };
     const unsubscribe = scrollXProgress.on("change", handleChange);
 
@@ -294,8 +278,6 @@ function SwipeableTabs({
   // the scroll position to the newly selected tab panel.
   const animationRef = useRef<any>();
   const onSelectionChange = (selectedTab: string) => {
-    console.log("onSelectionChange called in tabs component!");
-
     setSelectedTabKey(selectedTab);
 
     // If the scroll position is already moving but we aren't animating

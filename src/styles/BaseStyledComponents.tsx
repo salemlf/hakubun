@@ -1,6 +1,7 @@
 import { IonAlert, IonCol, IonContent, IonGrid, IonRow } from "@ionic/react";
 import styled from "styled-components/macro";
 import Button from "../components/Button/Button";
+import { motion } from "framer-motion";
 
 export const FullWidthGrid = styled(IonGrid)`
   margin-left: 0;

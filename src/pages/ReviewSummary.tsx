@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   IonContent,
   IonHeader,
-  IonPage,
   IonToolbar,
   IonBackButton,
   IonButtons,
@@ -20,8 +19,9 @@ import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import { FullWidthGrid } from "../styles/BaseStyledComponents";
 import styled from "styled-components/macro";
 import { useLocation } from "react-router-dom";
+import AnimatedPage from "../components/AnimatedPage";
 
-const Page = styled(IonPage)`
+const Page = styled(AnimatedPage)`
   --ion-background-color: var(--light-greyish-purple);
   background-color: var(--light-greyish-purple);
 `;

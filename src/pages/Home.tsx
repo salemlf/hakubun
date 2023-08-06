@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import {
-  IonPage,
   IonGrid,
   IonCol,
   IonRow,
@@ -20,6 +19,7 @@ import SrsStages from "../components/SrsStages/SrsStages";
 import FloatingTabBar from "../components/FloatingTabBar";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import { useHistory } from "react-router";
+import AnimatedPage from "../components/AnimatedPage";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
@@ -48,7 +48,7 @@ const Home = () => {
   };
 
   return (
-    <IonPage>
+    <AnimatedPage>
       <HomeHeader></HomeHeader>
       <ContentWithTabBar>
         <IonGrid>
@@ -98,7 +98,7 @@ const Home = () => {
         {homeLoading && <IonSpinner name="dots"></IonSpinner>}
       </ContentWithTabBar>
       <FloatingTabBar />
-    </IonPage>
+    </AnimatedPage>
   );
 };
 

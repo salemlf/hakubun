@@ -1,11 +1,12 @@
-import { IonGrid, IonPage } from "@ionic/react";
+import { IonGrid } from "@ionic/react";
 import { TabData } from "../types/MiscTypes";
-import styled from "styled-components/macro";
 import SwipeableTabs from "../components/SwipeableTabs";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import FloatingTabBar from "../components/FloatingTabBar";
+import styled from "styled-components/macro";
+import AnimatedPage from "../components/AnimatedPage";
 
-const Page = styled(IonPage)`
+const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
   background-color: var(--dark-greyish-purple);
 `;

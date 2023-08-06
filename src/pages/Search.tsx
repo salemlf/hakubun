@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IonList, IonPage, IonSearchbar } from "@ionic/react";
+import { IonList, IonSearchbar } from "@ionic/react";
 import Fuse from "fuse.js";
 import { flattenSearchResults } from "../services/MiscService";
 import { useAllSubjects } from "../hooks/useAllSubjects";
@@ -9,9 +9,9 @@ import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
 import styled from "styled-components/macro";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
+import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
 
-const Page = styled(IonPage)`
-  --ion-background-color: var(--dark-greyish-purple);
+const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
 `;
 

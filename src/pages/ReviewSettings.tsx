@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   IonContent,
-  IonPage,
   IonHeader,
   IonBackButton,
   IonButtons,
@@ -22,9 +21,9 @@ import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
 import BasicReviewSettings from "../components/BasicReviewSettings/BasicReviewSettings";
 import AdvancedReviewSettings from "../components/AdvancedReviewSettings/AdvancedReviewSettings";
 import styled from "styled-components/macro";
+import AnimatedPage from "../components/AnimatedPage";
 
-const Page = styled(IonPage)`
-  --ion-background-color: var(--dark-greyish-purple);
+const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
 
   ion-select::part(icon) {

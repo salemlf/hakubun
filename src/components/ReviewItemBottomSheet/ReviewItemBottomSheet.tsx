@@ -11,7 +11,7 @@ import {
 import { useLocation } from "react-router";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { Subject } from "../../types/Subject";
-import { ReviewQueueItem, ReviewType } from "../../types/ReviewSessionTypes";
+import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import BottomSheetHeader from "./BottomSheetHeader";
 import RadicalBottomSheet from "./RadicalBottomSheet";
 import KanjiBottomSheet from "./KanjiBottomSheet";
@@ -40,6 +40,7 @@ type Props = {
   currentReviewItem: ReviewQueueItem;
 };
 
+// TODO: modify to use some other sheet modal so don't need to use IonPage
 // TODO: some duplicated logic for tab lists in these child components, improve
 function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   let selectedTabColor = "var(--darkest-purple)";

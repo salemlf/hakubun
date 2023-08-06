@@ -1,4 +1,4 @@
-import { IonContent, IonGrid, IonPage } from "@ionic/react";
+import { IonContent, IonGrid } from "@ionic/react";
 import { useReviewQueue } from "../hooks/useReviewQueue";
 import ReviewSessionHeader from "../components/ReviewSessionHeader/ReviewSessionHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";
@@ -12,8 +12,10 @@ import {
   getCompletedReviewSessionData,
 } from "../services/ReviewService";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
+import AnimatedPage from "../components/AnimatedPage";
+// import { AnimatedPage } from "../styles/BaseStyledComponents";
 
-const Page = styled(IonPage)`
+const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
   background-color: var(--dark-greyish-purple);
 
@@ -72,7 +74,6 @@ export const ReviewSessionQueue = () => {
     });
     Promise.all(promises).then(function (results) {
       console.log(results);
-      console.log("AFTER submit reviews?");
 
       // TODO: flatten this assignment data on the summary page
       let reviewResponses = results;
