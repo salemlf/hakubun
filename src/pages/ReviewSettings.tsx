@@ -132,6 +132,10 @@ export const ReviewSettings = () => {
         {!availForReviewLoading && !availForReviewErr && availForReviewData && (
           <>
             <SwipeableTabs
+              tabBgColor="var(--wanikani-review)"
+              tabSelectionColor="black"
+              tabSelectionColorRGBA="rgba(0, 0, 0, .8)"
+              roundedContainer={false}
               tabs={[
                 {
                   id: "basic",

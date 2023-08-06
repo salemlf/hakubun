@@ -56,6 +56,7 @@ const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   outline-style: none;
+  font-size: 1rem;
   color: ${({ selectioncolor }) => selectioncolor};
   background-color: ${({ bgcolor }) => bgcolor};
   transition-property: background-color, border-color, color, fill, stroke,
