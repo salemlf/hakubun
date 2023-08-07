@@ -1,13 +1,20 @@
 import { useState } from "react";
-import { IonItem, IonList, IonSelect, IonSelectOption } from "@ionic/react";
 import { Assignment } from "../../types/Assignment";
 import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
-// import styled from "styled-components/macro";
+import Selector, { SelectItem } from "../Selector";
 import styled from "styled-components";
 
-const Select = styled(IonSelect)`
+const BatchSizeContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 16px;
+  align-items: center;
+`;
+
+const BatchSizeLabel = styled.p`
   font-size: 1.25rem;
-  min-height: 48px;
+  color: white;
+  padding-top: 0;
 `;
 
 type Props = {
@@ -16,41 +23,40 @@ type Props = {
   onBatchSizeChange: (batchSize: number) => void;
 };
 
+// TODO: use actual label, make more accessible
 function BatchSizeOption({
   availForReview,
   defaultSize,
   onBatchSizeChange,
 }: Props) {
   // TODO: move batchSize/setBatchSize state up a component
-  let [batchSize, setBatchSize] = useState<React.Key>(defaultSize);
+  let [batchSize, setBatchSize] = useState<number>(defaultSize);
   let availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter(
     (batchSize) => batchSize <= availForReview.length
   );
 
-  const onBatchUpdate = (batchNum: number) => {
+  const onBatchUpdate = (batchStr: string) => {
+    let batchNum = parseInt(batchStr);
     setBatchSize(batchNum);
     onBatchSizeChange(batchNum);
   };
 
   return (
-    <IonList>
-      <IonItem>
-        <Select
-          aria-label="batch-size"
-          label="Batch Size"
-          value={batchSize}
-          onIonChange={(e) => onBatchUpdate(e.detail.value)}
-        >
-          {availBatchSizes.map((batchSize: number) => {
-            return (
-              <IonSelectOption key={`batch_${batchSize}`} value={batchSize}>
-                {batchSize}
-              </IonSelectOption>
-            );
-          })}
-        </Select>
-      </IonItem>
-    </IonList>
+    <BatchSizeContainer>
+      <BatchSizeLabel>Batch Size</BatchSizeLabel>
+      <Selector
+        value={batchSize.toString()}
+        onValueChange={(updatedValue) => onBatchUpdate(updatedValue)}
+      >
+        {availBatchSizes.map((batchSize: number) => {
+          return (
+            <SelectItem key={`batch_${batchSize}`} value={batchSize.toString()}>
+              {batchSize}
+            </SelectItem>
+          );
+        })}
+      </Selector>
+    </BatchSizeContainer>
   );
 }
 
