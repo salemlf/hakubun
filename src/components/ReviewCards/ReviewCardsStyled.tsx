@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { SubjectType } from "../../types/Subject";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
-export const TestReviewCardContainer = styled(motion.div)`
+export const ReviewCardContainer = styled(motion.div)`
   border-radius: 10px;
   margin: 10px;
   display: flex;
@@ -19,7 +18,7 @@ type ReviewItemProps = {
 
 export const ReviewCard = styled(motion.div)<ReviewItemProps>`
   position: relative;
-  padding: 50px 0 100px 0;
+  padding: 80px 0 125px 0;
   border-radius: 10px;
   width: 100%;
   background-color: ${({ subjtype }) => {

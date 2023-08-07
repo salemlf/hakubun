@@ -23,7 +23,7 @@ import {
   RetryCardOverlay,
   ReviewCard,
   SwipeIcon,
-  TestReviewCardContainer,
+  ReviewCardContainer,
 } from "./ReviewCardsStyled";
 
 type CardProps = {
@@ -157,12 +157,12 @@ type Props = {
 // TODO: change to just use queueDataState.reviewQueue[queueDataState.currQueueIndex] instead of prop?
 function ReviewCards({ currentReviewItem }: Props) {
   return (
-    <TestReviewCardContainer>
+    <ReviewCardContainer>
       <Card
         key={currentReviewItem.itemID}
         currentReviewItem={currentReviewItem}
       />
-    </TestReviewCardContainer>
+    </ReviewCardContainer>
   );
 }
 
