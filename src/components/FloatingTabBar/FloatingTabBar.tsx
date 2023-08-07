@@ -9,21 +9,18 @@ import React from "react";
 import styled from "styled-components";
 
 const TabBarContainer = styled(NavigationMenu.Root)`
-  position: fixed;
+  position: sticky;
   bottom: 10px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  display: flex;
-  justify-content: center;
   width: 65%;
   min-width: 200px;
   max-width: 500px;
+  margin: auto;
 `;
 
 const TabList = styled(NavigationMenu.List)`
   background-color: var(--ion-color-secondary);
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   padding: 5px 10px;
   border-radius: 30px;
   list-style: none;
