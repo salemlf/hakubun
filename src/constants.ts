@@ -1,4 +1,6 @@
-export const ASSIGNMENT_BATCH_SIZES = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+export const ASSIGNMENT_BATCH_SIZES = [
+  1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+];
 
 export const INVALID_ANSWER_CHARS = new RegExp(
   /.*[!@#%^&*()_+=[\]{}\|;:",\\/<>\~`].*/,
