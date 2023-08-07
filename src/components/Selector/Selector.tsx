@@ -9,7 +9,7 @@ import CheckmarkIcon from "../../images/checkmark.svg";
 import styled from "styled-components";
 
 const Item = styled(SelectPrimitive.Item)`
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1;
   color: var(--darkest-purple);
   border-radius: 3px;
@@ -34,7 +34,7 @@ const Item = styled(SelectPrimitive.Item)`
 
 const ItemIndicator = styled(SelectPrimitive.ItemIndicator)`
   position: absolute;
-  left: 0;
+  right: 0;
   width: 25px;
   display: inline-flex;
   align-items: center;
@@ -68,7 +68,7 @@ const Trigger = styled(SelectPrimitive.Trigger)`
   justify-content: center;
   border-radius: 4px;
   padding: 0 15px;
-  font-size: 13px;
+  font-size: 1.2rem;
   line-height: 1;
   height: 35px;
   gap: 5px;
