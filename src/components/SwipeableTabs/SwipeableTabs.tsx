@@ -134,6 +134,7 @@ const TabPanelStyled = styled(Tabs.Content)`
 type TabsComponentProps = {
   tabs: TabData[];
   defaultValue: string;
+  scrollToDefault?: boolean;
   tabBgColor?: string;
   tabSelectionColor?: string;
   tabSelectionColorRGBA?: string;
@@ -144,6 +145,7 @@ type TabsComponentProps = {
 function SwipeableTabs({
   tabs,
   defaultValue,
+  scrollToDefault = true,
   tabBgColor,
   tabSelectionColor,
   tabSelectionColorRGBA,
@@ -166,7 +168,7 @@ function SwipeableTabs({
 
   // TODO: clean this up, a not ideal workaround for scrolling to default item
   useEffect(() => {
-    if (tabListRef.current && tabPanelsRef.current) {
+    if (scrollToDefault && tabListRef.current && tabPanelsRef.current) {
       setTimeout(() => {
         onSelectionChange(defaultValue);
       }, 500);

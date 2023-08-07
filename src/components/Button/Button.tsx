@@ -6,13 +6,14 @@ import styled from "styled-components";
 
 type ButtonContainerProps = {
   isPressed: boolean;
+  backgroundcolor: string;
+  color: string;
 };
 
 const ButtonContainer = styled.button<ButtonContainerProps>`
   border-radius: 10px;
-  background-color: ${({ isPressed }) =>
-    isPressed ? "var(--ion-color-primary-shade)" : `var(--ion-color-primary)`};
-  color: white;
+  background-color: ${({ backgroundcolor }) => `${backgroundcolor}`};
+  color: ${({ color }) => `${color}`};
   padding: 6px 8px;
   cursor: pointer;
   user-select: none;
@@ -28,20 +29,31 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
   }
 `;
 
+interface Props extends AriaButtonProps {
+  backgroundColor?: string;
+  color?: string;
+}
+
 // TODO: allow passing in button bgcolor and color
-function Button(props: AriaButtonProps) {
+function Button({
+  backgroundColor = "var(--ion-color-primary)",
+  color = "white",
+  ...props
+}: Props) {
   let { children } = props;
   let ref = useRef(null);
   let { buttonProps, isPressed } = useButton(
     {
       ...props,
-      elementType: "span",
+      elementType: "button",
     },
     ref
   );
 
   return (
     <ButtonContainer
+      backgroundcolor={backgroundColor}
+      color={color}
       {...buttonProps}
       ref={ref}
       isPressed={isPressed}

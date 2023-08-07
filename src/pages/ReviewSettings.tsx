@@ -6,7 +6,9 @@ import {
   IonButtons,
   IonToolbar,
   IonTitle,
+  IonIcon,
 } from "@ionic/react";
+import { useNavigate } from "react-router-dom";
 import {
   compareAssignmentsByAvailableDate,
   filterAssignmentsByType,
@@ -20,8 +22,10 @@ import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
 import BasicReviewSettings from "../components/BasicReviewSettings/BasicReviewSettings";
 import AdvancedReviewSettings from "../components/AdvancedReviewSettings/AdvancedReviewSettings";
 import AnimatedPage from "../components/AnimatedPage";
+import Button from "../components/Button/Button";
+import BackArrowIcon from "../images/back-arrow.svg";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import ShiftBy from "../components/ShiftBy/ShiftBy";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -47,6 +51,10 @@ const Title = styled(IonTitle)`
   width: 100%;
   height: 100%;
   text-align: center;
+`;
+
+const BackButton = styled(Button)`
+  margin-left: 5px;
 `;
 
 // TODO: change so using react router to pass data to next page instead of context
@@ -118,9 +126,16 @@ export const ReviewSettings = () => {
     <Page>
       <HeaderContainer>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/home"></IonBackButton>
-          </IonButtons>
+          <ShiftBy x={10}>
+            <IonButtons slot="start">
+              <BackButton
+                backgroundColor="var(--darkest-purple)"
+                onPress={() => navigate("/home")}
+              >
+                <IonIcon src={BackArrowIcon} />
+              </BackButton>
+            </IonButtons>
+          </ShiftBy>
           <Title>Review Settings</Title>
         </IonToolbar>
       </HeaderContainer>
@@ -160,6 +175,7 @@ export const ReviewSettings = () => {
                 },
               ]}
               defaultValue="basic"
+              scrollToDefault={false}
             />
             <StartReviewBtn onStartReviewBtnClick={onStartReviewBtnClick} />
           </>

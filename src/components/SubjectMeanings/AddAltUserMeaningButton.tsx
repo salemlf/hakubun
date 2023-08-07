@@ -9,7 +9,6 @@ import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
 import { Chip } from "../../styles/BaseStyledComponents";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const AddButton = styled(Chip)`
