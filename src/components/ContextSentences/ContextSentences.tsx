@@ -23,6 +23,7 @@ const SentenceGroup = styled(IonCol)`
 `;
 
 const ContextSentenceTxt = styled.p`
+  font-size: 1rem;
   margin-top: 0;
   margin-bottom: 2px;
   user-select: text;
