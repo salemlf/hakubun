@@ -1,124 +1,97 @@
-import {
-  JSXElementConstructor,
-  ReactElement,
-  RefObject,
-  cloneElement,
-  useRef,
-} from "react";
-import { DismissButton, Overlay, usePopover } from "react-aria";
-import type { AriaPopoverProps } from "react-aria";
-import type { OverlayTriggerState } from "react-stately";
-import { useOverlayTrigger } from "react-aria";
-import { useOverlayTriggerState } from "react-stately";
-// import styled from "styled-components/macro";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
+import { PopoverContentProps } from "@radix-ui/react-popover";
+import React from "react";
 import styled from "styled-components";
 
-// TODO: add styles to underlay (position: fixed; inset: 0;) depending on isModal state
-const Underlay = styled.div``;
+const Content = styled(PopoverPrimitive.Content)`
+  border-radius: 4px;
+  padding: 20px;
+  width: 260px;
+  background-color: white;
+  color: black;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
 
-const Arrow = styled.div`
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background: var(--ion-color-primary);
-  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
-
-  &[data-placement="top"] {
-    top: 100%;
-    transform: translateX(-50%) rotate(180deg);
+  &:focus {
+    box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+      hsl(206 22% 7% / 20%) 0px 10px 20px -15px, 0 0 0 2px var(--darkest-purple);
   }
 
-  &[data-placement="bottom"] {
-    bottom: 100%;
-    transform: translateX(-50%);
+  &[data-state="open"][data-side="top"] {
+    animation-name: slideDownAndFade;
+  }
+  &[data-state="open"][data-side="right"] {
+    animation-name: slideLeftAndFade;
+  }
+  &[data-state="open"][data-side="bottom"] {
+    animation-name: slideUpAndFade;
+  }
+  &[data-state="open"][data-side="left"] {
+    animation-name: slideRightAndFade;
   }
 
-  &[data-placement="left"] {
-    left: 100%;
-    transform: translateY(-50%) rotate(90deg);
+  @keyframes slideUpAndFade {
+    from {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  &[data-placement="right"] {
-    right: 100%;
-    transform: translateY(-50%) rotate(-90deg);
+  @keyframes slideRightAndFade {
+    from {
+      opacity: 0;
+      transform: translateX(-2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideDownAndFade {
+    from {
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideLeftAndFade {
+    from {
+      opacity: 0;
+      transform: translateX(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 `;
 
-const PopoverStyled = styled.div`
-  background: var(--ion-color-primary);
-  border: 1px solid var(--darkest-purple);
-  box-shadow: 0 8px 20px rgba(0 0 0 / 0.1);
-  border-radius: 6px;
-`;
+export const Popover = PopoverPrimitive.Root;
+export const PopoverTrigger = PopoverPrimitive.Trigger;
 
-interface PopoverContentProps extends Omit<AriaPopoverProps, "popoverRef"> {
-  children: React.ReactNode;
-  state: OverlayTriggerState;
-  showArrow: boolean;
-}
+type PopoverRef = HTMLDivElement;
 
-function PopoverContent({
-  children,
-  state,
-  offset = 8,
-  showArrow,
-  ...props
-}: PopoverContentProps) {
-  let popoverRef = useRef(null);
-  let { popoverProps, underlayProps, arrowProps, placement } = usePopover(
-    {
-      ...props,
-      offset,
-      popoverRef,
-    },
-    state
-  );
-
-  return (
-    <Overlay>
-      <Underlay {...underlayProps} className="underlay" />
-      <PopoverStyled {...popoverProps} ref={popoverRef} className="popover">
-        {showArrow && <Arrow {...arrowProps} data-placement={placement} />}
+const PopoverContent = React.forwardRef<PopoverRef, PopoverContentProps>(
+  ({ children, ...props }, forwardedRef) => (
+    <PopoverPrimitive.Portal>
+      <Content sideOffset={5} {...props} ref={forwardedRef}>
         {children}
-        <DismissButton onDismiss={state.close} />
-      </PopoverStyled>
-    </Overlay>
-  );
-}
+        <PopoverPrimitive.Arrow />
+      </Content>
+    </PopoverPrimitive.Portal>
+  )
+);
 
-type PopoverProps = {
-  children: ReactElement<any, string | JSXElementConstructor<any>>;
-  triggerRef: RefObject<Element>;
-  isPopoverOpen: boolean;
-  allowOutsideInteractions?: boolean;
-  showArrow?: boolean;
-};
-
-function Popover({
-  children,
-  triggerRef,
-  isPopoverOpen,
-  allowOutsideInteractions = true,
-  showArrow = false,
-}: PopoverProps) {
-  const state = useOverlayTriggerState({ isOpen: isPopoverOpen });
-  const { overlayProps } = useOverlayTrigger({ type: "dialog" }, state);
-
-  return (
-    <>
-      {isPopoverOpen && (
-        <PopoverContent
-          {...overlayProps}
-          state={state}
-          triggerRef={triggerRef}
-          isNonModal={allowOutsideInteractions}
-          showArrow={showArrow}
-        >
-          {cloneElement(children, overlayProps)}
-        </PopoverContent>
-      )}
-    </>
-  );
-}
-
-export default Popover;
+export default PopoverContent;
