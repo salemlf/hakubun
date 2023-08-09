@@ -4,14 +4,14 @@ import BatchSizeOption from "../BatchSizeOption";
 import AssignmentTypeSelector from "../AssignmentTypeSelector";
 
 type Props = {
-  availForReviewData: Assignment[];
+  assignmentData: Assignment[];
   defaultBatchSize: number;
   setBatchSize: React.Dispatch<React.SetStateAction<number>>;
   onSelectedAssignTypeChange: (assignmentTypeUpdated: AssignmentType) => void;
 };
 
-function BasicReviewSettings({
-  availForReviewData,
+function BasicAssignmentSettings({
+  assignmentData,
   defaultBatchSize,
   setBatchSize,
   onSelectedAssignTypeChange,
@@ -19,16 +19,16 @@ function BasicReviewSettings({
   return (
     <Card>
       <BatchSizeOption
-        availForReview={availForReviewData}
+        assignmentData={assignmentData}
         defaultSize={defaultBatchSize}
         onBatchSizeChange={(updatedBatchSize) => setBatchSize(updatedBatchSize)}
       />
       <AssignmentTypeSelector
-        availForReviewData={availForReviewData as Assignment[]}
+        assignmentData={assignmentData as Assignment[]}
         onSelectedAssignTypeChange={onSelectedAssignTypeChange}
       />
     </Card>
   );
 }
 
-export default BasicReviewSettings;
+export default BasicAssignmentSettings;
