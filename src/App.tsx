@@ -3,6 +3,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { ReviewSessionDataProvider } from "./contexts/ReviewSessionDataContext";
 import { ReviewSessionQueueProvider } from "./contexts/ReviewSessionQueueContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import Router from "./navigation/Router";
@@ -46,7 +47,9 @@ const App: React.FC = () => (
       <AuthProvider>
         <ReviewSessionDataProvider>
           <ReviewSessionQueueProvider>
-            <Router />
+            <ToastPrimitive.Provider>
+              <Router />
+            </ToastPrimitive.Provider>
           </ReviewSessionQueueProvider>
         </ReviewSessionDataProvider>
       </AuthProvider>
