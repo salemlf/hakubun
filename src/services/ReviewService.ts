@@ -1,5 +1,6 @@
 import { toKana, isKanji, isJapanese, toRomaji, isKana } from "wanakana";
 import {
+  GroupedReviewItems,
   ReviewAnswerValidResult,
   ReviewQueueItem,
   ReviewType,
@@ -158,7 +159,7 @@ export const getCorrectReviewItemsByType = (
 
 export const getReviewsGroupedByResult = (
   reviewQueueAfterCombined: ReviewQueueItem[]
-) => {
+): GroupedReviewItems => {
   const divideByResult = (
     array: any[],
     isCorrect: (e: ReviewQueueItem) => boolean

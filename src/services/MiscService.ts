@@ -87,8 +87,10 @@ export const capitalizeWord = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
 
-export const flattenData = (data: any) => {
-  let flattened = data.data.map((elem: any) => {
+export const flattenData = (data: any, nested: boolean = true) => {
+  let iteratingLevel = nested ? data.data : data;
+
+  let flattened = iteratingLevel.map((elem: any) => {
     elem = Object.assign({}, elem, elem.data);
     delete elem.data;
     return elem;

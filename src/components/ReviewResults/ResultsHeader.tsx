@@ -1,5 +1,4 @@
 import { IonHeader, IonTitle, IonToolbar } from "@ionic/react";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const Percentage = styled.h2`
@@ -20,11 +19,14 @@ const Title = styled(IonTitle)`
 `;
 
 type Props = {
-  percentageCorrect: number;
+  numCorrect: number;
+  numReviews: number;
 };
 
 // TODO: change to use custom header component
-function ResultsHeader({ percentageCorrect }: Props) {
+function ResultsHeader({ numCorrect, numReviews }: Props) {
+  let percentageCorrect = Math.ceil(100 * (numCorrect / numReviews));
+
   return (
     <Header>
       <IonToolbar>

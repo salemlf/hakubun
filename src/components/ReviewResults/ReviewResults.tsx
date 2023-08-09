@@ -3,9 +3,12 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonSkeletonText,
 } from "@ionic/react";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
+import { GroupedReviewItems } from "../../types/ReviewSessionTypes";
+import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import GroupedReviewSummaryResults from "./GroupedReviewSummaryResults";
 
 const CardHeader = styled(IonCardHeader)`
   padding: 12px;
@@ -44,51 +47,84 @@ const CardContent = styled(IonCardContent)`
   }
 `;
 
+type Props = {
+  groupedReviewItems: GroupedReviewItems;
+  numWrong: number;
+  numCorrect: number;
+};
+
 // TODO: change to use custom Card component
-function ReviewResults() {
+function ReviewResults({ groupedReviewItems, numWrong, numCorrect }: Props) {
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewResults.tsx:58 ~ ReviewResults ~ groupedReviewItems:",
+    groupedReviewItems
+  );
+  // *testing
+
+  let correctSubjIDs = groupedReviewItems.correct.map(
+    (reviewItem: any) => reviewItem.id
+  );
+  let incorrectSubjIDs = groupedReviewItems.incorrect.map(
+    (reviewItem: any) => reviewItem.id
+  );
+
+  let hasCorrect = correctSubjIDs.length !== 0;
+  let hasIncorrect = incorrectSubjIDs.length !== 0;
+
+  const { isLoading: correctReviewSubjLoading, data: correctReviewSubjData } =
+    useSubjectsByIDs(correctSubjIDs, hasCorrect);
+
+  const {
+    isLoading: incorrectReviewSubjLoading,
+    data: incorrectReviewSubjData,
+  } = useSubjectsByIDs(incorrectSubjIDs, hasIncorrect);
+
+  let reviewSummaryDataLoading =
+    (correctReviewSubjLoading && hasCorrect) ||
+    (incorrectReviewSubjLoading && hasIncorrect);
+
   return (
-    <IonCard>
-      <IncorrectItemsHeader>
-        {/* <CardTitle>{numWrong} Answered Incorrectly</CardTitle> */}
-      </IncorrectItemsHeader>
-      {/* {!reviewSummaryDataLoading ? (
-      <CardContent>
-        {incorrectReviewSubjData && (
-          <GroupedReviewSummaryResults
-            subjData={incorrectReviewSubjData}
-          />
+    <>
+      <IonCard>
+        <IncorrectItemsHeader>
+          <CardTitle>{numWrong} Answered Incorrectly</CardTitle>
+        </IncorrectItemsHeader>
+        {!reviewSummaryDataLoading ? (
+          <CardContent>
+            {incorrectReviewSubjData && (
+              <GroupedReviewSummaryResults subjData={incorrectReviewSubjData} />
+            )}
+          </CardContent>
+        ) : (
+          <CardContent>
+            <IonSkeletonText
+              animated={true}
+              style={{ height: "50px" }}
+            ></IonSkeletonText>
+          </CardContent>
         )}
-      </CardContent>
-    ) : (
-      <CardContent>
-        <IonSkeletonText
-          animated={true}
-          style={{ height: "50px" }}
-        ></IonSkeletonText>
-      </CardContent>
-    )}
-  </IonCard>
-  <IonCard>
-    <CorrectItemsHeader>
-      <CardTitle>{numCorrect} Answered Correctly</CardTitle>
-    </CorrectItemsHeader>
-    {!reviewSummaryDataLoading ? (
-      <CardContent>
-        {correctReviewSubjData && (
-          <GroupedReviewSummaryResults
-            subjData={correctReviewSubjData}
-          />
+      </IonCard>
+      <IonCard>
+        <CorrectItemsHeader>
+          <CardTitle>{numCorrect} Answered Correctly</CardTitle>
+        </CorrectItemsHeader>
+        {!reviewSummaryDataLoading ? (
+          <CardContent>
+            {correctReviewSubjData && (
+              <GroupedReviewSummaryResults subjData={correctReviewSubjData} />
+            )}
+          </CardContent>
+        ) : (
+          <CardContent>
+            <IonSkeletonText
+              animated={true}
+              style={{ height: "50px" }}
+            ></IonSkeletonText>
+          </CardContent>
         )}
-      </CardContent>
-    ) : (
-      <CardContent>
-        <IonSkeletonText
-          animated={true}
-          style={{ height: "50px" }}
-        ></IonSkeletonText>
-      </CardContent>
-    )} */}
-    </IonCard>
+      </IonCard>
+    </>
   );
 }
 

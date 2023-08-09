@@ -1,6 +1,5 @@
 import { Subject } from "./Subject";
 import { RequireAtLeastOne } from "./Global";
-import React from "react";
 
 export type ReviewType = "reading" | "meaning";
 
@@ -42,7 +41,10 @@ export type ReviewSessionDataDispatch = (
   action: ReviewSessionDataAction
 ) => void;
 
+// TODO: remove, change to be SRS level popover type once using toast for this functionality
 export type PopoverMessageType = "correct" | "incorrect" | "invalid";
+
+export type ToastMessageType = "correct" | "incorrect";
 
 export type PopoverInfo = {
   message: string;
@@ -85,6 +87,11 @@ export type BottomSheetSubjectProps = {
 export type ReviewAnswerValidResult = {
   isValid: boolean;
   message: string;
+};
+
+export type GroupedReviewItems = {
+  correct: ReviewQueueItem[];
+  incorrect: ReviewQueueItem[];
 };
 
 interface ReviewPostItemOptional {
