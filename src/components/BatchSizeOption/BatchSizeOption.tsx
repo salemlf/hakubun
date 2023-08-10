@@ -18,21 +18,21 @@ const BatchSizeLabel = styled.p`
 `;
 
 type Props = {
-  availForReview: Assignment[];
+  assignmentData: Assignment[];
   defaultSize: number;
   onBatchSizeChange: (batchSize: number) => void;
 };
 
 // TODO: use actual label, make more accessible
 function BatchSizeOption({
-  availForReview,
+  assignmentData,
   defaultSize,
   onBatchSizeChange,
 }: Props) {
   // TODO: move batchSize/setBatchSize state up a component
   let [batchSize, setBatchSize] = useState<number>(defaultSize);
   let availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter(
-    (batchSize) => batchSize <= availForReview.length
+    (batchSize) => batchSize <= assignmentData.length
   );
 
   const onBatchUpdate = (batchStr: string) => {

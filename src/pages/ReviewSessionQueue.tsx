@@ -80,7 +80,7 @@ export const ReviewSessionQueue = () => {
         reviewData,
         reviewResponses,
       };
-      navigate("/review/summary", { state: reviewInfo });
+      navigate("/reviews/summary", { state: reviewInfo });
     });
   };
 

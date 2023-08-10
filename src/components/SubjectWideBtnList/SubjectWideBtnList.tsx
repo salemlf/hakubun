@@ -1,4 +1,4 @@
-import { useIonRouter, IonCol, IonRow } from "@ionic/react";
+import { IonCol, IonRow } from "@ionic/react";
 import { setSubjectAvailImgs } from "../../services/ImageSrcService";
 import {
   getSubjectDisplayName,
@@ -11,12 +11,13 @@ import {
   Vocabulary,
   SubjectType,
   Subject,
+  Kana_Vocabulary,
 } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const Characters = styled(SubjectChars)`
+export const Characters = styled(SubjectChars)`
   display: flex;
   flex-direction: column;
 `;
@@ -38,8 +39,7 @@ type RadInfoProps = {
   radical: Radical;
 };
 
-// TODO: switch to CSS text-transform: capitalize instead of capitalizeWord for ReadingAndMeaningTxt
-const RadicalInfo = ({ radical }: RadInfoProps) => {
+export const RadicalInfo = ({ radical }: RadInfoProps) => {
   return (
     <ReadingAndMeaningContainer>
       <ReadingAndMeaningTxt>
@@ -50,11 +50,10 @@ const RadicalInfo = ({ radical }: RadInfoProps) => {
 };
 
 type ReadingMeaningProps = {
-  subject: Kanji | Vocabulary;
+  subject: Kanji | Vocabulary | Kana_Vocabulary;
 };
 
-// TODO: account for kana vocab where there's no reading (since reading would just be characters)
-const ReadingAndMeaning = ({ subject }: ReadingMeaningProps) => {
+export const ReadingAndMeaning = ({ subject }: ReadingMeaningProps) => {
   let hasReadings = subject.readings && subject.readings.length !== 0;
   return (
     <ReadingAndMeaningContainer>
@@ -71,11 +70,11 @@ const ReadingAndMeaning = ({ subject }: ReadingMeaningProps) => {
 };
 
 type ItemContainerProps = {
-  subjType: SubjectType;
+  subjtype: SubjectType;
 };
 
 const SubjectItemContainer = styled.button<ItemContainerProps>`
-  background-color: ${({ subjType }) => getSubjectColor(subjType)};
+  background-color: ${({ subjtype }) => getSubjectColor(subjtype)};
   width: 100%;
   display: flex;
   align-items: center;
@@ -107,14 +106,18 @@ export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
   };
 
   return (
-    <SubjectItemContainer subjType={subject.object} onClick={onSubjBtnClick}>
+    <SubjectItemContainer subjtype={subject.object} onClick={onSubjBtnClick}>
       <Characters subject={subject} fontSize="2rem" />
       {subject.object === "radical" && (
         <RadicalInfo radical={subject as Radical} />
       )}
 
-      {(subject.object === "kanji" || subject.object === "vocabulary") && (
-        <ReadingAndMeaning subject={subject as Kanji | Vocabulary} />
+      {(subject.object === "kanji" ||
+        subject.object === "vocabulary" ||
+        subject.object === "kana_vocabulary") && (
+        <ReadingAndMeaning
+          subject={subject as Kanji | Vocabulary | Kana_Vocabulary}
+        />
       )}
     </SubjectItemContainer>
   );

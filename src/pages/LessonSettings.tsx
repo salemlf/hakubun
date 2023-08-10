@@ -1,43 +1,31 @@
 import { useState } from "react";
 import {
+  IonButtons,
   IonContent,
   IonHeader,
-  IonButtons,
-  IonToolbar,
-  IonTitle,
   IonIcon,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
-import {
-  compareAssignmentsByAvailableDate,
-  filterAssignmentsByType,
-  getSubjIDsFromAssignments,
-} from "../services/SubjectAndAssignmentService";
-import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
-import { useReviewQueue } from "../hooks/useReviewQueue";
-import { AssignmentType } from "../types/Assignment";
-import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
-import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
-import BasicAssignmentSettings from "../components/BasicAssignmentSettings/BasicAssignmentSettings";
-import AdvancedAssignmentSettings from "../components/AdvancedAssignmentSettings/AdvancedAssignmentSettings";
+import Button from "../components/Button";
 import AnimatedPage from "../components/AnimatedPage";
-import Button from "../components/Button/Button";
+import ShiftBy from "../components/ShiftBy";
 import BackArrowIcon from "../images/back-arrow.svg";
-import ShiftBy from "../components/ShiftBy/ShiftBy";
 import styled from "styled-components";
+import { useLessons } from "../hooks/useLessons";
+import SwipeableTabs from "../components/SwipeableTabs";
+import { AssignmentType } from "../types/Assignment";
+import AdvancedAssignmentSettings from "../components/AdvancedAssignmentSettings";
+import BasicAssignmentSettings from "../components/BasicAssignmentSettings";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
-
-  ion-select::part(icon) {
-    color: white;
-    opacity: 1;
-  }
 `;
 
 const HeaderContainer = styled(IonHeader)`
-  background: var(--wanikani-review);
-  --ion-toolbar-background: var(--wanikani-review);
+  background: var(--wanikani-lesson);
+  --ion-toolbar-background: var(--wanikani-lesson);
   padding: 10px 0;
   box-shadow: none;
 `;
@@ -56,16 +44,14 @@ const BackButton = styled(Button)`
   margin-left: 5px;
 `;
 
-// TODO: change so using react router to pass data to next page instead of context
-export const ReviewSettings = () => {
-  const { createNewReviewSession } = useReviewQueue();
+// TODO: hide tab bar on this page
+function LessonSettings() {
   const navigate = useNavigate();
-
   const {
-    isLoading: availForReviewLoading,
-    data: availForReviewData,
-    error: availForReviewErr,
-  } = useAssignmentsAvailForReview();
+    isLoading: lessonsLoading,
+    data: lessonsData,
+    error: lessonsErr,
+  } = useLessons();
 
   let initialAssignTypes = [
     "radical" as AssignmentType,
@@ -95,32 +81,6 @@ export const ReviewSettings = () => {
     setSelectedAssignmentTypes(updatedAssignTypes);
   };
 
-  const onStartReviewBtnClick = () => {
-    let allAssignmentsToReview = filterAssignmentsByType(
-      availForReviewData,
-      Array.from(selectedAssignmentTypes)
-    );
-
-    //TODO: sort by available date ascending as default (oldest to newest), add other sort options
-    let sortedToReview = allAssignmentsToReview.sort(
-      compareAssignmentsByAvailableDate
-    );
-
-    let assignmentBatchToReview = sortedToReview.slice(0, batchSize);
-    // *testing
-    console.log(
-      "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentBatchToReview:",
-      assignmentBatchToReview
-    );
-    // *testing
-
-    let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
-
-    createNewReviewSession(assignmentBatchToReview, subjIDs);
-    // TODO: pass data to next page instead of caching in context?
-    navigate("/reviews/session");
-  };
-
   return (
     <Page>
       <HeaderContainer>
@@ -135,18 +95,16 @@ export const ReviewSettings = () => {
               </BackButton>
             </IonButtons>
           </ShiftBy>
-          <Title>Review Settings</Title>
+          <Title>Lesson Settings</Title>
         </IonToolbar>
       </HeaderContainer>
       <IonContent>
-        {availForReviewLoading && <h1>Loading...</h1>}
-        {!availForReviewLoading && availForReviewErr && (
-          <div>{`Error: ${availForReviewErr}`}</div>
-        )}
-        {!availForReviewLoading && !availForReviewErr && availForReviewData && (
+        {lessonsLoading && <h1>Loading...</h1>}
+        {!lessonsLoading && lessonsErr && <div>{`Error: ${lessonsErr}`}</div>}
+        {!lessonsLoading && !lessonsErr && lessonsData && (
           <>
             <SwipeableTabs
-              tabBgColor="var(--wanikani-review)"
+              tabBgColor="var(--wanikani-lesson)"
               tabSelectionColor="black"
               tabSelectionColorRGBA="rgba(0, 0, 0, .8)"
               roundedContainer={false}
@@ -156,7 +114,7 @@ export const ReviewSettings = () => {
                   label: "Basic",
                   tabContents: (
                     <BasicAssignmentSettings
-                      assignmentData={availForReviewData}
+                      assignmentData={lessonsData}
                       defaultBatchSize={defaultBatchSize}
                       setBatchSize={setBatchSize}
                       onSelectedAssignTypeChange={onSelectedAssignTypeChange}
@@ -168,8 +126,8 @@ export const ReviewSettings = () => {
                   label: "Advanced",
                   tabContents: (
                     <AdvancedAssignmentSettings
-                      showMeaning={false}
-                      assignmentData={availForReviewData}
+                      showMeaning={true}
+                      assignmentData={lessonsData}
                     />
                   ),
                 },
@@ -177,10 +135,12 @@ export const ReviewSettings = () => {
               defaultValue="basic"
               scrollToDefault={false}
             />
-            <StartReviewBtn onStartReviewBtnClick={onStartReviewBtnClick} />
+            {/* <StartReviewBtn onStartReviewBtnClick={onStartReviewBtnClick} /> */}
           </>
         )}
       </IonContent>
     </Page>
   );
-};
+}
+
+export default LessonSettings;

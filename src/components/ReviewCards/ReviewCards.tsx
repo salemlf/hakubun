@@ -41,6 +41,7 @@ const Card = ({ currentReviewItem }: CardProps) => {
     queueState,
     displayInvalidAnswerMsg,
   } = useReviewQueue();
+
   const x = useMotionValue(0);
   const [reviewCardRef, animateCard] = useAnimate();
   const opacityLeft = useTransform(x, [-100, 0], [1, 0]);
@@ -81,6 +82,7 @@ const Card = ({ currentReviewItem }: CardProps) => {
       setTimeout(() => {
         x.set(0);
         handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
+        // TODO: check if answer was correct or not, then show toast
       }, exitTimeMs);
     }
   };

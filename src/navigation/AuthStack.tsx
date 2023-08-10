@@ -34,7 +34,11 @@ const AuthRoutes = () => {
           element={<Navigate replace to="/authenticate" />}
         />
         <Route
-          path="/review"
+          path="/reviews"
+          element={<Navigate replace to="/authenticate" />}
+        />
+        <Route
+          path="/lessons"
           element={<Navigate replace to="/authenticate" />}
         />
       </Routes>

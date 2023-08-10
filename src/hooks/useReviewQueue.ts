@@ -66,14 +66,14 @@ export const useReviewQueue = () => {
       ? {
           type: "SHOW_POPOVER_MSG" as const,
           payload: {
-            message: `Fake increasing to ${endingSRSName}...`,
+            message: `Increasing to ${endingSRSName}...`,
             messageType: "correct",
           },
         }
       : {
           type: "SHOW_POPOVER_MSG" as const,
           payload: {
-            message: `Fake decreasing to ${endingSRSName}...`,
+            message: `Decreasing to ${endingSRSName}...`,
             messageType: "incorrect",
           },
         };

@@ -16,7 +16,6 @@ import BottomSheetHeader from "./BottomSheetHeader";
 import RadicalBottomSheet from "./RadicalBottomSheet";
 import KanjiBottomSheet from "./KanjiBottomSheet";
 import VocabBottomSheet from "./VocabBottomSheet";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const FullWidthGrid = styled(IonGrid)`
@@ -55,7 +54,7 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   // TODO: also reopen to previous breakpoint on return? Use something like modal.current.getCurrentBreakpoint()
   useEffect(() => {
     if (
-      location.pathname === "/review/session" &&
+      location.pathname === "/reviews/session" &&
       queueState.isBottomSheetVisible
     ) {
       // using timeout otherwise it gets all weird with the input state being disabled at same time

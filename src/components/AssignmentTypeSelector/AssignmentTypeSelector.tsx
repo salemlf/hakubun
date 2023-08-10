@@ -133,12 +133,12 @@ const AssignmentTypeCheckbox = ({
 };
 
 type Props = {
-  availForReviewData: Assignment[];
+  assignmentData: Assignment[];
   onSelectedAssignTypeChange: (assignmentTypeUpdated: AssignmentType) => void;
 };
 
 function AssignmentTypeSelector({
-  availForReviewData,
+  assignmentData,
   onSelectedAssignTypeChange,
 }: Props) {
   const [radicalsSelected, toggleRadicalsSelected] = useToggle(true);
@@ -147,17 +147,11 @@ function AssignmentTypeSelector({
   const [kanaVocabSelected, toggleKanaVocabSelected] = useToggle(true);
 
   // TODO: clean this up, ideally refactor so availForReviewData doesn't need to be passed in
-  let radicalsInQueue = checkIfAssignmentTypeInQueue(
-    availForReviewData,
-    "radical"
-  );
-  let kanjiInQueue = checkIfAssignmentTypeInQueue(availForReviewData, "kanji");
-  let vocabInQueue = checkIfAssignmentTypeInQueue(
-    availForReviewData,
-    "vocabulary"
-  );
+  let radicalsInQueue = checkIfAssignmentTypeInQueue(assignmentData, "radical");
+  let kanjiInQueue = checkIfAssignmentTypeInQueue(assignmentData, "kanji");
+  let vocabInQueue = checkIfAssignmentTypeInQueue(assignmentData, "vocabulary");
   let kanaVocabInQueue = checkIfAssignmentTypeInQueue(
-    availForReviewData,
+    assignmentData,
     "kana_vocabulary"
   );
 

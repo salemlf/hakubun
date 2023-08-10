@@ -118,3 +118,9 @@ export interface Vocabulary extends Subject {
   readings?: SubjectReading[];
   reading_mnemonic: string;
 }
+
+export interface Kana_Vocabulary extends Subject {
+  context_sentences: ContextSentence[];
+  parts_of_speech: string[];
+  pronunciation_audios: PronunciationAudio[];
+}

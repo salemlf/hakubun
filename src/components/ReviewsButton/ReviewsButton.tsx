@@ -46,7 +46,7 @@ function ReviewsButton({ level }: Props) {
       title="Reviews"
       color="clear"
       // TODO: change so if no reviews -> doesn't redirect and displays a message
-      onClick={() => navigate("/review/settings")}
+      onClick={() => navigate("/reviews/settings")}
       style={{
         backgroundImage: `url(${
           numReviews

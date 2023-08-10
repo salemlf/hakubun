@@ -1,16 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-
-type Props = {
-  level: number | undefined;
-};
+import { flattenData } from "../services/MiscService";
 
 // TODO: increase time to wait between data fetches
-export const useLessons = ({ level }: Props) => {
+export const useLessons = () => {
   return useQuery({
-    queryKey: ["available-lessons", level],
+    queryKey: ["available-lessons"],
     queryFn: WaniKaniAPI.getLessons,
-    enabled: !!level,
-    select: (data) => data.data,
+    select: (data) => flattenData(data),
   });
 };

@@ -16,6 +16,7 @@ import { Subjects } from "../pages/Subjects";
 import { Search } from "../pages/Search";
 import ReviewSummary from "../pages/ReviewSummary";
 import FloatingTabBar from "../components/FloatingTabBar";
+import LessonSettings from "../pages/LessonSettings";
 
 export const AppStack = () => {
   // TODO: trigger some event for this, use listenerEvent.canGoBack
@@ -34,9 +35,9 @@ const AppRoutes = () => {
   const location = useLocation();
   const [showTabs, setShowTabs] = useState(true);
   const pagesToHideTabBar = [
-    "/review/settings",
-    "/review/session",
-    "review/summary",
+    "/reviews/settings",
+    "/reviews/session",
+    "reviews/summary",
   ];
 
   let tabBarStyle = showTabs === true ? undefined : { display: "none" };
@@ -52,9 +53,10 @@ const AppRoutes = () => {
   return (
     <AnimatePresence>
       <Routes location={location} key={location.pathname}>
-        <Route path="/review/settings" element={<ReviewSettings />} />
-        <Route path="/review/session" element={<ReviewSessionQueue />}></Route>
-        <Route path="/review/summary" element={<ReviewSummary />} />
+        <Route path="/reviews/settings" element={<ReviewSettings />} />
+        <Route path="/reviews/session" element={<ReviewSessionQueue />}></Route>
+        <Route path="/reviews/summary" element={<ReviewSummary />} />
+        <Route path="/lessons/settings" element={<LessonSettings />} />
         <Route path="/subjects" element={<Subjects />} />
         <Route path="/search" element={<Search />} />
         <Route path="/subjects/:id" element={<SubjectDetails />} />
