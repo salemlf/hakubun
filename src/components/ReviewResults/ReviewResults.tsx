@@ -15,9 +15,9 @@ const CardHeader = styled(IonCardHeader)`
 `;
 
 const CorrectItemsHeader = styled(CardHeader)`
-  --ion-toolbar-background: var(--ion-color-tertiary-shade);
-  --ion-background-color: var(--ion-color-tertiary-shade);
-  background-color: var(--ion-color-tertiary-shade);
+  --ion-toolbar-background: var(--ion-color-success-dark);
+  --ion-background-color: var(--ion-color-success-dark);
+  background-color: var(--ion-color-success-dark);
 `;
 
 const CardTitle = styled(IonCardTitle)`

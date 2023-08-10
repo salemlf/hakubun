@@ -1,2 +1,2 @@
-export * from './RadixPopover';
-export { default } from './RadixPopover';
+export * from "./Popover";
+export { default } from "./Popover";

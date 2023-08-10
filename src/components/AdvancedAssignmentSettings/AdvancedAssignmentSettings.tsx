@@ -7,7 +7,7 @@ type Props = {
   showMeaning: boolean;
 };
 
-// TODO: make more generic
+// TODO: move assignment selector into this file
 function AdvancedAssignmentSettings({ assignmentData, showMeaning }: Props) {
   return (
     <Card>

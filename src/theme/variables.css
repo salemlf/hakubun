@@ -23,7 +23,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-tertiary-rgb: 25, 230, 172;
   --ion-color-tertiary-contrast: #000000;
   --ion-color-tertiary-contrast-rgb: 0, 0, 0;
-  --ion-color-tertiary-shade: #0f8a67;
+  --ion-color-tertiary-shade: #14b88a;
   --ion-color-tertiary-tint: #73e9c7;
 
   --offwhite-color: #e8d6ee;
@@ -56,6 +56,7 @@ http://ionicframework.com/docs/theming/ */
   --deep-purple-accent: #6930c3;
   --light-grey: #5b4f64;
 
+  --ion-color-success-dark: #0f8a67;
   --ion-color-success: #2dd36f;
   --ion-color-success-rgb: 45, 211, 111;
   --ion-color-success-contrast: #000000;
