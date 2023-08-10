@@ -5,8 +5,10 @@ import {
   Routes,
   Navigate,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import { App } from "@capacitor/app";
+import { Capacitor } from "@capacitor/core";
 import { AnimatePresence } from "framer-motion";
 import Home from "../pages/Home";
 import { SubjectDetails } from "../pages/SubjectDetails";
@@ -20,9 +22,9 @@ import LessonSettings from "../pages/LessonSettings";
 
 export const AppStack = () => {
   // TODO: trigger some event for this, use listenerEvent.canGoBack
-  App.addListener("backButton", (listenerEvent) => {
-    console.log("Back button used! listenerEvent:", listenerEvent);
-  });
+  // App.addListener("backButton", (listenerEvent) => {
+  //   console.log("Back button used! listenerEvent:", listenerEvent);
+  // });
 
   return (
     <Router>
@@ -33,6 +35,7 @@ export const AppStack = () => {
 
 const AppRoutes = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [showTabs, setShowTabs] = useState(true);
   const pagesToHideTabBar = [
     "/reviews/settings",
@@ -49,6 +52,23 @@ const AppRoutes = () => {
       setShowTabs(true);
     }
   }, [location.pathname]);
+
+  // !added
+  useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      App.addListener("backButton", ({ canGoBack }) => {
+        if (!canGoBack) {
+          App.exitApp();
+        } else {
+          navigate(-1);
+        }
+      });
+    }
+    return () => {
+      App.removeAllListeners();
+    };
+  }, [history]);
+  // !added
 
   return (
     <AnimatePresence>
