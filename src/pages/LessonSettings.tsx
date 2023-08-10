@@ -4,7 +4,6 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +17,7 @@ import SwipeableTabs from "../components/SwipeableTabs";
 import { AssignmentType } from "../types/Assignment";
 import AdvancedAssignmentSettings from "../components/AdvancedAssignmentSettings";
 import BasicAssignmentSettings from "../components/BasicAssignmentSettings";
+import { SettingsTitle } from "../styles/BaseStyledComponents";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -30,20 +30,11 @@ const HeaderContainer = styled(IonHeader)`
   box-shadow: none;
 `;
 
-const Title = styled(IonTitle)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0 90px 1px;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-`;
-
 const BackButton = styled(Button)`
   margin-left: 5px;
 `;
 
+// TODO: change to use custom tab bar instead of ion one
 // TODO: hide tab bar on this page
 function LessonSettings() {
   const navigate = useNavigate();
@@ -95,7 +86,7 @@ function LessonSettings() {
               </BackButton>
             </IonButtons>
           </ShiftBy>
-          <Title>Lesson Settings</Title>
+          <SettingsTitle>Lesson Settings</SettingsTitle>
         </IonToolbar>
       </HeaderContainer>
       <IonContent>

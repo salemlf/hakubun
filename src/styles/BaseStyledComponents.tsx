@@ -1,4 +1,11 @@
-import { IonAlert, IonCol, IonContent, IonGrid, IonRow } from "@ionic/react";
+import {
+  IonAlert,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonTitle,
+} from "@ionic/react";
 import Button from "../components/Button/Button";
 // import styled from "styled-components/macro";
 import styled from "styled-components";
@@ -117,4 +124,15 @@ export const ContentWithTabBar = styled(IonContent)`
   padding-inline-end: var(--ion-padding, 5px);
   padding-top: var(--ion-padding, 5px);
   padding-bottom: 4rem;
+`;
+
+export const SettingsTitle = styled(IonTitle)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0 90px 1px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 1.5rem;
 `;

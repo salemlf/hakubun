@@ -4,7 +4,6 @@ import {
   IonHeader,
   IonButtons,
   IonToolbar,
-  IonTitle,
   IonIcon,
 } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +23,7 @@ import AnimatedPage from "../components/AnimatedPage";
 import Button from "../components/Button/Button";
 import BackArrowIcon from "../images/back-arrow.svg";
 import ShiftBy from "../components/ShiftBy/ShiftBy";
+import { SettingsTitle } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
@@ -40,16 +40,6 @@ const HeaderContainer = styled(IonHeader)`
   --ion-toolbar-background: var(--wanikani-review);
   padding: 10px 0;
   box-shadow: none;
-`;
-
-const Title = styled(IonTitle)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0 90px 1px;
-  width: 100%;
-  height: 100%;
-  text-align: center;
 `;
 
 const BackButton = styled(Button)`
@@ -135,7 +125,7 @@ export const ReviewSettings = () => {
               </BackButton>
             </IonButtons>
           </ShiftBy>
-          <Title>Review Settings</Title>
+          <SettingsTitle>Review Settings</SettingsTitle>
         </IonToolbar>
       </HeaderContainer>
       <IonContent>

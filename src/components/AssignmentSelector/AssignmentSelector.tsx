@@ -23,7 +23,7 @@ const SubjectList = styled(ToggleGroup.Root)`
   border-radius: 4px;
   padding: 10px;
   flex-direction: column;
-  max-height: 70vh;
+  max-height: 65vh;
   overflow-y: scroll;
 `;
 
@@ -68,6 +68,11 @@ const Characters = styled(SubjectChars)`
   flex-direction: column;
 `;
 
+const NumSelectedTxt = styled.h2`
+  margin: 16px 12px 12px 12px;
+  font-size: 1.65rem;
+`;
+
 type Props = {
   assignmentData: Assignment[];
   showMeaning?: boolean;
@@ -105,35 +110,36 @@ function AssignmentSelector({ assignmentData, showMeaning = true }: Props) {
   return (
     <>
       {!subjectsLoading ? (
-        <SubjectList
-          type="multiple"
-          value={selected}
-          onValueChange={setSelected}
-        >
-          {(subjectsData as Subject[]).map((subject: Subject) => (
-            <SubjectItem
-              subjtype={subject.object}
-              key={`toggle_item_${subject.id}`}
-              value={subject.slug}
-            >
-              {/* <div> */}
-              <Check className="checkmark" src={CheckCircleIcon} />
-              {/* </div> */}
-              <Characters subject={subject} fontSize="2rem" />
-              {subject.object === "radical" && (
-                <RadicalInfo radical={subject as Radical} />
-              )}
+        <>
+          <NumSelectedTxt>{selected.length} selected</NumSelectedTxt>
+          <SubjectList
+            type="multiple"
+            value={selected}
+            onValueChange={setSelected}
+          >
+            {(subjectsData as Subject[]).map((subject: Subject) => (
+              <SubjectItem
+                subjtype={subject.object}
+                key={`toggle_item_${subject.id}`}
+                value={subject.slug}
+              >
+                <Check className="checkmark" src={CheckCircleIcon} />
+                <Characters subject={subject} fontSize="2rem" />
+                {subject.object === "radical" && (
+                  <RadicalInfo radical={subject as Radical} />
+                )}
 
-              {((showMeaning && subject.object === "kanji") ||
-                subject.object === "vocabulary" ||
-                subject.object === "kana_vocabulary") && (
-                <ReadingAndMeaning
-                  subject={subject as Kanji | Vocabulary | Kana_Vocabulary}
-                />
-              )}
-            </SubjectItem>
-          ))}
-        </SubjectList>
+                {((showMeaning && subject.object === "kanji") ||
+                  subject.object === "vocabulary" ||
+                  subject.object === "kana_vocabulary") && (
+                  <ReadingAndMeaning
+                    subject={subject as Kanji | Vocabulary | Kana_Vocabulary}
+                  />
+                )}
+              </SubjectItem>
+            ))}
+          </SubjectList>
+        </>
       ) : (
         <IonSkeletonText
           animated={true}

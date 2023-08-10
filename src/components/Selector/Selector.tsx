@@ -74,7 +74,7 @@ const Trigger = styled(SelectPrimitive.Trigger)`
   gap: 5px;
   background-color: white;
   color: var(--darkest-purple);
-  box-shadow: 0 2px 10px black;
+  box-shadow: 0 2px 10px #1b0f24;
 
   &:hover {
     background-color: rgb(231, 218, 240);

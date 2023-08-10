@@ -51,10 +51,7 @@ const TabListStyled = styled(Tabs.List)`
 
 // TODO: base hover color off selectioncolor
 const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
-  padding-top: 0.375rem;
-  padding-bottom: 0.375rem;
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
+  padding: 10px;
   outline-style: none;
   font-size: 1rem;
   color: ${({ selectioncolor }) => selectioncolor};
@@ -63,6 +60,7 @@ const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
     opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+  /* font-weight: 600; */
   cursor: default;
 
   @media (min-width: 640px) {
