@@ -70,7 +70,7 @@ const Characters = styled(SubjectChars)`
 
 const NumSelectedTxt = styled.h2`
   margin: 16px 12px 12px 12px;
-  font-size: 1.65rem;
+  font-size: 1.25rem;
 `;
 
 type Props = {
