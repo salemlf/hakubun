@@ -35,8 +35,11 @@ type Props = {
 // TODO: add aria label based on type of start button
 function StartReviewBtn({ onStartReviewBtnClick }: Props) {
   return (
-    <StartButtonStyled backgroundColor="var(--ion-color-tertiary)">
-      <StartIcon src={ReviewsIcon} onClick={onStartReviewBtnClick} />
+    <StartButtonStyled
+      backgroundColor="var(--ion-color-tertiary)"
+      onPress={onStartReviewBtnClick}
+    >
+      <StartIcon src={ReviewsIcon} />
       <StartTxt>Start</StartTxt>
     </StartButtonStyled>
   );
