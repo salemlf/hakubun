@@ -44,6 +44,13 @@ const HeaderContainer = styled(IonHeader)`
 
 const BackButton = styled(Button)`
   margin-left: 5px;
+  padding: 8px;
+  border-radius: 10px;
+`;
+
+const BackIcon = styled(IonIcon)`
+  width: 1.5em;
+  height: 1.5em;
 `;
 
 // TODO: change so using react router to pass data to next page instead of context
@@ -121,7 +128,7 @@ export const ReviewSettings = () => {
                 backgroundColor="var(--darkest-purple)"
                 onPress={() => navigate("/home")}
               >
-                <IonIcon src={BackArrowIcon} />
+                <BackIcon src={BackArrowIcon} />
               </BackButton>
             </IonButtons>
           </ShiftBy>

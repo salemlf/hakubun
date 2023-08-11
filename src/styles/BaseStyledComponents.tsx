@@ -136,3 +136,21 @@ export const SettingsTitle = styled(IonTitle)`
   text-align: center;
   font-size: 1.5rem;
 `;
+
+type ButtonContainerProps = {
+  isPressed: boolean;
+  backgroundcolor: string;
+  color: string;
+};
+
+export const BaseButton = styled.button<ButtonContainerProps>`
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  &:focus {
+    outline: 2px solid white;
+    --outline: 2px solid white;
+  }
+`;

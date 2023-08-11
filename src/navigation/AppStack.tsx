@@ -40,7 +40,8 @@ const AppRoutes = () => {
   const pagesToHideTabBar = [
     "/reviews/settings",
     "/reviews/session",
-    "reviews/summary",
+    "/reviews/summary",
+    "/lessons/settings",
   ];
 
   let tabBarStyle = showTabs === true ? undefined : { display: "none" };

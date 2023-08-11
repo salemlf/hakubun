@@ -27,6 +27,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-tertiary-tint: #73e9c7;
 
   --offwhite-color: #e8d6ee;
+  --ofwhite-color-tint: #f1e6f4;
+  --offwhite-color-shade: #dbbee4;
   --light-greyish-purple: #423949;
   --dark-greyish-purple: #30223a;
   --darkest-purple: #1b0f24;

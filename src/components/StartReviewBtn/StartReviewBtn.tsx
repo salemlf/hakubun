@@ -1,26 +1,44 @@
-import { IonFab, IonFabButton, IonIcon } from "@ionic/react";
-import startIcon from "../../images/start.svg";
-import ShiftBy from "../ShiftBy/ShiftBy";
+// TODO: change so not relying on IonIcon
+import { IonIcon } from "@ionic/react";
+import Button from "../Button/Button";
+import ReviewsIcon from "../../images/reviews.svg";
+import styled from "styled-components";
+
+const StartButtonStyled = styled(Button)`
+  position: absolute;
+  bottom: 35px;
+  left: 0;
+  right: 0;
+  padding: 10px 15px;
+  font-size: 1.5rem;
+  margin: auto;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+`;
+
+const StartIcon = styled(IonIcon)`
+  width: 1.75em;
+  height: 1.75em;
+`;
+
+const StartTxt = styled.p`
+  margin: 0;
+  padding-left: 10px;
+`;
 
 type Props = {
   onStartReviewBtnClick: () => void;
 };
 
-// while icon is *technically* centered already, doesn't appear to be since it's an arrow, so using ShiftBy component to slightly adjust
-// see this as reference: https://www.joshwcomeau.com/css/pixel-perfection/#going-the-extra-mile-3
+// TODO: change to be more generic so lessons start button can use too
+// TODO: add aria label based on type of start button
 function StartReviewBtn({ onStartReviewBtnClick }: Props) {
   return (
-    <>
-      <ShiftBy y={-30}>
-        <IonFab vertical="bottom" horizontal="center" aria-label="Start Review">
-          <IonFabButton onClick={onStartReviewBtnClick}>
-            <ShiftBy x={3}>
-              <IonIcon icon={startIcon}></IonIcon>
-            </ShiftBy>
-          </IonFabButton>
-        </IonFab>
-      </ShiftBy>
-    </>
+    <StartButtonStyled backgroundColor="var(--ion-color-tertiary)">
+      <StartIcon src={ReviewsIcon} onClick={onStartReviewBtnClick} />
+      <StartTxt>Start</StartTxt>
+    </StartButtonStyled>
   );
 }
 

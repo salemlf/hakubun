@@ -11,15 +11,10 @@ type ButtonContainerProps = {
 };
 
 const ButtonContainer = styled.button<ButtonContainerProps>`
-  border-radius: 10px;
   background-color: ${({ backgroundcolor }) => `${backgroundcolor}`};
   color: ${({ color }) => `${color}`};
-  padding: 6px 8px;
   cursor: pointer;
   user-select: none;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -32,12 +27,13 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
 interface Props extends AriaButtonProps {
   backgroundColor?: string;
   color?: string;
+  className?: string;
 }
 
-// TODO: allow passing in button bgcolor and color
 function Button({
   backgroundColor = "var(--ion-color-primary)",
   color = "white",
+  className,
   ...props
 }: Props) {
   let { children } = props;
@@ -58,6 +54,7 @@ function Button({
       ref={ref}
       isPressed={isPressed}
       tabIndex={0}
+      className={className}
     >
       {children}
     </ButtonContainer>
