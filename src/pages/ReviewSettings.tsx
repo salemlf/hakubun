@@ -15,15 +15,14 @@ import {
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
 import { useReviewQueue } from "../hooks/useReviewQueue";
 import { AssignmentType } from "../types/Assignment";
-import StartReviewBtn from "../components/StartReviewBtn/StartReviewBtn";
+import StartSessionButton from "../components/StartSessionButton/StartSessionButton";
 import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
 import BasicAssignmentSettings from "../components/BasicAssignmentSettings/BasicAssignmentSettings";
 import AdvancedAssignmentSettings from "../components/AdvancedAssignmentSettings/AdvancedAssignmentSettings";
 import AnimatedPage from "../components/AnimatedPage";
-import Button from "../components/Button/Button";
-import BackArrowIcon from "../images/back-arrow.svg";
 import ShiftBy from "../components/ShiftBy/ShiftBy";
 import { SettingsTitle } from "../styles/BaseStyledComponents";
+import BackButton from "../components/BackButton/BackButton";
 import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
@@ -40,17 +39,6 @@ const HeaderContainer = styled(IonHeader)`
   --ion-toolbar-background: var(--wanikani-review);
   padding: 10px 0;
   box-shadow: none;
-`;
-
-const BackButton = styled(Button)`
-  margin-left: 5px;
-  padding: 8px;
-  border-radius: 10px;
-`;
-
-const BackIcon = styled(IonIcon)`
-  width: 1.5em;
-  height: 1.5em;
 `;
 
 // TODO: change so using react router to pass data to next page instead of context
@@ -115,7 +103,7 @@ export const ReviewSettings = () => {
 
     createNewReviewSession(assignmentBatchToReview, subjIDs);
     // TODO: pass data to next page instead of caching in context?
-    navigate("/reviews/session");
+    navigate("/reviews/session", { replace: true });
   };
 
   return (
@@ -124,12 +112,7 @@ export const ReviewSettings = () => {
         <IonToolbar>
           <ShiftBy x={10}>
             <IonButtons slot="start">
-              <BackButton
-                backgroundColor="var(--darkest-purple)"
-                onPress={() => navigate("/home")}
-              >
-                <BackIcon src={BackArrowIcon} />
-              </BackButton>
+              <BackButton />
             </IonButtons>
           </ShiftBy>
           <SettingsTitle>Review Settings</SettingsTitle>
@@ -145,7 +128,6 @@ export const ReviewSettings = () => {
             <SwipeableTabs
               tabBgColor="var(--wanikani-review)"
               tabSelectionColor="black"
-              tabSelectionColorRGBA="rgba(0, 0, 0, .8)"
               roundedContainer={false}
               tabs={[
                 {
@@ -174,7 +156,10 @@ export const ReviewSettings = () => {
               defaultValue="basic"
               scrollToDefault={false}
             />
-            <StartReviewBtn onStartReviewBtnClick={onStartReviewBtnClick} />
+            <StartSessionButton
+              onStartBtnClick={onStartReviewBtnClick}
+              buttonType="reviews"
+            />
           </>
         )}
       </IonContent>

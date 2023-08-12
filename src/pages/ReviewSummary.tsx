@@ -11,6 +11,7 @@ import AnimatedPage from "../components/AnimatedPage";
 import styled from "styled-components";
 import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
 import { flattenData } from "../services/MiscService";
+import HomeButton from "../components/HomeButton";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--light-greyish-purple);
@@ -69,6 +70,7 @@ function ReviewSummary() {
             numCorrect={numCorrect}
           />
         </FullWidthGrid>
+        <HomeButton />
       </IonContent>
     </Page>
   );

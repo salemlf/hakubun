@@ -14,7 +14,7 @@ import {
 } from "../../types/Subject";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import SubjectChars from "../SubjectChars";
-import { RadicalInfo, ReadingAndMeaning } from "../SubjectWideBtnList";
+import { RadicalMeaning, ReadingAndMeaning } from "../SubjectWideBtnList";
 import CheckCircleIcon from "../../images/check-in-circle.svg";
 import styled from "styled-components";
 
@@ -73,14 +73,34 @@ const NumSelectedTxt = styled.h2`
   font-size: 1.25rem;
 `;
 
+function sortBySubjectType(arr: Assignment[]): Assignment[] {
+  const subjectOrder = ["radical", "kanji", "vocabulary", "kana_vocabulary"];
+
+  return arr.sort((a, b) => {
+    const indexA = subjectOrder.indexOf(a.subject_type);
+    const indexB = subjectOrder.indexOf(b.subject_type);
+
+    return indexA - indexB;
+  });
+}
+
+// TODO: use
+const sortAssignmentsByTypeAndLevel = (assignments: Assignment[]) => {
+  const sortedBySubjTypeArray = sortBySubjectType(assignments);
+  console.log(
+    "🚀 ~ file: AssignmentSelector.tsx:89 ~ sortAssignmentsByTypeAndLevel ~ sortedBySubjTypeArray:",
+    sortedBySubjTypeArray
+  );
+};
+
 type Props = {
   assignmentData: Assignment[];
   showMeaning?: boolean;
 };
 
-// TODO: use subject wide button list, but instead of going to subject on click select it
-// TODO: use showMeaning to hide or show the meaning in subject wide button list (will be hidden for reviews)
-// TODO: change name to subject selector?
+// TODO: use animate presence for checkmark
+// TODO: show level for review items (when showMeaning is false)
+// TODO: sort items by assignment type and then by level
 function AssignmentSelector({ assignmentData, showMeaning = true }: Props) {
   const [selected, setSelected] = useState<string[]>([]);
   // *testing
@@ -123,19 +143,20 @@ function AssignmentSelector({ assignmentData, showMeaning = true }: Props) {
                 key={`toggle_item_${subject.id}`}
                 value={subject.slug}
               >
-                <Check className="checkmark" src={CheckCircleIcon} />
                 <Characters subject={subject} fontSize="2rem" />
-                {subject.object === "radical" && (
-                  <RadicalInfo radical={subject as Radical} />
+                {showMeaning && subject.object === "radical" && (
+                  <RadicalMeaning radical={subject as Radical} />
                 )}
 
-                {((showMeaning && subject.object === "kanji") ||
-                  subject.object === "vocabulary" ||
-                  subject.object === "kana_vocabulary") && (
-                  <ReadingAndMeaning
-                    subject={subject as Kanji | Vocabulary | Kana_Vocabulary}
-                  />
-                )}
+                {showMeaning &&
+                  (subject.object === "kanji" ||
+                    subject.object === "vocabulary" ||
+                    subject.object === "kana_vocabulary") && (
+                    <ReadingAndMeaning
+                      subject={subject as Kanji | Vocabulary | Kana_Vocabulary}
+                    />
+                  )}
+                <Check className="checkmark" src={CheckCircleIcon} />
               </SubjectItem>
             ))}
           </SubjectList>

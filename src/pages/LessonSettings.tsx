@@ -7,17 +7,22 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
+import {
+  compareAssignmentsByAvailableDate,
+  filterAssignmentsByType,
+  getSubjIDsFromAssignments,
+} from "../services/SubjectAndAssignmentService";
+import { useLessons } from "../hooks/useLessons";
+import { AssignmentType } from "../types/Assignment";
 import AnimatedPage from "../components/AnimatedPage";
 import ShiftBy from "../components/ShiftBy";
-import BackArrowIcon from "../images/back-arrow.svg";
-import styled from "styled-components";
-import { useLessons } from "../hooks/useLessons";
 import SwipeableTabs from "../components/SwipeableTabs";
-import { AssignmentType } from "../types/Assignment";
 import AdvancedAssignmentSettings from "../components/AdvancedAssignmentSettings";
 import BasicAssignmentSettings from "../components/BasicAssignmentSettings";
+import StartSessionButton from "../components/StartSessionButton/StartSessionButton";
 import { SettingsTitle } from "../styles/BaseStyledComponents";
+import BackButton from "../components/BackButton/BackButton";
+import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -30,11 +35,6 @@ const HeaderContainer = styled(IonHeader)`
   box-shadow: none;
 `;
 
-const BackButton = styled(Button)`
-  margin-left: 5px;
-`;
-
-// TODO: change to use custom tab bar instead of ion one
 // TODO: hide tab bar on this page
 function LessonSettings() {
   const navigate = useNavigate();
@@ -72,18 +72,40 @@ function LessonSettings() {
     setSelectedAssignmentTypes(updatedAssignTypes);
   };
 
+  const onStartLessonBtnClick = () => {
+    let lessonsToChooseFrom = filterAssignmentsByType(
+      lessonsData,
+      Array.from(selectedAssignmentTypes)
+    );
+
+    //TODO: sort by available date ascending as default (oldest to newest), add other sort options
+    let sortedLessons = lessonsToChooseFrom.sort(
+      compareAssignmentsByAvailableDate
+    );
+
+    // TODO: change back, temporarily changing batch size to 2 for testing
+    // let assignmentBatchToReview = sortedToReview.slice(0, batchSize);
+    let assignmentBatchOfLessons = sortedLessons.slice(0, 1);
+    // *testing
+    console.log(
+      "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentBatchOfLessons:",
+      assignmentBatchOfLessons
+    );
+    // *testing
+
+    let subjIDs = getSubjIDsFromAssignments(assignmentBatchOfLessons);
+
+    // TODO: pass data to lesson session page once created, use replace: true
+    // navigate("/lessons/session");
+  };
+
   return (
     <Page>
       <HeaderContainer>
         <IonToolbar>
           <ShiftBy x={10}>
             <IonButtons slot="start">
-              <BackButton
-                backgroundColor="var(--darkest-purple)"
-                onPress={() => navigate("/home")}
-              >
-                <IonIcon src={BackArrowIcon} />
-              </BackButton>
+              <BackButton />
             </IonButtons>
           </ShiftBy>
           <SettingsTitle>Lesson Settings</SettingsTitle>
@@ -97,7 +119,6 @@ function LessonSettings() {
             <SwipeableTabs
               tabBgColor="var(--wanikani-lesson)"
               tabSelectionColor="black"
-              tabSelectionColorRGBA="rgba(0, 0, 0, .8)"
               roundedContainer={false}
               tabs={[
                 {
@@ -126,7 +147,10 @@ function LessonSettings() {
               defaultValue="basic"
               scrollToDefault={false}
             />
-            {/* <StartReviewBtn onStartReviewBtnClick={onStartReviewBtnClick} /> */}
+            <StartSessionButton
+              onStartBtnClick={onStartLessonBtnClick}
+              buttonType="lessons"
+            />
           </>
         )}
       </IonContent>

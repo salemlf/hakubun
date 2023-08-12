@@ -39,7 +39,7 @@ type RadInfoProps = {
   radical: Radical;
 };
 
-export const RadicalInfo = ({ radical }: RadInfoProps) => {
+export const RadicalMeaning = ({ radical }: RadInfoProps) => {
   return (
     <ReadingAndMeaningContainer>
       <ReadingAndMeaningTxt>
@@ -109,7 +109,7 @@ export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
     <SubjectItemContainer subjtype={subject.object} onClick={onSubjBtnClick}>
       <Characters subject={subject} fontSize="2rem" />
       {subject.object === "radical" && (
-        <RadicalInfo radical={subject as Radical} />
+        <RadicalMeaning radical={subject as Radical} />
       )}
 
       {(subject.object === "kanji" ||
