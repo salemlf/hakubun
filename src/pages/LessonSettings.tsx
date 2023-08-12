@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonToolbar,
-} from "@ionic/react";
+import { IonButtons, IonContent, IonHeader, IonToolbar } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 import {
   compareAssignmentsByAvailableDate,
@@ -13,6 +7,7 @@ import {
   getSubjIDsFromAssignments,
 } from "../services/SubjectAndAssignmentService";
 import { useLessons } from "../hooks/useLessons";
+import { INITIAL_ASSIGNMENT_TYPES } from "../constants";
 import { AssignmentType } from "../types/Assignment";
 import AnimatedPage from "../components/AnimatedPage";
 import ShiftBy from "../components/ShiftBy";
@@ -20,8 +15,8 @@ import SwipeableTabs from "../components/SwipeableTabs";
 import AdvancedAssignmentSettings from "../components/AdvancedAssignmentSettings";
 import BasicAssignmentSettings from "../components/BasicAssignmentSettings";
 import StartSessionButton from "../components/StartSessionButton/StartSessionButton";
-import { SettingsTitle } from "../styles/BaseStyledComponents";
 import BackButton from "../components/BackButton/BackButton";
+import { SettingsTitle } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
@@ -35,7 +30,7 @@ const HeaderContainer = styled(IonHeader)`
   box-shadow: none;
 `;
 
-// TODO: hide tab bar on this page
+// TODO: combine common parts of ReviewSettings and LessonSettings into components
 function LessonSettings() {
   const navigate = useNavigate();
   const {
@@ -44,18 +39,17 @@ function LessonSettings() {
     error: lessonsErr,
   } = useLessons();
 
-  let initialAssignTypes = [
-    "radical" as AssignmentType,
-    "kanji" as AssignmentType,
-    "vocabulary" as AssignmentType,
-    "kana_vocabulary" as AssignmentType,
-  ];
-
   // TODO: change to use user setting for default batch size once settings are implemented
   let defaultBatchSize = 5;
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
     Set<AssignmentType>
-  >(new Set(initialAssignTypes));
+  >(new Set(INITIAL_ASSIGNMENT_TYPES));
+  // !added
+  // needs to be string type for selector, so subject IDs will be converted to number on submit
+  const [selectedAdvancedSubjIDs, setSelectedAdvancedSubjIDs] = useState<
+    string[]
+  >([]);
+  // !added
   const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
 
   const onSelectedAssignTypeChange = (
@@ -138,6 +132,8 @@ function LessonSettings() {
                   label: "Advanced",
                   tabContents: (
                     <AdvancedAssignmentSettings
+                      selectedAdvancedSubjIDs={selectedAdvancedSubjIDs}
+                      setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}
                       showMeaning={true}
                       assignmentData={lessonsData}
                     />

@@ -13,6 +13,7 @@ import ReviewSessionHeader from "../components/ReviewSessionHeader/ReviewSession
 import ReviewCards from "../components/ReviewCards/ReviewCards";
 import AnimatedPage from "../components/AnimatedPage";
 import styled from "styled-components";
+import { AssignmentBatch } from "../types/MiscTypes";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -40,9 +41,24 @@ export const ReviewSessionQueue = () => {
   const location = useLocation();
   const { queueDataState, createNewReviewSession } = useReviewQueue();
   const { mutateAsync: createReviewsAsync } = useCreateReview();
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewSessionQueue.tsx:44 ~ ReviewSessionQueue ~ location.state:",
+    location.state
+  );
+  // *testing
+  let stateFromReviewSettings: AssignmentBatch = location.state;
   let assignmentBatchToReview: Assignment[] =
-    location.state.assignmentBatchToReview;
-  let subjIDs: number[] = location.state.subjIDs;
+    stateFromReviewSettings.assignmentBatch;
+  console.log(
+    "🚀 ~ file: ReviewSessionQueue.tsx:44 ~ ReviewSessionQueue ~ assignmentBatchToReview:",
+    assignmentBatchToReview
+  );
+  let subjIDs: number[] = stateFromReviewSettings.subjIDs;
+  console.log(
+    "🚀 ~ file: ReviewSessionQueue.tsx:47 ~ ReviewSessionQueue ~ subjIDs:",
+    subjIDs
+  );
 
   useEffect(() => {
     createNewReviewSession(assignmentBatchToReview, subjIDs);

@@ -1,3 +1,4 @@
+import { Assignment } from "./Assignment";
 import { SubjectType } from "./Subject";
 
 export interface ResponseStructure {
@@ -91,4 +92,9 @@ export type TabData = {
   id: string;
   label: string;
   tabContents: React.ReactNode;
+};
+
+export type AssignmentBatch = {
+  assignmentBatch: Assignment[];
+  subjIDs: number[];
 };

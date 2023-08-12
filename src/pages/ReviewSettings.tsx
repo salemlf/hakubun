@@ -7,7 +7,9 @@ import {
   getSubjIDsFromAssignments,
 } from "../services/SubjectAndAssignmentService";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
-import { AssignmentType } from "../types/Assignment";
+import { INITIAL_ASSIGNMENT_TYPES } from "../constants";
+import { Assignment, AssignmentType } from "../types/Assignment";
+import { AssignmentBatch } from "../types/MiscTypes";
 import StartSessionButton from "../components/StartSessionButton/StartSessionButton";
 import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
 import BasicAssignmentSettings from "../components/BasicAssignmentSettings/BasicAssignmentSettings";
@@ -34,28 +36,24 @@ const HeaderContainer = styled(IonHeader)`
   box-shadow: none;
 `;
 
-// TODO: change so using react router to pass data to next page instead of context
 export const ReviewSettings = () => {
   const navigate = useNavigate();
-
   const {
     isLoading: availForReviewLoading,
     data: availForReviewData,
     error: availForReviewErr,
   } = useAssignmentsAvailForReview();
 
-  let initialAssignTypes = [
-    "radical" as AssignmentType,
-    "kanji" as AssignmentType,
-    "vocabulary" as AssignmentType,
-    "kana_vocabulary" as AssignmentType,
-  ];
+  // needs to be string type for selector, so subject IDs will be converted to number on submit
+  const [selectedAdvancedSubjIDs, setSelectedAdvancedSubjIDs] = useState<
+    string[]
+  >([]);
 
   // TODO: change to use user setting for default batch size once settings are implemented
   let defaultBatchSize = 5;
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
     Set<AssignmentType>
-  >(new Set(initialAssignTypes));
+  >(new Set(INITIAL_ASSIGNMENT_TYPES));
   const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
 
   const onSelectedAssignTypeChange = (
@@ -72,7 +70,23 @@ export const ReviewSettings = () => {
     setSelectedAssignmentTypes(updatedAssignTypes);
   };
 
-  const onStartReviewBtnClick = () => {
+  const submitWithAdvancedSettings = (): AssignmentBatch => {
+    let assignmentBatch = availForReviewData.filter(
+      (assignment: Assignment) => {
+        return selectedAdvancedSubjIDs.includes(
+          assignment.subject_id.toString()
+        );
+      }
+    );
+
+    let subjIDs = selectedAdvancedSubjIDs.map((subjID) => parseInt(subjID));
+    return {
+      assignmentBatch,
+      subjIDs,
+    };
+  };
+
+  const submitWithBasicSettings = (): AssignmentBatch => {
     let allAssignmentsToReview = filterAssignmentsByType(
       availForReviewData,
       Array.from(selectedAssignmentTypes)
@@ -83,20 +97,21 @@ export const ReviewSettings = () => {
       compareAssignmentsByAvailableDate
     );
 
-    let assignmentBatchToReview = sortedToReview.slice(0, batchSize);
-    // *testing
-    console.log(
-      "🚀 ~ file: Reviews.tsx:112 ~ onButtonClick ~ assignmentBatchToReview:",
-      assignmentBatchToReview
-    );
-    // *testing
+    let assignmentBatch = sortedToReview.slice(0, batchSize);
+    let subjIDs = getSubjIDsFromAssignments(assignmentBatch);
 
-    let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
-
-    const reviewSessionData = {
-      assignmentBatchToReview,
+    return {
+      assignmentBatch,
       subjIDs,
     };
+  };
+
+  const onStartReviewBtnClick = () => {
+    let reviewSessionData =
+      selectedAdvancedSubjIDs.length === 0
+        ? submitWithBasicSettings()
+        : submitWithAdvancedSettings();
+
     navigate("/reviews/session", { state: reviewSessionData, replace: true });
   };
 
@@ -141,6 +156,8 @@ export const ReviewSettings = () => {
                   label: "Advanced",
                   tabContents: (
                     <AdvancedAssignmentSettings
+                      selectedAdvancedSubjIDs={selectedAdvancedSubjIDs}
+                      setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}
                       showMeaning={false}
                       assignmentData={availForReviewData}
                     />

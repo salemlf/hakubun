@@ -98,13 +98,24 @@ const sortBySubjectTypeAndLevel = (subjArr: Subject[]): Subject[] => {
 
 type Props = {
   assignmentData: Assignment[];
+  selectedAdvancedSubjIDs: string[];
+  setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
   showMeaning?: boolean;
 };
 
 // TODO: use animate presence for checkmark
 // TODO: improve "no assignments available" message
-function AssignmentSelector({ assignmentData, showMeaning = true }: Props) {
-  const [selected, setSelected] = useState<string[]>([]);
+function AssignmentSelector({
+  assignmentData,
+  selectedAdvancedSubjIDs,
+  setSelectedAdvancedSubjIDs,
+  showMeaning = true,
+}: Props) {
+  // const [selected, setSelected] = useState<string[]>([]);
+  console.log(
+    "🚀 ~ file: AssignmentSelector.tsx:109 ~ AssignmentSelector ~ selectedAdvancedSubjIDs:",
+    selectedAdvancedSubjIDs
+  );
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
 
   let assignmentSubjIDs = assignmentData.map(
@@ -125,17 +136,19 @@ function AssignmentSelector({ assignmentData, showMeaning = true }: Props) {
     <>
       {availableSubjects && availableSubjects.length !== 0 ? (
         <>
-          <NumSelectedTxt>{selected.length} selected</NumSelectedTxt>
+          <NumSelectedTxt>
+            {selectedAdvancedSubjIDs.length} selected
+          </NumSelectedTxt>
           <SubjectList
             type="multiple"
-            value={selected}
-            onValueChange={setSelected}
+            value={selectedAdvancedSubjIDs}
+            onValueChange={setSelectedAdvancedSubjIDs}
           >
             {(availableSubjects as Subject[]).map((subject: Subject) => (
               <SubjectItem
                 subjtype={subject.object}
                 key={`toggle_item_${subject.id}`}
-                value={subject.slug}
+                value={`${subject.id}`}
               >
                 <Characters subject={subject} fontSize="2rem" />
                 {showMeaning && subject.object === "radical" && (
