@@ -11,7 +11,7 @@ import {
   Vocabulary,
   SubjectType,
   Subject,
-  Kana_Vocabulary,
+  KanaVocabulary,
 } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
 import styled from "styled-components";
@@ -50,7 +50,7 @@ export const RadicalMeaning = ({ radical }: RadInfoProps) => {
 };
 
 type ReadingMeaningProps = {
-  subject: Kanji | Vocabulary | Kana_Vocabulary;
+  subject: Kanji | Vocabulary | KanaVocabulary;
 };
 
 export const ReadingAndMeaning = ({ subject }: ReadingMeaningProps) => {
@@ -116,7 +116,7 @@ export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
         subject.object === "vocabulary" ||
         subject.object === "kana_vocabulary") && (
         <ReadingAndMeaning
-          subject={subject as Kanji | Vocabulary | Kana_Vocabulary}
+          subject={subject as Kanji | Vocabulary | KanaVocabulary}
         />
       )}
     </SubjectItemContainer>

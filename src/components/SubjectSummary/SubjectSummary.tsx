@@ -8,7 +8,6 @@ import SubjectMeanings from "../SubjectMeanings/SubjectMeanings";
 import SubjDetailsKanjiReadings from "./SubjDetailsKanjiReadings";
 import { SubjSummaryRow } from "../../styles/SubjectDetailsStyled";
 import VocabReadings from "../VocabReadings/VocabReadings";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const SummaryContainer = styled(IonRow)`
@@ -21,24 +20,20 @@ const SummaryContainer = styled(IonRow)`
   padding-inline-end: var(--ion-padding, 16px);
   padding-top: var(--ion-padding, 0);
   padding-bottom: var(--ion-padding, 5px);
+  margin-bottom: 10px;
 
   h3:first-of-type {
     margin-top: 5px;
   }
 `;
 
-const AltMeaningsAndPartsOfSpeechRow = styled(SubjSummaryRow)`
-  justify-content: space-between;
-  align-items: flex-end;
-`;
-
 const PartsOfSpeechContainer = styled.div`
   width: 100%;
 `;
 
-const ReadingsAndSrsRow = styled(SubjSummaryRow)`
+const SpaceBetweenRow = styled(SubjSummaryRow)`
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 `;
 
 type SubjSummaryProps = {
@@ -58,30 +53,43 @@ const RadicalSummary = ({ subject, assignment }: SubjSummaryProps) => {
 const KanjiSummary = ({ subject, assignment }: SubjSummaryProps) => {
   return (
     <>
-      <AltMeaningsAndPartsOfSpeechRow>
+      <SubjSummaryRow>
         <SubjectMeanings subject={subject} />
-      </AltMeaningsAndPartsOfSpeechRow>
-      <ReadingsAndSrsRow>
+      </SubjSummaryRow>
+      <SpaceBetweenRow>
         <SubjDetailsKanjiReadings kanji={subject as Kanji} />
         <AssignmentSrs assignment={assignment} />
-      </ReadingsAndSrsRow>
+      </SpaceBetweenRow>
     </>
   );
 };
 
 const VocabSummary = ({ subject, assignment }: SubjSummaryProps) => {
+  const isKanaVocab = subject.object === "kana_vocabulary";
+
   return (
     <>
-      <AltMeaningsAndPartsOfSpeechRow>
+      <SubjSummaryRow>
         <SubjectMeanings subject={subject} />
-      </AltMeaningsAndPartsOfSpeechRow>
-      <PartsOfSpeechContainer>
-        <PartsOfSpeech vocab={subject as Vocabulary} />
-      </PartsOfSpeechContainer>
-      <ReadingsAndSrsRow>
-        <VocabReadings vocab={subject as Vocabulary} />
-        <AssignmentSrs assignment={assignment} />
-      </ReadingsAndSrsRow>
+      </SubjSummaryRow>
+      {isKanaVocab ? (
+        <SpaceBetweenRow>
+          <div>
+            <PartsOfSpeech vocab={subject as Vocabulary} />
+          </div>
+          <AssignmentSrs assignment={assignment} />
+        </SpaceBetweenRow>
+      ) : (
+        <>
+          <PartsOfSpeechContainer>
+            <PartsOfSpeech vocab={subject as Vocabulary} />
+          </PartsOfSpeechContainer>
+          <SpaceBetweenRow>
+            <VocabReadings vocab={subject as Vocabulary} />
+            <AssignmentSrs assignment={assignment} />
+          </SpaceBetweenRow>
+        </>
+      )}
     </>
   );
 };
@@ -124,7 +132,8 @@ function SubjectSummary({ subject }: Props) {
       {subject.object === "kanji" && (
         <KanjiSummary subject={subject} assignment={assignment} />
       )}
-      {subject.object === "vocabulary" && (
+      {(subject.object === "vocabulary" ||
+        subject.object === "kana_vocabulary") && (
         <VocabSummary subject={subject} assignment={assignment} />
       )}
     </SummaryContainer>

@@ -119,8 +119,10 @@ export interface Vocabulary extends Subject {
   reading_mnemonic: string;
 }
 
-export interface Kana_Vocabulary extends Subject {
+export interface KanaVocabulary extends Subject {
   context_sentences: ContextSentence[];
   parts_of_speech: string[];
   pronunciation_audios: PronunciationAudio[];
 }
+
+export type GeneralVocabulary = Vocabulary | KanaVocabulary;

@@ -6,7 +6,7 @@ import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Assignment } from "../../types/Assignment";
 import {
-  Kana_Vocabulary,
+  KanaVocabulary,
   Kanji,
   Radical,
   Subject,
@@ -160,7 +160,7 @@ function AssignmentSelector({
                     subject.object === "vocabulary" ||
                     subject.object === "kana_vocabulary") && (
                     <ReadingAndMeaning
-                      subject={subject as Kanji | Vocabulary | Kana_Vocabulary}
+                      subject={subject as Kanji | Vocabulary | KanaVocabulary}
                     />
                   )
                 ) : (

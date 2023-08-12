@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { IonGrid, IonSkeletonText } from "@ionic/react";
 import { useSubjectByID } from "../hooks/useSubjectByID";
-import { Kanji, Radical, Vocabulary } from "../types/Subject";
+import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
 import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";
 import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
@@ -23,6 +23,7 @@ const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
 `;
 
+// TODO: account for kana vocab
 export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
@@ -40,26 +41,31 @@ export const SubjectDetails = () => {
         <ContentWithTabBar>
           <IonSkeletonText
             animated={true}
-            style={{ height: "50px" }}
+            style={{ height: "75vh" }}
           ></IonSkeletonText>
         </ContentWithTabBar>
       ) : (
         <>
-          {subject && <SubjectHeader subject={subject} />}
-          <ContentWithTabBar>
-            <FullWidthGrid>
-              {subject && <SubjectSummary subject={subject}></SubjectSummary>}
-              {subject && subject?.object == "radical" && (
-                <RadicalSubjDetails radical={subject as Radical} />
-              )}
-              {subject && subject?.object == "kanji" && (
-                <KanjiSubjDetails kanji={subject as Kanji} />
-              )}
-              {subject && subject?.object == "vocabulary" && (
-                <VocabSubjDetails vocab={subject as Vocabulary} />
-              )}
-            </FullWidthGrid>
-          </ContentWithTabBar>
+          {subject && (
+            <>
+              <SubjectHeader subject={subject} />
+              <ContentWithTabBar>
+                <FullWidthGrid>
+                  <SubjectSummary subject={subject}></SubjectSummary>
+                  {subject.object == "radical" && (
+                    <RadicalSubjDetails radical={subject as Radical} />
+                  )}
+                  {subject.object == "kanji" && (
+                    <KanjiSubjDetails kanji={subject as Kanji} />
+                  )}
+                  {(subject.object == "vocabulary" ||
+                    subject.object == "kana_vocabulary") && (
+                    <VocabSubjDetails vocab={subject as GeneralVocabulary} />
+                  )}
+                </FullWidthGrid>
+              </ContentWithTabBar>
+            </>
+          )}
         </>
       )}
     </Page>
