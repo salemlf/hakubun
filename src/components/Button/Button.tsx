@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { useButton } from "react-aria";
 import { AriaButtonProps } from "@react-types/button";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 type ButtonContainerProps = {
@@ -14,10 +13,6 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
   background-color: ${({ backgroundcolor }) => `${backgroundcolor}`};
   color: ${({ color }) => `${color}`};
   cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   &:focus {
     outline: 2px solid white;
     --outline: 2px solid white;

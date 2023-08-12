@@ -7,7 +7,6 @@ import {
   IonTitle,
 } from "@ionic/react";
 import Button from "../components/Button/Button";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 export const FullWidthGrid = styled(IonGrid)`
@@ -35,7 +34,7 @@ export const SubjCol = styled(IonCol)`
 export const NoteHintContainer = styled.div`
   background-color: var(--light-grey);
   border-radius: 15px;
-  padding: 8px;
+  padding: 15px 12px 8px;
   margin: 10px 0;
 
   font-size: 0.9rem;
@@ -153,4 +152,23 @@ export const BaseButton = styled.button<ButtonContainerProps>`
     outline: 2px solid white;
     --outline: 2px solid white;
   }
+`;
+
+export const FloatingButton = styled(Button)`
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  position: fixed;
+  z-index: 1;
+  bottom: 35px;
+  padding: 10px 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.25rem;
+  margin: auto;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
