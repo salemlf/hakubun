@@ -1,4 +1,5 @@
-import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
+// TODO: change so not relying on IonIcon
+import { IonIcon, IonRow } from "@ionic/react";
 import SoundIcon from "../../images/sound.svg";
 import { useAudio } from "../../hooks/useAudio";
 import { getAudioForReading } from "../../services/MiscService";
@@ -10,21 +11,18 @@ import {
   ReadingsStyle,
 } from "../../styles/SubjectDetailsStyled";
 import Button from "../Button/Button";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 type AudioProps = {
   url: string;
 };
 
-// const Btn = styled.button`
-//   background-color: transparent;
-//   width: 1em;
-//   height: 1em;
-// `;
-
 const Btn = styled(Button)`
-  background-color: transparent;
+  padding: 4px;
+  border-radius: 8px;
+`;
+
+const AudioIcon = styled(IonIcon)`
   width: 1em;
   height: 1em;
 `;
@@ -33,8 +31,12 @@ const AudioBtn = ({ url }: AudioProps) => {
   const [playing, toggle] = useAudio(url);
 
   return (
-    <Btn onPress={toggle}>
-      <IonIcon icon={SoundIcon} />
+    <Btn
+      onPress={toggle}
+      backgroundColor="var(--ion-color-tertiary)"
+      color="black"
+    >
+      <AudioIcon icon={SoundIcon} />
     </Btn>
   );
 };
@@ -42,7 +44,7 @@ const AudioBtn = ({ url }: AudioProps) => {
 const VocabReadingContainer = styled.div`
   display: flex;
   gap: 6px;
-  align-items: center;
+  align-items: baseline;
 `;
 
 const ReadingTxt = styled.p`

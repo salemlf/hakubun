@@ -62,6 +62,7 @@ export const ReadingsStyle = styled.div`
   padding: 0;
   display: flex;
   gap: 8px;
+  align-items: baseline;
   user-select: text;
   -webkit-user-select: text;
   -moz-user-select: text;

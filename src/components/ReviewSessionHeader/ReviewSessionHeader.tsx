@@ -10,11 +10,10 @@ import {
   ReviewQueueItem,
   ReviewSessionDataState,
 } from "../../types/ReviewSessionTypes";
-
-import HomeIcon from "../../images/home.svg";
-// import styled from "styled-components/macro";
+import HomeIconColor from "../../images/home-color.svg";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import Button from "../Button/Button";
 
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;
@@ -43,20 +42,15 @@ const NumReviewsLeftText = styled.p`
   margin: 0;
 `;
 
-const HomeBtn = styled(IonButton)`
+const HomeBtn = styled(Button)`
   border-radius: 10px;
-  --border-radius: 10px;
-  padding: 2px 0;
-
-  ion-icon {
-    font-size: 32px;
-  }
+  margin-left: 10px;
+  padding: 0 6px;
 `;
 
 const HomeIconStyled = styled(IonIcon)`
-  .sc-ion-buttons-md-s ion-icon[slot="icon-only"] {
-    font-size: 64px;
-  }
+  width: 3em;
+  height: 3em;
 `;
 
 const calculateNumItemsInQueue = (queueDataState: ReviewSessionDataState) => {
@@ -88,8 +82,8 @@ function ReviewSessionHeader({ currentReviewItem }: Props) {
     <SessionHeader>
       <Toolbar>
         <IonButtons slot="start">
-          <HomeBtn onClick={() => navigate("/home")}>
-            <HomeIconStyled icon={HomeIcon}></HomeIconStyled>
+          <HomeBtn onPress={() => navigate("/home")}>
+            <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
           </HomeBtn>
         </IonButtons>
         {numUniqueItemsInQueue && (

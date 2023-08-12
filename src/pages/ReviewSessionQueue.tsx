@@ -36,8 +36,7 @@ const Grid = styled(IonGrid)`
 // TODO: fix the excessive number of rerenders happening for this page
 export const ReviewSessionQueue = () => {
   const { queueDataState } = useReviewQueue();
-  const { mutate: createReviews, mutateAsync: createReviewsAsync } =
-    useCreateReview();
+  const { mutateAsync: createReviewsAsync } = useCreateReview();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -80,7 +79,7 @@ export const ReviewSessionQueue = () => {
         reviewData,
         reviewResponses,
       };
-      navigate("/reviews/summary", { state: reviewInfo });
+      navigate("/reviews/summary", { state: reviewInfo, replace: true });
     });
   };
 

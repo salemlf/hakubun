@@ -18,18 +18,12 @@ interface CustomBgColor {
   bgcolor: string;
 }
 
-interface SelectionColorRGBA {
-  selectioncolorrgba: string;
-}
-
 type TabContainerStyles = {
   bgcolor: string;
   roundedcontainer: boolean;
 };
 
-type BgColorSelectionAndHover = CustomSelectColor &
-  CustomBgColor &
-  SelectionColorRGBA;
+type BgColorSelectionAndHover = CustomSelectColor & CustomBgColor;
 
 const TabsStyled = styled(Tabs.Root)`
   width: 100%;
@@ -60,16 +54,11 @@ const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
     opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
-  /* font-weight: 600; */
   cursor: default;
 
   @media (min-width: 640px) {
     font-size: 0.875rem;
     line-height: 1.25rem;
-  }
-
-  &:hover {
-    color: ${({ selectioncolorrgba }) => selectioncolorrgba};
   }
 `;
 
@@ -135,7 +124,6 @@ type TabsComponentProps = {
   scrollToDefault?: boolean;
   tabBgColor?: string;
   tabSelectionColor?: string;
-  tabSelectionColorRGBA?: string;
   roundedContainer?: boolean;
 };
 
@@ -146,16 +134,12 @@ function SwipeableTabs({
   scrollToDefault = true,
   tabBgColor,
   tabSelectionColor,
-  tabSelectionColorRGBA,
   roundedContainer = true,
 }: TabsComponentProps) {
   let bgColor = tabBgColor ? tabBgColor : "var(--ion-color-primary)";
   let selectionColor = tabSelectionColor
     ? tabSelectionColor
     : "var(--darkest-purple)";
-  let selectionColorRGBA = tabSelectionColorRGBA
-    ? tabSelectionColorRGBA
-    : "rgba(53, 32, 71, 0.8)";
 
   const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultValue);
   const tabListRef = useRef<HTMLDivElement | null>(null);
@@ -314,7 +298,6 @@ function SwipeableTabs({
               value={tab.id}
               bgcolor={bgColor}
               selectioncolor={selectionColor}
-              selectioncolorrgba={selectionColorRGBA}
             >
               {tab.label}
             </TabStyled>

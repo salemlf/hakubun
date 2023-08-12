@@ -2,6 +2,7 @@ import { IonIcon } from "@ionic/react";
 import { NoteHintContainer } from "../../styles/BaseStyledComponents";
 // import styled from "styled-components/macro";
 import styled from "styled-components";
+import Button from "../Button";
 
 export const NoteContainer = styled(NoteHintContainer)`
   position: relative;
@@ -21,7 +22,7 @@ export const ButtonContainer = styled.div`
   bottom: -20px;
 `;
 
-export const EditingButton = styled.button`
+export const EditingButton = styled(Button)`
   padding: 7px;
   border-radius: 50%;
 
@@ -75,7 +76,7 @@ export const EditableNote = styled.textarea`
 export const NoteContents = styled.div`
   width: 100%;
   background-color: var(--light-grey);
-  line-height: 1;
+  line-height: 1.5;
   padding: 3px 2px;
   margin: 0;
   display: block;

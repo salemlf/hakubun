@@ -165,49 +165,47 @@ function Note({
           <>
             <CancelButton
               aria-label="Cancel"
-              onClick={() =>
+              onPress={() =>
                 completeEditing({ saveEdit: false, remove: false })
               }
             >
               <IonIcon src={CancelIcon} />
             </CancelButton>
-            <SaveButton aria-label="Save">
-              <IonIcon
-                src={SaveIcon}
-                onClick={() =>
-                  completeEditing({ saveEdit: true, remove: false })
-                }
-              />
+            <SaveButton
+              aria-label="Save"
+              onPress={() => completeEditing({ saveEdit: true, remove: false })}
+            >
+              <IonIcon src={SaveIcon} />
             </SaveButton>
           </>
         ) : (
           <>
-            <TrashButton aria-label="Delete">
-              <IonIcon
-                src={TrashIcon}
-                onClick={() =>
-                  presentAlert({
-                    header: noteHeadingsAndMsg.alertHeadingTxt,
-                    message: noteHeadingsAndMsg.alertHeadingMsg,
-                    cssClass: "custom-alert",
-                    buttons: [
-                      {
-                        text: "Cancel",
-                        role: "cancel",
+            <TrashButton
+              aria-label="Delete"
+              onPress={() =>
+                presentAlert({
+                  header: noteHeadingsAndMsg.alertHeadingTxt,
+                  message: noteHeadingsAndMsg.alertHeadingMsg,
+                  cssClass: "custom-alert",
+                  buttons: [
+                    {
+                      text: "Cancel",
+                      role: "cancel",
+                    },
+                    {
+                      text: "Delete",
+                      role: "destructive",
+                      handler: () => {
+                        completeEditing({ saveEdit: true, remove: true });
                       },
-                      {
-                        text: "Delete",
-                        role: "destructive",
-                        handler: () => {
-                          completeEditing({ saveEdit: true, remove: true });
-                        },
-                      },
-                    ],
-                  })
-                }
-              />
+                    },
+                  ],
+                })
+              }
+            >
+              <IonIcon src={TrashIcon} />
             </TrashButton>
-            <PencilButton onClick={() => setIsEditable(true)} aria-label="Edit">
+            <PencilButton onPress={() => setIsEditable(true)} aria-label="Edit">
               <IonIcon src={PencilIcon} />
             </PencilButton>
           </>
