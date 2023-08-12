@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // TODO: change so not relying on IonIcon
 import { IonSkeletonText, IonIcon } from "@ionic/react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
+import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Assignment } from "../../types/Assignment";
 import {
@@ -12,7 +13,6 @@ import {
   SubjectType,
   Vocabulary,
 } from "../../types/Subject";
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import SubjectChars from "../SubjectChars";
 import { RadicalMeaning, ReadingAndMeaning } from "../SubjectWideBtnList";
 import CheckCircleIcon from "../../images/check-in-circle.svg";
@@ -21,7 +21,7 @@ import styled from "styled-components";
 const SubjectList = styled(ToggleGroup.Root)`
   display: flex;
   border-radius: 4px;
-  padding: 10px;
+  padding: 15px 10px;
   flex-direction: column;
   max-height: 65vh;
   overflow-y: scroll;
@@ -73,24 +73,27 @@ const NumSelectedTxt = styled.h2`
   font-size: 1.25rem;
 `;
 
-function sortBySubjectType(arr: Assignment[]): Assignment[] {
+const LvlBadge = styled.p`
+  background-color: var(--ion-color-secondary);
+  margin: 0;
+  padding: 6px;
+  border-radius: 0.8rem;
+  border: 1px solid white;
+`;
+
+const sortBySubjectTypeAndLevel = (subjArr: Subject[]): Subject[] => {
   const subjectOrder = ["radical", "kanji", "vocabulary", "kana_vocabulary"];
 
-  return arr.sort((a, b) => {
-    const indexA = subjectOrder.indexOf(a.subject_type);
-    const indexB = subjectOrder.indexOf(b.subject_type);
+  return subjArr.sort((subjA, subjB) => {
+    const indexA = subjectOrder.indexOf(subjA.object);
+    const indexB = subjectOrder.indexOf(subjB.object);
+    if (indexA !== indexB) {
+      return indexA - indexB;
+    }
 
-    return indexA - indexB;
+    // if same subject type, sort by level
+    return subjA.level - subjB.level;
   });
-}
-
-// TODO: use
-const sortAssignmentsByTypeAndLevel = (assignments: Assignment[]) => {
-  const sortedBySubjTypeArray = sortBySubjectType(assignments);
-  console.log(
-    "🚀 ~ file: AssignmentSelector.tsx:89 ~ sortAssignmentsByTypeAndLevel ~ sortedBySubjTypeArray:",
-    sortedBySubjTypeArray
-  );
 };
 
 type Props = {
@@ -99,16 +102,10 @@ type Props = {
 };
 
 // TODO: use animate presence for checkmark
-// TODO: show level for review items (when showMeaning is false)
-// TODO: sort items by assignment type and then by level
+// TODO: improve "no assignments available" message
 function AssignmentSelector({ assignmentData, showMeaning = true }: Props) {
   const [selected, setSelected] = useState<string[]>([]);
-  // *testing
-  console.log(
-    "🚀 ~ file: AssignmentSelector.tsx:65 ~ AssignmentSelector ~ selected:",
-    selected
-  );
-  // *testing
+  const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
 
   let assignmentSubjIDs = assignmentData.map(
     (assignmentItem: any) => assignmentItem.subject_id
@@ -117,19 +114,16 @@ function AssignmentSelector({ assignmentData, showMeaning = true }: Props) {
   const { isLoading: subjectsLoading, data: subjectsData } =
     useSubjectsByIDs(assignmentSubjIDs);
 
-  // *testing
-  // console.log(
-  //   "🚀 ~ file: AssignmentSelector.tsx:11 ~ AssignmentSelector ~ assignmentData:",
-  //   assignmentData
-  // );
-  console.log(
-    "🚀 ~ file: AssignmentSelector.tsx:26 ~ AssignmentSelector ~ subjectsData:",
-    subjectsData
-  );
-  // *testing
+  useEffect(() => {
+    if (subjectsData) {
+      let sortedAssignments = sortBySubjectTypeAndLevel(subjectsData);
+      setAvailableSubjects(sortedAssignments);
+    }
+  }, [subjectsLoading]);
+
   return (
     <>
-      {!subjectsLoading ? (
+      {availableSubjects && availableSubjects.length !== 0 ? (
         <>
           <NumSelectedTxt>{selected.length} selected</NumSelectedTxt>
           <SubjectList
@@ -137,7 +131,7 @@ function AssignmentSelector({ assignmentData, showMeaning = true }: Props) {
             value={selected}
             onValueChange={setSelected}
           >
-            {(subjectsData as Subject[]).map((subject: Subject) => (
+            {(availableSubjects as Subject[]).map((subject: Subject) => (
               <SubjectItem
                 subjtype={subject.object}
                 key={`toggle_item_${subject.id}`}
@@ -148,24 +142,29 @@ function AssignmentSelector({ assignmentData, showMeaning = true }: Props) {
                   <RadicalMeaning radical={subject as Radical} />
                 )}
 
-                {showMeaning &&
+                {showMeaning ? (
                   (subject.object === "kanji" ||
                     subject.object === "vocabulary" ||
                     subject.object === "kana_vocabulary") && (
                     <ReadingAndMeaning
                       subject={subject as Kanji | Vocabulary | Kana_Vocabulary}
                     />
-                  )}
+                  )
+                ) : (
+                  <LvlBadge>Lvl {subject.level}</LvlBadge>
+                )}
                 <Check className="checkmark" src={CheckCircleIcon} />
               </SubjectItem>
             ))}
           </SubjectList>
         </>
-      ) : (
+      ) : availableSubjects ? (
         <IonSkeletonText
           animated={true}
           style={{ height: "50px" }}
         ></IonSkeletonText>
+      ) : (
+        <p>No assignments available</p>
       )}
     </>
   );
