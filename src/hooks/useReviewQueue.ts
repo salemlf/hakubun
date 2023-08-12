@@ -33,10 +33,6 @@ export const useReviewQueue = () => {
   };
 
   const endReviewSession = () => {
-    resetCurrReviewCardsState();
-  };
-
-  const resetCurrReviewCardsState = () => {
     dispatchQueueContext({
       type: "RESET_REVIEW_CARDS",
     });
@@ -87,13 +83,6 @@ export const useReviewQueue = () => {
       queueDataState.reviewQueue
     );
 
-    // *testing
-    // console.log(
-    //   "🚀 ~ file: useReviewQueue.tsx:40 ~ correctFirstClick ~ isReviewItemComplete:",
-    //   isReviewItemComplete
-    // );
-    // *testing
-
     playAudioIfAvailable(
       currReviewItem.primary_audio_url,
       currReviewItem.review_type
@@ -110,12 +99,7 @@ export const useReviewQueue = () => {
         queueDataState.reviewQueue,
         updatedReviewItem
       );
-      // *testing
-      // console.log(
-      //   "🚀 ~ file: useReviewQueue.tsx:127 ~ correctFirstClick ~ updatedReviewItem:",
-      //   updatedReviewItem
-      // );
-      // *testing
+
       displaySRSStatus(updatedReviewItem);
     }
 
@@ -193,25 +177,11 @@ export const useReviewQueue = () => {
     );
     // *testing
     let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
-    // *testing
-    // console.log(
-    //   "🚀 ~ file: ReviewCard.tsx:141 ~ isCorrectAnswer:",
-    //   isCorrectAnswer
-    // );
-    // *testing
 
     let moveToNextItem = queueState.isSecondClick;
     isCorrectAnswer
       ? handleCorrectAnswer(currReviewItem, setUserAnswer, moveToNextItem)
       : handleWrongAnswer(currReviewItem, setUserAnswer, moveToNextItem);
-
-    // *testing
-    // console.log(
-    //   "🚀 ~ file: useReviewQueue.tsx:221 ~ useReviewQueue ~ currReviewItem:",
-    //   currReviewItem
-    // );
-    // console.log("queueDataState.reviewQueue: ", queueDataState.reviewQueue);
-    // *testing
 
     dispatchQueueContext({ type: "SUBMIT_CHOICE" });
   };

@@ -1,17 +1,18 @@
 import { useEffect } from "react";
 import { IonContent, IonGrid } from "@ionic/react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useReviewQueue } from "../hooks/useReviewQueue";
-import ReviewSessionHeader from "../components/ReviewSessionHeader/ReviewSessionHeader";
-import ReviewCards from "../components/ReviewCards/ReviewCards";
 import { useCreateReview } from "../hooks/useCreateReview";
 import {
   createReviewPostData,
   getCompletedReviewSessionData,
 } from "../services/ReviewService";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
+import { Assignment } from "../types/Assignment";
+import ReviewSessionHeader from "../components/ReviewSessionHeader/ReviewSessionHeader";
+import ReviewCards from "../components/ReviewCards/ReviewCards";
 import AnimatedPage from "../components/AnimatedPage";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -31,13 +32,21 @@ const Grid = styled(IonGrid)`
   margin: 10px;
 `;
 
+// TODO: improve "Loading..." text
 // TODO: add button to abandon session
 // TODO: redirect to home if user somehow ends up on this screen without data passed
-// TODO: fix the excessive number of rerenders happening for this page
 export const ReviewSessionQueue = () => {
-  const { queueDataState } = useReviewQueue();
-  const { mutateAsync: createReviewsAsync } = useCreateReview();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { queueDataState, createNewReviewSession } = useReviewQueue();
+  const { mutateAsync: createReviewsAsync } = useCreateReview();
+  let assignmentBatchToReview: Assignment[] =
+    location.state.assignmentBatchToReview;
+  let subjIDs: number[] = location.state.subjIDs;
+
+  useEffect(() => {
+    createNewReviewSession(assignmentBatchToReview, subjIDs);
+  }, []);
 
   useEffect(() => {
     if (
@@ -71,9 +80,10 @@ export const ReviewSessionQueue = () => {
         });
     });
     Promise.all(promises).then(function (results) {
+      // *testing
       console.log(results);
+      // *testing
 
-      // TODO: flatten this assignment data on the summary page
       let reviewResponses = results;
       let reviewInfo = {
         reviewData,
@@ -82,8 +92,6 @@ export const ReviewSessionQueue = () => {
       navigate("/reviews/summary", { state: reviewInfo, replace: true });
     });
   };
-
-  // !added
 
   let reviewQueue = queueDataState.reviewQueue;
   let currentReviewItem =

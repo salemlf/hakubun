@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 import { Assignment } from "../types/Assignment";
 import { Subject } from "../types/Subject";
 import { StudyMaterial } from "../types/MiscTypes";
@@ -9,8 +9,6 @@ import {
   ReviewSessionDataDispatch,
   ReviewType,
 } from "../types/ReviewSessionTypes";
-
-import { useStorage } from "../hooks/useStorage";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import {
   flattenData,
@@ -180,10 +178,12 @@ const createReviewItems = async (
 
   //TODO: shuffling, change this based on user-selected sort order when that's implemented
   const shuffledReviewQueueItems = shuffleArray(reviewQueueItems);
+  // *testing
   console.log(
     "🚀 ~ file: ReviewSessionDataContext.tsx:185 ~ shuffledReviewQueueItems:",
     shuffledReviewQueueItems
   );
+  // *testing
 
   dispatchContext({
     type: "REVIEW_QUEUE_LOADED",
@@ -192,8 +192,6 @@ const createReviewItems = async (
 };
 
 const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
-  const { getItem, setItem, removeItem } = useStorage();
-
   // TODO: refactor and then move into its own file
   const reviewQueueReducer = (
     state: ReviewSessionDataState,
@@ -201,14 +199,10 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
   ) => {
     switch (action.type) {
       case "RESET_REVIEW":
-        // TODO: change so removeItem called in function, not here
-        removeItem("reviewData");
         return { ...state, reviewQueue: [], currQueueIndex: 0 };
       case "REVIEW_QUEUE_LOADING":
         return { ...state, isLoading: true };
       case "REVIEW_QUEUE_LOADED":
-        // TODO: change so setItem not called here since usually pulled from cache
-        setItem("reviewQueue", action.payload);
         return { ...state, isLoading: false, reviewQueue: action.payload };
       // TODO: update so no need to find last item with subject ID, should be unique now since deleting item with old data
       case "UPDATE_REVIEW_QUEUE_ITEM":
@@ -266,23 +260,10 @@ const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
     }
   };
 
-  const getReviewQueueFromStorage = async () => {
-    dispatchQueueDataContext({ type: "REVIEW_QUEUE_LOADING" });
-    const queue = await getItem("reviewQueue");
-    dispatchQueueDataContext({
-      type: "REVIEW_QUEUE_LOADED",
-      payload: queue,
-    });
-  };
-
   const [queueDataState, dispatchQueueDataContext] = useReducer(
     reviewQueueReducer,
     initialState
   );
-
-  useEffect(() => {
-    getReviewQueueFromStorage();
-  }, []);
 
   const value = { queueDataState, dispatchQueueDataContext };
 

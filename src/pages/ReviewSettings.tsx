@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  IonContent,
-  IonHeader,
-  IonButtons,
-  IonToolbar,
-  IonIcon,
-} from "@ionic/react";
+import { IonContent, IonHeader, IonButtons, IonToolbar } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 import {
   compareAssignmentsByAvailableDate,
@@ -13,7 +7,6 @@ import {
   getSubjIDsFromAssignments,
 } from "../services/SubjectAndAssignmentService";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
-import { useReviewQueue } from "../hooks/useReviewQueue";
 import { AssignmentType } from "../types/Assignment";
 import StartSessionButton from "../components/StartSessionButton/StartSessionButton";
 import SwipeableTabs from "../components/SwipeableTabs/SwipeableTabs";
@@ -21,8 +14,8 @@ import BasicAssignmentSettings from "../components/BasicAssignmentSettings/Basic
 import AdvancedAssignmentSettings from "../components/AdvancedAssignmentSettings/AdvancedAssignmentSettings";
 import AnimatedPage from "../components/AnimatedPage";
 import ShiftBy from "../components/ShiftBy/ShiftBy";
-import { SettingsTitle } from "../styles/BaseStyledComponents";
 import BackButton from "../components/BackButton/BackButton";
+import { SettingsTitle } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
@@ -43,7 +36,6 @@ const HeaderContainer = styled(IonHeader)`
 
 // TODO: change so using react router to pass data to next page instead of context
 export const ReviewSettings = () => {
-  const { createNewReviewSession } = useReviewQueue();
   const navigate = useNavigate();
 
   const {
@@ -101,9 +93,11 @@ export const ReviewSettings = () => {
 
     let subjIDs = getSubjIDsFromAssignments(assignmentBatchToReview);
 
-    createNewReviewSession(assignmentBatchToReview, subjIDs);
-    // TODO: pass data to next page instead of caching in context?
-    navigate("/reviews/session", { replace: true });
+    const reviewSessionData = {
+      assignmentBatchToReview,
+      subjIDs,
+    };
+    navigate("/reviews/session", { state: reviewSessionData, replace: true });
   };
 
   return (
