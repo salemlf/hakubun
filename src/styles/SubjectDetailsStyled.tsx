@@ -74,3 +74,14 @@ export const ReadingContainer = styled(IonCol)`
   flex-direction: column;
   padding-left: 0;
 `;
+
+export const SubjDetailTabContainer = styled.div`
+  margin: 0;
+  background-color: var(--light-greyish-purple);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 16px;
+  border-radius: 25px;
+`;

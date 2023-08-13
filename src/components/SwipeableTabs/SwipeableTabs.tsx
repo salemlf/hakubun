@@ -62,6 +62,7 @@ const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
   }
 `;
 
+// TODO: use or delete this
 const FocusRing = styled(motion.span)<CustomBgColor>`
   position: absolute;
   top: 0;
@@ -127,20 +128,15 @@ type TabsComponentProps = {
   roundedContainer?: boolean;
 };
 
-// TODO: actually use the passed in tabBgColor, tabSelectionColor, and roundedContainer
+// originally based off of Devon Govett's react aria framer motion example, p cool shit
 function SwipeableTabs({
   tabs,
   defaultValue,
   scrollToDefault = true,
-  tabBgColor,
-  tabSelectionColor,
+  tabBgColor = "var(--offwhite-color)",
+  tabSelectionColor = "var(--darkest-purple)",
   roundedContainer = true,
 }: TabsComponentProps) {
-  let bgColor = tabBgColor ? tabBgColor : "var(--ion-color-primary)";
-  let selectionColor = tabSelectionColor
-    ? tabSelectionColor
-    : "var(--darkest-purple)";
-
   const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultValue);
   const tabListRef = useRef<HTMLDivElement | null>(null);
   const tabPanelsRef = useRef<HTMLDivElement | null>(null);
@@ -230,7 +226,6 @@ function SwipeableTabs({
     transform(x, "offsetWidth")
   );
 
-  // TODO: this is messing up actual selected item somehow
   // When the user scrolls, update the selected key
   // so that the correct tab panel becomes interactive.
   useEffect(() => {
@@ -290,21 +285,21 @@ function SwipeableTabs({
 
   return (
     <TabsStyled value={selectedTabKey} onValueChange={onSelectionChange}>
-      <TabContainer bgcolor={bgColor} roundedcontainer={roundedContainer}>
+      <TabContainer bgcolor={tabBgColor} roundedcontainer={roundedContainer}>
         <TabListStyled ref={tabListRef}>
           {tabs.map((tab) => (
             <TabStyled
               key={tab.id}
               value={tab.id}
-              bgcolor={bgColor}
-              selectioncolor={selectionColor}
+              bgcolor={tabBgColor}
+              selectioncolor={tabSelectionColor}
             >
               {tab.label}
             </TabStyled>
           ))}
         </TabListStyled>
         {/* Selection indicator. */}
-        <Selector style={{ x, width }} bgcolor={bgColor} />
+        <Selector style={{ x, width }} bgcolor={tabBgColor} />
       </TabContainer>
       <TabPanels ref={tabPanelsRef}>
         {tabs.map((tab) => (

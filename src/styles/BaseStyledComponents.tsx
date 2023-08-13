@@ -172,3 +172,9 @@ export const FloatingButton = styled(Button)`
   align-items: center;
   gap: 10px;
 `;
+
+export const FullWidthColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;

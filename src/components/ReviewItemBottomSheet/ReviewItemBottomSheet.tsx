@@ -13,10 +13,10 @@ import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { Subject } from "../../types/Subject";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import BottomSheetHeader from "./BottomSheetHeader";
-import RadicalBottomSheet from "./RadicalBottomSheet";
-import KanjiBottomSheet from "./KanjiBottomSheet";
-import VocabBottomSheet from "./VocabBottomSheet";
 import styled from "styled-components";
+import RadicalDetailTabs from "../RadicalDetailTabs/RadicalDetailTabs";
+import KanjiDetailTabs from "../KanjiDetailTabs/KanjiDetailTabs";
+import VocabDetailTabs from "../VocabDetailTabs/VocabDetailTabs";
 
 const FullWidthGrid = styled(IonGrid)`
   margin-left: 0;
@@ -41,11 +41,7 @@ type Props = {
 };
 
 // TODO: modify to use some other sheet modal so don't need to use IonPage
-// TODO: some duplicated logic for tab lists in these child components, improve
 function ReviewItemBottomSheet({ currentReviewItem }: Props) {
-  let selectedTabColor = "var(--darkest-purple)";
-  let tabsBgColor = "var(--offwhite-color)";
-
   const location = useLocation();
   const { queueState } = useReviewQueue();
   const modal = useRef<HTMLIonModalElement>(null);
@@ -86,25 +82,22 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
         <IonContent className="ion-padding">
           <FullWidthGrid>
             {currentReviewItem.object == "radical" && (
-              <RadicalBottomSheet
-                tabBgColor={tabsBgColor}
-                tabSelectionColor={selectedTabColor}
-                reviewItem={currentReviewItem}
+              <RadicalDetailTabs
+                radical={currentReviewItem}
+                scrollToDefault={true}
               />
             )}
             {currentReviewItem.object == "kanji" && (
-              <KanjiBottomSheet
-                tabBgColor={tabsBgColor}
-                tabSelectionColor={selectedTabColor}
-                reviewItem={currentReviewItem}
+              <KanjiDetailTabs
+                kanji={currentReviewItem}
+                scrollToDefault={true}
               />
             )}
             {(currentReviewItem.object == "vocabulary" ||
               currentReviewItem.object == "kana_vocabulary") && (
-              <VocabBottomSheet
-                tabBgColor={tabsBgColor}
-                tabSelectionColor={selectedTabColor}
-                reviewItem={currentReviewItem}
+              <VocabDetailTabs
+                vocab={currentReviewItem}
+                scrollToDefault={true}
               />
             )}
           </FullWidthGrid>
