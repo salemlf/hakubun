@@ -1,4 +1,11 @@
-import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import {
+  RefObject,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import {
   TargetAndTransition,
@@ -8,6 +15,9 @@ import {
   useScroll,
 } from "framer-motion";
 import { TabData } from "../../types/MiscTypes";
+// !added
+import type { ComponentProps, ForwardedRef } from "react";
+// !added
 import styled from "styled-components";
 
 interface CustomSelectColor {
@@ -39,7 +49,7 @@ const TabContainer = styled.div<TabContainerStyles>`
 
 const TabListStyled = styled(Tabs.List)`
   display: flex;
-  margin-left: 0.25rem;
+  margin-left: 0.4rem;
   justify-content: space-evenly;
 `;
 
@@ -127,190 +137,202 @@ type TabsComponentProps = {
   tabBgColor?: string;
   tabSelectionColor?: string;
   roundedContainer?: boolean;
+  // allow ref to be passed in to allow parent container scrolling if child is at end of scroll
+  parentContainerRef?: RefObject<HTMLDivElement | null>;
 };
 
+// TODO: fix so on end of scroll, parent container scrolls
 // originally based off of Devon Govett's react aria framer motion example, p cool shit
-function SwipeableTabs({
-  tabs,
-  defaultValue,
-  scrollToDefault = true,
-  tabBgColor = "var(--offwhite-color)",
-  tabSelectionColor = "var(--darkest-purple)",
-  roundedContainer = true,
-}: TabsComponentProps) {
-  const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultValue);
-  const tabListRef = useRef<HTMLDivElement | null>(null);
-  const tabPanelsRef = useRef<HTMLDivElement | null>(null);
-  const { scrollXProgress } = useScroll({
-    container: tabPanelsRef as RefObject<HTMLElement>,
-  });
+const SwipeableTabs = forwardRef(
+  (
+    {
+      tabs,
+      defaultValue,
+      scrollToDefault = true,
+      tabBgColor = "var(--offwhite-color)",
+      tabSelectionColor = "var(--darkest-purple)",
+      roundedContainer = true,
+    }: TabsComponentProps,
+    ref: ForwardedRef<HTMLDivElement>
+  ) => {
+    const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultValue);
+    const tabListRef = useRef<HTMLDivElement | null>(null);
+    const tabPanelsRef = useRef<HTMLDivElement | null>(null);
+    const { scrollXProgress } = useScroll({
+      container: tabPanelsRef as RefObject<HTMLElement>,
+    });
 
-  // TODO: clean this up, a not ideal workaround for scrolling to default item
-  useEffect(() => {
-    if (scrollToDefault && tabListRef.current && tabPanelsRef.current) {
-      setTimeout(() => {
-        onSelectionChange(defaultValue);
-      }, 500);
-    }
-  }, [tabListRef, tabPanelsRef, defaultValue]);
-
-  // Find all the tab elements so we can use their dimensions.
-  const [tabElements, setTabElements] = useState<Element[]>([]);
-
-  const getIndex = useCallback(
-    (x: number) => {
-      if (tabs.length <= 1) {
-        return 0;
+    // TODO: clean this up, a not ideal workaround for scrolling to default item. Necessary rn due to how tab components are being rendered
+    useEffect(() => {
+      if (scrollToDefault && tabListRef.current && tabPanelsRef.current) {
+        setTimeout(() => {
+          onSelectionChange(defaultValue);
+        }, 500);
       }
-      let optionsToRoundTo: number[] = [];
-      for (let i = 0; i < tabs.length; i++) {
-        optionsToRoundTo.push(i / (tabs.length - 1));
-      }
+    }, [tabListRef, tabPanelsRef, defaultValue]);
 
-      let closestIndex = 0;
-      let closestDifference = Math.abs(optionsToRoundTo[0] - x);
+    // Find all the tab elements so we can use their dimensions.
+    const [tabElements, setTabElements] = useState<Element[]>([]);
 
-      for (let i = 1; i < optionsToRoundTo.length; i++) {
-        const currentDifference = Math.abs(optionsToRoundTo[i] - x);
-        if (currentDifference < closestDifference) {
-          closestIndex = i;
-          closestDifference = currentDifference;
+    const getIndex = useCallback(
+      (x: number) => {
+        if (tabs.length <= 1) {
+          return 0;
         }
+        let optionsToRoundTo: number[] = [];
+        for (let i = 0; i < tabs.length; i++) {
+          optionsToRoundTo.push(i / (tabs.length - 1));
+        }
+
+        let closestIndex = 0;
+        let closestDifference = Math.abs(optionsToRoundTo[0] - x);
+
+        for (let i = 1; i < optionsToRoundTo.length; i++) {
+          const currentDifference = Math.abs(optionsToRoundTo[i] - x);
+          if (currentDifference < closestDifference) {
+            closestIndex = i;
+            closestDifference = currentDifference;
+          }
+        }
+
+        return closestIndex;
+      },
+      [tabs]
+    );
+
+    useEffect(() => {
+      if (tabElements.length === 0 && tabListRef.current) {
+        const tabs = tabListRef.current.querySelectorAll("[role=tab]");
+        setTabElements(Array.from(tabs));
       }
+    }, [tabElements]);
 
-      return closestIndex;
-    },
-    [tabs]
-  );
+    // This function transforms the scroll position into the X position
+    // or width of the selected tab indicator.
+    const transform = (
+      x: number,
+      property: "offsetLeft" | "offsetWidth"
+    ): number => {
+      if (!tabElements.length) return 0;
 
-  useEffect(() => {
-    if (tabElements.length === 0 && tabListRef.current) {
-      const tabs = tabListRef.current.querySelectorAll("[role=tab]");
-      setTabElements(Array.from(tabs));
-    }
-  }, [tabElements]);
+      // Find the tab index for the scroll X position.
+      const index = getIndex(x);
 
-  // This function transforms the scroll position into the X position
-  // or width of the selected tab indicator.
-  const transform = (
-    x: number,
-    property: "offsetLeft" | "offsetWidth"
-  ): number => {
-    if (!tabElements.length) return 0;
+      // Get the difference between this tab and the next one.
+      const difference =
+        index < tabElements.length - 1
+          ? tabElements[index + 1][property as keyof {}] -
+            tabElements[index][property as keyof {}]
+          : tabElements[index]["offsetWidth" as keyof {}];
 
-    // Find the tab index for the scroll X position.
-    const index = getIndex(x);
+      // Get the percentage between tabs.
+      // This is the difference between the integer index and fractional one.
+      const percent = (tabElements.length - 1) * x - index;
 
-    // Get the difference between this tab and the next one.
-    const difference =
-      index < tabElements.length - 1
-        ? tabElements[index + 1][property as keyof {}] -
-          tabElements[index][property as keyof {}]
-        : tabElements[index]["offsetWidth" as keyof {}];
+      // Linearly interpolate to calculate the position of the selection indicator.
+      const value =
+        tabElements[index][property as keyof {}] + difference * percent;
 
-    // Get the percentage between tabs.
-    // This is the difference between the integer index and fractional one.
-    const percent = (tabElements.length - 1) * x - index;
+      // iOS scrolls weird when translateX is 0 for some reason. 🤷‍♂️
+      return value || 0.1;
+    };
 
-    // Linearly interpolate to calculate the position of the selection indicator.
-    const value =
-      tabElements[index][property as keyof {}] + difference * percent;
+    const x = useTransform(scrollXProgress, (x) => {
+      return transform(x, "offsetLeft");
+    });
+    const width = useTransform(scrollXProgress, (x) =>
+      transform(x, "offsetWidth")
+    );
 
-    // iOS scrolls weird when translateX is 0 for some reason. 🤷‍♂️
-    return value || 0.1;
-  };
+    // When the user scrolls, update the selected key
+    // so that the correct tab panel becomes interactive.
+    useEffect(() => {
+      const handleChange = (x: number) => {
+        if (animationRef.current || !tabs.length) {
+          return;
+        }
 
-  const x = useTransform(scrollXProgress, (x) => {
-    return transform(x, "offsetLeft");
-  });
-  const width = useTransform(scrollXProgress, (x) =>
-    transform(x, "offsetWidth")
-  );
+        setSelectedTabKey(tabs[getIndex(x)].id);
+      };
+      const unsubscribe = scrollXProgress.on("change", handleChange);
 
-  // When the user scrolls, update the selected key
-  // so that the correct tab panel becomes interactive.
-  useEffect(() => {
-    const handleChange = (x: number) => {
-      if (animationRef.current || !tabs.length) {
+      return () => unsubscribe();
+    }, [scrollXProgress, getIndex, tabs]);
+
+    // When the user clicks on a tab perform an animation of
+    // the scroll position to the newly selected tab panel.
+    const animationRef = useRef<any>();
+    const onSelectionChange = (selectedTab: string) => {
+      setSelectedTabKey(selectedTab);
+
+      // If the scroll position is already moving but we aren't animating
+      // then the key changed as a result of a user scrolling. Ignore.
+      if (scrollXProgress.getVelocity() && !animationRef.current) {
         return;
       }
 
-      setSelectedTabKey(tabs[getIndex(x)].id);
+      const tabPanel = tabPanelsRef.current;
+      if (animationRef.current) {
+        animationRef.current.stop();
+      }
+
+      const index = tabs.findIndex((tab) => tab.id === selectedTab);
+      if (tabPanel) {
+        animationRef.current = animate<TargetAndTransition>(
+          tabPanel.scrollLeft as any,
+          (tabPanel.scrollWidth * (index / tabs.length)) as any,
+          {
+            type: "spring",
+            bounce: 0.2,
+            duration: 0.6,
+            onUpdate: (v) => {
+              (tabPanel.scrollLeft as any) = v;
+            },
+            onPlay: () => {
+              // Disable scroll snap while the animation is going or weird things happen.
+              tabPanel.style.scrollSnapType = "none";
+            },
+            onComplete: () => {
+              tabPanel.style.scrollSnapType = "";
+              animationRef.current = null;
+            },
+          }
+        );
+      }
     };
-    const unsubscribe = scrollXProgress.on("change", handleChange);
 
-    return () => unsubscribe();
-  }, [scrollXProgress, getIndex, tabs]);
-
-  // When the user clicks on a tab perform an animation of
-  // the scroll position to the newly selected tab panel.
-  const animationRef = useRef<any>();
-  const onSelectionChange = (selectedTab: string) => {
-    setSelectedTabKey(selectedTab);
-
-    // If the scroll position is already moving but we aren't animating
-    // then the key changed as a result of a user scrolling. Ignore.
-    if (scrollXProgress.getVelocity() && !animationRef.current) {
-      return;
-    }
-
-    const tabPanel = tabPanelsRef.current;
-    if (animationRef.current) {
-      animationRef.current.stop();
-    }
-
-    const index = tabs.findIndex((tab) => tab.id === selectedTab);
-    if (tabPanel) {
-      animationRef.current = animate<TargetAndTransition>(
-        tabPanel.scrollLeft as any,
-        (tabPanel.scrollWidth * (index / tabs.length)) as any,
-        {
-          type: "spring",
-          bounce: 0.2,
-          duration: 0.6,
-          onUpdate: (v) => {
-            (tabPanel.scrollLeft as any) = v;
-          },
-          onPlay: () => {
-            // Disable scroll snap while the animation is going or weird things happen.
-            tabPanel.style.scrollSnapType = "none";
-          },
-          onComplete: () => {
-            tabPanel.style.scrollSnapType = "";
-            animationRef.current = null;
-          },
-        }
-      );
-    }
-  };
-
-  return (
-    <TabsStyled value={selectedTabKey} onValueChange={onSelectionChange}>
-      <TabContainer bgcolor={tabBgColor} roundedcontainer={roundedContainer}>
-        <TabListStyled ref={tabListRef}>
+    return (
+      <TabsStyled
+        value={selectedTabKey}
+        onValueChange={onSelectionChange}
+        ref={ref}
+      >
+        <TabContainer bgcolor={tabBgColor} roundedcontainer={roundedContainer}>
+          <TabListStyled ref={tabListRef}>
+            {tabs.map((tab) => (
+              <TabStyled
+                key={tab.id}
+                value={tab.id}
+                bgcolor={tabBgColor}
+                selectioncolor={tabSelectionColor}
+              >
+                {tab.label}
+              </TabStyled>
+            ))}
+          </TabListStyled>
+          {/* Selection indicator. */}
+          <Selector style={{ x, width }} bgcolor={tabBgColor} />
+        </TabContainer>
+        <TabPanels ref={tabPanelsRef}>
           {tabs.map((tab) => (
-            <TabStyled
-              key={tab.id}
-              value={tab.id}
-              bgcolor={tabBgColor}
-              selectioncolor={tabSelectionColor}
-            >
-              {tab.label}
-            </TabStyled>
+            <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
+              {tab.tabContents}
+            </TabPanelStyled>
           ))}
-        </TabListStyled>
-        {/* Selection indicator. */}
-        <Selector style={{ x, width }} bgcolor={tabBgColor} />
-      </TabContainer>
-      <TabPanels ref={tabPanelsRef}>
-        {tabs.map((tab) => (
-          <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
-            {tab.tabContents}
-          </TabPanelStyled>
-        ))}
-      </TabPanels>
-    </TabsStyled>
-  );
-}
+        </TabPanels>
+      </TabsStyled>
+    );
+  }
+);
 
 export default SwipeableTabs;

@@ -11,9 +11,10 @@ import KanjiDetailTabs from "../KanjiDetailTabs";
 import VocabDetailTabs from "../VocabDetailTabs";
 import HomeIconColor from "../../images/home-color.svg";
 import styled from "styled-components";
-import { useState } from "react";
+import { RefObject, useRef, useState } from "react";
 import { TabData } from "../../types/MiscTypes";
 import SwipeableTabs from "../SwipeableTabs";
+import { motion } from "framer-motion";
 
 type HeaderProps = {
   subjType: SubjectType;
@@ -41,14 +42,20 @@ const LessonContent = styled.div`
 
 type CardProps = {
   lesson: ReviewQueueItem;
+  parentContainerRef: RefObject<HTMLDivElement | null>;
 };
 
 // TODO: move home button into lesson session component, will be fixed to top left
-function LessonCard({ lesson }: CardProps) {
+// function LessonCard({ lesson }: CardProps) {
+function LessonCard({ lesson, parentContainerRef }: CardProps) {
   const navigate = useNavigate();
 
   return (
-    <>
+    <motion.div
+      drag="x"
+      dragConstraints={parentContainerRef}
+      onMeasureDragConstraints={console.log}
+    >
       <LessonSessionHeader subjType={lesson.object}>
         <HomeBtn onPress={() => navigate("/home")}>
           <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
@@ -71,7 +78,7 @@ function LessonCard({ lesson }: CardProps) {
           <VocabDetailTabs vocab={lesson} scrollToDefault={false} />
         )}
       </LessonContent>
-    </>
+    </motion.div>
   );
 }
 
@@ -81,17 +88,22 @@ type Props = {
 
 function LessonCards({ lessons }: Props) {
   const [currLessonIndex, setCurrLessonIndex] = useState<number>(0);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   let lessonTabs: TabData[] = lessons.map((lesson) => {
     return {
       id: lesson.id.toString(),
       label: lesson.id.toString(),
-      tabContents: <LessonCard lesson={lesson} />,
+      tabContents: <LessonCard lesson={lesson} parentContainerRef={ref} />,
     };
   });
 
   return (
-    <SwipeableTabs defaultValue={lessons[0].id.toString()} tabs={lessonTabs} />
+    <SwipeableTabs
+      defaultValue={lessons[0].id.toString()}
+      tabs={lessonTabs}
+      ref={ref}
+    />
   );
 }
 
