@@ -1,10 +1,5 @@
-import {
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonButton,
-  IonIcon,
-} from "@ionic/react";
+// TODO: change so not relying on IonIcon
+import { IonHeader, IonToolbar, IonButtons, IonIcon } from "@ionic/react";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import {
   ReviewQueueItem,

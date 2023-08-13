@@ -15,6 +15,7 @@ const HomeTxt = styled.p`
   text-transform: capitalize;
 `;
 
+// TODO: change name to FloatingHomeButton
 function HomeButton() {
   const navigate = useNavigate();
 

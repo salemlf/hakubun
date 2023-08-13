@@ -77,11 +77,12 @@ function AssignmentSettings({
   };
 
   const submitWithAdvancedSettings = (): AssignmentBatch => {
+    let subjIDs = selectedAdvancedSubjIDs.map((subjID) => parseInt(subjID));
+
     let assignmentBatch = assignmentData.filter((assignment: Assignment) => {
-      return selectedAdvancedSubjIDs.includes(assignment.subject_id.toString());
+      return subjIDs.includes(assignment.subject_id);
     });
 
-    let subjIDs = selectedAdvancedSubjIDs.map((subjID) => parseInt(subjID));
     return {
       assignmentBatch,
       subjIDs,
