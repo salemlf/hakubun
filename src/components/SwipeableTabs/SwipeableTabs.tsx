@@ -99,6 +99,7 @@ const TabPanels = styled.div`
   font-weight: 300;
   color: white;
   scroll-snap-type: x mandatory;
+  overscroll-behavior-x: auto;
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
