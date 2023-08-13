@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
+import type { ForwardedRef } from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import {
   TargetAndTransition,
@@ -15,9 +16,6 @@ import {
   useScroll,
 } from "framer-motion";
 import { TabData } from "../../types/MiscTypes";
-// !added
-import type { ComponentProps, ForwardedRef } from "react";
-// !added
 import styled from "styled-components";
 
 interface CustomSelectColor {
@@ -49,17 +47,35 @@ const TabContainer = styled.div<TabContainerStyles>`
 
 const TabListStyled = styled(Tabs.List)`
   display: flex;
-  margin-left: 0.4rem;
+  /* margin-left: 0.4rem; */
   justify-content: space-evenly;
 `;
 
-// TODO: base hover color off selectioncolor
 const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
   padding: 10px;
   outline-style: none;
   font-size: 1rem;
   color: ${({ selectioncolor }) => selectioncolor};
   background-color: ${({ bgcolor }) => bgcolor};
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  cursor: default;
+
+  @media (min-width: 640px) {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+`;
+
+const TabStyledBlob = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
+  outline-style: none;
+  font-size: 1rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background-color: var(--offwhite-color);
   transition-property: background-color, border-color, color, fill, stroke,
     opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -96,6 +112,18 @@ const Selector = styled(motion.span)<CustomBgColor>`
   border-radius: 9999px;
   background-color: ${({ bgcolor }) => bgcolor};
   mix-blend-mode: difference;
+  margin: 4px 0;
+`;
+
+const SelectorBlob = styled(motion.span)<CustomBgColor>`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  border-radius: 9999px;
+  background-color: var(--ion-color-primary);
   margin: 4px 0;
 `;
 
@@ -137,10 +165,10 @@ type TabsComponentProps = {
   tabBgColor?: string;
   tabSelectionColor?: string;
   roundedContainer?: boolean;
-  // allow ref to be passed in to allow parent container scrolling if child is at end of scroll
-  parentContainerRef?: RefObject<HTMLDivElement | null>;
+  blobs?: boolean;
 };
 
+// TODO: implement a version of this where current item is marked as a blob and is positioned below tab panel
 // TODO: fix so on end of scroll, parent container scrolls
 // originally based off of Devon Govett's react aria framer motion example, p cool shit
 const SwipeableTabs = forwardRef(
@@ -152,6 +180,7 @@ const SwipeableTabs = forwardRef(
       tabBgColor = "var(--offwhite-color)",
       tabSelectionColor = "var(--darkest-purple)",
       roundedContainer = true,
+      blobs = false,
     }: TabsComponentProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
@@ -307,29 +336,63 @@ const SwipeableTabs = forwardRef(
         onValueChange={onSelectionChange}
         ref={ref}
       >
-        <TabContainer bgcolor={tabBgColor} roundedcontainer={roundedContainer}>
-          <TabListStyled ref={tabListRef}>
-            {tabs.map((tab) => (
-              <TabStyled
-                key={tab.id}
-                value={tab.id}
-                bgcolor={tabBgColor}
-                selectioncolor={tabSelectionColor}
-              >
-                {tab.label}
-              </TabStyled>
-            ))}
-          </TabListStyled>
-          {/* Selection indicator. */}
-          <Selector style={{ x, width }} bgcolor={tabBgColor} />
-        </TabContainer>
-        <TabPanels ref={tabPanelsRef}>
-          {tabs.map((tab) => (
-            <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
-              {tab.tabContents}
-            </TabPanelStyled>
-          ))}
-        </TabPanels>
+        {blobs ? (
+          <>
+            <TabPanels ref={tabPanelsRef}>
+              {tabs.map((tab) => (
+                <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
+                  {tab.tabContents}
+                </TabPanelStyled>
+              ))}
+            </TabPanels>
+            <TabContainer
+              bgcolor={"transparent"}
+              roundedcontainer={roundedContainer}
+            >
+              <TabListStyled ref={tabListRef}>
+                {tabs.map((tab) => (
+                  <TabStyledBlob
+                    key={tab.id}
+                    value={tab.id}
+                    bgcolor={tabBgColor}
+                    selectioncolor={tabSelectionColor}
+                  />
+                ))}
+              </TabListStyled>
+              {/* Selection indicator. */}
+              <SelectorBlob style={{ x, width }} bgcolor={tabBgColor} />
+            </TabContainer>
+          </>
+        ) : (
+          <>
+            <TabContainer
+              bgcolor={tabBgColor}
+              roundedcontainer={roundedContainer}
+            >
+              <TabListStyled ref={tabListRef}>
+                {tabs.map((tab) => (
+                  <TabStyled
+                    key={tab.id}
+                    value={tab.id}
+                    bgcolor={tabBgColor}
+                    selectioncolor={tabSelectionColor}
+                  >
+                    {tab.label}
+                  </TabStyled>
+                ))}
+              </TabListStyled>
+              {/* Selection indicator. */}
+              <Selector style={{ x, width }} bgcolor={tabBgColor} />
+            </TabContainer>
+            <TabPanels ref={tabPanelsRef}>
+              {tabs.map((tab) => (
+                <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
+                  {tab.tabContents}
+                </TabPanelStyled>
+              ))}
+            </TabPanels>
+          </>
+        )}
       </TabsStyled>
     );
   }

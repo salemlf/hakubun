@@ -91,7 +91,11 @@ function LessonCards({ lessons }: Props) {
   });
 
   return (
-    <SwipeableTabs defaultValue={lessons[0].id.toString()} tabs={lessonTabs} />
+    <SwipeableTabs
+      defaultValue={lessons[0].id.toString()}
+      tabs={lessonTabs}
+      blobs={true}
+    />
   );
 }
 
