@@ -17,6 +17,7 @@ import SubjectChars from "../SubjectChars";
 import { RadicalMeaning, ReadingAndMeaning } from "../SubjectWideBtnList";
 import CheckCircleIcon from "../../images/check-in-circle.svg";
 import styled from "styled-components";
+import { AnimatePresence, motion } from "framer-motion";
 
 const SubjectList = styled(ToggleGroup.Root)`
   display: flex;
@@ -47,20 +48,22 @@ const SubjectItem = styled(ToggleGroup.Item)<ItemContainerProps>`
     --outline: 2px solid white;
   }
 
-  &[data-state="on"] {
+  /* &[data-state="on"] {
     .checkmark {
       display: block;
     }
-  }
+  } */
 `;
 
-const Check = styled(IonIcon)`
+const CheckIconContainer = styled(motion.div)`
   position: absolute;
   top: -10px;
   right: -10px;
+`;
+
+const Check = styled(IonIcon)`
   width: 2.5em;
   height: 2.5em;
-  display: none;
 `;
 
 const Characters = styled(SubjectChars)`
@@ -166,7 +169,18 @@ function AssignmentSelector({
                 ) : (
                   <LvlBadge>Lvl {subject.level}</LvlBadge>
                 )}
-                <Check className="checkmark" src={CheckCircleIcon} />
+                <AnimatePresence>
+                  {selectedAdvancedSubjIDs.includes(`${subject.id}`) && (
+                    <CheckIconContainer
+                      key={`${subject.id}`}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                    >
+                      <Check className="checkmark" src={CheckCircleIcon} />
+                    </CheckIconContainer>
+                  )}
+                </AnimatePresence>
               </SubjectItem>
             ))}
           </SubjectList>
