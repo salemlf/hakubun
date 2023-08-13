@@ -6,7 +6,12 @@ import {
 } from "../types/Subject";
 import { Assignment, AssignmentType } from "../types/Assignment";
 import { SrsLevelName, StudyMaterial, TagType } from "../types/MiscTypes";
-import { capitalizeWord } from "./MiscService";
+import {
+  capitalizeWord,
+  findStudyMaterialWithSubjID,
+  getAudioForReading,
+} from "./MiscService";
+import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(
@@ -177,4 +182,64 @@ export const compareAssignmentsByAvailableDate = (
     new Date(assignment1.available_at).getTime() -
     new Date(assignment2.available_at).getTime()
   );
+};
+
+export const createAssignmentQueueItems = (
+  assignments: Assignment[],
+  subjects: Subject[],
+  studyMaterials: StudyMaterial[]
+): ReviewQueueItem[] => {
+  const subjectsWithQueueProps = (subjects as ReviewQueueItem[]).map(
+    (subject, index) => {
+      let foundAssignment = findAssignmentWithSubjID(assignments, subject);
+      let foundStudyMaterial = findStudyMaterialWithSubjID(
+        studyMaterials,
+        subject
+      );
+
+      let primaryReading = subject.readings?.find(
+        (reading: any) => reading.primary === true
+      );
+
+      let audioUrl =
+        subject.pronunciation_audios && primaryReading
+          ? getAudioForReading(subject.pronunciation_audios, primaryReading)
+          : null;
+
+      // this should always be true since we retrieved the subjects based on the assignments
+      let assignment = foundAssignment!;
+
+      return {
+        ...subject,
+        assignment_id: assignment.id,
+        srs_stage: assignment.srs_stage,
+        is_reviewed: false,
+        itemID: `meaning${index}`,
+        meaning_synonyms: foundStudyMaterial
+          ? foundStudyMaterial.meaning_synonyms
+          : [],
+        review_type: "meaning" as ReviewType,
+        primary_audio_url: audioUrl,
+        is_correct_answer: null,
+        ending_srs_stage: null,
+        incorrect_meaning_answers: 0,
+        incorrect_reading_answers: 0,
+      };
+    }
+  );
+  // adds reading items to queue if the subject has readings (radicals and kana vocab don't)
+  const itemsWithReadings = subjectsWithQueueProps.filter(
+    (queueItem) => queueItem.readings !== undefined
+  );
+
+  const meaningAndReadingQueue = [
+    ...subjectsWithQueueProps,
+    ...itemsWithReadings.map((itemWithReadings, index) => ({
+      ...itemWithReadings,
+      review_type: "reading" as ReviewType,
+      itemID: `reading${index}`,
+    })),
+  ];
+
+  return meaningAndReadingQueue;
 };

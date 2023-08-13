@@ -50,15 +50,7 @@ export const ReviewSessionQueue = () => {
   let stateFromReviewSettings: AssignmentBatch = location.state;
   let assignmentBatchToReview: Assignment[] =
     stateFromReviewSettings.assignmentBatch;
-  console.log(
-    "🚀 ~ file: ReviewSessionQueue.tsx:44 ~ ReviewSessionQueue ~ assignmentBatchToReview:",
-    assignmentBatchToReview
-  );
   let subjIDs: number[] = stateFromReviewSettings.subjIDs;
-  console.log(
-    "🚀 ~ file: ReviewSessionQueue.tsx:47 ~ ReviewSessionQueue ~ subjIDs:",
-    subjIDs
-  );
 
   useEffect(() => {
     createNewReviewSession(assignmentBatchToReview, subjIDs);
@@ -89,10 +81,13 @@ export const ReviewSessionQueue = () => {
           return results.resources_updated.assignment;
         })
         .catch((err) => {
+          // *testing
+          // TODO: actually catch errors
           console.log(
             "🚀 ~ file: ReviewSessionQueue.tsx:96 ~ promises ~ err:",
             err
           );
+          // *testing
         });
     });
     Promise.all(promises).then(function (results) {

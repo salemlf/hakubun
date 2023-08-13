@@ -19,6 +19,7 @@ import { Search } from "../pages/Search";
 import ReviewSummary from "../pages/ReviewSummary";
 import FloatingTabBar from "../components/FloatingTabBar";
 import LessonSettings from "../pages/LessonSettings";
+import LessonSession from "../pages/LessonSession";
 
 export const AppStack = () => {
   // TODO: trigger some event for this, use listenerEvent.canGoBack
@@ -37,11 +38,13 @@ const AppRoutes = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showTabs, setShowTabs] = useState(true);
+  // TODO: change implementation so don't need to list all these
   const pagesToHideTabBar = [
     "/reviews/settings",
     "/reviews/session",
     "/reviews/summary",
     "/lessons/settings",
+    "/lessons/session",
   ];
 
   let tabBarStyle = showTabs === true ? undefined : { display: "none" };
@@ -54,7 +57,6 @@ const AppRoutes = () => {
     }
   }, [location.pathname]);
 
-  // !added
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
       App.addListener("backButton", ({ canGoBack }) => {
@@ -69,7 +71,6 @@ const AppRoutes = () => {
       App.removeAllListeners();
     };
   }, [history]);
-  // !added
 
   return (
     <AnimatePresence>
@@ -78,6 +79,7 @@ const AppRoutes = () => {
         <Route path="/reviews/session" element={<ReviewSessionQueue />}></Route>
         <Route path="/reviews/summary" element={<ReviewSummary />} />
         <Route path="/lessons/settings" element={<LessonSettings />} />
+        <Route path="/lessons/session" element={<LessonSession />} />
         <Route path="/subjects" element={<Subjects />} />
         <Route path="/search" element={<Search />} />
         <Route path="/subjects/:id" element={<SubjectDetails />} />

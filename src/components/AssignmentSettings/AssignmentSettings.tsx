@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  compareAssignmentsByAvailableDate,
+  filterAssignmentsByType,
+  getSubjIDsFromAssignments,
+} from "../../services/SubjectAndAssignmentService";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentBatch } from "../../types/MiscTypes";
 import { INITIAL_ASSIGNMENT_TYPES } from "../../constants";
@@ -7,11 +12,6 @@ import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
-import {
-  compareAssignmentsByAvailableDate,
-  filterAssignmentsByType,
-  getSubjIDsFromAssignments,
-} from "../../services/SubjectAndAssignmentService";
 
 type Props = {
   settingsType: "lessons" | "reviews";
@@ -98,7 +98,7 @@ function AssignmentSettings({
     if (settingsType === "reviews") {
       navigate("/reviews/session", { state: sessionData, replace: true });
     } else {
-      console.log("LESSON SESSION NOT IMPLEMENTED YET!");
+      navigate("/lessons/session", { state: sessionData, replace: true });
     }
   };
 

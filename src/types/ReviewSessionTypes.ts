@@ -3,6 +3,7 @@ import { RequireAtLeastOne } from "./Global";
 
 export type ReviewType = "reading" | "meaning";
 
+// TODO: change name to AssignmentQueueItem since lessons use it too
 export interface ReviewQueueItem extends Subject {
   itemID: string;
   assignment_id: number;

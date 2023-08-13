@@ -4,11 +4,14 @@ import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { flattenCollectionOfOne, flattenData } from "../services/MiscService";
 import { StudyMaterial } from "../types/MiscTypes";
 
-export const useStudyMaterialsBySubjIDs = (subjIDs: number[]) => {
+export const useStudyMaterialsBySubjIDs = (
+  subjIDs: number[],
+  enabled: boolean = true
+) => {
   return useQuery({
     queryKey: ["study-materials-by-subj-ids", subjIDs],
     queryFn: () => WaniKaniAPI.getStudyMaterialsBySubjIDs(subjIDs),
-    enabled: !!subjIDs,
+    enabled: enabled && subjIDs.length !== 0,
     select: useCallback(
       (data: any) => {
         if (data.data.length === 1) {

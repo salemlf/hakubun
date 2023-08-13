@@ -17,7 +17,10 @@ import {
   findStudyMaterialWithSubjID,
 } from "../services/MiscService";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
-import { findAssignmentWithSubjID } from "../services/SubjectAndAssignmentService";
+import {
+  createAssignmentQueueItems,
+  findAssignmentWithSubjID,
+} from "../services/SubjectAndAssignmentService";
 
 const initialState: ReviewSessionDataState = {
   isLoading: false,
@@ -100,67 +103,6 @@ const addToReviewQueue = (
   });
 };
 
-const createMeaningAndReadingQueueItems = (
-  assignments: Assignment[],
-  subjects: Subject[],
-  studyMaterials: StudyMaterial[]
-): ReviewQueueItem[] => {
-  const subjectsWithQueueProps = (subjects as ReviewQueueItem[]).map(
-    (subject, index) => {
-      let foundAssignment = findAssignmentWithSubjID(assignments, subject);
-      let foundStudyMaterial = findStudyMaterialWithSubjID(
-        studyMaterials,
-        subject
-      );
-
-      let primaryReading = subject.readings?.find(
-        (reading: any) => reading.primary === true
-      );
-
-      let audioUrl =
-        subject.pronunciation_audios && primaryReading
-          ? getAudioForReading(subject.pronunciation_audios, primaryReading)
-          : null;
-
-      // this should always be true since we retrieved the subjects based on the assignments
-      let assignment = foundAssignment!;
-
-      return {
-        ...subject,
-        assignment_id: assignment.id,
-        srs_stage: assignment.srs_stage,
-        is_reviewed: false,
-        itemID: `meaning${index}`,
-        meaning_synonyms: foundStudyMaterial
-          ? foundStudyMaterial.meaning_synonyms
-          : [],
-        review_type: "meaning" as ReviewType,
-        primary_audio_url: audioUrl,
-        is_correct_answer: null,
-        ending_srs_stage: null,
-        incorrect_meaning_answers: 0,
-        incorrect_reading_answers: 0,
-      };
-    }
-  );
-
-  // adds reading items to queue if the subject has readings (radicals and kana vocab don't)
-  const itemsWithReadings = subjectsWithQueueProps.filter(
-    (queueItem) => queueItem.readings !== undefined
-  );
-
-  const meaningAndReadingQueue = [
-    ...subjectsWithQueueProps,
-    ...itemsWithReadings.map((itemWithReadings, index) => ({
-      ...itemWithReadings,
-      review_type: "reading" as ReviewType,
-      itemID: `reading${index}`,
-    })),
-  ];
-
-  return meaningAndReadingQueue;
-};
-
 const createReviewItems = async (
   assignments: Assignment[],
   subjIDs: number[],
@@ -170,7 +112,7 @@ const createReviewItems = async (
   let subjects = (await getSubjectData(subjIDs)) as Subject[];
   let studyMaterials = (await getStudyMaterials(subjIDs)) as StudyMaterial[];
 
-  let reviewQueueItems = createMeaningAndReadingQueueItems(
+  let reviewQueueItems = createAssignmentQueueItems(
     assignments,
     subjects,
     studyMaterials

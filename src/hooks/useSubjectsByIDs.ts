@@ -8,7 +8,7 @@ export const useSubjectsByIDs = (ids: number[], enabled: boolean = true) => {
   return useQuery({
     queryKey: ["subjects-by-ids", ids],
     queryFn: () => WaniKaniAPI.getSubjectsBySubjIDs(ids),
-    enabled: ids.length !== 0 && enabled,
+    enabled: enabled && ids.length !== 0,
     select: useCallback(
       (data: any) => {
         let flattened = flattenData(data);
