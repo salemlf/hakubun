@@ -173,9 +173,14 @@ function AssignmentSelector({
                   {selectedAdvancedSubjIDs.includes(`${subject.id}`) && (
                     <CheckIconContainer
                       key={`${subject.id}`}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      exit={{ scale: 0 }}
+                      transition={{
+                        type: "spring",
+                        duration: 0.75,
+                        bounce: 0.5,
+                      }}
+                      initial={{ scale: 0, rotate: 90 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      exit={{ scale: 0, rotate: 90 }}
                     >
                       <Check className="checkmark" src={CheckCircleIcon} />
                     </CheckIconContainer>
