@@ -40,9 +40,25 @@ const TabsStyled = styled(Tabs.Root)`
 const TabContainer = styled.div<TabContainerStyles>`
   position: relative;
   background-color: ${({ bgcolor }) => bgcolor};
-  padding: 3px 0;
+  /* padding: 3px 0; */
+  padding: 0;
   border-radius: ${({ roundedcontainer }) =>
     roundedcontainer ? ".5rem" : "0"};
+`;
+
+const TabContainerBottomFlex = styled.div<TabContainerStyles>`
+  background-color: ${({ bgcolor }) => bgcolor};
+  /* padding: 3px 0; */
+  padding: 0;
+  border-radius: ${({ roundedcontainer }) =>
+    roundedcontainer ? ".5rem" : "0"};
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-direction: column;
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
 `;
 
 const TabListStyled = styled(Tabs.List)`
@@ -124,7 +140,6 @@ const SelectorBlob = styled(motion.span)<CustomBgColor>`
   z-index: 10;
   border-radius: 9999px;
   background-color: var(--ion-color-primary);
-  margin: 4px 0;
 `;
 
 const TabPanels = styled.div`
@@ -345,7 +360,7 @@ const SwipeableTabs = forwardRef(
                 </TabPanelStyled>
               ))}
             </TabPanels>
-            <TabContainer
+            <TabContainerBottomFlex
               bgcolor={"transparent"}
               roundedcontainer={roundedContainer}
             >
@@ -360,8 +375,11 @@ const SwipeableTabs = forwardRef(
                 ))}
               </TabListStyled>
               {/* Selection indicator. */}
-              <SelectorBlob style={{ x, width }} bgcolor={tabBgColor} />
-            </TabContainer>
+              <SelectorBlob
+                style={{ x, width: "20px", height: "20px" }}
+                bgcolor={tabBgColor}
+              />
+            </TabContainerBottomFlex>
           </>
         ) : (
           <>

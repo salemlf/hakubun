@@ -82,6 +82,7 @@ type Props = {
 function LessonCards({ lessons }: Props) {
   const [currLessonIndex, setCurrLessonIndex] = useState<number>(0);
 
+  // TODO: if on last index, show button to go to lesson review session
   let lessonTabs: TabData[] = lessons.map((lesson) => {
     return {
       id: lesson.id.toString(),
