@@ -4,8 +4,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Build Android App
         uses: sparkfabrik/android-build-action@v1.5.0
         with:
-          project-path: .
+          project-path: android
           output-path: hakubun.apk
