@@ -26,3 +26,8 @@ jobs:
         with:
           project-path: android
           output-path: hakubun.apk
+      - name: Upload Android APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: hakubun-apk
+          path: android/hakubun.apk
