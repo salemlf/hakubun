@@ -6,6 +6,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
       - name: Install dependencies
         run: npm install
       - name: Create build
