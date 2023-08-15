@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
+// TODO: change so not relying on IonIcon
+import { IonIcon } from "@ionic/react";
+import Button from "../Button";
 import { Subject, SubjectType } from "../../types/Subject";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
@@ -6,6 +10,7 @@ import SubjectChars from "../SubjectChars";
 import RadicalDetailTabs from "../RadicalDetailTabs";
 import KanjiDetailTabs from "../KanjiDetailTabs";
 import VocabDetailTabs from "../VocabDetailTabs";
+import HomeIconColor from "../../images/home-color.svg";
 import { TabData } from "../../types/MiscTypes";
 import SwipeableTabs from "../SwipeableTabs";
 import styled from "styled-components";
@@ -16,7 +21,18 @@ type HeaderProps = {
 
 const LessonSessionHeader = styled.header<HeaderProps>`
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
-  padding: 75px 10px;
+  padding: 30px 10px 75px;
+`;
+
+// TODO: extract into HomeButton component
+const HomeBtn = styled(Button)`
+  border-radius: 10px;
+  padding: 0 6px;
+`;
+
+const HomeIconStyled = styled(IonIcon)`
+  width: 3em;
+  height: 3em;
 `;
 
 const LessonContent = styled.div`
@@ -29,9 +45,14 @@ type CardProps = {
 
 // TODO: move home button into lesson session component, will be fixed to top left
 function LessonCard({ lesson }: CardProps) {
+  const navigate = useNavigate();
+
   return (
     <>
       <LessonSessionHeader subjType={lesson.object}>
+        <HomeBtn onPress={() => navigate("/home")}>
+          <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
+        </HomeBtn>
         <SubjectChars
           subject={lesson as Subject}
           fontSize="4rem"
