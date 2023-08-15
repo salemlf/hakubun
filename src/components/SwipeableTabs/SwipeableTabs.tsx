@@ -142,11 +142,14 @@ const SelectorBlob = styled(motion.span)<CustomBgColor>`
   background-color: var(--ion-color-primary);
 `;
 
-const TabPanels = styled.div`
+type TabPanelsProps = {
+  hasmargin: boolean;
+};
+
+const TabPanels = styled.div<TabPanelsProps>`
   display: flex;
   overflow: auto;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin: ${({ hasmargin }) => (hasmargin ? `16px 0` : "0")};
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 300;
@@ -183,7 +186,7 @@ type TabsComponentProps = {
   blobs?: boolean;
 };
 
-// TODO: implement a version of this where current item is marked as a blob and is positioned below tab panel
+// TODO: break this down into smaller components? File is pretty large
 // TODO: fix so on end of scroll, parent container scrolls
 // originally based off of Devon Govett's react aria framer motion example, p cool shit
 const SwipeableTabs = forwardRef(
@@ -353,7 +356,7 @@ const SwipeableTabs = forwardRef(
       >
         {blobs ? (
           <>
-            <TabPanels ref={tabPanelsRef}>
+            <TabPanels ref={tabPanelsRef} hasmargin={false}>
               {tabs.map((tab) => (
                 <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
                   {tab.tabContents}
@@ -375,10 +378,7 @@ const SwipeableTabs = forwardRef(
                 ))}
               </TabListStyled>
               {/* Selection indicator. */}
-              <SelectorBlob
-                style={{ x, width: "20px", height: "20px" }}
-                bgcolor={tabBgColor}
-              />
+              <SelectorBlob style={{ x, width }} bgcolor={tabBgColor} />
             </TabContainerBottomFlex>
           </>
         ) : (
@@ -402,7 +402,7 @@ const SwipeableTabs = forwardRef(
               {/* Selection indicator. */}
               <Selector style={{ x, width }} bgcolor={tabBgColor} />
             </TabContainer>
-            <TabPanels ref={tabPanelsRef}>
+            <TabPanels ref={tabPanelsRef} hasmargin={true}>
               {tabs.map((tab) => (
                 <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
                   {tab.tabContents}

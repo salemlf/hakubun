@@ -36,7 +36,7 @@ const HomeIconStyled = styled(IonIcon)`
 `;
 
 const LessonContent = styled.div`
-  margin: 10px 16px;
+  margin: 10px 20px;
 `;
 
 type CardProps = {
