@@ -1,0 +1,11 @@
+name: Build Dev Version of App
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Android App
+        uses: sparkfabrik/android-build-action@v1.5.0
+        with:
+          project-path: android
+          output-path: hakubun.apk
