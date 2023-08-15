@@ -6,17 +6,13 @@
 # set -x
 
 # # Required nodeJS version
-# NODE_VERSION=20.5.0
+NODE_VERSION=18.16.0
 
 # # workaround to override the v8 alias
-# npm config delete prefix
-# . ~/.bashrc
-# nvm install "$NODE_VERSION"
-# nvm alias node20 "$NODE_VERSION"
-
-sudo npm cache clean -f
-sudo npm install -g n
-sudo n stable
+npm config delete prefix
+. ~/.bashrc
+nvm install "$NODE_VERSION"
+nvm alias node18 "$NODE_VERSION"
 
 # substitute APP_SECRET_VALUE in App Center config file
 envsubst < ./src/main/assets/appcenter-config.json > ./src/main/assets/temp-appcenter-config.json && mv ./src/main/assets/temp-appcenter-config.json ./src/main/assets/appcenter-config.json
