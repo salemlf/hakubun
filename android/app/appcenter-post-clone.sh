@@ -14,6 +14,9 @@ npm config delete prefix
 nvm install "$NODE_VERSION"
 nvm alias node20 "$NODE_VERSION"
 
+# substitute APP_SECRET_VALUE in App Center config file
+envsubst < ./src/main/assets/appcenter-config.json > ./src/main/assets/temp-appcenter-config.json && mv ./src/main/assets/temp-appcenter-config.json ./src/main/assets/appcenter-config.json
+
 # go to root of project
 cd ../..
 

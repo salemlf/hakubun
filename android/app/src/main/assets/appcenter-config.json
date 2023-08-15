@@ -1,0 +1,4 @@
+{
+  "app_secret": "${APP_SECRET_VALUE}",
+  "start_automatically": true
+}
