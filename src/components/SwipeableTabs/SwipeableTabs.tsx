@@ -40,7 +40,6 @@ const TabsStyled = styled(Tabs.Root)`
 const TabContainer = styled.div<TabContainerStyles>`
   position: relative;
   background-color: ${({ bgcolor }) => bgcolor};
-  /* padding: 3px 0; */
   padding: 0;
   border-radius: ${({ roundedcontainer }) =>
     roundedcontainer ? ".5rem" : "0"};
