@@ -146,7 +146,7 @@ type TabPanelsProps = {
 
 const TabPanels = styled.div<TabPanelsProps>`
   display: flex;
-  overflow: auto;
+  overflow-x: auto;
   margin: ${({ hasmargin }) => (hasmargin ? `16px 0` : "0")};
   font-size: 0.875rem;
   line-height: 1.25rem;
