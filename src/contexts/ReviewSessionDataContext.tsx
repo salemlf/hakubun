@@ -4,23 +4,14 @@ import { Subject } from "../types/Subject";
 import { StudyMaterial } from "../types/MiscTypes";
 import {
   ReviewSessionDataState,
-  ReviewSessionDataAction,
   ReviewQueueItem,
   ReviewSessionDataDispatch,
-  ReviewType,
 } from "../types/ReviewSessionTypes";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import {
-  flattenData,
-  shuffleArray,
-  getAudioForReading,
-  findStudyMaterialWithSubjID,
-} from "../services/MiscService";
+import { flattenData, shuffleArray } from "../services/MiscService";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
-import {
-  createAssignmentQueueItems,
-  findAssignmentWithSubjID,
-} from "../services/SubjectAndAssignmentService";
+import { createAssignmentQueueItems } from "../services/SubjectAndAssignmentService";
+import { reviewDataReducer } from "../reducers/reviewDataReducer";
 
 const initialState: ReviewSessionDataState = {
   isLoading: false,
@@ -134,76 +125,8 @@ const createReviewItems = async (
 };
 
 const ReviewSessionDataProvider = ({ children }: ProviderProps) => {
-  // TODO: refactor and then move into its own file
-  const reviewQueueReducer = (
-    state: ReviewSessionDataState,
-    action: ReviewSessionDataAction
-  ) => {
-    switch (action.type) {
-      case "RESET_REVIEW":
-        return { ...state, reviewQueue: [], currQueueIndex: 0 };
-      case "REVIEW_QUEUE_LOADING":
-        return { ...state, isLoading: true };
-      case "REVIEW_QUEUE_LOADED":
-        return { ...state, isLoading: false, reviewQueue: action.payload };
-      // TODO: update so no need to find last item with subject ID, should be unique now since deleting item with old data
-      case "UPDATE_REVIEW_QUEUE_ITEM":
-        let lastIndexOfItem =
-          state.reviewQueue.length -
-          1 -
-          state.reviewQueue
-            .slice()
-            .reverse()
-            .findIndex(
-              (reviewItem) =>
-                reviewItem.itemID === action.payload.itemID &&
-                reviewItem.review_type === action.payload.review_type
-            );
-        let updatedQueueItem = Object.assign({}, action.payload);
-
-        return {
-          ...state,
-          reviewQueue: [
-            ...state.reviewQueue.slice(0, lastIndexOfItem),
-            updatedQueueItem,
-            ...state.reviewQueue.slice(lastIndexOfItem + 1),
-          ],
-        };
-      case "INCREMENT_CURR_INDEX":
-        return {
-          ...state,
-          currQueueIndex: state.currQueueIndex + 1,
-        };
-      case "ADD_TO_REVIEW_QUEUE":
-        return {
-          ...state,
-          reviewQueue: [...state.reviewQueue, action.payload],
-        };
-      case "REMOVE_REVIEW_QUEUE_ITEM":
-        console.log("REMOVE_REVIEW_QUEUE_ITEM called!");
-        let indexToRemove = state.currQueueIndex;
-        // *testing
-        console.log(
-          "🚀 ~ file: ReviewSessionDataContext.tsx:249 ~ ReviewSessionDataProvider ~ indexToRemove:",
-          indexToRemove
-        );
-        // *testing
-
-        return {
-          ...state,
-          reviewQueue: [
-            ...state.reviewQueue.slice(0, indexToRemove),
-            ...state.reviewQueue.slice(indexToRemove + 1),
-          ],
-        };
-      default: {
-        throw new Error(`Unhandled action type: ${action.type}`);
-      }
-    }
-  };
-
   const [queueDataState, dispatchQueueDataContext] = useReducer(
-    reviewQueueReducer,
+    reviewDataReducer,
     initialState
   );
 
