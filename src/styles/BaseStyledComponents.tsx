@@ -154,14 +154,17 @@ export const BaseButton = styled.button<ButtonContainerProps>`
   }
 `;
 
-export const FloatingButton = styled(Button)`
+type FloatingButtonProps = {
+  distancefrombottom: string;
+};
+export const FloatingButton = styled(Button)<FloatingButtonProps>`
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   position: fixed;
   z-index: 1;
-  bottom: 35px;
+  bottom: ${({ distancefrombottom }) => distancefrombottom};
   padding: 10px 15px;
   left: 50%;
   transform: translateX(-50%);

@@ -2,6 +2,7 @@
 import { IonIcon } from "@ionic/react";
 import ReviewsIcon from "../../images/reviews.svg";
 import LessonsIcon from "../../images/lessons.svg";
+import LessonQuizIcon from "../../images/quiz.svg";
 import styled from "styled-components";
 
 import { FloatingButton } from "../../styles/BaseStyledComponents";
@@ -18,7 +19,7 @@ const StartTxt = styled.p`
 
 type Props = {
   onStartBtnClick: () => void;
-  buttonType: "lessons" | "reviews" | "lesson quiz";
+  buttonType: "lessons" | "reviews" | "quiz";
 };
 
 // TODO: add aria label based on type of start button
@@ -28,10 +29,11 @@ function StartSessionButton({ onStartBtnClick, buttonType }: Props) {
       backgroundColor="var(--ion-color-tertiary)"
       color="black"
       onPress={onStartBtnClick}
+      distancefrombottom={buttonType === "quiz" ? "60px" : "35px"}
     >
       {buttonType === "reviews" && <StartIcon src={ReviewsIcon} />}
       {buttonType === "lessons" && <StartIcon src={LessonsIcon} />}
-      {buttonType === "lesson quiz" && <StartIcon src={LessonsIcon} />}
+      {buttonType === "quiz" && <StartIcon src={LessonQuizIcon} />}
       <StartTxt>Start {buttonType}</StartTxt>
     </FloatingButton>
   );

@@ -106,7 +106,6 @@ type Props = {
   showMeaning?: boolean;
 };
 
-// TODO: use animate presence for checkmark
 // TODO: improve "no assignments available" message
 function AssignmentSelector({
   assignmentData,
@@ -114,11 +113,6 @@ function AssignmentSelector({
   setSelectedAdvancedSubjIDs,
   showMeaning = true,
 }: Props) {
-  // const [selected, setSelected] = useState<string[]>([]);
-  console.log(
-    "🚀 ~ file: AssignmentSelector.tsx:109 ~ AssignmentSelector ~ selectedAdvancedSubjIDs:",
-    selectedAdvancedSubjIDs
-  );
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
 
   let assignmentSubjIDs = assignmentData.map(

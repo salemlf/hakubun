@@ -24,6 +24,7 @@ function HomeButton() {
       backgroundColor="var(--ion-color-tertiary)"
       color="black"
       onPress={() => navigate("/home", { replace: true })}
+      distancefrombottom="35px"
     >
       <HomeIcon src={ColorHomeIcon} />
       <HomeTxt>Home</HomeTxt>
