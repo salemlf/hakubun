@@ -16,6 +16,7 @@ import {
 } from "../../styles/SubjectDetailsStyled";
 import { FullWidthColumn } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
+import StartSessionButton from "../StartSessionButton";
 
 const ReadingHeading = styled(SubjDetailSubHeading)`
   margin-bottom: 0;
@@ -27,7 +28,7 @@ const VocabReadingSection = styled(SubjDetailSection)`
 
 const getTabsForVocab = (vocabQueueItem: ReviewQueueItem) => {
   let isKanaVocab = vocabQueueItem.object === "kana_vocabulary";
-  const tabInCommon: TabData[] = [
+  const meaningTab: TabData[] = [
     {
       id: "meaning",
       label: "Meaning",
@@ -49,7 +50,7 @@ const getTabsForVocab = (vocabQueueItem: ReviewQueueItem) => {
     },
   ];
 
-  let breakdown: TabData = {
+  let breakdownTab: TabData = {
     id: "breakdown",
     label: "Breakdown",
     tabContents: (
@@ -62,7 +63,7 @@ const getTabsForVocab = (vocabQueueItem: ReviewQueueItem) => {
     ),
   };
 
-  let reading: TabData = {
+  let readingTab: TabData = {
     id: "reading",
     label: "Reading",
     tabContents: (
@@ -83,10 +84,10 @@ const getTabsForVocab = (vocabQueueItem: ReviewQueueItem) => {
   };
 
   if (isKanaVocab) {
-    return [...tabInCommon];
+    return [...meaningTab];
   }
 
-  return [breakdown, ...tabInCommon, reading];
+  return [breakdownTab, ...meaningTab, readingTab];
 };
 
 type Props = {

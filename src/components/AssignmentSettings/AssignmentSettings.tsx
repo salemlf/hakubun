@@ -95,7 +95,6 @@ function AssignmentSettings({
         ? submitWithBasicSettings()
         : submitWithAdvancedSettings();
 
-    // TODO: redirect to lesson session once implemented
     if (settingsType === "reviews") {
       navigate("/reviews/session", { state: sessionData, replace: true });
     } else {
