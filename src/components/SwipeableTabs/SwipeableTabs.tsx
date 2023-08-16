@@ -47,7 +47,6 @@ const TabContainer = styled.div<TabContainerStyles>`
 
 const TabContainerBottomFlex = styled.div<TabContainerStyles>`
   background-color: ${({ bgcolor }) => bgcolor};
-  /* padding: 3px 0; */
   padding: 0;
   border-radius: ${({ roundedcontainer }) =>
     roundedcontainer ? ".5rem" : "0"};
@@ -57,12 +56,19 @@ const TabContainerBottomFlex = styled.div<TabContainerStyles>`
   flex-direction: column;
   position: fixed;
   bottom: 20px;
-  width: 100%;
+  max-width: 100vw;
+  overflow-x: auto;
 `;
 
 const TabListStyled = styled(Tabs.List)`
   display: flex;
   justify-content: space-evenly;
+  max-width: 100%;
+`;
+
+const TabListBlobsStyled = styled(Tabs.List)`
+  display: flex;
+  max-width: 100%;
 `;
 
 const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
@@ -86,8 +92,9 @@ const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
 const TabStyledBlob = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
   outline-style: none;
   font-size: 1rem;
-  width: 25px;
-  height: 25px;
+  min-width: 25px;
+  min-height: 25px;
+  margin: 0 5px;
   border-radius: 9999px;
   background-color: var(--offwhite-color);
   transition-property: background-color, border-color, color, fill, stroke,
@@ -365,7 +372,7 @@ const SwipeableTabs = forwardRef(
               bgcolor={"transparent"}
               roundedcontainer={roundedContainer}
             >
-              <TabListStyled ref={tabListRef}>
+              <TabListBlobsStyled ref={tabListRef}>
                 {tabs.map((tab) => (
                   <TabStyledBlob
                     key={tab.id}
@@ -374,7 +381,7 @@ const SwipeableTabs = forwardRef(
                     selectioncolor={tabSelectionColor}
                   />
                 ))}
-              </TabListStyled>
+              </TabListBlobsStyled>
               {/* Selection indicator. */}
               <SelectorBlob style={{ x, width }} bgcolor={tabBgColor} />
             </TabContainerBottomFlex>

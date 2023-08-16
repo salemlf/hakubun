@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Subject, SubjectType } from "../../types/Subject";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
@@ -59,8 +58,6 @@ type Props = {
 };
 
 function LessonCards({ lessons }: Props) {
-  const [currLessonIndex, setCurrLessonIndex] = useState<number>(0);
-
   // TODO: if on last index, show button to go to lesson review session
   let lessonTabs: TabData[] = lessons.map((lesson) => {
     return {
@@ -75,6 +72,7 @@ function LessonCards({ lessons }: Props) {
       defaultValue={lessons[0].id.toString()}
       tabs={lessonTabs}
       blobs={true}
+      scrollToDefault={false}
     />
   );
 }
