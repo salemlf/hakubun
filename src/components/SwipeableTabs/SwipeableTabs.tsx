@@ -40,7 +40,6 @@ const TabsStyled = styled(Tabs.Root)`
 const TabContainer = styled.div<TabContainerStyles>`
   position: relative;
   background-color: ${({ bgcolor }) => bgcolor};
-  /* padding: 3px 0; */
   padding: 0;
   border-radius: ${({ roundedcontainer }) =>
     roundedcontainer ? ".5rem" : "0"};
@@ -63,7 +62,6 @@ const TabContainerBottomFlex = styled.div<TabContainerStyles>`
 
 const TabListStyled = styled(Tabs.List)`
   display: flex;
-  /* margin-left: 0.4rem; */
   justify-content: space-evenly;
 `;
 
@@ -88,8 +86,8 @@ const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
 const TabStyledBlob = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
   outline-style: none;
   font-size: 1rem;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   border-radius: 9999px;
   background-color: var(--offwhite-color);
   transition-property: background-color, border-color, color, fill, stroke,
