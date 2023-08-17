@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { IonSkeletonText } from "@ionic/react";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { Subject } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
 import {
   SubjDetailSection,
@@ -10,10 +12,14 @@ import {
 type Props = {
   kanjiIDs: number[];
   displayQuestionTxt?: boolean;
+  vocabSlug: string;
 };
 
-// TODO: sort so in same order as usage
-function KanjiUsedInVocab({ kanjiIDs, displayQuestionTxt = false }: Props) {
+function KanjiUsedInVocab({
+  kanjiIDs,
+  displayQuestionTxt = false,
+  vocabSlug,
+}: Props) {
   const {
     isLoading: kanjiUsedSubjLoading,
     data: kanjiUsedSubjData,
@@ -26,13 +32,31 @@ function KanjiUsedInVocab({ kanjiIDs, displayQuestionTxt = false }: Props) {
     error: kanjiUsedAssignmentsErr,
   } = useAssignmentsBySubjIDs(kanjiIDs);
 
-  let loading =
-    kanjiUsedSubjLoading ||
-    kanjiUsedSubjErr ||
-    kanjiUsedAssignmentsLoading ||
-    kanjiUsedAssignmentsErr;
+  const [kanjiUsedSubjects, setKanjiUsedSubjects] = useState<Subject[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (loading) {
+  useEffect(() => {
+    if (
+      !kanjiUsedAssignmentsLoading &&
+      !kanjiUsedSubjLoading &&
+      kanjiUsedSubjData &&
+      kanjiUsedAssignmentsData
+    ) {
+      setIsLoading(false);
+
+      const sortedSubjData = [...kanjiUsedSubjData].sort((a, b) => {
+        const aIndex = vocabSlug.indexOf(a.slug);
+        const bIndex = vocabSlug.indexOf(b.slug);
+        return aIndex - bIndex;
+      });
+
+      setKanjiUsedSubjects(sortedSubjData);
+    } else {
+      setIsLoading(true);
+    }
+  }, [kanjiUsedAssignmentsLoading, kanjiUsedSubjLoading]);
+
+  if (isLoading) {
     return (
       <div className="ion-padding">
         <IonSkeletonText animated={true}></IonSkeletonText>
@@ -45,7 +69,7 @@ function KanjiUsedInVocab({ kanjiIDs, displayQuestionTxt = false }: Props) {
     <SubjDetailSection>
       <SubjDetailSubHeading>Kanji Used</SubjDetailSubHeading>
       <SubjectButtonList
-        subjList={kanjiUsedSubjData}
+        subjList={kanjiUsedSubjects}
         assignmentList={kanjiUsedAssignmentsData}
       />
       {displayQuestionTxt && (

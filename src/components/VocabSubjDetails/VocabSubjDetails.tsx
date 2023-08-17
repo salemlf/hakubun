@@ -22,7 +22,10 @@ function VocabSubjDetails({ vocab }: Props) {
       {!isKanaVocab && <VocabReadingExplanation vocab={vocab as Vocabulary} />}
       <ContextSentences sentences={vocab.context_sentences} />
       {findComponents && (
-        <KanjiUsedInVocab kanjiIDs={vocab.component_subject_ids!} />
+        <KanjiUsedInVocab
+          kanjiIDs={vocab.component_subject_ids!}
+          vocabSlug={vocab.slug}
+        />
       )}
     </SubjInfoContainer>
   );

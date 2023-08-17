@@ -57,6 +57,7 @@ const getTabsForVocab = (vocabQueueItem: ReviewQueueItem) => {
         <KanjiUsedInVocab
           kanjiIDs={vocabQueueItem.component_subject_ids!}
           displayQuestionTxt={true}
+          vocabSlug={vocabQueueItem.slug}
         />
       </SubjDetailTabContainer>
     ),
