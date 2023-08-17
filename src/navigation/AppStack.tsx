@@ -20,6 +20,7 @@ import ReviewSummary from "../pages/ReviewSummary";
 import FloatingTabBar from "../components/FloatingTabBar";
 import LessonSettings from "../pages/LessonSettings";
 import LessonSession from "../pages/LessonSession";
+import LessonQuiz from "../pages/LessonQuiz";
 
 export const AppStack = () => {
   // TODO: trigger some event for this, use listenerEvent.canGoBack
@@ -45,6 +46,7 @@ const AppRoutes = () => {
     "/reviews/summary",
     "/lessons/settings",
     "/lessons/session",
+    "/lessons/quiz",
   ];
 
   let tabBarStyle = showTabs === true ? undefined : { display: "none" };
@@ -80,6 +82,7 @@ const AppRoutes = () => {
         <Route path="/reviews/summary" element={<ReviewSummary />} />
         <Route path="/lessons/settings" element={<LessonSettings />} />
         <Route path="/lessons/session" element={<LessonSession />} />
+        <Route path="/lessons/quiz" element={<LessonQuiz />} />
         <Route path="/subjects" element={<Subjects />} />
         <Route path="/search" element={<Search />} />
         <Route path="/subjects/:id" element={<SubjectDetails />} />
