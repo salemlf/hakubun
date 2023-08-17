@@ -9,11 +9,11 @@ import {
 } from "../services/ReviewService";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 import { Assignment } from "../types/Assignment";
-import ReviewSessionHeader from "../components/ReviewSessionHeader/ReviewSessionHeader";
+import { AssignmentBatch } from "../types/MiscTypes";
+import QueueHeader from "../components/QueueHeader/QueueHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";
 import AnimatedPage from "../components/AnimatedPage";
 import styled from "styled-components";
-import { AssignmentBatch } from "../types/MiscTypes";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -111,16 +111,14 @@ export const ReviewSessionQueue = () => {
   return (
     <Page>
       {!queueDataState.isLoading && reviewQueue.length !== 0 && (
-        <ReviewSessionHeader currentReviewItem={currentReviewItem} />
+        <QueueHeader currentReviewItem={currentReviewItem} queueType="review" />
       )}
       <IonContent>
         <Grid>
           {queueDataState.isLoading && <p>Loading...</p>}
           {!queueDataState.isLoading &&
             reviewQueue.length !== queueDataState.currQueueIndex &&
-            currentReviewItem && (
-              <ReviewCards currentReviewItem={currentReviewItem} />
-            )}
+            currentReviewItem && <ReviewCards queueType="review" />}
         </Grid>
       </IonContent>
     </Page>

@@ -7,15 +7,15 @@ import {
   useAnimate,
 } from "framer-motion";
 import { toHiragana } from "wanakana";
-import { SubjectType } from "../../types/Subject";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import { isUserAnswerValid } from "../../services/ReviewService";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
+import { useLessonQuizStore } from "../../stores/useLessonQuizStore";
+import { SubjectType } from "../../types/Subject";
+import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import ReviewCharAndType from "./ReviewCharAndType";
 import ReviewAnswerInput from "./ReviewAnswerInput";
 import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
-
 import RetryIcon from "../../images/retry.svg";
 import NextIcon from "../../images/next-item.svg";
 import {
@@ -153,11 +153,22 @@ const Card = ({ currentReviewItem }: CardProps) => {
 };
 
 type Props = {
-  currentReviewItem: ReviewQueueItem;
+  queueType: "review" | "quiz";
 };
 
-// TODO: change to just use queueDataState.reviewQueue[queueDataState.currQueueIndex] instead of prop?
-function ReviewCards({ currentReviewItem }: Props) {
+// TODO: add a callback to submit items that gets called when...
+// TODO: !isLoading && queueData.length !== 0 && queueData.length === currQueueIndex
+function ReviewCards({ queueType }: Props) {
+  const { queueDataState } = useReviewQueue();
+  const lessonQuizQueue = useLessonQuizStore.use.lessonQuizQueue();
+  const lessonQueueIndex = useLessonQuizStore.use.currQueueIndex();
+  let currQueueIndex =
+    queueType === "review" ? queueDataState.currQueueIndex : lessonQueueIndex;
+  let queueData =
+    queueType === "review" ? queueDataState.reviewQueue : lessonQuizQueue;
+
+  let currentReviewItem = queueData[currQueueIndex];
+
   return (
     <ReviewCardContainer>
       <Card

@@ -1,14 +1,12 @@
 // TODO: change so not relying on IonIcon
 import { IonHeader, IonToolbar, IonButtons, IonIcon } from "@ionic/react";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
-import {
-  ReviewQueueItem,
-  ReviewSessionDataState,
-} from "../../types/ReviewSessionTypes";
+import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import HomeIconColor from "../../images/home-color.svg";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
+import { useLessonQuizStore } from "../../stores/useLessonQuizStore";
 
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;
@@ -48,8 +46,8 @@ const HomeIconStyled = styled(IonIcon)`
   height: 3em;
 `;
 
-const calculateNumItemsInQueue = (queueDataState: ReviewSessionDataState) => {
-  let notReviewed = queueDataState.reviewQueue.filter(
+const calculateNumItemsInQueue = (queue: ReviewQueueItem[]) => {
+  let notReviewed = queue.filter(
     (reviewItem) => reviewItem.is_reviewed === false
   );
 
@@ -62,26 +60,31 @@ const calculateNumItemsInQueue = (queueDataState: ReviewSessionDataState) => {
 
 type Props = {
   currentReviewItem: ReviewQueueItem;
+  queueType: "review" | "quiz";
 };
 
-function ReviewSessionHeader({ currentReviewItem }: Props) {
+function QueueHeader({ currentReviewItem, queueType }: Props) {
   const navigate = useNavigate();
 
   const { queueDataState } = useReviewQueue();
+  const reviewQueue = queueDataState.reviewQueue;
+  const lessonQuizQueue = useLessonQuizStore.use.lessonQuizQueue();
+
+  let queueData = queueType === "review" ? reviewQueue : lessonQuizQueue;
 
   let numUniqueItemsInQueue = currentReviewItem
-    ? calculateNumItemsInQueue(queueDataState)
+    ? calculateNumItemsInQueue(queueData)
     : undefined;
 
   return (
     <SessionHeader>
       <Toolbar>
         <IonButtons slot="start">
-          <HomeBtn onPress={() => navigate("/home")}>
+          <HomeBtn onPress={() => navigate("/home", { replace: true })}>
             <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
           </HomeBtn>
         </IonButtons>
-        {numUniqueItemsInQueue && (
+        {numUniqueItemsInQueue !== undefined && (
           <NumReviewsLeftContainer>
             <NumReviewsLeftText>{numUniqueItemsInQueue}</NumReviewsLeftText>
           </NumReviewsLeftContainer>
@@ -91,4 +94,4 @@ function ReviewSessionHeader({ currentReviewItem }: Props) {
   );
 }
 
-export default ReviewSessionHeader;
+export default QueueHeader;
