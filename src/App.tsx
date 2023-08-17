@@ -42,8 +42,8 @@ const queryClient = new QueryClient({
 });
 
 const App: React.FC = () => (
-  <IonApp>
-    <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={queryClient}>
+    <IonApp>
       <AuthProvider>
         <ReviewSessionDataProvider>
           <ReviewSessionQueueProvider>
@@ -53,9 +53,9 @@ const App: React.FC = () => (
           </ReviewSessionQueueProvider>
         </ReviewSessionDataProvider>
       </AuthProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  </IonApp>
+    </IonApp>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
 );
 
 export default App;

@@ -19,9 +19,10 @@ export const useCreateReview = () => {
         data
       );
       // *testing
-      return queryClient.invalidateQueries([
-        "assignments-available-for-review",
-      ]);
+      queryClient.invalidateQueries({
+        queryKey: ["assignments-available-for-review"],
+      });
+      queryClient.invalidateQueries({ queryKey: ["available-num-reviews"] });
     },
   });
 };
