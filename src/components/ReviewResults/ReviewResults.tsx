@@ -87,13 +87,13 @@ function ReviewResults({ groupedReviewItems, numWrong, numCorrect }: Props) {
   return (
     <>
       <IonCard>
-        <IncorrectItemsHeader>
-          <CardTitle>{numWrong} Answered Incorrectly</CardTitle>
-        </IncorrectItemsHeader>
+        <CorrectItemsHeader>
+          <CardTitle>{numCorrect} Answered Correctly</CardTitle>
+        </CorrectItemsHeader>
         {!reviewSummaryDataLoading ? (
           <CardContent>
-            {incorrectReviewSubjData && (
-              <GroupedReviewSummaryResults subjData={incorrectReviewSubjData} />
+            {correctReviewSubjData && (
+              <GroupedReviewSummaryResults subjData={correctReviewSubjData} />
             )}
           </CardContent>
         ) : (
@@ -106,13 +106,13 @@ function ReviewResults({ groupedReviewItems, numWrong, numCorrect }: Props) {
         )}
       </IonCard>
       <IonCard>
-        <CorrectItemsHeader>
-          <CardTitle>{numCorrect} Answered Correctly</CardTitle>
-        </CorrectItemsHeader>
+        <IncorrectItemsHeader>
+          <CardTitle>{numWrong} Answered Incorrectly</CardTitle>
+        </IncorrectItemsHeader>
         {!reviewSummaryDataLoading ? (
           <CardContent>
-            {correctReviewSubjData && (
-              <GroupedReviewSummaryResults subjData={correctReviewSubjData} />
+            {incorrectReviewSubjData && (
+              <GroupedReviewSummaryResults subjData={incorrectReviewSubjData} />
             )}
           </CardContent>
         ) : (
