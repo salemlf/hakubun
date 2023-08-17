@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { IonContent, IonHeader, IonTitle } from "@ionic/react";
+import { IonContent } from "@ionic/react";
 import { getReviewsGroupedByResult } from "../services/ReviewService";
 import { useReviewQueue } from "../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";

@@ -16,7 +16,6 @@ import {
 } from "../../styles/SubjectDetailsStyled";
 import { FullWidthColumn } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
-import StartSessionButton from "../StartSessionButton";
 
 const ReadingHeading = styled(SubjDetailSubHeading)`
   margin-bottom: 0;

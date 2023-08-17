@@ -35,7 +35,7 @@ const HomeIconStyled = styled(IonIcon)`
 function LessonSession() {
   const location = useLocation();
   const navigate = useNavigate();
-  // const [lessonQueue, setLessonQueue] = useState<ReviewQueueItem[]>([]);
+  const [lessonQueue, setLessonQueue] = useState<ReviewQueueItem[]>([]);
   const [uniqueLessonQueue, setUniqueLessonQueue] = useState<ReviewQueueItem[]>(
     []
   );
@@ -61,7 +61,6 @@ function LessonSession() {
       subjectsData.length !== 0 &&
       studyMaterialsData !== undefined
     ) {
-      // TODO: change so not creating lessonQueue as ReviewQueueItem[] before it's necessary
       let lessonsToLearn = createAssignmentQueueItems(
         assignmentBatchToLearn,
         subjectsData,
@@ -73,23 +72,15 @@ function LessonSession() {
         (lesson, index, self) =>
           index === self.findIndex((l) => l.id === lesson.id)
       );
-      console.log(
-        "🚀 ~ file: LessonSession.tsx:220 ~ useEffect ~ uniqueLessonsToLearn:",
-        uniqueLessonsToLearn
-      );
 
-      // const shuffledLessons = shuffleArray(lessonsToLearn);
-      // // *testing
-      // console.log(
-      //   "🚀 ~ file: LessonSession.tsx:81 ~ useEffect ~ shuffledLessons:",
-      //   shuffledLessons
-      // );
-      // // *testing
-
-      // setLessonQueue(shuffledLessons);
+      setLessonQueue(lessonsToLearn);
       setUniqueLessonQueue(uniqueLessonsToLearn);
     }
   }, [subjectsLoading, studyMaterialsLoading, location.state]);
+
+  const onStartLessonBtnClick = () => {
+    navigate("/lessons/quiz", { state: lessonQueue, replace: true });
+  };
 
   return (
     <Page>
@@ -99,7 +90,10 @@ function LessonSession() {
           <HomeBtn onPress={() => navigate("/home")}>
             <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
           </HomeBtn>
-          <LessonCards lessons={uniqueLessonQueue} />
+          <LessonCards
+            lessons={uniqueLessonQueue}
+            onStartLessonBtnClick={onStartLessonBtnClick}
+          />
         </IonContent>
       )}
     </Page>

@@ -1,5 +1,6 @@
 import { Subject, SubjectType } from "../../types/Subject";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { useTabIndexStore } from "../../stores/useTabIndexStore";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import SubjectChars from "../SubjectChars";
 import RadicalDetailTabs from "../RadicalDetailTabs";
@@ -8,6 +9,7 @@ import VocabDetailTabs from "../VocabDetailTabs";
 import { TabData } from "../../types/MiscTypes";
 import SwipeableTabs from "../SwipeableTabs";
 import styled from "styled-components";
+import StartSessionButton from "../StartSessionButton";
 
 type HeaderProps = {
   subjType: SubjectType;
@@ -26,7 +28,6 @@ type CardProps = {
   lesson: ReviewQueueItem;
 };
 
-// TODO: move home button into lesson session component, will be fixed to top left
 function LessonCard({ lesson }: CardProps) {
   return (
     <>
@@ -55,10 +56,12 @@ function LessonCard({ lesson }: CardProps) {
 
 type Props = {
   lessons: ReviewQueueItem[];
+  onStartLessonBtnClick: () => void;
 };
 
-function LessonCards({ lessons }: Props) {
-  // TODO: if on last index, show button to go to lesson review session
+function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
+  const isLastIndex = useTabIndexStore((state) => state.isLastIndex);
+
   let lessonTabs: TabData[] = lessons.map((lesson) => {
     return {
       id: lesson.id.toString(),
@@ -68,12 +71,21 @@ function LessonCards({ lessons }: Props) {
   });
 
   return (
-    <SwipeableTabs
-      defaultValue={lessons[0].id.toString()}
-      tabs={lessonTabs}
-      blobs={true}
-      scrollToDefault={false}
-    />
+    <>
+      <SwipeableTabs
+        defaultValue={lessons[0].id.toString()}
+        tabs={lessonTabs}
+        blobs={true}
+        scrollToDefault={false}
+        trackIndex={true}
+      />
+      {isLastIndex && (
+        <StartSessionButton
+          buttonType="quiz"
+          onStartBtnClick={onStartLessonBtnClick}
+        />
+      )}
+    </>
   );
 }
 
