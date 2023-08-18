@@ -46,7 +46,6 @@ function Button({
       backgroundcolor={backgroundColor}
       color={color}
       {...buttonProps}
-      // ref={ref}
       isPressed={isPressed}
       tabIndex={0}
       className={className}

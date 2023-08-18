@@ -4,18 +4,19 @@ import {
   Navigate,
   Routes,
   useLocation,
+  createRoutesFromElements,
 } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import TokenInput from "../pages/TokenInput";
 
-// TODO: change so no need to specify every route to redirect from
-export const AuthStack = () => {
-  return (
-    <Router>
-      <AuthRoutes />
-    </Router>
-  );
-};
+// export const AuthStack = () => {
+//   return (
+//     <Router>
+//       <AuthRoutes />
+//     </Router>
+//   );
+// };
 
 const AuthRoutes = () => {
   const location = useLocation();
@@ -45,3 +46,7 @@ const AuthRoutes = () => {
     </AnimatePresence>
   );
 };
+
+export const authRouter = createBrowserRouter(
+  createRoutesFromElements(<Route path="*" element={<AuthRoutes />} />)
+);

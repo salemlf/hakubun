@@ -16,7 +16,7 @@ type ReviewItemProps = {
   subjtype: SubjectType;
 };
 
-export const ReviewCard = styled(motion.div)<ReviewItemProps>`
+export const ReviewCardStyled = styled(motion.div)<ReviewItemProps>`
   position: relative;
   padding: 80px 0 125px 0;
   border-radius: 10px;

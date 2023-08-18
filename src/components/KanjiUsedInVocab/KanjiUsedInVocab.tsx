@@ -42,8 +42,6 @@ function KanjiUsedInVocab({
       kanjiUsedSubjData &&
       kanjiUsedAssignmentsData
     ) {
-      setIsLoading(false);
-
       const sortedSubjData = [...kanjiUsedSubjData].sort((a, b) => {
         const aIndex = vocabSlug.indexOf(a.slug);
         const bIndex = vocabSlug.indexOf(b.slug);
@@ -51,6 +49,7 @@ function KanjiUsedInVocab({
       });
 
       setKanjiUsedSubjects(sortedSubjData);
+      setIsLoading(false);
     } else {
       setIsLoading(true);
     }

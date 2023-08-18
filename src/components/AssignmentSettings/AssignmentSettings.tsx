@@ -12,6 +12,7 @@ import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
+import { useReviewQueue } from "../../hooks/useReviewQueue";
 
 type Props = {
   settingsType: "lessons" | "reviews";
@@ -26,6 +27,9 @@ function AssignmentSettings({
   defaultBatchSize,
 }: Props) {
   const navigate = useNavigate();
+  // !added
+  const { endReviewSession } = useReviewQueue();
+  // !added
   const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
 
   // needs to be string type for selector, so subject IDs will be converted to number on submit
@@ -96,6 +100,8 @@ function AssignmentSettings({
         : submitWithAdvancedSettings();
 
     if (settingsType === "reviews") {
+      // ending review in case some weirdness occurred and there's a review session in progress
+      endReviewSession();
       navigate("/reviews/session", { state: sessionData, replace: true });
     } else {
       navigate("/lessons/session", { state: sessionData, replace: true });

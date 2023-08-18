@@ -6,6 +6,8 @@ import {
   Navigate,
   useLocation,
   useNavigate,
+  createBrowserRouter,
+  createRoutesFromElements,
 } from "react-router-dom";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
@@ -22,18 +24,13 @@ import LessonSettings from "../pages/LessonSettings";
 import LessonSession from "../pages/LessonSession";
 import LessonQuiz from "../pages/LessonQuiz";
 
-export const AppStack = () => {
-  // TODO: trigger some event for this, use listenerEvent.canGoBack
-  // App.addListener("backButton", (listenerEvent) => {
-  //   console.log("Back button used! listenerEvent:", listenerEvent);
-  // });
-
-  return (
-    <Router>
-      <AppRoutes />
-    </Router>
-  );
-};
+// export const AppStack = () => {
+//   return (
+//     <Router>
+//       <AppRoutes />
+//     </Router>
+//   );
+// };
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -94,3 +91,7 @@ const AppRoutes = () => {
     </AnimatePresence>
   );
 };
+
+export const appRouter = createBrowserRouter(
+  createRoutesFromElements(<Route path="*" element={<AppRoutes />} />)
+);

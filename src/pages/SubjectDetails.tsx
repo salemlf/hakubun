@@ -23,7 +23,7 @@ const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
 `;
 
-// TODO: account for kana vocab
+// TODO: if routed to this page from a review session, show a "back to review" button and hide tab bar
 export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
