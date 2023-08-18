@@ -14,10 +14,6 @@ export const useSubjectByID = (id: number) => {
         delete flattened.data;
 
         let subjWithImgInfo = setSubjectAvailImgs(flattened);
-        console.log(
-          "🚀 ~ file: useSubjectByID.tsx:17 ~ useSubjectByID ~ subjWithImgInfo:",
-          subjWithImgInfo
-        );
         return subjWithImgInfo;
       },
       [id]

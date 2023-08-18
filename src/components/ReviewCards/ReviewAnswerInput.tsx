@@ -1,10 +1,17 @@
-import { SetStateAction, useEffect, useRef } from "react";
+import {
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { motion, useAnimate } from "framer-motion";
 import WanakanaInput from "./WanakanaInput";
 import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 // import styled from "styled-components/macro";
 import styled from "styled-components";
+import { useBeforeUnload } from "react-router-dom";
 
 const InputRow = styled(motion.div)`
   width: 100%;

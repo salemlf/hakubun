@@ -3,7 +3,6 @@ import {
   ReviewSessionQueueAction,
 } from "../types/ReviewSessionTypes";
 
-// TODO: add option to hide popover, used for when new session is starting
 export const reviewSessionQueueReducer = (
   state: ReviewSessionQueueState,
   action: ReviewSessionQueueAction

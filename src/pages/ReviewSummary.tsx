@@ -18,6 +18,7 @@ const Page = styled(AnimatedPage)`
   background-color: var(--light-greyish-purple);
 `;
 
+// TODO: on page load, call setSavedUserAnswer and set to null
 // TODO: show button to redirect to Home instead of normal tab bar?
 function ReviewSummary() {
   const { endReviewSession } = useReviewQueue();

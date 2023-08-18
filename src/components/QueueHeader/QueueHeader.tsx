@@ -59,14 +59,15 @@ const calculateNumItemsInQueue = (queue: ReviewQueueItem[]) => {
 };
 
 type Props = {
-  currentReviewItem: ReviewQueueItem;
   queueType: "review" | "quiz";
 };
 
-function QueueHeader({ currentReviewItem, queueType }: Props) {
+function QueueHeader({ queueType }: Props) {
   const navigate = useNavigate();
 
   const { queueDataState } = useReviewQueue();
+  let currentReviewItem =
+    queueDataState.reviewQueue[queueDataState.currQueueIndex];
   const reviewQueue = queueDataState.reviewQueue;
   const lessonQuizQueue = useLessonQuizStore.use.lessonQuizQueue();
 

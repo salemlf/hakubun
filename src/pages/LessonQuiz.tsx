@@ -24,10 +24,10 @@ const Grid = styled(IonGrid)`
 function LessonQuiz() {
   const location = useLocation();
   const isLoading = useLessonQuizStore.use.isLoading();
-  const lessonQuizQueue = useLessonQuizStore.use.lessonQuizQueue();
+  // const lessonQuizQueue = useLessonQuizStore.use.lessonQuizQueue();
   const setLessonQuizLoaded = useLessonQuizStore.use.setLessonQuizLoaded();
   // TODO: move this state down to ReviewCards
-  const currQueueIndex = useLessonQuizStore.use.currQueueIndex();
+  // const currQueueIndex = useLessonQuizStore.use.currQueueIndex();
 
   let lessonQueueFromSession: ReviewQueueItem[] = location.state;
 
@@ -45,19 +45,21 @@ function LessonQuiz() {
     }
   }, [location.state]);
 
-  let currentReviewItem = lessonQuizQueue[currQueueIndex];
+  const submitLessonQuiz = (queueData: ReviewQueueItem[]) => {
+    console.log("submitLessonQuiz NOT IMPLEMENTED YET");
+  };
+
+  // let currentReviewItem = lessonQuizQueue[currQueueIndex];
 
   return (
     <Page>
-      {!isLoading && lessonQuizQueue.length !== 0 && (
-        <QueueHeader currentReviewItem={currentReviewItem} queueType="quiz" />
-      )}
+      {!isLoading && <QueueHeader queueType="quiz" />}
       <IonContent>
         <Grid>
           {isLoading && <p>Loading...</p>}
-          {!isLoading &&
-            lessonQuizQueue.length !== currQueueIndex &&
-            currentReviewItem && <ReviewCards queueType="quiz" />}
+          {!isLoading && (
+            <ReviewCards queueType="quiz" submitItems={submitLessonQuiz} />
+          )}
         </Grid>
       </IonContent>
     </Page>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IonIcon } from "@ionic/react";
 import {
   useMotionValue,
@@ -21,26 +21,40 @@ import NextIcon from "../../images/next-item.svg";
 import {
   NextCardOverlay,
   RetryCardOverlay,
-  ReviewCard,
+  ReviewCardStyled,
   SwipeIcon,
   ReviewCardContainer,
 } from "./ReviewCardsStyled";
+import { useCardQueueStore } from "../../stores/useCardQueueStore";
 
 type CardProps = {
   currentReviewItem: ReviewQueueItem;
 };
 
-const Card = ({ currentReviewItem }: CardProps) => {
-  const [userAnswer, setUserAnswer] = useState("");
-  // TODO: display these shortcuts on page so user knows about them
-  useKeyDown(() => attemptToAdvance(), ["F12"]);
-  useKeyDown(() => retryTriggered(), ["F6"]);
+export const ReviewCard = ({ currentReviewItem }: CardProps) => {
   const {
     handleNextClick,
     handleRetryClick,
     queueState,
     displayInvalidAnswerMsg,
   } = useReviewQueue();
+  // !added
+  const savedUserAnswer = useCardQueueStore.use.savedUserAnswer();
+  const setSavedUserAnswer = useCardQueueStore.use.setSavedUserAnswer();
+  let initialUserAnswer =
+    !queueState.isSecondClick || savedUserAnswer === null
+      ? ""
+      : savedUserAnswer;
+  console.log(
+    "🚀 ~ file: ReviewCards.tsx:46 ~ ReviewCard ~ queueState.isSecondClick:",
+    queueState.isSecondClick
+  );
+  // !added
+  // const [userAnswer, setUserAnswer] = useState("");
+  const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
+  // TODO: display these shortcuts on page so user knows about them
+  useKeyDown(() => attemptToAdvance(), ["F12"]);
+  useKeyDown(() => retryTriggered(), ["F6"]);
 
   const x = useMotionValue(0);
   const [reviewCardRef, animateCard] = useAnimate();
@@ -51,6 +65,23 @@ const Card = ({ currentReviewItem }: CardProps) => {
   const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
   const exitTimeMs = 500;
   const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
+
+  // !added
+  useEffect(() => {
+    // *testing
+    console.log("Came back to page!!");
+    console.log("Restoring user answer from store...");
+    console.log(
+      "🚀 ~ file: ReviewCards.tsx:67 ~ useEffect ~ savedUserAnswer:",
+      savedUserAnswer
+    );
+    // *testing
+    return () => {
+      // *testing
+      console.log("LEAVING PAGE!");
+    };
+  }, []);
+  // !added
 
   const retryTriggered = () => {
     if (queueState.showRetryButton) {
@@ -73,6 +104,16 @@ const Card = ({ currentReviewItem }: CardProps) => {
       displayInvalidAnswerMsg(isValidInfo.message);
       setShakeInputTrigger((shakeInputTrigger) => shakeInputTrigger + 1);
     } else {
+      // !added
+      console.log("Saving user answer to store...");
+      // *testing
+      // TODO: save user answer to store
+      console.log(
+        "🚀 ~ file: ReviewCards.tsx:80 ~ return ~ userAnswer:",
+        userAnswer
+      );
+      setSavedUserAnswer(userAnswer);
+      // !added
       animateCard(
         reviewCardRef.current,
         { x: "150%" },
@@ -97,7 +138,7 @@ const Card = ({ currentReviewItem }: CardProps) => {
 
   return (
     <>
-      <ReviewCard
+      <ReviewCardStyled
         ref={reviewCardRef}
         subjtype={currentReviewItem.object as SubjectType}
         initial={{ y: "-150%" }}
@@ -147,35 +188,58 @@ const Card = ({ currentReviewItem }: CardProps) => {
             <IonIcon icon={NextIcon}></IonIcon>
           </SwipeIcon>
         </NextCardOverlay>
-      </ReviewCard>
+      </ReviewCardStyled>
     </>
   );
 };
 
-type Props = {
-  queueType: "review" | "quiz";
+type QueueInfo = {
+  currQueueIndex: number;
+  queueData: ReviewQueueItem[];
 };
 
-// TODO: add a callback to submit items that gets called when...
-// TODO: !isLoading && queueData.length !== 0 && queueData.length === currQueueIndex
-function ReviewCards({ queueType }: Props) {
+type Props = {
+  queueType: "review" | "quiz";
+  submitItems: (reviewData: ReviewQueueItem[]) => void;
+};
+
+function ReviewCards({ queueType, submitItems }: Props) {
   const { queueDataState } = useReviewQueue();
   const lessonQuizQueue = useLessonQuizStore.use.lessonQuizQueue();
   const lessonQueueIndex = useLessonQuizStore.use.currQueueIndex();
-  let currQueueIndex =
-    queueType === "review" ? queueDataState.currQueueIndex : lessonQueueIndex;
-  let queueData =
-    queueType === "review" ? queueDataState.reviewQueue : lessonQuizQueue;
+  const queueInfo: { [index: string]: QueueInfo } = {
+    review: {
+      currQueueIndex: queueDataState.currQueueIndex,
+      queueData: queueDataState.reviewQueue,
+    },
+    quiz: {
+      currQueueIndex: lessonQueueIndex,
+      queueData: lessonQuizQueue,
+    },
+  };
 
-  let currentReviewItem = queueData[currQueueIndex];
+  let currQueueIndex = queueInfo[queueType].currQueueIndex;
+  let queueData = queueInfo[queueType].queueData;
+
+  useEffect(() => {
+    if (currQueueIndex === queueData.length && queueData.length !== 0) {
+      submitItems(queueData);
+    }
+  }, [queueData[currQueueIndex]]);
 
   return (
-    <ReviewCardContainer>
-      <Card
-        key={currentReviewItem.itemID}
-        currentReviewItem={currentReviewItem}
-      />
-    </ReviewCardContainer>
+    <>
+      {queueData.length === 0 || currQueueIndex === queueData.length ? (
+        <p>Loading...</p>
+      ) : (
+        <ReviewCardContainer>
+          <ReviewCard
+            key={queueData[currQueueIndex].itemID}
+            currentReviewItem={queueData[currQueueIndex]}
+          />
+        </ReviewCardContainer>
+      )}
+    </>
   );
 }
 
