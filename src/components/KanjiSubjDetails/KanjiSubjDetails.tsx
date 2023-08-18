@@ -1,6 +1,6 @@
 import { IonRow, IonSkeletonText } from "@ionic/react";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { Kanji } from "../../types/Subject";
+import { Kanji, Subject } from "../../types/Subject";
 import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic/KanjiMeaningMnemonic";
 import RadicalCombination from "../RadicalCombination/RadicalCombination";
 import SubjectWideBtnList from "../SubjectWideBtnList/SubjectWideBtnList";
@@ -11,12 +11,15 @@ import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
+import { useEffect, useState } from "react";
 
 type Props = {
   kanji: Kanji;
 };
 
 function KanjiSubjDetails({ kanji }: Props) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [vocabFound, setVocabFound] = useState<Subject[]>([]);
   let findSimilar = kanji.visually_similar_subject_ids.length !== 0;
   let findVocab = kanji.amalgamation_subject_ids.length !== 0;
 
@@ -26,11 +29,21 @@ function KanjiSubjDetails({ kanji }: Props) {
     error: vocabFoundSubjErr,
   } = useSubjectsByIDs(kanji.amalgamation_subject_ids, findVocab);
 
-  let vocabFoundLoading =
-    findVocab && (vocabFoundSubjLoading || vocabFoundSubjErr);
+  useEffect(() => {
+    if (!vocabFoundSubjLoading && vocabFoundSubjData) {
+      let sortedByLvlVocab = [...vocabFoundSubjData].sort(
+        (a, b) => a.level - b.level
+      );
+
+      setVocabFound(sortedByLvlVocab);
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [vocabFoundSubjLoading]);
 
   // TODO: make this laoding skeleton actually good lol
-  if (vocabFoundLoading) {
+  if (isLoading) {
     return (
       <IonRow class="ion-justify-content-start">
         <div className="ion-padding">
@@ -49,9 +62,7 @@ function KanjiSubjDetails({ kanji }: Props) {
       {findSimilar && <VisuallySimilarKanji kanji={kanji} />}
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Vocabulary</SubjDetailSubHeading>
-        {vocabFoundSubjData && vocabFoundSubjData.length !== 0 && (
-          <SubjectWideBtnList subjList={vocabFoundSubjData} />
-        )}
+        {findVocab && <SubjectWideBtnList subjList={vocabFound} />}
       </SubjDetailSection>
     </SubjInfoContainer>
   );
