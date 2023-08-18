@@ -11,6 +11,7 @@ import {
   getSubjectDisplayName,
 } from "../../services/SubjectAndAssignmentService";
 import { ReviewSettings } from "../../pages/ReviewSettings";
+import styled from "styled-components";
 
 // TODO: change to use size sm, md, lg?
 type Props = {
@@ -20,6 +21,14 @@ type Props = {
   showDetails: boolean;
   onBtnClick: (e: any) => void;
 };
+
+// TODO: improve text overflow method
+const KanjiMeaning = styled(SubjBtnDetailsTxt)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 4em;
+`;
 
 // TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
 function KanjiButton({
@@ -46,9 +55,7 @@ function KanjiButton({
               <SubjBtnDetailsTxt>
                 {getPrimaryReading(subject.readings!)}
               </SubjBtnDetailsTxt>
-              <SubjBtnDetailsTxt>
-                {getSubjectDisplayName(subject)}
-              </SubjBtnDetailsTxt>
+              <KanjiMeaning>{getSubjectDisplayName(subject)}</KanjiMeaning>
             </div>
           )}
         </SubjInfoCol>
