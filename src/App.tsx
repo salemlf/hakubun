@@ -43,17 +43,17 @@ const queryClient = new QueryClient({
 
 const App: React.FC = () => (
   <QueryClientProvider client={queryClient}>
-    <IonApp>
-      <AuthProvider>
-        <ReviewSessionDataProvider>
-          <ReviewSessionQueueProvider>
-            <ToastPrimitive.Provider>
+    <AuthProvider>
+      <ReviewSessionDataProvider>
+        <ReviewSessionQueueProvider>
+          <ToastPrimitive.Provider>
+            <IonApp>
               <Router />
-            </ToastPrimitive.Provider>
-          </ReviewSessionQueueProvider>
-        </ReviewSessionDataProvider>
-      </AuthProvider>
-    </IonApp>
+            </IonApp>
+          </ToastPrimitive.Provider>
+        </ReviewSessionQueueProvider>
+      </ReviewSessionDataProvider>
+    </AuthProvider>
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 );
