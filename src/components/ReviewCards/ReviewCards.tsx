@@ -38,20 +38,14 @@ export const ReviewCard = ({ currentReviewItem }: CardProps) => {
     queueState,
     displayInvalidAnswerMsg,
   } = useReviewQueue();
-  // !added
   const savedUserAnswer = useCardQueueStore.use.savedUserAnswer();
   const setSavedUserAnswer = useCardQueueStore.use.setSavedUserAnswer();
   let initialUserAnswer =
     !queueState.isSecondClick || savedUserAnswer === null
       ? ""
       : savedUserAnswer;
-  console.log(
-    "🚀 ~ file: ReviewCards.tsx:46 ~ ReviewCard ~ queueState.isSecondClick:",
-    queueState.isSecondClick
-  );
-  // !added
-  // const [userAnswer, setUserAnswer] = useState("");
   const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
+
   // TODO: display these shortcuts on page so user knows about them
   useKeyDown(() => attemptToAdvance(), ["F12"]);
   useKeyDown(() => retryTriggered(), ["F6"]);
@@ -65,23 +59,6 @@ export const ReviewCard = ({ currentReviewItem }: CardProps) => {
   const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
   const exitTimeMs = 500;
   const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
-
-  // !added
-  useEffect(() => {
-    // *testing
-    console.log("Came back to page!!");
-    console.log("Restoring user answer from store...");
-    console.log(
-      "🚀 ~ file: ReviewCards.tsx:67 ~ useEffect ~ savedUserAnswer:",
-      savedUserAnswer
-    );
-    // *testing
-    return () => {
-      // *testing
-      console.log("LEAVING PAGE!");
-    };
-  }, []);
-  // !added
 
   const retryTriggered = () => {
     if (queueState.showRetryButton) {
