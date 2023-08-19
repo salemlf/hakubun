@@ -98,3 +98,10 @@ export type AssignmentBatch = {
   assignmentBatch: Assignment[];
   subjIDs: number[];
 };
+
+// used for navigation blocking with react-router-prompt
+export declare enum HistoryAction {
+  Pop = "POP",
+  Push = "PUSH",
+  Replace = "REPLACE",
+}

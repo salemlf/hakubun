@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { IonContent, IonGrid } from "@ionic/react";
 import { useLocation, useNavigate } from "react-router-dom";
 // TODO: instead add a module declaration file for react-router-prompt
@@ -10,10 +10,9 @@ import {
   createReviewPostData,
   getCompletedReviewSessionData,
 } from "../services/ReviewService";
-import { useCardQueueStore } from "../stores/useCardQueueStore";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 import { Assignment } from "../types/Assignment";
-import { AssignmentBatch } from "../types/MiscTypes";
+import { AssignmentBatch, HistoryAction } from "../types/MiscTypes";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";
 import AnimatedPage from "../components/AnimatedPage";
@@ -95,7 +94,6 @@ export const ReviewSessionQueue = () => {
   };
 
   // TODO: move into service file so lesson quiz can use it too
-  // TODO: find and add HistoryAction type
   const blockUserLeavingPage = ({
     currentLocation,
     nextLocation,
@@ -103,8 +101,7 @@ export const ReviewSessionQueue = () => {
   }: {
     currentLocation: Location;
     nextLocation: Location;
-    // historyAction: HistoryAction;
-    historyAction: any;
+    historyAction: HistoryAction;
   }) => {
     // *testing
     console.log("canLeavePage called!");
