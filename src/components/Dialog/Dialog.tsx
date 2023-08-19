@@ -1,5 +1,5 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import Button from "../Button/Button";
+import { RequireAtLeastOne } from "../../types/Global";
 import styled from "styled-components";
 
 const Overlay = styled(AlertDialog.Overlay)`
@@ -41,7 +41,7 @@ const Description = styled(AlertDialog.Description)`
   line-height: 1.5;
 `;
 
-const DialogButton = styled(Button)`
+const DialogButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -53,9 +53,18 @@ const DialogButton = styled(Button)`
   height: 35px;
 `;
 
-type Props = {
+type UncontrolledDialogProps = {
+  defaultOpen: boolean;
+};
+
+type ControlledDialogProps = {
   open: boolean;
-  setOpen?: (isOpen: boolean) => void;
+  setOpen: (isOpen: boolean) => void;
+};
+
+type PropsWithControlChoice = {
+  controlledSettings?: ControlledDialogProps;
+  uncontrolledSettings?: UncontrolledDialogProps;
   title: string;
   description?: string;
   confirmText: string;
@@ -64,9 +73,15 @@ type Props = {
   onConfirmClick: (e: any) => void;
 };
 
+// TODO: this type isn't perfect since it doesn't check for the case where both are defined, in that case controlled will override uncontrolled
+type Props = RequireAtLeastOne<
+  PropsWithControlChoice,
+  "controlledSettings" | "uncontrolledSettings"
+>;
+
 function Dialog({
-  open = false,
-  setOpen,
+  controlledSettings,
+  uncontrolledSettings,
   title,
   description,
   confirmText,
@@ -75,7 +90,7 @@ function Dialog({
   onCancelClick,
 }: Props) {
   return (
-    <AlertDialog.Root open={open} onOpenChange={setOpen}>
+    <AlertDialog.Root {...controlledSettings} {...uncontrolledSettings}>
       <AlertDialog.Trigger>Open</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <Overlay />
@@ -84,10 +99,10 @@ function Dialog({
           {description && <Description>{description}</Description>}
           <form>
             <AlertDialog.Cancel asChild>
-              <DialogButton onPress={onCancelClick}>{cancelText}</DialogButton>
+              <DialogButton onClick={onCancelClick}>{cancelText}</DialogButton>
             </AlertDialog.Cancel>
             <AlertDialog.Action asChild>
-              <DialogButton onPress={onConfirmClick}>
+              <DialogButton onClick={onConfirmClick}>
                 {confirmText}
               </DialogButton>
             </AlertDialog.Action>
