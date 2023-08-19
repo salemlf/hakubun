@@ -15,7 +15,6 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
   cursor: pointer;
   &:focus {
     outline: 2px solid white;
-    --outline: 2px solid white;
   }
 `;
 

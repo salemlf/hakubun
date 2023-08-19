@@ -9,10 +9,10 @@ const Overlay = styled(AlertDialog.Overlay)`
 `;
 
 const Content = styled(AlertDialog.Content)`
-  background-color: white;
-  border-radius: 6px;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
-    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  background-color: var(--ion-color-secondary);
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 15px #1b0f24;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -29,28 +29,47 @@ const Content = styled(AlertDialog.Content)`
 
 const Title = styled(AlertDialog.Title)`
   margin: 0;
-  color: black;
-  font-size: 1rem;
+  margin-bottom: 10px;
+  font-size: 1.25rem;
   font-weight: 500;
 `;
 
 const Description = styled(AlertDialog.Description)`
   margin-bottom: 20px;
-  color: black;
-  font-size: 15px;
+  font-size: 1rem;
   line-height: 1.5;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 25px;
+  padding-top: 10px;
 `;
 
 const DialogButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 0 15px;
-  font-size: 15px;
+  font-size: 1rem;
   line-height: 1;
   font-weight: 500;
   height: 35px;
+
+  &:focus {
+    outline: 2px solid white;
+  }
+`;
+
+const ConfirmButton = styled(DialogButton)`
+  background-color: var(--ion-color-primary);
+`;
+
+const CancelButton = styled(DialogButton)`
+  background-color: var(--ion-color-tertiary);
+  color: black;
 `;
 
 type UncontrolledDialogProps = {
@@ -66,6 +85,7 @@ type PropsWithControlChoice = {
   controlledSettings?: ControlledDialogProps;
   uncontrolledSettings?: UncontrolledDialogProps;
   title: string;
+  programmaticTrigger?: boolean;
   description?: string;
   confirmText: string;
   cancelText: string;
@@ -79,9 +99,11 @@ type Props = RequireAtLeastOne<
   "controlledSettings" | "uncontrolledSettings"
 >;
 
+// TODO: improve trigger button or pass in trigger component as prop instead (more likely)
 function Dialog({
   controlledSettings,
   uncontrolledSettings,
+  programmaticTrigger = true,
   title,
   description,
   confirmText,
@@ -91,22 +113,22 @@ function Dialog({
 }: Props) {
   return (
     <AlertDialog.Root {...controlledSettings} {...uncontrolledSettings}>
-      <AlertDialog.Trigger>Open</AlertDialog.Trigger>
+      {!programmaticTrigger && <AlertDialog.Trigger>Open</AlertDialog.Trigger>}
       <AlertDialog.Portal>
         <Overlay />
         <Content>
           <Title>{title}</Title>
           {description && <Description>{description}</Description>}
-          <form>
+          <ButtonContainer>
             <AlertDialog.Cancel asChild>
-              <DialogButton onClick={onCancelClick}>{cancelText}</DialogButton>
+              <CancelButton onClick={onCancelClick}>{cancelText}</CancelButton>
             </AlertDialog.Cancel>
             <AlertDialog.Action asChild>
-              <DialogButton onClick={onConfirmClick}>
+              <ConfirmButton onClick={onConfirmClick}>
                 {confirmText}
-              </DialogButton>
+              </ConfirmButton>
             </AlertDialog.Action>
-          </form>
+          </ButtonContainer>
         </Content>
       </AlertDialog.Portal>
     </AlertDialog.Root>
