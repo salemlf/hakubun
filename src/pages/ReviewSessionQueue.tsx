@@ -175,9 +175,12 @@ export const ReviewSessionQueue = () => {
     nextLocation: Location;
     historyAction: HistoryAction;
   }) => {
-    // allowing user to view subjects pages during reviews
+    // allowing user to view subjects pages during reviews and to review summary page
     let regex = new RegExp("/subjects/*");
-    if (regex.test(nextLocation.pathname)) {
+    if (
+      regex.test(nextLocation.pathname) ||
+      nextLocation.pathname === "/reviews/summary"
+    ) {
       return false;
     }
     return true;
