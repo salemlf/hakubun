@@ -45,6 +45,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/globals.scss";
+import LessonSummary from "./pages/LessonSummary";
 
 // TODO: change so not using setupIonicReact and IonApp
 setupIonicReact();
@@ -100,6 +101,7 @@ const AppElements = () => {
           <Route path="/lessons/settings" element={<LessonSettings />} />
           <Route path="/lessons/session" element={<LessonSession />} />
           <Route path="/lessons/quiz" element={<LessonQuiz />} />
+          <Route path="/lessons/summary" element={<LessonSummary />} />
           <Route path="/subjects" element={<Subjects />} />
           <Route path="/search" element={<Search />} />
           <Route path="/subjects/:id" element={<SubjectDetails />} />
