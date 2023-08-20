@@ -13,14 +13,12 @@ import { flattenData } from "../services/MiscService";
 import HomeButton from "../components/HomeButton";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import FloatingTabBar from "../components/FloatingTabBar";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--light-greyish-purple);
   background-color: var(--light-greyish-purple);
 `;
 
-// TODO: show button to redirect to Home instead of normal tab bar?
 function ReviewSummary() {
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
@@ -64,22 +62,19 @@ function ReviewSummary() {
   let numWrong = groupedReviewItems.incorrect.length;
 
   return (
-    <>
-      <Page>
-        <ResultsHeader numCorrect={numCorrect} numReviews={reviewData.length} />
-        <IonContent className="ion-padding">
-          <FullWidthGrid>
-            <ReviewResults
-              groupedReviewItems={groupedReviewItems}
-              numWrong={numWrong}
-              numCorrect={numCorrect}
-            />
-          </FullWidthGrid>
-          <HomeButton />
-        </IonContent>
-      </Page>
-      <FloatingTabBar />
-    </>
+    <Page>
+      <ResultsHeader numCorrect={numCorrect} numReviews={reviewData.length} />
+      <IonContent className="ion-padding">
+        <FullWidthGrid>
+          <ReviewResults
+            groupedReviewItems={groupedReviewItems}
+            numWrong={numWrong}
+            numCorrect={numCorrect}
+          />
+        </FullWidthGrid>
+        <HomeButton />
+      </IonContent>
+    </Page>
   );
 }
 
