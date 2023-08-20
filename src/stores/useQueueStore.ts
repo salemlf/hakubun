@@ -24,6 +24,7 @@ interface QueueActions {
   submitChoice: () => void;
 }
 
+// TODO: clean up how initial data is set
 const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
   isSecondClick: false,
   isBottomSheetVisible: false,
