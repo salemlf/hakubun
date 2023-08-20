@@ -9,6 +9,7 @@ import ClearIcon from "../images/clear.svg";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
 import styled from "styled-components";
+import FloatingTabBar from "../components/FloatingTabBar";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -75,28 +76,31 @@ export const Search = () => {
   };
 
   return (
-    <Page>
-      <ContentWithTabBar>
-        <SearchBar
-          debounce={1800}
-          searchIcon={SearchIcon}
-          clearIcon={ClearIcon}
-          onIonInput={(ev) => handleInput(ev)}
-        ></SearchBar>
-        {!allSubjectsLoading ? (
-          <List>
-            {results.map((subject: any) => (
-              <SubjectWideButton
-                subject={subject}
-                key={subject.id}
-                findImages={true}
-              />
-            ))}
-          </List>
-        ) : (
-          <p>Loading...</p>
-        )}
-      </ContentWithTabBar>
-    </Page>
+    <>
+      <Page>
+        <ContentWithTabBar>
+          <SearchBar
+            debounce={1800}
+            searchIcon={SearchIcon}
+            clearIcon={ClearIcon}
+            onIonInput={(ev) => handleInput(ev)}
+          ></SearchBar>
+          {!allSubjectsLoading ? (
+            <List>
+              {results.map((subject: any) => (
+                <SubjectWideButton
+                  subject={subject}
+                  key={subject.id}
+                  findImages={true}
+                />
+              ))}
+            </List>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </ContentWithTabBar>
+      </Page>
+      <FloatingTabBar />
+    </>
   );
 };

@@ -96,9 +96,6 @@ export const ReviewSessionQueue = () => {
     }
   }, [subjectsLoading, studyMaterialsLoading, location.state]);
 
-  // !added
-
-  //
   useEffect(() => {
     if (assignmentQueue.length !== 0) {
       // *testing
@@ -176,9 +173,9 @@ export const ReviewSessionQueue = () => {
     historyAction: HistoryAction;
   }) => {
     // allowing user to view subjects pages during reviews and to review summary page
-    let regex = new RegExp("/subjects/*");
+    let subjDetailsRegex = new RegExp("/subjects/*");
     if (
-      regex.test(nextLocation.pathname) ||
+      subjDetailsRegex.test(nextLocation.pathname) ||
       nextLocation.pathname === "/reviews/summary"
     ) {
       return false;
@@ -186,6 +183,7 @@ export const ReviewSessionQueue = () => {
     return true;
   };
 
+  // TODO: on confirm/before leaving page (for realzies), call endReviewSession()
   return (
     <Page>
       <ReactRouterPrompt when={blockUserLeavingPage}>

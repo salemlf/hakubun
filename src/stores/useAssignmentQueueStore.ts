@@ -5,6 +5,7 @@ import { createSelectors } from "../utils";
 interface AssignmentQueueState {
   assignmentQueue: ReviewQueueItem[];
   currQueueIndex: number;
+  sessionInProgress: boolean;
 }
 
 interface AssignmentQueueActions {
@@ -18,6 +19,7 @@ interface AssignmentQueueActions {
 const initialState: AssignmentQueueState = {
   currQueueIndex: 0,
   assignmentQueue: [],
+  sessionInProgress: false,
 };
 
 // TODO:rename variables so works with lessons quiz and review session
@@ -76,6 +78,7 @@ const useAssignmentQueueStoreBase = create<
     set((state) => ({
       ...state,
       assignmentQueue: queueData,
+      sessionInProgress: true,
     }));
   },
   addToAssignmentQueue(reviewItem) {

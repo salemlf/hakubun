@@ -19,6 +19,7 @@ import SrsStages from "../components/SrsStages/SrsStages";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import AnimatedPage from "../components/AnimatedPage";
 import { useNavigate } from "react-router-dom";
+import FloatingTabBar from "../components/FloatingTabBar";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
@@ -47,56 +48,59 @@ const Home = () => {
   };
 
   return (
-    <AnimatedPage>
-      <HomeHeader></HomeHeader>
-      <ContentWithTabBar>
-        <IonGrid>
-          {!homeLoading ? (
-            <>
-              <IonRow>
-                <IonCol>
-                  <LessonsButton level={level}></LessonsButton>
-                </IonCol>
-                <IonCol>
-                  <ReviewsButton level={level}></ReviewsButton>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <LevelProgressBar level={level} />
-                </IonCol>
-              </IonRow>
-              <IonRow class="ion-justify-content-start">
-                <IonCol>
-                  <RadicalForLvlCard level={level}></RadicalForLvlCard>
-                </IonCol>
-              </IonRow>
-              <IonRow class="ion-justify-content-start">
-                <IonCol>
-                  <KanjiForLvlCard level={level}></KanjiForLvlCard>
-                </IonCol>
-              </IonRow>
-              <IonRow class="ion-justify-content-start">
-                <SrsStages></SrsStages>
-              </IonRow>
-              <IonRow className="ion-padding">
-                <IonCol>
-                  <IonButton
-                    title="Remove authorization"
-                    onClick={() => removeAuth()}
-                  >
-                    Remove Auth
-                  </IonButton>
-                </IonCol>
-              </IonRow>
-            </>
-          ) : (
-            <IonSkeletonText animated={true}></IonSkeletonText>
-          )}
-        </IonGrid>
-        {homeLoading && <IonSpinner name="dots"></IonSpinner>}
-      </ContentWithTabBar>
-    </AnimatedPage>
+    <>
+      <AnimatedPage>
+        <HomeHeader></HomeHeader>
+        <ContentWithTabBar>
+          <IonGrid>
+            {!homeLoading ? (
+              <>
+                <IonRow>
+                  <IonCol>
+                    <LessonsButton level={level}></LessonsButton>
+                  </IonCol>
+                  <IonCol>
+                    <ReviewsButton level={level}></ReviewsButton>
+                  </IonCol>
+                </IonRow>
+                <IonRow>
+                  <IonCol>
+                    <LevelProgressBar level={level} />
+                  </IonCol>
+                </IonRow>
+                <IonRow class="ion-justify-content-start">
+                  <IonCol>
+                    <RadicalForLvlCard level={level}></RadicalForLvlCard>
+                  </IonCol>
+                </IonRow>
+                <IonRow class="ion-justify-content-start">
+                  <IonCol>
+                    <KanjiForLvlCard level={level}></KanjiForLvlCard>
+                  </IonCol>
+                </IonRow>
+                <IonRow class="ion-justify-content-start">
+                  <SrsStages></SrsStages>
+                </IonRow>
+                <IonRow className="ion-padding">
+                  <IonCol>
+                    <IonButton
+                      title="Remove authorization"
+                      onClick={() => removeAuth()}
+                    >
+                      Remove Auth
+                    </IonButton>
+                  </IonCol>
+                </IonRow>
+              </>
+            ) : (
+              <IonSkeletonText animated={true}></IonSkeletonText>
+            )}
+          </IonGrid>
+          {homeLoading && <IonSpinner name="dots"></IonSpinner>}
+        </ContentWithTabBar>
+      </AnimatedPage>
+      <FloatingTabBar />
+    </>
   );
 };
 

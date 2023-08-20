@@ -4,6 +4,7 @@ import SwipeableTabs from "../components/SwipeableTabs";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import AnimatedPage from "../components/AnimatedPage";
 import styled from "styled-components";
+import FloatingTabBar from "../components/FloatingTabBar";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -31,13 +32,16 @@ const tabs: TabData[] = [
 // TODO: just testing this out, need to put real content
 export const Subjects = () => {
   return (
-    <Page>
-      <SwipeableTabs tabs={tabs} defaultValue="1" />
-      <ContentWithTabBar>
-        <IonGrid>
-          <p>Subjects Page - TO DO</p>
-        </IonGrid>
-      </ContentWithTabBar>
-    </Page>
+    <>
+      <Page>
+        <SwipeableTabs tabs={tabs} defaultValue="1" />
+        <ContentWithTabBar>
+          <IonGrid>
+            <p>Subjects Page - TO DO</p>
+          </IonGrid>
+        </ContentWithTabBar>
+      </Page>
+      <FloatingTabBar />
+    </>
   );
 };

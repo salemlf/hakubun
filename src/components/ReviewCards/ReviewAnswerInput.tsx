@@ -32,6 +32,7 @@ type Props = {
   shakeInputTrigger: number;
 };
 
+// TODO: fix bug where input turns red/wrong once navigating back from subject details page
 function ReviewAnswerInput({
   currentReviewItem,
   userAnswer,

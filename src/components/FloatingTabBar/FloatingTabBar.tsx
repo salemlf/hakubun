@@ -87,13 +87,9 @@ const PageLink = ({ pathName, children, ...props }: PageLinkProps) => {
   );
 };
 
-type Props = {
-  styleProps: React.CSSProperties | undefined;
-};
-
-function FloatingTabBar({ styleProps }: Props) {
+function FloatingTabBar() {
   return (
-    <TabBarContainer style={styleProps}>
+    <TabBarContainer>
       <TabList>
         <NavigationMenu.Item>
           <PageLink pathName="/subjects">

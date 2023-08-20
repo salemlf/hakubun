@@ -84,29 +84,7 @@ const App: React.FC = () => {
 
 const AppElements = () => {
   const location = useLocation();
-  const [showTabs, setShowTabs] = useState(true);
-  // TODO: change implementation so don't need to list all these
-  const pagesToHideTabBar = [
-    "/reviews/settings",
-    "/reviews/session",
-    "/reviews/summary",
-    "/lessons/settings",
-    "/lessons/session",
-    "/lessons/quiz",
-    "/authenticate",
-  ];
-
   const { authLoading, isAuthenticated } = useUserAuth();
-
-  let tabBarStyle = showTabs === true ? undefined : { display: "none" };
-
-  useEffect(() => {
-    if (pagesToHideTabBar.includes(location.pathname)) {
-      setShowTabs(false);
-    } else {
-      setShowTabs(true);
-    }
-  }, [location.pathname]);
 
   return (
     <AnimatePresence>
@@ -137,7 +115,6 @@ const AppElements = () => {
         </Route>
         <Route path="*" element={<p>Oh no, 404!</p>} />
       </Routes>
-      <FloatingTabBar styleProps={tabBarStyle} />
     </AnimatePresence>
   );
 };
