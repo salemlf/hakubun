@@ -40,12 +40,12 @@ function LessonSession() {
     []
   );
 
-  let stateFromReviewSettings: AssignmentBatch = location.state;
+  let stateFromLessonSettings: AssignmentBatch = location.state;
   let assignmentBatchToLearn: Assignment[] =
-    stateFromReviewSettings.assignmentBatch;
-  let subjIDs: number[] = stateFromReviewSettings.subjIDs;
+    stateFromLessonSettings.assignmentBatch;
+  let subjIDs: number[] = stateFromLessonSettings.subjIDs;
 
-  let queriesEnabled = stateFromReviewSettings !== undefined;
+  let queriesEnabled = stateFromLessonSettings !== undefined;
   const { data: subjectsData, isLoading: subjectsLoading } = useSubjectsByIDs(
     subjIDs,
     queriesEnabled
