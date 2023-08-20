@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Route,
   Routes,
@@ -14,8 +13,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider, useUserAuth } from "./contexts/AuthContext";
-import { ReviewSessionDataProvider } from "./contexts/ReviewSessionDataContext";
-import { ReviewSessionQueueProvider } from "./contexts/ReviewSessionQueueContext";
 import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
 import { ReviewSettings } from "./pages/ReviewSettings";
@@ -28,7 +25,6 @@ import { Subjects } from "./pages/Subjects";
 import LessonQuiz from "./pages/LessonQuiz";
 import { SubjectDetails } from "./pages/SubjectDetails";
 import Home from "./pages/Home";
-import FloatingTabBar from "./components/FloatingTabBar";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -67,15 +63,11 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ReviewSessionDataProvider>
-          <ReviewSessionQueueProvider>
-            <ToastPrimitive.Provider>
-              <IonApp>
-                <RouterProvider router={browserRouter} />
-              </IonApp>
-            </ToastPrimitive.Provider>
-          </ReviewSessionQueueProvider>
-        </ReviewSessionDataProvider>
+        <ToastPrimitive.Provider>
+          <IonApp>
+            <RouterProvider router={browserRouter} />
+          </IonApp>
+        </ToastPrimitive.Provider>
       </AuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
