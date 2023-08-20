@@ -15,23 +15,26 @@ interface QueueActions {
   setSecondClick: (isSecondClick: boolean) => void;
   retryReview: () => void;
   showPopoverMsg: (popoverInfo: PopoverInfo) => void;
-  resetReviewCards: () => void;
   setSavedUserAnswer: (savedUserAnswer: string | null) => void;
   correctShowResult: () => void;
   correctMoveToNext: () => void;
   wrongMoveToNext: () => void;
   wrongShowResult: () => void;
   submitChoice: () => void;
+  resetAll: () => void;
 }
 
-// TODO: clean up how initial data is set
-const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
+const initialState: QueueState = {
   isSecondClick: false,
   isBottomSheetVisible: false,
   showRetryButton: false,
   popoverInfo: { message: "", messageType: "invalid" },
   displayPopoverMsg: false,
   savedUserAnswer: null,
+};
+
+const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
+  ...initialState,
   setSecondClick: (isSecondClick) => set({ isSecondClick }),
   retryReview: () =>
     set({
@@ -42,13 +45,6 @@ const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
     }),
   showPopoverMsg: (state) =>
     set({ popoverInfo: { ...state }, displayPopoverMsg: true }),
-  resetReviewCards: () =>
-    set({
-      displayPopoverMsg: false,
-      isSecondClick: false,
-      isBottomSheetVisible: false,
-      showRetryButton: false,
-    }),
   setSavedUserAnswer: (savedUserAnswer) => set({ savedUserAnswer }),
   correctShowResult: () => set({ isBottomSheetVisible: true }),
   correctMoveToNext: () =>
@@ -62,6 +58,9 @@ const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
   wrongShowResult: () =>
     set({ isBottomSheetVisible: true, showRetryButton: true }),
   submitChoice: () => set({ isSecondClick: !get().isSecondClick }),
+  resetAll: () => {
+    set(initialState);
+  },
 }));
 
 export const useQueueStore = createSelectors(useQueueStoreBase);

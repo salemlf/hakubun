@@ -50,7 +50,7 @@ function SwipeableTabs({
   const { scrollXProgress } = useScroll({
     container: tabPanelsRef as RefObject<HTMLElement>,
   });
-  const setIsLastIndex = useTabIndexStore((state) => state.setIsLastIndex);
+  const setIsLastIndex = useTabIndexStore.use.setIsLastIndex();
 
   // TODO: clean this up, a not ideal workaround for scrolling to default item. Necessary rn due to how tab components are being rendered
   useEffect(() => {

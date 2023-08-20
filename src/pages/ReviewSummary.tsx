@@ -21,8 +21,8 @@ const Page = styled(AnimatedPage)`
 
 // TODO: show button to redirect to Home instead of normal tab bar?
 function ReviewSummary() {
-  const resetReviewCards = useQueueStore.use.resetReviewCards();
-  const resetReviewSession = useAssignmentQueueStore.use.resetReviewSession();
+  const resetQueueStore = useQueueStore.use.resetAll();
+  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
   const location = useLocation();
   const reviewData: ReviewQueueItem[] = location.state.reviewData;
   // *testing
@@ -54,8 +54,8 @@ function ReviewSummary() {
   // *testing
 
   useEffect(() => {
-    resetReviewCards();
-    resetReviewSession();
+    resetQueueStore();
+    resetAssignmentQueue();
   }, []);
 
   let groupedReviewItems = getReviewsGroupedByResult(reviewData);

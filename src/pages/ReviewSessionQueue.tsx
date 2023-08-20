@@ -54,8 +54,8 @@ export const ReviewSessionQueue = () => {
   const location = useLocation();
   const queryClient = useQueryClient();
 
-  const resetReviewCards = useQueueStore.use.resetReviewCards();
-  const resetReviewSession = useAssignmentQueueStore.use.resetReviewSession();
+  const resetQueueStore = useQueueStore.use.resetAll();
+  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
   const setAssignmentQueueData =
     useAssignmentQueueStore.use.setAssignmentQueueData();
   const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
@@ -125,8 +125,8 @@ export const ReviewSessionQueue = () => {
   };
 
   const endReviewSession = () => {
-    resetReviewCards();
-    resetReviewSession();
+    resetQueueStore();
+    resetAssignmentQueue();
   };
 
   const submitReviews = (queueData: ReviewQueueItem[]) => {

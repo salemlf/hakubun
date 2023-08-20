@@ -9,20 +9,23 @@ interface AssignmentQueueState {
 
 interface AssignmentQueueActions {
   updateQueueItem: (item: ReviewQueueItem) => void;
-  resetReviewSession: () => void;
   setAssignmentQueueData: (queueData: ReviewQueueItem[]) => void;
   incrementCurrQueueIndex: () => void;
   addToAssignmentQueue: (reviewItem: ReviewQueueItem) => void;
   removeOldQueueItem: () => void;
+  resetAll: () => void;
 }
+const initialState: AssignmentQueueState = {
+  currQueueIndex: 0,
+  assignmentQueue: [],
+};
 
 // TODO:rename variables so works with lessons quiz and review session
 // TODO: remove isLoading here, just keep in review session queue file
 const useAssignmentQueueStoreBase = create<
   AssignmentQueueState & AssignmentQueueActions
 >((set, get) => ({
-  currQueueIndex: 0,
-  assignmentQueue: [],
+  ...initialState,
 
   incrementCurrQueueIndex: () =>
     set((state) => ({ currQueueIndex: state.currQueueIndex + 1 })),
@@ -61,9 +64,6 @@ const useAssignmentQueueStoreBase = create<
       ],
     }));
   },
-  resetReviewSession: () => {
-    set((state) => ({ ...state, assignmentQueue: [], currQueueIndex: 0 }));
-  },
 
   setAssignmentQueueData: (queueData: ReviewQueueItem[]) => {
     set((state) => ({
@@ -87,6 +87,9 @@ const useAssignmentQueueStoreBase = create<
         ...state.assignmentQueue.slice(indexToRemove + 1),
       ],
     }));
+  },
+  resetAll: () => {
+    set(initialState);
   },
 }));
 

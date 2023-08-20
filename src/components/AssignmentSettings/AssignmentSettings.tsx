@@ -28,8 +28,8 @@ function AssignmentSettings({
   defaultBatchSize,
 }: Props) {
   const navigate = useNavigate();
-  const resetReviewCards = useQueueStore.use.resetReviewCards();
-  const resetReviewSession = useAssignmentQueueStore.use.resetReviewSession();
+  const resetQueueStore = useQueueStore.use.resetAll();
+  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
   const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
 
   // needs to be string type for selector, so subject IDs will be converted to number on submit
@@ -100,8 +100,8 @@ function AssignmentSettings({
         : submitWithAdvancedSettings();
 
     // ending in case some weirdness occurred and there's a review session or lesson quiz in progress
-    resetReviewCards();
-    resetReviewSession();
+    resetQueueStore();
+    resetAssignmentQueue();
     if (settingsType === "reviews") {
       navigate("/reviews/session", { state: sessionData, replace: true });
     } else {

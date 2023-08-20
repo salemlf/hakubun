@@ -10,6 +10,7 @@ import { TabData } from "../../types/MiscTypes";
 import SwipeableTabs from "../SwipeableTabs";
 import styled from "styled-components";
 import StartSessionButton from "../StartSessionButton";
+import { useEffect } from "react";
 
 type HeaderProps = {
   subjType: SubjectType;
@@ -60,7 +61,14 @@ type Props = {
 };
 
 function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
-  const isLastIndex = useTabIndexStore((state) => state.isLastIndex);
+  const isLastIndex = useTabIndexStore.use.isLastIndex();
+  const resetTabIndex = useTabIndexStore.use.resetAll();
+
+  useEffect(() => {
+    return () => {
+      resetTabIndex();
+    };
+  }, []);
 
   let lessonTabs: TabData[] = lessons.map((lesson) => {
     return {
