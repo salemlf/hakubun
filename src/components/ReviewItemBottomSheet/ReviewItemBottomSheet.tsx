@@ -49,11 +49,6 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
 
   // TODO: also reopen to previous breakpoint on return? Use something like modal.current.getCurrentBreakpoint()
   useEffect(() => {
-    console.log(
-      "🚀 ~ file: ReviewItemBottomSheet.tsx:60 ~ useEffect ~ location.pathname:",
-      location.pathname
-    );
-
     if (
       (location.pathname === "/reviews/session" ||
         location.pathname === "/lessons/quiz") &&

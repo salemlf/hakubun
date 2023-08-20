@@ -7,6 +7,7 @@ interface AssignmentQueueState {
   currQueueIndex: number;
 }
 
+// TODO: fix updaeQueueItem not actually updating >:(
 interface AssignmentQueueActions {
   updateQueueItem: (item: ReviewQueueItem) => void;
   setAssignmentQueueData: (queueData: ReviewQueueItem[]) => void;
@@ -42,11 +43,46 @@ const useAssignmentQueueStoreBase = create<
             reviewItem.itemID === item.itemID &&
             reviewItem.review_type === item.review_type
         );
-    const updatedQueueItem = { ...item };
+    // *testing
+    console.log(
+      "🚀 ~ file: useAssignmentQueueStore.ts:36 ~ lastIndexOfItem:",
+      lastIndexOfItem
+    );
+    // *testing
+    // let lastIndexOfItem =
+    //     state.reviewQueue.length -
+    //     1 -
+    //     state.reviewQueue
+    //       .slice()
+    //       .reverse()
+    //       .findIndex(
+    //         (reviewItem) =>
+    //           reviewItem.itemID === action.payload.itemID &&
+    //           reviewItem.review_type === action.payload.review_type
+    //       );
+    //   let updatedQueueItem = Object.assign({}, action.payload);
+
+    //   return {
+    //     ...state,
+    //     reviewQueue: [
+    //       ...state.reviewQueue.slice(0, lastIndexOfItem),
+    //       updatedQueueItem,
+    //       ...state.reviewQueue.slice(lastIndexOfItem + 1),
+    //     ],
+    //   };
+
+    let updatedQueueItem = Object.assign({}, item);
+    // const updatedQueueItem = { ...item };
+    // *testing
+    console.log(
+      "🚀 ~ file: useAssignmentQueueStore.ts:75 ~ updatedQueueItem:",
+      updatedQueueItem
+    );
+    // *testing
 
     set((state) => ({
       ...state,
-      reviewSessionQueue: [
+      assignmentQueue: [
         ...state.assignmentQueue.slice(0, lastIndexOfItem),
         updatedQueueItem,
         ...state.assignmentQueue.slice(lastIndexOfItem + 1),
