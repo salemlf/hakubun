@@ -111,7 +111,7 @@ const AppElements = () => {
   return (
     <AnimatePresence>
       <Routes location={location} key={location.pathname}>
-        <Route index element={<TokenInput />} />
+        <Route element={<TokenInput />} />
         <Route path="/authenticate" element={<TokenInput />} />
         <Route
           element={
@@ -133,7 +133,7 @@ const AppElements = () => {
           <Route path="/subjects" element={<Subjects />} />
           <Route path="/search" element={<Search />} />
           <Route path="/subjects/:id" element={<SubjectDetails />} />
-          <Route path="/home" element={<Home />} />
+          <Route index path="/home" element={<Home />} />
           <Route path="/" element={<Navigate replace to="/home" />} />
         </Route>
         <Route path="*" element={<p>Oh no, 404!</p>} />
