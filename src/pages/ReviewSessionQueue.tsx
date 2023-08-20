@@ -186,7 +186,12 @@ export const ReviewSessionQueue = () => {
   // TODO: on confirm/before leaving page (for realzies), call endReviewSession()
   return (
     <Page>
-      <ReactRouterPrompt when={blockUserLeavingPage}>
+      <ReactRouterPrompt
+        when={blockUserLeavingPage}
+        beforeConfirm={() => {
+          endReviewSession();
+        }}
+      >
         {
           ({
             isActive,
