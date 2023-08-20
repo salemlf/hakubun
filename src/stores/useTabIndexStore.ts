@@ -1,11 +1,27 @@
 import { create } from "zustand";
+import { createSelectors } from "../utils";
 
-interface TabIndexStore {
+interface TabIndexState {
   isLastIndex: boolean;
-  setIsLastIndex: (isLast: boolean) => void;
 }
 
-export const useTabIndexStore = create<TabIndexStore>((set) => ({
+interface TabIndexActions {
+  setIsLastIndex: (isLast: boolean) => void;
+  resetAll: () => void;
+}
+
+const initialState: TabIndexState = {
   isLastIndex: false,
-  setIsLastIndex: (isLast: boolean) => set({ isLastIndex: isLast }),
-}));
+};
+
+export const useTabIndexStoreBase = create<TabIndexState & TabIndexActions>(
+  (set) => ({
+    ...initialState,
+    setIsLastIndex: (isLast: boolean) => set({ isLastIndex: isLast }),
+    resetAll: () => {
+      set(initialState);
+    },
+  })
+);
+
+export const useTabIndexStore = createSelectors(useTabIndexStoreBase);
