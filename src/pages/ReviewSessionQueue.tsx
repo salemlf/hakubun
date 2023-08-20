@@ -7,16 +7,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import ReactRouterPrompt from "react-router-prompt";
 import { useCreateReview } from "../hooks/useCreateReview";
 import {
+  blockUserLeavingPage,
   createReviewPostData,
   getCompletedReviewSessionData,
 } from "../services/ReviewService";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 import { Assignment } from "../types/Assignment";
-import {
-  AssignmentBatch,
-  HistoryAction,
-  StudyMaterial,
-} from "../types/MiscTypes";
+import { AssignmentBatch, StudyMaterial } from "../types/MiscTypes";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";
 import AnimatedPage from "../components/AnimatedPage";
@@ -97,14 +94,7 @@ export const ReviewSessionQueue = () => {
   }, [subjectsLoading, studyMaterialsLoading, location.state]);
 
   useEffect(() => {
-    if (assignmentQueue.length !== 0) {
-      // *testing
-      console.log("INSIDE IF in [] useEffect");
-      // *testing
-    } else {
-      // *testing
-      console.log("INSIDE ELSE in [] useEffect");
-      // *testing
+    if (assignmentQueue.length === 0) {
       createNewReviewSession();
     }
   }, []);
@@ -130,7 +120,7 @@ export const ReviewSessionQueue = () => {
     let reviewData = getCompletedReviewSessionData(queueData);
     let reviewPostData = createReviewPostData(reviewData);
 
-    // TODO: change to catch errors
+    // TODO: change to actually catch errors
     let promises = reviewPostData.map(function (reviewItem) {
       return createReviewsAsync({
         reviewSessionData: reviewItem,
@@ -140,7 +130,6 @@ export const ReviewSessionQueue = () => {
         })
         .catch((err) => {
           // *testing
-          // TODO: actually catch errors
           console.log(
             "🚀 ~ file: ReviewSessionQueue.tsx:96 ~ promises ~ err:",
             err
@@ -162,28 +151,6 @@ export const ReviewSessionQueue = () => {
     });
   };
 
-  // TODO: move into service file so lesson quiz can use it too
-  const blockUserLeavingPage = ({
-    currentLocation,
-    nextLocation,
-    historyAction,
-  }: {
-    currentLocation: Location;
-    nextLocation: Location;
-    historyAction: HistoryAction;
-  }) => {
-    // allowing user to view subjects pages during reviews and to review summary page
-    let subjDetailsRegex = new RegExp("/subjects/*");
-    if (
-      subjDetailsRegex.test(nextLocation.pathname) ||
-      nextLocation.pathname === "/reviews/summary"
-    ) {
-      return false;
-    }
-    return true;
-  };
-
-  // TODO: on confirm/before leaving page (for realzies), call endReviewSession()
   return (
     <Page>
       <ReactRouterPrompt
@@ -192,27 +159,25 @@ export const ReviewSessionQueue = () => {
           endReviewSession();
         }}
       >
-        {
-          ({
-            isActive,
-            onConfirm,
-            onCancel,
-          }: {
-            isActive: boolean;
-            onConfirm: () => void;
-            onCancel: () => void;
-          }) =>
-            isActive && (
-              <Dialog
-                uncontrolledSettings={{ defaultOpen: isActive }}
-                title="End review session?"
-                confirmText="End Session"
-                cancelText="Cancel"
-                onConfirmClick={onConfirm}
-                onCancelClick={onCancel}
-              />
-            )
-          // )
+        {({
+          isActive,
+          onConfirm,
+          onCancel,
+        }: {
+          isActive: boolean;
+          onConfirm: () => void;
+          onCancel: () => void;
+        }) =>
+          isActive && (
+            <Dialog
+              uncontrolledSettings={{ defaultOpen: isActive }}
+              title="End review session?"
+              confirmText="End Session"
+              cancelText="Cancel"
+              onConfirmClick={onConfirm}
+              onCancelClick={onCancel}
+            />
+          )
         }
       </ReactRouterPrompt>
       {!isLoading && assignmentQueue.length !== 0 && <QueueHeader />}

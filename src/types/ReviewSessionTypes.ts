@@ -1,7 +1,6 @@
+// TODO: change file name to AssignmentQueueTypes
 import { Subject } from "./Subject";
 import { RequireAtLeastOne } from "./Global";
-
-// TODO: change file name to AssignmentQueueTypes
 
 export type ReviewType = "reading" | "meaning";
 

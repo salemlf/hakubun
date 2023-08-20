@@ -1,3 +1,4 @@
+// TODO: rename to AssignmentQueueService or something like that
 import { toKana, isKanji, isJapanese, toRomaji, isKana } from "wanakana";
 import {
   GroupedReviewItems,
@@ -5,9 +6,9 @@ import {
   ReviewQueueItem,
   ReviewType,
 } from "../types/ReviewSessionTypes";
-import { SubjectMeaning, SubjectReading } from "../types/Subject";
 import { INVALID_ANSWER_CHARS } from "../constants";
 import Fuse from "fuse.js";
+import { HistoryAction } from "../types/MiscTypes";
 
 const reviewColors: { [index: string]: string } = {
   reading: `var(--ion-color-primary)`,
@@ -471,4 +472,25 @@ export const createReviewPostData = (reviewedItems: ReviewQueueItem[]) => {
     incorrect_meaning_answers: reviewedItem.incorrect_meaning_answers,
     incorrect_reading_answers: reviewedItem.incorrect_reading_answers,
   }));
+};
+
+export const blockUserLeavingPage = ({
+  currentLocation,
+  nextLocation,
+  historyAction,
+}: {
+  currentLocation: Location;
+  nextLocation: Location;
+  historyAction: HistoryAction;
+}) => {
+  // allowing user to view subjects pages during reviews and to review summary page
+  let subjDetailsRegex = new RegExp("/subjects/*");
+  if (
+    subjDetailsRegex.test(nextLocation.pathname) ||
+    nextLocation.pathname === "/reviews/summary" ||
+    nextLocation.pathname === "/lessons/summary"
+  ) {
+    return false;
+  }
+  return true;
 };

@@ -1,18 +1,18 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { IonContent } from "@ionic/react";
 import { getReviewsGroupedByResult } from "../services/ReviewService";
+import { flattenData } from "../services/MiscService";
+import { useQueueStore } from "../stores/useQueueStore";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
+import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
-import { FullWidthGrid } from "../styles/BaseStyledComponents";
-import { useLocation } from "react-router-dom";
 import AnimatedPage from "../components/AnimatedPage";
-import styled from "styled-components";
-import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
-import { flattenData } from "../services/MiscService";
 import HomeButton from "../components/HomeButton";
-import { useQueueStore } from "../stores/useQueueStore";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
+import { FullWidthGrid } from "../styles/BaseStyledComponents";
+import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--light-greyish-purple);
@@ -20,9 +20,9 @@ const Page = styled(AnimatedPage)`
 `;
 
 function ReviewSummary() {
+  const location = useLocation();
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
-  const location = useLocation();
   const reviewData: ReviewQueueItem[] = location.state.reviewData;
   // *testing
   console.log(
