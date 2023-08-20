@@ -171,7 +171,7 @@ export const ReviewSessionQueue = () => {
           isActive && (
             <Dialog
               uncontrolledSettings={{ defaultOpen: isActive }}
-              title="End review session?"
+              title="End Review Session?"
               confirmText="End Session"
               cancelText="Cancel"
               onConfirmClick={onConfirm}

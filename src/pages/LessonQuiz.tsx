@@ -122,8 +122,8 @@ function LessonQuiz() {
           isActive && (
             <Dialog
               uncontrolledSettings={{ defaultOpen: isActive }}
-              title="End review session?"
-              confirmText="End Session"
+              title="End Lesson Quiz?"
+              confirmText="End Quiz"
               cancelText="Cancel"
               onConfirmClick={onConfirm}
               onCancelClick={onCancel}
