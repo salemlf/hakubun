@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IonContent, IonGrid } from "@ionic/react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 // TODO: instead add a module declaration file for react-router-prompt
 // @ts-ignore: Could not find a declaration file for module
 import ReactRouterPrompt from "react-router-prompt";
-import { useReviewQueue } from "../hooks/useReviewQueue";
 import { useCreateReview } from "../hooks/useCreateReview";
 import {
   createReviewPostData,
@@ -12,12 +12,21 @@ import {
 } from "../services/ReviewService";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 import { Assignment } from "../types/Assignment";
-import { AssignmentBatch, HistoryAction } from "../types/MiscTypes";
+import {
+  AssignmentBatch,
+  HistoryAction,
+  StudyMaterial,
+} from "../types/MiscTypes";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";
 import AnimatedPage from "../components/AnimatedPage";
 import Dialog from "../components/Dialog/Dialog";
 import styled from "styled-components";
+import { useQueueStore } from "../stores/useQueueStore";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
+import { useSubjectsByIDs } from "../hooks/useSubjectsByIDs";
+import { useStudyMaterialsBySubjIDs } from "../hooks/useStudyMaterialsBySubjIDs";
+import { createAssignmentQueueItems } from "../services/SubjectAndAssignmentService";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -43,19 +52,82 @@ const Grid = styled(IonGrid)`
 export const ReviewSessionQueue = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { queueDataState, createNewReviewSession } = useReviewQueue();
+  const queryClient = useQueryClient();
+
+  const resetReviewCards = useQueueStore.use.resetReviewCards();
+  const resetReviewSession = useAssignmentQueueStore.use.resetReviewSession();
+  const setAssignmentQueueData =
+    useAssignmentQueueStore.use.setAssignmentQueueData();
+  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
+  const [isLoading, setIsLoading] = useState(true);
+
   const { mutateAsync: createReviewsAsync } = useCreateReview();
   let stateFromReviewSettings: AssignmentBatch = location.state;
   let assignmentBatchToReview: Assignment[] =
     stateFromReviewSettings.assignmentBatch;
   let subjIDs: number[] = stateFromReviewSettings.subjIDs;
 
+  let queriesEnabled = stateFromReviewSettings !== undefined;
+  const { data: subjectsData, isLoading: subjectsLoading } = useSubjectsByIDs(
+    subjIDs,
+    queriesEnabled
+  );
+  const { data: studyMaterialsData, isLoading: studyMaterialsLoading } =
+    useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled, false);
+
   useEffect(() => {
-    if (queueDataState.reviewQueue.length !== 0) {
+    if (
+      location.state &&
+      !subjectsLoading &&
+      !studyMaterialsLoading &&
+      subjectsData.length !== 0 &&
+      studyMaterialsData !== undefined
+    ) {
+      let reviews = createAssignmentQueueItems(
+        assignmentBatchToReview,
+        subjectsData,
+        studyMaterialsData as StudyMaterial[]
+      );
+
+      setIsLoading(false);
+      setAssignmentQueueData(reviews);
     } else {
-      createNewReviewSession(assignmentBatchToReview, subjIDs);
+      setIsLoading(true);
+    }
+  }, [subjectsLoading, studyMaterialsLoading, location.state]);
+
+  // !added
+
+  //
+  useEffect(() => {
+    if (assignmentQueue.length !== 0) {
+      // *testing
+      console.log("INSIDE IF in [] useEffect");
+      // *testing
+    } else {
+      // *testing
+      console.log("INSIDE ELSE in [] useEffect");
+      // *testing
+      createNewReviewSession();
     }
   }, []);
+
+  // TODO: make sure this actually reloads everything
+  const createNewReviewSession = () => {
+    // *testing
+    console.log("createNewReviewSession called!");
+    // *testing
+    endReviewSession();
+    queryClient.invalidateQueries([
+      "study-materials-by-subj-ids",
+      "subjects-by-ids",
+    ]);
+  };
+
+  const endReviewSession = () => {
+    resetReviewCards();
+    resetReviewSession();
+  };
 
   const submitReviews = (queueData: ReviewQueueItem[]) => {
     let reviewData = getCompletedReviewSessionData(queueData);
@@ -103,13 +175,6 @@ export const ReviewSessionQueue = () => {
     nextLocation: Location;
     historyAction: HistoryAction;
   }) => {
-    // *testing
-    console.log("canLeavePage called!");
-    console.log("currentLocation: ", currentLocation);
-    console.log("nextLocation: ", nextLocation);
-    console.log("historyAction: ", historyAction);
-    // *testing
-
     // allowing user to view subjects pages during reviews
     let regex = new RegExp("/subjects/*");
     if (regex.test(nextLocation.pathname)) {
@@ -144,16 +209,13 @@ export const ReviewSessionQueue = () => {
           // )
         }
       </ReactRouterPrompt>
-      {!queueDataState.isLoading && queueDataState.reviewQueue.length !== 0 && (
-        <QueueHeader queueType="review" />
-      )}
+      {!isLoading && assignmentQueue.length !== 0 && <QueueHeader />}
       <IonContent>
         <Grid>
-          {queueDataState.isLoading && <p>Loading...</p>}
-          {!queueDataState.isLoading &&
-            queueDataState.reviewQueue.length !== 0 && (
-              <ReviewCards queueType="review" submitItems={submitReviews} />
-            )}
+          {isLoading && <p>Loading...</p>}
+          {!isLoading && assignmentQueue.length !== 0 && (
+            <ReviewCards submitItems={submitReviews} />
+          )}
         </Grid>
       </IonContent>
     </Page>

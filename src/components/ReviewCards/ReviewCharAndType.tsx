@@ -5,7 +5,6 @@ import {
 } from "../../services/SubjectAndAssignmentService";
 import { getReviewTypeColor } from "../../services/ReviewService";
 import { capitalizeWord, getPopoverMsgColor } from "../../services/MiscService";
-import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { SubjectType } from "../../types/Subject";
 import {
   PopoverInfo,
@@ -14,8 +13,8 @@ import {
   ReviewType,
 } from "../../types/ReviewSessionTypes";
 import SubjectChars from "../SubjectChars/SubjectChars";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
+import { useQueueStore } from "../../stores/useQueueStore";
 
 type ReviewTypeProps = {
   reviewType: ReviewType;
@@ -103,7 +102,8 @@ function ReviewCharAndType({
   currentReviewItem,
   disableTextSelection = false,
 }: Props) {
-  const { queueState } = useReviewQueue();
+  const displayPopoverMsg = useQueueStore.use.displayPopoverMsg();
+  const popoverInfo = useQueueStore.use.popoverInfo();
 
   let subjType = currentReviewItem.object as SubjectType;
   let reviewType = currentReviewItem.review_type;
@@ -125,8 +125,8 @@ function ReviewCharAndType({
           />
         </SubjectCharactersCol>
         <ReviewMessage
-          displayMsg={queueState.displayPopoverMsg}
-          popoverInfo={queueState.popoverInfo}
+          displayMsg={displayPopoverMsg}
+          popoverInfo={popoverInfo}
         />
       </SubjectCharRow>
       <ReviewTypeRow reviewType={reviewType}>

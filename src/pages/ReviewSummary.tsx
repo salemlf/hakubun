@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { IonContent } from "@ionic/react";
 import { getReviewsGroupedByResult } from "../services/ReviewService";
-import { useReviewQueue } from "../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
@@ -12,16 +11,18 @@ import styled from "styled-components";
 import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
 import { flattenData } from "../services/MiscService";
 import HomeButton from "../components/HomeButton";
+import { useQueueStore } from "../stores/useQueueStore";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--light-greyish-purple);
   background-color: var(--light-greyish-purple);
 `;
 
-// TODO: on page load, call setSavedUserAnswer and set to null
 // TODO: show button to redirect to Home instead of normal tab bar?
 function ReviewSummary() {
-  const { endReviewSession } = useReviewQueue();
+  const resetReviewCards = useQueueStore.use.resetReviewCards();
+  const resetReviewSession = useAssignmentQueueStore.use.resetReviewSession();
   const location = useLocation();
   const reviewData: ReviewQueueItem[] = location.state.reviewData;
   // *testing
@@ -53,7 +54,8 @@ function ReviewSummary() {
   // *testing
 
   useEffect(() => {
-    endReviewSession();
+    resetReviewCards();
+    resetReviewSession();
   }, []);
 
   let groupedReviewItems = getReviewsGroupedByResult(reviewData);

@@ -1,218 +1,211 @@
-import { useEffect, useState } from "react";
-import { IonIcon } from "@ionic/react";
+import { useEffect } from "react";
 import {
-  useMotionValue,
-  useTransform,
-  useWillChange,
-  useAnimate,
-} from "framer-motion";
-import { toHiragana } from "wanakana";
-import { isUserAnswerValid } from "../../services/ReviewService";
-import { useKeyDown } from "../../hooks/useKeyDown";
-import { useReviewQueue } from "../../hooks/useReviewQueue";
-import { useLessonQuizStore } from "../../stores/useLessonQuizStore";
-import { SubjectType } from "../../types/Subject";
+  calculateSRSLevel,
+  checkIfReviewIsComplete,
+  isUserAnswerCorrect,
+} from "../../services/ReviewService";
+import {
+  capitalizeWord,
+  getSrsNameBySrsLvl,
+  playAudioIfAvailable,
+} from "../../services/MiscService";
+import { useQueueStore } from "../../stores/useQueueStore";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
-import ReviewCharAndType from "./ReviewCharAndType";
-import ReviewAnswerInput from "./ReviewAnswerInput";
-import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
-import RetryIcon from "../../images/retry.svg";
-import NextIcon from "../../images/next-item.svg";
-import {
-  NextCardOverlay,
-  RetryCardOverlay,
-  ReviewCardStyled,
-  SwipeIcon,
-  ReviewCardContainer,
-} from "./ReviewCardsStyled";
-import { useCardQueueStore } from "../../stores/useCardQueueStore";
-
-type CardProps = {
-  currentReviewItem: ReviewQueueItem;
-};
-
-export const ReviewCard = ({ currentReviewItem }: CardProps) => {
-  const {
-    handleNextClick,
-    handleRetryClick,
-    queueState,
-    displayInvalidAnswerMsg,
-  } = useReviewQueue();
-  const savedUserAnswer = useCardQueueStore.use.savedUserAnswer();
-  const setSavedUserAnswer = useCardQueueStore.use.setSavedUserAnswer();
-  let initialUserAnswer =
-    !queueState.isSecondClick || savedUserAnswer === null
-      ? ""
-      : savedUserAnswer;
-  const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
-
-  // TODO: display these shortcuts on page so user knows about them
-  useKeyDown(() => attemptToAdvance(), ["F12"]);
-  useKeyDown(() => retryTriggered(), ["F6"]);
-
-  const x = useMotionValue(0);
-  const [reviewCardRef, animateCard] = useAnimate();
-  const opacityLeft = useTransform(x, [-100, 0], [1, 0]);
-  const opacityRight = useTransform(x, [0, 100], [0, 1]);
-  const willChange = useWillChange();
-  const rotate = useTransform(x, [-300, 0, 300], [-20, 0, 20]);
-  const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
-  const exitTimeMs = 500;
-  const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
-
-  const retryTriggered = () => {
-    if (queueState.showRetryButton) {
-      setTimeout(() => {
-        x.set(0);
-        handleRetryClick(currentReviewItem, setUserAnswer);
-      }, exitTimeMs);
-    } else {
-      // TODO: show some visual indication of this
-      console.log("RETRY NOT AVAILABLE!");
-    }
-  };
-
-  const attemptToAdvance = () => {
-    currentReviewItem.review_type === "reading" &&
-      setUserAnswer(toHiragana(userAnswer));
-
-    let isValidInfo = isUserAnswerValid(currentReviewItem, userAnswer);
-    if (isValidInfo.isValid === false) {
-      displayInvalidAnswerMsg(isValidInfo.message);
-      setShakeInputTrigger((shakeInputTrigger) => shakeInputTrigger + 1);
-    } else {
-      // !added
-      console.log("Saving user answer to store...");
-      // *testing
-      // TODO: save user answer to store
-      console.log(
-        "🚀 ~ file: ReviewCards.tsx:80 ~ return ~ userAnswer:",
-        userAnswer
-      );
-      setSavedUserAnswer(userAnswer);
-      // !added
-      animateCard(
-        reviewCardRef.current,
-        { x: "150%" },
-        { duration: exitTimeDecimal }
-      );
-
-      setTimeout(() => {
-        x.set(0);
-        handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
-        // TODO: check if answer was correct or not, then show toast
-      }, exitTimeMs);
-    }
-  };
-
-  const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
-    if (info.offset.x > 200) {
-      attemptToAdvance();
-    } else if (info.offset.x < -200) {
-      retryTriggered();
-    }
-  };
-
-  return (
-    <>
-      <ReviewCardStyled
-        ref={reviewCardRef}
-        subjtype={currentReviewItem.object as SubjectType}
-        initial={{ y: "-150%" }}
-        style={{
-          x,
-          rotate,
-          willChange,
-        }}
-        drag="x"
-        animate={{ y: 0 }}
-        transition={{ type: "spring", duration: 1, bounce: 0.5 }}
-        dragSnapToOrigin={true}
-        dragConstraints={{ left: 0, right: 0 }}
-        dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
-        onDragEnd={handleDragEnd}
-        dragDirectionLock={true}
-        whileTap={{ cursor: "grabbing" }}
-        dragElastic={0.5}
-      >
-        <ReviewCharAndType
-          currentReviewItem={currentReviewItem}
-          disableTextSelection={true}
-        />
-        <ReviewAnswerInput
-          shakeInputTrigger={shakeInputTrigger}
-          currentReviewItem={currentReviewItem}
-          userAnswer={userAnswer}
-          setUserAnswer={setUserAnswer}
-          nextBtnClicked={attemptToAdvance}
-        />
-        <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />
-        <RetryCardOverlay
-          style={{
-            opacity: opacityLeft,
-          }}
-        >
-          <SwipeIcon>
-            <IonIcon icon={RetryIcon}></IonIcon>
-          </SwipeIcon>
-        </RetryCardOverlay>
-        <NextCardOverlay
-          style={{
-            opacity: opacityRight,
-          }}
-        >
-          <SwipeIcon>
-            <IonIcon icon={NextIcon}></IonIcon>
-          </SwipeIcon>
-        </NextCardOverlay>
-      </ReviewCardStyled>
-    </>
-  );
-};
-
-type QueueInfo = {
-  currQueueIndex: number;
-  queueData: ReviewQueueItem[];
-};
+import { ReviewCard } from "./ReviewCard";
+import { ReviewCardContainer } from "./ReviewCardsStyled";
 
 type Props = {
-  queueType: "review" | "quiz";
   submitItems: (reviewData: ReviewQueueItem[]) => void;
 };
 
-function ReviewCards({ queueType, submitItems }: Props) {
-  const { queueDataState } = useReviewQueue();
-  const lessonQuizQueue = useLessonQuizStore.use.lessonQuizQueue();
-  const lessonQueueIndex = useLessonQuizStore.use.currQueueIndex();
-  const queueInfo: { [index: string]: QueueInfo } = {
-    review: {
-      currQueueIndex: queueDataState.currQueueIndex,
-      queueData: queueDataState.reviewQueue,
-    },
-    quiz: {
-      currQueueIndex: lessonQueueIndex,
-      queueData: lessonQuizQueue,
-    },
-  };
+// TODO: instead of constantly updating currQueueIndex, just use useState in parent component where it can be saved off to useCardQueueStore and restored if user leaves page
+function ReviewCards({ submitItems }: Props) {
+  const showPopoverMsg = useQueueStore.use.showPopoverMsg();
+  const correctShowResult = useQueueStore.use.correctShowResult();
+  const correctMoveToNext = useQueueStore.use.correctMoveToNext();
+  const wrongMoveToNext = useQueueStore.use.wrongMoveToNext();
+  const wrongShowResult = useQueueStore.use.wrongShowResult();
+  const isSecondClick = useQueueStore.use.isSecondClick();
+  const submitChoice = useQueueStore.use.submitChoice();
+  const retryReview = useQueueStore.use.retryReview();
 
-  let currQueueIndex = queueInfo[queueType].currQueueIndex;
-  let queueData = queueInfo[queueType].queueData;
+  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
+  let currQueueIndex = useAssignmentQueueStore.use.currQueueIndex();
+  let updateItem = useAssignmentQueueStore.use.updateQueueItem();
+  let incrementQueueIndex =
+    useAssignmentQueueStore.use.incrementCurrQueueIndex();
+  const addItemToQueue = useAssignmentQueueStore.use.addToAssignmentQueue();
+  const removeOldItemFromQueue =
+    useAssignmentQueueStore.use.removeOldQueueItem();
 
   useEffect(() => {
-    if (currQueueIndex === queueData.length && queueData.length !== 0) {
-      submitItems(queueData);
+    if (
+      currQueueIndex === assignmentQueue.length &&
+      assignmentQueue.length !== 0
+    ) {
+      submitItems(assignmentQueue);
     }
-  }, [queueData[currQueueIndex]]);
+  }, [assignmentQueue[currQueueIndex]]);
+
+  const displaySRSStatus = (reviewItem: ReviewQueueItem) => {
+    // *testing
+    console.log("reviewItem.srs_stage: ", reviewItem.srs_stage);
+    console.log("reviewItem.ending_srs_stage: ", reviewItem.ending_srs_stage);
+    // *testing
+
+    let endingSRS = reviewItem.ending_srs_stage!;
+
+    let hasIncreased = endingSRS > reviewItem.srs_stage;
+    let endingSRSName = capitalizeWord(getSrsNameBySrsLvl(endingSRS));
+
+    // TODO: change to use more specific types that display up or down arrows based on correct/incorrect
+    let popoverToDisplay = hasIncreased
+      ? ({
+          message: `Increasing to ${endingSRSName}...`,
+          messageType: "correct",
+        } as const)
+      : ({
+          message: `Decreasing to ${endingSRSName}...`,
+          messageType: "incorrect",
+        } as const);
+
+    showPopoverMsg(popoverToDisplay);
+  };
+
+  const displayInvalidAnswerMsg = (message: string) => {
+    showPopoverMsg({ message, messageType: "invalid" });
+  };
+
+  const handleCorrectAnswer = (
+    currReviewItem: ReviewQueueItem,
+    setUserAnswer: (value: string) => void,
+    moveToNextItem: boolean
+  ) => {
+    if (moveToNextItem) {
+      correctMoveToNext();
+
+      incrementQueueIndex();
+      setUserAnswer("");
+    } else {
+      correctFirstClick(currReviewItem);
+    }
+  };
+
+  const handleWrongAnswer = (
+    currReviewItem: ReviewQueueItem,
+    setUserAnswer: (value: string) => void,
+    moveToNextItem: boolean
+  ) => {
+    let updatedReviewItem = currReviewItem;
+
+    if (moveToNextItem) {
+      addItemToQueue(updatedReviewItem);
+      removeOldItemFromQueue();
+      wrongMoveToNext();
+      setUserAnswer("");
+    } else {
+      showPopoverMsg({ message: "SRRY, WRONG :(", messageType: "incorrect" });
+      updatedReviewItem.is_correct_answer = false;
+      updatedReviewItem.is_reviewed = false;
+
+      updatedReviewItem.review_type === "reading"
+        ? (updatedReviewItem.incorrect_reading_answers += 1)
+        : (updatedReviewItem.incorrect_meaning_answers += 1);
+
+      updateItem(updatedReviewItem);
+      wrongShowResult();
+    }
+  };
+
+  const correctFirstClick = (currReviewItem: ReviewQueueItem) => {
+    let isReviewItemComplete = checkIfReviewIsComplete(
+      currReviewItem,
+      assignmentQueue
+    );
+
+    playAudioIfAvailable(
+      currReviewItem.primary_audio_url,
+      currReviewItem.review_type
+    );
+
+    let updatedReviewItem = currReviewItem;
+    showPopoverMsg({ message: "CORRECT!", messageType: "correct" });
+
+    if (isReviewItemComplete) {
+      updatedReviewItem = calculateSRSLevel(assignmentQueue, updatedReviewItem);
+
+      displaySRSStatus(updatedReviewItem);
+    }
+
+    let wasWrongFirstAttempt = updatedReviewItem.is_reviewed;
+    if (wasWrongFirstAttempt) {
+      // keeping answer as incorrect and is_reviewed as true
+      updatedReviewItem.is_reviewed = true;
+
+      updateItem(updatedReviewItem);
+    }
+
+    // user got answer correct first try
+    else {
+      updatedReviewItem.is_correct_answer = true;
+      updatedReviewItem.is_reviewed = true;
+      updateItem(updatedReviewItem);
+    }
+
+    correctShowResult();
+  };
+
+  const handleNextClick = (
+    currReviewItem: ReviewQueueItem,
+    userAnswer: string,
+    setUserAnswer: (value: string) => void
+  ) => {
+    // *testing
+    console.log(
+      "🚀 ~ file: ReviewSession.tsx:137 ~ ReviewSession ~ userAnswer:",
+      userAnswer
+    );
+    // *testing
+    let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
+
+    let moveToNextItem = isSecondClick;
+    isCorrectAnswer
+      ? handleCorrectAnswer(currReviewItem, setUserAnswer, moveToNextItem)
+      : handleWrongAnswer(currReviewItem, setUserAnswer, moveToNextItem);
+
+    submitChoice();
+  };
+
+  const handleRetryClick = (
+    currReviewItem: ReviewQueueItem,
+    setUserAnswer: (value: string) => void
+  ) => {
+    let updatedReviewItem = currReviewItem;
+    updatedReviewItem.is_correct_answer = null;
+    updatedReviewItem.is_reviewed = false;
+    // undoing the increment previously done
+    updatedReviewItem.review_type === "reading"
+      ? (updatedReviewItem.incorrect_reading_answers -= 1)
+      : (updatedReviewItem.incorrect_meaning_answers -= 1);
+
+    updateItem(updatedReviewItem);
+    setUserAnswer("");
+    retryReview();
+  };
 
   return (
     <>
-      {queueData.length === 0 || currQueueIndex === queueData.length ? (
+      {assignmentQueue.length === 0 ||
+      currQueueIndex === assignmentQueue.length ? (
         <p>Loading...</p>
       ) : (
         <ReviewCardContainer>
           <ReviewCard
-            key={queueData[currQueueIndex].itemID}
-            currentReviewItem={queueData[currQueueIndex]}
+            currentReviewItem={assignmentQueue[currQueueIndex]}
+            displayInvalidAnswerMsg={displayInvalidAnswerMsg}
+            handleNextClick={handleNextClick}
+            handleRetryClick={handleRetryClick}
           />
         </ReviewCardContainer>
       )}

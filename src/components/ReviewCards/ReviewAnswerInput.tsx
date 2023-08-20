@@ -1,17 +1,9 @@
-import {
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { SetStateAction, useEffect, useRef } from "react";
 import { motion, useAnimate } from "framer-motion";
 import WanakanaInput from "./WanakanaInput";
-import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
-// import styled from "styled-components/macro";
+import { useQueueStore } from "../../stores/useQueueStore";
 import styled from "styled-components";
-import { useBeforeUnload } from "react-router-dom";
 
 const InputRow = styled(motion.div)`
   width: 100%;
@@ -47,11 +39,12 @@ function ReviewAnswerInput({
   nextBtnClicked,
   shakeInputTrigger,
 }: Props) {
-  const { queueState } = useReviewQueue();
+  const isSecondClick = useQueueStore.use.isSecondClick();
   let reviewType = currentReviewItem.review_type;
   const inputRef = useRef<HTMLInputElement>();
   const [inputContainerRef, animate] = useAnimate();
-  let inputColor = queueState.isSecondClick
+
+  let inputColor = isSecondClick
     ? currentReviewItem.is_correct_answer
       ? "var(--ion-color-tertiary)"
       : "var(--ion-color-danger)"
@@ -88,7 +81,7 @@ function ReviewAnswerInput({
         }}
         translateToHiragana={reviewType === "reading"}
         onChange={(e: any) => setUserAnswer(e.target.value)}
-        disabled={queueState.isSecondClick}
+        disabled={isSecondClick}
         placeholder={reviewType === "reading" ? "答え" : ""}
       />
     </InputRow>

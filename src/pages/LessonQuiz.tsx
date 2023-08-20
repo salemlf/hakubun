@@ -1,13 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IonContent, IonGrid } from "@ionic/react";
 import { useLocation } from "react-router-dom";
 import { shuffleArray } from "../services/MiscService";
-import { useLessonQuizStore } from "../stores/useLessonQuizStore";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 import AnimatedPage from "../components/AnimatedPage";
 import ReviewCards from "../components/ReviewCards";
 import QueueHeader from "../components/QueueHeader";
 import styled from "styled-components";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -21,13 +21,13 @@ const Grid = styled(IonGrid)`
   margin: 10px;
 `;
 
+// TODO: add ReactRouterPrompt and account for user trying to navigate away from page
 function LessonQuiz() {
   const location = useLocation();
-  const isLoading = useLessonQuizStore.use.isLoading();
-  // const lessonQuizQueue = useLessonQuizStore.use.lessonQuizQueue();
-  const setLessonQuizLoaded = useLessonQuizStore.use.setLessonQuizLoaded();
-  // TODO: move this state down to ReviewCards
-  // const currQueueIndex = useLessonQuizStore.use.currQueueIndex();
+  const [isLoading, setIsLoading] = useState(true);
+  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
+  const setAssignmentQueueData =
+    useAssignmentQueueStore.use.setAssignmentQueueData();
 
   let lessonQueueFromSession: ReviewQueueItem[] = location.state;
 
@@ -41,24 +41,28 @@ function LessonQuiz() {
       );
       //   *testing
 
-      setLessonQuizLoaded(shuffledLessons);
+      setAssignmentQueueData(shuffledLessons);
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
     }
   }, [location.state]);
 
+  // TODO: start assignments and redirect to lesson summary page
   const submitLessonQuiz = (queueData: ReviewQueueItem[]) => {
+    // *testing
     console.log("submitLessonQuiz NOT IMPLEMENTED YET");
+    // *testing
   };
-
-  // let currentReviewItem = lessonQuizQueue[currQueueIndex];
 
   return (
     <Page>
-      {!isLoading && <QueueHeader queueType="quiz" />}
+      {!isLoading && assignmentQueue.length !== 0 && <QueueHeader />}
       <IonContent>
         <Grid>
           {isLoading && <p>Loading...</p>}
-          {!isLoading && (
-            <ReviewCards queueType="quiz" submitItems={submitLessonQuiz} />
+          {!isLoading && assignmentQueue.length !== 0 && (
+            <ReviewCards submitItems={submitLessonQuiz} />
           )}
         </Grid>
       </IonContent>

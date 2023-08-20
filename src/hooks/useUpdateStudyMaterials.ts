@@ -9,6 +9,7 @@ type Props = {
 
 export const useUpdateStudyMaterials = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({ studyMaterialID, updatedStudyMaterials }: Props) =>
       updateStudyMaterials(studyMaterialID, updatedStudyMaterials),

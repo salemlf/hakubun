@@ -1,12 +1,11 @@
 // TODO: change so not relying on IonIcon
 import { IonHeader, IonToolbar, IonButtons, IonIcon } from "@ionic/react";
-import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import HomeIconColor from "../../images/home-color.svg";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
-import { useLessonQuizStore } from "../../stores/useLessonQuizStore";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;
@@ -58,23 +57,15 @@ const calculateNumItemsInQueue = (queue: ReviewQueueItem[]) => {
   ].length;
 };
 
-type Props = {
-  queueType: "review" | "quiz";
-};
-
-function QueueHeader({ queueType }: Props) {
+function QueueHeader() {
   const navigate = useNavigate();
+  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
+  const currQueueIndex = useAssignmentQueueStore.use.currQueueIndex();
 
-  const { queueDataState } = useReviewQueue();
-  let currentReviewItem =
-    queueDataState.reviewQueue[queueDataState.currQueueIndex];
-  const reviewQueue = queueDataState.reviewQueue;
-  const lessonQuizQueue = useLessonQuizStore.use.lessonQuizQueue();
+  let currentQueueItem = assignmentQueue[currQueueIndex];
 
-  let queueData = queueType === "review" ? reviewQueue : lessonQuizQueue;
-
-  let numUniqueItemsInQueue = currentReviewItem
-    ? calculateNumItemsInQueue(queueData)
+  let numUniqueItemsInQueue = currentQueueItem
+    ? calculateNumItemsInQueue(assignmentQueue)
     : undefined;
 
   return (

@@ -9,7 +9,6 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useLocation } from "react-router";
-import { useReviewQueue } from "../../hooks/useReviewQueue";
 import { Subject } from "../../types/Subject";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import BottomSheetHeader from "./BottomSheetHeader";
@@ -17,6 +16,7 @@ import styled from "styled-components";
 import RadicalDetailTabs from "../RadicalDetailTabs/RadicalDetailTabs";
 import KanjiDetailTabs from "../KanjiDetailTabs/KanjiDetailTabs";
 import VocabDetailTabs from "../VocabDetailTabs/VocabDetailTabs";
+import { useQueueStore } from "../../stores/useQueueStore";
 
 const FullWidthGrid = styled(IonGrid)`
   margin-left: 0;
@@ -43,15 +43,21 @@ type Props = {
 // TODO: modify to use some other sheet modal so don't need to use IonPage
 function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   const location = useLocation();
-  const { queueState } = useReviewQueue();
+  const showBottomSheet = useQueueStore.use.isBottomSheetVisible();
   const modal = useRef<HTMLIonModalElement>(null);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   // TODO: also reopen to previous breakpoint on return? Use something like modal.current.getCurrentBreakpoint()
   useEffect(() => {
+    console.log(
+      "🚀 ~ file: ReviewItemBottomSheet.tsx:60 ~ useEffect ~ location.pathname:",
+      location.pathname
+    );
+
     if (
-      location.pathname === "/reviews/session" &&
-      queueState.isBottomSheetVisible
+      (location.pathname === "/reviews/session" ||
+        location.pathname === "/lessons/quiz") &&
+      showBottomSheet
     ) {
       // using timeout otherwise it gets all weird with the input state being disabled at same time
       setTimeout(() => {
@@ -60,7 +66,7 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
     } else {
       setIsBottomSheetVisible(false);
     }
-  }, [location.pathname, queueState.isBottomSheetVisible]);
+  }, [location.pathname, showBottomSheet]);
 
   return (
     <IonModal
