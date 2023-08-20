@@ -45,13 +45,7 @@ const useAssignmentQueueStoreBase = create<
             reviewItem.review_type === item.review_type
         );
 
-    const updatedQueueItem = { ...item };
-    // *testing
-    console.log(
-      "🚀 ~ file: useAssignmentQueueStore.ts:75 ~ updatedQueueItem:",
-      updatedQueueItem
-    );
-    // *testing
+    let updatedQueueItem = Object.assign({}, item);
 
     set((state) => ({
       ...state,
