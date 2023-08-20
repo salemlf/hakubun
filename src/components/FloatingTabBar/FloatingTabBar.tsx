@@ -102,7 +102,7 @@ function FloatingTabBar({ styleProps }: Props) {
           </PageLink>
         </NavigationMenu.Item>
         <NavigationMenu.Item>
-          <PageLink pathName="/home">
+          <PageLink pathName="/">
             <IonIcon src={HomeIcon} />
             <TabLabel>Home</TabLabel>
           </PageLink>

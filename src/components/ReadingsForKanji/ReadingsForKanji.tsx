@@ -8,6 +8,7 @@ type Props = {
   hideReadingType?: boolean;
 };
 
+// TODO: sort readings with primary first
 function ReadingsForKanji({
   kanji,
   readingType,

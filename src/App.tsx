@@ -3,10 +3,10 @@ import {
   Route,
   Routes,
   useLocation,
-  Navigate,
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
+  useRouteError,
 } from "react-router-dom";
 import { IonApp, setupIonicReact } from "@ionic/react";
 import { AnimatePresence } from "framer-motion";
@@ -133,8 +133,7 @@ const AppElements = () => {
           <Route path="/subjects" element={<Subjects />} />
           <Route path="/search" element={<Search />} />
           <Route path="/subjects/:id" element={<SubjectDetails />} />
-          <Route index path="/home" element={<Home />} />
-          <Route path="/" element={<Navigate replace to="/home" />} />
+          <Route index path="/" element={<Home />} />
         </Route>
         <Route path="*" element={<p>Oh no, 404!</p>} />
       </Routes>
@@ -143,8 +142,21 @@ const AppElements = () => {
   );
 };
 
+function ErrorBoundary() {
+  let error = useRouteError();
+  console.error(error);
+  // Uncaught ReferenceError: path is not defined
+  return <p>Woah! Something went really wrong :(</p>;
+}
+
 const browserRouter = createBrowserRouter(
-  createRoutesFromElements(<Route path="*" element={<AppElements />} />)
+  createRoutesFromElements(
+    <Route
+      path="*"
+      element={<AppElements />}
+      errorElement={<ErrorBoundary />}
+    />
+  )
 );
 
 export default App;

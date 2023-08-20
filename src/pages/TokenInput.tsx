@@ -34,7 +34,7 @@ const TokenInput = () => {
     if (success) {
       console.log("Successfully logged in!");
       setAuthErr("");
-      navigate("/home");
+      navigate("/");
     } else {
       setAuthErr(
         "An error occurred retrieving your info, make sure your API token is correct"

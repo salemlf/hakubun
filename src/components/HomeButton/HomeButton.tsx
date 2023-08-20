@@ -23,7 +23,7 @@ function HomeButton() {
     <FloatingButton
       backgroundColor="var(--ion-color-tertiary)"
       color="black"
-      onPress={() => navigate("/home", { replace: true })}
+      onPress={() => navigate("/", { replace: true })}
       distancefrombottom="35px"
     >
       <HomeIcon src={ColorHomeIcon} />

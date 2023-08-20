@@ -87,7 +87,7 @@ function LessonSession() {
       {subjectsLoading || (studyMaterialsLoading && <h1>Loading...</h1>)}
       {uniqueLessonQueue.length !== 0 && (
         <IonContent>
-          <HomeBtn onPress={() => navigate("/home")}>
+          <HomeBtn onPress={() => navigate("/")}>
             <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
           </HomeBtn>
           <LessonCards
