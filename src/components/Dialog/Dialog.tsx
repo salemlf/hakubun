@@ -102,7 +102,7 @@ type Props = RequireAtLeastOne<
 // TODO: improve trigger button or pass in trigger component as prop instead (more likely)
 function Dialog({
   controlledSettings,
-  uncontrolledSettings,
+  uncontrolledSettings = { defaultOpen: false },
   programmaticTrigger = true,
   title,
   description,
