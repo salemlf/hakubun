@@ -225,4 +225,15 @@ export const WaniKaniAPI = {
 
     return response.data;
   },
+
+  startAssignment: async function (assignmentID: number) {
+    let url = `${baseUrl}assignments/${assignmentID}/start`;
+
+    const response: AxiosResponse = await api.request({
+      url: url,
+      method: "PUT",
+    });
+
+    return response.data;
+  },
 };
