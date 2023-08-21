@@ -28,7 +28,6 @@ const useAssignmentQueueStoreBase = create<
   AssignmentQueueState & AssignmentQueueActions
 >((set, get) => ({
   ...initialState,
-
   incrementCurrQueueIndex: () =>
     set((state) => ({ currQueueIndex: state.currQueueIndex + 1 })),
   resetQueueIndex: () => set({ currQueueIndex: 0 }),
@@ -48,7 +47,6 @@ const useAssignmentQueueStoreBase = create<
     let updatedQueueItem = Object.assign({}, item);
 
     set((state) => ({
-      ...state,
       assignmentQueue: [
         ...state.assignmentQueue.slice(0, lastIndexOfItem),
         updatedQueueItem,
@@ -56,28 +54,14 @@ const useAssignmentQueueStoreBase = create<
       ],
     }));
   },
-  removeReviewItem: () => {
-    const indexToRemove = get().currQueueIndex;
-
-    set((state) => ({
-      ...state,
-      assignmentQueueData: [
-        ...state.assignmentQueue.slice(0, indexToRemove),
-        ...state.assignmentQueue.slice(indexToRemove + 1),
-      ],
-    }));
-  },
-
   setAssignmentQueueData: (queueData: ReviewQueueItem[]) => {
-    set((state) => ({
-      ...state,
+    set(() => ({
       assignmentQueue: queueData,
       sessionInProgress: true,
     }));
   },
   addToAssignmentQueue(reviewItem) {
     set((state) => ({
-      ...state,
       assignmentQueue: [...state.assignmentQueue, reviewItem],
     }));
   },
@@ -85,8 +69,7 @@ const useAssignmentQueueStoreBase = create<
     const indexToRemove = get().currQueueIndex;
 
     set((state) => ({
-      ...state,
-      assignmentQueueData: [
+      assignmentQueue: [
         ...state.assignmentQueue.slice(0, indexToRemove),
         ...state.assignmentQueue.slice(indexToRemove + 1),
       ],
