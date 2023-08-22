@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
-const AnimatedPageContainer = styled(motion.main)`
+const AnimatedPageContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   min-height: 100%;

@@ -1,50 +1,12 @@
-import {
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonSkeletonText,
-} from "@ionic/react";
+import { IonSkeletonText } from "@ionic/react";
 import styled from "styled-components";
 import { GroupedReviewItems } from "../../types/ReviewSessionTypes";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import GroupedReviewSummaryResults from "./GroupedReviewSummaryResults";
+import Card from "../Card";
 
-const CardHeader = styled(IonCardHeader)`
-  padding: 12px;
-`;
-
-const CorrectItemsHeader = styled(CardHeader)`
-  --ion-toolbar-background: var(--ion-color-success-dark);
-  --ion-background-color: var(--ion-color-success-dark);
-  background-color: var(--ion-color-success-dark);
-`;
-
-const CardTitle = styled(IonCardTitle)`
-  font-size: 1.25rem;
-  --color: white;
-  color: white;
-`;
-
-const IncorrectItemsHeader = styled(CardHeader)`
-  --ion-toolbar-background: var(--ion-color-danger);
-  --ion-background-color: var(--ion-color-danger);
-  background-color: var(--ion-color-danger);
-`;
-
-const CardContent = styled(IonCardContent)`
-  --ion-background-color: var(--light-grey);
-  background-color: var(--light-grey);
-  /* I use !important sparingly, but overriding ionic styles is annoying lol.. */
-  padding-top: 15px !important;
-  padding-bottom: 15px !important;
-
-  .card-content-md p {
-    font-size: unset;
-  }
-  .card-content-md h1 {
-    font-size: unset;
-  }
+const ReviewCard = styled(Card)`
+  display: flex;
 `;
 
 type Props = {
@@ -86,44 +48,36 @@ function ReviewResults({ groupedReviewItems, numWrong, numCorrect }: Props) {
 
   return (
     <>
-      <IonCard>
-        <CorrectItemsHeader>
-          <CardTitle>{numCorrect} Answered Correctly</CardTitle>
-        </CorrectItemsHeader>
+      <ReviewCard
+        title={`${numCorrect} Answered Correctly`}
+        headerBgColor="var(--ion-color-success-dark)"
+      >
         {!reviewSummaryDataLoading ? (
-          <CardContent>
-            {correctReviewSubjData && (
-              <GroupedReviewSummaryResults subjData={correctReviewSubjData} />
-            )}
-          </CardContent>
+          correctReviewSubjData && (
+            <GroupedReviewSummaryResults subjData={correctReviewSubjData} />
+          )
         ) : (
-          <CardContent>
-            <IonSkeletonText
-              animated={true}
-              style={{ height: "50px" }}
-            ></IonSkeletonText>
-          </CardContent>
+          <IonSkeletonText
+            animated={true}
+            style={{ height: "50px" }}
+          ></IonSkeletonText>
         )}
-      </IonCard>
-      <IonCard>
-        <IncorrectItemsHeader>
-          <CardTitle>{numWrong} Answered Incorrectly</CardTitle>
-        </IncorrectItemsHeader>
+      </ReviewCard>
+      <ReviewCard
+        title={`${numWrong} Answered Incorrectly`}
+        headerBgColor="var(--ion-color-danger)"
+      >
         {!reviewSummaryDataLoading ? (
-          <CardContent>
-            {incorrectReviewSubjData && (
-              <GroupedReviewSummaryResults subjData={incorrectReviewSubjData} />
-            )}
-          </CardContent>
+          incorrectReviewSubjData && (
+            <GroupedReviewSummaryResults subjData={incorrectReviewSubjData} />
+          )
         ) : (
-          <CardContent>
-            <IonSkeletonText
-              animated={true}
-              style={{ height: "50px" }}
-            ></IonSkeletonText>
-          </CardContent>
+          <IonSkeletonText
+            animated={true}
+            style={{ height: "50px" }}
+          ></IonSkeletonText>
         )}
-      </IonCard>
+      </ReviewCard>
     </>
   );
 }

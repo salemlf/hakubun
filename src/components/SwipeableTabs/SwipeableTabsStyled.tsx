@@ -38,7 +38,6 @@ export const TabContainerBottomFlex = styled.div<TabContainerStyles>`
   width: 100%;
   flex-direction: column;
   justify-content: center;
-  /* align-items: stretch; */
   align-items: center;
   position: fixed;
   bottom: 20px;
@@ -58,7 +57,7 @@ export const TabListBlobsStyled = styled(Tabs.List)`
 `;
 
 export const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
-  padding: 10px;
+  padding: 12px;
   outline-style: none;
   font-size: 1rem;
   color: ${({ selectioncolor }) => selectioncolor};
@@ -119,7 +118,7 @@ export const Selector = styled(motion.span)<CustomBgColor>`
   border-radius: 9999px;
   background-color: ${({ bgcolor }) => bgcolor};
   mix-blend-mode: difference;
-  margin: 4px 0;
+  margin: 5px 0;
 `;
 
 export const SelectorBlob = styled(motion.span)<CustomBgColor>`

@@ -16,6 +16,14 @@ export const FullWidthGrid = styled(IonGrid)`
   padding-right: 0;
 `;
 
+export const FullWidthGridDiv = styled.div`
+  display: grid;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+`;
+
 type RowProps = {
   justify: string;
 };
@@ -181,3 +189,5 @@ export const FullWidthColumn = styled.div`
   flex-direction: column;
   width: 100%;
 `;
+
+export const MainContent = styled.main``;

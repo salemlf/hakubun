@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { IonContent } from "@ionic/react";
 import { getReviewsGroupedByResult } from "../services/ReviewService";
 import { flattenData } from "../services/MiscService";
 import { useQueueStore } from "../stores/useQueueStore";
@@ -11,12 +10,16 @@ import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import AnimatedPage from "../components/AnimatedPage";
 import HomeButton from "../components/HomeButton";
-import { FullWidthGrid } from "../styles/BaseStyledComponents";
+import { FullWidthGridDiv, MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
+// TODO: figure out why background color isn't changing, fix and change to --light-greyish-purple background, then cards to --light-grey
 const Page = styled(AnimatedPage)`
-  --ion-background-color: var(--light-greyish-purple);
-  background-color: var(--light-greyish-purple);
+  background-color: var(--dark-greyish-purple);
+`;
+
+const Grid = styled(FullWidthGridDiv)`
+  margin-top: 10px;
 `;
 
 function ReviewSummary() {
@@ -64,16 +67,16 @@ function ReviewSummary() {
   return (
     <Page>
       <ResultsHeader numCorrect={numCorrect} numReviews={reviewData.length} />
-      <IonContent className="ion-padding">
-        <FullWidthGrid>
+      <MainContent>
+        <Grid>
           <ReviewResults
             groupedReviewItems={groupedReviewItems}
             numWrong={numWrong}
             numCorrect={numCorrect}
           />
-        </FullWidthGrid>
+        </Grid>
         <HomeButton />
-      </IonContent>
+      </MainContent>
     </Page>
   );
 }

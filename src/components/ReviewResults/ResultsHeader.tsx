@@ -1,21 +1,19 @@
-import { IonHeader, IonTitle, IonToolbar } from "@ionic/react";
 import styled from "styled-components";
+
+const ReviewSummaryHeader = styled.header`
+  background-color: var(--wanikani-review);
+  padding: 5px 0 10px;
+  color: white;
+  text-align: center;
+`;
+
+const ReviewSummaryHeadingTxt = styled.h1`
+  font-size: 1.75rem;
+  margin: 20px 0;
+`;
 
 const Percentage = styled.h2`
   font-size: 2rem;
-`;
-
-const Header = styled(IonHeader)`
-  --ion-toolbar-background: var(--ion-color-secondary);
-  --ion-background-color: var(--ion-color-secondary);
-  background-color: var(--ion-color-secondary);
-  padding: 18px 0;
-  text-align: center;
-`;
-
-const Title = styled(IonTitle)`
-  text-align: center;
-  font-size: 1.75rem;
 `;
 
 type Props = {
@@ -28,13 +26,11 @@ function ResultsHeader({ numCorrect, numReviews }: Props) {
   let percentageCorrect = Math.ceil(100 * (numCorrect / numReviews));
 
   return (
-    <Header>
-      <IonToolbar>
-        <Title>Review Summary</Title>
-        <Percentage>{percentageCorrect}%</Percentage>
-        <p>Answered Correctly</p>
-      </IonToolbar>
-    </Header>
+    <ReviewSummaryHeader>
+      <ReviewSummaryHeadingTxt>Review Summary</ReviewSummaryHeadingTxt>
+      <Percentage>{percentageCorrect}%</Percentage>
+      <p>Answered Correctly</p>
+    </ReviewSummaryHeader>
   );
 }
 

@@ -1,9 +1,12 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
 
-const CardContainer = styled.div`
-  margin: 10px;
-  background-color: var(--light-greyish-purple);
+type CardContainerProps = {
+  cardbgcolor: string;
+};
+const CardContainer = styled.div<CardContainerProps>`
+  margin: 10px 15px 5px 15px;
+  background-color: ${({ cardbgcolor }) => cardbgcolor};
   border-radius: 8px;
   color: white;
 `;
@@ -27,16 +30,18 @@ const CardContent = styled.div`
 type Props = {
   children?: ReactNode;
   title?: string;
+  cardBgColor?: string;
   headerBgColor?: string;
 };
 
 function Card({
   children,
   title,
+  cardBgColor = "var(--light-greyish-purple)",
   headerBgColor = "var(--light-greyish-purple)",
 }: Props) {
   return (
-    <CardContainer>
+    <CardContainer cardbgcolor={cardBgColor}>
       {title && <Header headerbgcolor={headerBgColor}>{title}</Header>}
       <CardContent>{children}</CardContent>
     </CardContainer>
