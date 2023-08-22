@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { IonContent, IonGrid } from "@ionic/react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 // TODO: instead add a module declaration file for react-router-prompt
 // @ts-ignore: Could not find a declaration file for module
 import ReactRouterPrompt from "react-router-prompt";
@@ -9,11 +8,9 @@ import { useCreateReview } from "../hooks/useCreateReview";
 import {
   blockUserLeavingPage,
   createReviewPostData,
-  getCompletedReviewSessionData,
+  getCompletedAssignmentQueueData,
 } from "../services/ReviewService";
 import { ReviewQueueItem } from "../types/ReviewSessionTypes";
-import { Assignment } from "../types/Assignment";
-import { AssignmentBatch, StudyMaterial } from "../types/MiscTypes";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";
 import AnimatedPage from "../components/AnimatedPage";
@@ -21,9 +18,6 @@ import Dialog from "../components/Dialog/Dialog";
 import styled from "styled-components";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { useSubjectsByIDs } from "../hooks/useSubjectsByIDs";
-import { useStudyMaterialsBySubjIDs } from "../hooks/useStudyMaterialsBySubjIDs";
-import { createAssignmentQueueItems } from "../services/SubjectAndAssignmentService";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -48,68 +42,16 @@ const Grid = styled(IonGrid)`
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 export const ReviewSessionQueue = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const queryClient = useQueryClient();
-
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
-  const setAssignmentQueueData =
-    useAssignmentQueueStore.use.setAssignmentQueueData();
   const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
-  const [isLoading, setIsLoading] = useState(true);
-
   const { mutateAsync: createReviewsAsync } = useCreateReview();
-  let stateFromReviewSettings: AssignmentBatch = location.state;
-  let assignmentBatchToReview: Assignment[] =
-    stateFromReviewSettings.assignmentBatch;
-  let subjIDs: number[] = stateFromReviewSettings.subjIDs;
-
-  let queriesEnabled = stateFromReviewSettings !== undefined;
-  const { data: subjectsData, isLoading: subjectsLoading } = useSubjectsByIDs(
-    subjIDs,
-    queriesEnabled
-  );
-  const { data: studyMaterialsData, isLoading: studyMaterialsLoading } =
-    useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled, false);
-
-  useEffect(() => {
-    if (
-      location.state &&
-      !subjectsLoading &&
-      !studyMaterialsLoading &&
-      subjectsData.length !== 0 &&
-      studyMaterialsData !== undefined
-    ) {
-      let reviews = createAssignmentQueueItems(
-        assignmentBatchToReview,
-        subjectsData,
-        studyMaterialsData as StudyMaterial[]
-      );
-
-      setIsLoading(false);
-      setAssignmentQueueData(reviews);
-    } else {
-      setIsLoading(true);
-    }
-  }, [subjectsLoading, studyMaterialsLoading, location.state]);
 
   useEffect(() => {
     if (assignmentQueue.length === 0) {
-      createNewReviewSession();
+      // TODO: redirect to home page, shouldn't be here with no reviews!
     }
   }, []);
-
-  // TODO: make sure this actually reloads everything
-  const createNewReviewSession = () => {
-    // *testing
-    console.log("createNewReviewSession called!");
-    // *testing
-    endReviewSession();
-    queryClient.invalidateQueries([
-      "study-materials-by-subj-ids",
-      "subjects-by-ids",
-    ]);
-  };
 
   const endReviewSession = () => {
     resetQueueStore();
@@ -117,7 +59,7 @@ export const ReviewSessionQueue = () => {
   };
 
   const submitReviews = (queueData: ReviewQueueItem[]) => {
-    let reviewData = getCompletedReviewSessionData(queueData);
+    let reviewData = getCompletedAssignmentQueueData(queueData);
     let reviewPostData = createReviewPostData(reviewData);
 
     // TODO: change to actually catch errors
@@ -180,11 +122,10 @@ export const ReviewSessionQueue = () => {
           )
         }
       </ReactRouterPrompt>
-      {!isLoading && assignmentQueue.length !== 0 && <QueueHeader />}
+      {assignmentQueue.length !== 0 && <QueueHeader />}
       <IonContent>
         <Grid>
-          {isLoading && <p>Loading...</p>}
-          {!isLoading && assignmentQueue.length !== 0 && (
+          {assignmentQueue.length !== 0 && (
             <ReviewCards submitItems={submitReviews} />
           )}
         </Grid>
