@@ -19,7 +19,6 @@ type Props = {
   submitItems: (reviewData: ReviewQueueItem[]) => void;
 };
 
-// TODO: instead of constantly updating currQueueIndex, just use useState in parent component where it can be saved off to useCardQueueStore and restored if user leaves page
 function ReviewCards({ submitItems }: Props) {
   const showPopoverMsg = useQueueStore.use.showPopoverMsg();
   const correctShowResult = useQueueStore.use.correctShowResult();
@@ -49,11 +48,6 @@ function ReviewCards({ submitItems }: Props) {
   }, [assignmentQueue[currQueueIndex]]);
 
   const displaySRSStatus = (reviewItem: ReviewQueueItem) => {
-    // *testing
-    console.log("reviewItem.srs_stage: ", reviewItem.srs_stage);
-    console.log("reviewItem.ending_srs_stage: ", reviewItem.ending_srs_stage);
-    // *testing
-
     let endingSRS = reviewItem.ending_srs_stage!;
 
     let hasIncreased = endingSRS > reviewItem.srs_stage;
