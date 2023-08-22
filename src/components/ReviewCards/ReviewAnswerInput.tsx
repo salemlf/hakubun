@@ -32,7 +32,6 @@ type Props = {
   shakeInputTrigger: number;
 };
 
-// TODO: fix bug where input turns red/wrong once navigating back from subject details page
 function ReviewAnswerInput({
   currentReviewItem,
   userAnswer,
@@ -52,9 +51,12 @@ function ReviewAnswerInput({
     : "var(--offwhite-color)";
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    // applying slight delay because this input is self-conscious and really doesn't like being focused on lol
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 100);
   });
 
   useEffect(() => {
