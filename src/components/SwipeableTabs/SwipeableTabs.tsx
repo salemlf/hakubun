@@ -66,12 +66,12 @@ function SwipeableTabs({
 
   const getIndex = useCallback(
     (x: number) => {
-      if (tabs.length <= 1) {
+      if (tabElements.length <= 1) {
         return 0;
       }
       let optionsToRoundTo: number[] = [];
-      for (let i = 0; i < tabs.length; i++) {
-        optionsToRoundTo.push(i / (tabs.length - 1));
+      for (let i = 0; i < tabElements.length; i++) {
+        optionsToRoundTo.push(i / (tabElements.length - 1));
       }
 
       let closestIndex = 0;
@@ -87,13 +87,13 @@ function SwipeableTabs({
 
       return closestIndex;
     },
-    [tabs]
+    [tabElements]
   );
 
   useEffect(() => {
     if (tabElements.length === 0 && tabListRef.current) {
-      const tabs = tabListRef.current.querySelectorAll("[role=tab]");
-      setTabElements(Array.from(tabs));
+      const tabList = tabListRef.current.querySelectorAll("[role=tab]");
+      setTabElements(Array.from(tabList));
     }
   }, [tabElements]);
 
@@ -101,8 +101,10 @@ function SwipeableTabs({
   useEffect(() => {
     if (trackIndex) {
       // TODO: get index of selectedTabKey in tabs array
-      const currentIndex = tabs.findIndex((tab) => tab.id === selectedTabKey);
-      if (currentIndex === tabs.length - 1) {
+      const currentIndex = tabElements.findIndex(
+        (tab) => tab.id === selectedTabKey
+      );
+      if (currentIndex === tabElements.length - 1) {
         setIsLastIndex(true);
       } else {
         setIsLastIndex(false);
