@@ -10,14 +10,13 @@ export const useStartAssignment = () => {
 
   return useMutation({
     mutationFn: ({ assignmentID }: Props) => startAssignment(assignmentID),
-
-    // TODO: this invalidation isn't working for some reason, fix
-    onSuccess: (data, variables, context) => {
-      // by returning instead of just calling, we keep query in a loading state while queries are invalidated
-      return queryClient.invalidateQueries([
-        "assignments-by-subj-ids",
-        "assignments-available-for-review",
-      ]);
+    onSettled: (data, error, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: ["assignments-by-subj-ids"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["assignments-available-for-review"],
+      });
     },
   });
 };
