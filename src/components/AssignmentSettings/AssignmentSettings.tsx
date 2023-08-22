@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   compareAssignmentsByAvailableDate,
+  createAssignmentQueueItems,
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
 } from "../../services/SubjectAndAssignmentService";
 import { Assignment, AssignmentType } from "../../types/Assignment";
-import { AssignmentBatch } from "../../types/MiscTypes";
+import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
 import { INITIAL_ASSIGNMENT_TYPES } from "../../constants";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
@@ -14,6 +15,8 @@ import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
+import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 
 type Props = {
   settingsType: "lessons" | "reviews";
@@ -28,9 +31,45 @@ function AssignmentSettings({
   defaultBatchSize,
 }: Props) {
   const navigate = useNavigate();
+  const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
-  const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
+  const [isLoading, setIsLoading] = useState(false);
+  const setAssignmentQueueData =
+    useAssignmentQueueStore.use.setAssignmentQueueData();
+
+  const [subjIDs, setSubjIDs] = useState<number[]>([]);
+  const [assignmentBatch, setAssignmentBatch] = useState<Assignment[]>([]);
+  let queriesEnabled = subjIDs.length !== 0 && assignmentBatch.length !== 0;
+  const { data: subjectsData, isLoading: subjectsLoading } = useSubjectsByIDs(
+    subjIDs,
+    queriesEnabled
+  );
+  const { data: studyMaterialsData, isLoading: studyMaterialsLoading } =
+    useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled, false);
+
+  useEffect(() => {
+    if (
+      !subjectsLoading &&
+      !studyMaterialsLoading &&
+      subjectsData.length !== 0 &&
+      studyMaterialsData !== undefined
+    ) {
+      let assignmentQueue = createAssignmentQueueItems(
+        assignmentBatch,
+        subjectsData,
+        studyMaterialsData as StudyMaterial[]
+      );
+
+      setAssignmentQueueData(assignmentQueue);
+
+      if (settingsType === "reviews") {
+        navigate("/reviews/session", { replace: true });
+      } else {
+        navigate("/lessons/session", { replace: true });
+      }
+    }
+  }, [subjectsLoading, studyMaterialsLoading]);
 
   // needs to be string type for selector, so subject IDs will be converted to number on submit
   const [selectedAdvancedSubjIDs, setSelectedAdvancedSubjIDs] = useState<
@@ -102,52 +141,58 @@ function AssignmentSettings({
     // ending in case some weirdness occurred and there's a review session or lesson quiz in progress
     resetQueueStore();
     resetAssignmentQueue();
-    if (settingsType === "reviews") {
-      navigate("/reviews/session", { state: sessionData, replace: true });
-    } else {
-      navigate("/lessons/session", { state: sessionData, replace: true });
-    }
+
+    // getting data for assignment queue
+    setIsLoading(true);
+    setSubjIDs(sessionData.subjIDs);
+    setAssignmentBatch(sessionData.assignmentBatch);
   };
 
   return (
     <>
-      <SwipeableTabs
-        tabBgColor={tabBgColor}
-        tabSelectionColor="black"
-        roundedContainer={false}
-        tabs={[
-          {
-            id: "basic",
-            label: "Basic",
-            tabContents: (
-              <BasicAssignmentSettings
-                assignmentData={assignmentData}
-                defaultBatchSize={defaultBatchSize}
-                setBatchSize={setBatchSize}
-                onSelectedAssignTypeChange={onSelectedAssignTypeChange}
-              />
-            ),
-          },
-          {
-            id: "advanced",
-            label: "Advanced",
-            tabContents: (
-              <AdvancedAssignmentSettings
-                selectedAdvancedSubjIDs={selectedAdvancedSubjIDs}
-                setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}
-                showMeaning={showMeaning}
-                assignmentData={assignmentData}
-              />
-            ),
-          },
-        ]}
-        defaultValue="basic"
-        scrollToDefault={false}
-      />
-      <StartSessionButton
-        onStartBtnClick={onStartSessionBtnClick}
-        buttonType={settingsType}
-      />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <SwipeableTabs
+            tabBgColor={tabBgColor}
+            tabSelectionColor="black"
+            roundedContainer={false}
+            tabs={[
+              {
+                id: "basic",
+                label: "Basic",
+                tabContents: (
+                  <BasicAssignmentSettings
+                    assignmentData={assignmentData}
+                    defaultBatchSize={defaultBatchSize}
+                    setBatchSize={setBatchSize}
+                    onSelectedAssignTypeChange={onSelectedAssignTypeChange}
+                  />
+                ),
+              },
+              {
+                id: "advanced",
+                label: "Advanced",
+                tabContents: (
+                  <AdvancedAssignmentSettings
+                    selectedAdvancedSubjIDs={selectedAdvancedSubjIDs}
+                    setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}
+                    showMeaning={showMeaning}
+                    assignmentData={assignmentData}
+                  />
+                ),
+              },
+            ]}
+            defaultValue="basic"
+            scrollToDefault={false}
+          />
+          <StartSessionButton
+            onStartBtnClick={onStartSessionBtnClick}
+            buttonType={settingsType}
+          />
+        </>
+      )}
     </>
   );
 }
