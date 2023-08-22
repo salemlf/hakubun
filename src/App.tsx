@@ -92,6 +92,7 @@ const AppElements = () => {
             />
           }
         >
+          <Route index path="/" element={<Home />} />
           <Route path="/reviews/settings" element={<ReviewSettings />} />
           <Route
             path="/reviews/session"
@@ -103,9 +104,8 @@ const AppElements = () => {
           <Route path="/lessons/quiz" element={<LessonQuiz />} />
           <Route path="/lessons/summary" element={<LessonSummary />} />
           <Route path="/subjects" element={<Subjects />} />
-          <Route path="/search" element={<Search />} />
           <Route path="/subjects/:id" element={<SubjectDetails />} />
-          <Route index path="/" element={<Home />} />
+          <Route path="/search" element={<Search />} />
         </Route>
         <Route path="*" element={<p>Oh no, 404!</p>} />
       </Routes>
@@ -117,7 +117,12 @@ function ErrorBoundary() {
   let error = useRouteError();
   console.error(error);
   // Uncaught ReferenceError: path is not defined
-  return <p>Woah! Something went really wrong :(</p>;
+  return (
+    <div>
+      <p>Woah! Something went really wrong :(</p>
+      <p>Error: {`${error}`}</p>
+    </div>
+  );
 }
 
 const browserRouter = createBrowserRouter(

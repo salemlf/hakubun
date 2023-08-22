@@ -185,15 +185,15 @@ export const getReviewsGroupedByResult = (
 };
 
 // combining objects with same IDs (subject IDs)
-export const getCompletedReviewSessionData = (
+export const getCompletedAssignmentQueueData = (
   reviewQueue: ReviewQueueItem[]
 ) => {
-  let reviewQueueItemIterator = reviewQueue
+  let assignmentQueueDataIterator = reviewQueue
     .reduce(queueItemReducer, new Map())
     .values();
 
   let combinedQueueItems: ReviewQueueItem[] = Array.from(
-    reviewQueueItemIterator
+    assignmentQueueDataIterator
   );
 
   return combinedQueueItems;
