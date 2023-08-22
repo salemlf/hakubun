@@ -159,19 +159,18 @@ export const getAudioUrlByGender = (
   return audio?.url;
 };
 
-// TODO: fix, this is always returning the same audio no matter the reading
 export const getAudioForReading = (
   audioItems: PronunciationAudio[],
   reading: SubjectReading
 ) => {
-  let audioOptions = audioItems.filter(
+  let audioByReading = audioItems.filter(
     (audioOption: PronunciationAudio) =>
       audioOption.metadata.pronunciation === reading.reading
   );
 
   // TODO: change to allow selecting based on voice in settings
-  let selectedAudioFile = getAudioUrlByGender(audioItems, "female");
-  return selectedAudioFile ? selectedAudioFile : audioOptions[0].url;
+  let selectedAudioFile = getAudioUrlByGender(audioByReading, "female");
+  return selectedAudioFile ? selectedAudioFile : audioByReading[0].url;
 };
 
 // TODO: make this more *elegant*
