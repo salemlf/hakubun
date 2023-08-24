@@ -16,6 +16,7 @@ import {
 } from "../../styles/SubjectDetailsStyled";
 import { FullWidthColumn } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
+import { useState } from "react";
 
 const ReadingHeading = styled(SubjDetailSubHeading)`
   margin-bottom: 0;
@@ -96,8 +97,14 @@ type Props = {
 };
 
 function VocabDetailTabs({ vocab, scrollToDefault }: Props) {
+  const [selectedTabKey, setSelectedTabKey] = useState<string>(
+    vocab.review_type as string
+  );
+
   return (
     <SwipeableTabs
+      selectedTabKey={selectedTabKey}
+      setSelectedTabKey={setSelectedTabKey}
       tabs={getTabsForVocab(vocab)}
       defaultValue={vocab.review_type as string}
       scrollToDefault={scrollToDefault}

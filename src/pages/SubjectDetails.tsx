@@ -1,6 +1,7 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IonGrid, IonSkeletonText } from "@ionic/react";
 import { useSubjectByID } from "../hooks/useSubjectByID";
+import { useTabBarVisibility } from "../hooks/useTabBarVisibility";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
 import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";
@@ -8,12 +9,9 @@ import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
 import VocabSubjDetails from "../components/VocabSubjDetails/VocabSubjDetails";
 import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
 import AnimatedPage from "../components/AnimatedPage";
+import FloatingTabBar from "../components/FloatingTabBar";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-import { useEffect } from "react";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { useTabBarVisibility } from "../hooks/useTabBarVisibility";
-import FloatingTabBar from "../components/FloatingTabBar";
 
 const FullWidthGrid = styled(IonGrid)`
   margin-left: 0;

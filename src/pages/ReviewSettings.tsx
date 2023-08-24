@@ -3,9 +3,9 @@ import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForRev
 import AnimatedPage from "../components/AnimatedPage";
 import ShiftBy from "../components/ShiftBy/ShiftBy";
 import BackButton from "../components/BackButton/BackButton";
-import { SettingsTitle } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
+import { SettingsTitle } from "../styles/BaseStyledComponents";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);

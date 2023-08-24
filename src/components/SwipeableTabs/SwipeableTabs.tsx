@@ -5,7 +5,6 @@ import {
   animate,
   useScroll,
 } from "framer-motion";
-import { useTabIndexStore } from "../../stores/useTabIndexStore";
 import { TabData } from "../../types/MiscTypes";
 import {
   Selector,
@@ -23,13 +22,15 @@ import {
 
 type TabsComponentProps = {
   tabs: TabData[];
-  defaultValue: string;
+  selectedTabKey: string;
+  setSelectedTabKey: (selected: string) => void;
+  defaultValue?: string;
   scrollToDefault?: boolean;
   tabBgColor?: string;
   tabSelectionColor?: string;
   roundedContainer?: boolean;
   blobs?: boolean;
-  trackIndex?: boolean;
+  tabFontSize?: string;
 };
 
 // TODO: fix so on end of scroll, parent container scrolls
@@ -37,24 +38,29 @@ type TabsComponentProps = {
 function SwipeableTabs({
   tabs,
   defaultValue,
+  selectedTabKey,
+  setSelectedTabKey,
   scrollToDefault = true,
   tabBgColor = "var(--offwhite-color)",
   tabSelectionColor = "var(--darkest-purple)",
   roundedContainer = true,
   blobs = false,
-  trackIndex = false,
+  tabFontSize = "1rem",
 }: TabsComponentProps) {
-  const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultValue);
   const tabListRef = useRef<HTMLDivElement | null>(null);
   const tabPanelsRef = useRef<HTMLDivElement | null>(null);
   const { scrollXProgress } = useScroll({
     container: tabPanelsRef as RefObject<HTMLElement>,
   });
-  const setIsLastIndex = useTabIndexStore.use.setIsLastIndex();
 
   // TODO: clean this up, a not ideal workaround for scrolling to default item. Necessary rn due to how tab components are being rendered
   useEffect(() => {
-    if (scrollToDefault && tabListRef.current && tabPanelsRef.current) {
+    if (
+      scrollToDefault &&
+      defaultValue &&
+      tabListRef.current &&
+      tabPanelsRef.current
+    ) {
       setTimeout(() => {
         onSelectionChange(defaultValue);
       }, 500);
@@ -96,21 +102,6 @@ function SwipeableTabs({
       setTabElements(Array.from(tabList));
     }
   }, [tabElements]);
-
-  // keeps track of whether last index is selected
-  useEffect(() => {
-    if (trackIndex) {
-      // TODO: get index of selectedTabKey in tabs array
-      const currentIndex = tabElements.findIndex(
-        (tab) => tab.id === selectedTabKey
-      );
-      if (currentIndex === tabElements.length - 1) {
-        setIsLastIndex(true);
-      } else {
-        setIsLastIndex(false);
-      }
-    }
-  }, [selectedTabKey]);
 
   // This function transforms the scroll position into the X position
   // or width of the selected tab indicator.
@@ -210,7 +201,7 @@ function SwipeableTabs({
     <TabsStyled value={selectedTabKey} onValueChange={onSelectionChange}>
       {blobs ? (
         <>
-          <TabPanels ref={tabPanelsRef} hasmargin={false}>
+          <TabPanels ref={tabPanelsRef}>
             {tabs.map((tab) => (
               <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
                 {tab.tabContents}
@@ -248,6 +239,7 @@ function SwipeableTabs({
                   value={tab.id}
                   bgcolor={tabBgColor}
                   selectioncolor={tabSelectionColor}
+                  fontsize={tabFontSize}
                 >
                   {tab.label}
                 </TabStyled>
@@ -256,7 +248,7 @@ function SwipeableTabs({
             {/* Selection indicator. */}
             <Selector style={{ x, width }} bgcolor={tabBgColor} />
           </TabContainer>
-          <TabPanels ref={tabPanelsRef} hasmargin={true}>
+          <TabPanels ref={tabPanelsRef}>
             {tabs.map((tab) => (
               <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
                 {tab.tabContents}

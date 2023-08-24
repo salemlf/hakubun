@@ -17,8 +17,13 @@ type TabContainerStyles = {
 
 type BgColorSelectionAndHover = CustomSelectColor & CustomBgColor;
 
+type CustomFontSize = {
+  fontsize: string;
+};
+
 export const TabsStyled = styled(Tabs.Root)`
   width: 100%;
+  max-height: 90vh;
 `;
 
 export const TabContainer = styled.div<TabContainerStyles>`
@@ -56,7 +61,9 @@ export const TabListBlobsStyled = styled(Tabs.List)`
   max-width: 100%;
 `;
 
-export const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
+export const TabStyled = styled(Tabs.Trigger)<
+  BgColorSelectionAndHover & CustomFontSize
+>`
   padding: 12px;
   outline-style: none;
   font-size: 1rem;
@@ -67,11 +74,12 @@ export const TabStyled = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
   cursor: default;
+  font-size: ${({ fontsize }) => fontsize};
 
-  @media (min-width: 640px) {
+  /* @media (min-width: 640px) {
     font-size: 0.875rem;
     line-height: 1.25rem;
-  }
+  } */
 `;
 
 export const TabStyledBlob = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
@@ -132,14 +140,10 @@ export const SelectorBlob = styled(motion.span)<CustomBgColor>`
   background-color: var(--ion-color-primary);
 `;
 
-type TabPanelsProps = {
-  hasmargin: boolean;
-};
-
-export const TabPanels = styled.div<TabPanelsProps>`
+export const TabPanels = styled.div`
   display: flex;
   overflow-x: auto;
-  margin: ${({ hasmargin }) => (hasmargin ? `16px 0` : "0")};
+  margin: 0;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 300;
@@ -164,4 +168,14 @@ export const TabPanelStyled = styled(Tabs.Content)`
   scroll-snap-align: start;
   flex-shrink: 0;
   margin: 0 5px;
+  max-height: 90vh;
+  overflow-y: auto;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 `;

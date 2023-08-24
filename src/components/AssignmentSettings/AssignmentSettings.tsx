@@ -32,6 +32,8 @@ function AssignmentSettings({
 }: Props) {
   const navigate = useNavigate();
   const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
+  const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
+
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
   const [isLoading, setIsLoading] = useState(false);
@@ -155,6 +157,8 @@ function AssignmentSettings({
       ) : (
         <>
           <SwipeableTabs
+            selectedTabKey={selectedTabKey}
+            setSelectedTabKey={setSelectedTabKey}
             tabBgColor={tabBgColor}
             tabSelectionColor="black"
             roundedContainer={false}

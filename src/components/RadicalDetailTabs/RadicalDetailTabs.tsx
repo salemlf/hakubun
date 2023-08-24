@@ -4,6 +4,7 @@ import RadicalNameMnemonic from "../RadicalNameMnemonic";
 import SubjectMeanings from "../SubjectMeanings";
 import SwipeableTabs from "../SwipeableTabs";
 import { SubjDetailTabContainer } from "../../styles/SubjectDetailsStyled";
+import { useState } from "react";
 
 type Props = {
   radical: ReviewQueueItem;
@@ -11,8 +12,12 @@ type Props = {
 };
 
 function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
+  const [selectedTabKey, setSelectedTabKey] = useState<string>("name");
+
   return (
     <SwipeableTabs
+      selectedTabKey={selectedTabKey}
+      setSelectedTabKey={setSelectedTabKey}
       tabs={[
         {
           id: "name",

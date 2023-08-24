@@ -55,7 +55,7 @@ function LessonSession() {
     <Page>
       {uniqueLessonQueue.length !== 0 && (
         <IonContent>
-          <HomeBtn onPress={() => navigate("/")}>
+          <HomeBtn onPress={() => navigate("/", { replace: true })}>
             <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
           </HomeBtn>
           <LessonCards

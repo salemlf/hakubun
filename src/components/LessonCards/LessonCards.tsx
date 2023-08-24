@@ -10,7 +10,7 @@ import { TabData } from "../../types/MiscTypes";
 import SwipeableTabs from "../SwipeableTabs";
 import styled from "styled-components";
 import StartSessionButton from "../StartSessionButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 type HeaderProps = {
   subjType: SubjectType;
@@ -61,14 +61,12 @@ type Props = {
 };
 
 function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
-  const isLastIndex = useTabIndexStore.use.isLastIndex();
-  const resetTabIndex = useTabIndexStore.use.resetAll();
+  const [selectedTabKey, setSelectedTabKey] = useState<string>(
+    lessons[0].id.toString()
+  );
 
-  useEffect(() => {
-    return () => {
-      resetTabIndex();
-    };
-  }, []);
+  const isLastIndex =
+    selectedTabKey == lessons[lessons.length - 1].id.toString();
 
   let lessonTabs: TabData[] = lessons.map((lesson) => {
     return {
@@ -81,11 +79,11 @@ function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
   return (
     <>
       <SwipeableTabs
-        defaultValue={lessons[0].id.toString()}
+        selectedTabKey={selectedTabKey}
+        setSelectedTabKey={setSelectedTabKey}
         tabs={lessonTabs}
         blobs={true}
         scrollToDefault={false}
-        trackIndex={true}
       />
       {isLastIndex && (
         <StartSessionButton

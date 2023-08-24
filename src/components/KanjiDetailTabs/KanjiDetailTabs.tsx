@@ -12,6 +12,7 @@ import {
   SubjDetailTabContainer,
 } from "../../styles/SubjectDetailsStyled";
 import { FullWidthColumn } from "../../styles/BaseStyledComponents";
+import { useState } from "react";
 
 type Props = {
   kanji: ReviewQueueItem;
@@ -19,8 +20,13 @@ type Props = {
 };
 
 function KanjiDetailTabs({ kanji, scrollToDefault }: Props) {
+  const [selectedTabKey, setSelectedTabKey] = useState<string>(
+    kanji.review_type as string
+  );
   return (
     <SwipeableTabs
+      selectedTabKey={selectedTabKey}
+      setSelectedTabKey={setSelectedTabKey}
       tabs={[
         {
           id: "radicals",

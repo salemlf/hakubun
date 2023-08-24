@@ -6,7 +6,6 @@ import { Assignment } from "../../types/Assignment";
 import BasicCard from "../BasicCard";
 import SubjectButton from "../SubjectButton";
 import SrsStageProgressBar from "../SrsStageProgressBar/SrsStageProgressBar";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const RadicalItemContainer = styled(IonCol)`
