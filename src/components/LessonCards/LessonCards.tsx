@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { Subject, SubjectType } from "../../types/Subject";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
-import { useTabIndexStore } from "../../stores/useTabIndexStore";
 import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
 import SubjectChars from "../SubjectChars";
 import RadicalDetailTabs from "../RadicalDetailTabs";
@@ -10,7 +10,6 @@ import { TabData } from "../../types/MiscTypes";
 import SwipeableTabs from "../SwipeableTabs";
 import styled from "styled-components";
 import StartSessionButton from "../StartSessionButton";
-import { useEffect, useState } from "react";
 
 type HeaderProps = {
   subjType: SubjectType;
