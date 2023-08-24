@@ -1,5 +1,10 @@
 import { AssignmentType } from "./types/Assignment";
 
+export const LEVELS = Array.from({ length: 60 }, (_, index) => index + 1);
+
+// TODO: remove
+export const TEMP_LEVELS = Array.from({ length: 5 }, (_, index) => index + 1);
+
 export const ASSIGNMENT_BATCH_SIZES = [
   1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
 ];

@@ -1,25 +1,20 @@
 import { ReactNode } from "react";
+import { Header } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 type CardContainerProps = {
   cardbgcolor: string;
+  margin: string;
 };
 const CardContainer = styled.div<CardContainerProps>`
-  margin: 10px 15px 5px 15px;
+  margin: ${({ margin }) => margin};
   background-color: ${({ cardbgcolor }) => cardbgcolor};
   border-radius: 8px;
   color: white;
 `;
 
-type HeaderContainerProps = {
-  headerbgcolor: string;
-};
-
-const Header = styled.header<HeaderContainerProps>`
+const CardHeader = styled(Header)`
   border-radius: 8px 8px 0 0;
-  background-color: ${({ headerbgcolor }) => headerbgcolor};
-  padding: 10px;
-  font-size: 1.5rem;
 `;
 
 const CardContent = styled.div`
@@ -32,6 +27,7 @@ type Props = {
   title?: string;
   cardBgColor?: string;
   headerBgColor?: string;
+  margin?: string;
 };
 
 function Card({
@@ -39,10 +35,11 @@ function Card({
   title,
   cardBgColor = "var(--light-greyish-purple)",
   headerBgColor = "var(--light-greyish-purple)",
+  margin = "16px",
 }: Props) {
   return (
-    <CardContainer cardbgcolor={cardBgColor}>
-      {title && <Header headerbgcolor={headerBgColor}>{title}</Header>}
+    <CardContainer cardbgcolor={cardBgColor} margin={margin}>
+      {title && <CardHeader bgcolor={headerBgColor}>{title}</CardHeader>}
       <CardContent>{children}</CardContent>
     </CardContainer>
   );
