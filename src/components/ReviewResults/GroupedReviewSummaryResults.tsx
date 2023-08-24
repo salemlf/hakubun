@@ -26,7 +26,7 @@ function GroupedReviewSummaryResults({ subjData }: Props) {
 
   return (
     <IonRow>
-      <SubjCharacterList subjList={subjData} />
+      <SubjCharacterList subjList={subjData} justify="flex-start" />
     </IonRow>
   );
 }

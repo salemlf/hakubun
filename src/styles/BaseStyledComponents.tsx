@@ -191,3 +191,13 @@ export const FullWidthColumn = styled.div`
 `;
 
 export const MainContent = styled.main``;
+
+type HeaderContainerProps = {
+  bgcolor: string;
+};
+
+export const Header = styled.header<HeaderContainerProps>`
+  background-color: ${({ bgcolor }) => bgcolor};
+  padding: 10px;
+  font-size: 1.5rem;
+`;

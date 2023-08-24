@@ -17,6 +17,7 @@ type SubjProps = {
   showDetails?: boolean;
 };
 
+// TODO: refactor this to use composition instead of conditional rendering
 function SubjectButton({
   subject,
   assignment,

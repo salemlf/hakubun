@@ -5,11 +5,11 @@ import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 import { flattenData } from "../services/MiscService";
 
-export const useSubjectsByLevel = (level: any) => {
+export const useSubjectsByLevel = (level: any, enabled: boolean = true) => {
   return useQuery({
     queryKey: ["subjects-by-lvl", level],
     queryFn: () => WaniKaniAPI.getSubjectsByLevel(level),
-    enabled: !!level,
+    enabled: !!level && enabled,
     select: useCallback(
       (data: any) => {
         let flattened = flattenData(data);
