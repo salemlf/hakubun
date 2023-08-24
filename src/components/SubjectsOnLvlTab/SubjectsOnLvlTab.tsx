@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react";
 import { useSubjectsByLevel } from "../../hooks/useSubjectsByLevel";
 import { Subject } from "../../types/Subject";
-import SubjectButton from "../SubjectButton";
 import Card from "../Card";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import SubjectButtonList from "../SubjectButtonList";
 import SubjectWideBtnList from "../SubjectWideBtnList";
+import styled from "styled-components";
 
 const SubjectCardContainer = styled.div`
   display: flex;
@@ -69,36 +69,12 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
         <>
           <Card title={`Radicals - ${radicals.length}`}>
             <SubjectCardContainer>
-              {(radicals as Subject[]).map((radical: Subject) => {
-                return (
-                  <SubjectButton
-                    key={`col_${radical.id}`}
-                    subject={radical}
-                    assignment={undefined}
-                    locked={true}
-                    useLockedStyle={false}
-                    showDetails={false}
-                    isButtonLink={true}
-                  />
-                );
-              })}
+              <SubjectButtonList subjList={radicals} assignmentList={[]} />
             </SubjectCardContainer>
           </Card>
           <Card title={`Kanji - ${kanji.length}`}>
             <SubjectCardContainer>
-              {(kanji as Subject[]).map((kanjiItem: Subject) => {
-                return (
-                  <SubjectButton
-                    key={`col_${kanjiItem.id}`}
-                    subject={kanjiItem}
-                    assignment={undefined}
-                    locked={true}
-                    isButtonLink={true}
-                    useLockedStyle={false}
-                    showDetails={false}
-                  />
-                );
-              })}
+              <SubjectButtonList subjList={kanji} assignmentList={[]} />
             </SubjectCardContainer>
           </Card>
           <Card
