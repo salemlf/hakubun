@@ -77,6 +77,7 @@ export const ReadingContainer = styled(IonCol)`
 
 export const SubjDetailTabContainer = styled.div`
   margin: 0;
+  margin-top: 16px;
   background-color: var(--light-greyish-purple);
   display: flex;
   flex-direction: row;

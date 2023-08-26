@@ -1,4 +1,5 @@
 import {
+  ButtonSize,
   SrsLevelName,
   StudyMaterial,
   StudyMaterialPostDataWithID,
@@ -6,7 +7,6 @@ import {
 import { Collection } from "../types/Collection";
 import { PopoverMessageType, ReviewType } from "../types/ReviewSessionTypes";
 import { PronunciationAudio, Subject, SubjectReading } from "../types/Subject";
-import { nanoid } from "nanoid";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   if (timeTill > 0) {
@@ -264,4 +264,36 @@ export const findStudyMaterialWithSubjID = (
   return studyMaterials.find(
     (studyMaterial: StudyMaterial) => studyMaterial.subject_id === subject.id
   );
+};
+
+type BtnSizeStyles = {
+  containerSize: string;
+  fontSize: string;
+  fontSizeNoDetails: string;
+  detailFontSize: string;
+};
+
+const btnSizeInfo: { [index: string]: BtnSizeStyles } = {
+  sm: {
+    containerSize: "3rem",
+    fontSize: "1rem",
+    fontSizeNoDetails: "1.75rem",
+    detailFontSize: ".5rem",
+  },
+  md: {
+    containerSize: "4rem",
+    fontSize: "1.5rem",
+    fontSizeNoDetails: "2rem",
+    detailFontSize: ".75rem",
+  },
+  lg: {
+    containerSize: "5rem",
+    fontSize: "1.75rem",
+    fontSizeNoDetails: "2.25rem",
+    detailFontSize: "1rem",
+  },
+};
+
+export const getSubjectBtnSize = (size: ButtonSize) => {
+  return btnSizeInfo[size as keyof {}];
 };

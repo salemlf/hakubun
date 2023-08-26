@@ -105,3 +105,5 @@ export declare enum HistoryAction {
   Push = "PUSH",
   Replace = "REPLACE",
 }
+
+export type ButtonSize = "sm" | "md" | "lg";

@@ -53,6 +53,7 @@ function RadicalSubjDetails({ radical }: Props) {
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
         <SubjectButtonList
+          btnSize="lg"
           subjList={usedInKanjiSubjData}
           assignmentList={usedInKanjiAssignmentsData}
         />

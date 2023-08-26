@@ -9,25 +9,34 @@ import {
 import { Subject } from "../../types/Subject";
 import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService";
 import SubjectChars from "../SubjectChars/SubjectChars";
+import { ButtonSize } from "../../types/MiscTypes";
+import { getSubjectBtnSize } from "../../services/MiscService";
 
-// TODO: change to use size sm, md, lg?
 type Props = {
   subject: Subject;
-  isBigBtn: boolean;
+  btnSize: ButtonSize;
   onBtnClick: (e: any) => void;
   showDetails: boolean;
 };
 
 // TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
 // TODO: add more space b/t character and meaning
-function RadicalButton({ subject, isBigBtn, showDetails, onBtnClick }: Props) {
+function RadicalButton({ subject, showDetails, btnSize, onBtnClick }: Props) {
+  const charFontSize = showDetails
+    ? getSubjectBtnSize(btnSize).fontSize
+    : getSubjectBtnSize(btnSize).fontSizeNoDetails;
+
+  const containerSize = getSubjectBtnSize(btnSize).containerSize;
+  const detailFontSize = getSubjectBtnSize(btnSize).detailFontSize;
+
   return (
     <>
       {subject.useImage ? (
         <BtnWithImage
           title="Radical Subject"
+          containersize={containerSize}
+          subjcharsize={charFontSize}
           onClick={onBtnClick}
-          bigBtn={isBigBtn}
         >
           <SubjInfoCol>
             <ImageFallback
@@ -36,7 +45,7 @@ function RadicalButton({ subject, isBigBtn, showDetails, onBtnClick }: Props) {
             ></ImageFallback>
             {showDetails && (
               <div>
-                <SubjBtnDetailsTxt>
+                <SubjBtnDetailsTxt detailfontsize={detailFontSize}>
                   {getSubjectDisplayName(subject)}
                 </SubjBtnDetailsTxt>
               </div>
@@ -46,16 +55,16 @@ function RadicalButton({ subject, isBigBtn, showDetails, onBtnClick }: Props) {
       ) : (
         <BtnWithTxt
           title="Radical Subject"
+          containersize={containerSize}
+          subjcharsize={charFontSize}
           onClick={onBtnClick}
-          bigBtn={isBigBtn}
           subjType="radical"
         >
           <SubjInfoCol>
-            <SubjectChars subject={subject} fontSize="2rem" />
-            {/* <p>{subject.characters}</p> */}
+            <SubjectChars subject={subject} fontSize={charFontSize} />
             {showDetails && (
               <div>
-                <SubjBtnDetailsTxt>
+                <SubjBtnDetailsTxt detailfontsize={detailFontSize}>
                   {getSubjectDisplayName(subject)}
                 </SubjBtnDetailsTxt>
               </div>

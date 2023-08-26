@@ -6,6 +6,7 @@ import {
   IonRow,
   IonTitle,
 } from "@ionic/react";
+import { motion } from "framer-motion";
 import Button from "../components/Button/Button";
 import styled from "styled-components";
 
@@ -170,18 +171,27 @@ export const FloatingButton = styled(Button)<FloatingButtonProps>`
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  position: fixed;
-  z-index: 1;
   bottom: ${({ distancefrombottom }) => distancefrombottom};
   padding: 10px 15px;
-  left: 50%;
-  transform: translateX(-50%);
   font-size: 1.25rem;
-  margin: auto;
   border-radius: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
+`;
+
+type FloatingButtonContainerProps = {
+  distancefrombottom: string;
+};
+
+export const FloatingButtonContainer = styled(
+  motion.div
+)<FloatingButtonContainerProps>`
+  position: fixed;
+  z-index: 1;
+  bottom: ${({ distancefrombottom }) => distancefrombottom};
+  left: 50%;
+  margin: auto;
 `;
 
 export const FullWidthColumn = styled.div`

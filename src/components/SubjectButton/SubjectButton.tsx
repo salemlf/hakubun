@@ -6,13 +6,15 @@ import KanjiButton from "./KanjiButton";
 import SubjectButtonLoading from "./SubjectButtonLoading";
 import { Assignment } from "../../types/Assignment";
 import { useNavigate } from "react-router-dom";
+import { ButtonSize } from "../../types/MiscTypes";
 
-// TODO: use a context around this or abstract things out, this many props is icky
+// TODO: abstract things out, this many props is icky
 type SubjProps = {
   subject: Subject;
   assignment: Assignment | undefined;
   locked: boolean;
   useLockedStyle: boolean;
+  btnSize: ButtonSize;
   isButtonLink?: boolean;
   showDetails?: boolean;
 };
@@ -23,6 +25,7 @@ function SubjectButton({
   assignment,
   locked,
   useLockedStyle,
+  btnSize,
   isButtonLink = false,
   showDetails = true,
 }: SubjProps) {
@@ -54,14 +57,14 @@ function SubjectButton({
         subject.object === "radical" ? (
           <RadicalButton
             subject={subject}
-            isBigBtn={isButtonLink}
+            btnSize={btnSize}
             onBtnClick={onClickEvent}
             showDetails={showDetails}
           />
         ) : (
           <KanjiButton
             subject={subject}
-            isBigBtn={isButtonLink}
+            btnSize={btnSize}
             onBtnClick={onClickEvent}
             locked={useLockedStyle && locked}
             showDetails={showDetails}

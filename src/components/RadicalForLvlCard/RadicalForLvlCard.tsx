@@ -66,6 +66,7 @@ function RadicalForLvlCard({ level }: Props) {
                   (assignment: Assignment) =>
                     assignment.subject_id === radical.id
                 )}
+                btnSize="sm"
                 locked={false}
                 useLockedStyle={false}
                 showDetails={false}

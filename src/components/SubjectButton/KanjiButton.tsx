@@ -9,51 +9,53 @@ import {
   getPrimaryReading,
   getSubjectDisplayName,
 } from "../../services/SubjectAndAssignmentService";
-import { ReviewSettings } from "../../pages/ReviewSettings";
-import styled from "styled-components";
+import { ButtonSize } from "../../types/MiscTypes";
+import { getSubjectBtnSize } from "../../services/MiscService";
 
 // TODO: change to use size sm, md, lg?
 type Props = {
   subject: Subject;
-  isBigBtn: boolean;
+  btnSize: ButtonSize;
   locked: boolean;
   showDetails: boolean;
   onBtnClick: (e: any) => void;
 };
 
-// TODO: improve text overflow method
-const KanjiMeaning = styled(SubjBtnDetailsTxt)`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 4em;
-`;
-
 // TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
 function KanjiButton({
   subject,
-  isBigBtn,
+  btnSize,
   locked,
   showDetails,
   onBtnClick,
 }: Props) {
-  // kanji always have readings, so using ! for subject.readings
+  const charFontSize = showDetails
+    ? getSubjectBtnSize(btnSize).fontSize
+    : getSubjectBtnSize(btnSize).fontSizeNoDetails;
+
+  const containerSize = getSubjectBtnSize(btnSize).containerSize;
+  const detailFontSize = getSubjectBtnSize(btnSize).detailFontSize;
+
   return (
     <BtnWithTxt
+      containersize={containerSize}
+      subjcharsize={charFontSize}
       title="Kanji Subject"
       onClick={onBtnClick}
       subjType="kanji"
-      bigBtn={isBigBtn}
       lockedStyle={locked}
     >
       <SubjInfoCol>
-        <SubjectChars subject={subject} fontSize="2rem" />
+        <SubjectChars subject={subject} fontSize={charFontSize} />
         {showDetails && (
           <div>
-            <SubjBtnDetailsTxt>
+            <SubjBtnDetailsTxt detailfontsize={detailFontSize}>
+              {/* kanji always have readings, so using ! for subject.readings */}
               {getPrimaryReading(subject.readings!)}
             </SubjBtnDetailsTxt>
-            <KanjiMeaning>{getSubjectDisplayName(subject)}</KanjiMeaning>
+            <SubjBtnDetailsTxt detailfontsize={detailFontSize}>
+              {getSubjectDisplayName(subject)}
+            </SubjBtnDetailsTxt>
           </div>
         )}
       </SubjInfoCol>

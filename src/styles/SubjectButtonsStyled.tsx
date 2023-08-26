@@ -1,11 +1,11 @@
 import { Col } from "./SubjectDetailsStyled";
 import { SubjectType } from "../types/Subject";
 import { IonBadge, IonButton, IonSkeletonText } from "@ionic/react";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 type DefaultBtnProps = {
-  bigBtn: boolean;
+  containersize: string;
+  subjcharsize: string;
 };
 
 export const DefaultBtn = styled.button<DefaultBtnProps>`
@@ -13,8 +13,13 @@ export const DefaultBtn = styled.button<DefaultBtnProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ bigBtn }) => (bigBtn ? "5rem" : "3rem")};
-  height: ${({ bigBtn }) => (bigBtn ? "5rem" : "3rem")};
+  width: ${({ containersize }) => containersize};
+  height: ${({ containersize }) => containersize};
+
+  img {
+    width: ${({ subjcharsize }) => subjcharsize};
+    filter: brightness(0) invert(1);
+  }
 
   --box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
@@ -23,9 +28,8 @@ export const DefaultBtn = styled.button<DefaultBtnProps>`
 `;
 
 type TxtBtnProps = {
-  lockedStyle?: boolean;
   subjType: SubjectType;
-  bigBtn: boolean;
+  lockedStyle?: boolean;
 };
 
 export const BtnWithTxt = styled(DefaultBtn)<TxtBtnProps>`
@@ -40,14 +44,22 @@ export const BtnWithTxt = styled(DefaultBtn)<TxtBtnProps>`
   }
 `;
 
-export const SubjBtnDetailsTxt = styled.p`
+type DetailsBtnProps = {
+  detailfontsize: string;
+};
+
+export const SubjBtnDetailsTxt = styled.p<DetailsBtnProps>`
   user-select: text;
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
 
   margin: 0;
-  font-size: 0.75rem;
+  font-size: ${({ detailfontsize }) => detailfontsize};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 4em;
 
   &:last-of-type {
     margin-top: 2px;
@@ -57,11 +69,6 @@ export const SubjBtnDetailsTxt = styled.p`
 export const BtnWithImage = styled(DefaultBtn)`
   background-color: var(--wanikani-blue);
   padding: 4px;
-
-  img {
-    width: 2rem;
-    filter: brightness(0) invert(1);
-  }
 
   &:focus {
     outline: 2px solid white;
@@ -77,6 +84,7 @@ export const SubjInfoCol = styled(Col)`
   gap: 5px;
 `;
 
+// TODO: change to use Button component
 export const BaseReviewLessonButton = styled(IonButton)`
   min-height: 100px;
   height: 100%;
@@ -89,10 +97,11 @@ export const BaseReviewLessonButton = styled(IonButton)`
   p {
     position: absolute;
     margin: 0;
-    bottom: 10px;
+    bottom: 2px;
     left: 0;
     color: white;
     font-weight: 600;
+    font-size: 1rem;
   }
 
   &:focus {
@@ -109,8 +118,9 @@ export const BaseReviewLessonButtonSkeleton = styled(IonSkeletonText)`
 
 export const BaseReviewLessonButtonBadge = styled(IonBadge)`
   position: absolute;
-  bottom: 10px;
   right: 0;
+  bottom: 2px;
+  font-size: 1rem;
   background-color: var(--deep-purple-accent);
   color: white;
 `;

@@ -68,6 +68,7 @@ function KanjiUsedInVocab({
     <SubjDetailSection>
       <SubjDetailSubHeading>Kanji Used</SubjDetailSubHeading>
       <SubjectButtonList
+        btnSize="lg"
         subjList={kanjiUsedSubjects}
         assignmentList={kanjiUsedAssignmentsData}
       />

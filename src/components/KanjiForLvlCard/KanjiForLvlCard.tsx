@@ -9,7 +9,6 @@ import { Subject } from "../../types/Subject";
 import SubjectButton from "../SubjectButton";
 import BasicCard from "../BasicCard";
 import SrsStageProgressBar from "../SrsStageProgressBar/SrsStageProgressBar";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const KanjiItemContainer = styled(IonCol)`
@@ -83,6 +82,7 @@ function KanjiForLvlCard({ level }: Props) {
                       assignmentsData,
                       kanjiItem
                     )}
+                    btnSize="sm"
                     locked={isAssignmentLocked(assignmentsData, kanjiItem)}
                     useLockedStyle={true}
                     showDetails={false}
