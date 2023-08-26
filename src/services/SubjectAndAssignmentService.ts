@@ -190,15 +190,6 @@ export const createAssignmentQueueItems = (
         subject
       );
 
-      let primaryReading = subject.readings?.find(
-        (reading: any) => reading.primary === true
-      );
-
-      let audioUrl =
-        subject.pronunciation_audios && primaryReading
-          ? getAudioForReading(subject.pronunciation_audios, primaryReading)
-          : null;
-
       // this should always be true since we retrieved the subjects based on the assignments
       let assignment = foundAssignment!;
 
@@ -212,7 +203,6 @@ export const createAssignmentQueueItems = (
           ? foundStudyMaterial.meaning_synonyms
           : [],
         review_type: "meaning" as ReviewType,
-        primary_audio_url: audioUrl,
         is_correct_answer: null,
         ending_srs_stage: null,
         incorrect_meaning_answers: 0,

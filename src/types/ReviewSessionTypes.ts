@@ -13,7 +13,6 @@ export interface ReviewQueueItem extends Subject {
   review_type: ReviewType;
   is_correct_answer: boolean | null;
   meaning_synonyms: string[];
-  primary_audio_url: string | null;
   incorrect_meaning_answers: number;
   incorrect_reading_answers: number;
   ending_srs_stage: number | null;
