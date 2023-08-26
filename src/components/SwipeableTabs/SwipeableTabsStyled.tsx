@@ -18,7 +18,7 @@ type TabContainerStyles = {
 type BgColorSelectionAndHover = CustomSelectColor & CustomBgColor;
 
 type CustomFontSize = {
-  fontsize: string;
+  tabfontsize: string;
 };
 
 export const TabsStyled = styled(Tabs.Root)`
@@ -32,6 +32,9 @@ export const TabContainer = styled.div<TabContainerStyles>`
   padding: 0;
   border-radius: ${({ roundedcontainer }) =>
     roundedcontainer ? ".5rem" : "0"};
+  max-width: 100vw;
+  overflow-x: auto;
+  padding: 0 12px;
 `;
 
 export const TabContainerBottomFlex = styled.div<TabContainerStyles>`
@@ -52,8 +55,7 @@ export const TabContainerBottomFlex = styled.div<TabContainerStyles>`
 
 export const TabListStyled = styled(Tabs.List)`
   display: flex;
-  justify-content: space-evenly;
-  max-width: 100%;
+  gap: 5px;
 `;
 
 export const TabListBlobsStyled = styled(Tabs.List)`
@@ -64,9 +66,9 @@ export const TabListBlobsStyled = styled(Tabs.List)`
 export const TabStyled = styled(Tabs.Trigger)<
   BgColorSelectionAndHover & CustomFontSize
 >`
+  margin: auto;
   padding: 12px;
   outline-style: none;
-  font-size: 1rem;
   color: ${({ selectioncolor }) => selectioncolor};
   background-color: ${({ bgcolor }) => bgcolor};
   transition-property: background-color, border-color, color, fill, stroke,
@@ -74,7 +76,7 @@ export const TabStyled = styled(Tabs.Trigger)<
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
   cursor: default;
-  font-size: ${({ fontsize }) => fontsize};
+  font-size: ${({ tabfontsize }) => tabfontsize};
 
   /* @media (min-width: 640px) {
     font-size: 0.875rem;

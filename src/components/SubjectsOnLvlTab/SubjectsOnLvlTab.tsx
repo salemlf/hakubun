@@ -20,15 +20,10 @@ type Props = {
 };
 
 function SubjectsOnLvlTab({ level, isSelected }: Props) {
-  console.log(
-    "🚀 ~ file: SubjectsOnLvlTab.tsx:16 ~ SubjectsOnLvlTab ~ isSelected:",
-    isSelected
-  );
   const [radicals, setRadicals] = useState<Subject[]>([]);
   const [kanji, setKanji] = useState<Subject[]>([]);
   const [vocabulary, setVocabulary] = useState<Subject[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  // TODO: only
 
   const {
     isLoading: subjectCurrLvlLoading,
@@ -67,18 +62,33 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
         <p>Loading...</p>
       ) : (
         <>
-          <Card title={`Radicals - ${radicals.length}`}>
+          <Card
+            title={`Radicals - ${radicals.length}`}
+            headerBgColor="var(--wanikani-radical)"
+          >
             <SubjectCardContainer>
-              <SubjectButtonList subjList={radicals} assignmentList={[]} />
+              <SubjectButtonList
+                subjList={radicals}
+                assignmentList={[]}
+                btnSize="md"
+              />
             </SubjectCardContainer>
           </Card>
-          <Card title={`Kanji - ${kanji.length}`}>
+          <Card
+            title={`Kanji - ${kanji.length}`}
+            headerBgColor="var(--wanikani-kanji)"
+          >
             <SubjectCardContainer>
-              <SubjectButtonList subjList={kanji} assignmentList={[]} />
+              <SubjectButtonList
+                subjList={kanji}
+                assignmentList={[]}
+                btnSize="md"
+              />
             </SubjectCardContainer>
           </Card>
           <Card
             title={`Vocabulary - ${vocabulary.length}`}
+            headerBgColor="var(--wanikani-vocab)"
             margin="16px 16px 60px 16px"
           >
             <SubjectCardContainer>

@@ -67,6 +67,21 @@ function SwipeableTabs({
     }
   }, [tabListRef, tabPanelsRef, defaultValue]);
 
+  // scrolls to the selected tab when tab list is large enough to have scrollbar
+  useEffect(() => {
+    if (selectedTabKey && tabElements && tabElements.length > 0) {
+      const index = tabs.findIndex((tab) => tab.id === selectedTabKey);
+      let currSelected = tabElements[index];
+      if (currSelected) {
+        currSelected.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
+    }
+  }, [selectedTabKey]);
+
   // Find all the tab elements so we can use their dimensions.
   const [tabElements, setTabElements] = useState<Element[]>([]);
 
@@ -144,7 +159,7 @@ function SwipeableTabs({
   // so that the correct tab panel becomes interactive.
   useEffect(() => {
     const handleChange = (x: number) => {
-      if (animationRef.current || !tabs.length) {
+      if (animationRef.current || !tabElements.length) {
         return;
       }
 
@@ -153,7 +168,7 @@ function SwipeableTabs({
     const unsubscribe = scrollXProgress.on("change", handleChange);
 
     return () => unsubscribe();
-  }, [scrollXProgress, getIndex, tabs]);
+  }, [scrollXProgress, getIndex, tabElements]);
 
   // When the user clicks on a tab perform an animation of
   // the scroll position to the newly selected tab panel.
@@ -239,7 +254,7 @@ function SwipeableTabs({
                   value={tab.id}
                   bgcolor={tabBgColor}
                   selectioncolor={tabSelectionColor}
-                  fontsize={tabFontSize}
+                  tabfontsize={tabFontSize}
                 >
                   {tab.label}
                 </TabStyled>
