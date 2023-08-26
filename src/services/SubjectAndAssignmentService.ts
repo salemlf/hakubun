@@ -24,19 +24,12 @@ export const getAssignmentStatuses = (assignments: Assignment[]) => {
   );
 };
 
-// TODO: modify to note use capitalizeWord, will do that in component
 export const getSubjectDisplayName = (subj: Subject) => {
-  let subjType = subj["object"];
+  let primary = subj["meanings"]?.filter(
+    (meaning: any) => meaning.primary === true
+  );
 
-  if (subjType === "radical") {
-    return capitalizeWord(subj["slug" as keyof {}]);
-  } else {
-    let primary = subj["meanings"]?.filter(
-      (meaning: any) => meaning.primary === true
-    );
-
-    return primary ? primary[0].meaning : "";
-  }
+  return primary ? primary[0].meaning : "";
 };
 
 export const getAlternativeMeanings = (subj: Subject) => {
