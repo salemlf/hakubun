@@ -9,7 +9,7 @@ import {
   blockUserLeavingPage,
   createReviewPostData,
   getCompletedAssignmentQueueData,
-} from "../services/ReviewService";
+} from "../services/AssignmentQueueService";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";

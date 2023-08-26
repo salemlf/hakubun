@@ -8,7 +8,7 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import { toHiragana } from "wanakana";
-import { isUserAnswerValid } from "../../services/ReviewService";
+import { isUserAnswerValid } from "../../services/AssignmentQueueService";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { SubjectType } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";

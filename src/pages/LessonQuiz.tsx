@@ -13,7 +13,7 @@ import styled from "styled-components";
 import {
   blockUserLeavingPage,
   getCompletedAssignmentQueueData,
-} from "../services/ReviewService";
+} from "../services/AssignmentQueueService";
 import { useQueueStore } from "../stores/useQueueStore";
 import Dialog from "../components/Dialog";
 import { useStartAssignment } from "../hooks/useStartAssignment";

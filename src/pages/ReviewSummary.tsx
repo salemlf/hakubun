@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { getReviewsGroupedByResult } from "../services/ReviewService";
+import { getReviewsGroupedByResult } from "../services/AssignmentQueueService";
 import { flattenData } from "../services/MiscService";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";

@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../stores/useQueueStore";
 import { flattenData } from "../services/MiscService";
-import { groupDataByProperty } from "../services/ReviewService";
+import { groupDataByProperty } from "../services/AssignmentQueueService";
 import { useSubjectsByIDs } from "../hooks/useSubjectsByIDs";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import { Assignment } from "../types/Assignment";

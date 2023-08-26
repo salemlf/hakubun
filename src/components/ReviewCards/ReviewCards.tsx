@@ -3,7 +3,7 @@ import {
   calculateSRSLevel,
   checkIfReviewIsComplete,
   isUserAnswerCorrect,
-} from "../../services/ReviewService";
+} from "../../services/AssignmentQueueService";
 import {
   capitalizeWord,
   getAudioForReading,

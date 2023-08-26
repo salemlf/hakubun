@@ -3,7 +3,7 @@ import {
   getSubjectColor,
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
-import { getReviewTypeColor } from "../../services/ReviewService";
+import { getReviewTypeColor } from "../../services/AssignmentQueueService";
 import { capitalizeWord, getPopoverMsgColor } from "../../services/MiscService";
 import { SubjectType } from "../../types/Subject";
 import {
