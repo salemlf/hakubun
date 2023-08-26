@@ -12,7 +12,7 @@ import {
 } from "../services/AssignmentQueueService";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
-import ReviewCards from "../components/ReviewCards/ReviewCards";
+import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
 import AnimatedPage from "../components/AnimatedPage";
 import Dialog from "../components/Dialog/Dialog";
 import styled from "styled-components";
@@ -123,7 +123,7 @@ export const ReviewSession = () => {
       <IonContent>
         <Grid>
           {assignmentQueue.length !== 0 && (
-            <ReviewCards submitItems={submitReviews} />
+            <AssignmentQueueCards submitItems={submitReviews} />
           )}
         </Grid>
       </IonContent>

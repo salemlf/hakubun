@@ -7,7 +7,7 @@ import ReactRouterPrompt from "react-router-prompt";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import AnimatedPage from "../components/AnimatedPage";
-import ReviewCards from "../components/ReviewCards";
+import AssignmentQueueCards from "../components/AssignmentQueueCards";
 import QueueHeader from "../components/QueueHeader";
 import styled from "styled-components";
 import {
@@ -113,7 +113,7 @@ function LessonQuiz() {
       <IonContent>
         <Grid>
           {assignmentQueue.length !== 0 && (
-            <ReviewCards submitItems={submitLessonQuiz} />
+            <AssignmentQueueCards submitItems={submitLessonQuiz} />
           )}
         </Grid>
       </IonContent>

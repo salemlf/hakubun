@@ -12,17 +12,17 @@ import { isUserAnswerValid } from "../../services/AssignmentQueueService";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { SubjectType } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
-import ReviewCharAndType from "./ReviewCharAndType";
-import ReviewAnswerInput from "./ReviewAnswerInput";
+import AssignmentCharAndType from "./AssignmentCharAndType";
+import AssignmentAnswerInput from "./AssignmentAnswerInput";
 import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
 import RetryIcon from "../../images/retry.svg";
 import NextIcon from "../../images/next-item.svg";
 import {
   NextCardOverlay,
   RetryCardOverlay,
-  ReviewCardStyled,
+  AssignmentCardStyled,
   SwipeIcon,
-} from "./ReviewCardsStyled";
+} from "./AssignmentQueueCardsStyled";
 import { useQueueStore } from "../../stores/useQueueStore";
 
 type CardProps = {
@@ -39,7 +39,7 @@ type CardProps = {
   ) => void;
 };
 
-export const ReviewCard = ({
+export const AssignmentQueueCard = ({
   currentReviewItem,
   displayInvalidAnswerMsg,
   handleNextClick,
@@ -114,7 +114,7 @@ export const ReviewCard = ({
   return (
     <AnimatePresence>
       {currentReviewItem && (
-        <ReviewCardStyled
+        <AssignmentCardStyled
           ref={reviewCardRef}
           subjtype={currentReviewItem.object as SubjectType}
           initial={{ y: "-150%" }}
@@ -134,11 +134,11 @@ export const ReviewCard = ({
           whileTap={{ cursor: "grabbing" }}
           dragElastic={0.5}
         >
-          <ReviewCharAndType
+          <AssignmentCharAndType
             currentReviewItem={currentReviewItem}
             disableTextSelection={true}
           />
-          <ReviewAnswerInput
+          <AssignmentAnswerInput
             shakeInputTrigger={shakeInputTrigger}
             currentReviewItem={currentReviewItem}
             userAnswer={userAnswer}
@@ -164,7 +164,7 @@ export const ReviewCard = ({
               <IonIcon icon={NextIcon}></IonIcon>
             </SwipeIcon>
           </NextCardOverlay>
-        </ReviewCardStyled>
+        </AssignmentCardStyled>
       )}
     </AnimatePresence>
   );

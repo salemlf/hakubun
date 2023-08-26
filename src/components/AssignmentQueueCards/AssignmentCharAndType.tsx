@@ -7,7 +7,6 @@ import { getReviewTypeColor } from "../../services/AssignmentQueueService";
 import { capitalizeWord, getPopoverMsgColor } from "../../services/MiscService";
 import { SubjectType } from "../../types/Subject";
 import {
-  PopoverInfo,
   PopoverMessageType,
   AssignmentQueueItem,
   ReviewType,
@@ -16,12 +15,12 @@ import SubjectChars from "../SubjectChars/SubjectChars";
 import styled from "styled-components";
 import { useQueueStore } from "../../stores/useQueueStore";
 
-type ReviewTypeProps = {
+type AssignmentItemTypeProps = {
   reviewType: ReviewType;
 };
 
 // TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
-const ReviewTypeRow = styled(IonRow)<ReviewTypeProps>`
+const AssignmentTypeRow = styled(IonRow)<AssignmentItemTypeProps>`
   justify-content: center;
   width: 100%;
   background-color: ${({ reviewType }) => getReviewTypeColor(reviewType)};
@@ -66,22 +65,6 @@ const Message = styled.span<MessageProps>`
   color: #fefefe;
 `;
 
-type ReviewMessageProps = {
-  displayMsg: boolean;
-  popoverInfo: PopoverInfo;
-};
-
-// TODO: change to just merge with ReviewCharAndType component below
-const ReviewMessage = ({ displayMsg, popoverInfo }: ReviewMessageProps) => {
-  return (
-    <MessageWrapper displayMsg={displayMsg}>
-      <Message messageType={popoverInfo.messageType}>
-        {popoverInfo.message}
-      </Message>
-    </MessageWrapper>
-  );
-};
-
 type CharColProps = {
   subjType: SubjectType;
 };
@@ -98,7 +81,7 @@ type Props = {
 };
 
 // TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
-function ReviewCharAndType({
+function AssignmentCharAndType({
   currentReviewItem,
   disableTextSelection = false,
 }: Props) {
@@ -124,18 +107,19 @@ function ReviewCharAndType({
             withBgColor={true}
           />
         </SubjectCharactersCol>
-        <ReviewMessage
-          displayMsg={displayPopoverMsg}
-          popoverInfo={popoverInfo}
-        />
+        <MessageWrapper displayMsg={displayPopoverMsg}>
+          <Message messageType={popoverInfo.messageType}>
+            {popoverInfo.message}
+          </Message>
+        </MessageWrapper>
       </SubjectCharRow>
-      <ReviewTypeRow reviewType={reviewType}>
+      <AssignmentTypeRow reviewType={reviewType}>
         <p>
           {reviewDisplayTxt} {reviewTypeCapitalized}
         </p>
-      </ReviewTypeRow>
+      </AssignmentTypeRow>
     </>
   );
 }
 
-export default ReviewCharAndType;
+export default AssignmentCharAndType;

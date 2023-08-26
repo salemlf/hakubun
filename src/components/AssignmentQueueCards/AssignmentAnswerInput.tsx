@@ -32,7 +32,7 @@ type Props = {
   shakeInputTrigger: number;
 };
 
-function ReviewAnswerInput({
+function AssignmentAnswerInput({
   currentReviewItem,
   userAnswer,
   setUserAnswer,
@@ -91,4 +91,4 @@ function ReviewAnswerInput({
   );
 }
 
-export default ReviewAnswerInput;
+export default AssignmentAnswerInput;

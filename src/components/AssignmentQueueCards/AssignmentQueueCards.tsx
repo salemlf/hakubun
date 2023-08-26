@@ -13,14 +13,14 @@ import {
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
-import { ReviewCard } from "./ReviewCard";
-import { ReviewCardContainer } from "./ReviewCardsStyled";
+import { AssignmentQueueCard } from "./AssignmentQueueCard";
+import { AssignmentCardContainer } from "./AssignmentQueueCardsStyled";
 
 type Props = {
   submitItems: (reviewData: AssignmentQueueItem[]) => void;
 };
 
-function ReviewCards({ submitItems }: Props) {
+function AssignmentQueueCards({ submitItems }: Props) {
   const showPopoverMsg = useQueueStore.use.showPopoverMsg();
   const correctShowResult = useQueueStore.use.correctShowResult();
   const correctMoveToNext = useQueueStore.use.correctMoveToNext();
@@ -231,17 +231,17 @@ function ReviewCards({ submitItems }: Props) {
       currQueueIndex === assignmentQueue.length ? (
         <p>Loading...</p>
       ) : (
-        <ReviewCardContainer>
-          <ReviewCard
+        <AssignmentCardContainer>
+          <AssignmentQueueCard
             currentReviewItem={assignmentQueue[currQueueIndex]}
             displayInvalidAnswerMsg={displayInvalidAnswerMsg}
             handleNextClick={handleNextClick}
             handleRetryClick={handleRetryClick}
           />
-        </ReviewCardContainer>
+        </AssignmentCardContainer>
       )}
     </>
   );
 }
 
-export default ReviewCards;
+export default AssignmentQueueCards;
