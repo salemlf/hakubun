@@ -1,3 +1,8 @@
+import {
+  constructStudyMaterialData,
+  updateValsInStudyMaterialData,
+} from "../services/MiscService";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useCreateStudyMaterials } from "./useCreateStudyMaterials";
 import { useUpdateStudyMaterials } from "./useUpdateStudyMaterials";
 import {
@@ -6,10 +11,6 @@ import {
   StudyMaterialPostData,
   StudyMaterialsChangeActionType,
 } from "../types/MiscTypes";
-import {
-  constructStudyMaterialData,
-  updateValsInStudyMaterialData,
-} from "../services/MiscService";
 import { Subject } from "../types/Subject";
 
 type StudyMaterialsChangeMethod = "create" | "update";
@@ -20,7 +21,7 @@ type ActionDictionary = {
     | ActionCreateFunction;
 };
 
-// TODO: create type definition that makes at least one of optional params required
+// TODO: use RequireAtLeastOne to make at least one of optional params required
 interface ActionParams {
   subject?: Subject;
   studyMaterialData: StudyMaterialDataResponse;
@@ -44,6 +45,9 @@ type ActionCreateFunction = (params: ActionCreateParams) => void;
 export const useStudyMaterialsChange = () => {
   const { mutate: createStudyMaterials } = useCreateStudyMaterials();
   const { mutate: updateStudyMaterials } = useUpdateStudyMaterials();
+  const isSessionInProgress = useAssignmentQueueStore.use.sessionInProgress();
+  const updateQueueItemAltMeanings =
+    useAssignmentQueueStore.use.updateQueueItemAltMeanings();
 
   const getDataChangeMethod = (
     studyMaterialData: StudyMaterialDataResponse
@@ -53,7 +57,7 @@ export const useStudyMaterialsChange = () => {
       : "create";
   };
 
-  // TODO: change to return a promise (likely resolved within createStudyMaterials onSettled)
+  // TODO: change to return a promise? (likely resolved within createStudyMaterials onSettled)
   const createStudyMaterialsData: ActionCreateFunction = (
     createParams: ActionCreateParams
   ) => {
@@ -78,10 +82,18 @@ export const useStudyMaterialsChange = () => {
     );
     // *testing
 
-    createStudyMaterials({ studyMaterialsData: createdStudyMaterialData });
+    createStudyMaterials(
+      { studyMaterialsData: createdStudyMaterialData },
+      {
+        onSuccess: (data, variables, context) => {
+          let isMeaningBeingUpdated = userMeaningToUpdate !== undefined;
+          updateMeaningsInAssignmentQueue(data, isMeaningBeingUpdated);
+        },
+      }
+    );
   };
 
-  // TODO: change to return a promise (likely resolved within createStudyMaterials onSettled)
+  // TODO: change to return a promise? (likely resolved within createStudyMaterials onSettled)
   const updateStudyMaterialsData: ActionUpdateFunction = (
     updateParams: ActionUpdateParams
   ) => {
@@ -107,17 +119,29 @@ export const useStudyMaterialsChange = () => {
       action: actionType,
     });
 
-    // *testing
-    console.log(
-      "🚀 ~ file: useStudyMaterialsChange.tsx:69 ~ useStudyMaterialsChange ~ updatedStudyMaterialData:",
-      updatedStudyMaterialData
+    updateStudyMaterials(
+      {
+        studyMaterialID: studyMaterialData.id,
+        updatedStudyMaterials: updatedStudyMaterialData,
+      },
+      {
+        onSuccess: (data, variables, context) => {
+          let isMeaningBeingUpdated = userMeaningToUpdate !== undefined;
+          updateMeaningsInAssignmentQueue(data, isMeaningBeingUpdated);
+        },
+      }
     );
-    // *testing
+  };
 
-    updateStudyMaterials({
-      studyMaterialID: studyMaterialData.id,
-      updatedStudyMaterials: updatedStudyMaterialData,
-    });
+  const updateMeaningsInAssignmentQueue = (
+    updatedItemData: any,
+    isMeaningBeingUpdated: boolean
+  ) => {
+    if (!isMeaningBeingUpdated || !isSessionInProgress) return;
+
+    let subjectID = updatedItemData.data.subject_id;
+    let meaningSynonyms = updatedItemData.data.meaning_synonyms;
+    updateQueueItemAltMeanings(subjectID, meaningSynonyms);
   };
 
   const deleteUserAltSubjectMeaning = (

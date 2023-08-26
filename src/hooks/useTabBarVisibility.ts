@@ -9,13 +9,15 @@ export function useTabBarVisibility() {
 
   useEffect(() => {
     let subjDetailsRegex = new RegExp("/subjects/*");
-    if (subjDetailsRegex.test(location.pathname) && isSessionInProgress) {
+    if (isSessionInProgress && subjDetailsRegex.test(location.pathname)) {
       // *testing
       console.log("Session in progress, hide tab bar");
       // *testing
       setIsTabBarVisible(false);
     } else {
+      // *testing
       console.log("Showing tab bar");
+      // *testing
       setIsTabBarVisible(true);
     }
   }, [location.pathname]);

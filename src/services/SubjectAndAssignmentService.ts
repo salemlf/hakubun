@@ -6,11 +6,7 @@ import {
 } from "../types/Subject";
 import { Assignment, AssignmentType } from "../types/Assignment";
 import { SrsLevelName, StudyMaterial, TagType } from "../types/MiscTypes";
-import {
-  capitalizeWord,
-  findStudyMaterialWithSubjID,
-  getAudioForReading,
-} from "./MiscService";
+import { findStudyMaterialWithSubjID } from "./MiscService";
 import { AssignmentQueueItem, ReviewType } from "../types/AssignmentQueueTypes";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {

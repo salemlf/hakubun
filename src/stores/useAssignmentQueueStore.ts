@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import { createSelectors } from "../utils";
+import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 
 interface AssignmentQueueState {
   assignmentQueue: AssignmentQueueItem[];
@@ -10,6 +10,10 @@ interface AssignmentQueueState {
 
 interface AssignmentQueueActions {
   updateQueueItem: (item: AssignmentQueueItem) => void;
+  updateQueueItemAltMeanings: (
+    subjectID: number,
+    altMeanings: string[]
+  ) => void;
   setAssignmentQueueData: (queueData: AssignmentQueueItem[]) => void;
   incrementCurrQueueIndex: () => void;
   addToAssignmentQueue: (reviewItem: AssignmentQueueItem) => void;
@@ -22,8 +26,6 @@ const initialState: AssignmentQueueState = {
   sessionInProgress: false,
 };
 
-// TODO:rename variables so works with lessons quiz and review session
-// TODO: remove isLoading here, just keep in review session queue file
 const useAssignmentQueueStoreBase = create<
   AssignmentQueueState & AssignmentQueueActions
 >((set, get) => ({
@@ -52,6 +54,29 @@ const useAssignmentQueueStoreBase = create<
         updatedQueueItem,
         ...state.assignmentQueue.slice(lastIndexOfItem + 1),
       ],
+    }));
+  },
+  updateQueueItemAltMeanings: (subjectID, altMeanings) => {
+    const shouldUpdateAltMeanings = (
+      assignmentQueueItem: AssignmentQueueItem
+    ): boolean =>
+      assignmentQueueItem.id === subjectID &&
+      assignmentQueueItem.review_type === "meaning";
+
+    const queueItemsWithUpdatedMeanings = get().assignmentQueue.map(
+      (assignmentQueueItem: AssignmentQueueItem) => {
+        if (shouldUpdateAltMeanings(assignmentQueueItem)) {
+          return {
+            ...assignmentQueueItem,
+            meaning_synonyms: altMeanings,
+          };
+        }
+        return assignmentQueueItem;
+      }
+    );
+
+    set(() => ({
+      assignmentQueue: queueItemsWithUpdatedMeanings,
     }));
   },
   setAssignmentQueueData: (queueData: AssignmentQueueItem[]) => {
