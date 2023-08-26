@@ -11,7 +11,7 @@ import { Assignment } from "../types/Assignment";
 import { Subject } from "../types/Subject";
 import Card from "../components/Card/Card";
 import AnimatedPage from "../components/AnimatedPage";
-import HomeButton from "../components/HomeButton";
+import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
 import SubjCharacterList from "../components/ReviewResults/SubjCharacterList";
 import { FullWidthGrid } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
@@ -132,7 +132,7 @@ function LessonSummary() {
             </>
           )}
         </FullWidthGrid>
-        <HomeButton />
+        <FloatingHomeButton />
       </IonContent>
     </Page>
   );

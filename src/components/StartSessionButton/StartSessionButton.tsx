@@ -38,7 +38,6 @@ function StartSessionButton({ onStartBtnClick, buttonType }: Props) {
         backgroundColor="var(--ion-color-tertiary)"
         color="black"
         onPress={onStartBtnClick}
-        distancefrombottom={buttonType === "quiz" ? "60px" : "35px"}
       >
         {buttonType === "reviews" && <StartIcon src={ReviewsIcon} />}
         {buttonType === "lessons" && <StartIcon src={LessonsIcon} />}

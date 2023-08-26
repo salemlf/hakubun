@@ -9,7 +9,7 @@ import { ReviewQueueItem } from "../types/ReviewSessionTypes";
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import AnimatedPage from "../components/AnimatedPage";
-import HomeButton from "../components/HomeButton";
+import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
 import { FullWidthGridDiv, MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -75,7 +75,7 @@ function ReviewSummary() {
             numCorrect={numCorrect}
           />
         </Grid>
-        <HomeButton />
+        <FloatingHomeButton />
       </MainContent>
     </Page>
   );

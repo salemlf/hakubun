@@ -178,13 +178,6 @@ export const getAudioForReading = (
         )
       : audioByReading;
 
-  // *testing
-  console.log(
-    "🚀 ~ file: MiscService.ts:184 ~ audioFilesFound:",
-    audioFilesFound
-  );
-  // *testing
-
   // TODO: change to allow selecting based on voice in settings
   let selectedAudioFile = getAudioUrlByGender(audioFilesFound, "female");
   return selectedAudioFile ? selectedAudioFile : audioFilesFound[0].url;
