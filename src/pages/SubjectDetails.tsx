@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { IonGrid, IonSkeletonText } from "@ionic/react";
+import { AnimatePresence } from "framer-motion";
 import { useSubjectByID } from "../hooks/useSubjectByID";
 import { useTabBarVisibility } from "../hooks/useTabBarVisibility";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
@@ -73,7 +74,7 @@ export const SubjectDetails = () => {
           </>
         )}
       </Page>
-      {isTabBarVisible && <FloatingTabBar />}
+      <AnimatePresence>{isTabBarVisible && <FloatingTabBar />}</AnimatePresence>
     </>
   );
 };

@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import {
   compareAssignmentsByAvailableDate,
   createAssignmentQueueItems,
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
 } from "../../services/SubjectAndAssignmentService";
+import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
+import { useQueueStore } from "../../stores/useQueueStore";
+import { INITIAL_ASSIGNMENT_TYPES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
-import { INITIAL_ASSIGNMENT_TYPES } from "../../constants";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
-import { useQueueStore } from "../../stores/useQueueStore";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 
 type Props = {
   settingsType: "lessons" | "reviews";
@@ -191,10 +192,14 @@ function AssignmentSettings({
             defaultValue="basic"
             scrollToDefault={false}
           />
-          <StartSessionButton
-            onStartBtnClick={onStartSessionBtnClick}
-            buttonType={settingsType}
-          />
+          <AnimatePresence>
+            {!isLoading && (
+              <StartSessionButton
+                onStartBtnClick={onStartSessionBtnClick}
+                buttonType={settingsType}
+              />
+            )}
+          </AnimatePresence>
         </>
       )}
     </>

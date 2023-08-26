@@ -1,4 +1,5 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+import { motion } from "framer-motion";
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
 import HomeIcon from "../../images/home.svg";
@@ -8,7 +9,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
 
-const TabBarContainer = styled(NavigationMenu.Root)`
+const TabBarContainer = styled(motion(NavigationMenu.Root))`
   position: sticky;
   bottom: 10px;
   width: 65%;
@@ -89,7 +90,7 @@ const PageLink = ({ pathName, children, ...props }: PageLinkProps) => {
 
 function FloatingTabBar() {
   return (
-    <TabBarContainer>
+    <TabBarContainer exit={{ y: -150 }} transition={{ type: "spring" }}>
       <TabList>
         <NavigationMenu.Item>
           <PageLink pathName="/subjects">
