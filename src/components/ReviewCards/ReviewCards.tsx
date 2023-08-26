@@ -6,8 +6,9 @@ import {
 } from "../../services/ReviewService";
 import {
   capitalizeWord,
+  getAudioForReading,
   getSrsNameBySrsLvl,
-  playAudioIfAvailable,
+  playAudioForAssignmentQueueItem,
 } from "../../services/MiscService";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
@@ -71,10 +72,41 @@ function ReviewCards({ submitItems }: Props) {
     showPopoverMsg({ message, messageType: "invalid" });
   };
 
+  const playAudioIfReadingAndAvailable = (
+    assignmentQueueItem: ReviewQueueItem,
+    userAnswer: string
+  ) => {
+    if (
+      (assignmentQueueItem.review_type === "reading" &&
+        assignmentQueueItem.object === "vocabulary") ||
+      (assignmentQueueItem.object === "kana_vocabulary" &&
+        assignmentQueueItem.pronunciation_audios !== undefined)
+    ) {
+      const primaryReadingMap: { [index: string]: string | undefined } = {
+        vocabulary: assignmentQueueItem.readings?.find(
+          (reading: any) => reading.primary === true
+        )?.reading,
+        kana_vocabulary: assignmentQueueItem.characters || undefined,
+      };
+
+      let primaryReading =
+        primaryReadingMap[assignmentQueueItem.object as string];
+
+      let userAnswerReadingOrPrimaryFallback = getAudioForReading(
+        assignmentQueueItem.pronunciation_audios!,
+        userAnswer,
+        primaryReading
+      );
+
+      playAudioForAssignmentQueueItem(userAnswerReadingOrPrimaryFallback);
+    }
+  };
+
   const handleCorrectAnswer = (
     currReviewItem: ReviewQueueItem,
     setUserAnswer: (value: string) => void,
-    moveToNextItem: boolean
+    moveToNextItem: boolean,
+    userAnswer: string
   ) => {
     if (moveToNextItem) {
       correctMoveToNext();
@@ -82,7 +114,7 @@ function ReviewCards({ submitItems }: Props) {
       incrementQueueIndex();
       setUserAnswer("");
     } else {
-      correctFirstClick(currReviewItem);
+      correctFirstClick(currReviewItem, userAnswer);
     }
   };
 
@@ -112,15 +144,15 @@ function ReviewCards({ submitItems }: Props) {
     }
   };
 
-  const correctFirstClick = (currReviewItem: ReviewQueueItem) => {
+  const correctFirstClick = (
+    currReviewItem: ReviewQueueItem,
+    userAnswer: string
+  ) => {
+    playAudioIfReadingAndAvailable(currReviewItem, userAnswer);
+
     let isReviewItemComplete = checkIfReviewIsComplete(
       currReviewItem,
       assignmentQueue
-    );
-
-    playAudioIfAvailable(
-      currReviewItem.primary_audio_url,
-      currReviewItem.review_type
     );
 
     let updatedReviewItem = currReviewItem;
@@ -165,7 +197,12 @@ function ReviewCards({ submitItems }: Props) {
 
     let moveToNextItem = isSecondClick;
     isCorrectAnswer
-      ? handleCorrectAnswer(currReviewItem, setUserAnswer, moveToNextItem)
+      ? handleCorrectAnswer(
+          currReviewItem,
+          setUserAnswer,
+          moveToNextItem,
+          userAnswer
+        )
       : handleWrongAnswer(currReviewItem, setUserAnswer, moveToNextItem);
 
     submitChoice();

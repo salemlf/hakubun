@@ -76,7 +76,7 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
                       <AudioBtn
                         url={getAudioForReading(
                           vocab.pronunciation_audios,
-                          vocabReading
+                          vocabReading.reading
                         )}
                       />
                     )}

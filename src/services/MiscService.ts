@@ -5,8 +5,8 @@ import {
   StudyMaterialPostDataWithID,
 } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
-import { PopoverMessageType, ReviewType } from "../types/ReviewSessionTypes";
-import { PronunciationAudio, Subject, SubjectReading } from "../types/Subject";
+import { PopoverMessageType } from "../types/ReviewSessionTypes";
+import { PronunciationAudio, Subject } from "../types/Subject";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   if (timeTill > 0) {
@@ -161,29 +161,39 @@ export const getAudioUrlByGender = (
 
 export const getAudioForReading = (
   audioItems: PronunciationAudio[],
-  reading: SubjectReading
+  reading: string,
+  primaryReadingFallback?: string
 ) => {
   let audioByReading = audioItems.filter(
     (audioOption: PronunciationAudio) =>
-      audioOption.metadata.pronunciation === reading.reading
+      audioOption.metadata.pronunciation === reading
   );
 
+  // if no audio for the reading and fallback passed in, use the primary reading as a fallback
+  let audioFilesFound =
+    audioByReading.length === 0 && primaryReadingFallback
+      ? audioItems.filter(
+          (audioOption: PronunciationAudio) =>
+            audioOption.metadata.pronunciation === primaryReadingFallback
+        )
+      : audioByReading;
+
+  // *testing
+  console.log(
+    "🚀 ~ file: MiscService.ts:184 ~ audioFilesFound:",
+    audioFilesFound
+  );
+  // *testing
+
   // TODO: change to allow selecting based on voice in settings
-  let selectedAudioFile = getAudioUrlByGender(audioByReading, "female");
-  return selectedAudioFile ? selectedAudioFile : audioByReading[0].url;
+  let selectedAudioFile = getAudioUrlByGender(audioFilesFound, "female");
+  return selectedAudioFile ? selectedAudioFile : audioFilesFound[0].url;
 };
 
-// TODO: make this more *elegant*
-// TODO: also account for when there's multiple valid readings, use the one the user selected
-export const playAudioIfAvailable = (
-  url: string | null,
-  reviewType: ReviewType
-) => {
-  let shouldPlayAudio = url !== null && reviewType === "reading";
-  if (shouldPlayAudio) {
-    let audio = new Audio(url!);
-    audio.play();
-  }
+// TODO: move this to assignment queue service
+export const playAudioForAssignmentQueueItem = (url: string) => {
+  let audio = new Audio(url!);
+  audio.play();
 };
 
 export const constructStudyMaterialData = ({
