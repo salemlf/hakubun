@@ -5,6 +5,7 @@ import {
   useTransform,
   useWillChange,
   useAnimate,
+  AnimatePresence,
 } from "framer-motion";
 import { toHiragana } from "wanakana";
 import { isUserAnswerValid } from "../../services/ReviewService";
@@ -111,58 +112,60 @@ export const ReviewCard = ({
   };
 
   return (
-    <>
-      <ReviewCardStyled
-        ref={reviewCardRef}
-        subjtype={currentReviewItem.object as SubjectType}
-        initial={{ y: "-150%" }}
-        style={{
-          x,
-          rotate,
-          willChange,
-        }}
-        drag="x"
-        animate={{ y: 0 }}
-        transition={{ type: "spring", duration: 1, bounce: 0.5 }}
-        dragSnapToOrigin={true}
-        dragConstraints={{ left: 0, right: 0 }}
-        dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
-        onDragEnd={handleDragEnd}
-        dragDirectionLock={true}
-        whileTap={{ cursor: "grabbing" }}
-        dragElastic={0.5}
-      >
-        <ReviewCharAndType
-          currentReviewItem={currentReviewItem}
-          disableTextSelection={true}
-        />
-        <ReviewAnswerInput
-          shakeInputTrigger={shakeInputTrigger}
-          currentReviewItem={currentReviewItem}
-          userAnswer={userAnswer}
-          setUserAnswer={setUserAnswer}
-          nextBtnClicked={attemptToAdvance}
-        />
-        <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />
-        <RetryCardOverlay
+    <AnimatePresence>
+      {currentReviewItem && (
+        <ReviewCardStyled
+          ref={reviewCardRef}
+          subjtype={currentReviewItem.object as SubjectType}
+          initial={{ y: "-150%" }}
+          animate={{ y: 0 }}
           style={{
-            opacity: opacityLeft,
+            x,
+            rotate,
+            willChange,
           }}
+          drag="x"
+          transition={{ type: "spring", duration: 1, bounce: 0.5 }}
+          dragSnapToOrigin={true}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
+          onDragEnd={handleDragEnd}
+          dragDirectionLock={true}
+          whileTap={{ cursor: "grabbing" }}
+          dragElastic={0.5}
         >
-          <SwipeIcon>
-            <IonIcon icon={RetryIcon}></IonIcon>
-          </SwipeIcon>
-        </RetryCardOverlay>
-        <NextCardOverlay
-          style={{
-            opacity: opacityRight,
-          }}
-        >
-          <SwipeIcon>
-            <IonIcon icon={NextIcon}></IonIcon>
-          </SwipeIcon>
-        </NextCardOverlay>
-      </ReviewCardStyled>
-    </>
+          <ReviewCharAndType
+            currentReviewItem={currentReviewItem}
+            disableTextSelection={true}
+          />
+          <ReviewAnswerInput
+            shakeInputTrigger={shakeInputTrigger}
+            currentReviewItem={currentReviewItem}
+            userAnswer={userAnswer}
+            setUserAnswer={setUserAnswer}
+            nextBtnClicked={attemptToAdvance}
+          />
+          <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />
+          <RetryCardOverlay
+            style={{
+              opacity: opacityLeft,
+            }}
+          >
+            <SwipeIcon>
+              <IonIcon icon={RetryIcon}></IonIcon>
+            </SwipeIcon>
+          </RetryCardOverlay>
+          <NextCardOverlay
+            style={{
+              opacity: opacityRight,
+            }}
+          >
+            <SwipeIcon>
+              <IonIcon icon={NextIcon}></IonIcon>
+            </SwipeIcon>
+          </NextCardOverlay>
+        </ReviewCardStyled>
+      )}
+    </AnimatePresence>
   );
 };
