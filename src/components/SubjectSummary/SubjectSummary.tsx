@@ -6,8 +6,8 @@ import AssignmentSrs from "./AssignmentSrs";
 import PartsOfSpeech from "../PartsOfSpeech";
 import SubjectMeanings from "../SubjectMeanings/SubjectMeanings";
 import SubjDetailsKanjiReadings from "./SubjDetailsKanjiReadings";
-import { SubjSummaryRow } from "../../styles/SubjectDetailsStyled";
 import VocabReadings from "../VocabReadings/VocabReadings";
+import { SubjSummaryRow } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
 const SummaryContainer = styled(IonRow)`
@@ -44,7 +44,7 @@ type SubjSummaryProps = {
 const RadicalSummary = ({ subject, assignment }: SubjSummaryProps) => {
   return (
     <>
-      <SubjectMeanings subject={subject} />
+      <SubjectMeanings subject={subject} showPrimaryMeaning={false} />
       <AssignmentSrs assignment={assignment} />
     </>
   );
@@ -54,7 +54,7 @@ const KanjiSummary = ({ subject, assignment }: SubjSummaryProps) => {
   return (
     <>
       <SubjSummaryRow>
-        <SubjectMeanings subject={subject} />
+        <SubjectMeanings subject={subject} showPrimaryMeaning={false} />
       </SubjSummaryRow>
       <SpaceBetweenRow>
         <SubjDetailsKanjiReadings kanji={subject as Kanji} />
@@ -70,7 +70,7 @@ const VocabSummary = ({ subject, assignment }: SubjSummaryProps) => {
   return (
     <>
       <SubjSummaryRow>
-        <SubjectMeanings subject={subject} />
+        <SubjectMeanings subject={subject} showPrimaryMeaning={false} />
       </SubjSummaryRow>
       {isKanaVocab ? (
         <SpaceBetweenRow>

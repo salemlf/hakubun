@@ -5,13 +5,12 @@ import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
 import { generateUUID } from "../../utils";
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse } from "../../types/MiscTypes";
-import { Chip } from "../../styles/BaseStyledComponents";
 import { closeCircle } from "ionicons/icons";
-// import styled from "styled-components/macro";
+import { Chip } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const UserMeaningChip = styled(Chip)`
-  background-color: var(--light-greyish-purple);
+  background-color: var(--light-grey);
 `;
 
 type MeaningWithUUID = {

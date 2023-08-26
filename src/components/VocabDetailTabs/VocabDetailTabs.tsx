@@ -26,6 +26,10 @@ const VocabReadingSection = styled(SubjDetailSection)`
   margin-bottom: 0;
 `;
 
+const PartsOfSpeechContainer = styled(FullWidthColumn)`
+  margin-bottom: 10px;
+`;
+
 const getTabsForVocab = (vocabQueueItem: AssignmentQueueItem) => {
   let isKanaVocab = vocabQueueItem.object === "kana_vocabulary";
   const meaningTab: TabData[] = [
@@ -38,9 +42,9 @@ const getTabsForVocab = (vocabQueueItem: AssignmentQueueItem) => {
             subject={vocabQueueItem as Subject}
             showPrimaryMeaning={true}
           />
-          <FullWidthColumn>
+          <PartsOfSpeechContainer>
             <PartsOfSpeech vocab={vocabQueueItem as Vocabulary} />
-          </FullWidthColumn>
+          </PartsOfSpeechContainer>
           <VocabMeaningExplanation vocab={vocabQueueItem as Vocabulary} />
           {isKanaVocab && vocabQueueItem.context_sentences && (
             <ContextSentences sentences={vocabQueueItem.context_sentences} />

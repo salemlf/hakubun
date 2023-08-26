@@ -12,10 +12,12 @@ import {
 } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
-const AlternativeMeaningsContainer = styled(SubjSummaryCol)`
+const MeaningsContainer = styled(SubjSummaryCol)`
+  flex-basis: 100%;
   padding-left: 0;
   padding-right: 0;
-  margin-bottom: 8px;
+  padding-bottom: 0;
+  margin-bottom: 0;
 `;
 
 const SubjDetailHeadingNoBtmMargin = styled(SubjDetailSubHeading)`
@@ -27,6 +29,7 @@ const AltMeaningsContainer = styled.div`
   align-items: center;
   margin-top: 8px;
   gap: 5px;
+  margin-bottom: 8px;
 `;
 
 const AltMeaningText = styled(SubjDetailTxt)`
@@ -37,31 +40,17 @@ const AltMeaningText = styled(SubjDetailTxt)`
   -ms-user-select: text;
 `;
 
-type PrimaryAndAltProps = {
+type PrimaryMeaningProps = {
   subject: Subject;
-  altMeanings: SubjectMeaning[];
-  hasAltMeanings: boolean;
 };
 
-// TODO: switch to CSS text-transform: capitalize instead of capitalizeWord for primaryMeaning
-const PrimaryAndAltMeanings = ({
-  subject,
-  altMeanings,
-}: PrimaryAndAltProps) => {
+const PrimaryMeaning = ({ subject }: PrimaryMeaningProps) => {
   let primaryMeaning = getSubjectDisplayName(subject);
-  let hasAltMeanings = altMeanings && altMeanings.length !== 0;
   return (
-    <AltMeaningText>
-      {primaryMeaning}
-      {hasAltMeanings ? ", " : ""}
-      {hasAltMeanings
-        ? altMeanings
-            .map((altMeaning: SubjectMeaning) => {
-              return altMeaning.meaning;
-            })
-            .join(", ")
-        : ""}
-    </AltMeaningText>
+    <>
+      <SubjDetailSubHeading>Primary Meaning</SubjDetailSubHeading>
+      <AltMeaningText>{primaryMeaning}</AltMeaningText>
+    </>
   );
 };
 
@@ -83,39 +72,31 @@ const AltMeanings = ({ altMeanings }: AltProps) => {
 
 type Props = {
   subject: Subject;
-  showPrimaryMeaning?: boolean;
+  showPrimaryMeaning: boolean;
 };
 
-function SubjectMeanings({ subject, showPrimaryMeaning = false }: Props) {
+function SubjectMeanings({ subject, showPrimaryMeaning }: Props) {
   let altMeanings = getAlternativeMeanings(subject);
   let hasAltMeanings = altMeanings && altMeanings.length !== 0;
 
   return (
-    <AlternativeMeaningsContainer>
-      {showPrimaryMeaning ? (
-        <SubjDetailSubHeading>Meanings</SubjDetailSubHeading>
-      ) : (
+    <>
+      {showPrimaryMeaning && (
+        <MeaningsContainer>
+          <PrimaryMeaning subject={subject} />
+        </MeaningsContainer>
+      )}
+      <MeaningsContainer>
         <SubjDetailHeadingNoBtmMargin>
           Alternative Meanings
         </SubjDetailHeadingNoBtmMargin>
-      )}
-      {showPrimaryMeaning && (
-        <PrimaryAndAltMeanings
-          subject={subject}
-          altMeanings={altMeanings}
-          hasAltMeanings={hasAltMeanings}
-        />
-      )}
-      {!showPrimaryMeaning && (
         <AltMeaningsContainer>
-          <>
-            {hasAltMeanings && <AltMeanings altMeanings={altMeanings} />}
-            <UserMeaningChips subject={subject} />
-            <AddAltUserMeaningButton subject={subject} />
-          </>
+          {hasAltMeanings && <AltMeanings altMeanings={altMeanings} />}
+          <UserMeaningChips subject={subject} />
+          <AddAltUserMeaningButton subject={subject} />
         </AltMeaningsContainer>
-      )}
-    </AlternativeMeaningsContainer>
+      </MeaningsContainer>
+    </>
   );
 }
 
