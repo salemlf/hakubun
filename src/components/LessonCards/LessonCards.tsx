@@ -10,6 +10,7 @@ import { TabData } from "../../types/MiscTypes";
 import SwipeableTabs from "../SwipeableTabs";
 import styled from "styled-components";
 import StartSessionButton from "../StartSessionButton";
+import { AnimatePresence } from "framer-motion";
 
 type HeaderProps = {
   subjType: SubjectType;
@@ -84,12 +85,14 @@ function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
         blobs={true}
         scrollToDefault={false}
       />
-      {isLastIndex && (
-        <StartSessionButton
-          buttonType="quiz"
-          onStartBtnClick={onStartLessonBtnClick}
-        />
-      )}
+      <AnimatePresence>
+        {isLastIndex && (
+          <StartSessionButton
+            buttonType="quiz"
+            onStartBtnClick={onStartLessonBtnClick}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }
