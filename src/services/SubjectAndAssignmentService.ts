@@ -11,7 +11,7 @@ import {
   findStudyMaterialWithSubjID,
   getAudioForReading,
 } from "./MiscService";
-import { ReviewQueueItem, ReviewType } from "../types/ReviewSessionTypes";
+import { AssignmentQueueItem, ReviewType } from "../types/AssignmentQueueTypes";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(
@@ -181,8 +181,8 @@ export const createAssignmentQueueItems = (
   assignments: Assignment[],
   subjects: Subject[],
   studyMaterials: StudyMaterial[]
-): ReviewQueueItem[] => {
-  const subjectsWithQueueProps = (subjects as ReviewQueueItem[]).map(
+): AssignmentQueueItem[] => {
+  const subjectsWithQueueProps = (subjects as AssignmentQueueItem[]).map(
     (subject, index) => {
       let foundAssignment = findAssignmentWithSubjID(assignments, subject);
       let foundStudyMaterial = findStudyMaterialWithSubjID(

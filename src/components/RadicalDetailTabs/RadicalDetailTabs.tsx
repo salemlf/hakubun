@@ -1,4 +1,4 @@
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { Radical, Subject } from "../../types/Subject";
 import RadicalNameMnemonic from "../RadicalNameMnemonic";
 import SubjectMeanings from "../SubjectMeanings";
@@ -7,7 +7,7 @@ import { SubjDetailTabContainer } from "../../styles/SubjectDetailsStyled";
 import { useState } from "react";
 
 type Props = {
-  radical: ReviewQueueItem;
+  radical: AssignmentQueueItem;
   scrollToDefault: boolean;
 };
 

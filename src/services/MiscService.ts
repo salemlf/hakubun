@@ -5,7 +5,7 @@ import {
   StudyMaterialPostDataWithID,
 } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
-import { PopoverMessageType } from "../types/ReviewSessionTypes";
+import { PopoverMessageType } from "../types/AssignmentQueueTypes";
 import { PronunciationAudio, Subject } from "../types/Subject";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {

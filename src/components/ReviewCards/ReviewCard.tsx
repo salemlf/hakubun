@@ -11,7 +11,7 @@ import { toHiragana } from "wanakana";
 import { isUserAnswerValid } from "../../services/ReviewService";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { SubjectType } from "../../types/Subject";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import ReviewCharAndType from "./ReviewCharAndType";
 import ReviewAnswerInput from "./ReviewAnswerInput";
 import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
@@ -26,15 +26,15 @@ import {
 import { useQueueStore } from "../../stores/useQueueStore";
 
 type CardProps = {
-  currentReviewItem: ReviewQueueItem;
+  currentReviewItem: AssignmentQueueItem;
   displayInvalidAnswerMsg: (message: string) => void;
   handleNextClick: (
-    currentReviewItem: ReviewQueueItem,
+    currentReviewItem: AssignmentQueueItem,
     userAnswer: string,
     setUserAnswer: (userAnswer: string) => void
   ) => void;
   handleRetryClick: (
-    currentReviewItem: ReviewQueueItem,
+    currentReviewItem: AssignmentQueueItem,
     setUserAnswer: (userAnswer: string) => void
   ) => void;
 };

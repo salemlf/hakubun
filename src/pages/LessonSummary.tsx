@@ -6,7 +6,7 @@ import { useQueueStore } from "../stores/useQueueStore";
 import { flattenData } from "../services/MiscService";
 import { groupDataByProperty } from "../services/ReviewService";
 import { useSubjectsByIDs } from "../hooks/useSubjectsByIDs";
-import { ReviewQueueItem } from "../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import { Assignment } from "../types/Assignment";
 import { Subject } from "../types/Subject";
 import Card from "../components/Card/Card";
@@ -46,7 +46,8 @@ function LessonSummary() {
   const location = useLocation();
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
-  const lessonsStartedData: ReviewQueueItem[] = location.state.lessonResponses;
+  const lessonsStartedData: AssignmentQueueItem[] =
+    location.state.lessonResponses;
   const [subjectsByType, setSubjectsByType] = useState<SubjectsGroupedByType>(
     {} as SubjectsGroupedByType
   );

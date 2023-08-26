@@ -1,18 +1,18 @@
 import { create } from "zustand";
-import { ReviewQueueItem } from "../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import { createSelectors } from "../utils";
 
 interface AssignmentQueueState {
-  assignmentQueue: ReviewQueueItem[];
+  assignmentQueue: AssignmentQueueItem[];
   currQueueIndex: number;
   sessionInProgress: boolean;
 }
 
 interface AssignmentQueueActions {
-  updateQueueItem: (item: ReviewQueueItem) => void;
-  setAssignmentQueueData: (queueData: ReviewQueueItem[]) => void;
+  updateQueueItem: (item: AssignmentQueueItem) => void;
+  setAssignmentQueueData: (queueData: AssignmentQueueItem[]) => void;
   incrementCurrQueueIndex: () => void;
-  addToAssignmentQueue: (reviewItem: ReviewQueueItem) => void;
+  addToAssignmentQueue: (reviewItem: AssignmentQueueItem) => void;
   removeOldQueueItem: () => void;
   resetAll: () => void;
 }
@@ -54,7 +54,7 @@ const useAssignmentQueueStoreBase = create<
       ],
     }));
   },
-  setAssignmentQueueData: (queueData: ReviewQueueItem[]) => {
+  setAssignmentQueueData: (queueData: AssignmentQueueItem[]) => {
     set(() => ({
       assignmentQueue: queueData,
       sessionInProgress: true,

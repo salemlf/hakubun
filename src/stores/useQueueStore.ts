@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createSelectors } from "../utils";
-import { PopoverInfo } from "../types/ReviewSessionTypes";
+import { PopoverInfo } from "../types/AssignmentQueueTypes";
 
 interface QueueState {
   isSecondClick: boolean;

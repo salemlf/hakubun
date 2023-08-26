@@ -10,7 +10,7 @@ import {
   createReviewPostData,
   getCompletedAssignmentQueueData,
 } from "../services/ReviewService";
-import { ReviewQueueItem } from "../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import ReviewCards from "../components/ReviewCards/ReviewCards";
 import AnimatedPage from "../components/AnimatedPage";
@@ -40,7 +40,7 @@ const Grid = styled(IonGrid)`
 // TODO: improve "Loading..." text
 // TODO: add button to abandon session
 // TODO: redirect to home if user somehow ends up on this screen without data passed
-export const ReviewSessionQueue = () => {
+export const ReviewSession = () => {
   const navigate = useNavigate();
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
@@ -58,7 +58,7 @@ export const ReviewSessionQueue = () => {
     resetAssignmentQueue();
   };
 
-  const submitReviews = (queueData: ReviewQueueItem[]) => {
+  const submitReviews = (queueData: AssignmentQueueItem[]) => {
     let reviewData = getCompletedAssignmentQueueData(queueData);
     let reviewPostData = createReviewPostData(reviewData);
 
@@ -72,10 +72,7 @@ export const ReviewSessionQueue = () => {
         })
         .catch((err) => {
           // *testing
-          console.log(
-            "🚀 ~ file: ReviewSessionQueue.tsx:96 ~ promises ~ err:",
-            err
-          );
+          console.log("🚀 ~ file: ReviewSession.tsx:96 ~ promises ~ err:", err);
           // *testing
         });
     });

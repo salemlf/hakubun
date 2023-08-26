@@ -1,11 +1,9 @@
-// TODO: change file name to AssignmentQueueTypes
 import { Subject } from "./Subject";
 import { RequireAtLeastOne } from "./Global";
 
 export type ReviewType = "reading" | "meaning";
 
-// TODO: change name to AssignmentQueueItem since lessons use it too
-export interface ReviewQueueItem extends Subject {
+export interface AssignmentQueueItem extends Subject {
   itemID: string;
   assignment_id: number;
   is_reviewed: boolean;
@@ -18,30 +16,6 @@ export interface ReviewQueueItem extends Subject {
   ending_srs_stage: number | null;
 }
 
-export type ReviewSessionDataState = {
-  isLoading: boolean;
-  reviewQueue: ReviewQueueItem[];
-  currQueueIndex: number;
-};
-
-type ReviewSessionDataActionType =
-  | "REVIEW_QUEUE_LOADING"
-  | "REVIEW_QUEUE_LOADED"
-  | "UPDATE_REVIEW_QUEUE_ITEM"
-  | "REMOVE_REVIEW_QUEUE_ITEM"
-  | "ADD_TO_REVIEW_QUEUE"
-  | "RESET_REVIEW"
-  | "INCREMENT_CURR_INDEX";
-
-export type ReviewSessionDataAction = {
-  type: ReviewSessionDataActionType;
-  payload?: any;
-};
-
-export type ReviewSessionDataDispatch = (
-  action: ReviewSessionDataAction
-) => void;
-
 // TODO: remove, change to be SRS level popover type once using toast for this functionality
 export type PopoverMessageType = "correct" | "incorrect" | "invalid";
 
@@ -52,35 +26,8 @@ export type PopoverInfo = {
   messageType: PopoverMessageType;
 };
 
-export type ReviewSessionQueueState = {
-  isSecondClick: boolean;
-  isBottomSheetVisible: boolean;
-  showRetryButton: boolean;
-  popoverInfo: PopoverInfo;
-  displayPopoverMsg: boolean;
-};
-
-export type ReviewSessionQueueActionType =
-  | "CORRECT_MOVE_TO_NEXT"
-  | "WRONG_MOVE_TO_NEXT"
-  | "CORRECT_SHOW_RESULT"
-  | "WRONG_SHOW_RESULT"
-  | "SUBMIT_CHOICE"
-  | "RETRY_REVIEW"
-  | "SHOW_POPOVER_MSG"
-  | "RESET_REVIEW_CARDS";
-
-export type ReviewSessionQueueAction = {
-  type: ReviewSessionQueueActionType;
-  payload?: any;
-};
-
-export type ReviewSessionQueueDispatch = (
-  action: ReviewSessionQueueAction
-) => void;
-
 export type BottomSheetSubjectProps = {
-  reviewItem: ReviewQueueItem;
+  reviewItem: AssignmentQueueItem;
   tabBgColor: string;
   tabSelectionColor: string;
 };
@@ -91,8 +38,8 @@ export type ReviewAnswerValidResult = {
 };
 
 export type GroupedReviewItems = {
-  correct: ReviewQueueItem[];
-  incorrect: ReviewQueueItem[];
+  correct: AssignmentQueueItem[];
+  incorrect: AssignmentQueueItem[];
 };
 
 interface ReviewPostItemOptional {

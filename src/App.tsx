@@ -16,7 +16,7 @@ import { AuthProvider, useUserAuth } from "./contexts/AuthContext";
 import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
 import { ReviewSettings } from "./pages/ReviewSettings";
-import { ReviewSessionQueue } from "./pages/ReviewSessionQueue";
+import { ReviewSession } from "./pages/ReviewSession";
 import ReviewSummary from "./pages/ReviewSummary";
 import LessonSettings from "./pages/LessonSettings";
 import LessonSession from "./pages/LessonSession";
@@ -94,10 +94,7 @@ const AppElements = () => {
         >
           <Route index path="/" element={<Home />} />
           <Route path="/reviews/settings" element={<ReviewSettings />} />
-          <Route
-            path="/reviews/session"
-            element={<ReviewSessionQueue />}
-          ></Route>
+          <Route path="/reviews/session" element={<ReviewSession />}></Route>
           <Route path="/reviews/summary" element={<ReviewSummary />} />
           <Route path="/lessons/settings" element={<LessonSettings />} />
           <Route path="/lessons/session" element={<LessonSession />} />

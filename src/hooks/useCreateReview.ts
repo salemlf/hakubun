@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { ReviewPostItem } from "../types/ReviewSessionTypes";
+import { ReviewPostItem } from "../types/AssignmentQueueTypes";
 
 type Props = {
   reviewSessionData: ReviewPostItem;

@@ -1,5 +1,5 @@
 import { TabData } from "../../types/MiscTypes";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { Subject, Vocabulary } from "../../types/Subject";
 import ContextSentences from "../ContextSentences";
 import KanjiUsedInVocab from "../KanjiUsedInVocab";
@@ -26,7 +26,7 @@ const VocabReadingSection = styled(SubjDetailSection)`
   margin-bottom: 0;
 `;
 
-const getTabsForVocab = (vocabQueueItem: ReviewQueueItem) => {
+const getTabsForVocab = (vocabQueueItem: AssignmentQueueItem) => {
   let isKanaVocab = vocabQueueItem.object === "kana_vocabulary";
   const meaningTab: TabData[] = [
     {
@@ -92,7 +92,7 @@ const getTabsForVocab = (vocabQueueItem: ReviewQueueItem) => {
 };
 
 type Props = {
-  vocab: ReviewQueueItem;
+  vocab: AssignmentQueueItem;
   scrollToDefault: boolean;
 };
 

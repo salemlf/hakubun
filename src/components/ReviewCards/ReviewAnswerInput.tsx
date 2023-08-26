@@ -1,7 +1,7 @@
 import { SetStateAction, useEffect, useRef } from "react";
 import { motion, useAnimate } from "framer-motion";
 import WanakanaInput from "./WanakanaInput";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { useQueueStore } from "../../stores/useQueueStore";
 import styled from "styled-components";
 
@@ -25,7 +25,7 @@ const AnswerInput = styled(WanakanaInput)<AnswerInputProps>`
 `;
 
 type Props = {
-  currentReviewItem: ReviewQueueItem;
+  currentReviewItem: AssignmentQueueItem;
   userAnswer: string;
   setUserAnswer: (value: SetStateAction<string>) => void;
   nextBtnClicked: () => void;

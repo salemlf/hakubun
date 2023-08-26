@@ -1,6 +1,6 @@
 // TODO: change so not relying on IonIcon
 import { IonHeader, IonToolbar, IonButtons, IonIcon } from "@ionic/react";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import HomeIconColor from "../../images/home-color.svg";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -45,7 +45,7 @@ const HomeIconStyled = styled(IonIcon)`
   height: 3em;
 `;
 
-const calculateNumItemsInQueue = (queue: ReviewQueueItem[]) => {
+const calculateNumItemsInQueue = (queue: AssignmentQueueItem[]) => {
   let notReviewed = queue.filter(
     (reviewItem) => reviewItem.is_reviewed === false
   );

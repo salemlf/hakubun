@@ -1,6 +1,6 @@
 import { IonSkeletonText } from "@ionic/react";
 import styled from "styled-components";
-import { GroupedReviewItems } from "../../types/ReviewSessionTypes";
+import { GroupedReviewItems } from "../../types/AssignmentQueueTypes";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import GroupedReviewSummaryResults from "./GroupedReviewSummaryResults";
 import Card from "../Card";

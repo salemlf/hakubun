@@ -9,9 +9,9 @@ import { SubjectType } from "../../types/Subject";
 import {
   PopoverInfo,
   PopoverMessageType,
-  ReviewQueueItem,
+  AssignmentQueueItem,
   ReviewType,
-} from "../../types/ReviewSessionTypes";
+} from "../../types/AssignmentQueueTypes";
 import SubjectChars from "../SubjectChars/SubjectChars";
 import styled from "styled-components";
 import { useQueueStore } from "../../stores/useQueueStore";
@@ -93,7 +93,7 @@ const SubjectCharactersCol = styled(IonCol)<CharColProps>`
 `;
 
 type Props = {
-  currentReviewItem: ReviewQueueItem;
+  currentReviewItem: AssignmentQueueItem;
   disableTextSelection?: boolean;
 };
 

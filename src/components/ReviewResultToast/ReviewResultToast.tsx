@@ -1,4 +1,4 @@
-import { ToastMessageType } from "../../types/ReviewSessionTypes";
+import { ToastMessageType } from "../../types/AssignmentQueueTypes";
 import Toast from "../Toast/Toast";
 
 const toastColors: {

@@ -1,5 +1,5 @@
 import { Kanji, Subject } from "../../types/Subject";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic";
 import RadicalCombination from "../RadicalCombination";
 import SubjectMeanings from "../SubjectMeanings";
@@ -15,7 +15,7 @@ import { FullWidthColumn } from "../../styles/BaseStyledComponents";
 import { useState } from "react";
 
 type Props = {
-  kanji: ReviewQueueItem;
+  kanji: AssignmentQueueItem;
   scrollToDefault: boolean;
 };
 

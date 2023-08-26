@@ -5,7 +5,7 @@ import { flattenData } from "../services/MiscService";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
-import { ReviewQueueItem } from "../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import AnimatedPage from "../components/AnimatedPage";
@@ -26,7 +26,7 @@ function ReviewSummary() {
   const location = useLocation();
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
-  const reviewData: ReviewQueueItem[] = location.state.reviewData;
+  const reviewData: AssignmentQueueItem[] = location.state.reviewData;
   // *testing
   console.log(
     "🚀 ~ file: ReviewSummary.tsx:52 ~ ReviewSummary ~ location.state:",

@@ -3,9 +3,9 @@ import { toKana, isKanji, isJapanese, toRomaji, isKana } from "wanakana";
 import {
   GroupedReviewItems,
   ReviewAnswerValidResult,
-  ReviewQueueItem,
+  AssignmentQueueItem,
   ReviewType,
-} from "../types/ReviewSessionTypes";
+} from "../types/AssignmentQueueTypes";
 import { INVALID_ANSWER_CHARS } from "../constants";
 import Fuse from "fuse.js";
 import { HistoryAction } from "../types/MiscTypes";
@@ -20,13 +20,13 @@ export const getReviewTypeColor = (reviewType: ReviewType) => {
 };
 
 export const checkIfReviewIsComplete = (
-  reviewItemToMatch: ReviewQueueItem,
-  reviewQueue: ReviewQueueItem[]
+  reviewItemToMatch: AssignmentQueueItem,
+  reviewQueue: AssignmentQueueItem[]
 ) => {
   let correspondingReviewType: ReviewType =
     reviewItemToMatch.review_type === "reading" ? "meaning" : "reading";
   let matchingReviewItemsOfOtherType = reviewQueue.filter(
-    (review: ReviewQueueItem) =>
+    (review: AssignmentQueueItem) =>
       review.id === reviewItemToMatch.id &&
       review.review_type === correspondingReviewType
   );
@@ -37,14 +37,14 @@ export const checkIfReviewIsComplete = (
   }
 
   let matchHasBeenReviewd = matchingReviewItemsOfOtherType.some(
-    (review: ReviewQueueItem) => review.is_reviewed === true
+    (review: AssignmentQueueItem) => review.is_reviewed === true
   );
   return matchHasBeenReviewd;
 };
 
 export const getCorrespondingReview = (
-  reviewQueue: ReviewQueueItem[],
-  reviewItem: ReviewQueueItem
+  reviewQueue: AssignmentQueueItem[],
+  reviewItem: AssignmentQueueItem
 ) => {
   let correspondingReviewType: ReviewType =
     reviewItem.review_type === "reading" ? "meaning" : "reading";
@@ -59,8 +59,8 @@ export const getCorrespondingReview = (
 };
 
 export const calculateSRSLevel = (
-  reviewQueue: ReviewQueueItem[],
-  reviewItem: ReviewQueueItem
+  reviewQueue: AssignmentQueueItem[],
+  reviewItem: AssignmentQueueItem
 ) => {
   let matchingItem = getCorrespondingReview(reviewQueue, reviewItem);
 
@@ -109,7 +109,10 @@ export const calculateSRSLevel = (
   };
 };
 
-export const mergeQueueItems = (A: ReviewQueueItem, B: ReviewQueueItem) => {
+export const mergeQueueItems = (
+  A: AssignmentQueueItem,
+  B: AssignmentQueueItem
+) => {
   let merged: any = {};
   Object.keys({ ...A, ...B }).map((key) => {
     if (
@@ -124,20 +127,23 @@ export const mergeQueueItems = (A: ReviewQueueItem, B: ReviewQueueItem) => {
   return merged;
 };
 
-// reducer that merges ReviewQueueItems with same ids
+// reducer that merges AssignmentQueueItems with same ids
 export const queueItemReducer = (
   reducedQueueItems: any,
-  reviewQueueItem: ReviewQueueItem
+  assignmentQueueItem: AssignmentQueueItem
 ) => {
-  let key = reviewQueueItem.id;
+  let key = assignmentQueueItem.id;
   let correspondingReview = reducedQueueItems.get(key);
-  let mergedItem = mergeQueueItems(correspondingReview || {}, reviewQueueItem);
+  let mergedItem = mergeQueueItems(
+    correspondingReview || {},
+    assignmentQueueItem
+  );
   reducedQueueItems.set(key, mergedItem);
   return reducedQueueItems;
 };
 
 export const getCorrectReviewItemsByType = (
-  combinedReviewItems: ReviewQueueItem[],
+  combinedReviewItems: AssignmentQueueItem[],
   reviewType: ReviewType
 ) => {
   let subjMeaningFilter: string;
@@ -159,11 +165,11 @@ export const getCorrectReviewItemsByType = (
 };
 
 export const getReviewsGroupedByResult = (
-  reviewQueueAfterCombined: ReviewQueueItem[]
+  reviewQueueAfterCombined: AssignmentQueueItem[]
 ): GroupedReviewItems => {
   const divideByResult = (
     array: any[],
-    isCorrect: (e: ReviewQueueItem) => boolean
+    isCorrect: (e: AssignmentQueueItem) => boolean
   ) => {
     return array.reduce(
       ([correct, incorrect], elem) => {
@@ -186,13 +192,13 @@ export const getReviewsGroupedByResult = (
 
 // combining objects with same IDs (subject IDs)
 export const getCompletedAssignmentQueueData = (
-  reviewQueue: ReviewQueueItem[]
+  reviewQueue: AssignmentQueueItem[]
 ) => {
   let assignmentQueueDataIterator = reviewQueue
     .reduce(queueItemReducer, new Map())
     .values();
 
-  let combinedQueueItems: ReviewQueueItem[] = Array.from(
+  let combinedQueueItems: AssignmentQueueItem[] = Array.from(
     assignmentQueueDataIterator
   );
 
@@ -210,7 +216,7 @@ export const groupDataByProperty = function (dataToGroup: any[], key: string) {
 };
 
 type AnswersForReviewsParams = {
-  reviewItem: ReviewQueueItem;
+  reviewItem: AssignmentQueueItem;
   acceptedAnswersOnly: boolean;
 };
 
@@ -268,7 +274,7 @@ export const getAnswersForReadingReviews = ({
 
 // TODO: update so user-added readings are also checked
 export const isUserReadingAnswerCorrect = (
-  reviewItem: ReviewQueueItem,
+  reviewItem: AssignmentQueueItem,
   userAnswer: string
 ) => {
   // so "ん" is converted properly
@@ -293,7 +299,7 @@ export const isUserReadingAnswerCorrect = (
 };
 
 export const isUserMeaningAnswerCorrect = (
-  reviewItem: ReviewQueueItem,
+  reviewItem: AssignmentQueueItem,
   userAnswer: string
 ) => {
   let answersWithSynonyms = getAnswersForMeaningReviews({
@@ -320,7 +326,7 @@ export const isUserMeaningAnswerCorrect = (
 };
 
 export const isUserAnswerCorrect = (
-  reviewItem: ReviewQueueItem,
+  reviewItem: AssignmentQueueItem,
   userAnswer: string
 ) => {
   let reviewType = reviewItem.review_type as string;
@@ -355,7 +361,7 @@ const checkInvalidSubjectAnswer = (
 };
 
 const checkInvalidMeaningAnswer = (
-  currReviewItem: ReviewQueueItem,
+  currReviewItem: AssignmentQueueItem,
   userAnswer: string
 ): ReviewAnswerValidResult => {
   // entered japanese when english meaning was asked for
@@ -393,7 +399,7 @@ const checkInvalidMeaningAnswer = (
 };
 
 const checkInvalidReadingAnswer = (
-  currReviewItem: ReviewQueueItem,
+  currReviewItem: AssignmentQueueItem,
   userAnswer: string
 ): ReviewAnswerValidResult => {
   let attemptToKanaConvert = toKana(userAnswer);
@@ -442,7 +448,7 @@ const checkInvalidReadingAnswer = (
 };
 
 export const isUserAnswerValid = (
-  currReviewItem: ReviewQueueItem,
+  currReviewItem: AssignmentQueueItem,
   userAnswer: string
 ): ReviewAnswerValidResult => {
   let subjectValidInfo = checkInvalidSubjectAnswer(userAnswer);
@@ -466,7 +472,7 @@ export const isUserAnswerValid = (
   };
 };
 
-export const createReviewPostData = (reviewedItems: ReviewQueueItem[]) => {
+export const createReviewPostData = (reviewedItems: AssignmentQueueItem[]) => {
   return reviewedItems.map((reviewedItem) => ({
     assignment_id: reviewedItem.assignment_id,
     incorrect_meaning_answers: reviewedItem.incorrect_meaning_answers,

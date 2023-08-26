@@ -9,7 +9,7 @@ import {
 } from "../types/MiscTypes";
 
 import { getSrsLvlBySrsName } from "../services/MiscService";
-import { ReviewPostItem } from "../types/ReviewSessionTypes";
+import { ReviewPostItem } from "../types/AssignmentQueueTypes";
 
 // TODO: make paging "automatic" where no need to add special case for it
 export const WaniKaniAPI = {

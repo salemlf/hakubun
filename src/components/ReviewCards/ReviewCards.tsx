@@ -12,12 +12,12 @@ import {
 } from "../../services/MiscService";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { ReviewCard } from "./ReviewCard";
 import { ReviewCardContainer } from "./ReviewCardsStyled";
 
 type Props = {
-  submitItems: (reviewData: ReviewQueueItem[]) => void;
+  submitItems: (reviewData: AssignmentQueueItem[]) => void;
 };
 
 function ReviewCards({ submitItems }: Props) {
@@ -48,7 +48,7 @@ function ReviewCards({ submitItems }: Props) {
     }
   }, [assignmentQueue[currQueueIndex]]);
 
-  const displaySRSStatus = (reviewItem: ReviewQueueItem) => {
+  const displaySRSStatus = (reviewItem: AssignmentQueueItem) => {
     let endingSRS = reviewItem.ending_srs_stage!;
 
     let hasIncreased = endingSRS > reviewItem.srs_stage;
@@ -73,7 +73,7 @@ function ReviewCards({ submitItems }: Props) {
   };
 
   const playAudioIfReadingAndAvailable = (
-    assignmentQueueItem: ReviewQueueItem,
+    assignmentQueueItem: AssignmentQueueItem,
     userAnswer: string
   ) => {
     if (
@@ -103,7 +103,7 @@ function ReviewCards({ submitItems }: Props) {
   };
 
   const handleCorrectAnswer = (
-    currReviewItem: ReviewQueueItem,
+    currReviewItem: AssignmentQueueItem,
     setUserAnswer: (value: string) => void,
     moveToNextItem: boolean,
     userAnswer: string
@@ -119,7 +119,7 @@ function ReviewCards({ submitItems }: Props) {
   };
 
   const handleWrongAnswer = (
-    currReviewItem: ReviewQueueItem,
+    currReviewItem: AssignmentQueueItem,
     setUserAnswer: (value: string) => void,
     moveToNextItem: boolean
   ) => {
@@ -145,7 +145,7 @@ function ReviewCards({ submitItems }: Props) {
   };
 
   const correctFirstClick = (
-    currReviewItem: ReviewQueueItem,
+    currReviewItem: AssignmentQueueItem,
     userAnswer: string
   ) => {
     playAudioIfReadingAndAvailable(currReviewItem, userAnswer);
@@ -183,7 +183,7 @@ function ReviewCards({ submitItems }: Props) {
   };
 
   const handleNextClick = (
-    currReviewItem: ReviewQueueItem,
+    currReviewItem: AssignmentQueueItem,
     userAnswer: string,
     setUserAnswer: (value: string) => void
   ) => {
@@ -209,7 +209,7 @@ function ReviewCards({ submitItems }: Props) {
   };
 
   const handleRetryClick = (
-    currReviewItem: ReviewQueueItem,
+    currReviewItem: AssignmentQueueItem,
     setUserAnswer: (value: string) => void
   ) => {
     let updatedReviewItem = currReviewItem;

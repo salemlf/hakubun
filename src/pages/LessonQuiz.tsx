@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 // @ts-ignore: Could not find a declaration file for module
 import ReactRouterPrompt from "react-router-prompt";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { ReviewQueueItem } from "../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import AnimatedPage from "../components/AnimatedPage";
 import ReviewCards from "../components/ReviewCards";
 import QueueHeader from "../components/QueueHeader";
@@ -48,7 +48,7 @@ function LessonQuiz() {
     resetAssignmentQueue();
   };
 
-  const submitLessonQuiz = (queueData: ReviewQueueItem[]) => {
+  const submitLessonQuiz = (queueData: AssignmentQueueItem[]) => {
     let completedLessonData = getCompletedAssignmentQueueData(queueData);
 
     // TODO: change to actually catch errors
@@ -64,10 +64,7 @@ function LessonQuiz() {
         })
         .catch((err) => {
           // *testing
-          console.log(
-            "🚀 ~ file: ReviewSessionQueue.tsx:96 ~ promises ~ err:",
-            err
-          );
+          console.log("🚀 ~ file: ReviewSession.tsx:96 ~ promises ~ err:", err);
           // *testing
         });
     });

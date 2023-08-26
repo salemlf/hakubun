@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Subject, SubjectType } from "../../types/Subject";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import SubjectChars from "../SubjectChars";
 import RadicalDetailTabs from "../RadicalDetailTabs";
 import KanjiDetailTabs from "../KanjiDetailTabs";
@@ -25,7 +25,7 @@ const LessonContent = styled.div`
 `;
 
 type CardProps = {
-  lesson: ReviewQueueItem;
+  lesson: AssignmentQueueItem;
 };
 
 function LessonCard({ lesson }: CardProps) {
@@ -55,7 +55,7 @@ function LessonCard({ lesson }: CardProps) {
 }
 
 type Props = {
-  lessons: ReviewQueueItem[];
+  lessons: AssignmentQueueItem[];
   onStartLessonBtnClick: () => void;
 };
 

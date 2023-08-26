@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import { useLocation } from "react-router";
 import { Subject } from "../../types/Subject";
-import { ReviewQueueItem } from "../../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import BottomSheetHeader from "./BottomSheetHeader";
 import styled from "styled-components";
 import RadicalDetailTabs from "../RadicalDetailTabs/RadicalDetailTabs";
@@ -37,7 +37,7 @@ const Toolbar = styled(IonToolbar)`
 `;
 
 type Props = {
-  currentReviewItem: ReviewQueueItem;
+  currentReviewItem: AssignmentQueueItem;
 };
 
 // TODO: modify to use some other sheet modal so don't need to use IonPage

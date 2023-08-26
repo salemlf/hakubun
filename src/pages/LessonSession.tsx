@@ -3,7 +3,7 @@ import { IonContent, IonIcon } from "@ionic/react";
 import AnimatedPage from "../components/AnimatedPage";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ReviewQueueItem } from "../types/ReviewSessionTypes";
+import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import LessonCards from "../components/LessonCards";
 import Button from "../components/Button";
 import HomeIconColor from "../images/home-color.svg";
@@ -31,9 +31,9 @@ const HomeIconStyled = styled(IonIcon)`
 function LessonSession() {
   const navigate = useNavigate();
   const lessonQueue = useAssignmentQueueStore.use.assignmentQueue();
-  const [uniqueLessonQueue, setUniqueLessonQueue] = useState<ReviewQueueItem[]>(
-    []
-  );
+  const [uniqueLessonQueue, setUniqueLessonQueue] = useState<
+    AssignmentQueueItem[]
+  >([]);
 
   useEffect(() => {
     if (lessonQueue.length === 0) {
