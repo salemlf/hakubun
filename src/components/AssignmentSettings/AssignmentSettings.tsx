@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
 import {
   compareAssignmentsByAvailableDate,
   createAssignmentQueueItems,
@@ -192,14 +191,10 @@ function AssignmentSettings({
             defaultValue="basic"
             scrollToDefault={false}
           />
-          <AnimatePresence>
-            {!isLoading && (
-              <StartSessionButton
-                onStartBtnClick={onStartSessionBtnClick}
-                buttonType={settingsType}
-              />
-            )}
-          </AnimatePresence>
+          <StartSessionButton
+            onStartBtnClick={onStartSessionBtnClick}
+            buttonType={settingsType}
+          />
         </>
       )}
     </>
