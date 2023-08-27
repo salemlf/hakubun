@@ -53,6 +53,9 @@ function SwipeableTabs({
     container: tabPanelsRef as RefObject<HTMLElement>,
   });
 
+  // Find all the tab elements so we can use their dimensions.
+  const [tabElements, setTabElements] = useState<Element[]>([]);
+
   // TODO: clean this up, a not ideal workaround for scrolling to default item. Necessary rn due to how tab components are being rendered
   useEffect(() => {
     if (
@@ -69,7 +72,12 @@ function SwipeableTabs({
 
   // scrolls to the selected tab when tab list is large enough to have scrollbar
   useEffect(() => {
-    if (selectedTabKey && tabElements && tabElements.length > 0) {
+    if (
+      selectedTabKey &&
+      tabListRef.current &&
+      tabElements &&
+      tabElements.length > 0
+    ) {
       const index = tabs.findIndex((tab) => tab.id === selectedTabKey);
       let currSelected = tabElements[index];
       if (currSelected) {
@@ -80,10 +88,7 @@ function SwipeableTabs({
         });
       }
     }
-  }, [selectedTabKey]);
-
-  // Find all the tab elements so we can use their dimensions.
-  const [tabElements, setTabElements] = useState<Element[]>([]);
+  }, [selectedTabKey, tabListRef.current, tabElements]);
 
   const getIndex = useCallback(
     (x: number) => {
