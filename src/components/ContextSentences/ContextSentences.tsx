@@ -1,25 +1,26 @@
-import { IonRow, IonCol, IonIcon } from "@ionic/react";
+import { useState } from "react";
+import { IonIcon } from "@ionic/react";
 import { ContextSentence } from "../../types/Subject";
+import Button from "../Button/Button";
 import { IconHeadingContainer } from "../../styles/BaseStyledComponents";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
 import ContextIcon from "../../images/context.svg";
-// import styled from "styled-components/macro";
+import OpenEyeIcon from "../../images/open-eye.svg";
+import CrossedOutEyeIcon from "../../images/crossed-out-eye.svg";
 import styled from "styled-components";
 
-const ContextSentenceContainer = styled(IonRow)`
-  display: flex;
-  flex-direction: row;
+const ContextSentenceContainer = styled.div`
   margin-left: -3px;
 `;
 
-const SentenceGroup = styled(IonCol)`
-  flex-direction: column;
-  flex-basis: 100%;
+const SentenceGroup = styled.div`
   display: flex;
+  flex-basis: 100%;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 `;
 
 const ContextSentenceTxt = styled.p`
@@ -32,12 +33,49 @@ const ContextSentenceTxt = styled.p`
   -ms-user-select: text;
 `;
 
+const EnglishSentenceContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+`;
+
+const EyeBallButton = styled(Button)`
+  border-radius: 0.5rem;
+  padding: 5px;
+  color: black;
+`;
+
+const EyeIcon = styled(IonIcon)`
+  width: 1.5em;
+  height: 1.5em;
+`;
+
+type EnglishContextSentenceTxtProps = {
+  blurtext: boolean;
+};
+
+const EnglishContextSentenceTxt = styled(
+  ContextSentenceTxt
+)<EnglishContextSentenceTxtProps>`
+  ${({ blurtext }) => blurtext && "filter: blur(5px);"}
+`;
+
 // TODO: improve styling
 type Props = {
   sentences: ContextSentence[];
 };
 
 function ContextSentences({ sentences }: Props) {
+  const initialBlurState = Array(sentences.length).fill(true);
+  const [blurStates, setBlurStates] = useState(initialBlurState);
+
+  const toggleTranslationBlur = (index: number) => {
+    const newBlurStates = [...blurStates];
+    newBlurStates[index] = !newBlurStates[index];
+    setBlurStates(newBlurStates);
+  };
+
   return (
     <SubjDetailSection>
       <IconHeadingContainer>
@@ -50,7 +88,19 @@ function ContextSentences({ sentences }: Props) {
             return (
               <SentenceGroup key={`col_${index}`}>
                 <ContextSentenceTxt>{sentence.ja}</ContextSentenceTxt>
-                <ContextSentenceTxt>{sentence.en}</ContextSentenceTxt>
+                <EnglishSentenceContainer>
+                  <EnglishContextSentenceTxt blurtext={blurStates[index]}>
+                    {sentence.en}
+                  </EnglishContextSentenceTxt>
+                  <EyeBallButton
+                    onPress={() => toggleTranslationBlur(index)}
+                    aria-label={`Show/Hide English Translation for Context Sentence ${index}`}
+                  >
+                    <EyeIcon
+                      src={blurStates[index] ? OpenEyeIcon : CrossedOutEyeIcon}
+                    />
+                  </EyeBallButton>
+                </EnglishSentenceContainer>
               </SentenceGroup>
             );
           }
