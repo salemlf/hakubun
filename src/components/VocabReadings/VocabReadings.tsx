@@ -4,7 +4,11 @@ import SoundIcon from "../../images/sound.svg";
 import { useAudio } from "../../hooks/useAudio";
 import { getAudioForReading } from "../../services/MiscService";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
-import { Vocabulary, SubjectReading } from "../../types/Subject";
+import {
+  Vocabulary,
+  SubjectReading,
+  PronunciationAudio,
+} from "../../types/Subject";
 import {
   ReadingContainer,
   SubjDetailSubHeading,
@@ -72,14 +76,19 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
                 return (
                   <VocabReadingContainer key={`reading_${index}`}>
                     <ReadingTxt>{vocabReading.reading}</ReadingTxt>
-                    {hasReadings && (
-                      <AudioBtn
-                        url={getAudioForReading(
-                          vocab.pronunciation_audios,
+                    {hasReadings &&
+                      vocab.pronunciation_audios.some(
+                        (audioOption: PronunciationAudio) =>
+                          audioOption.metadata.pronunciation ===
                           vocabReading.reading
-                        )}
-                      />
-                    )}
+                      ) && (
+                        <AudioBtn
+                          url={getAudioForReading(
+                            vocab.pronunciation_audios,
+                            vocabReading.reading
+                          )}
+                        />
+                      )}
                   </VocabReadingContainer>
                 );
               })
