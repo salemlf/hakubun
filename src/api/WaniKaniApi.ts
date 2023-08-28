@@ -36,6 +36,8 @@ export const WaniKaniAPI = {
 
     return reviewsCombined;
   },
+
+  // TODO: delete and just use getAssignmentsAvailForReview count
   getNumReviews: async function () {
     let url = `${baseUrl}assignments?immediately_available_for_review`;
 
@@ -151,6 +153,18 @@ export const WaniKaniAPI = {
   getAssignmentsByStage: async function (srsLvl: SrsLevelName) {
     let lvlRange = getSrsLvlBySrsName(srsLvl);
     let url = `${baseUrl}assignments?srs_stages=${lvlRange}&started=true`;
+
+    let assignments = await PagingAPI.iterateOverPages(url, []);
+    let assignmentsCombined = PagingAPI.combinePages(assignments);
+
+    return assignmentsCombined;
+  },
+
+  getAssignmentsAvailableInRange: async function (
+    startDateIsoString: string,
+    endDateIsoString: string
+  ) {
+    let url = `${baseUrl}assignments?available_after=${startDateIsoString}&available_before=${endDateIsoString}`;
 
     let assignments = await PagingAPI.iterateOverPages(url, []);
     let assignmentsCombined = PagingAPI.combinePages(assignments);

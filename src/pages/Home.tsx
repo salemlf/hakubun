@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   IonGrid,
   IonCol,
@@ -18,8 +19,8 @@ import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
 import SrsStages from "../components/SrsStages/SrsStages";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import AnimatedPage from "../components/AnimatedPage";
-import { useNavigate } from "react-router-dom";
 import FloatingTabBar from "../components/FloatingTabBar";
+import ReviewForecast from "../components/ReviewForecast";
 
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
@@ -80,6 +81,9 @@ const Home = () => {
                 </IonRow>
                 <IonRow class="ion-justify-content-start">
                   <SrsStages></SrsStages>
+                </IonRow>
+                <IonRow class="ion-justify-content-start">
+                  <ReviewForecast />
                 </IonRow>
                 <IonRow className="ion-padding">
                   <IonCol>
