@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { IonCol } from "@ionic/react";
-import { useAssignmentsAvailableInRange } from "../../hooks/useAssignmentsAvailableInRange";
-import { Assignment } from "../../types/Assignment";
 import styled from "styled-components";
+import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
+import DailyReviewForecast from "./DailyReviewForecast";
+import SwipeableTabs from "../SwipeableTabs";
 
 const Container = styled.section`
   width: 100%;
@@ -11,137 +12,107 @@ const Container = styled.section`
   padding: 10px;
 `;
 
-const ChartContainer = styled.section`
-  display: flex;
-`;
-
 const Heading = styled.h2`
   font-size: 1.5rem;
 `;
 
-const LabelContainer = styled.div`
-  display: grid;
-  grid-template-columns: auto;
-  gap: 0.5em 0;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  grid-auto-columns: 1fr;
-  margin-right: 5px;
-`;
+const dayOfWeekNames = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
-const ReviewTimeLabel = styled.label`
-  grid-column-start: 1;
-  grid-column-end: 2;
-`;
-
-const ChartList = styled.ul`
-  display: grid;
-  width: 100%;
-  grid-template-columns: auto;
-  gap: 0.5em 0;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  grid-auto-columns: 1fr;
-  border-left: 3px solid var(--ion-color-primary);
-`;
-
-type NumReviewsBarProps = {
-  gridcolspan: number;
+type StartAndEndTimeInfo = {
+  dayOfWeek: string;
+  startTimeIsoString: string;
+  endTimeIsoString: string;
 };
 
-const NumReviewsBar = styled.li<NumReviewsBarProps>`
-  background: var(--ion-color-tertiary);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.25rem 0.5rem;
-  grid-column-start: 1;
-  grid-column-end: ${({ gridcolspan }) => `span ${gridcolspan}`};
-  border-radius: 0 12px 12px 0;
-`;
+const createStartAndEndDatesForWeek = (date: Date): StartAndEndTimeInfo[] => {
+  return Array(7)
+    .fill(new Date(date))
+    .map((el, index) => {
+      let currDay = new Date();
+      currDay.setDate(el.getDate() + index);
 
-// const NumReviews = styled.p`
-//   margin: 0;
-// `;
+      let startTime = new Date(currDay);
+      if (index !== 0) {
+        startTime.setHours(0, 0, 0, 0);
+      }
 
-type ReviewsByHourData = {
-  [key: string]: Assignment[];
+      let endTime = new Date(currDay);
+      endTime.setHours(23, 59, 59, 999);
+
+      let dayOfWeek = dayOfWeekNames[startTime.getDay()];
+
+      return {
+        dayOfWeek,
+        startTimeIsoString: startTime.toISOString(),
+        endTimeIsoString: endTime.toISOString(),
+      };
+    });
 };
 
-function get12HourFormat(date: Date): string {
-  const hours = date.getHours();
-  const amOrPm = hours >= 12 ? "PM" : "AM";
-  const formattedHours = hours % 12 || 12;
-
-  return `${formattedHours}${amOrPm}`;
-}
-
+// TODO: fix issue where not reloading all data once coming back to page
 function ReviewForecast() {
+  const [selectedTabKey, setSelectedTabKey] = useState<string>("0");
   const [isLoading, setIsLoading] = useState(true);
-  const [reviewsByHour, setReviewsByHour] = useState<ReviewsByHourData>({});
-
-  let rightNow = new Date();
-  let rightNowISO = rightNow.toISOString();
-  let endOfToday = new Date();
-  endOfToday.setHours(23, 59, 59, 999);
-  let endOfTodayISO = endOfToday.toISOString();
+  const [startAndEndTimes, setStartAndEndTimes] = useState<
+    StartAndEndTimeInfo[]
+  >([]);
+  // !added
+  const [totalAvailablePrior, setTotalAvailablePrior] = useState<number[]>([]);
+  console.log(
+    "🚀 ~ file: ReviewForecast.tsx:72 ~ ReviewForecast ~ totalAvailablePrior:",
+    totalAvailablePrior
+  );
+  // !added
 
   const {
-    isLoading: assignmentLoading,
-    data: assignments,
-    error: assignmentsErr,
-  } = useAssignmentsAvailableInRange(rightNowISO, endOfTodayISO);
+    isLoading: availForReviewLoading,
+    data: availForReviewData,
+    error: availForReviewErr,
+  } = useAssignmentsAvailForReview();
+
+  // !added
+  const updateTotalAvailableReviews = (
+    totalAvailableForDay: number,
+    indexToUpdate: number
+  ) => {
+    // *testing
+    console.log(
+      "🚀 ~ file: ReviewForecast.tsx:85 ~ ReviewForecast ~ indexToUpdate:",
+      indexToUpdate
+    );
+    console.log(
+      "🚀 ~ file: ReviewForecast.tsx:101 ~ ReviewForecast ~ totalAvailableForDay:",
+      totalAvailableForDay
+    );
+    // *testing
+
+    let updatedTotalAvailablePrior = totalAvailablePrior;
+    updatedTotalAvailablePrior[indexToUpdate + 1] =
+      updatedTotalAvailablePrior[indexToUpdate] + totalAvailableForDay;
+    setTotalAvailablePrior(updatedTotalAvailablePrior);
+  };
+  // !added
 
   useEffect(() => {
-    if (!assignmentLoading && assignments) {
-      // *testing
-      console.log("assignments", assignments);
-      // *testing
-
-      const sortedAssignments = assignments.sort(
-        (a: Assignment, b: Assignment) => {
-          if (a.available_at === null) {
-            return 1;
-          } else if (b.available_at === null) {
-            return -1;
-          } else {
-            return (
-              new Date(a.available_at).getTime() -
-              new Date(b.available_at).getTime()
-            );
-          }
-        }
-      );
-
-      const groupedByHour = sortedAssignments.reduce(
-        (group: ReviewsByHourData, assignment: Assignment) => {
-          if (assignment.available_at !== null) {
-            const hour = get12HourFormat(new Date(assignment.available_at));
-            group[hour] = group[hour] ?? [];
-
-            group[hour].push(assignment);
-          }
-          return group;
-        },
-        {}
-      );
-
-      setReviewsByHour(groupedByHour);
-      // *testing
-      console.log(
-        "🚀 ~ file: ReviewForecast.tsx:80 ~ groupByCategory ~ groupedByHour:",
-        groupedByHour
-      );
-      // *testing
+    if (!availForReviewLoading && availForReviewData) {
+      setTotalAvailablePrior([availForReviewData.length]);
+      let forecastTimes = createStartAndEndDatesForWeek(new Date());
+      setStartAndEndTimes(forecastTimes);
 
       setIsLoading(false);
     } else {
       setIsLoading(true);
+      // setTotalAvailablePrior([]);
     }
-  }, [assignmentLoading]);
+  }, [availForReviewLoading]);
 
   return (
     <IonCol>
@@ -150,26 +121,33 @@ function ReviewForecast() {
       ) : (
         <Container>
           <Heading>Review Forecast</Heading>
-          <ChartContainer>
-            <LabelContainer>
-              {Object.keys(reviewsByHour).map((keyName) => (
-                <ReviewTimeLabel htmlFor={keyName}>{keyName}</ReviewTimeLabel>
-              ))}
-            </LabelContainer>
-            <ChartList>
-              {Object.keys(reviewsByHour).map((keyName) => (
-                <>
-                  <NumReviewsBar
-                    id={keyName}
-                    key={keyName}
-                    gridcolspan={reviewsByHour[keyName].length}
-                  >
-                    <span>+{reviewsByHour[keyName].length}</span>
-                  </NumReviewsBar>
-                </>
-              ))}
-            </ChartList>
-          </ChartContainer>
+          <SwipeableTabs
+            tabBgColor="var(--ion-color-primary)"
+            roundedContainer={false}
+            selectedTabKey={selectedTabKey}
+            setSelectedTabKey={setSelectedTabKey}
+            tabs={startAndEndTimes.map((forecastForDayTimes, index) => {
+              return {
+                key: index.toString(),
+                id: index.toString(),
+                label: forecastForDayTimes.dayOfWeek,
+                tabContents: (
+                  <DailyReviewForecast
+                    key={index}
+                    // numAssignmentsAlreadyAvailable={
+                    //   numAssignmentsAlreadyAvailable
+                    // }
+                    index={index}
+                    updateTotalAvailableReviews={updateTotalAvailableReviews}
+                    numAssignmentsAlreadyAvailable={totalAvailablePrior[index]}
+                    startDateIsoString={forecastForDayTimes.startTimeIsoString}
+                    endDateIsoString={forecastForDayTimes.endTimeIsoString}
+                  />
+                ),
+              };
+            })}
+            defaultValue={"0"}
+          />
         </Container>
       )}
     </IonCol>

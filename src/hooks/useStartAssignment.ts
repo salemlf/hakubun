@@ -17,6 +17,9 @@ export const useStartAssignment = () => {
       queryClient.invalidateQueries({
         queryKey: ["assignments-available-for-review"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["assignments-available-in-range"],
+      });
     },
   });
 };

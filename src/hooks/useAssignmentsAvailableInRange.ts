@@ -4,11 +4,16 @@ import { flattenData } from "../services/MiscService";
 
 export const useAssignmentsAvailableInRange = (
   startDateIsoString: string,
-  endDateIsoString: string
+  endDateIsoString: string,
+  isEnabled: boolean
 ) => {
   return useQuery({
-    queryKey: ["assignments-available-in-range"],
-    enabled: !!endDateIsoString && !!startDateIsoString,
+    queryKey: [
+      "assignments-available-in-range",
+      startDateIsoString,
+      endDateIsoString,
+    ],
+    enabled: !!isEnabled && !!endDateIsoString && !!startDateIsoString,
     queryFn: () =>
       WaniKaniAPI.getAssignmentsAvailableInRange(
         startDateIsoString,

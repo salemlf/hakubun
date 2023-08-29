@@ -62,10 +62,12 @@ const SubjectsContent = ({ level }: SubjectsContentProps) => {
         setSelectedTabKey={setSelectedTabKey}
         tabs={LEVELS.map((level) => {
           return {
+            key: level.toString(),
             id: level.toString(),
             label: `${level}`,
             tabContents: (
               <SubjectsOnLvlTab
+                key={level}
                 level={level}
                 isSelected={selectedTabKey === level.toString()}
               />

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { setBtnBackground } from "../../services/ImageSrcService";
 import { useNumReviews } from "../../hooks/useNumReviews";
 import {
@@ -5,8 +6,6 @@ import {
   BaseReviewLessonButtonBadge,
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
-import { useNavigate } from "react-router-dom";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const ReviewsButtonStyled = styled(BaseReviewLessonButton)`

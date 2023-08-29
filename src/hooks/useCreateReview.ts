@@ -23,6 +23,9 @@ export const useCreateReview = () => {
         queryKey: ["assignments-available-for-review"],
       });
       queryClient.invalidateQueries({ queryKey: ["available-num-reviews"] });
+      queryClient.invalidateQueries({
+        queryKey: ["assignments-available-in-range"],
+      });
     },
   });
 };
