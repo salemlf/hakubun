@@ -64,13 +64,13 @@ function ReviewForecast() {
   const [startAndEndTimes, setStartAndEndTimes] = useState<
     StartAndEndTimeInfo[]
   >([]);
-  // !added
+
+  // TODO: change to use useForecastTotalsStoreBase
   const [totalAvailablePrior, setTotalAvailablePrior] = useState<number[]>([]);
   console.log(
     "🚀 ~ file: ReviewForecast.tsx:72 ~ ReviewForecast ~ totalAvailablePrior:",
     totalAvailablePrior
   );
-  // !added
 
   const {
     isLoading: availForReviewLoading,
@@ -78,7 +78,7 @@ function ReviewForecast() {
     error: availForReviewErr,
   } = useAssignmentsAvailForReview();
 
-  // !added
+  // TODO: change to use useForecastTotalsStoreBase
   const updateTotalAvailableReviews = (
     totalAvailableForDay: number,
     indexToUpdate: number
@@ -99,7 +99,6 @@ function ReviewForecast() {
       updatedTotalAvailablePrior[indexToUpdate] + totalAvailableForDay;
     setTotalAvailablePrior(updatedTotalAvailablePrior);
   };
-  // !added
 
   useEffect(() => {
     if (!availForReviewLoading && availForReviewData) {
