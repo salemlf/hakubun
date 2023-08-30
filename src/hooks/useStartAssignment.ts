@@ -20,6 +20,9 @@ export const useStartAssignment = () => {
       queryClient.invalidateQueries({
         queryKey: ["assignments-available-in-range"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["available-lessons"],
+      });
     },
   });
 };
