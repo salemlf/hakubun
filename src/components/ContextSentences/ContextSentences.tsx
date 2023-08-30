@@ -34,16 +34,18 @@ const ContextSentenceTxt = styled.p`
 `;
 
 const EnglishSentenceContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
 `;
 
 const EyeBallButton = styled(Button)`
   border-radius: 0.5rem;
   padding: 5px;
   color: black;
+  margin-left: 10px;
 `;
 
 const EyeIcon = styled(IonIcon)`
