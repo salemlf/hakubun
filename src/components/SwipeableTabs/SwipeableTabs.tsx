@@ -5,6 +5,7 @@ import {
   animate,
   useScroll,
 } from "framer-motion";
+import { scrollIntoView } from "seamless-scroll-polyfill";
 import { TabData } from "../../types/MiscTypes";
 import {
   Selector,
@@ -73,11 +74,16 @@ function SwipeableTabs({
       const index = tabs.findIndex((tab) => tab.id === selectedTabKey);
       let currSelected = tabElements[index];
       if (currSelected) {
-        currSelected.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-          inline: "center",
-        });
+        scrollIntoView(
+          currSelected,
+          {
+            behavior: "smooth",
+            inline: "center",
+          },
+          {
+            duration: 250, // aprox. the duration that chrome uses,
+          }
+        );
       }
     }
   }, [selectedTabKey]);
