@@ -4,7 +4,11 @@ import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 import { flattenData } from "../services/MiscService";
 
-export const useSubjectsByIDs = (ids: number[], enabled: boolean = true) => {
+export const useSubjectsByIDs = (
+  ids: number[],
+  enabled: boolean = true,
+  sortByLvl: boolean = false
+) => {
   return useQuery({
     queryKey: ["subjects-by-ids", ids],
     queryFn: () => WaniKaniAPI.getSubjectsBySubjIDs(ids),
@@ -22,6 +26,13 @@ export const useSubjectsByIDs = (ids: number[], enabled: boolean = true) => {
           return filtered;
         },
         []);
+
+        if (sortByLvl) {
+          let sortedByLvl = subjsUpdated.sort(
+            (a: any, b: any) => a.level - b.level
+          );
+          return sortedByLvl;
+        }
 
         return subjsUpdated;
       },

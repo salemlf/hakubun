@@ -20,7 +20,7 @@ function RadicalSubjDetails({ radical }: Props) {
     isLoading: usedInKanjiSubjLoading,
     data: usedInKanjiSubjData,
     error: usedInKanjiSubjErr,
-  } = useSubjectsByIDs(radical.amalgamation_subject_ids);
+  } = useSubjectsByIDs(radical.amalgamation_subject_ids, true, true);
 
   const {
     isLoading: usedInKanjiAssignmentsLoading,
