@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAssignmentsAvailableInRange } from "../../hooks/useAssignmentsAvailableInRange";
 import { Assignment } from "../../types/Assignment";
 import styled from "styled-components";
+import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
 
 const ChartContainer = styled.section`
   display: grid;
@@ -132,29 +133,26 @@ const calculateDailyReviewInfo = (
 };
 
 type Props = {
-  //   numAssignmentsAlreadyAvailable: number;
-  numAssignmentsAlreadyAvailable: number | undefined;
   startDateIsoString: string;
   endDateIsoString: string;
-  //   totalAvailablePrior: number[];
   index: number;
-  updateTotalAvailableReviews: (
-    totalAvailableForDay: number,
-    indexToUpdate: number
-  ) => void;
 };
 
 // TODO: don't like mapping over same items three times, try to improve
 function DailyReviewForecast({
-  numAssignmentsAlreadyAvailable,
   startDateIsoString,
   endDateIsoString,
   index,
-  updateTotalAvailableReviews,
 }: Props) {
-  console.log("🚀 ~ file: DailyReviewForecast.tsx:155 ~ index:", index);
-  let enabled = numAssignmentsAlreadyAvailable !== undefined;
-  console.log("🚀 ~ file: DailyReviewForecast.tsx:156 ~ enabled:", enabled);
+  // *testing
+  // console.log("🚀 ~ file: DailyReviewForecast.tsx:155 ~ index:", index);
+  // *testing
+  const runningTotals =
+    useForecastTotalsStore.use.runningTotalAvailableReviews();
+  const updateRunningTotalAvailableReviews =
+    useForecastTotalsStore.use.updateRunningTotalAvailableReviews();
+  let enabled = runningTotals[index] !== undefined;
+  // console.log("🚀 ~ file: DailyReviewForecast.tsx:156 ~ enabled:", enabled);
   // *testing
   //   console.log(
   //     "🚀 ~ file: DailyReviewForecast.tsx:160 ~ startDateIsoString:",
@@ -182,16 +180,12 @@ function DailyReviewForecast({
   );
 
   useEffect(() => {
-    if (
-      !assignmentLoading &&
-      assignments &&
-      numAssignmentsAlreadyAvailable !== undefined
-    ) {
+    if (!assignmentLoading && assignments && enabled) {
       // *testing
-      console.log("assignments", assignments);
+      // console.log("assignments", assignments);
       // *testing
-      //   if(inde) {
-      updateTotalAvailableReviews(assignments.length, index);
+
+      updateRunningTotalAvailableReviews(assignments.length, index);
 
       const sortedAssignments = assignments.sort(
         (a: Assignment, b: Assignment) => {
@@ -210,7 +204,7 @@ function DailyReviewForecast({
 
       let reviewCalculations = calculateDailyReviewInfo(
         sortedAssignments,
-        numAssignmentsAlreadyAvailable
+        runningTotals[index]
       );
 
       setReviewsByHour(reviewCalculations.groupedByHour);

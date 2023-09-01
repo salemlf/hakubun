@@ -4,16 +4,19 @@ import styled from "styled-components";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
 import DailyReviewForecast from "./DailyReviewForecast";
 import SwipeableTabs from "../SwipeableTabs";
+import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
 
 const Container = styled.section`
   width: 100%;
   border-radius: 0.5rem;
   margin: auto;
   padding: 10px;
+  background-color: var(--light-greyish-purple);
 `;
 
 const Heading = styled.h2`
   font-size: 1.5rem;
+  margin-top: 5px;
 `;
 
 const dayOfWeekNames = [
@@ -65,12 +68,12 @@ function ReviewForecast() {
     StartAndEndTimeInfo[]
   >([]);
 
-  // TODO: change to use useForecastTotalsStoreBase
-  const [totalAvailablePrior, setTotalAvailablePrior] = useState<number[]>([]);
-  console.log(
-    "🚀 ~ file: ReviewForecast.tsx:72 ~ ReviewForecast ~ totalAvailablePrior:",
-    totalAvailablePrior
-  );
+  // !added
+  const seedRunningTotalAvailableReviews =
+    useForecastTotalsStore.use.seedRunningTotalAvailableReviews();
+  const runningTotals =
+    useForecastTotalsStore.use.runningTotalAvailableReviews();
+  // !added
 
   const {
     isLoading: availForReviewLoading,
@@ -78,38 +81,20 @@ function ReviewForecast() {
     error: availForReviewErr,
   } = useAssignmentsAvailForReview();
 
-  // TODO: change to use useForecastTotalsStoreBase
-  const updateTotalAvailableReviews = (
-    totalAvailableForDay: number,
-    indexToUpdate: number
-  ) => {
-    // *testing
-    console.log(
-      "🚀 ~ file: ReviewForecast.tsx:85 ~ ReviewForecast ~ indexToUpdate:",
-      indexToUpdate
-    );
-    console.log(
-      "🚀 ~ file: ReviewForecast.tsx:101 ~ ReviewForecast ~ totalAvailableForDay:",
-      totalAvailableForDay
-    );
-    // *testing
-
-    let updatedTotalAvailablePrior = totalAvailablePrior;
-    updatedTotalAvailablePrior[indexToUpdate + 1] =
-      updatedTotalAvailablePrior[indexToUpdate] + totalAvailableForDay;
-    setTotalAvailablePrior(updatedTotalAvailablePrior);
-  };
-
+  // TODO: this might have issues not conforming to invalidation times of availForReviewData, hmm
   useEffect(() => {
     if (!availForReviewLoading && availForReviewData) {
-      setTotalAvailablePrior([availForReviewData.length]);
+      // using previously fetched data if already loaded
+      if (runningTotals.length === 0) {
+        seedRunningTotalAvailableReviews(availForReviewData.length);
+      }
+
       let forecastTimes = createStartAndEndDatesForWeek(new Date());
       setStartAndEndTimes(forecastTimes);
 
       setIsLoading(false);
     } else {
       setIsLoading(true);
-      // setTotalAvailablePrior([]);
     }
   }, [availForReviewLoading]);
 
@@ -122,7 +107,7 @@ function ReviewForecast() {
           <Heading>Review Forecast</Heading>
           <SwipeableTabs
             tabBgColor="var(--ion-color-primary)"
-            roundedContainer={false}
+            roundedContainer={true}
             selectedTabKey={selectedTabKey}
             setSelectedTabKey={setSelectedTabKey}
             tabs={startAndEndTimes.map((forecastForDayTimes, index) => {
@@ -133,12 +118,7 @@ function ReviewForecast() {
                 tabContents: (
                   <DailyReviewForecast
                     key={index}
-                    // numAssignmentsAlreadyAvailable={
-                    //   numAssignmentsAlreadyAvailable
-                    // }
                     index={index}
-                    updateTotalAvailableReviews={updateTotalAvailableReviews}
-                    numAssignmentsAlreadyAvailable={totalAvailablePrior[index]}
                     startDateIsoString={forecastForDayTimes.startTimeIsoString}
                     endDateIsoString={forecastForDayTimes.endTimeIsoString}
                   />
