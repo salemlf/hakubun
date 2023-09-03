@@ -7,6 +7,10 @@ body {
   @media (prefers-color-scheme: dark) {
     color: white;
   }
+
+  ion-app {
+    overflow: -moz-hidden-unscrollable !important;
+  }
 }
 
 .custom-alert .alert-wrapper {

@@ -102,6 +102,8 @@ const Home = () => {
           </IonGrid>
           {homeLoading && <IonSpinner name="dots"></IonSpinner>}
         </ContentWithTabBar>
+        {/* TODO: move tab bar here once no longer using IonPage */}
+        {/* <FloatingTabBar /> */}
       </AnimatedPage>
       <FloatingTabBar />
     </>
