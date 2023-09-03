@@ -39,6 +39,8 @@ type Props = {
   currentReviewItem: AssignmentQueueItem;
 };
 
+// TODO: rename so matches AssignmentQueue naming convention
+// TODO: modify how BottomSheet component is displayed, rn it's isOpen prop will always be true lol
 function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   const location = useLocation();
   const showBottomSheet = useQueueStore.use.isBottomSheetVisible();

@@ -3,11 +3,11 @@ import {
   forwardRef,
   useContext,
   useEffect,
-  useState,
+  useRef,
 } from "react";
 import type { ForwardedRef } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
-import { PanInfo, motion, useMotionValue } from "framer-motion";
+import { PanInfo, motion, useAnimation } from "framer-motion";
 import styled from "styled-components";
 
 const Overlay = styled(motion.div)`
@@ -33,15 +33,11 @@ const Portal = styled(RadixDialog.Portal)`
 `;
 
 const Content = styled(RadixDialog.Content)`
-  position: fixed;
   width: 100%;
   border-radius: 12px 12px 0 0;
-  /* height: 95%; */
   height: 100%;
-  bottom: -75px;
   background-color: var(--light-greyish-purple);
   overflow-y: clip;
-  padding-bottom: 75px;
 `;
 
 const DialogOpenContext = createContext<boolean>(false);
@@ -76,12 +72,27 @@ const overlayVariants = {
   open: { opacity: 1, pointerEvents: "auto" as const },
 };
 
-const swipeConfidenceThreshold = 6000;
-const swipePower = (offset: number, velocity: number) => {
-  return Math.abs(offset) * velocity;
+// TODO: move this hook to a separate file
+// cred to Nadia Makarevich, tutorial here: https://www.developerway.com/posts/implementing-advanced-use-previous-hook
+const usePrevious = <TValue extends unknown>(value: TValue) => {
+  const ref = useRef<{ value: TValue; prev: TValue | null }>({
+    value: value,
+    prev: null,
+  });
+
+  const current = ref.current.value;
+
+  if (value !== current) {
+    ref.current = {
+      value: value,
+      prev: current,
+    };
+  }
+
+  return ref.current.prev;
 };
 
-// TODO: pass in px from bottom for mostly closed state, will be calculated based header height
+// TODO: pass px height values for page header and to bottom sheet header to be used in variants
 // TODO: add a handle/button so can easily click to swap between opening and closing
 // TODO: modify so interacting outside moves dialog to lowest breakpoint
 function BottomSheetContentCore(
@@ -93,43 +104,31 @@ function BottomSheetContentCore(
   console.log("🚀 ~ file: Sheet.tsx:102 ~ isOpen:", isOpen);
   // *testing
 
-  const motionY = useMotionValue(0);
-  const [position, setPosition] = useState<number>(600);
+  const prevIsOpen = usePrevious(isOpen);
+  const controls = useAnimation();
 
   useEffect(() => {
-    motionY.set(position);
-  }, [position, motionY]);
+    if (!prevIsOpen && isOpen) {
+      controls.start("hidden");
+    } else if (prevIsOpen && isOpen) {
+      controls.start("fullyOpen");
+    }
+  }, [controls, isOpen, prevIsOpen]);
 
-  // TODO: modify this so it adds and subtracts position based on height of viewport
-  const onDragEnd = (
+  function onDragEnd(
     event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
-  ) => {
-    let swipe = swipePower(info.offset.y, info.velocity.y);
-
-    // *testing
-    console.log("🚀 ~ file: Sheet.tsx:145 ~ position:", position);
-    // *testing
-
-    if (swipe < -swipeConfidenceThreshold) {
-      // *testing
-      console.log("PULLED UP");
-      // *testing
-      if (position > 0) {
-        setPosition(position - 600);
-      }
-    } else if (swipe > swipeConfidenceThreshold) {
-      // *testing
-      console.log("PULLED DOWN");
-      // *testing
-      if (position <= 0) {
-        setPosition(position + 600);
-      }
+  ) {
+    const shouldClose =
+      info.velocity.y > 20 || (info.velocity.y >= 0 && info.point.y > 45);
+    if (shouldClose) {
+      controls.start("hidden");
+    } else {
+      controls.start("fullyOpen");
     }
-  };
+  }
 
   return (
-    // <Portal container={getEnsureDialogContainer()} forceMount>
     <Portal>
       <RadixDialog.Overlay className="overlay" forceMount asChild>
         <Overlay
@@ -150,28 +149,34 @@ function BottomSheetContentCore(
       >
         <motion.div
           drag="y"
-          // style={{ y: motionY }}
-          animate={{ y: position }}
-          transition={{
-            y: { duration: 1, type: "spring" },
-          }}
-          dragConstraints={{
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: position,
-          }}
           onDragEnd={onDragEnd}
-          dragElastic={0.1}
-          dragTransition={{ bounceStiffness: 600, bounceDamping: 10 }}
-          initial={false}
-          dragSnapToOrigin={true}
+          initial="hidden"
+          animate={controls}
+          transition={{
+            type: "spring",
+            damping: 20,
+            stiffness: 300,
+          }}
+          // TODO: for fullyOpen variant, use calc(100% - {PAGE_HEADER_HEIGHT}px - {SOME_MARGIN})
+          // TODO: for hidden variant, use calc(100% -{BOTTOM_SHEET_HEADER_HEIGHT}px)
+          variants={{
+            hidden: { y: "calc(100% - 100px)" },
+            fullyOpen: { y: 75 },
+            closed: { y: "100%" },
+          }}
+          dragConstraints={{ top: 0 }}
+          dragElastic={0.3}
+          style={{
+            display: "inline-block",
+            height: "100vh",
+            overflowY: "hidden",
+            zIndex: 5,
+          }}
         >
           {children}
         </motion.div>
       </Content>
     </Portal>
-    // </Portal>
   );
 }
 
