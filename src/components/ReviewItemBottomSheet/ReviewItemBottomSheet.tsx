@@ -29,7 +29,7 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   const showBottomSheet = useQueueStore.use.isBottomSheetVisible();
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
-  // TODO: also reopen to previous breakpoint on return? Use something like modal.current.getCurrentBreakpoint()
+  // TODO: also reopen to previous breakpoint on return?
   useEffect(() => {
     if (
       (location.pathname === "/reviews/session" ||

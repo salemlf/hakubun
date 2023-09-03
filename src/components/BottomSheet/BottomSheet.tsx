@@ -3,12 +3,13 @@ import {
   forwardRef,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import type { ForwardedRef } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { PanInfo, motion, useAnimation } from "framer-motion";
+import { useElementSize } from "usehooks-ts";
+import { usePrevious } from "../../hooks/usePrevious";
 import Button from "../Button/Button";
 import styled from "styled-components";
 
@@ -92,42 +93,30 @@ const overlayVariants = {
   open: { opacity: 1, pointerEvents: "auto" as const },
 };
 
-// TODO: move this hook to a separate file
-// cred to Nadia Makarevich, tutorial here: https://www.developerway.com/posts/implementing-advanced-use-previous-hook
-const usePrevious = <TValue extends unknown>(value: TValue) => {
-  const ref = useRef<{ value: TValue; prev: TValue | null }>({
-    value: value,
-    prev: null,
-  });
-
-  const current = ref.current.value;
-
-  if (value !== current) {
-    ref.current = {
-      value: value,
-      prev: current,
-    };
-  }
-
-  return ref.current.prev;
+// TODO: for fullyOpen variant, use calc(100% - {PAGE_HEADER_HEIGHT}px - {SOME_MARGIN}) (this isn't super important, just if I have time)
+const sheetPosVariants = {
+  mostlyClosed: (height: number) => ({
+    y: `calc(100% - ${height}px)`,
+  }),
+  fullyOpen: { y: "10%" },
+  // closed: { y: "100%" },
 };
 
 type BottomSheetContentCoreProps = RadixDialog.DialogContentProps & {
   title: string;
 };
 
-// TODO: pass px height values for page header and to bottom sheet header to be used in variants
+// TODO: disable content inside sheet (except open/close button) when in mostlyClosed state
 // TODO: modify so interacting outside moves dialog to lowest breakpoint
 function BottomSheetContentCore(
   { title, children, className, ...props }: BottomSheetContentCoreProps,
   forwardedRef: ForwardedRef<HTMLDivElement>
 ) {
   const isOpen = useContext(DialogOpenContext);
-  // *testing
-  console.log("🚀 ~ file: Sheet.tsx:102 ~ isOpen:", isOpen);
-  // *testing
-
+  const [headerRef, { height: headerHeight }] = useElementSize();
   const [isFullyOpen, setIsFullyOpen] = useState(false);
+  const prevIsOpen = usePrevious(isOpen);
+  const controls = useAnimation();
 
   const onSheetBtnPress = (e: any) => {
     if (isFullyOpen) {
@@ -139,16 +128,13 @@ function BottomSheetContentCore(
     }
   };
 
-  const prevIsOpen = usePrevious(isOpen);
-  const controls = useAnimation();
-
   useEffect(() => {
     if (!prevIsOpen && isOpen) {
       controls.start("mostlyClosed");
     } else if (prevIsOpen && isOpen) {
       controls.start("fullyOpen");
     }
-  }, [controls, isOpen, prevIsOpen]);
+  }, [controls, isOpen, prevIsOpen, headerHeight]);
 
   const onDragEnd = (
     event: MouseEvent | TouchEvent | PointerEvent,
@@ -192,23 +178,17 @@ function BottomSheetContentCore(
             damping: 20,
             stiffness: 300,
           }}
-          // TODO: for fullyOpen variant, use calc(100% - {PAGE_HEADER_HEIGHT}px - {SOME_MARGIN})
-          // TODO: for mostlyClosed variant, use calc(100% -{BOTTOM_SHEET_HEADER_HEIGHT}px)
-          variants={{
-            mostlyClosed: { y: "calc(100% - 100px)" },
-            fullyOpen: { y: 75 },
-            // closed: { y: "100%" },
-          }}
+          custom={headerHeight}
+          variants={sheetPosVariants}
           dragConstraints={{ top: 0 }}
           dragElastic={0.3}
           style={{
             display: "inline-block",
-            height: "100vh",
             overflowY: "hidden",
             zIndex: 5,
           }}
         >
-          <SheetHeader>
+          <SheetHeader ref={headerRef}>
             <SheetOpenCloseButton onPress={onSheetBtnPress} />
             <SheetHeadingTxt>{title}</SheetHeadingTxt>
           </SheetHeader>
