@@ -1,4 +1,13 @@
-import { toKana, isKanji, isJapanese, toRomaji, isKana } from "wanakana";
+import {
+  toKana,
+  isKanji,
+  isJapanese,
+  toRomaji,
+  isKana,
+  isMixed,
+  isKatakana,
+  toHiragana,
+} from "wanakana";
 import {
   GroupedReviewItems,
   ReviewAnswerValidResult,
@@ -498,4 +507,16 @@ export const blockUserLeavingPage = ({
     return false;
   }
   return true;
+};
+
+export const convertToHiragana = (japanese: string) => {
+  if (isMixed(japanese) || isKatakana(japanese)) {
+    return toHiragana(japanese);
+  }
+  return japanese;
+};
+
+export const playAudioForAssignmentQueueItem = (url: string) => {
+  let audio = new Audio(url!);
+  audio.play();
 };

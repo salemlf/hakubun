@@ -7,6 +7,7 @@ import {
 import { Collection } from "../types/Collection";
 import { PopoverMessageType } from "../types/AssignmentQueueTypes";
 import { PronunciationAudio, Subject } from "../types/Subject";
+import { convertToHiragana } from "./AssignmentQueueService";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   if (timeTill > 0) {
@@ -159,34 +160,57 @@ export const getAudioUrlByGender = (
   return audio?.url;
 };
 
+// TODO: clean this up
 export const getAudioForReading = (
   audioItems: PronunciationAudio[],
-  reading: string,
+  userAnswer: string,
   primaryReadingFallback?: string
 ) => {
+  // *testing
+  console.log("🚀 ~ file: MiscService.ts:167 ~ audioItems:", audioItems);
+  // *testing
+
+  let readingInHiragana = convertToHiragana(userAnswer);
+  // *testing
+  console.log(
+    "🚀 ~ file: MiscService.ts:173 ~ readingInHiragana:",
+    readingInHiragana
+  );
+  // *testing
+
+  let primaryFallback = primaryReadingFallback
+    ? convertToHiragana(primaryReadingFallback)
+    : primaryReadingFallback;
+  // *testing
+  console.log(
+    "🚀 ~ file: MiscService.ts:192 ~ primaryFallback:",
+    primaryFallback
+  );
+  // *testing
+
   let audioByReading = audioItems.filter(
     (audioOption: PronunciationAudio) =>
-      audioOption.metadata.pronunciation === reading
+      audioOption.metadata.pronunciation === userAnswer
   );
 
   // if no audio for the reading and fallback passed in, use the primary reading as a fallback
   let audioFilesFound =
-    audioByReading.length === 0 && primaryReadingFallback
+    audioByReading.length === 0 && primaryFallback
       ? audioItems.filter(
           (audioOption: PronunciationAudio) =>
-            audioOption.metadata.pronunciation === primaryReadingFallback
+            audioOption.metadata.pronunciation === primaryFallback
         )
       : audioByReading;
+  // *testing
+  console.log(
+    "🚀 ~ file: MiscService.ts:178 ~ audioFilesFound:",
+    audioFilesFound
+  );
+  // *testing
 
   // TODO: change to allow selecting based on voice in settings
   let selectedAudioFile = getAudioUrlByGender(audioFilesFound, "female");
   return selectedAudioFile ? selectedAudioFile : audioFilesFound[0].url;
-};
-
-// TODO: move this to assignment queue service
-export const playAudioForAssignmentQueueItem = (url: string) => {
-  let audio = new Audio(url!);
-  audio.play();
 };
 
 export const constructStudyMaterialData = ({
