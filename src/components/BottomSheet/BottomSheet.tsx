@@ -107,7 +107,6 @@ type BottomSheetContentCoreProps = RadixDialog.DialogContentProps & {
 };
 
 // TODO: disable content inside sheet (except open/close button) when in mostlyClosed state
-// TODO: modify so interacting outside moves dialog to lowest breakpoint
 function BottomSheetContentCore(
   { title, children, className, ...props }: BottomSheetContentCoreProps,
   forwardedRef: ForwardedRef<HTMLDivElement>
@@ -118,21 +117,29 @@ function BottomSheetContentCore(
   const prevIsOpen = usePrevious(isOpen);
   const controls = useAnimation();
 
+  const mostlyClose = () => {
+    controls.start("mostlyClosed");
+    setIsFullyOpen(false);
+  };
+
+  const fullyOpen = () => {
+    controls.start("fullyOpen");
+    setIsFullyOpen(true);
+  };
+
   const onSheetBtnPress = (e: any) => {
     if (isFullyOpen) {
-      controls.start("mostlyClosed");
-      setIsFullyOpen(false);
+      mostlyClose();
     } else {
-      controls.start("fullyOpen");
-      setIsFullyOpen(true);
+      fullyOpen();
     }
   };
 
   useEffect(() => {
     if (!prevIsOpen && isOpen) {
-      controls.start("mostlyClosed");
+      mostlyClose();
     } else if (prevIsOpen && isOpen) {
-      controls.start("fullyOpen");
+      fullyOpen();
     }
   }, [controls, isOpen, prevIsOpen, headerHeight]);
 
@@ -143,9 +150,9 @@ function BottomSheetContentCore(
     const shouldClose =
       info.velocity.y > 20 || (info.velocity.y >= 0 && info.point.y > 45);
     if (shouldClose) {
-      controls.start("mostlyClosed");
+      mostlyClose();
     } else {
-      controls.start("fullyOpen");
+      fullyOpen();
     }
   };
 
@@ -160,8 +167,18 @@ function BottomSheetContentCore(
       </RadixDialog.Overlay>
 
       <Content
-        onEscapeKeyDown={(event: any) => event.preventDefault()}
-        onInteractOutside={(event: any) => event.preventDefault()}
+        onEscapeKeyDown={(event: any) => {
+          event.preventDefault();
+          if (isFullyOpen) {
+            mostlyClose();
+          }
+        }}
+        onInteractOutside={(event: any) => {
+          event.preventDefault();
+          if (isFullyOpen) {
+            mostlyClose();
+          }
+        }}
         forceMount
         className="content"
         ref={forwardedRef}

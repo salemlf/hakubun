@@ -50,6 +50,9 @@ function SwipeableTabs({
 }: TabsComponentProps) {
   const tabListRef = useRef<HTMLDivElement | null>(null);
   const tabPanelsRef = useRef<HTMLDivElement | null>(null);
+  // !added
+  const tabContainerRef = useRef<HTMLDivElement | null>(null);
+  // !added
   const { scrollXProgress } = useScroll({
     container: tabPanelsRef as RefObject<HTMLElement>,
   });
@@ -70,15 +73,37 @@ function SwipeableTabs({
 
   // scrolls to the selected tab when tab list is large enough to have scrollbar
   useEffect(() => {
-    if (selectedTabKey && tabElements && tabElements.length > 0) {
+    if (
+      tabContainerRef.current &&
+      selectedTabKey &&
+      tabElements &&
+      tabElements.length > 0
+    ) {
+      // *testing
+      // console.log(
+      //   "🚀 ~ file: SwipeableTabs.tsx:80 ~ useEffect ~ tabContainerRef.current:",
+      //   tabContainerRef.current
+      // );
+      // *testing
       const index = tabs.findIndex((tab) => tab.id === selectedTabKey);
       let currSelected = tabElements[index];
+      // *testing
+      // console.log(
+      //   "🚀 ~ file: SwipeableTabs.tsx:86 ~ useEffect ~ currSelected:",
+      //   currSelected
+      // );
+      // *testing
+
       if (currSelected) {
+        // *testing
+        // console.log("CALLED");
+        // *testing
         scrollIntoView(
           currSelected,
           {
             behavior: "smooth",
             inline: "center",
+            block: "nearest",
           },
           {
             duration: 250, // aprox. the duration that chrome uses,
@@ -86,7 +111,8 @@ function SwipeableTabs({
         );
       }
     }
-  }, [selectedTabKey]);
+  }, [selectedTabKey, tabContainerRef.current]);
+  // }, [selectedTabKey]);
 
   // Find all the tab elements so we can use their dimensions.
   const [tabElements, setTabElements] = useState<Element[]>([]);
@@ -230,6 +256,7 @@ function SwipeableTabs({
             ))}
           </TabPanels>
           <TabContainerBottomFlex
+            ref={tabContainerRef}
             bgcolor={"transparent"}
             roundedcontainer={roundedContainer}
           >
@@ -252,6 +279,7 @@ function SwipeableTabs({
           <TabContainer
             bgcolor={tabBgColor}
             roundedcontainer={roundedContainer}
+            ref={tabContainerRef}
           >
             <TabListStyled ref={tabListRef}>
               {tabs.map((tab) => (
