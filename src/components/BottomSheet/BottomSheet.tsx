@@ -4,10 +4,12 @@ import {
   useContext,
   useEffect,
   useRef,
+  useState,
 } from "react";
 import type { ForwardedRef } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { PanInfo, motion, useAnimation } from "framer-motion";
+import Button from "../Button/Button";
 import styled from "styled-components";
 
 const Overlay = styled(motion.div)`
@@ -38,6 +40,24 @@ const Content = styled(RadixDialog.Content)`
   height: 100%;
   background-color: var(--light-greyish-purple);
   overflow-y: clip;
+`;
+
+const SheetHeader = styled.header`
+  background-color: var(--light-greyish-purple);
+  padding: 5px 0 10px;
+  color: white;
+  text-align: center;
+`;
+
+const SheetHeadingTxt = styled(RadixDialog.Title)`
+  font-size: 1.25rem;
+  margin: 15px 0;
+`;
+
+const SheetOpenCloseButton = styled(Button)`
+  width: 75px;
+  height: 10px;
+  border-radius: 1rem;
 `;
 
 const DialogOpenContext = createContext<boolean>(false);
@@ -92,11 +112,14 @@ const usePrevious = <TValue extends unknown>(value: TValue) => {
   return ref.current.prev;
 };
 
+type BottomSheetContentCoreProps = RadixDialog.DialogContentProps & {
+  title: string;
+};
+
 // TODO: pass px height values for page header and to bottom sheet header to be used in variants
-// TODO: add a handle/button so can easily click to swap between opening and closing
 // TODO: modify so interacting outside moves dialog to lowest breakpoint
 function BottomSheetContentCore(
-  { children, className, ...props }: RadixDialog.DialogContentProps,
+  { title, children, className, ...props }: BottomSheetContentCoreProps,
   forwardedRef: ForwardedRef<HTMLDivElement>
 ) {
   const isOpen = useContext(DialogOpenContext);
@@ -104,29 +127,41 @@ function BottomSheetContentCore(
   console.log("🚀 ~ file: Sheet.tsx:102 ~ isOpen:", isOpen);
   // *testing
 
+  const [isFullyOpen, setIsFullyOpen] = useState(false);
+
+  const onSheetBtnPress = (e: any) => {
+    if (isFullyOpen) {
+      controls.start("mostlyClosed");
+      setIsFullyOpen(false);
+    } else {
+      controls.start("fullyOpen");
+      setIsFullyOpen(true);
+    }
+  };
+
   const prevIsOpen = usePrevious(isOpen);
   const controls = useAnimation();
 
   useEffect(() => {
     if (!prevIsOpen && isOpen) {
-      controls.start("hidden");
+      controls.start("mostlyClosed");
     } else if (prevIsOpen && isOpen) {
       controls.start("fullyOpen");
     }
   }, [controls, isOpen, prevIsOpen]);
 
-  function onDragEnd(
+  const onDragEnd = (
     event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
-  ) {
+  ) => {
     const shouldClose =
       info.velocity.y > 20 || (info.velocity.y >= 0 && info.point.y > 45);
     if (shouldClose) {
-      controls.start("hidden");
+      controls.start("mostlyClosed");
     } else {
       controls.start("fullyOpen");
     }
-  }
+  };
 
   return (
     <Portal>
@@ -150,7 +185,7 @@ function BottomSheetContentCore(
         <motion.div
           drag="y"
           onDragEnd={onDragEnd}
-          initial="hidden"
+          initial="mostlyClosed"
           animate={controls}
           transition={{
             type: "spring",
@@ -158,11 +193,11 @@ function BottomSheetContentCore(
             stiffness: 300,
           }}
           // TODO: for fullyOpen variant, use calc(100% - {PAGE_HEADER_HEIGHT}px - {SOME_MARGIN})
-          // TODO: for hidden variant, use calc(100% -{BOTTOM_SHEET_HEADER_HEIGHT}px)
+          // TODO: for mostlyClosed variant, use calc(100% -{BOTTOM_SHEET_HEADER_HEIGHT}px)
           variants={{
-            hidden: { y: "calc(100% - 100px)" },
+            mostlyClosed: { y: "calc(100% - 100px)" },
             fullyOpen: { y: 75 },
-            closed: { y: "100%" },
+            // closed: { y: "100%" },
           }}
           dragConstraints={{ top: 0 }}
           dragElastic={0.3}
@@ -173,6 +208,10 @@ function BottomSheetContentCore(
             zIndex: 5,
           }}
         >
+          <SheetHeader>
+            <SheetOpenCloseButton onPress={onSheetBtnPress} />
+            <SheetHeadingTxt>{title}</SheetHeadingTxt>
+          </SheetHeader>
           {children}
         </motion.div>
       </Content>

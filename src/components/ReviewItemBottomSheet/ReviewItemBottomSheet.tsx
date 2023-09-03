@@ -1,38 +1,21 @@
 import { useEffect, useState } from "react";
-import {
-  IonContent,
-  IonGrid,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonContent, IonGrid } from "@ionic/react";
 import { useLocation } from "react-router";
+import { useQueueStore } from "../../stores/useQueueStore";
 import { Subject } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import BottomSheetHeader from "./BottomSheetHeader";
-import styled from "styled-components";
 import RadicalDetailTabs from "../RadicalDetailTabs/RadicalDetailTabs";
 import KanjiDetailTabs from "../KanjiDetailTabs/KanjiDetailTabs";
 import VocabDetailTabs from "../VocabDetailTabs/VocabDetailTabs";
-import { useQueueStore } from "../../stores/useQueueStore";
 import BottomSheetRoot, { BottomSheetContent } from "../BottomSheet";
+import styled from "styled-components";
 
 const FullWidthGrid = styled(IonGrid)`
   margin-left: 0;
   margin-right: 0;
   padding-left: 0;
   padding-right: 0;
-`;
-
-const Title = styled(IonTitle)`
-  text-align: center;
-`;
-
-const Toolbar = styled(IonToolbar)`
-  &:first-of-type {
-    padding-top: 8px;
-  }
-  padding-bottom: 8px;
 `;
 
 type Props = {
@@ -63,44 +46,37 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   }, [location.pathname, showBottomSheet]);
 
   return (
-    isBottomSheetVisible && (
-      <BottomSheetRoot
-        isOpen={isBottomSheetVisible}
-        setIsOpen={setIsBottomSheetVisible}
-      >
-        <BottomSheetContent>
-          <IonHeader>
-            <Toolbar>
-              <Title>Subject Info</Title>
-            </Toolbar>
-          </IonHeader>
-          <BottomSheetHeader subject={currentReviewItem as Subject} />
-          <IonContent className="ion-padding">
-            <FullWidthGrid>
-              {currentReviewItem.object == "radical" && (
-                <RadicalDetailTabs
-                  radical={currentReviewItem}
-                  scrollToDefault={true}
-                />
-              )}
-              {currentReviewItem.object == "kanji" && (
-                <KanjiDetailTabs
-                  kanji={currentReviewItem}
-                  scrollToDefault={true}
-                />
-              )}
-              {(currentReviewItem.object == "vocabulary" ||
-                currentReviewItem.object == "kana_vocabulary") && (
-                <VocabDetailTabs
-                  vocab={currentReviewItem}
-                  scrollToDefault={true}
-                />
-              )}
-            </FullWidthGrid>
-          </IonContent>
-        </BottomSheetContent>
-      </BottomSheetRoot>
-    )
+    <BottomSheetRoot
+      isOpen={isBottomSheetVisible}
+      setIsOpen={setIsBottomSheetVisible}
+    >
+      <BottomSheetContent title="Subject Info">
+        <BottomSheetHeader subject={currentReviewItem as Subject} />
+        <IonContent className="ion-padding">
+          <FullWidthGrid>
+            {currentReviewItem.object == "radical" && (
+              <RadicalDetailTabs
+                radical={currentReviewItem}
+                scrollToDefault={true}
+              />
+            )}
+            {currentReviewItem.object == "kanji" && (
+              <KanjiDetailTabs
+                kanji={currentReviewItem}
+                scrollToDefault={true}
+              />
+            )}
+            {(currentReviewItem.object == "vocabulary" ||
+              currentReviewItem.object == "kana_vocabulary") && (
+              <VocabDetailTabs
+                vocab={currentReviewItem}
+                scrollToDefault={true}
+              />
+            )}
+          </FullWidthGrid>
+        </IonContent>
+      </BottomSheetContent>
+    </BottomSheetRoot>
   );
 }
 
