@@ -160,16 +160,22 @@ function BottomSheetContentCore(
     }
   }, [controls, isOpen, prevIsOpen, headerHeight]);
 
+  // TODO: make drag up animation smoother, has no give rn
   const onDragEnd = (
     event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
   ) => {
-    const shouldClose =
-      info.velocity.y > 20 || (info.velocity.y >= 0 && info.point.y > 45);
-    if (shouldClose) {
-      mostlyClose();
+    let offsetTriggersChange = Math.abs(info.offset.y) > 300;
+    if (offsetTriggersChange) {
+      const shouldClose =
+        info.velocity.y > 20 || (info.velocity.y >= 0 && info.point.y > 45);
+      if (shouldClose) {
+        mostlyClose();
+      } else {
+        fullyOpen();
+      }
     } else {
-      fullyOpen();
+      isFullyOpen ? fullyOpen() : mostlyClose();
     }
   };
 
@@ -196,7 +202,7 @@ function BottomSheetContentCore(
             mostlyClose();
           }
         }}
-        forceMount
+        // forceMount
         className="content"
         ref={forwardedRef}
         asChild
