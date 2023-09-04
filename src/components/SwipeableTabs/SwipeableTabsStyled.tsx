@@ -35,6 +35,14 @@ export const TabContainer = styled.div<TabContainerStyles>`
   max-width: 100vw;
   overflow-x: auto;
   padding: 0 12px;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 `;
 
 export const TabContainerBottomFlex = styled.div<TabContainerStyles>`
