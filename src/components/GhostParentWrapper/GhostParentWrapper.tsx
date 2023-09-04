@@ -5,7 +5,11 @@ type GhostWrapperProps = {
   children: ReactNode;
 };
 
-function GhostWrapper({ children, ...props }: GhostWrapperProps) {
+/**
+ * Wraps child components with a ghost parent (adding no extra nodes), used to apply styles or other props to children
+ * Considered calling this component "absent father" lol
+ */
+function GhostParentWrapper({ children, ...props }: GhostWrapperProps) {
   return (
     <>
       {Children.map(children, (child) => {
@@ -15,4 +19,4 @@ function GhostWrapper({ children, ...props }: GhostWrapperProps) {
   );
 }
 
-export default GhostWrapper;
+export default GhostParentWrapper;
