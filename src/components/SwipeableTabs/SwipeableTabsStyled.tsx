@@ -179,7 +179,7 @@ export const TabPanelStyled = styled(Tabs.Content)`
   flex-shrink: 0;
   margin: 0 5px;
   /* max-height: 90vh; */
-  max-height: 62vh;
+  max-height: 100%;
   overflow-y: auto;
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
