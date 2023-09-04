@@ -202,8 +202,7 @@ function BottomSheetContentCore(
             mostlyClose();
           }
         }}
-        // forceMount
-        className="content"
+        forceMount
         ref={forwardedRef}
         asChild
         {...props}
