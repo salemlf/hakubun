@@ -3,7 +3,6 @@ import { SrsLevelName } from "../../types/MiscTypes";
 import { getSrsLevelColor } from "../../services/SubjectAndAssignmentService";
 import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
 import SrsStagesLoadingSkeleton from "./SrsStagesLoadingSkeleton";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const SrsButtonContainer = styled(IonGrid)`
@@ -36,13 +35,13 @@ const SrsStageButton = styled.button<ButtonProps>`
 
 const NumItemsInStage = styled.p`
   margin: 5px 0;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
 `;
 
 const StageName = styled.p`
   margin: 5px 0;
-  font-size: 0.75rem;
+  font-size: 1rem;
   text-transform: uppercase;
 `;
 
