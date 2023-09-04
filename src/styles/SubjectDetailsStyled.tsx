@@ -75,6 +75,7 @@ export const ReadingContainer = styled(IonCol)`
   padding-left: 0;
 `;
 
+// TOODO: change to calculate height using some other method
 export const SubjDetailTabContainer = styled.div`
   margin: 0;
   margin-top: 16px;
@@ -85,6 +86,6 @@ export const SubjDetailTabContainer = styled.div`
   justify-content: flex-start;
   padding: 16px;
   border-radius: 25px;
-  max-height: 88%;
+  max-height: 80%;
   overflow-y: auto;
 `;

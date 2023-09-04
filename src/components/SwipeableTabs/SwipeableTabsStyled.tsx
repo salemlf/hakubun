@@ -23,7 +23,7 @@ type CustomFontSize = {
 
 export const TabsStyled = styled(Tabs.Root)`
   width: 100%;
-  max-height: 90vh;
+  /* max-height: 90vh; */
 `;
 
 export const TabContainer = styled.div<TabContainerStyles>`
@@ -171,6 +171,7 @@ export const TabPanels = styled.div`
   scrollbar-width: none; /* Firefox */
 `;
 
+// TOODO: change to calculate height using some other method
 export const TabPanelStyled = styled(Tabs.Content)`
   border-radius: 0.25rem;
   outline-style: none;
@@ -179,7 +180,7 @@ export const TabPanelStyled = styled(Tabs.Content)`
   flex-shrink: 0;
   margin: 0 5px;
   /* max-height: 90vh; */
-  max-height: 100%;
+  max-height: 80%;
   overflow-y: auto;
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
