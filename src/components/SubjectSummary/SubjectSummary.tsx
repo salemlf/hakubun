@@ -41,6 +41,7 @@ type SubjSummaryProps = {
   assignment: Assignment | undefined;
 };
 
+// TODO: put these in same row
 const RadicalSummary = ({ subject, assignment }: SubjSummaryProps) => {
   return (
     <>

@@ -32,6 +32,7 @@ const Content = styled(RadixDialog.Content)`
   height: 100%;
   background-color: var(--light-greyish-purple);
   overflow-y: clip;
+  pointer-events: auto;
 `;
 
 const SheetHeader = styled.header`
@@ -65,6 +66,7 @@ const SheetContainer = styled.div`
   bottom: 0;
   z-index: 5;
   overflow-y: hidden;
+  pointer-events: none;
 `;
 
 const SheetContext = createContext<boolean>(false);
