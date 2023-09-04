@@ -293,7 +293,7 @@ const btnSizeInfo: { [index: string]: BtnSizeStyles } = {
     containerSize: "5rem",
     fontSize: "1.75rem",
     fontSizeNoDetails: "2.25rem",
-    detailFontSize: "1rem",
+    detailFontSize: ".8rem",
   },
 };
 
