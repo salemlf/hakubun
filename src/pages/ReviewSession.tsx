@@ -29,14 +29,6 @@ const Page = styled(AnimatedPage)`
   }
 `;
 
-const Grid = styled(IonGrid)`
-  padding-inline-start: 0;
-  padding-inline-end: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin: 10px;
-`;
-
 // TODO: improve "Loading..." text
 // TODO: add button to abandon session
 // TODO: redirect to home if user somehow ends up on this screen without data passed
@@ -121,11 +113,9 @@ export const ReviewSession = () => {
       </ReactRouterPrompt>
       {assignmentQueue.length !== 0 && <QueueHeader />}
       <IonContent>
-        <Grid>
-          {assignmentQueue.length !== 0 && (
-            <AssignmentQueueCards submitItems={submitReviews} />
-          )}
-        </Grid>
+        {assignmentQueue.length !== 0 && (
+          <AssignmentQueueCards submitItems={submitReviews} />
+        )}
       </IonContent>
     </Page>
   );

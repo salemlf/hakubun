@@ -114,57 +114,59 @@ export const AssignmentQueueCard = ({
   return (
     <AnimatePresence>
       {currentReviewItem && (
-        <AssignmentCardStyled
-          ref={reviewCardRef}
-          subjtype={currentReviewItem.object as SubjectType}
-          initial={{ y: "-150%" }}
-          animate={{ y: 0 }}
-          style={{
-            x,
-            rotate,
-            willChange,
-          }}
-          drag="x"
-          transition={{ type: "spring", duration: 1, bounce: 0.5 }}
-          dragSnapToOrigin={true}
-          dragConstraints={{ left: 0, right: 0 }}
-          dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
-          onDragEnd={handleDragEnd}
-          dragDirectionLock={true}
-          whileTap={{ cursor: "grabbing" }}
-          dragElastic={0.5}
-        >
-          <AssignmentCharAndType
-            currentReviewItem={currentReviewItem}
-            disableTextSelection={true}
-          />
-          <AssignmentAnswerInput
-            shakeInputTrigger={shakeInputTrigger}
-            currentReviewItem={currentReviewItem}
-            userAnswer={userAnswer}
-            setUserAnswer={setUserAnswer}
-            nextBtnClicked={attemptToAdvance}
-          />
+        <>
+          <AssignmentCardStyled
+            ref={reviewCardRef}
+            subjtype={currentReviewItem.object as SubjectType}
+            initial={{ y: "-150%" }}
+            animate={{ y: 0 }}
+            style={{
+              x,
+              rotate,
+              willChange,
+            }}
+            drag="x"
+            transition={{ type: "spring", duration: 1, bounce: 0.5 }}
+            dragSnapToOrigin={true}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
+            onDragEnd={handleDragEnd}
+            dragDirectionLock={true}
+            whileTap={{ cursor: "grabbing" }}
+            dragElastic={0.5}
+          >
+            <AssignmentCharAndType
+              currentReviewItem={currentReviewItem}
+              disableTextSelection={true}
+            />
+            <AssignmentAnswerInput
+              shakeInputTrigger={shakeInputTrigger}
+              currentReviewItem={currentReviewItem}
+              userAnswer={userAnswer}
+              setUserAnswer={setUserAnswer}
+              nextBtnClicked={attemptToAdvance}
+            />
+            <RetryCardOverlay
+              style={{
+                opacity: opacityLeft,
+              }}
+            >
+              <SwipeIcon>
+                <IonIcon icon={RetryIcon}></IonIcon>
+              </SwipeIcon>
+            </RetryCardOverlay>
+            <NextCardOverlay
+              style={{
+                opacity: opacityRight,
+              }}
+            >
+              <SwipeIcon>
+                <IonIcon icon={NextIcon}></IonIcon>
+              </SwipeIcon>
+            </NextCardOverlay>
+          </AssignmentCardStyled>
           <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />
-          <RetryCardOverlay
-            style={{
-              opacity: opacityLeft,
-            }}
-          >
-            <SwipeIcon>
-              <IonIcon icon={RetryIcon}></IonIcon>
-            </SwipeIcon>
-          </RetryCardOverlay>
-          <NextCardOverlay
-            style={{
-              opacity: opacityRight,
-            }}
-          >
-            <SwipeIcon>
-              <IonIcon icon={NextIcon}></IonIcon>
-            </SwipeIcon>
-          </NextCardOverlay>
-        </AssignmentCardStyled>
+        </>
       )}
     </AnimatePresence>
   );

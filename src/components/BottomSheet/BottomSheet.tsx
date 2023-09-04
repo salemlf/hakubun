@@ -3,14 +3,16 @@ import {
   forwardRef,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import type { ForwardedRef } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { PanInfo, motion, useAnimation } from "framer-motion";
-import { useElementSize } from "usehooks-ts";
+import { FocusScope } from "react-aria";
 import { usePrevious } from "../../hooks/usePrevious";
 import Button from "../Button/Button";
+import GhostParentWrapper from "../GhostParentWrapper";
 import styled from "styled-components";
 
 const Overlay = styled(motion.div)`
@@ -22,17 +24,6 @@ const Overlay = styled(motion.div)`
   display: grid;
   place-items: center;
   overflow-y: auto;
-`;
-
-const Portal = styled(RadixDialog.Portal)`
-  .container {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 `;
 
 const Content = styled(RadixDialog.Content)`
@@ -61,7 +52,22 @@ const SheetOpenCloseButton = styled(Button)`
   border-radius: 1rem;
 `;
 
-const DialogOpenContext = createContext<boolean>(false);
+const SheetContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  overflow-y: hidden;
+`;
+
+const SheetContext = createContext<boolean>(false);
 
 type BottomSheetRootProps = RadixDialog.DialogProps & {
   isOpen: boolean;
@@ -75,7 +81,7 @@ function BottomSheetRoot({
   ...props
 }: BottomSheetRootProps) {
   return (
-    <DialogOpenContext.Provider value={isOpen}>
+    <SheetContext.Provider value={isOpen}>
       <RadixDialog.Root
         onOpenChange={setIsOpen}
         open={isOpen}
@@ -84,7 +90,7 @@ function BottomSheetRoot({
       >
         {children}
       </RadixDialog.Root>
-    </DialogOpenContext.Provider>
+    </SheetContext.Provider>
   );
 }
 
@@ -106,13 +112,22 @@ type BottomSheetContentCoreProps = RadixDialog.DialogContentProps & {
   title: string;
 };
 
-// TODO: disable content inside sheet (except open/close button) when in mostlyClosed state
+// TODO: fix bug where can't tab back once tabbed to open/close button (workaround rn is to open sheet and then tab back)
 function BottomSheetContentCore(
   { title, children, className, ...props }: BottomSheetContentCoreProps,
   forwardedRef: ForwardedRef<HTMLDivElement>
 ) {
-  const isOpen = useContext(DialogOpenContext);
-  const [headerRef, { height: headerHeight }] = useElementSize();
+  const [headerHeight, setHeaderHeight] = useState(0);
+  // TODO: change to not use "any" type
+  const headerRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (headerRef.current) {
+      setHeaderHeight(headerRef.current.clientHeight);
+    }
+  }, [headerRef.current]);
+
+  const isOpen = useContext(SheetContext);
   const [isFullyOpen, setIsFullyOpen] = useState(false);
   const prevIsOpen = usePrevious(isOpen);
   const controls = useAnimation();
@@ -157,8 +172,8 @@ function BottomSheetContentCore(
   };
 
   return (
-    <Portal>
-      <RadixDialog.Overlay className="overlay" forceMount asChild>
+    <SheetContainer>
+      <RadixDialog.Overlay className="overlay" asChild>
         <Overlay
           variants={overlayVariants}
           animate={isOpen ? "open" : "closed"}
@@ -205,14 +220,26 @@ function BottomSheetContentCore(
             zIndex: 5,
           }}
         >
-          <SheetHeader ref={headerRef}>
-            <SheetOpenCloseButton onPress={onSheetBtnPress} />
-            <SheetHeadingTxt>{title}</SheetHeadingTxt>
-          </SheetHeader>
-          {children}
+          {isFullyOpen ? (
+            <FocusScope contain autoFocus>
+              <SheetHeader ref={headerRef}>
+                <SheetOpenCloseButton onPress={onSheetBtnPress} />
+                <SheetHeadingTxt>{title}</SheetHeadingTxt>
+              </SheetHeader>
+              {children}
+            </FocusScope>
+          ) : (
+            <>
+              <SheetHeader ref={headerRef}>
+                <SheetOpenCloseButton onPress={onSheetBtnPress} />
+                <SheetHeadingTxt>{title}</SheetHeadingTxt>
+              </SheetHeader>
+              <GhostParentWrapper inert>{children}</GhostParentWrapper>
+            </>
+          )}
         </motion.div>
       </Content>
-    </Portal>
+    </SheetContainer>
   );
 }
 
