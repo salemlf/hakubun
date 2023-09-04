@@ -166,27 +166,9 @@ export const getAudioForReading = (
   userAnswer: string,
   primaryReadingFallback?: string
 ) => {
-  // *testing
-  console.log("🚀 ~ file: MiscService.ts:167 ~ audioItems:", audioItems);
-  // *testing
-
-  let readingInHiragana = convertToHiragana(userAnswer);
-  // *testing
-  console.log(
-    "🚀 ~ file: MiscService.ts:173 ~ readingInHiragana:",
-    readingInHiragana
-  );
-  // *testing
-
   let primaryFallback = primaryReadingFallback
     ? convertToHiragana(primaryReadingFallback)
     : primaryReadingFallback;
-  // *testing
-  console.log(
-    "🚀 ~ file: MiscService.ts:192 ~ primaryFallback:",
-    primaryFallback
-  );
-  // *testing
 
   let audioByReading = audioItems.filter(
     (audioOption: PronunciationAudio) =>
@@ -201,12 +183,6 @@ export const getAudioForReading = (
             audioOption.metadata.pronunciation === primaryFallback
         )
       : audioByReading;
-  // *testing
-  console.log(
-    "🚀 ~ file: MiscService.ts:178 ~ audioFilesFound:",
-    audioFilesFound
-  );
-  // *testing
 
   // TODO: change to allow selecting based on voice in settings
   let selectedAudioFile = getAudioUrlByGender(audioFilesFound, "female");
