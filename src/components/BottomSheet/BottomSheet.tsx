@@ -107,7 +107,7 @@ const sheetPosVariants = {
     y: `calc(100% - ${height}px)`,
   }),
   fullyOpen: { y: "10%" },
-  // closed: { y: "100%" },
+  closed: { y: "100%" },
 };
 
 type BottomSheetContentCoreProps = RadixDialog.DialogContentProps & {
@@ -130,6 +130,9 @@ function BottomSheetContentCore(
   }, [headerRef.current]);
 
   const isOpen = useContext(SheetContext);
+  // *testing
+  console.log("🚀 ~ file: BottomSheet.tsx:133 ~ isOpen:", isOpen);
+  // *testing
   const [isFullyOpen, setIsFullyOpen] = useState(false);
   const prevIsOpen = usePrevious(isOpen);
   const controls = useAnimation();
@@ -152,11 +155,18 @@ function BottomSheetContentCore(
     }
   };
 
+  // TODO: modify so not using a bunch of if statements
   useEffect(() => {
     if (!prevIsOpen && isOpen) {
       mostlyClose();
     } else if (prevIsOpen && isOpen) {
       fullyOpen();
+    } else if (prevIsOpen && !isOpen) {
+      // need to mostly close first so that the sheet is in the right position to close
+      mostlyClose();
+    }
+    if (!isOpen) {
+      controls.start("closed");
     }
   }, [controls, isOpen, prevIsOpen, headerHeight]);
 
