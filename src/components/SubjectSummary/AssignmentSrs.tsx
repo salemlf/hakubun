@@ -6,13 +6,12 @@ import {
   SubjSummaryCol,
   SubjSummaryRow,
 } from "../../styles/SubjectDetailsStyled";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const AssignmentSrsContainer = styled(SubjSummaryCol)`
   justify-content: flex-end;
   padding: 5px 0;
-  flex: 0 0 40%;
+  /* flex: 0 0 40%; */
 
   p {
     margin: 5px 0;
