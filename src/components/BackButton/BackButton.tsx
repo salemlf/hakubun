@@ -20,12 +20,16 @@ const BackIcon = styled(IonIcon)`
   height: 1.5em;
 `;
 
-function BackButton() {
+type Props = {
+  backgroundColor?: string;
+};
+
+function BackButton({ backgroundColor = "var(--darkest-purple)" }: Props) {
   const navigate = useNavigate();
 
   return (
     <BackButtonStyled
-      backgroundColor="var(--darkest-purple)"
+      backgroundColor={backgroundColor}
       onPress={() => navigate(-1)}
     >
       <BackIcon src={BackArrowIcon} />
