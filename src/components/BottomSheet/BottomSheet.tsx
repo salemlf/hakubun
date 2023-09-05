@@ -6,10 +6,16 @@ import {
   useRef,
   useState,
 } from "react";
-import type { ForwardedRef } from "react";
+import type { ForwardedRef, RefObject } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
-import { PanInfo, motion, useAnimation } from "framer-motion";
+import {
+  AnimationControls,
+  PanInfo,
+  motion,
+  useAnimation,
+} from "framer-motion";
 import { FocusScope } from "react-aria";
+import { useWindowSize } from "usehooks-ts";
 import { usePrevious } from "../../hooks/usePrevious";
 import Button from "../Button/Button";
 import GhostParentWrapper from "../GhostParentWrapper";
@@ -33,6 +39,9 @@ const Content = styled(RadixDialog.Content)`
   background-color: var(--light-greyish-purple);
   overflow-y: clip;
   pointer-events: auto;
+  /* !added */
+  position: absolute;
+  /* !added */
 `;
 
 const SheetHeader = styled.header`
@@ -101,12 +110,11 @@ const overlayVariants = {
   open: { opacity: 1, pointerEvents: "auto" as const },
 };
 
-// TODO: for fullyOpen variant, use calc(100% - {PAGE_HEADER_HEIGHT}px - {SOME_MARGIN}) (this isn't super important, just if I have time)
 const sheetPosVariants = {
-  mostlyClosed: (height: number) => ({
-    y: `calc(100% - ${height}px)`,
+  fullyOpen: { y: 0 },
+  mostlyClosed: (dragHeight: number) => ({
+    y: dragHeight,
   }),
-  fullyOpen: { y: "10%" },
   closed: { y: "100%" },
 };
 
@@ -114,14 +122,20 @@ type BottomSheetContentCoreProps = RadixDialog.DialogContentProps & {
   title: string;
 };
 
+const sheetHeightMargin = 100;
+
 // TODO: fix bug where can't tab back once tabbed to open/close button (workaround rn is to open sheet and then tab back)
 function BottomSheetContentCore(
   { title, children, className, ...props }: BottomSheetContentCoreProps,
   forwardedRef: ForwardedRef<HTMLDivElement>
 ) {
+  const isOpen = useContext(SheetContext);
   const [headerHeight, setHeaderHeight] = useState(0);
   // TODO: change to not use "any" type
   const headerRef = useRef<any>(null);
+  const sheetContainerRef = useRef<HTMLDivElement>(null);
+  const { height } = useWindowSize();
+  const dragHeight = height - headerHeight - sheetHeightMargin;
 
   useEffect(() => {
     if (headerRef.current) {
@@ -129,10 +143,6 @@ function BottomSheetContentCore(
     }
   }, [headerRef.current]);
 
-  const isOpen = useContext(SheetContext);
-  // *testing
-  console.log("🚀 ~ file: BottomSheet.tsx:133 ~ isOpen:", isOpen);
-  // *testing
   const [isFullyOpen, setIsFullyOpen] = useState(false);
   const prevIsOpen = usePrevious(isOpen);
   const controls = useAnimation();
@@ -170,7 +180,6 @@ function BottomSheetContentCore(
     }
   }, [controls, isOpen, prevIsOpen, headerHeight]);
 
-  // TODO: make drag up animation smoother, has no give rn
   const onDragEnd = (
     event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
@@ -190,7 +199,7 @@ function BottomSheetContentCore(
   };
 
   return (
-    <SheetContainer>
+    <SheetContainer ref={sheetContainerRef}>
       <RadixDialog.Overlay className="overlay" asChild>
         <Overlay
           variants={overlayVariants}
@@ -227,12 +236,13 @@ function BottomSheetContentCore(
             damping: 20,
             stiffness: 300,
           }}
-          custom={headerHeight}
+          custom={dragHeight}
           variants={sheetPosVariants}
-          dragConstraints={{ top: 0 }}
+          dragConstraints={{ top: 0, bottom: dragHeight }}
           dragElastic={0.3}
           style={{
-            display: "inline-block",
+            width: "100%",
+            height: height - sheetHeightMargin,
             overflowY: "hidden",
             zIndex: 5,
           }}
