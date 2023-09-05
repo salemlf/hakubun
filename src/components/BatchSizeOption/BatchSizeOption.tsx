@@ -8,7 +8,7 @@ import styled from "styled-components";
 const BatchSizeContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 10px 16px;
+  margin: 10px 16px 16px;
   align-items: center;
 `;
 
