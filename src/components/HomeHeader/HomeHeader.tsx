@@ -1,40 +1,35 @@
 import { useEffect, useState } from "react";
-import {
-  IonButton,
-  IonButtons,
-  IonCol,
-  IonGrid,
-  IonHeader,
-  IonRow,
-  IonToolbar,
-} from "@ionic/react";
 import { useUserAuth } from "../../contexts/AuthContext";
 import LvlBadge from "../LvlBadge/LvlBadge";
+import Button from "../Button";
 import SettingsIcon from "../../images/settings.svg";
-// import styled from "styled-components/macro";
+import { Header } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const SettingsImg = styled.img`
-  width: 3em;
-  height: 3em;
+  width: 2.75em;
+  height: 2.75em;
 `;
 
-const Button = styled(IonButton)`
-  min-height: 38px;
+const SettingsButton = styled(Button)`
+  border-radius: 12px;
+  padding: 5px;
 `;
 
-const UserInfoCol = styled(IonCol)`
-  flex-grow: 0;
+const HeaderWrapper = styled(Header)`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const UserInfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
   p {
     font-size: 1.25rem;
     margin: 0;
   }
-`;
-
-const HeaderRow = styled(IonRow)`
-  align-items: center;
-  justify-content: flex-start;
 `;
 
 function HomeHeader() {
@@ -56,25 +51,15 @@ function HomeHeader() {
 
   // TODO: show loading skeleton
   return (
-    <IonHeader>
-      <IonToolbar>
-        <IonGrid>
-          <HeaderRow>
-            <UserInfoCol>
-              <LvlBadge level={level}></LvlBadge>
-            </UserInfoCol>
-            <UserInfoCol>
-              <p>{username}</p>
-            </UserInfoCol>
-          </HeaderRow>
-        </IonGrid>
-        <IonButtons slot="primary">
-          <Button>
-            <SettingsImg src={SettingsIcon} alt="settings icon"></SettingsImg>
-          </Button>
-        </IonButtons>
-      </IonToolbar>
-    </IonHeader>
+    <HeaderWrapper bgcolor="var(--light-greyish-purple)">
+      <UserInfoContainer>
+        <LvlBadge level={level}></LvlBadge>
+        <p>{username}</p>
+      </UserInfoContainer>
+      <SettingsButton backgroundColor="transparent">
+        <SettingsImg src={SettingsIcon} alt="settings icon"></SettingsImg>
+      </SettingsButton>
+    </HeaderWrapper>
   );
 }
 
