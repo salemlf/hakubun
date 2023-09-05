@@ -12,19 +12,12 @@ const BatchSizeContainer = styled.div`
   align-items: center;
 `;
 
-const BatchSizeLabel = styled(Label)`
-  font-size: 1.25rem;
-  color: white;
-  padding-top: 0;
-`;
-
 type Props = {
   assignmentData: Assignment[];
   defaultSize: number;
   onBatchSizeChange: (batchSize: number) => void;
 };
 
-// TODO: use actual label, make more accessible
 function BatchSizeOption({
   assignmentData,
   defaultSize,
@@ -44,10 +37,7 @@ function BatchSizeOption({
 
   return (
     <BatchSizeContainer>
-      <BatchSizeLabel
-        labelText="Batch Size"
-        idOfControl="batch-size-selector"
-      />
+      <Label labelText="Batch Size" idOfControl="batch-size-selector" />
       <Selector
         id="batch-size-selector"
         value={batchSize.toString()}
