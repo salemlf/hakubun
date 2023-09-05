@@ -46,6 +46,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 import LessonSummary from "./pages/LessonSummary";
+import Settings from "./pages/Settings";
 
 // TODO: change so not using setupIonicReact and IonApp
 setupIonicReact();
@@ -93,6 +94,7 @@ const AppElements = () => {
           }
         >
           <Route index path="/" element={<Home />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/reviews/settings" element={<ReviewSettings />} />
           <Route path="/reviews/session" element={<ReviewSession />}></Route>
           <Route path="/reviews/summary" element={<ReviewSummary />} />

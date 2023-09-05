@@ -5,6 +5,7 @@ import Button from "../Button";
 import SettingsIcon from "../../images/settings.svg";
 import { Header } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const SettingsImg = styled.img`
   width: 2.75em;
@@ -33,6 +34,7 @@ const UserInfoContainer = styled.div`
 `;
 
 function HomeHeader() {
+  const navigate = useNavigate();
   const auth = useUserAuth();
   const [level, setLevel] = useState<number | undefined>();
   const [username, setUsername] = useState<string | undefined>("");
@@ -56,7 +58,10 @@ function HomeHeader() {
         <LvlBadge level={level}></LvlBadge>
         <p>{username}</p>
       </UserInfoContainer>
-      <SettingsButton backgroundColor="transparent">
+      <SettingsButton
+        backgroundColor="transparent"
+        onPress={() => navigate("/settings")}
+      >
         <SettingsImg src={SettingsIcon} alt="settings icon"></SettingsImg>
       </SettingsButton>
     </HeaderWrapper>
