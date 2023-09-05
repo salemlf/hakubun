@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IonContent, IonGrid } from "@ionic/react";
 import { useLocation } from "react-router";
+import { useWindowSize } from "usehooks-ts";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { Subject } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
@@ -28,6 +29,9 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   const location = useLocation();
   const showBottomSheet = useQueueStore.use.isBottomSheetVisible();
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  // !added
+  const { height } = useWindowSize();
+  // !added
 
   // TODO: also reopen to previous breakpoint on return?
   useEffect(() => {
@@ -46,37 +50,38 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   }, [location.pathname, showBottomSheet]);
 
   return (
-    <BottomSheetRoot
-      isOpen={isBottomSheetVisible}
-      setIsOpen={setIsBottomSheetVisible}
-    >
-      <BottomSheetContent title="Subject Info">
-        <BottomSheetHeader subject={currentReviewItem as Subject} />
-        <IonContent className="ion-padding">
-          <FullWidthGrid>
-            {currentReviewItem.object == "radical" && (
-              <RadicalDetailTabs
-                radical={currentReviewItem}
-                scrollToDefault={true}
-              />
-            )}
-            {currentReviewItem.object == "kanji" && (
-              <KanjiDetailTabs
-                kanji={currentReviewItem}
-                scrollToDefault={true}
-              />
-            )}
-            {(currentReviewItem.object == "vocabulary" ||
-              currentReviewItem.object == "kana_vocabulary") && (
-              <VocabDetailTabs
-                vocab={currentReviewItem}
-                scrollToDefault={true}
-              />
-            )}
-          </FullWidthGrid>
-        </IonContent>
-      </BottomSheetContent>
-    </BottomSheetRoot>
+    isBottomSheetVisible && (
+      <>
+        <BottomSheetRoot>
+          <BottomSheetContent title="Subject Info" height={height}>
+            <BottomSheetHeader subject={currentReviewItem as Subject} />
+            <IonContent className="ion-padding">
+              <FullWidthGrid>
+                {currentReviewItem.object == "radical" && (
+                  <RadicalDetailTabs
+                    radical={currentReviewItem}
+                    scrollToDefault={true}
+                  />
+                )}
+                {currentReviewItem.object == "kanji" && (
+                  <KanjiDetailTabs
+                    kanji={currentReviewItem}
+                    scrollToDefault={true}
+                  />
+                )}
+                {(currentReviewItem.object == "vocabulary" ||
+                  currentReviewItem.object == "kana_vocabulary") && (
+                  <VocabDetailTabs
+                    vocab={currentReviewItem}
+                    scrollToDefault={true}
+                  />
+                )}
+              </FullWidthGrid>
+            </IonContent>
+          </BottomSheetContent>
+        </BottomSheetRoot>
+      </>
+    )
   );
 }
 
