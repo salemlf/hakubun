@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Assignment } from "../../types/Assignment";
 import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import Selector, { SelectItem } from "../Selector";
+import Label from "../Label";
 import styled from "styled-components";
 
 const BatchSizeContainer = styled.div`
@@ -11,7 +12,7 @@ const BatchSizeContainer = styled.div`
   align-items: center;
 `;
 
-const BatchSizeLabel = styled.p`
+const BatchSizeLabel = styled(Label)`
   font-size: 1.25rem;
   color: white;
   padding-top: 0;
@@ -43,8 +44,12 @@ function BatchSizeOption({
 
   return (
     <BatchSizeContainer>
-      <BatchSizeLabel>Batch Size</BatchSizeLabel>
+      <BatchSizeLabel
+        labelText="Batch Size"
+        idOfControl="batch-size-selector"
+      />
       <Selector
+        id="batch-size-selector"
         value={batchSize.toString()}
         onValueChange={(updatedValue) => onBatchUpdate(updatedValue)}
       >

@@ -113,12 +113,16 @@ const SelectViewport = styled(SelectPrimitive.Viewport)`
 
 type ButtonRef = HTMLButtonElement;
 
+type SelectorProps = SelectProps & {
+  id: string;
+};
+
 // TODO: create a composed version of the selector where can pass in an array of items and they'll be mapped
-const Selector = React.forwardRef<ButtonRef, SelectProps>(
-  ({ children, ...props }, forwardedRef) => {
+const Selector = React.forwardRef<ButtonRef, SelectorProps>(
+  ({ id, children, ...props }, forwardedRef) => {
     return (
       <SelectorRoot {...props}>
-        <Trigger ref={forwardedRef}>
+        <Trigger ref={forwardedRef} id={id}>
           <SelectPrimitive.Value />
           <SelectPrimitive.Icon>
             <IonIcon src={ExpandArrowIcon} />
