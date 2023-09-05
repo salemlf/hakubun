@@ -6,7 +6,6 @@ import {
   BaseReviewLessonButtonBadge,
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const LessonsButtonStyled = styled(BaseReviewLessonButton)`
@@ -41,17 +40,12 @@ function LessonsButton({ level }: Props) {
     return <LessonButtonSkeleton animated={true}></LessonButtonSkeleton>;
   }
 
-  // const goToLessons = () => {
-  //   // TODO: use lessonData
-  // };
-
   return (
     <LessonsButtonStyled
       color="clear"
       expand="block"
       title="Lessons"
       onClick={() => navigate("/lessons/settings")}
-      // onClick={goToLessons}
       style={{
         backgroundImage: `url(${
           numLessons
