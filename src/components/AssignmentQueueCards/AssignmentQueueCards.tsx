@@ -76,12 +76,26 @@ function AssignmentQueueCards({ submitItems }: Props) {
     assignmentQueueItem: AssignmentQueueItem,
     userAnswer: string
   ) => {
+    // *testing
+    console.log(
+      "🚀 ~ file: AssignmentQueueCards.tsx:79 ~ AssignmentQueueCards ~ assignmentQueueItem:",
+      assignmentQueueItem
+    );
+    console.log(
+      "🚀 ~ file: AssignmentQueueCards.tsx:79 ~ AssignmentQueueCards ~ userAnswer:",
+      userAnswer
+    );
+    // *testing
+
     if (
       (assignmentQueueItem.review_type === "reading" &&
         assignmentQueueItem.object === "vocabulary") ||
       (assignmentQueueItem.object === "kana_vocabulary" &&
         assignmentQueueItem.pronunciation_audios !== undefined)
     ) {
+      // *testing
+      console.log("INSIDE FIRST IF");
+      // *testing
       const primaryReadingMap: { [index: string]: string | undefined } = {
         vocabulary: assignmentQueueItem.readings?.find(
           (reading: any) => reading.primary === true

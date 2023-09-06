@@ -167,27 +167,57 @@ export const getAudioForReading = (
   userAnswer: string,
   primaryReadingFallback?: string
 ) => {
-  let primaryFallback = primaryReadingFallback
-    ? convertToHiragana(primaryReadingFallback)
-    : primaryReadingFallback;
+  const hiraganaFallback =
+    primaryReadingFallback && convertToHiragana(primaryReadingFallback);
 
-  let audioByReading = audioItems.filter(
+  const audioByReading = findAudioByPronunciation(userAnswer, audioItems);
+
+  if (audioByReading.length > 0) {
+    return (
+      getAudioUrlByGender(audioByReading, "female") || audioByReading[0].url
+    );
+  }
+
+  if (primaryReadingFallback) {
+    const foundWithPrimary = findAudioByPronunciation(
+      primaryReadingFallback,
+      audioItems
+    );
+
+    if (foundWithPrimary.length > 0) {
+      return (
+        getAudioUrlByGender(foundWithPrimary, "female") ||
+        foundWithPrimary[0].url
+      );
+    }
+
+    if (hiraganaFallback) {
+      const audioFilesFound = findAudioByPronunciation(
+        hiraganaFallback,
+        audioItems
+      );
+
+      if (audioFilesFound.length > 0) {
+        return (
+          getAudioUrlByGender(audioFilesFound, "female") ||
+          audioFilesFound[0].url
+        );
+      }
+    }
+  }
+
+  // TODO: rn just returning empty string as last fallback, don't think this should ever happen?
+  return "";
+};
+
+const findAudioByPronunciation = (
+  pronunciation: string,
+  audioItems: PronunciationAudio[]
+) => {
+  return audioItems.filter(
     (audioOption: PronunciationAudio) =>
-      audioOption.metadata.pronunciation === userAnswer
+      audioOption.metadata.pronunciation === pronunciation
   );
-
-  // if no audio for the reading and fallback passed in, use the primary reading as a fallback
-  let audioFilesFound =
-    audioByReading.length === 0 && primaryFallback
-      ? audioItems.filter(
-          (audioOption: PronunciationAudio) =>
-            audioOption.metadata.pronunciation === primaryFallback
-        )
-      : audioByReading;
-
-  // TODO: change to allow selecting based on voice in settings
-  let selectedAudioFile = getAudioUrlByGender(audioFilesFound, "female");
-  return selectedAudioFile ? selectedAudioFile : audioFilesFound[0].url;
 };
 
 export const constructStudyMaterialData = ({
