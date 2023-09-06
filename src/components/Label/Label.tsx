@@ -3,30 +3,34 @@ import { PrimitiveLabelProps } from "@radix-ui/react-label";
 import styled from "styled-components";
 
 type LabelStyledProps = {
-  fontsize: string;
+  labelfontsize: string;
   color: string;
 };
 
 const LabelStyled = styled(LabelPrimitive.Root)<LabelStyledProps>`
-  font-size: ${({ fontsize }) => `${fontsize}`};
+  font-size: ${({ labelfontsize }) => `${labelfontsize}`};
   color: ${({ color }) => `${color}`};
 `;
 
 type LabelProps = PrimitiveLabelProps & {
   idOfControl: string;
   labelText: string;
-  fontSize?: string;
+  labelfontSize?: string;
   color?: string;
 };
 
 function Label({
   idOfControl,
   labelText,
-  fontSize = "1.25rem",
+  labelfontSize = "1.25rem",
   color = "white",
 }: LabelProps) {
   return (
-    <LabelStyled htmlFor={idOfControl} fontsize={fontSize} color={color}>
+    <LabelStyled
+      htmlFor={idOfControl}
+      labelfontsize={labelfontSize}
+      color={color}
+    >
       {labelText}
     </LabelStyled>
   );
