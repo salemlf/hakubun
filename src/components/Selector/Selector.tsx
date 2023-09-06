@@ -63,18 +63,18 @@ const SelectorRoot = styled(SelectPrimitive.Root)`
 `;
 
 const Trigger = styled(SelectPrimitive.Trigger)`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: flex;
   border-radius: 4px;
-  padding: 0 15px;
+  padding: 5px 12px;
   font-size: 1.2rem;
   line-height: 1;
-  height: 35px;
-  gap: 5px;
+  gap: 8px;
   background-color: white;
   color: var(--darkest-purple);
   box-shadow: 0 2px 10px #1b0f24;
+
+  /* max width so doesn't take up a crazy amount, will use ellipsis if overflow */
+  max-width: 55vw;
 
   &:hover {
     background-color: rgb(231, 218, 240);
@@ -86,6 +86,12 @@ const Trigger = styled(SelectPrimitive.Trigger)`
 
   &[data-placeholder] {
     color: var(--dark-greyish-purple);
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `;
 
