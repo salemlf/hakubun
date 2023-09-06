@@ -25,6 +25,8 @@ import { Subjects } from "./pages/Subjects";
 import LessonQuiz from "./pages/LessonQuiz";
 import { SubjectDetails } from "./pages/SubjectDetails";
 import Home from "./pages/Home";
+import LessonSummary from "./pages/LessonSummary";
+import Settings from "./pages/Settings";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -45,8 +47,6 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/globals.scss";
-import LessonSummary from "./pages/LessonSummary";
-import Settings from "./pages/Settings";
 
 // TODO: change so not using setupIonicReact and IonApp
 setupIonicReact();

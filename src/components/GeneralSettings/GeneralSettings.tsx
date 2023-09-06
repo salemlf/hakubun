@@ -1,17 +1,25 @@
-import { SettingRow } from "../../styles/BaseStyledComponents";
-import Label from "../Label";
-import Selector, { SelectItem } from "../Selector";
+import { useUserSettingsStore } from "../../stores/useUserSettings";
 import { AUDIO_VOICES } from "../../constants";
-import { useState } from "react";
+import { PronunciationVoice } from "../../types/UserSettingsTypes";
+import Label from "../Label";
 import Card from "../Card";
+import Selector, { SelectItem } from "../Selector";
+import { SettingRow } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const SettingCategory = styled(Card)`
   display: flex;
 `;
 
+// TODO: use voice setting
 function GeneralSettings() {
-  const [selectedVoice, setSelectedVoice] = useState(AUDIO_VOICES[0]);
+  const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
+  const setPronunciationVoice =
+    useUserSettingsStore.use.setPronunciationVoice();
+
+  const updateSelectedVoice = (newVoice: PronunciationVoice) => {
+    setPronunciationVoice(newVoice);
+  };
 
   return (
     <SettingCategory title="General" headerBgColor="var(--ion-color-primary)">
@@ -19,8 +27,10 @@ function GeneralSettings() {
         <Label labelText="Audio Voice" idOfControl="audio-voice-selector" />
         <Selector
           id="audio-voice-selector"
-          value={selectedVoice}
-          onValueChange={(updatedValue) => setSelectedVoice(updatedValue)}
+          value={pronunciationVoice as string}
+          onValueChange={(updatedValue) =>
+            updateSelectedVoice(updatedValue as PronunciationVoice)
+          }
         >
           {AUDIO_VOICES.map((voiceOption: string) => {
             return (

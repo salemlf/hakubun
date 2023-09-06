@@ -33,6 +33,7 @@ const UserInfoContainer = styled.div`
   }
 `;
 
+// TODO: sometimes settings button somehow redirects to /reviews/settings and not settings? fix
 function HomeHeader() {
   const navigate = useNavigate();
   const auth = useUserAuth();
