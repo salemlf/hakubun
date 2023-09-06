@@ -6,6 +6,13 @@ export const ASSIGNMENT_BATCH_SIZES = [
   1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
 ];
 
+export const AUDIO_VOICES = [
+  "Male, Kyoto accent",
+  "Female, Kyoto accent",
+  "Male, Tokyo accent",
+  "Female, Tokyo accent",
+];
+
 export const INITIAL_ASSIGNMENT_TYPES: AssignmentType[] = [
   "radical",
   "kanji",

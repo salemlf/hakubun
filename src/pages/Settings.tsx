@@ -1,9 +1,10 @@
 import { IonContent } from "@ionic/react";
 import AnimatedPage from "../components/AnimatedPage";
-import styled from "styled-components";
-import { Header } from "../styles/BaseStyledComponents";
 import BackButton from "../components/BackButton";
 import Card from "../components/Card";
+import GeneralSettings from "../components/GeneralSettings";
+import { Header } from "../styles/BaseStyledComponents";
+import styled from "styled-components";
 
 const SettingsHeader = styled(Header)`
   padding: 14px 5px;
@@ -30,10 +31,7 @@ function Settings() {
         <PageHeading>User Settings</PageHeading>
       </SettingsHeader>
       <IonContent>
-        <SettingCategory
-          title="General"
-          headerBgColor="var(--ion-color-primary)"
-        ></SettingCategory>
+        <GeneralSettings />
         <SettingCategory
           title="Lessons"
           headerBgColor="var(--wanikani-lesson)"

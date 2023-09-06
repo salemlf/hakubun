@@ -8,6 +8,7 @@ import {
 } from "@ionic/react";
 import { motion } from "framer-motion";
 import Button from "../components/Button/Button";
+import Card from "../components/Card";
 import styled from "styled-components";
 
 export const FullWidthGrid = styled(IonGrid)`
@@ -206,4 +207,12 @@ export const Header = styled.header<HeaderContainerProps>`
   background-color: ${({ bgcolor }) => bgcolor};
   padding: 10px;
   font-size: 1.5rem;
+`;
+
+export const SettingRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 16px 6px;
+  align-items: center;
+  gap: 10px;
 `;
