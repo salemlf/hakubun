@@ -1,4 +1,4 @@
-import { useUserSettingsStore } from "../../stores/useUserSettings";
+import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
 import { AUDIO_VOICES } from "../../constants";
 import { PronunciationVoice } from "../../types/UserSettingsTypes";
 import Label from "../Label";
@@ -14,10 +14,13 @@ const SettingCategory = styled(Card)`
 // TODO: use voice setting
 function GeneralSettings() {
   const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
+  const voiceID = pronunciationVoice.id;
+
   const setPronunciationVoice =
     useUserSettingsStore.use.setPronunciationVoice();
 
-  const updateSelectedVoice = (newVoice: PronunciationVoice) => {
+  const updateSelectedVoice = (newVoiceID: string) => {
+    let newVoice = AUDIO_VOICES.find((voice) => voice.id === newVoiceID)!;
     setPronunciationVoice(newVoice);
   };
 
@@ -27,15 +30,16 @@ function GeneralSettings() {
         <Label labelText="Audio Voice" idOfControl="audio-voice-selector" />
         <Selector
           id="audio-voice-selector"
-          value={pronunciationVoice as string}
-          onValueChange={(updatedValue) =>
-            updateSelectedVoice(updatedValue as PronunciationVoice)
-          }
+          value={voiceID}
+          onValueChange={(updatedValue) => updateSelectedVoice(updatedValue)}
         >
-          {AUDIO_VOICES.map((voiceOption: string) => {
+          {AUDIO_VOICES.map((voiceOption: PronunciationVoice) => {
             return (
-              <SelectItem key={`voice_${voiceOption}`} value={voiceOption}>
-                {voiceOption}
+              <SelectItem
+                key={`voice_${voiceOption.id}`}
+                value={voiceOption.id}
+              >
+                {voiceOption.displayName}
               </SelectItem>
             );
           })}

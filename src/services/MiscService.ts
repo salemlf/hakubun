@@ -161,7 +161,6 @@ export const getAudioUrlByGender = (
 };
 
 // TODO: pass in audio voice settings
-// TODO: clean this up
 export const getAudioForReading = (
   audioItems: PronunciationAudio[],
   userAnswer: string,

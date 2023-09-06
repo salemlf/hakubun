@@ -8,10 +8,38 @@ export const ASSIGNMENT_BATCH_SIZES = [
 ];
 
 export const AUDIO_VOICES: PronunciationVoice[] = [
-  "Male, Kyoto accent",
-  "Female, Kyoto accent",
-  "Male, Tokyo accent",
-  "Female, Tokyo accent",
+  {
+    id: "male_kyoto",
+    details: {
+      gender: "male",
+      accent: "Kyoto",
+    },
+    displayName: "Male, Kyoto accent",
+  },
+  {
+    id: "female_kyoto",
+    details: {
+      gender: "female",
+      accent: "Kyoto",
+    },
+    displayName: "Female, Kyoto accent",
+  },
+  {
+    id: "male_tokyo",
+    details: {
+      gender: "male",
+      accent: "Tokyo",
+    },
+    displayName: "Male, Tokyo accent",
+  },
+  {
+    id: "female_tokyo",
+    details: {
+      gender: "female",
+      accent: "Tokyo",
+    },
+    displayName: "Female, Tokyo accent",
+  },
 ];
 
 export const INITIAL_ASSIGNMENT_TYPES: AssignmentType[] = [

@@ -16,7 +16,14 @@ const useUserSettingsStoreBase = create<
 >()(
   persist(
     (set, get) => ({
-      pronunciationVoice: "Female, Tokyo accent",
+      pronunciationVoice: {
+        id: "female_tokyo",
+        details: {
+          gender: "female",
+          accent: "Tokyo",
+        },
+        displayName: "Female, Tokyo accent",
+      },
       setPronunciationVoice: (voice: PronunciationVoice) =>
         set({ pronunciationVoice: voice }),
     }),

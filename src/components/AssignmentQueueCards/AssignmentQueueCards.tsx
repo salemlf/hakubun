@@ -15,6 +15,7 @@ import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { AssignmentQueueCard } from "./AssignmentQueueCard";
 import { AssignmentCardContainer } from "./AssignmentQueueCardsStyled";
+import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
 
 type Props = {
   submitItems: (reviewData: AssignmentQueueItem[]) => void;
@@ -38,6 +39,8 @@ function AssignmentQueueCards({ submitItems }: Props) {
   const addItemToQueue = useAssignmentQueueStore.use.addToAssignmentQueue();
   const removeOldItemFromQueue =
     useAssignmentQueueStore.use.removeOldQueueItem();
+
+  const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
 
   useEffect(() => {
     if (

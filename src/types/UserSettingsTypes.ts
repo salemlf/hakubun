@@ -1,5 +1,9 @@
-export type PronunciationVoice =
-  | "Male, Kyoto accent"
-  | "Female, Kyoto accent"
-  | "Male, Tokyo accent"
-  | "Female, Tokyo accent";
+export type PronunciationVoice = {
+  id: string;
+  details: {
+    // lol not accurate, but okay
+    gender: "male" | "female";
+    accent: "Kyoto" | "Tokyo";
+  };
+  displayName: string;
+};
