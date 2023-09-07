@@ -220,10 +220,17 @@ function AssignmentQueueCards({ submitItems }: Props) {
     let updatedReviewItem = currReviewItem;
     updatedReviewItem.is_correct_answer = null;
     updatedReviewItem.is_reviewed = false;
-    // undoing the increment previously done
-    updatedReviewItem.review_type === "reading"
-      ? (updatedReviewItem.incorrect_reading_answers -= 1)
-      : (updatedReviewItem.incorrect_meaning_answers -= 1);
+
+    // undoing the increment previously done, but not allowing it to go below 0
+    if (updatedReviewItem.review_type === "reading") {
+      updatedReviewItem.incorrect_reading_answers > 0
+        ? (updatedReviewItem.incorrect_reading_answers -= 1)
+        : updatedReviewItem.incorrect_reading_answers;
+    } else {
+      updatedReviewItem.incorrect_meaning_answers > 0
+        ? (updatedReviewItem.incorrect_meaning_answers -= 1)
+        : updatedReviewItem.incorrect_meaning_answers;
+    }
 
     updateItem(updatedReviewItem);
     setUserAnswer("");

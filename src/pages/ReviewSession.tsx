@@ -13,6 +13,7 @@ import {
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
+import { PreFlattenedAssignment } from "../types/Assignment";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
 import AnimatedPage from "../components/AnimatedPage";
@@ -73,12 +74,23 @@ export const ReviewSession = () => {
       // *testing
       console.log(results);
       // *testing
+      let unableToUpdate: AssignmentQueueItem[] = [];
+      let reviewResponses: PreFlattenedAssignment[] = [];
 
-      let reviewResponses = results;
+      results.forEach((response, index) => {
+        if (response === undefined) {
+          unableToUpdate.push(reviewData[index]);
+        } else {
+          reviewResponses.push(response);
+        }
+      });
+
       let reviewInfo = {
         reviewData,
         reviewResponses,
+        errors: unableToUpdate,
       };
+
       navigate("/reviews/summary", { state: reviewInfo, replace: true });
     });
   };

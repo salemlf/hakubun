@@ -27,7 +27,11 @@ function ReviewSummary() {
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
   const reviewData: AssignmentQueueItem[] = location.state.reviewData;
+  const errors: AssignmentQueueItem[] = location.state.errors;
   // *testing
+  if (errors.length > 0) {
+    console.log("errors: ", errors);
+  }
   console.log(
     "🚀 ~ file: ReviewSummary.tsx:52 ~ ReviewSummary ~ location.state:",
     location.state
@@ -37,6 +41,7 @@ function ReviewSummary() {
     reviewData
   );
   // *testing
+
   const reviewResponses: PreFlattenedAssignment[] =
     location.state.reviewResponses;
 
@@ -74,6 +79,12 @@ function ReviewSummary() {
             numWrong={numWrong}
             numCorrect={numCorrect}
           />
+          {errors.length > 0 && (
+            <p>
+              Oh no, looks like we weren't able to submit all your reviews for
+              some reason...
+            </p>
+          )}
         </Grid>
         <FloatingHomeButton />
       </MainContent>

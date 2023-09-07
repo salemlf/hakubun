@@ -67,7 +67,12 @@ export const AssignmentQueueCard = ({
   const exitTimeMs = 500;
   const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
 
+  // TODO: fix handleRetryClick being called even when showRetryButton shouldn't be visible
   const retryTriggered = () => {
+    // *testing
+    console.log("Handling retry for item: ", currentReviewItem);
+    // *testing
+
     if (showRetryButton) {
       setTimeout(() => {
         x.set(0);
