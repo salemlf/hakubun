@@ -5,10 +5,12 @@ import { PronunciationVoice } from "../types/UserSettingsTypes";
 
 interface UserSettingsState {
   pronunciationVoice: PronunciationVoice;
+  lessonBatchSize: number;
 }
 
 interface UserSettingsActions {
   setPronunciationVoice: (voice: PronunciationVoice) => void;
+  setLessonBatchSize: (size: number) => void;
 }
 
 const useUserSettingsStoreBase = create<
@@ -24,8 +26,10 @@ const useUserSettingsStoreBase = create<
         },
         displayName: "Female, Tokyo accent",
       },
+      lessonBatchSize: 2,
       setPronunciationVoice: (voice: PronunciationVoice) =>
         set({ pronunciationVoice: voice }),
+      setLessonBatchSize: (size: number) => set({ lessonBatchSize: size }),
     }),
     {
       name: "user-settings-storage",

@@ -4,7 +4,7 @@ import { PronunciationVoice } from "./types/UserSettingsTypes";
 export const LEVELS = Array.from({ length: 60 }, (_, index) => index + 1);
 
 export const ASSIGNMENT_BATCH_SIZES = [
-  1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+  1, 2, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
 ];
 
 export const AUDIO_VOICES: PronunciationVoice[] = [

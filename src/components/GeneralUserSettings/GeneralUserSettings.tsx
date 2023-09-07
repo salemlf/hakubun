@@ -12,7 +12,7 @@ const SettingCategory = styled(Card)`
 `;
 
 // TODO: add disclaimer about kyoto accent not always being available for vocab
-function GeneralSettings() {
+function GeneralUserSettings() {
   const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
   const voiceID = pronunciationVoice.id;
 
@@ -49,4 +49,4 @@ function GeneralSettings() {
   );
 }
 
-export default GeneralSettings;
+export default GeneralUserSettings;
