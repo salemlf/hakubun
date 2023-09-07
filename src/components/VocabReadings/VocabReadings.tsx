@@ -1,20 +1,21 @@
 // TODO: change so not relying on IonIcon
 import { IonIcon, IonRow } from "@ionic/react";
-import SoundIcon from "../../images/sound.svg";
 import { useAudio } from "../../hooks/useAudio";
 import { getAudioForReading } from "../../services/MiscService";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
+import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
 import {
   Vocabulary,
   SubjectReading,
   PronunciationAudio,
 } from "../../types/Subject";
+import Button from "../Button/Button";
+import SoundIcon from "../../images/sound.svg";
 import {
   ReadingContainer,
   SubjDetailSubHeading,
   ReadingsStyle,
 } from "../../styles/SubjectDetailsStyled";
-import Button from "../Button/Button";
 import styled from "styled-components";
 
 type AudioProps = {
@@ -65,6 +66,7 @@ type VocabReadingProps = {
 function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
   let hasReadings = vocab.readings && vocab.readings.length !== 0;
   let readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
+  const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
 
   return hasReadings ? (
     <ReadingContainer>
@@ -85,7 +87,8 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
                         <AudioBtn
                           url={getAudioForReading(
                             vocab.pronunciation_audios,
-                            vocabReading.reading
+                            vocabReading.reading,
+                            pronunciationVoice
                           )}
                         />
                       )}

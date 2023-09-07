@@ -11,7 +11,7 @@ const SettingCategory = styled(Card)`
   display: flex;
 `;
 
-// TODO: use voice setting
+// TODO: add disclaimer about kyoto accent not always being available for vocab
 function GeneralSettings() {
   const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
   const voiceID = pronunciationVoice.id;

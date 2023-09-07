@@ -1,9 +1,11 @@
 import { useEffect } from "react";
-import { IonContent, IonGrid } from "@ionic/react";
+import { IonContent } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 // TODO: instead add a module declaration file for react-router-prompt
 // @ts-ignore: Could not find a declaration file for module
 import ReactRouterPrompt from "react-router-prompt";
+import { useQueueStore } from "../stores/useQueueStore";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useCreateReview } from "../hooks/useCreateReview";
 import {
   blockUserLeavingPage,
@@ -16,8 +18,6 @@ import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQ
 import AnimatedPage from "../components/AnimatedPage";
 import Dialog from "../components/Dialog/Dialog";
 import styled from "styled-components";
-import { useQueueStore } from "../stores/useQueueStore";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -68,6 +68,7 @@ export const ReviewSession = () => {
           // *testing
         });
     });
+
     Promise.all(promises).then(function (results) {
       // *testing
       console.log(results);

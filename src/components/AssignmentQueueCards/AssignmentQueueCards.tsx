@@ -75,30 +75,17 @@ function AssignmentQueueCards({ submitItems }: Props) {
     showPopoverMsg({ message, messageType: "invalid" });
   };
 
+  // TODO: clean up this logic
   const playAudioIfReadingAndAvailable = (
     assignmentQueueItem: AssignmentQueueItem,
     userAnswer: string
   ) => {
-    // *testing
-    console.log(
-      "🚀 ~ file: AssignmentQueueCards.tsx:79 ~ AssignmentQueueCards ~ assignmentQueueItem:",
-      assignmentQueueItem
-    );
-    console.log(
-      "🚀 ~ file: AssignmentQueueCards.tsx:79 ~ AssignmentQueueCards ~ userAnswer:",
-      userAnswer
-    );
-    // *testing
-
     if (
       (assignmentQueueItem.review_type === "reading" &&
         assignmentQueueItem.object === "vocabulary") ||
       (assignmentQueueItem.object === "kana_vocabulary" &&
         assignmentQueueItem.pronunciation_audios !== undefined)
     ) {
-      // *testing
-      console.log("INSIDE FIRST IF");
-      // *testing
       const primaryReadingMap: { [index: string]: string | undefined } = {
         vocabulary: assignmentQueueItem.readings?.find(
           (reading: any) => reading.primary === true
@@ -112,6 +99,7 @@ function AssignmentQueueCards({ submitItems }: Props) {
       let userAnswerReadingOrPrimaryFallback = getAudioForReading(
         assignmentQueueItem.pronunciation_audios!,
         userAnswer,
+        pronunciationVoice,
         primaryReading
       );
 
