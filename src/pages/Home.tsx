@@ -85,16 +85,6 @@ const Home = () => {
                 <IonRow class="ion-justify-content-start">
                   <ReviewForecast />
                 </IonRow>
-                <IonRow className="ion-padding">
-                  <IonCol>
-                    <IonButton
-                      title="Remove authorization"
-                      onClick={() => removeAuth()}
-                    >
-                      Remove Auth
-                    </IonButton>
-                  </IonCol>
-                </IonRow>
               </>
             ) : (
               <IonSkeletonText animated={true}></IonSkeletonText>
