@@ -84,15 +84,14 @@ function BottomSheetContentCore(
   const headerRef = useRef<any>(null);
   const sheetContainerRef = useRef<HTMLDivElement>(null);
   const dragHeight = height - headerHeight - sheetHeightMargin;
+  const controls = useAnimation();
+  const [isFullyOpen, setIsFullyOpen] = useState(false);
 
   useEffect(() => {
     if (headerRef.current) {
       setHeaderHeight(headerRef.current.clientHeight);
     }
   }, [headerRef.current]);
-
-  const [isFullyOpen, setIsFullyOpen] = useState(false);
-  const controls = useAnimation();
 
   const mostlyClose = () => {
     controls.start("mostlyClosed");
@@ -131,6 +130,10 @@ function BottomSheetContentCore(
       } else {
         fullyOpen();
       }
+    }
+    // going back to previous position
+    else {
+      isFullyOpen ? fullyOpen() : mostlyClose();
     }
   };
 
@@ -174,7 +177,6 @@ function BottomSheetContentCore(
             overflowY: "hidden",
             zIndex: 5,
           }}
-          dragSnapToOrigin={true}
         >
           {isFullyOpen ? (
             <FocusScope contain autoFocus>
