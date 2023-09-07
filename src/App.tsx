@@ -49,7 +49,9 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
-LogRocket.init("cleqvf/hakubun");
+LogRocket.init("cleqvf/hakubun", {
+  shouldCaptureIP: false,
+});
 
 // TODO: change so not using setupIonicReact and IonApp
 setupIonicReact();
