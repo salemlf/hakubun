@@ -31,6 +31,7 @@ const TabBarContainer = styled(motion(NavigationMenu.Root))`
   left: 0;
   right: 0;
   bottom: 16px;
+  z-index: 12;
 `;
 
 const TabList = styled(NavigationMenu.List)`
