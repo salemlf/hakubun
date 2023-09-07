@@ -126,7 +126,7 @@ export const FocusRing = styled(motion.span)<CustomBgColor>`
   --ring-offset-width: 2px;
 `;
 
-export const Selector = styled(motion.span)<CustomBgColor>`
+export const Selector = styled(motion.div)<CustomBgColor>`
   position: absolute;
   top: 0;
   right: 0;
