@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { IonGrid, IonSkeletonText } from "@ionic/react";
 import { AnimatePresence } from "framer-motion";
+import { useHideTabBar } from "../contexts/HideTabBarContext";
 import { useSubjectByID } from "../hooks/useSubjectByID";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
@@ -31,6 +32,7 @@ export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
   const isSessionInProgress = useAssignmentQueueStore.use.sessionInProgress();
+  const { isHidden } = useHideTabBar();
 
   const {
     isLoading: subjectLoading,
@@ -73,7 +75,7 @@ export const SubjectDetails = () => {
         </>
       )}
       <AnimatePresence>
-        {!isSessionInProgress && <FloatingTabBar />}
+        {!isHidden && !isSessionInProgress && <FloatingTabBar />}
       </AnimatePresence>
     </Page>
   );

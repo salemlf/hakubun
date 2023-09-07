@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
+import { Keyboard } from "@capacitor/keyboard";
+import { useHideTabBar } from "../contexts/HideTabBarContext";
 import Loading from "../components/Loading";
 
 type Props = {
@@ -18,6 +20,7 @@ const ProtectedRoute = ({
   children,
 }: Props) => {
   const navigate = useNavigate();
+  const { setIsHidden } = useHideTabBar();
 
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
@@ -33,6 +36,22 @@ const ProtectedRoute = ({
       CapacitorApp.removeAllListeners();
     };
   }, [history]);
+
+  useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      Keyboard.addListener("keyboardWillShow", () => {
+        setIsHidden(true);
+      });
+
+      Keyboard.addListener("keyboardDidHide", () => {
+        setIsHidden(false);
+      });
+    }
+    return () => {
+      setIsHidden(false);
+      Keyboard.removeAllListeners();
+    };
+  }, []);
 
   if (authLoading) {
     return <Loading />;

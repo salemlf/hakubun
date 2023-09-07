@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { IonList, IonSearchbar } from "@ionic/react";
 import Fuse from "fuse.js";
 import { flattenSearchResults } from "../services/MiscService";
+import { useHideTabBar } from "../contexts/HideTabBarContext";
 import { useAllSubjects } from "../hooks/useAllSubjects";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
 import SearchIcon from "../images/search.svg";
@@ -33,6 +34,7 @@ const List = styled(IonList)`
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useState("");
+  const { isHidden } = useHideTabBar();
 
   const options = {
     threshold: 0.1,
@@ -99,7 +101,8 @@ export const Search = () => {
             <p>Loading...</p>
           )}
         </ContentWithTabBar>
-        <FloatingTabBar />
+        {!isHidden && <FloatingTabBar />}
+        {/* <FloatingTabBar /> */}
       </Page>
     </>
   );
