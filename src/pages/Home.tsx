@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   IonGrid,
   IonCol,
   IonRow,
-  IonButton,
   IonSpinner,
   IonSkeletonText,
 } from "@ionic/react";
@@ -25,7 +23,6 @@ import ReviewForecast from "../components/ReviewForecast";
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
-  const navigate = useNavigate();
 
   const appContext = useUserAuth();
 
@@ -35,11 +32,6 @@ const Home = () => {
     setUserDetails();
     setHomeLoading(false);
   }, [appContext.isAuthenticated]);
-
-  const removeAuth = () => {
-    appContext.logout();
-    navigate("/authenticate");
-  };
 
   const setUserDetails = () => {
     let userData = appContext.user;
