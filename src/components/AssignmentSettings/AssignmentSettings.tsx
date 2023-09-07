@@ -169,7 +169,7 @@ function AssignmentSettings({
                 tabContents: (
                   <BasicAssignmentSettings
                     assignmentData={assignmentData}
-                    defaultBatchSize={defaultBatchSize}
+                    defaultBatchSize={batchSize}
                     setBatchSize={setBatchSize}
                     onSelectedAssignTypeChange={onSelectedAssignTypeChange}
                   />

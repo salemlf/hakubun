@@ -6,6 +6,7 @@ import BackButton from "../components/BackButton/BackButton";
 import styled from "styled-components";
 import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
 import { SettingsTitle } from "../styles/BaseStyledComponents";
+import { useUserSettingsStore } from "../stores/useUserSettingsStore";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -30,8 +31,7 @@ export const ReviewSettings = () => {
     error: availForReviewErr,
   } = useAssignmentsAvailForReview();
 
-  // TODO: change to use user setting for default review batch size once settings are implemented
-  let defaultBatchSize = 5;
+  const reviewBatchSize = useUserSettingsStore.use.reviewBatchSize();
 
   return (
     <Page>
@@ -54,7 +54,7 @@ export const ReviewSettings = () => {
           <AssignmentSettings
             settingsType="reviews"
             assignmentData={availForReviewData}
-            defaultBatchSize={defaultBatchSize}
+            defaultBatchSize={reviewBatchSize}
           />
         )}
       </IonContent>

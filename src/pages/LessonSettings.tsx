@@ -6,6 +6,7 @@ import BackButton from "../components/BackButton/BackButton";
 import AssignmentSettings from "../components/AssignmentSettings";
 import { SettingsTitle } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
+import { useUserSettingsStore } from "../stores/useUserSettingsStore";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -25,8 +26,7 @@ function LessonSettings() {
     error: lessonsErr,
   } = useLessons();
 
-  // TODO: change to use user setting for default lesson batch size once settings are implemented
-  let defaultBatchSize = 1;
+  const lessonBatchSize = useUserSettingsStore.use.lessonBatchSize();
 
   return (
     <Page>
@@ -47,7 +47,7 @@ function LessonSettings() {
           <AssignmentSettings
             settingsType="lessons"
             assignmentData={lessonsData}
-            defaultBatchSize={defaultBatchSize}
+            defaultBatchSize={lessonBatchSize}
           />
         )}
       </IonContent>

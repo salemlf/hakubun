@@ -6,7 +6,7 @@ import AssignmentTypeSelector from "../AssignmentTypeSelector";
 type Props = {
   assignmentData: Assignment[];
   defaultBatchSize: number;
-  setBatchSize: React.Dispatch<React.SetStateAction<number>>;
+  setBatchSize: (size: number) => void;
   onSelectedAssignTypeChange: (assignmentTypeUpdated: AssignmentType) => void;
 };
 
