@@ -18,7 +18,6 @@ const SubjectsHeader = styled(Header)`
   text-align: center;
 `;
 
-// TODO: selects current level at first, but then when leaving page and coming back defaults to 1 for some reason, fix
 export const Subjects = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
@@ -53,10 +52,10 @@ const SubjectsContent = ({ level }: SubjectsContentProps) => {
 
   return (
     <ContentWithTabBar>
-      <SubjectsHeader bgcolor="var(--offwhite-color)">Level</SubjectsHeader>
+      <SubjectsHeader bgcolor="var(--ion-color-primary)">Level</SubjectsHeader>
       <SwipeableTabs
         tabFontSize="1.5rem"
-        // tabBgColor="var(--ion-color-primary)"
+        tabBgColor="var(--ion-color-primary)"
         roundedContainer={false}
         selectedTabKey={selectedTabKey}
         setSelectedTabKey={setSelectedTabKey}
