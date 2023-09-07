@@ -81,17 +81,17 @@ export interface ContextSentence {
 
 export interface PronunciationAudio {
   url: string;
-  contentType: string;
+  content_type: string;
   metadata: AudioMetadata;
 }
 
 export interface AudioMetadata {
   gender: string;
-  sourceId: number;
+  source_id: number;
   pronunciation: string;
-  voiceActorId: number;
-  voiceActorName: string;
-  voiceDescription: string;
+  voice_actor_id: number;
+  voice_actor_name: string;
+  voice_description: string;
 }
 
 export interface Radical extends Subject {
