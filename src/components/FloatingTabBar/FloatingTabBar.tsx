@@ -24,8 +24,13 @@ const TabBarContainer = styled(motion(NavigationMenu.Root))`
   min-width: 200px;
   max-width: 500px;
   margin: auto;
-  margin-top: auto;
-  margin-bottom: 10px;
+  /* margin-top: auto;
+  margin-bottom: 10px; */
+  /* flex-shrink: 0; */
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
 `;
 
 const TabList = styled(NavigationMenu.List)`

@@ -124,15 +124,21 @@ export const BottomSheetContent = styled(IonRow)`
   padding-bottom: var(--ion-padding, 16px);
 `;
 
-export const ContentWithTabBar = styled(IonContent)`
-  --padding-start: var(--ion-padding, 0px);
-  --padding-end: var(--ion-padding, 5px);
-  --padding-top: var(--ion-padding, 5px);
-  --padding-bottom: 4rem;
-  padding-inline-start: var(--ion-padding, 5px);
-  padding-inline-end: var(--ion-padding, 5px);
-  padding-top: var(--ion-padding, 5px);
-  padding-bottom: 4rem;
+// export const ContentWithTabBar = styled(IonContent)`
+//   --padding-start: var(--ion-padding, 0px);
+//   --padding-end: var(--ion-padding, 5px);
+//   --padding-top: var(--ion-padding, 5px);
+//   --padding-bottom: 4rem;
+//   padding-inline-start: var(--ion-padding, 5px);
+//   padding-inline-end: var(--ion-padding, 5px);
+//   padding-top: var(--ion-padding, 5px);
+//   padding-bottom: 4rem;
+// `;
+
+export const ContentWithTabBar = styled.main`
+  overflow-y: auto;
+  /* flex: 1 0 auto; */
+  padding: 5px 5px 4rem 5px;
 `;
 
 export const SettingsTitle = styled(IonTitle)`

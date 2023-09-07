@@ -5,7 +5,9 @@ import styled from "styled-components";
 const AnimatedPageContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
+  /* height: 100%; */
   min-height: 100%;
+  position: relative;
 `;
 
 type Props = {

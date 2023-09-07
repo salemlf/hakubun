@@ -99,8 +99,8 @@ export const Search = () => {
             <p>Loading...</p>
           )}
         </ContentWithTabBar>
+        <FloatingTabBar />
       </Page>
-      <FloatingTabBar />
     </>
   );
 };

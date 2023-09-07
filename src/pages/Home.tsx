@@ -83,6 +83,7 @@ const Home = () => {
             )}
           </IonGrid>
           {homeLoading && <IonSpinner name="dots"></IonSpinner>}
+          {/* <FloatingTabBar /> */}
         </ContentWithTabBar>
         <FloatingTabBar />
       </AnimatedPage>
