@@ -141,6 +141,11 @@ export const ContentWithTabBar = styled.main`
   padding: 5px 5px 4rem 5px;
 `;
 
+export const ContentWithTabBarNoPadding = styled.main`
+  overflow-y: auto;
+  padding: 0;
+`;
+
 export const SettingsTitle = styled(IonTitle)`
   position: absolute;
   top: 0;
