@@ -1,6 +1,7 @@
 import { createElement } from "react";
 import { toHiragana } from "wanakana";
 
+// TODO: if character(s) are Japanese, use Japanese font (font-family: var(--japanese-font-family);)
 const translateInputValue = (string: string, translateToHiragana: boolean) => {
   if (translateToHiragana) {
     return toHiragana(string, { IMEMode: true });
