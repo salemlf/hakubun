@@ -35,7 +35,7 @@ const JapaneseTxt = styled.span`
 `;
 
 const TaggedTxt = styled(SubjDetailTxt)`
-  line-height: 1.75;
+  line-height: 2;
   user-select: text;
   -webkit-user-select: text;
   -moz-user-select: text;
