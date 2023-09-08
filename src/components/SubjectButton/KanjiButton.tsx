@@ -1,6 +1,7 @@
 import { Subject } from "../../types/Subject";
 import {
   BtnWithTxt,
+  JapaneseDetailsTxt,
   SubjBtnDetailsTxt,
   SubjInfoCol,
 } from "../../styles/SubjectButtonsStyled";
@@ -49,10 +50,10 @@ function KanjiButton({
         <SubjectChars subject={subject} fontSize={charFontSize} />
         {showDetails && (
           <div>
-            <SubjBtnDetailsTxt detailfontsize={detailFontSize}>
+            <JapaneseDetailsTxt detailfontsize={detailFontSize}>
               {/* kanji always have readings, so using ! for subject.readings */}
               {getPrimaryReading(subject.readings!)}
-            </SubjBtnDetailsTxt>
+            </JapaneseDetailsTxt>
             <SubjBtnDetailsTxt detailfontsize={detailFontSize}>
               {getSubjectDisplayName(subject)}
             </SubjBtnDetailsTxt>

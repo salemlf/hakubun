@@ -96,6 +96,9 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-tab-bar-background: var(--ion-color-secondary);
   --ion-tab-bar-background-focused: var(--ion-color-primary-shade);
+
+  --ion-default-font: "Poppins", sans-serif;
+  --japanese-font-family: "Zen Kaku Gothic New", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {

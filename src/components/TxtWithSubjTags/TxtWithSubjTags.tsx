@@ -5,7 +5,6 @@ import { getTagColor } from "../../services/SubjectAndAssignmentService";
 import { TagType } from "../../types/MiscTypes";
 import { TAG_REGEXES } from "../../constants";
 import { SubjDetailTxt } from "../../styles/SubjectDetailsStyled";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 type TagRegexes = {
@@ -29,6 +28,10 @@ const Tag = styled.span<TagProps>`
   filter: url("#goo");
   display: inline;
   box-decoration-break: clone;
+`;
+
+const JapaneseTxt = styled.span`
+  font-family: var(--japanese-font-family);
 `;
 
 const TaggedTxt = styled(SubjDetailTxt)`
@@ -132,11 +135,20 @@ const createSubjectTags = (
     }
   );
 
-  // TODO: replacing with nothing rn, use different font?
   replaced = reactStringReplace(
     replaced,
     regexForTags.japaneseRegEx,
-    (match, i) => match
+    (match, i) => {
+      let uuid = uuidsArr[currUUIDArrIndex];
+      currUUIDArrIndex++;
+
+      return (
+        <Fragment key={`japanese-tag${uuid}`}>
+          <JapaneseTxt>{match}</JapaneseTxt>
+          <Goo />
+        </Fragment>
+      );
+    }
   );
 
   replaced = reactStringReplace(

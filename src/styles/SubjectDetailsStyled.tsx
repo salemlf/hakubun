@@ -69,6 +69,10 @@ export const ReadingsStyle = styled.div`
   -ms-user-select: text;
 `;
 
+export const JapaneseTxtInline = styled.span`
+  font-family: var(--japanese-font-family);
+`;
+
 export const ReadingContainer = styled(IonCol)`
   display: flex;
   flex-direction: column;

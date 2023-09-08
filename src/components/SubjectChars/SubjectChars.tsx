@@ -1,7 +1,6 @@
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { SubjectType, Subject } from "../../types/Subject";
 import ImageFallback from "../ImageFallback/ImageFallback";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 type CharDivProps = {
@@ -33,6 +32,7 @@ const DivWithTxt = styled(CharDiv)<CharDivProps>`
     disableTextSelection ? `none` : `text`};
 
   p {
+    font-family: var(--japanese-font-family);
     margin: 0;
     color: white;
     font-size: ${({ fontSize }) => fontSize};

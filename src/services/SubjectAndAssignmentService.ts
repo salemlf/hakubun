@@ -120,15 +120,15 @@ export const getSubjectTypeDisplayText = (
 
 // TODO: change kana vocab to some other color?
 const subjColors: { [index: string]: string } = {
-  radical: `var(--wanikani-radical)`,
-  kanji: `var(--wanikani-kanji)`,
-  vocabulary: `var(--wanikani-vocab)`,
-  kana_vocabulary: `var(--wanikani-vocab)`,
+  radical: "var(--wanikani-radical)",
+  kanji: "var(--wanikani-kanji)",
+  vocabulary: "var(--wanikani-vocab)",
+  kana_vocabulary: "var(--wanikani-vocab)",
 };
 
 const tagColors: { [index: string]: string } = {
-  reading: `var(--wanikani-reading)`,
-  meaning: `var(--deep-purple-accent)`,
+  reading: "var(--wanikani-reading)",
+  meaning: "var(--deep-purple-accent)",
 };
 
 const subjAndTagColors = { ...subjColors, ...tagColors };

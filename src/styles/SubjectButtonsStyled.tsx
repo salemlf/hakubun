@@ -66,6 +66,10 @@ export const SubjBtnDetailsTxt = styled.p<DetailsBtnProps>`
   }
 `;
 
+export const JapaneseDetailsTxt = styled(SubjBtnDetailsTxt)`
+  font-family: var(--japanese-font-family);
+`;
+
 export const BtnWithImage = styled(DefaultBtn)`
   background-color: var(--wanikani-blue);
   padding: 4px;

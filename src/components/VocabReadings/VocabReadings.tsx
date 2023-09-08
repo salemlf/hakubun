@@ -15,6 +15,7 @@ import {
   ReadingContainer,
   SubjDetailSubHeading,
   ReadingsStyle,
+  JapaneseTxtInline,
 } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
@@ -55,6 +56,7 @@ const VocabReadingContainer = styled.div`
 const ReadingTxt = styled.p`
   margin: 5px 0;
   font-size: 1rem;
+  font-family: var(--japanese-font-family);
 `;
 
 type VocabReadingProps = {
@@ -104,7 +106,7 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
       <IonRow>
         <ReadingsStyle>
           <strong>Readings: </strong>
-          {vocab.characters}
+          <JapaneseTxtInline>{vocab.characters}</JapaneseTxtInline>
         </ReadingsStyle>
       </IonRow>
     </ReadingContainer>

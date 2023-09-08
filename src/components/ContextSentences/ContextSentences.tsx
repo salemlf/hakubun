@@ -33,6 +33,10 @@ const ContextSentenceTxt = styled.p`
   -ms-user-select: text;
 `;
 
+const JapaneseContextSentenceTxt = styled(ContextSentenceTxt)`
+  font-family: var(--japanese-font-family);
+`;
+
 const EnglishSentenceContainer = styled.div`
   width: 100%;
   display: flex;
@@ -89,7 +93,9 @@ function ContextSentences({ sentences }: Props) {
           (sentence: ContextSentence, index: number) => {
             return (
               <SentenceGroup key={`col_${index}`}>
-                <ContextSentenceTxt>{sentence.ja}</ContextSentenceTxt>
+                <JapaneseContextSentenceTxt>
+                  {sentence.ja}
+                </JapaneseContextSentenceTxt>
                 <EnglishSentenceContainer>
                   <EnglishContextSentenceTxt blurtext={blurStates[index]}>
                     {sentence.en}

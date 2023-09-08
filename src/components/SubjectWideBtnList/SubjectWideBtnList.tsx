@@ -35,6 +35,10 @@ const ReadingAndMeaningTxt = styled.p`
   margin: 5px 0;
 `;
 
+const ReadingTxt = styled(ReadingAndMeaningTxt)`
+  font-family: var(--japanese-font-family);
+`;
+
 type RadInfoProps = {
   radical: Radical;
 };
@@ -58,9 +62,7 @@ export const ReadingAndMeaning = ({ subject }: ReadingMeaningProps) => {
   return (
     <ReadingAndMeaningContainer>
       {hasReadings && (
-        <ReadingAndMeaningTxt>
-          {getPrimaryReading(subject.readings!)}
-        </ReadingAndMeaningTxt>
+        <ReadingTxt>{getPrimaryReading(subject.readings!)}</ReadingTxt>
       )}
       <ReadingAndMeaningTxt>
         {getSubjectDisplayName(subject)}
