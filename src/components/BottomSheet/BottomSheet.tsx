@@ -192,7 +192,7 @@ function BottomSheetContentCore(
                 <SheetOpenCloseButton onPress={onSheetBtnPress} />
                 <SheetHeadingTxt>{title}</SheetHeadingTxt>
               </SheetHeader>
-              <GhostParentWrapper inert>{children}</GhostParentWrapper>
+              <GhostParentWrapper inert={true}>{children}</GhostParentWrapper>
             </>
           )}
         </motion.div>
