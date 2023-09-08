@@ -13,8 +13,10 @@ const InputRow = styled(motion.div)`
 
 type AnswerInputProps = {
   inputcolor: string;
+  translateToHiragana: boolean;
 };
 
+// uses japanese font if translateToHiragana is true, with English fallback since can be mixed
 const AnswerInput = styled(WanakanaInput)<AnswerInputProps>`
   width: 100%;
   padding: 12px;
@@ -22,6 +24,8 @@ const AnswerInput = styled(WanakanaInput)<AnswerInputProps>`
   font-size: 1.25rem;
   color: black;
   background-color: ${({ inputcolor }) => inputcolor};
+  font-family: ${({ translateToHiragana }) =>
+    translateToHiragana && "var(--japanese-with-english-fallback-font-family)"};
 `;
 
 type Props = {
@@ -43,6 +47,7 @@ function AssignmentAnswerInput({
   let reviewType = currentReviewItem.review_type;
   const inputRef = useRef<HTMLInputElement>();
   const [inputContainerRef, animate] = useAnimate();
+  let isReadingType = reviewType === "reading";
 
   let inputColor = isSecondClick
     ? currentReviewItem.is_correct_answer
@@ -82,10 +87,10 @@ function AssignmentAnswerInput({
             nextBtnClicked();
           }
         }}
-        translateToHiragana={reviewType === "reading"}
+        translateToHiragana={isReadingType}
         onChange={(e: any) => setUserAnswer(e.target.value)}
         disabled={isSecondClick}
-        placeholder={reviewType === "reading" ? "答え" : ""}
+        placeholder={isReadingType ? "答え" : ""}
       />
     </InputRow>
   );

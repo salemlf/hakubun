@@ -99,6 +99,8 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-default-font: "Poppins", sans-serif;
   --japanese-font-family: "Zen Kaku Gothic New", sans-serif;
+  --japanese-with-english-fallback-font-family: "Zen Kaku Gothic New", "Poppins",
+    sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
