@@ -192,7 +192,8 @@ function BottomSheetContentCore(
                 <SheetOpenCloseButton onPress={onSheetBtnPress} />
                 <SheetHeadingTxt>{title}</SheetHeadingTxt>
               </SheetHeader>
-              <GhostParentWrapper inert={true}>{children}</GhostParentWrapper>
+              {/* @ts-ignore using inert shows an annoying TypeScript error */}
+              <GhostParentWrapper inert>{children}</GhostParentWrapper>
             </>
           )}
         </motion.div>
