@@ -13,6 +13,12 @@ type ProviderProps = {
 
 const HideTabBarProvider = ({ children }: ProviderProps) => {
   const [isHidden, setIsHidden] = useState<boolean>(false);
+  //* testing
+  console.log(
+    "🚀 ~ file: HideTabBarContext.tsx:16 ~ HideTabBarProvider ~ isHidden:",
+    isHidden
+  );
+  //* testing
 
   return (
     <HideTabBarContext.Provider value={{ isHidden, setIsHidden }}>

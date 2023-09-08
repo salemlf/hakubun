@@ -39,18 +39,43 @@ const ProtectedRoute = ({
 
   useEffect(() => {
     if (Capacitor.isPluginAvailable("Keyboard")) {
+      //* testing
+      console.debug("useEffect in ProtectedRoute called!");
+      //* testing
+
+      //* testing
+      console.debug("Capacitor Keyboard plugin is available!");
+      //* testing
       Keyboard.addListener("keyboardWillShow", () => {
+        //* testing
+        console.debug("keyboardWillShow called!");
+        //* testing
         setIsHidden(true);
       });
 
       Keyboard.addListener("keyboardDidHide", () => {
+        //* testing
+        console.debug("keyboardDidHide called!");
+        //* testing
         setIsHidden(false);
       });
-      return () => {
-        setIsHidden(false);
-        Keyboard.removeAllListeners();
-      };
+      // return () => {
+      //   //* testing
+      //   console.debug("Removing listeners in ProtectedRoute useEffect...");
+      //   //* testing
+      //   setIsHidden(false);
+      //   Keyboard.removeAllListeners();
+      // };
     }
+    return () => {
+      //* testing
+      console.debug("Removing listeners in ProtectedRoute useEffect...");
+      //* testing
+      setIsHidden(false);
+      if (Capacitor.isPluginAvailable("Keyboard")) {
+        Keyboard.removeAllListeners();
+      }
+    };
   }, []);
 
   if (authLoading) {
