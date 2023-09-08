@@ -1,25 +1,67 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import * as Tabs from "@radix-ui/react-tabs";
 import {
   TargetAndTransition,
   useTransform,
   animate,
   useScroll,
 } from "framer-motion";
-import { scrollIntoView } from "seamless-scroll-polyfill";
 import { TabData } from "../../types/MiscTypes";
 import {
-  Selector,
-  SelectorBlob,
-  TabContainer,
-  TabContainerBottomFlex,
-  TabListBlobsStyled,
-  TabListStyled,
-  TabPanelStyled,
-  TabPanels,
-  TabStyled,
-  TabStyledBlob,
-  TabsStyled,
-} from "./SwipeableTabsStyled";
+  ROUNDED_CONTAINER_DEFAULT,
+  TAB_BG_COLOR_DEFAULT,
+  TAB_SELECTION_COLOR_DEFAULT,
+} from "./constants";
+import { TabList } from "./TabList";
+import { TabListBlobs } from "./TabListBlobs";
+import styled from "styled-components";
+
+const TabsStyled = styled(Tabs.Root)`
+  width: 100%;
+  /* max-height: 90vh; */
+`;
+
+// TOODO: change to calculate height using some other method
+const TabPanelStyled = styled(Tabs.Content)`
+  border-radius: 0.25rem;
+  outline-style: none;
+  width: 100%;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  margin: 0 5px;
+  /* max-height: 90vh; */
+  max-height: 80%;
+  overflow-y: auto;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+`;
+
+const TabPanels = styled.div`
+  display: flex;
+  overflow-x: auto;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 300;
+  color: white;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: auto;
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+`;
 
 type TabsComponentProps = {
   tabs: TabData[];
@@ -42,17 +84,14 @@ function SwipeableTabs({
   selectedTabKey,
   setSelectedTabKey,
   scrollToDefault = true,
-  tabBgColor = "var(--offwhite-color)",
-  tabSelectionColor = "var(--darkest-purple)",
-  roundedContainer = true,
+  tabBgColor = TAB_BG_COLOR_DEFAULT,
+  tabSelectionColor = TAB_SELECTION_COLOR_DEFAULT,
+  roundedContainer = ROUNDED_CONTAINER_DEFAULT,
   blobs = false,
   tabFontSize = "1rem",
 }: TabsComponentProps) {
   const tabListRef = useRef<HTMLDivElement | null>(null);
   const tabPanelsRef = useRef<HTMLDivElement | null>(null);
-  // !added
-  const tabContainerRef = useRef<HTMLDivElement | null>(null);
-  // !added
   const { scrollXProgress } = useScroll({
     container: tabPanelsRef as RefObject<HTMLElement>,
   });
@@ -70,49 +109,6 @@ function SwipeableTabs({
       }, 500);
     }
   }, [tabListRef, tabPanelsRef, defaultValue]);
-
-  // scrolls to the selected tab when tab list is large enough to have scrollbar
-  useEffect(() => {
-    if (
-      tabContainerRef.current &&
-      selectedTabKey &&
-      tabElements &&
-      tabElements.length > 0
-    ) {
-      // *testing
-      // console.log(
-      //   "🚀 ~ file: SwipeableTabs.tsx:80 ~ useEffect ~ tabContainerRef.current:",
-      //   tabContainerRef.current
-      // );
-      // *testing
-      const index = tabs.findIndex((tab) => tab.id === selectedTabKey);
-      let currSelected = tabElements[index];
-      // *testing
-      // console.log(
-      //   "🚀 ~ file: SwipeableTabs.tsx:86 ~ useEffect ~ currSelected:",
-      //   currSelected
-      // );
-      // *testing
-
-      if (currSelected) {
-        // *testing
-        // console.log("CALLED");
-        // *testing
-        scrollIntoView(
-          currSelected,
-          {
-            behavior: "smooth",
-            inline: "center",
-            block: "nearest",
-          },
-          {
-            duration: 250, // aprox. the duration that chrome uses,
-          }
-        );
-      }
-    }
-  }, [selectedTabKey, tabContainerRef.current]);
-  // }, [selectedTabKey]);
 
   // Find all the tab elements so we can use their dimensions.
   const [tabElements, setTabElements] = useState<Element[]>([]);
@@ -246,68 +242,40 @@ function SwipeableTabs({
 
   return (
     <TabsStyled value={selectedTabKey} onValueChange={onSelectionChange}>
-      {blobs ? (
-        <>
-          <TabPanels ref={tabPanelsRef}>
-            {tabs.map((tab) => (
-              <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
-                {tab.tabContents}
-              </TabPanelStyled>
-            ))}
-          </TabPanels>
-          <TabContainerBottomFlex
-            ref={tabContainerRef}
-            bgcolor={"transparent"}
-            roundedcontainer={roundedContainer}
-          >
-            <TabListBlobsStyled ref={tabListRef} bgcolor={tabBgColor}>
-              {tabs.map((tab) => (
-                <TabStyledBlob
-                  key={tab.id}
-                  value={tab.id}
-                  bgcolor={tabBgColor}
-                  selectioncolor={tabSelectionColor}
-                />
-              ))}
-            </TabListBlobsStyled>
-            {/* Selection indicator. */}
-            <SelectorBlob style={{ x, width }} bgcolor={tabBgColor} />
-          </TabContainerBottomFlex>
-        </>
-      ) : (
-        <>
-          <TabContainer
-            bgcolor={tabBgColor}
-            roundedcontainer={roundedContainer}
-            ref={tabContainerRef}
-          >
-            <TabListStyled ref={tabListRef} bgcolor={tabBgColor}>
-              {tabs.map((tab) => (
-                <TabStyled
-                  key={tab.id}
-                  value={tab.id}
-                  bgcolor={tabBgColor}
-                  selectioncolor={tabSelectionColor}
-                  tabfontsize={tabFontSize}
-                >
-                  {tab.label}
-                </TabStyled>
-              ))}
-            </TabListStyled>
-            {/* Selection indicator. */}
-            <Selector
-              style={{ x, width, borderRadius: 9999 }}
-              bgcolor={tabBgColor}
-            />
-          </TabContainer>
-          <TabPanels ref={tabPanelsRef}>
-            {tabs.map((tab) => (
-              <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
-                {tab.tabContents}
-              </TabPanelStyled>
-            ))}
-          </TabPanels>
-        </>
+      {!blobs && (
+        <TabList
+          ref={tabListRef}
+          tabs={tabs}
+          tabElements={tabElements}
+          selectedTabKey={selectedTabKey}
+          x={x}
+          width={width}
+          tabBgColor={tabBgColor}
+          tabSelectionColor={tabSelectionColor}
+          roundedContainer={roundedContainer}
+          tabFontSize={tabFontSize}
+        />
+      )}
+      <TabPanels ref={tabPanelsRef}>
+        {tabs.map((tab) => (
+          <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
+            {tab.tabContents}
+          </TabPanelStyled>
+        ))}
+      </TabPanels>
+      {blobs && (
+        <TabListBlobs
+          ref={tabListRef}
+          tabs={tabs}
+          tabElements={tabElements}
+          selectedTabKey={selectedTabKey}
+          x={x}
+          width={width}
+          tabBgColor={tabBgColor}
+          tabSelectionColor={tabSelectionColor}
+          roundedContainer={roundedContainer}
+          tabFontSize={tabFontSize}
+        />
       )}
     </TabsStyled>
   );
