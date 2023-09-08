@@ -38,7 +38,7 @@ const ProtectedRoute = ({
   }, [history]);
 
   useEffect(() => {
-    if (Capacitor.isNativePlatform()) {
+    if (Capacitor.isPluginAvailable("Keyboard")) {
       Keyboard.addListener("keyboardWillShow", () => {
         setIsHidden(true);
       });
@@ -46,11 +46,11 @@ const ProtectedRoute = ({
       Keyboard.addListener("keyboardDidHide", () => {
         setIsHidden(false);
       });
+      return () => {
+        setIsHidden(false);
+        Keyboard.removeAllListeners();
+      };
     }
-    return () => {
-      setIsHidden(false);
-      Keyboard.removeAllListeners();
-    };
   }, []);
 
   if (authLoading) {
