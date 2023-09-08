@@ -9,24 +9,12 @@ import { NavLink, useLocation } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
 
-// const TabBarContainer = styled(motion(NavigationMenu.Root))`
-//   position: sticky;
-//   bottom: 10px;
-//   width: 65%;
-//   min-width: 200px;
-//   max-width: 500px;
-//   margin: auto;
-// `;
-
 // TODO: change to this once no longer using IonPage
 const TabBarContainer = styled(motion(NavigationMenu.Root))`
-  width: 65%;
+  width: 80%;
   min-width: 200px;
   max-width: 500px;
   margin: auto;
-  /* margin-top: auto;
-  margin-bottom: 10px; */
-  /* flex-shrink: 0; */
   position: absolute;
   left: 0;
   right: 0;
@@ -36,9 +24,9 @@ const TabBarContainer = styled(motion(NavigationMenu.Root))`
 
 const TabList = styled(NavigationMenu.List)`
   background-color: var(--ion-color-secondary);
-  display: flex;
-  justify-content: space-evenly;
-  padding: 5px 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 6px 10px;
   border-radius: 30px;
   list-style: none;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 1px 8px;
