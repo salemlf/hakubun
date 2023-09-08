@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const SubjectName = styled.h1`
   margin: 0;
-  margin-top: 5px;
+  line-height: 1.5;
   word-break: break-word;
   user-select: text;
   -webkit-user-select: text;
