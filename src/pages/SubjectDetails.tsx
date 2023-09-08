@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import { IonGrid, IonSkeletonText } from "@ionic/react";
 import { AnimatePresence } from "framer-motion";
-import { useHideTabBar } from "../contexts/HideTabBarContext";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useSubjectByID } from "../hooks/useSubjectByID";
+import { useHideOnKeyboardOpen } from "../hooks/useHideOnKeyboardOpen";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
 import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";
@@ -13,7 +14,6 @@ import AnimatedPage from "../components/AnimatedPage";
 import FloatingTabBar from "../components/FloatingTabBar";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 
 const FullWidthGrid = styled(IonGrid)`
   margin-left: 0;
@@ -32,7 +32,7 @@ export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
   const isSessionInProgress = useAssignmentQueueStore.use.sessionInProgress();
-  const { isHidden } = useHideTabBar();
+  const { shouldHide } = useHideOnKeyboardOpen();
 
   const {
     isLoading: subjectLoading,
@@ -75,7 +75,7 @@ export const SubjectDetails = () => {
         </>
       )}
       <AnimatePresence>
-        {!isHidden && !isSessionInProgress && <FloatingTabBar />}
+        {!shouldHide && !isSessionInProgress && <FloatingTabBar />}
       </AnimatePresence>
     </Page>
   );

@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import { IonList, IonSearchbar } from "@ionic/react";
 import Fuse from "fuse.js";
 import { flattenSearchResults } from "../services/MiscService";
-import { useHideTabBar } from "../contexts/HideTabBarContext";
 import { useAllSubjects } from "../hooks/useAllSubjects";
+import { useHideOnKeyboardOpen } from "../hooks/useHideOnKeyboardOpen";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
+import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
+import FloatingTabBar from "../components/FloatingTabBar";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
-import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
 import styled from "styled-components";
-import FloatingTabBar from "../components/FloatingTabBar";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -34,7 +34,7 @@ const List = styled(IonList)`
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useState("");
-  const { isHidden } = useHideTabBar();
+  const { shouldHide } = useHideOnKeyboardOpen();
 
   const options = {
     threshold: 0.1,
@@ -101,7 +101,7 @@ export const Search = () => {
             <p>Loading...</p>
           )}
         </ContentWithTabBar>
-        {!isHidden && <FloatingTabBar />}
+        {!shouldHide && <FloatingTabBar />}
         {/* <FloatingTabBar /> */}
       </Page>
     </>

@@ -14,7 +14,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider, useUserAuth } from "./contexts/AuthContext";
-import { HideTabBarProvider } from "./contexts/HideTabBarContext";
 import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
 import { ReviewSettings } from "./pages/ReviewSettings";
@@ -72,11 +71,9 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ToastPrimitive.Provider>
-          <HideTabBarProvider>
-            <IonApp>
-              <RouterProvider router={browserRouter} />
-            </IonApp>
-          </HideTabBarProvider>
+          <IonApp>
+            <RouterProvider router={browserRouter} />
+          </IonApp>
         </ToastPrimitive.Provider>
       </AuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />
