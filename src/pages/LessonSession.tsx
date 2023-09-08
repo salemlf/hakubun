@@ -1,5 +1,5 @@
 // TODO: change so not relying on IonIcon
-import { IonContent, IonIcon } from "@ionic/react";
+import { IonIcon } from "@ionic/react";
 import AnimatedPage from "../components/AnimatedPage";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import Button from "../components/Button";
 import HomeIconColor from "../images/home-color.svg";
 import styled from "styled-components";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
+import { MainContent } from "../styles/BaseStyledComponents";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -54,7 +55,7 @@ function LessonSession() {
   return (
     <Page>
       {uniqueLessonQueue.length !== 0 && (
-        <IonContent>
+        <MainContent>
           <HomeBtn onPress={() => navigate("/", { replace: true })}>
             <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
           </HomeBtn>
@@ -62,7 +63,7 @@ function LessonSession() {
             lessons={uniqueLessonQueue}
             onStartLessonBtnClick={onStartLessonBtnClick}
           />
-        </IonContent>
+        </MainContent>
       )}
     </Page>
   );
