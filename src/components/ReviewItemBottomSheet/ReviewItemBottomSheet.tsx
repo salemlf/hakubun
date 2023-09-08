@@ -13,11 +13,10 @@ import BottomSheetRoot, { BottomSheetContent } from "../BottomSheet";
 import { Section } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-const FullWidthGrid = styled(IonGrid)`
-  margin-left: 0;
-  margin-right: 0;
-  padding-left: 0;
-  padding-right: 0;
+const SectionWithPadding = styled(Section)`
+  padding: 12px;
+  height: inherit;
+  box-sizing: border-box;
 `;
 
 type Props = {
@@ -56,29 +55,29 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
         <BottomSheetRoot>
           <BottomSheetContent title="Subject Info" height={height}>
             <BottomSheetHeader subject={currentReviewItem as Subject} />
-            <Section>
-              <FullWidthGrid>
-                {currentReviewItem.object == "radical" && (
-                  <RadicalDetailTabs
-                    radical={currentReviewItem}
-                    scrollToDefault={true}
-                  />
-                )}
-                {currentReviewItem.object == "kanji" && (
-                  <KanjiDetailTabs
-                    kanji={currentReviewItem}
-                    scrollToDefault={true}
-                  />
-                )}
-                {(currentReviewItem.object == "vocabulary" ||
-                  currentReviewItem.object == "kana_vocabulary") && (
-                  <VocabDetailTabs
-                    vocab={currentReviewItem}
-                    scrollToDefault={true}
-                  />
-                )}
-              </FullWidthGrid>
-            </Section>
+            <SectionWithPadding>
+              {/* <FullWidthGrid> */}
+              {currentReviewItem.object == "radical" && (
+                <RadicalDetailTabs
+                  radical={currentReviewItem}
+                  scrollToDefault={true}
+                />
+              )}
+              {currentReviewItem.object == "kanji" && (
+                <KanjiDetailTabs
+                  kanji={currentReviewItem}
+                  scrollToDefault={true}
+                />
+              )}
+              {(currentReviewItem.object == "vocabulary" ||
+                currentReviewItem.object == "kana_vocabulary") && (
+                <VocabDetailTabs
+                  vocab={currentReviewItem}
+                  scrollToDefault={true}
+                />
+              )}
+              {/* </FullWidthGrid> */}
+            </SectionWithPadding>
           </BottomSheetContent>
         </BottomSheetRoot>
       </>

@@ -18,10 +18,9 @@ import styled from "styled-components";
 
 const TabsStyled = styled(Tabs.Root)`
   width: 100%;
-  /* max-height: 90vh; */
 `;
 
-// TOODO: change to calculate height using some other method
+// TODO: change to calculate height using some other method
 const TabPanelStyled = styled(Tabs.Content)`
   border-radius: 0.25rem;
   outline-style: none;
@@ -29,9 +28,6 @@ const TabPanelStyled = styled(Tabs.Content)`
   scroll-snap-align: start;
   flex-shrink: 0;
   margin: 0 5px;
-  /* max-height: 90vh; */
-  max-height: 80%;
-  overflow-y: auto;
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: none;
@@ -108,7 +104,7 @@ function SwipeableTabs({
         onSelectionChange(defaultValue);
       }, 500);
     }
-  }, [tabListRef, tabPanelsRef, defaultValue]);
+  }, [tabListRef.current, tabPanelsRef.current, defaultValue]);
 
   // Find all the tab elements so we can use their dimensions.
   const [tabElements, setTabElements] = useState<Element[]>([]);

@@ -174,7 +174,7 @@ function BottomSheetContentCore(
           style={{
             width: "100%",
             height: height - sheetHeightMargin,
-            overflowY: "hidden",
+            // overflowY: "hidden",
             zIndex: 5,
           }}
         >
