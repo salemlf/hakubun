@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   IonInput,
   IonContent,
@@ -10,7 +11,6 @@ import {
   IonSkeletonText,
 } from "@ionic/react";
 import { useUserAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 // TODO: change to use normal input instead of IonInput
 const TokenInput = () => {
