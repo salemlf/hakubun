@@ -12,6 +12,7 @@ import {
 import { useUserAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+// TODO: change to use normal input instead of IonInput
 const TokenInput = () => {
   // TODO: change token to useRef?
   const [token, setToken] = useState("");
@@ -61,6 +62,7 @@ const TokenInput = () => {
           </IonHeader>
           <IonContent className="ion-padding">
             <IonInput
+              data-private
               fill="outline"
               label="WaniKani API Token"
               style={styles.input}
