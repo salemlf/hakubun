@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import * as LogRocket from "logrocket";
 import { useUser, User } from "./useUser";
 import { useStorage } from "./useStorage";
 import { api, pagingApi } from "../api/ApiConfig";
@@ -57,6 +58,9 @@ export const useAuth = () => {
       // *testing
       // TODO: add auth to storage using useStorage
       addUser(userInfo);
+      LogRocket.identify(`${userInfo.username}}`, {
+        name: `${userInfo.username}}`,
+      });
       setIsAuthenticated(true);
       setAuthLoading(false);
       return true;
