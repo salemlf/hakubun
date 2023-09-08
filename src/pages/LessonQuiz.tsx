@@ -1,22 +1,23 @@
 import { useEffect } from "react";
-import { IonContent, IonGrid } from "@ionic/react";
+import { IonGrid } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 // TODO: instead add a module declaration file for react-router-prompt
 // @ts-ignore: Could not find a declaration file for module
 import ReactRouterPrompt from "react-router-prompt";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
-import AnimatedPage from "../components/AnimatedPage";
-import AssignmentQueueCards from "../components/AssignmentQueueCards";
-import QueueHeader from "../components/QueueHeader";
-import styled from "styled-components";
 import {
   blockUserLeavingPage,
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../stores/useQueueStore";
-import Dialog from "../components/Dialog";
 import { useStartAssignment } from "../hooks/useStartAssignment";
+import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
+import AssignmentQueueCards from "../components/AssignmentQueueCards";
+import AnimatedPage from "../components/AnimatedPage";
+import QueueHeader from "../components/QueueHeader";
+import Dialog from "../components/Dialog";
+import { MainContent } from "../styles/BaseStyledComponents";
+import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -110,13 +111,13 @@ function LessonQuiz() {
         }
       </ReactRouterPrompt>
       {assignmentQueue.length !== 0 && <QueueHeader />}
-      <IonContent>
+      <MainContent>
         <Grid>
           {assignmentQueue.length !== 0 && (
             <AssignmentQueueCards submitItems={submitLessonQuiz} />
           )}
         </Grid>
-      </IonContent>
+      </MainContent>
     </Page>
   );
 }

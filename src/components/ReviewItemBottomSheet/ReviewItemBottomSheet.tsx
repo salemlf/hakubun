@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IonContent, IonGrid } from "@ionic/react";
+import { IonGrid } from "@ionic/react";
 import { useLocation } from "react-router";
 import { useWindowSize } from "usehooks-ts";
 import { useQueueStore } from "../../stores/useQueueStore";
