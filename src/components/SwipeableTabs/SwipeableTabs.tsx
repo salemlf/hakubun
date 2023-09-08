@@ -260,7 +260,7 @@ function SwipeableTabs({
             bgcolor={"transparent"}
             roundedcontainer={roundedContainer}
           >
-            <TabListBlobsStyled ref={tabListRef}>
+            <TabListBlobsStyled ref={tabListRef} bgcolor={tabBgColor}>
               {tabs.map((tab) => (
                 <TabStyledBlob
                   key={tab.id}
@@ -281,7 +281,7 @@ function SwipeableTabs({
             roundedcontainer={roundedContainer}
             ref={tabContainerRef}
           >
-            <TabListStyled ref={tabListRef}>
+            <TabListStyled ref={tabListRef} bgcolor={tabBgColor}>
               {tabs.map((tab) => (
                 <TabStyled
                   key={tab.id}
@@ -295,7 +295,10 @@ function SwipeableTabs({
               ))}
             </TabListStyled>
             {/* Selection indicator. */}
-            <Selector style={{ x, width }} bgcolor={tabBgColor} />
+            <Selector
+              style={{ x, width, borderRadius: 9999 }}
+              bgcolor={tabBgColor}
+            />
           </TabContainer>
           <TabPanels ref={tabPanelsRef}>
             {tabs.map((tab) => (

@@ -10,6 +10,7 @@ import RadicalDetailTabs from "../RadicalDetailTabs/RadicalDetailTabs";
 import KanjiDetailTabs from "../KanjiDetailTabs/KanjiDetailTabs";
 import VocabDetailTabs from "../VocabDetailTabs/VocabDetailTabs";
 import BottomSheetRoot, { BottomSheetContent } from "../BottomSheet";
+import { Section } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const FullWidthGrid = styled(IonGrid)`
@@ -55,7 +56,7 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
         <BottomSheetRoot>
           <BottomSheetContent title="Subject Info" height={height}>
             <BottomSheetHeader subject={currentReviewItem as Subject} />
-            <IonContent className="ion-padding">
+            <Section>
               <FullWidthGrid>
                 {currentReviewItem.object == "radical" && (
                   <RadicalDetailTabs
@@ -77,7 +78,7 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
                   />
                 )}
               </FullWidthGrid>
-            </IonContent>
+            </Section>
           </BottomSheetContent>
         </BottomSheetRoot>
       </>

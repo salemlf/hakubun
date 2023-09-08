@@ -35,6 +35,7 @@ export const TabContainer = styled.div<TabContainerStyles>`
   max-width: 100vw;
   overflow-x: auto;
   padding: 0 12px;
+  isolation: isolate;
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: none;
@@ -59,21 +60,23 @@ export const TabContainerBottomFlex = styled.div<TabContainerStyles>`
   bottom: 20px;
   max-width: 100vw;
   overflow-x: auto;
+  isolation: isolate;
 `;
 
-export const TabListStyled = styled(Tabs.List)`
+export const TabListStyled = styled(Tabs.List)<CustomBgColor>`
   display: flex;
   gap: 5px;
+  background-color: ${({ bgcolor }) => bgcolor};
 `;
 
-export const TabListBlobsStyled = styled(Tabs.List)`
+export const TabListBlobsStyled = styled(Tabs.List)<CustomBgColor>`
   display: flex;
   max-width: 100%;
 `;
 
-export const TabStyled = styled(Tabs.Trigger)<
-  BgColorSelectionAndHover & CustomFontSize
->`
+type TabStyledProps = BgColorSelectionAndHover & CustomFontSize;
+
+export const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
   margin: auto;
   padding: 12px;
   outline-style: none;
@@ -99,7 +102,8 @@ export const TabStyledBlob = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
   min-height: 25px;
   margin: 0 5px;
   border-radius: 9999px;
-  background-color: var(--offwhite-color);
+  /* background-color: var(--offwhite-color); */
+  background-color: ${({ bgcolor }) => bgcolor};
   transition-property: background-color, border-color, color, fill, stroke,
     opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -133,7 +137,6 @@ export const Selector = styled(motion.div)<CustomBgColor>`
   bottom: 0;
   left: 0;
   z-index: 10;
-  border-radius: 9999px;
   background-color: ${({ bgcolor }) => bgcolor};
   mix-blend-mode: difference;
   margin: 5px 0;

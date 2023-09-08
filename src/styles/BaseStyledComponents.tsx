@@ -1,15 +1,15 @@
-import {
-  IonAlert,
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonTitle,
-} from "@ionic/react";
+import { IonAlert, IonCol, IonGrid, IonRow, IonTitle } from "@ionic/react";
 import { motion } from "framer-motion";
 import Button from "../components/Button/Button";
-import Card from "../components/Card";
 import styled from "styled-components";
+
+type CustomBgColor = {
+  bgcolor: string;
+};
+
+type OptionalBgColor = {
+  bgcolor?: string;
+};
 
 export const FullWidthGrid = styled(IonGrid)`
   margin-left: 0;
@@ -205,11 +205,13 @@ export const FullWidthColumn = styled.div`
 
 export const MainContent = styled.main``;
 
-type HeaderContainerProps = {
-  bgcolor: string;
-};
+export const Section = styled.section<OptionalBgColor>`
+  background-color: ${({ bgcolor }) =>
+    bgcolor ? bgcolor : "var(--ion-background-color)"};
+  padding: 0 10px;
+`;
 
-export const Header = styled.header<HeaderContainerProps>`
+export const Header = styled.header<CustomBgColor>`
   background-color: ${({ bgcolor }) => bgcolor};
   padding: 10px;
   font-size: 1.5rem;
