@@ -34,6 +34,7 @@ const LogoutButton = styled(Button)`
   border-radius: 12px;
 `;
 
+// TODO: change to get/set defaults from API
 function Settings() {
   const appContext = useUserAuth();
   const navigate = useNavigate();
