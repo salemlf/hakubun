@@ -138,7 +138,7 @@ export const BottomSheetContent = styled(IonRow)`
 export const ContentWithTabBar = styled.main`
   overflow-y: auto;
   /* flex: 1 0 auto; */
-  padding: 5px 5px 4rem 5px;
+  padding: 5px 5px 85px 5px;
 `;
 
 export const ContentWithTabBarNoPadding = styled.main`
