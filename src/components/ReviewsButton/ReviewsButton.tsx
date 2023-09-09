@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setBtnBackground } from "../../services/ImageSrcService";
 import { useNumReviews } from "../../hooks/useNumReviews";
@@ -8,7 +9,6 @@ import {
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components";
-import { useState } from "react";
 
 const ReviewsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-review);
@@ -27,6 +27,7 @@ type Props = {
   level: number | undefined;
 };
 
+// TODO: change so getting reviews and then just use number of those for count
 function ReviewsButton({ level }: Props) {
   const navigate = useNavigate();
   const [displayToast, setDisplayToast] = useState<boolean>(false);
@@ -41,7 +42,6 @@ function ReviewsButton({ level }: Props) {
     return <ReviewsButtonSkeleton animated={true}></ReviewsButtonSkeleton>;
   }
 
-  // TODO: display different message if reviews available but trial and at max level
   const onReviewBtnClick = () => {
     if (numReviews === 0 || numReviews === undefined) {
       setDisplayToast(true);
