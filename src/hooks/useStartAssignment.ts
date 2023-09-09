@@ -27,6 +27,9 @@ export const useStartAssignment = () => {
       queryClient.invalidateQueries({
         queryKey: ["available-lessons"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["available-num-lessons"],
+      });
     },
   });
 };
