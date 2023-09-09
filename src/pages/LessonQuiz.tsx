@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { IonGrid } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 // TODO: instead add a module declaration file for react-router-prompt
 // @ts-ignore: Could not find a declaration file for module
@@ -23,11 +22,7 @@ const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
 `;
 
-const Grid = styled(IonGrid)`
-  padding-inline-start: 0;
-  padding-inline-end: 0;
-  padding-top: 0;
-  padding-bottom: 0;
+const MainContentWithMargin = styled(MainContent)`
   margin: 10px;
 `;
 
@@ -111,13 +106,11 @@ function LessonQuiz() {
         }
       </ReactRouterPrompt>
       {assignmentQueue.length !== 0 && <QueueHeader />}
-      <MainContent>
-        <Grid>
-          {assignmentQueue.length !== 0 && (
-            <AssignmentQueueCards submitItems={submitLessonQuiz} />
-          )}
-        </Grid>
-      </MainContent>
+      <MainContentWithMargin>
+        {assignmentQueue.length !== 0 && (
+          <AssignmentQueueCards submitItems={submitLessonQuiz} />
+        )}
+      </MainContentWithMargin>
     </Page>
   );
 }
