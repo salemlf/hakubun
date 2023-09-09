@@ -1,23 +1,26 @@
 import { useState } from "react";
 import { useStorage } from "./useStorage";
-
-export interface User {
-  username: string;
-  level: number;
-}
+import { User } from "../types/UserTypes";
 
 export const useUser = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [hasPaidSubscription, setHasPaidSubscription] =
+    useState<boolean>(false);
   const { setItem, removeItem } = useStorage();
 
   const addUser = (user: User) => {
     setUser(user);
     setItem("user", user);
+    let hasPaidSubscription = user.subscription.type !== "free";
+    setHasPaidSubscription(hasPaidSubscription);
+    setItem("hasPaidSubscription", hasPaidSubscription);
   };
 
   const removeUser = () => {
     setUser(null);
     removeItem("user");
+    setHasPaidSubscription(false);
+    removeItem("hasPaidSubscription");
   };
 
   // TODO: prob delete
@@ -33,5 +36,5 @@ export const useUser = () => {
     setItem("user", updatedUser);
   };
 
-  return { user, addUser, removeUser, setLevel };
+  return { user, hasPaidSubscription, addUser, removeUser, setLevel };
 };

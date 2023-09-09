@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { User } from "../hooks/useUser";
+import { User } from "../types/UserTypes";
 
 type AuthContextData = {
   user: User | null;
@@ -38,4 +38,4 @@ const useUserAuth = () => {
   return context;
 };
 
-export { AuthContext, AuthProvider, useUserAuth };
+export { AuthProvider, useUserAuth };

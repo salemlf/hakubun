@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import * as LogRocket from "logrocket";
-import { useUser, User } from "./useUser";
+import { useUser } from "./useUser";
 import { useStorage } from "./useStorage";
 import { api, pagingApi } from "../api/ApiConfig";
+import { User } from "../types/UserTypes";
 
 // TODO: update so user data is refetched if hard refresh (not implemented yet)
 export const useAuth = () => {
@@ -45,13 +46,10 @@ export const useAuth = () => {
     try {
       let userData = await getUser();
 
+      let userInfo: User = userData.data;
       // *testing
       console.log("🚀 ~ file: useAuth.tsx:24 ~ login ~ userData:", userData);
       // *testing
-      let userInfo = {
-        username: userData.data.username,
-        level: userData.data.level,
-      };
 
       // *testing
       console.log("🚀 ~ file: useAuth.tsx:23 ~ login ~ userInfo:", userInfo);
