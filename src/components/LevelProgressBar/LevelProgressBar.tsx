@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
-import { getAssignmentStatuses } from "../../services/SubjectAndAssignmentService";
 import { IonSkeletonText } from "@ionic/react";
-// import styled from "styled-components/macro";
+import { getAssignmentStatuses } from "../../services/SubjectAndAssignmentService";
+import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
+import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
 import styled from "styled-components";
 
 const PillShapedBar = styled.div`
@@ -67,9 +67,17 @@ function LevelProgressBar({ level }: Props) {
     error: kanjiAssignmentsLvlErr,
   } = useKanjiAssignmentsForLvl(level);
 
+  const {
+    isLoading: subjectsLoading,
+    data: subjectsData,
+    error: subjectsErr,
+  } = useKanjiSubjectsForLvl(level);
+
   useEffect(() => {
-    if (kanjiAssignmentsLvlData) {
-      let { passed, total } = getAssignmentStatuses(kanjiAssignmentsLvlData);
+    if (subjectsData && kanjiAssignmentsLvlData) {
+      let total = subjectsData.length;
+
+      let { passed } = getAssignmentStatuses(kanjiAssignmentsLvlData);
       let numToPass = Math.ceil(total * 0.9);
       let percentage = Math.round((passed / numToPass) * 100);
 
@@ -80,11 +88,11 @@ function LevelProgressBar({ level }: Props) {
         barRef.current.style.width = `${percentage}%`;
       }
     }
-  }, [kanjiAssignmentsLvlData]);
+  }, [subjectsLoading, kanjiAssignmentsLvlLoading]);
 
   return (
     <>
-      {!kanjiAssignmentsLvlLoading && (
+      {!kanjiAssignmentsLvlLoading && !subjectsLoading && (
         <ProgressContainer>
           <Backdrop>
             <div className="source">
