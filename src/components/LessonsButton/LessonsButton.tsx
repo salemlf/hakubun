@@ -47,11 +47,10 @@ function LessonsButton({ level }: Props) {
       title="Lessons"
       onClick={() => navigate("/lessons/settings")}
       style={{
-        backgroundImage: `url(${
-          numLessons
-            ? setBtnBackground({ btnType: "lessons", numItems: numLessons })
-            : ""
-        })`,
+        backgroundImage: `url(${setBtnBackground({
+          btnType: "lessons",
+          numItems: numLessons,
+        })})`,
       }}
     >
       <p>Lessons</p>

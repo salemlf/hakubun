@@ -47,11 +47,10 @@ function ReviewsButton({ level }: Props) {
       // TODO: change so if no reviews -> doesn't redirect and displays a message
       onClick={() => navigate("/reviews/settings")}
       style={{
-        backgroundImage: `url(${
-          numReviews
-            ? setBtnBackground({ btnType: "reviews", numItems: numReviews })
-            : ""
-        })`,
+        backgroundImage: `url(${setBtnBackground({
+          btnType: "reviews",
+          numItems: numReviews,
+        })})`,
       }}
     >
       <p>Reviews</p>
