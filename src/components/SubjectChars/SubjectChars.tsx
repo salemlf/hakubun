@@ -57,6 +57,8 @@ const DivWithImage = styled(CharDiv)<CharDivProps>`
     margin: 0.45em 0;
     filter: brightness(0) invert(1);
     width: ${({ fontSize }) => fontSize};
+    /* unsetting max-width from 100% otherwise hides image completely */
+    max-width: unset;
   }
 `;
 
