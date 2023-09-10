@@ -60,11 +60,16 @@ type Props = {
   onStartLessonBtnClick: () => void;
 };
 
-// TODO: scrolls to last item by default for some reason, fix
+// TODO: scrolls to last item by default for some reason, using temporary fix in meantime
 function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
-  const [selectedTabKey, setSelectedTabKey] = useState<string>(
-    lessons[0].id.toString()
+  let defaultTabKey = lessons[0].id.toString();
+  // *testing
+  console.log(
+    "🚀 ~ file: LessonCards.tsx:66 ~ LessonCards ~ defaultTabKey:",
+    defaultTabKey
   );
+  // *testing
+  const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
   // *testing
   console.log(
     "🚀 ~ file: LessonCards.tsx:67 ~ LessonCards ~ selectedTabKey:",
@@ -73,7 +78,7 @@ function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
   // *testing
 
   const isLastIndex =
-    selectedTabKey == lessons[lessons.length - 1].id.toString();
+    selectedTabKey === lessons[lessons.length - 1].id.toString();
 
   let lessonTabs: TabData[] = lessons.map((lesson) => {
     return {
@@ -90,7 +95,8 @@ function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
         setSelectedTabKey={setSelectedTabKey}
         tabs={lessonTabs}
         blobs={true}
-        scrollToDefault={false}
+        scrollToDefault={true}
+        defaultValue={defaultTabKey}
       />
       <AnimatePresence>
         {isLastIndex && (
