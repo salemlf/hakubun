@@ -1,5 +1,5 @@
 import { ForwardedRef, forwardRef, useEffect, useRef } from "react";
-import { MotionValue, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import * as Tabs from "@radix-ui/react-tabs";
 import { scrollIntoView } from "seamless-scroll-polyfill";
 import { TabData } from "../../types/MiscTypes";
@@ -49,17 +49,17 @@ const TabContainerBottomFlex = styled.div<TabContainerStyles>`
 
 const TabListBlobsStyled = styled(Tabs.List)<CustomBgColor>`
   display: flex;
+  gap: 10px;
   max-width: 100%;
 `;
 
 export const TabStyledBlob = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
   outline-style: none;
   font-size: 1rem;
-  min-width: 25px;
-  min-height: 25px;
+  width: 25px;
+  height: 25px;
   margin: 0 5px;
   border-radius: 9999px;
-  /* background-color: var(--offwhite-color); */
   background-color: ${({ bgcolor }) => bgcolor};
   transition-property: background-color, border-color, color, fill, stroke,
     opacity, box-shadow, transform;
@@ -67,10 +67,10 @@ export const TabStyledBlob = styled(Tabs.Trigger)<BgColorSelectionAndHover>`
   transition-duration: 300ms;
   cursor: default;
 
-  @media (min-width: 640px) {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
+  margin: auto;
+  position: relative;
+  border-radius: 9999px;
+  line-height: 1.25rem;
 `;
 
 export const SelectorBlob = styled(motion.span)<CustomBgColor>`
@@ -88,8 +88,8 @@ type SwipeableTabsListProps = {
   tabs: TabData[];
   tabElements: Element[];
   selectedTabKey: string;
-  x: MotionValue<number>;
-  width: MotionValue<number>;
+  //   x: MotionValue<number>;
+  //   width: MotionValue<number>;
   tabBgColor: string;
   tabSelectionColor: string;
   roundedContainer: boolean;
@@ -102,8 +102,8 @@ function TabListBlobsCore(
     tabs,
     tabElements,
     selectedTabKey,
-    x,
-    width,
+    // x,
+    // width,
     roundedContainer,
     tabBgColor,
     tabSelectionColor,
@@ -155,11 +155,18 @@ function TabListBlobsCore(
             value={tab.id}
             bgcolor={tabBgColor}
             selectioncolor={tabSelectionColor}
-          />
+          >
+            {selectedTabKey === tab.id && (
+              <SelectorBlob
+                style={{ borderRadius: 9999 }}
+                bgcolor={tabBgColor}
+                layoutId="selector"
+                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              />
+            )}
+          </TabStyledBlob>
         ))}
       </TabListBlobsStyled>
-      {/* Selection indicator. */}
-      <SelectorBlob style={{ x, width }} bgcolor={tabBgColor} />
     </TabContainerBottomFlex>
   );
 }

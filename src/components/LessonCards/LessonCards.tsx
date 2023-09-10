@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { Subject, SubjectType } from "../../types/Subject";
+import { AnimatePresence } from "framer-motion";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import { TabData } from "../../types/MiscTypes";
+import { Subject, SubjectType } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
 import RadicalDetailTabs from "../RadicalDetailTabs";
 import KanjiDetailTabs from "../KanjiDetailTabs";
 import VocabDetailTabs from "../VocabDetailTabs";
-import { TabData } from "../../types/MiscTypes";
 import SwipeableTabs from "../SwipeableTabs";
-import styled from "styled-components";
 import StartSessionButton from "../StartSessionButton";
-import { AnimatePresence } from "framer-motion";
+import styled from "styled-components";
 
 type HeaderProps = {
   subjType: SubjectType;
@@ -60,10 +60,17 @@ type Props = {
   onStartLessonBtnClick: () => void;
 };
 
+// TODO: scrolls to last item by default for some reason, fix
 function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>(
     lessons[0].id.toString()
   );
+  // *testing
+  console.log(
+    "🚀 ~ file: LessonCards.tsx:67 ~ LessonCards ~ selectedTabKey:",
+    selectedTabKey
+  );
+  // *testing
 
   const isLastIndex =
     selectedTabKey == lessons[lessons.length - 1].id.toString();

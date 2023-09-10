@@ -1,17 +1,12 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import * as Tabs from "@radix-ui/react-tabs";
-import {
-  TargetAndTransition,
-  useTransform,
-  animate,
-  useScroll,
-} from "framer-motion";
-import { TabData } from "../../types/MiscTypes";
+import { TargetAndTransition, animate, useScroll } from "framer-motion";
 import {
   ROUNDED_CONTAINER_DEFAULT,
   TAB_BG_COLOR_DEFAULT,
   TAB_SELECTION_COLOR_DEFAULT,
 } from "./constants";
+import { TabData } from "../../types/MiscTypes";
 import { TabList } from "./TabList";
 import { TabListBlobs } from "./TabListBlobs";
 import styled from "styled-components";
@@ -142,43 +137,7 @@ function SwipeableTabs({
     }
   }, [tabElements]);
 
-  // This function transforms the scroll position into the X position
-  // or width of the selected tab indicator.
-  const transform = (
-    x: number,
-    property: "offsetLeft" | "offsetWidth"
-  ): number => {
-    if (!tabElements.length) return 0;
-
-    // Find the tab index for the scroll X position.
-    const index = getIndex(x);
-
-    // Get the difference between this tab and the next one.
-    const difference =
-      index < tabElements.length - 1
-        ? tabElements[index + 1][property as keyof {}] -
-          tabElements[index][property as keyof {}]
-        : tabElements[index]["offsetWidth" as keyof {}];
-
-    // Get the percentage between tabs.
-    // This is the difference between the integer index and fractional one.
-    const percent = (tabElements.length - 1) * x - index;
-
-    // Linearly interpolate to calculate the position of the selection indicator.
-    const value =
-      tabElements[index][property as keyof {}] + difference * percent;
-
-    // iOS scrolls weird when translateX is 0 for some reason. 🤷‍♂️
-    return value || 0.1;
-  };
-
-  const x = useTransform(scrollXProgress, (x) => {
-    return transform(x, "offsetLeft");
-  });
-  const width = useTransform(scrollXProgress, (x) =>
-    transform(x, "offsetWidth")
-  );
-
+  // TODO: think that the problem for selecting always selecting last tab is (at least partially) here?
   // When the user scrolls, update the selected key
   // so that the correct tab panel becomes interactive.
   useEffect(() => {
@@ -244,8 +203,6 @@ function SwipeableTabs({
           tabs={tabs}
           tabElements={tabElements}
           selectedTabKey={selectedTabKey}
-          x={x}
-          width={width}
           tabBgColor={tabBgColor}
           tabSelectionColor={tabSelectionColor}
           roundedContainer={roundedContainer}
@@ -265,8 +222,6 @@ function SwipeableTabs({
           tabs={tabs}
           tabElements={tabElements}
           selectedTabKey={selectedTabKey}
-          x={x}
-          width={width}
           tabBgColor={tabBgColor}
           tabSelectionColor={tabSelectionColor}
           roundedContainer={roundedContainer}

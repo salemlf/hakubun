@@ -1,5 +1,5 @@
 import { ForwardedRef, forwardRef, useEffect, useRef } from "react";
-import { MotionValue, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import * as Tabs from "@radix-ui/react-tabs";
 import { scrollIntoView } from "seamless-scroll-polyfill";
 import { TabData } from "../../types/MiscTypes";
@@ -32,12 +32,10 @@ export const TabContainer = styled.div<TabContainerStyles>`
 
 export const TabListStyled = styled(Tabs.List)<CustomBgColor>`
   display: flex;
-  gap: 5px;
   background-color: ${({ bgcolor }) => bgcolor};
 `;
 
 export const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
-  margin: auto;
   padding: 12px;
   outline-style: none;
   color: ${({ selectioncolor }) => selectioncolor};
@@ -48,6 +46,11 @@ export const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
   transition-duration: 300ms;
   cursor: default;
   font-size: ${({ tabfontsize }) => tabfontsize};
+
+  margin: auto;
+  position: relative;
+  border-radius: 9999px;
+  line-height: 1.25rem;
 `;
 
 const Selector = styled(motion.div)<CustomBgColor>`
@@ -66,8 +69,6 @@ type SwipeableTabsListProps = {
   tabs: TabData[];
   tabElements: Element[];
   selectedTabKey: string;
-  x: MotionValue<number>;
-  width: MotionValue<number>;
   tabBgColor: string;
   tabSelectionColor: string;
   roundedContainer: boolean;
@@ -79,8 +80,6 @@ function TabListCore(
     tabs,
     tabElements,
     selectedTabKey,
-    x,
-    width,
     roundedContainer,
     tabBgColor,
     tabSelectionColor,
@@ -134,12 +133,18 @@ function TabListCore(
             selectioncolor={tabSelectionColor}
             tabfontsize={tabFontSize}
           >
+            {selectedTabKey === tab.id && (
+              <Selector
+                style={{ borderRadius: 9999 }}
+                bgcolor={tabBgColor}
+                layoutId="selector"
+                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              />
+            )}
             {tab.label}
           </TabStyled>
         ))}
       </TabListStyled>
-      {/* Selection indicator. */}
-      <Selector style={{ x, width, borderRadius: 9999 }} bgcolor={tabBgColor} />
     </TabContainer>
   );
 }
