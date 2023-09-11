@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useNumLessons } from "../../hooks/useLessonNum";
+import { useAuth } from "../../hooks/useAuth";
 import { setBtnBackground } from "../../services/ImageSrcService";
 import Toast from "../Toast";
 import {
@@ -9,9 +10,6 @@ import {
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components";
-import { useUser } from "../../hooks/useUser";
-import { useAuth } from "../../hooks/useAuth";
-import { MAX_LEVEL_FOR_FREE } from "../../constants";
 
 const LessonsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-lesson);

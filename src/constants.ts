@@ -63,5 +63,3 @@ export const TAG_REGEXES = {
   japaneseRegEx: new RegExp(`<ja>(.+?)<\/ja>`, "g"),
   japaneseReadingRegEx: new RegExp(`<reading><ja>(.+?)<\/ja><\/reading>`, "g"),
 };
-
-export const MAX_LEVEL_FOR_FREE = 3;

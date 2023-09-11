@@ -1,6 +1,7 @@
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { useQuery } from "@tanstack/react-query";
-import { UserData } from "../types/MiscTypes";
+
+import { User } from "../types/UserTypes";
 
 type Props = {
   token: string | undefined;
@@ -12,6 +13,6 @@ export const useUserInfo = ({ token }: Props) => {
     queryKey: ["user-info", token],
     queryFn: WaniKaniAPI.getUser,
     enabled: !!token,
-    select: (data) => data.data as UserData,
+    select: (data) => data.data as User,
   });
 };
