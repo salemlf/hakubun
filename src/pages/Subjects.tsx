@@ -56,10 +56,12 @@ const SubjectsContent = ({ level }: SubjectsContentProps) => {
 
   return (
     <ContentWithTabBarNoPadding>
-      <SubjectsHeader bgcolor="var(--ion-color-primary)">Level</SubjectsHeader>
+      <SubjectsHeader bgcolor="var(--ion-color-primary-tint)">
+        Level
+      </SubjectsHeader>
       <SwipeableTabs
         tabFontSize="1.5rem"
-        tabBgColor="var(--ion-color-primary)"
+        tabBgColor="var(--ion-color-primary-tint)"
         roundedContainer={false}
         selectedTabKey={selectedTabKey}
         setSelectedTabKey={setSelectedTabKey}
