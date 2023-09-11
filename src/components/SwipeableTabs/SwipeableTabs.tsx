@@ -138,7 +138,7 @@ function SwipeableTabs({
     }
   }, [tabElements]);
 
-  // scrolls to the selected tab when tab list is large enough to have scrollbar
+  // scrolls to the selected tab (and centers it) when tab list is large enough to have scrollbar
   useEffect(() => {
     if (
       tabListRef.current &&
@@ -146,17 +146,16 @@ function SwipeableTabs({
       tabElements &&
       tabElements.length > 0
     ) {
-      // *testing
       const index = tabs.findIndex((tab) => tab.id === selectedTabKey);
       let currSelected = tabElements[index];
       if (currSelected) {
-        let selectedOffsetLeft = currSelected.offsetLeft;
-        let containerOffsetLeft = tabListRef.current.offsetLeft;
-        let posToScrollTo = selectedOffsetLeft - containerOffsetLeft;
+        let scrollToCenterPos =
+          currSelected.offsetLeft +
+          currSelected.offsetWidth / 2 -
+          tabListRef.current.offsetWidth / 2;
 
-        // TODO: change so scrolled to item is centered
         tabListRef.current.scrollTo({
-          left: posToScrollTo,
+          left: scrollToCenterPos,
           behavior: "smooth",
         });
       }
