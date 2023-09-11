@@ -1,7 +1,6 @@
 import { ForwardedRef, forwardRef, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import * as Tabs from "@radix-ui/react-tabs";
-import { scrollIntoView } from "seamless-scroll-polyfill";
 import { TabData } from "../../types/MiscTypes";
 import {
   CustomBgColor,
@@ -10,7 +9,10 @@ import {
 } from "./SwipeableTabsTypes";
 import styled from "styled-components";
 
-export const TabContainer = styled.div<TabContainerStyles>`
+const TabListStyled = styled(Tabs.List)<TabContainerStyles>`
+  display: flex;
+  background-color: ${({ bgcolor }) => bgcolor};
+  /* !added */
   position: relative;
   background-color: ${({ bgcolor }) => bgcolor};
   padding: 0;
@@ -28,14 +30,11 @@ export const TabContainer = styled.div<TabContainerStyles>`
   /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+
+  /* !added */
 `;
 
-export const TabListStyled = styled(Tabs.List)<CustomBgColor>`
-  display: flex;
-  background-color: ${({ bgcolor }) => bgcolor};
-`;
-
-export const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
+const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
   padding: 12px;
   outline-style: none;
   color: ${({ selectioncolor }) => selectioncolor};
@@ -75,6 +74,7 @@ type SwipeableTabsListProps = {
   tabFontSize: string;
 };
 
+// TODO: combine this and TabListBlobs into one component OR combine common styles
 function TabListCore(
   {
     tabs,
@@ -88,64 +88,33 @@ function TabListCore(
   }: SwipeableTabsListProps,
   tabListRef: ForwardedRef<HTMLDivElement>
 ) {
-  const tabContainerRef = useRef<HTMLDivElement | null>(null);
-
-  // scrolls to the selected tab when tab list is large enough to have scrollbar
-  useEffect(() => {
-    if (
-      tabContainerRef.current &&
-      selectedTabKey &&
-      tabElements &&
-      tabElements.length > 0
-    ) {
-      // *testing
-      const index = tabs.findIndex((tab) => tab.id === selectedTabKey);
-      let currSelected = tabElements[index];
-      if (currSelected) {
-        scrollIntoView(
-          currSelected,
-          {
-            behavior: "smooth",
-            inline: "center",
-            block: "nearest",
-          },
-          {
-            duration: 250, // aprox. the duration that chrome uses,
-          }
-        );
-      }
-    }
-  }, [selectedTabKey, tabContainerRef.current]);
-
   return (
-    <TabContainer
+    <TabListStyled
+      ref={tabListRef}
       bgcolor={tabBgColor}
       roundedcontainer={roundedContainer}
-      ref={tabContainerRef}
       {...props}
     >
-      <TabListStyled ref={tabListRef} bgcolor={tabBgColor}>
-        {tabs.map((tab) => (
-          <TabStyled
-            key={tab.id}
-            value={tab.id}
-            bgcolor={tabBgColor}
-            selectioncolor={tabSelectionColor}
-            tabfontsize={tabFontSize}
-          >
-            {selectedTabKey === tab.id && (
-              <Selector
-                style={{ borderRadius: 9999 }}
-                bgcolor={tabBgColor}
-                layoutId="selector"
-                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-              />
-            )}
-            {tab.label}
-          </TabStyled>
-        ))}
-      </TabListStyled>
-    </TabContainer>
+      {tabs.map((tab) => (
+        <TabStyled
+          key={tab.id}
+          value={tab.id}
+          bgcolor={tabBgColor}
+          selectioncolor={tabSelectionColor}
+          tabfontsize={tabFontSize}
+        >
+          {selectedTabKey === tab.id && (
+            <Selector
+              style={{ borderRadius: 9999 }}
+              bgcolor={tabBgColor}
+              layoutId="selector"
+              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+            />
+          )}
+          {tab.label}
+        </TabStyled>
+      ))}
+    </TabListStyled>
   );
 }
 

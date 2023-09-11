@@ -1,6 +1,7 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import { TargetAndTransition, animate, useScroll } from "framer-motion";
+import { scrollIntoView } from "seamless-scroll-polyfill";
 import {
   ROUNDED_CONTAINER_DEFAULT,
   TAB_BG_COLOR_DEFAULT,
@@ -102,7 +103,7 @@ function SwipeableTabs({
   }, [tabListRef.current, tabPanelsRef.current, defaultValue]);
 
   // Find all the tab elements so we can use their dimensions.
-  const [tabElements, setTabElements] = useState<Element[]>([]);
+  const [tabElements, setTabElements] = useState<HTMLButtonElement[]>([]);
 
   const getIndex = useCallback(
     (x: number) => {
@@ -132,10 +133,36 @@ function SwipeableTabs({
 
   useEffect(() => {
     if (tabElements.length === 0 && tabListRef.current) {
-      const tabList = tabListRef.current.querySelectorAll("[role=tab]");
+      const tabList: NodeListOf<HTMLButtonElement> =
+        tabListRef.current.querySelectorAll("[role=tab]");
       setTabElements(Array.from(tabList));
     }
   }, [tabElements]);
+
+  // scrolls to the selected tab when tab list is large enough to have scrollbar
+  useEffect(() => {
+    if (
+      tabListRef.current &&
+      selectedTabKey &&
+      tabElements &&
+      tabElements.length > 0
+    ) {
+      // *testing
+      const index = tabs.findIndex((tab) => tab.id === selectedTabKey);
+      let currSelected = tabElements[index];
+      if (currSelected) {
+        let selectedOffsetLeft = currSelected.offsetLeft;
+        let containerOffsetLeft = tabListRef.current.offsetLeft;
+        let posToScrollTo = selectedOffsetLeft - containerOffsetLeft;
+
+        // TODO: change so scrolled to item is centered
+        tabListRef.current.scrollTo({
+          left: posToScrollTo,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [selectedTabKey, tabListRef.current]);
 
   // TODO: think that the problem for selecting always selecting last tab is (at least partially) here?
   // When the user scrolls, update the selected key
