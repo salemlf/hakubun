@@ -1,7 +1,6 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import { TargetAndTransition, animate, useScroll } from "framer-motion";
-import { scrollIntoView } from "seamless-scroll-polyfill";
 import {
   ROUNDED_CONTAINER_DEFAULT,
   TAB_BG_COLOR_DEFAULT,

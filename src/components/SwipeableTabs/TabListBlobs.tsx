@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useRef } from "react";
+import { ForwardedRef, forwardRef } from "react";
 import { motion } from "framer-motion";
 import * as Tabs from "@radix-ui/react-tabs";
 import { TabData } from "../../types/MiscTypes";
