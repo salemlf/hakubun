@@ -62,6 +62,7 @@ const Description = styled(ToastPrimitive.Description)`
 
 const CloseButton = styled(ToastPrimitive.Close)`
   grid-area: close;
+  align-self: baseline;
   padding: 0;
   border-radius: 50%;
   background-color: transparent;

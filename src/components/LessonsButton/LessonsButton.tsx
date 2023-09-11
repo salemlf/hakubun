@@ -9,6 +9,9 @@ import {
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components";
+import { useUser } from "../../hooks/useUser";
+import { useAuth } from "../../hooks/useAuth";
+import { MAX_LEVEL_FOR_FREE } from "../../constants";
 
 const LessonsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-lesson);
@@ -27,10 +30,12 @@ type Props = {
   level: number;
 };
 
-// TODO: if no lessons available, show message on click
 function LessonsButton({ level }: Props) {
   const navigate = useNavigate();
   const [displayToast, setDisplayToast] = useState<boolean>(false);
+  const [toastTitle, setToastTitle] = useState<string>();
+  const [toastContent, setToastContent] = useState<string>();
+  const { user } = useAuth();
 
   // TODO: change so getting lessons and then just use number of those for count
   const {
@@ -43,10 +48,27 @@ function LessonsButton({ level }: Props) {
     return <LessonButtonSkeleton animated={true}></LessonButtonSkeleton>;
   }
 
-  // TODO: display different message if lessons available but trial and at max level
   const onLessonBtnClick = () => {
+    let paidSubscription = user && user.subscription.type !== "free";
     if (numLessons === 0 || numLessons === undefined) {
+      setToastTitle("No lessons available!");
+      setToastContent(
+        "Looks like you don't have any lessons right now, work on reviews if you have some available :)"
+      );
       setDisplayToast(true);
+    }
+    // trial user
+    else if (
+      user &&
+      !paidSubscription &&
+      user.level > user.subscription.max_level_granted
+    ) {
+      setToastTitle("No more free lessons, sorry :(");
+      setToastContent("Looks like you've used up all your free lessons!");
+      setDisplayToast(true);
+
+      console.log("No paid subscription");
+      console.log("user: ", user);
     } else {
       navigate("/lessons/settings");
     }
@@ -74,8 +96,8 @@ function LessonsButton({ level }: Props) {
       <Toast
         open={displayToast}
         setOpen={setDisplayToast}
-        title="No lessons available!"
-        content="Looks like you don't have any lessons right now, work on reviews if you have some available :)"
+        title={toastTitle}
+        content={toastContent}
       ></Toast>
     </>
   );

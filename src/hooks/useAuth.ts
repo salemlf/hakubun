@@ -16,7 +16,7 @@ export const useAuth = () => {
   useEffect(() => {
     setAuthLoading(true);
     //* testing
-    console.log("Ran useEffect is useAuth");
+    console.log("Ran useEffect in useAuth");
     //* testing
     getItem("token").then((token) => {
       if (token) {
@@ -45,20 +45,17 @@ export const useAuth = () => {
     setAuthLoading(true);
     try {
       let userData = await getUser();
-
       let userInfo: User = userData.data;
-      // *testing
-      console.log("🚀 ~ file: useAuth.tsx:24 ~ login ~ userData:", userData);
-      // *testing
 
       // *testing
       console.log("🚀 ~ file: useAuth.tsx:23 ~ login ~ userInfo:", userInfo);
       // *testing
-      // TODO: add auth to storage using useStorage
+
       addUser(userInfo);
       LogRocket.identify(`${userInfo.username}}`, {
         name: `${userInfo.username}}`,
       });
+
       setIsAuthenticated(true);
       setAuthLoading(false);
       return true;
