@@ -14,7 +14,9 @@ type TagRegexes = {
   readingRegEx: RegExp;
   meaningRegEx: RegExp;
   japaneseRegEx: RegExp;
+  kanjiJapaneseRegEx: RegExp;
   japaneseReadingRegEx: RegExp;
+  readingJapaneseRegEx: RegExp;
 };
 
 type TagProps = {
@@ -40,6 +42,10 @@ const TaggedTxt = styled(SubjDetailTxt)`
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
+`;
+
+const JapaneseTag = styled(Tag)`
+  font-family: var(--japanese-font-family);
 `;
 
 // this is used so there's no icky wrapping for words where color is cut off/no border-radius on one side
@@ -75,6 +81,10 @@ const createSubjectTags = (
   regexForTags: TagRegexes,
   uuidsArr: string[]
 ) => {
+  // *testing
+  console.debug("🚀 ~ file: TxtWithSubjTags.tsx:78 ~ text:", text);
+  // *testing
+
   let currUUIDArrIndex = 0;
 
   let replaced = reactStringReplace(text, regexForTags.radRegEx, (match, i) => {
@@ -88,6 +98,21 @@ const createSubjectTags = (
       </Fragment>
     );
   });
+
+  replaced = reactStringReplace(
+    replaced,
+    regexForTags.kanjiJapaneseRegEx,
+    (match, i) => {
+      let uuid = uuidsArr[currUUIDArrIndex];
+      currUUIDArrIndex++;
+      return (
+        <Fragment key={`kanji-ja-tag${uuid}`}>
+          <JapaneseTag tagType="kanji">{match}</JapaneseTag>
+          <Goo />
+        </Fragment>
+      );
+    }
+  );
 
   replaced = reactStringReplace(
     replaced,
@@ -121,14 +146,14 @@ const createSubjectTags = (
 
   replaced = reactStringReplace(
     replaced,
-    regexForTags.japaneseReadingRegEx,
+    regexForTags.readingJapaneseRegEx,
     (match, i) => {
       let uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
 
       return (
-        <Fragment key={`ja-reading-tag${uuid}`}>
-          <Tag tagType="reading">{match}</Tag>
+        <Fragment key={`reading-ja-tag${uuid}`}>
+          <JapaneseTag tagType="reading">{match}</JapaneseTag>
           <Goo />
         </Fragment>
       );
@@ -142,9 +167,19 @@ const createSubjectTags = (
       let uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
 
+      const found = regexForTags.readingRegEx.exec(match);
+      let leftover = found ? match.replace(regexForTags.readingRegEx, "") : "";
+
       return (
         <Fragment key={`japanese-tag${uuid}`}>
-          <JapaneseTxt>{match}</JapaneseTxt>
+          {found ? (
+            <>
+              <Tag tagType="reading">{found[found.length - 1]}</Tag>
+              <JapaneseTxt>{leftover}</JapaneseTxt>
+            </>
+          ) : (
+            <JapaneseTxt>{match}</JapaneseTxt>
+          )}
           <Goo />
         </Fragment>
       );
@@ -182,6 +217,10 @@ const createSubjectTags = (
       );
     }
   );
+
+  // *testing
+  console.debug("replaced: ", replaced);
+  // *testing
 
   return replaced;
 };
