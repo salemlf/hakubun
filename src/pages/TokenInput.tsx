@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   IonInput,
-  IonContent,
   IonSpinner,
   IonHeader,
   IonToolbar,
@@ -11,6 +10,7 @@ import {
   IonSkeletonText,
 } from "@ionic/react";
 import { useUserAuth } from "../contexts/AuthContext";
+import { MainContent } from "../styles/BaseStyledComponents";
 
 // TODO: change to use normal input instead of IonInput
 const TokenInput = () => {
@@ -60,7 +60,7 @@ const TokenInput = () => {
               <IonTitle>Authorize Hakubun</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <IonContent className="ion-padding">
+          <MainContent>
             <IonInput
               data-private
               fill="outline"
@@ -78,7 +78,7 @@ const TokenInput = () => {
             >
               Submit
             </IonButton>
-          </IonContent>
+          </MainContent>
         </>
       ) : (
         <>
@@ -92,7 +92,7 @@ const TokenInput = () => {
               </IonTitle>
             </IonToolbar>
           </IonHeader>
-          <IonContent className="ion-padding">
+          <MainContent>
             <IonInput label="WaniKani API Token Loading Skeleton">
               <IonSkeletonText
                 animated={true}
@@ -100,7 +100,7 @@ const TokenInput = () => {
               ></IonSkeletonText>
             </IonInput>
             <IonSkeletonText animated={true}></IonSkeletonText>
-          </IonContent>
+          </MainContent>
         </>
       )}
     </>

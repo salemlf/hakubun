@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { IonContent } from "@ionic/react";
 import { useLocation } from "react-router-dom";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../stores/useQueueStore";
@@ -13,7 +12,7 @@ import Card from "../components/Card/Card";
 import AnimatedPage from "../components/AnimatedPage";
 import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
 import SubjCharacterList from "../components/ReviewResults/SubjCharacterList";
-import { FullWidthGrid } from "../styles/BaseStyledComponents";
+import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
@@ -84,57 +83,55 @@ function LessonSummary() {
       <LessonSummaryHeader>
         <LessonSummaryHeadingTxt>Lesson Summary</LessonSummaryHeadingTxt>
       </LessonSummaryHeader>
-      <IonContent className="ion-padding">
-        <FullWidthGrid>
-          {lessonSubjectsLoading && <p>Loading...</p>}
-          {Object.keys(subjectsByType).length !== 0 && (
-            <>
-              <SubjectCard
-                title={`${
-                  (subjectsByType.radical ?? []).length
-                } Radicals Learned`}
-                headerBgColor="var(--wanikani-radical)"
-              >
-                <SubjCharacterList
-                  subjList={subjectsByType.radical ?? []}
-                  justify="flex-start"
-                />
-              </SubjectCard>
-              <SubjectCard
-                title={`${(subjectsByType.kanji ?? []).length} Kanji Learned`}
-                headerBgColor="var(--wanikani-kanji)"
-              >
-                <SubjCharacterList
-                  subjList={subjectsByType.kanji ?? []}
-                  justify="flex-start"
-                />
-              </SubjectCard>
-              <SubjectCard
-                title={`${
-                  (
-                    [
-                      ...(subjectsByType.vocabulary ?? []),
-                      ...(subjectsByType.kana_vocabulary ?? []),
-                    ] ?? []
-                  ).length
-                } Vocabulary Learned`}
-                headerBgColor="var(--wanikani-vocab)"
-              >
-                <SubjCharacterList
-                  subjList={
-                    [
-                      ...(subjectsByType.vocabulary ?? []),
-                      ...(subjectsByType.kana_vocabulary ?? []),
-                    ] ?? []
-                  }
-                  justify="flex-start"
-                />
-              </SubjectCard>
-            </>
-          )}
-        </FullWidthGrid>
+      <ContentWithTabBar>
+        {lessonSubjectsLoading && <p>Loading...</p>}
+        {Object.keys(subjectsByType).length !== 0 && (
+          <>
+            <SubjectCard
+              title={`${
+                (subjectsByType.radical ?? []).length
+              } Radicals Learned`}
+              headerBgColor="var(--wanikani-radical)"
+            >
+              <SubjCharacterList
+                subjList={subjectsByType.radical ?? []}
+                justify="flex-start"
+              />
+            </SubjectCard>
+            <SubjectCard
+              title={`${(subjectsByType.kanji ?? []).length} Kanji Learned`}
+              headerBgColor="var(--wanikani-kanji)"
+            >
+              <SubjCharacterList
+                subjList={subjectsByType.kanji ?? []}
+                justify="flex-start"
+              />
+            </SubjectCard>
+            <SubjectCard
+              title={`${
+                (
+                  [
+                    ...(subjectsByType.vocabulary ?? []),
+                    ...(subjectsByType.kana_vocabulary ?? []),
+                  ] ?? []
+                ).length
+              } Vocabulary Learned`}
+              headerBgColor="var(--wanikani-vocab)"
+            >
+              <SubjCharacterList
+                subjList={
+                  [
+                    ...(subjectsByType.vocabulary ?? []),
+                    ...(subjectsByType.kana_vocabulary ?? []),
+                  ] ?? []
+                }
+                justify="flex-start"
+              />
+            </SubjectCard>
+          </>
+        )}
         <FloatingHomeButton />
-      </IonContent>
+      </ContentWithTabBar>
     </Page>
   );
 }

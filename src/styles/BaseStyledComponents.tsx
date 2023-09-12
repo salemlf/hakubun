@@ -90,7 +90,7 @@ export const Chip = styled(Button)`
   -moz-user-select: text;
   -ms-user-select: text;
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
     --outline: 2px solid white;
   }
@@ -124,20 +124,8 @@ export const BottomSheetContent = styled(IonRow)`
   padding-bottom: var(--ion-padding, 16px);
 `;
 
-// export const ContentWithTabBar = styled(IonContent)`
-//   --padding-start: var(--ion-padding, 0px);
-//   --padding-end: var(--ion-padding, 5px);
-//   --padding-top: var(--ion-padding, 5px);
-//   --padding-bottom: 4rem;
-//   padding-inline-start: var(--ion-padding, 5px);
-//   padding-inline-end: var(--ion-padding, 5px);
-//   padding-top: var(--ion-padding, 5px);
-//   padding-bottom: 4rem;
-// `;
-
 export const ContentWithTabBar = styled.main`
   overflow-y: auto;
-  /* flex: 1 0 auto; */
   padding: 5px 5px 85px 5px;
 `;
 
@@ -169,9 +157,8 @@ export const BaseButton = styled.button<ButtonContainerProps>`
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
-    --outline: 2px solid white;
   }
 `;
 
@@ -208,7 +195,9 @@ export const FullWidthColumn = styled.div`
   width: 100%;
 `;
 
-export const MainContent = styled.main``;
+export const MainContent = styled.main`
+  overflow-y: auto;
+`;
 
 export const Section = styled.section<OptionalBgColor>`
   background-color: ${({ bgcolor }) =>

@@ -43,16 +43,10 @@ const SubjectItem = styled(ToggleGroup.Item)<ItemContainerProps>`
   margin-bottom: 8px;
   border-radius: 10px;
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
     --outline: 2px solid white;
   }
-
-  /* &[data-state="on"] {
-    .checkmark {
-      display: block;
-    }
-  } */
 `;
 
 const CheckIconContainer = styled(motion.div)`

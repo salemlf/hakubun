@@ -1,6 +1,7 @@
-import { Col } from "./SubjectDetailsStyled";
+import { IonBadge, IonSkeletonText } from "@ionic/react";
 import { SubjectType } from "../types/Subject";
-import { IonBadge, IonButton, IonSkeletonText } from "@ionic/react";
+import Button from "../components/Button";
+import { Col } from "./SubjectDetailsStyled";
 import styled from "styled-components";
 
 type DefaultBtnProps = {
@@ -38,7 +39,7 @@ export const BtnWithTxt = styled(DefaultBtn)<TxtBtnProps>`
   background-color: ${({ lockedStyle }) =>
     lockedStyle && `var(--ion-color-step-300)`};
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
     --outline: 2px solid white;
   }
@@ -74,7 +75,7 @@ export const BtnWithImage = styled(DefaultBtn)`
   background-color: var(--wanikani-blue);
   padding: 4px;
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
     --outline: 2px solid white;
   }
@@ -88,8 +89,8 @@ export const SubjInfoCol = styled(Col)`
   gap: 5px;
 `;
 
-// TODO: change to use Button component
-export const BaseReviewLessonButton = styled(IonButton)`
+export const BaseReviewLessonButton = styled(Button)`
+  width: 100%;
   min-height: 100px;
   height: 100%;
   border-radius: 8px;
@@ -101,14 +102,14 @@ export const BaseReviewLessonButton = styled(IonButton)`
   p {
     position: absolute;
     margin: 0;
-    bottom: 2px;
-    left: 0;
+    bottom: 6px;
+    left: 10px;
     color: white;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
     --outline: 2px solid white;
   }
@@ -122,8 +123,8 @@ export const BaseReviewLessonButtonSkeleton = styled(IonSkeletonText)`
 
 export const BaseReviewLessonButtonBadge = styled(IonBadge)`
   position: absolute;
-  right: 0;
-  bottom: 2px;
+  right: 10px;
+  bottom: 6px;
   font-size: 1rem;
   background-color: var(--deep-purple-accent);
   color: white;

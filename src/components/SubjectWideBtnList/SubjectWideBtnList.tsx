@@ -1,4 +1,5 @@
 import { IonCol, IonRow } from "@ionic/react";
+import { useNavigate } from "react-router-dom";
 import { setSubjectAvailImgs } from "../../services/ImageSrcService";
 import {
   getSubjectDisplayName,
@@ -15,7 +16,6 @@ import {
 } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 export const Characters = styled(SubjectChars)`
   display: flex;
@@ -85,7 +85,7 @@ const SubjectItemContainer = styled.button<ItemContainerProps>`
   margin-bottom: 2px;
   border-radius: 10px;
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
     --outline: 2px solid white;
   }

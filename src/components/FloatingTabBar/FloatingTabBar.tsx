@@ -59,7 +59,7 @@ const TabButton = styled(NavigationMenu.Link)`
     height: 1.5em;
   }
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
   }
 

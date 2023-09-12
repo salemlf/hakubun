@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { IonContent } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 // TODO: instead add a module declaration file for react-router-prompt
 // @ts-ignore: Could not find a declaration file for module
@@ -19,6 +18,7 @@ import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQ
 import AnimatedPage from "../components/AnimatedPage";
 import Dialog from "../components/Dialog/Dialog";
 import styled from "styled-components";
+import { MainContent } from "../styles/BaseStyledComponents";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -125,11 +125,11 @@ export const ReviewSession = () => {
         }
       </ReactRouterPrompt>
       {assignmentQueue.length !== 0 && <QueueHeader />}
-      <IonContent>
+      <MainContent>
         {assignmentQueue.length !== 0 && (
           <AssignmentQueueCards submitItems={submitReviews} />
         )}
-      </IonContent>
+      </MainContent>
     </Page>
   );
 };

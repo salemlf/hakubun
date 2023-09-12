@@ -58,7 +58,7 @@ const DialogButton = styled.button`
   font-weight: 500;
   height: 35px;
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
   }
 `;

@@ -1,8 +1,7 @@
 import { IonIcon } from "@ionic/react";
 import { NoteHintContainer } from "../../styles/BaseStyledComponents";
-// import styled from "styled-components/macro";
-import styled from "styled-components";
 import Button from "../Button";
+import styled from "styled-components";
 
 export const NoteContainer = styled(NoteHintContainer)`
   position: relative;
@@ -34,7 +33,7 @@ export const EditingButton = styled(Button)`
     align-items: center;
   }
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
     --outline: 2px solid white;
   }

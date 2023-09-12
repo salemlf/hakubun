@@ -1,12 +1,12 @@
-import { IonButtons, IonContent, IonHeader, IonToolbar } from "@ionic/react";
+import { IonButtons, IonHeader, IonToolbar } from "@ionic/react";
+import { useUserSettingsStore } from "../stores/useUserSettingsStore";
 import { useLessons } from "../hooks/useLessons";
 import AnimatedPage from "../components/AnimatedPage";
 import ShiftBy from "../components/ShiftBy";
 import BackButton from "../components/BackButton/BackButton";
 import AssignmentSettings from "../components/AssignmentSettings";
-import { SettingsTitle } from "../styles/BaseStyledComponents";
+import { MainContent, SettingsTitle } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-import { useUserSettingsStore } from "../stores/useUserSettingsStore";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -40,7 +40,7 @@ function LessonSettings() {
           <SettingsTitle>Lesson Settings</SettingsTitle>
         </IonToolbar>
       </HeaderContainer>
-      <IonContent>
+      <MainContent>
         {lessonsLoading && <h1>Loading...</h1>}
         {!lessonsLoading && lessonsErr && <div>{`Error: ${lessonsErr}`}</div>}
         {!lessonsLoading && !lessonsErr && lessonsData && (
@@ -50,7 +50,7 @@ function LessonSettings() {
             defaultBatchSize={lessonBatchSize}
           />
         )}
-      </IonContent>
+      </MainContent>
     </Page>
   );
 }

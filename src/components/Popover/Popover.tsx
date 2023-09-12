@@ -1,6 +1,6 @@
+import React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { PopoverContentProps } from "@radix-ui/react-popover";
-import React from "react";
 import styled from "styled-components";
 
 const Content = styled(PopoverPrimitive.Content)`
@@ -15,7 +15,7 @@ const Content = styled(PopoverPrimitive.Content)`
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 
-  &:focus {
+  &:focus-visible {
     box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
       hsl(206 22% 7% / 20%) 0px 10px 20px -15px, 0 0 0 2px var(--darkest-purple);
   }

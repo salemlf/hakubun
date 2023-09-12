@@ -80,7 +80,7 @@ const Trigger = styled(SelectPrimitive.Trigger)`
     background-color: rgb(231, 218, 240);
   }
 
-  &:focus {
+  &:focus-visible {
     box-shadow: 0 0 0 2px black;
   }
 
