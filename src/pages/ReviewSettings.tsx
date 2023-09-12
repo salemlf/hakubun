@@ -1,12 +1,14 @@
-import { IonContent, IonHeader, IonButtons, IonToolbar } from "@ionic/react";
+import { useEffect, useState } from "react";
+import { IonHeader, IonButtons, IonToolbar } from "@ionic/react";
+import { useUserSettingsStore } from "../stores/useUserSettingsStore";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
+import { useAuth } from "../hooks/useAuth";
 import AnimatedPage from "../components/AnimatedPage";
 import ShiftBy from "../components/ShiftBy/ShiftBy";
 import BackButton from "../components/BackButton/BackButton";
-import styled from "styled-components";
 import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
-import { SettingsTitle } from "../styles/BaseStyledComponents";
-import { useUserSettingsStore } from "../stores/useUserSettingsStore";
+import { MainContent, SettingsTitle } from "../styles/BaseStyledComponents";
+import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -25,11 +27,23 @@ const HeaderContainer = styled(IonHeader)`
 `;
 
 export const ReviewSettings = () => {
+  const { user } = useAuth();
+  const [isEnabled, setIsEnabled] = useState(false);
+  let currUserLevel = user?.level;
+
+  useEffect(() => {
+    if (user && user.level) {
+      setIsEnabled(true);
+    } else {
+      setIsEnabled(false);
+    }
+  }, [user]);
+
   const {
     isLoading: availForReviewLoading,
     data: availForReviewData,
     error: availForReviewErr,
-  } = useAssignmentsAvailForReview();
+  } = useAssignmentsAvailForReview(currUserLevel, isEnabled);
 
   const reviewBatchSize = useUserSettingsStore.use.reviewBatchSize();
 
@@ -45,7 +59,7 @@ export const ReviewSettings = () => {
           <SettingsTitle>Review Settings</SettingsTitle>
         </IonToolbar>
       </HeaderContainer>
-      <IonContent>
+      <MainContent>
         {availForReviewLoading && <h1>Loading...</h1>}
         {!availForReviewLoading && availForReviewErr && (
           <div>{`Error: ${availForReviewErr}`}</div>
@@ -57,7 +71,7 @@ export const ReviewSettings = () => {
             defaultBatchSize={reviewBatchSize}
           />
         )}
-      </IonContent>
+      </MainContent>
     </Page>
   );
 };

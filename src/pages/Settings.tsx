@@ -1,4 +1,3 @@
-import { IonContent } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../contexts/AuthContext";
 import AnimatedPage from "../components/AnimatedPage";
@@ -7,7 +6,11 @@ import GeneralUserSettings from "../components/GeneralUserSettings";
 import LessonUserSettings from "../components/LessonUserSettings";
 import ReviewUserSettings from "../components/ReviewUserSettings/ReviewUserSettings";
 import Button from "../components/Button";
-import { Header } from "../styles/BaseStyledComponents";
+import FloatingTabBar from "../components/FloatingTabBar";
+import {
+  ContentWithTabBarNoPadding,
+  Header,
+} from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const SettingsHeader = styled(Header)`
@@ -51,7 +54,7 @@ function Settings() {
         <BackButton backgroundColor="var(--ion-color-secondary)" />
         <PageHeading>User Settings</PageHeading>
       </SettingsHeader>
-      <IonContent>
+      <ContentWithTabBarNoPadding>
         <GeneralUserSettings />
         <LessonUserSettings />
         <ReviewUserSettings />
@@ -63,7 +66,8 @@ function Settings() {
             Logout
           </LogoutButton>
         </ButtonRow>
-      </IonContent>
+      </ContentWithTabBarNoPadding>
+      <FloatingTabBar />
     </AnimatedPage>
   );
 }

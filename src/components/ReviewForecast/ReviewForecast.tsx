@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { IonCol } from "@ionic/react";
-import styled from "styled-components";
+import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
+import { useAuth } from "../../hooks/useAuth";
 import DailyReviewForecast from "./DailyReviewForecast";
 import SwipeableTabs from "../SwipeableTabs";
-import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
+import styled from "styled-components";
 
 const Container = styled.section`
   width: 100%;
@@ -68,18 +69,28 @@ function ReviewForecast() {
     StartAndEndTimeInfo[]
   >([]);
 
-  // !added
+  const { user } = useAuth();
+  const [isEnabled, setIsEnabled] = useState(false);
+  let currUserLevel = user?.level;
+
+  useEffect(() => {
+    if (user && user.level) {
+      setIsEnabled(true);
+    } else {
+      setIsEnabled(false);
+    }
+  }, [user]);
+
   const seedRunningTotalAvailableReviews =
     useForecastTotalsStore.use.seedRunningTotalAvailableReviews();
   const runningTotals =
     useForecastTotalsStore.use.runningTotalAvailableReviews();
-  // !added
 
   const {
     isLoading: availForReviewLoading,
     data: availForReviewData,
     error: availForReviewErr,
-  } = useAssignmentsAvailForReview();
+  } = useAssignmentsAvailForReview(currUserLevel, isEnabled);
 
   // TODO: this might have issues not conforming to invalidation times of availForReviewData, hmm
   useEffect(() => {
