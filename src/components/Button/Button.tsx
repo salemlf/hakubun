@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { CSSProperties, useRef } from "react";
 import { useButton } from "react-aria";
 import { AriaButtonProps } from "@react-types/button";
 import styled from "styled-components";
@@ -13,7 +13,7 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
   background-color: ${({ backgroundcolor }) => `${backgroundcolor}`};
   color: ${({ color }) => `${color}`};
   cursor: pointer;
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
   }
 `;
@@ -22,12 +22,14 @@ interface Props extends AriaButtonProps {
   backgroundColor?: string;
   color?: string;
   className?: string;
+  style?: CSSProperties;
 }
 
 function Button({
   backgroundColor = "var(--ion-color-primary)",
   color = "white",
   className,
+  style,
   ...props
 }: Props) {
   let { children } = props;
@@ -49,6 +51,7 @@ function Button({
       isPressed={isPressed}
       tabIndex={0}
       className={className}
+      style={style}
     >
       {children}
     </ButtonContainer>

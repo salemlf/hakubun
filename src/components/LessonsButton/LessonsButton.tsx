@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useNumLessons } from "../../hooks/useLessonNum";
 import { useAuth } from "../../hooks/useAuth";
 import { setBtnBackground } from "../../services/ImageSrcService";
 import Toast from "../Toast";
@@ -10,10 +9,11 @@ import {
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components";
+import { useLessons } from "../../hooks/useLessons";
 
 const LessonsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-lesson);
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
     --outline: 2px solid white;
   }
@@ -24,31 +24,26 @@ const LessonButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`
   --background-rgb: var(--wani-kani-pink-rgb);
 `;
 
-type Props = {
-  level: number;
-};
-
-function LessonsButton({ level }: Props) {
+function LessonsButton() {
   const navigate = useNavigate();
   const [displayToast, setDisplayToast] = useState<boolean>(false);
   const [toastTitle, setToastTitle] = useState<string>();
   const [toastContent, setToastContent] = useState<string>();
   const { user } = useAuth();
 
-  // TODO: change so getting lessons and then just use number of those for count
   const {
-    isLoading: numLessonsLoading,
-    data: numLessons,
-    error: lessonErr,
-  } = useNumLessons({ level: level });
+    isLoading: lessonsLoading,
+    data: lessonsData,
+    error: lessonsErr,
+  } = useLessons();
 
-  if (numLessonsLoading || lessonErr) {
+  if (lessonsLoading || lessonsErr) {
     return <LessonButtonSkeleton animated={true}></LessonButtonSkeleton>;
   }
 
   const onLessonBtnClick = () => {
     let paidSubscription = user && user.subscription.type !== "free";
-    if (numLessons === 0 || numLessons === undefined) {
+    if (lessonsData === undefined || lessonsData.length === 0) {
       setToastTitle("No lessons available!");
       setToastContent(
         "Looks like you don't have any lessons right now, work on reviews if you have some available :)"
@@ -75,20 +70,17 @@ function LessonsButton({ level }: Props) {
   return (
     <>
       <LessonsButtonStyled
-        color="clear"
-        expand="block"
-        title="Lessons"
-        onClick={onLessonBtnClick}
+        onPress={onLessonBtnClick}
         style={{
           backgroundImage: `url(${setBtnBackground({
             btnType: "lessons",
-            numItems: numLessons,
+            numItems: lessonsData ? lessonsData.length : 0,
           })})`,
         }}
       >
         <p>Lessons</p>
         <BaseReviewLessonButtonBadge>
-          {numLessons ? numLessons : 0}
+          {lessonsData ? lessonsData.length : 0}
         </BaseReviewLessonButtonBadge>
       </LessonsButtonStyled>
       <Toast

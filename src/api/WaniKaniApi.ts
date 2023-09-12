@@ -24,30 +24,24 @@ export const WaniKaniAPI = {
       method: "GET",
     });
 
-    console.log("🚀 ~ file: WaniKaniApi.tsx:23 ~ response:", response);
     return response.data;
   },
 
-  getAssignmentsAvailForReview: async function () {
-    let url = `${baseUrl}assignments?immediately_available_for_review`;
+  getAssignmentsAvailForReview: async function (currLevel: number) {
+    if (currLevel === 0) return { data: [], total: 0 };
+
+    let levelRange = [];
+    for (let i = 1; i <= currLevel; i++) {
+      levelRange.push(i);
+    }
+    let levelRangeString = levelRange.join(",");
+
+    let url = `${baseUrl}assignments?immediately_available_for_review&levels=${levelRangeString}`;
 
     let reviews = await PagingAPI.iterateOverPages(url, []);
     let reviewsCombined = PagingAPI.combinePages(reviews);
 
     return reviewsCombined;
-  },
-
-  // TODO: delete and just use getAssignmentsAvailForReview count
-  getNumReviews: async function () {
-    let url = `${baseUrl}assignments?immediately_available_for_review`;
-
-    const response: AxiosResponse = await api.request({
-      url: url,
-      method: "GET",
-    });
-
-    let numReviews = response.data.total_count;
-    return numReviews;
   },
 
   getLessons: async function () {
@@ -59,6 +53,7 @@ export const WaniKaniAPI = {
     return lessonsCombined;
   },
 
+  // TODO: delete and just use getLessons count
   getNumLessons: async function () {
     let url = `${baseUrl}assignments?immediately_available_for_lessons`;
 

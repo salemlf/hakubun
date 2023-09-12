@@ -4,9 +4,11 @@ import { useUser } from "./useUser";
 import { useStorage } from "./useStorage";
 import { api, pagingApi } from "../api/ApiConfig";
 import { User } from "../types/UserTypes";
+import { useQueryClient } from "@tanstack/react-query";
 
 // TODO: update so user data is refetched if hard refresh (not implemented yet)
 export const useAuth = () => {
+  const queryClient = useQueryClient();
   const { user, addUser, removeUser } = useUser();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
@@ -29,8 +31,8 @@ export const useAuth = () => {
     getItem("user").then((user) => {
       if (user) {
         //* testing
-        console.log("Found user in storage!");
-        console.log("🚀 ~ file: useAuth.tsx:24 ~ getItem ~ user:", user);
+        // console.log("Found user in storage!");
+        // console.log("🚀 ~ file: useAuth.tsx:24 ~ getItem ~ user:", user);
         //* testing
         addUser(user);
         setIsAuthenticated(true);
@@ -75,6 +77,7 @@ export const useAuth = () => {
     removeToken();
     setIsAuthenticated(false);
     setAuthLoading(false);
+    queryClient.invalidateQueries();
   };
 
   const getUser = () => {

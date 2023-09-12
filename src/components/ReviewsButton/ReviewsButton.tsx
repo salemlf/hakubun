@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setBtnBackground } from "../../services/ImageSrcService";
-import { useNumReviews } from "../../hooks/useNumReviews";
+import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
 import Toast from "../Toast/Toast";
 import {
   BaseReviewLessonButton,
@@ -12,7 +12,7 @@ import styled from "styled-components";
 
 const ReviewsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-review);
-  &:focus {
+  &:focus-visible {
     outline: 2px solid white;
     --outline: 2px solid white;
   }
@@ -24,50 +24,46 @@ const ReviewsButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`
 `;
 
 type Props = {
-  level: number | undefined;
+  level: number;
 };
 
-// TODO: change so getting reviews and then just use number of those for count
 function ReviewsButton({ level }: Props) {
   const navigate = useNavigate();
   const [displayToast, setDisplayToast] = useState<boolean>(false);
 
   const {
-    isLoading: numReviewsLoading,
-    data: numReviews,
-    error: reviewErr,
-  } = useNumReviews(level);
-
-  if (numReviewsLoading || reviewErr) {
-    return <ReviewsButtonSkeleton animated={true}></ReviewsButtonSkeleton>;
-  }
+    isLoading: availForReviewLoading,
+    data: availForReviewData,
+    error: availForReviewErr,
+  } = useAssignmentsAvailForReview(level);
 
   const onReviewBtnClick = () => {
-    if (numReviews === 0 || numReviews === undefined) {
+    if (availForReviewData === undefined || availForReviewData.length === 0) {
       setDisplayToast(true);
     } else {
       navigate("/reviews/settings");
     }
   };
 
+  if (availForReviewLoading || availForReviewErr) {
+    return <ReviewsButtonSkeleton animated={true}></ReviewsButtonSkeleton>;
+  }
+
   // TODO: delay loading until image is set
   return (
     <>
       <ReviewsButtonStyled
-        expand="block"
-        title="Reviews"
-        color="clear"
-        onClick={onReviewBtnClick}
+        onPress={onReviewBtnClick}
         style={{
           backgroundImage: `url(${setBtnBackground({
             btnType: "reviews",
-            numItems: numReviews,
+            numItems: availForReviewData ? availForReviewData.length : 0,
           })})`,
         }}
       >
         <p>Reviews</p>
         <BaseReviewLessonButtonBadge>
-          {numReviews ? numReviews : 0}
+          {availForReviewData ? availForReviewData.length : 0}
         </BaseReviewLessonButtonBadge>
       </ReviewsButtonStyled>
       <Toast

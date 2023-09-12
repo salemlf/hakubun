@@ -7,7 +7,6 @@ export const useUser = () => {
   const { setItem, removeItem } = useStorage();
 
   const addUser = (user: User) => {
-    console.log("🚀 ~ file: useUser.ts:13 ~ addUser ~ user:", user);
     setUser(user);
     setItem("user", user);
   };

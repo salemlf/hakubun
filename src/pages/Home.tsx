@@ -50,7 +50,7 @@ const Home = () => {
               <>
                 <IonRow>
                   <IonCol>
-                    <LessonsButton level={level}></LessonsButton>
+                    <LessonsButton />
                   </IonCol>
                   <IonCol>
                     <ReviewsButton level={level}></ReviewsButton>
