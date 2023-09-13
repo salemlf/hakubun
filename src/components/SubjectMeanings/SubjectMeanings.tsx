@@ -27,6 +27,7 @@ const SubjDetailHeadingNoBtmMargin = styled(SubjDetailSubHeading)`
 const AltMeaningsContainer = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   margin-top: 8px;
   gap: 5px;
   margin-bottom: 8px;
