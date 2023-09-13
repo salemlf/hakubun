@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   IonGrid,
   IonCol,
@@ -6,13 +6,7 @@ import {
   IonSpinner,
   IonSkeletonText,
 } from "@ionic/react";
-import {
-  PanInfo,
-  motion,
-  useAnimation,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
+import { PanInfo, motion, useAnimation, useMotionValue } from "framer-motion";
 import { useUserAuth } from "../contexts/AuthContext";
 import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
 import HomeHeader from "../components/HomeHeader";
@@ -21,7 +15,6 @@ import ReviewsButton from "../components/ReviewsButton/ReviewsButton";
 import RadicalForLvlCard from "../components/RadicalForLvlCard/RadicalForLvlCard";
 import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
 import SrsStages from "../components/SrsStages/SrsStages";
-import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import AnimatedPage from "../components/AnimatedPage";
 import FloatingTabBar from "../components/FloatingTabBar";
 import ReviewForecast from "../components/ReviewForecast";
@@ -58,12 +51,12 @@ const refreshingVariants = {
 
 const Home = () => {
   const queryClient = useQueryClient();
+  const appContext = useUserAuth();
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
   const scrollY = useMotionValue(0);
   const controls = useAnimation();
-
-  const appContext = useUserAuth();
+  const relPageContainerRef = useRef<HTMLDivElement>(null);
 
   // TODO: remove spinner for loading, just using text skeletons instead
   useEffect(() => {
@@ -100,7 +93,7 @@ const Home = () => {
     <>
       <AnimatedPage>
         <HomeHeader></HomeHeader>
-        <RelPageContainer>
+        <RelPageContainer ref={relPageContainerRef}>
           <LoadingContainer>
             <motion.img
               initial="hidden"
@@ -111,7 +104,7 @@ const Home = () => {
           </LoadingContainer>
           <DraggableMainContent
             drag="y"
-            dragConstraints={{ top: 0, bottom: 0 }}
+            dragConstraints={relPageContainerRef}
             style={{
               y: scrollY,
             }}
