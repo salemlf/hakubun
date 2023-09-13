@@ -5,7 +5,12 @@ import AnimatedPage from "../components/AnimatedPage";
 import ShiftBy from "../components/ShiftBy";
 import BackButton from "../components/BackButton/BackButton";
 import AssignmentSettings from "../components/AssignmentSettings";
-import { MainContent, SettingsTitle } from "../styles/BaseStyledComponents";
+import LoadingDots from "../components/LoadingDots";
+import {
+  FixedCenterContainer,
+  MainContent,
+  SettingsTitle,
+} from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
@@ -41,7 +46,11 @@ function LessonSettings() {
         </IonToolbar>
       </HeaderContainer>
       <MainContent>
-        {lessonsLoading && <h1>Loading...</h1>}
+        {lessonsLoading && (
+          <FixedCenterContainer>
+            <LoadingDots />
+          </FixedCenterContainer>
+        )}
         {!lessonsLoading && lessonsErr && <div>{`Error: ${lessonsErr}`}</div>}
         {!lessonsLoading && !lessonsErr && lessonsData && (
           <AssignmentSettings

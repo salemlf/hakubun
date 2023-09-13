@@ -3,6 +3,8 @@ import { useAssignmentsAvailableInRange } from "../../hooks/useAssignmentsAvaila
 import { Assignment } from "../../types/Assignment";
 import styled from "styled-components";
 import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
+import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
+import LoadingDots from "../LoadingDots";
 
 const ChartContainer = styled.section`
   display: grid;
@@ -220,7 +222,9 @@ function DailyReviewForecast({
   return (
     <>
       {isLoading ? (
-        <p>Loading...</p>
+        <FixedCenterContainer>
+          <LoadingDots />
+        </FixedCenterContainer>
       ) : (
         <ChartContainer>
           <LabelContainer>

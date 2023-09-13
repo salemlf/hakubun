@@ -9,8 +9,12 @@ import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
 import FloatingTabBar from "../components/FloatingTabBar";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
-import { ContentWithTabBar } from "../styles/BaseStyledComponents";
+import {
+  ContentWithTabBar,
+  FixedCenterContainer,
+} from "../styles/BaseStyledComponents";
 import styled from "styled-components";
+import LoadingDots from "../components/LoadingDots";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -98,11 +102,12 @@ export const Search = () => {
               ))}
             </List>
           ) : (
-            <p>Loading...</p>
+            <FixedCenterContainer>
+              <LoadingDots />
+            </FixedCenterContainer>
           )}
         </ContentWithTabBar>
         {!shouldHide && <FloatingTabBar />}
-        {/* <FloatingTabBar /> */}
       </Page>
     </>
   );

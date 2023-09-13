@@ -5,9 +5,10 @@ import SwipeableTabs from "../components/SwipeableTabs";
 import AnimatedPage from "../components/AnimatedPage";
 import FloatingTabBar from "../components/FloatingTabBar";
 import SubjectsOnLvlTab from "../components/SubjectsOnLvlTab/SubjectsOnLvlTab";
+import LoadingDots from "../components/LoadingDots";
 import {
-  ContentWithTabBar,
   ContentWithTabBarNoPadding,
+  FixedCenterContainer,
   Header,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
@@ -39,7 +40,13 @@ export const Subjects = () => {
   return (
     <>
       <Page>
-        {isLoading ? <p>Loading...</p> : <SubjectsContent level={level} />}
+        {isLoading ? (
+          <FixedCenterContainer>
+            <LoadingDots />
+          </FixedCenterContainer>
+        ) : (
+          <SubjectsContent level={level} />
+        )}
       </Page>
       <FloatingTabBar />
     </>

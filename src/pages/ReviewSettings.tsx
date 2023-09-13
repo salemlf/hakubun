@@ -7,7 +7,12 @@ import AnimatedPage from "../components/AnimatedPage";
 import ShiftBy from "../components/ShiftBy/ShiftBy";
 import BackButton from "../components/BackButton/BackButton";
 import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
-import { MainContent, SettingsTitle } from "../styles/BaseStyledComponents";
+import LoadingDots from "../components/LoadingDots";
+import {
+  FixedCenterContainer,
+  MainContent,
+  SettingsTitle,
+} from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
@@ -60,7 +65,11 @@ export const ReviewSettings = () => {
         </IonToolbar>
       </HeaderContainer>
       <MainContent>
-        {availForReviewLoading && <h1>Loading...</h1>}
+        {availForReviewLoading && (
+          <FixedCenterContainer>
+            <LoadingDots />
+          </FixedCenterContainer>
+        )}
         {!availForReviewLoading && availForReviewErr && (
           <div>{`Error: ${availForReviewErr}`}</div>
         )}

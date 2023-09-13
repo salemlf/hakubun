@@ -5,6 +5,8 @@ import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailFor
 import { useAuth } from "../../hooks/useAuth";
 import DailyReviewForecast from "./DailyReviewForecast";
 import SwipeableTabs from "../SwipeableTabs";
+import LoadingDots from "../LoadingDots";
+import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Container = styled.section`
@@ -112,7 +114,9 @@ function ReviewForecast() {
   return (
     <IonCol>
       {isLoading ? (
-        <p>Loading...</p>
+        <FixedCenterContainer>
+          <LoadingDots />
+        </FixedCenterContainer>
       ) : (
         <Container>
           <Heading>Review Forecast</Heading>

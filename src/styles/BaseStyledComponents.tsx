@@ -218,3 +218,11 @@ export const SettingRow = styled.div`
   align-items: center;
   gap: 10px;
 `;
+
+export const FixedCenterContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 12;
+`;

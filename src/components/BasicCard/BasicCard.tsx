@@ -34,7 +34,7 @@ interface Props {
   isLoading: boolean;
 }
 
-// TODO: modify so just custom html and css
+// TODO: delete this once no longer used
 function BasicCard({ children, title, isLoading }: Props) {
   return (
     <Card>

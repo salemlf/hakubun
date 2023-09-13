@@ -12,10 +12,12 @@ import {
 } from "../../services/MiscService";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
+import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { AssignmentQueueCard } from "./AssignmentQueueCard";
 import { AssignmentCardContainer } from "./AssignmentQueueCardsStyled";
-import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
+import LoadingDots from "../LoadingDots";
+import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   submitItems: (reviewData: AssignmentQueueItem[]) => void;
@@ -241,7 +243,9 @@ function AssignmentQueueCards({ submitItems }: Props) {
     <>
       {assignmentQueue.length === 0 ||
       currQueueIndex === assignmentQueue.length ? (
-        <p>Loading...</p>
+        <FixedCenterContainer>
+          <LoadingDots />
+        </FixedCenterContainer>
       ) : (
         <AssignmentCardContainer>
           <AssignmentQueueCard

@@ -1,12 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  IonGrid,
-  IonCol,
-  IonRow,
-  IonSpinner,
-  IonSkeletonText,
-} from "@ionic/react";
+import { IonGrid, IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 import { PanInfo, motion, useAnimation, useMotionValue } from "framer-motion";
+import { useQueryClient } from "@tanstack/react-query";
 import { useUserAuth } from "../contexts/AuthContext";
 import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
 import HomeHeader from "../components/HomeHeader";
@@ -18,9 +13,10 @@ import SrsStages from "../components/SrsStages/SrsStages";
 import AnimatedPage from "../components/AnimatedPage";
 import FloatingTabBar from "../components/FloatingTabBar";
 import ReviewForecast from "../components/ReviewForecast";
+import LoadingDots from "../components/LoadingDots";
 import RefreshIcon from "../images/refresh.svg";
+import { FixedCenterContainer } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-import { useQueryClient } from "@tanstack/react-query";
 
 const RelPageContainer = styled.div`
   overflow-y: auto;
@@ -147,7 +143,11 @@ const Home = () => {
                 <IonSkeletonText animated={true}></IonSkeletonText>
               )}
             </IonGrid>
-            {homeLoading && <IonSpinner name="dots"></IonSpinner>}
+            {homeLoading && (
+              <FixedCenterContainer>
+                <LoadingDots />
+              </FixedCenterContainer>
+            )}
           </DraggableMainContent>
         </RelPageContainer>
         <FloatingTabBar />

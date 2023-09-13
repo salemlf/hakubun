@@ -6,10 +6,10 @@ import {
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
 } from "../../services/SubjectAndAssignmentService";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../../stores/useQueueStore";
+import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { INITIAL_ASSIGNMENT_TYPES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
@@ -17,6 +17,8 @@ import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
+import LoadingDots from "../LoadingDots";
+import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   settingsType: "lessons" | "reviews";
@@ -153,7 +155,9 @@ function AssignmentSettings({
   return (
     <>
       {isLoading ? (
-        <p>Loading...</p>
+        <FixedCenterContainer>
+          <LoadingDots />
+        </FixedCenterContainer>
       ) : (
         <>
           <SwipeableTabs

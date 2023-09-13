@@ -12,7 +12,11 @@ import Card from "../components/Card/Card";
 import AnimatedPage from "../components/AnimatedPage";
 import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
 import SubjCharacterList from "../components/ReviewResults/SubjCharacterList";
-import { ContentWithTabBar } from "../styles/BaseStyledComponents";
+import LoadingDots from "../components/LoadingDots";
+import {
+  ContentWithTabBar,
+  FixedCenterContainer,
+} from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
@@ -84,7 +88,11 @@ function LessonSummary() {
         <LessonSummaryHeadingTxt>Lesson Summary</LessonSummaryHeadingTxt>
       </LessonSummaryHeader>
       <ContentWithTabBar>
-        {lessonSubjectsLoading && <p>Loading...</p>}
+        {lessonSubjectsLoading && (
+          <FixedCenterContainer>
+            <LoadingDots />
+          </FixedCenterContainer>
+        )}
         {Object.keys(subjectsByType).length !== 0 && (
           <>
             <SubjectCard
