@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import reactStringReplace from "react-string-replace";
-import { generateXNumUUIDs } from "../../utils";
 import { getTagColor } from "../../services/SubjectAndAssignmentService";
+import { generateXNumUUIDs } from "../../utils";
+import { TAG_REGEXES } from "./constants";
 import { TagType } from "../../types/MiscTypes";
-import { TAG_REGEXES } from "../../constants";
 import { SubjDetailTxt } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
@@ -135,9 +135,22 @@ const createSubjectTags = (
     (match, i) => {
       let uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
+
+      const found = regexForTags.japaneseRegEx.exec(match);
+      let leftover = found ? match.replace(regexForTags.japaneseRegEx, "") : "";
+
       return (
         <Fragment key={`vocabulary-tag${uuid}`}>
-          <Tag tagType="vocabulary">{match}</Tag>
+          {found ? (
+            <>
+              <JapaneseTag tagType="vocabulary">
+                {found[found.length - 1]}
+              </JapaneseTag>
+              <JapaneseTxt>{leftover}</JapaneseTxt>
+            </>
+          ) : (
+            <Tag tagType="vocabulary">{match}</Tag>
+          )}
           <Goo />
         </Fragment>
       );
