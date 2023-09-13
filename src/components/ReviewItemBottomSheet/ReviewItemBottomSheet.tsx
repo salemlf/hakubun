@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { IonGrid } from "@ionic/react";
 import { useLocation } from "react-router";
 import { useWindowSize } from "usehooks-ts";
 import { useQueueStore } from "../../stores/useQueueStore";
@@ -15,7 +14,7 @@ import styled from "styled-components";
 
 const SectionWithPadding = styled(Section)`
   padding: 12px;
-  height: inherit;
+  height: 100%;
   box-sizing: border-box;
 `;
 
@@ -56,7 +55,6 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
           <BottomSheetContent title="Subject Info" height={height}>
             <BottomSheetHeader subject={currentReviewItem as Subject} />
             <SectionWithPadding>
-              {/* <FullWidthGrid> */}
               {currentReviewItem.object == "radical" && (
                 <RadicalDetailTabs
                   radical={currentReviewItem}
@@ -76,7 +74,6 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
                   scrollToDefault={true}
                 />
               )}
-              {/* </FullWidthGrid> */}
             </SectionWithPadding>
           </BottomSheetContent>
         </BottomSheetRoot>

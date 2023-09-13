@@ -13,6 +13,7 @@ import styled from "styled-components";
 
 const TabsStyled = styled(Tabs.Root)`
   width: 100%;
+  height: 100%;
 `;
 
 // TODO: change to calculate height using some other method
@@ -20,6 +21,7 @@ const TabPanelStyled = styled(Tabs.Content)`
   border-radius: 0.25rem;
   outline-style: none;
   width: 100%;
+  height: 85%;
   scroll-snap-align: start;
   flex-shrink: 0;
   margin: 0 5px;
@@ -43,6 +45,7 @@ const TabPanels = styled.div`
   color: white;
   scroll-snap-type: x mandatory;
   overscroll-behavior-x: auto;
+  height: 100%;
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {

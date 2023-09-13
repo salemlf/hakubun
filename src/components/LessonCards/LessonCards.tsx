@@ -23,6 +23,7 @@ const LessonSessionHeader = styled.header<HeaderProps>`
 
 const LessonContent = styled.div`
   margin: 10px 20px 25px;
+  height: 100%;
 `;
 
 type CardProps = {
