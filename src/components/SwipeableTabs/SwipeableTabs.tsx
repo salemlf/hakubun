@@ -46,6 +46,7 @@ const TabPanels = styled.div`
   scroll-snap-type: x mandatory;
   overscroll-behavior-x: auto;
   height: 100%;
+  padding-bottom: 30px;
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
@@ -106,6 +107,14 @@ function SwipeableTabs({
 
   // Find all the tab elements so we can use their dimensions.
   const [tabElements, setTabElements] = useState<HTMLButtonElement[]>([]);
+
+  // *testing
+  if (blobs) {
+    console.log("BLOBS selectedTabKey: ", selectedTabKey);
+  } else {
+    console.log("NORMAL selectedTabKey: ", selectedTabKey);
+  }
+  // *testing
 
   const getIndex = useCallback(
     (x: number) => {
