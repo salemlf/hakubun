@@ -53,19 +53,6 @@ export const WaniKaniAPI = {
     return lessonsCombined;
   },
 
-  // TODO: delete and just use getLessons count
-  getNumLessons: async function () {
-    let url = `${baseUrl}assignments?immediately_available_for_lessons`;
-
-    const response: AxiosResponse = await api.request({
-      url: url,
-      method: "GET",
-    });
-
-    let numLessons = response.data.total_count;
-    return numLessons;
-  },
-
   // TODO: change below functions so passing in types and using one function (getSubjectsByLevel)
   getSubjectsByLevel: async function (level: number) {
     let url = `${baseUrl}subjects?levels=${level}`;
