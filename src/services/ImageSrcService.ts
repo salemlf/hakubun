@@ -19,7 +19,7 @@ import { Subject } from "../types/Subject";
 
 export const setSubjectAvailImgs = (subject: Subject) => {
   let updatedSubj = subject;
-  if (updatedSubj.characters == null) {
+  if (updatedSubj.characters === null || updatedSubj.characters === "") {
     let availableImages = updatedSubj.character_images
       ?.filter((image: any) => image.content_type === "image/png")
       .map((image: any) => image.url);

@@ -78,3 +78,5 @@ export declare enum HistoryAction {
 }
 
 export type ButtonSize = "sm" | "md" | "lg";
+
+export type LoadingDotSize = "sm" | "md" | "lg";
