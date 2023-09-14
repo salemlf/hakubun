@@ -1,6 +1,7 @@
 import { Transition, motion } from "framer-motion";
 import CircleIcon from "../../images/circle.svg";
 import styled from "styled-components";
+import { LoadingDotSize } from "../../types/MiscTypes";
 
 type DotContainerProps = {
   containerwidth: string;
@@ -51,15 +52,40 @@ const DotTransition: Transition = {
   repeatType: "reverse",
 };
 
-type Props = {
-  containerWidth?: string;
-  dotSize?: string;
+type DotSizeStyles = {
+  containerSize: string;
+  dotSize: string;
 };
 
-function LoadingDots({ containerWidth = "200px", dotSize = "3rem" }: Props) {
+const btnSizeInfo: { [index: string]: DotSizeStyles } = {
+  sm: {
+    containerSize: "66px",
+    dotSize: "16px",
+  },
+  md: {
+    containerSize: "133px",
+    dotSize: "32px",
+  },
+  lg: {
+    containerSize: "200px",
+    dotSize: "48px",
+  },
+};
+
+const getLoadingDotSize = (size: LoadingDotSize) => {
+  return btnSizeInfo[size as keyof {}];
+};
+
+type Props = {
+  size?: LoadingDotSize;
+};
+
+function LoadingDots({ size = "lg" }: Props) {
+  let { containerSize, dotSize } = getLoadingDotSize(size);
+
   return (
     <DotContainer
-      containerwidth={containerWidth}
+      containerwidth={containerSize}
       variants={LoadingContainerVariants}
       initial="initial"
       animate="animate"

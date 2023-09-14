@@ -226,3 +226,11 @@ export const FixedCenterContainer = styled.div`
   transform: translate(-50%, -50%);
   z-index: 12;
 `;
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 12;
+`;

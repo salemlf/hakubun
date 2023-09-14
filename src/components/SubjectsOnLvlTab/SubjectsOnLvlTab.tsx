@@ -5,7 +5,10 @@ import Card from "../Card";
 import SubjectButtonList from "../SubjectButtonList";
 import SubjectWideBtnList from "../SubjectWideBtnList";
 import LoadingDots from "../LoadingDots";
-import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
+import {
+  FixedCenterContainer,
+  LoadingContainer,
+} from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const SubjectCardContainer = styled.div`
@@ -61,9 +64,9 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
   return (
     <>
       {isLoading ? (
-        <FixedCenterContainer>
+        <LoadingContainer>
           <LoadingDots />
-        </FixedCenterContainer>
+        </LoadingContainer>
       ) : (
         <>
           <Card

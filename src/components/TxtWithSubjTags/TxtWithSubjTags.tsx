@@ -81,10 +81,6 @@ const createSubjectTags = (
   regexForTags: TagRegexes,
   uuidsArr: string[]
 ) => {
-  // *testing
-  console.debug("🚀 ~ file: TxtWithSubjTags.tsx:78 ~ text:", text);
-  // *testing
-
   let currUUIDArrIndex = 0;
 
   let replaced = reactStringReplace(text, regexForTags.radRegEx, (match, i) => {
@@ -230,10 +226,6 @@ const createSubjectTags = (
       );
     }
   );
-
-  // *testing
-  console.debug("replaced: ", replaced);
-  // *testing
 
   return replaced;
 };

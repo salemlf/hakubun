@@ -6,7 +6,10 @@ import { useAuth } from "../../hooks/useAuth";
 import DailyReviewForecast from "./DailyReviewForecast";
 import SwipeableTabs from "../SwipeableTabs";
 import LoadingDots from "../LoadingDots";
-import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
+import {
+  FixedCenterContainer,
+  LoadingContainer,
+} from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Container = styled.section`
@@ -114,9 +117,9 @@ function ReviewForecast() {
   return (
     <IonCol>
       {isLoading ? (
-        <FixedCenterContainer>
-          <LoadingDots />
-        </FixedCenterContainer>
+        <LoadingContainer>
+          <LoadingDots size="md" />
+        </LoadingContainer>
       ) : (
         <Container>
           <Heading>Review Forecast</Heading>

@@ -33,6 +33,10 @@ const SheetOpenCloseButton = styled(Button)`
   width: 75px;
   height: 10px;
   border-radius: 1rem;
+
+  &:focus-visible {
+    outline: 2px solid white;
+  }
 `;
 
 const SheetContainer = styled.div`
