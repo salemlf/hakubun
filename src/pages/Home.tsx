@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { IonGrid, IonCol, IonRow, IonSkeletonText } from "@ionic/react";
-import { PanInfo, motion, useAnimation, useMotionValue } from "framer-motion";
+import {
+  motion,
+  useAnimation,
+  useMotionValueEvent,
+  useScroll,
+  useVelocity,
+} from "framer-motion";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUserAuth } from "../contexts/AuthContext";
 import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
@@ -18,17 +24,26 @@ import RefreshIcon from "../images/refresh.svg";
 import { FixedCenterContainer } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-const RelPageContainer = styled.div`
+const SnapContainer = styled.div`
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: auto;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
+  margin: 0;
 `;
 
 const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
+  scroll-snap-align: start;
 `;
 
 const DraggableMainContent = styled(motion.main)`
+  max-width: 100vw;
   padding: 5px 5px 85px 5px;
+  /* height: 100%; */
+  scroll-snap-align: start;
 `;
 
 const REFRESH_MAX_SIZE = 100;
@@ -50,11 +65,68 @@ const Home = () => {
   const appContext = useUserAuth();
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
-  const scrollY = useMotionValue(0);
-  const controls = useAnimation();
-  const relPageContainerRef = useRef<HTMLDivElement>(null);
+  const [lastTimeRefreshed, setLastTimeRefreshed] = useState<
+    Date | undefined
+  >();
 
-  // TODO: remove spinner for loading, just using text skeletons instead
+  const controls = useAnimation();
+  const snapContainerRef = useRef<HTMLDivElement>(null);
+  const mainContentRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: mainContentRef,
+    container: snapContainerRef,
+  });
+
+  const scrollVelocity = useVelocity(scrollYProgress);
+
+  const refresh = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["assignments-available-for-review"],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["assignments-available-in-range"],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["available-lessons"],
+    });
+  };
+
+  const refreshIfTimeElapsed = () => {
+    let currTime = new Date();
+    if (lastTimeRefreshed === undefined) {
+      setLastTimeRefreshed(currTime);
+      refresh();
+      return;
+    }
+
+    let timeDiff = (currTime.getTime() - lastTimeRefreshed.getTime()) / 60000;
+    // *testing
+    console.log(
+      "🚀 ~ file: Home.tsx:133 ~ refreshIfTimeElapsed ~ timeDiff:",
+      timeDiff
+    );
+    // *testing
+
+    // if it's been more than a minute, refresh
+    // TODO: otherwise, show a toast letting user know they can't refresh yet
+    if (timeDiff >= 1) {
+      refresh();
+    }
+  };
+
+  // TODO: improve/change how this is done
+  useMotionValueEvent(scrollVelocity, "change", (latest) => {
+    if (latest < -2 && scrollYProgress.get() < 0.2) {
+      controls.start("refreshing");
+      controls.start("spin");
+      refreshIfTimeElapsed();
+
+      setTimeout(() => {
+        controls.start("complete");
+      }, 3000);
+    }
+  });
+
   useEffect(() => {
     setHomeLoading(true);
     setUserDetails();
@@ -68,28 +140,11 @@ const Home = () => {
     }
   };
 
-  // TODO: fix so only allows drag when scrolled to top of page
-  const onDragEnd = (
-    event: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ) => {
-    if (info.offset.y > 200) {
-      controls.start("refreshing");
-      controls.start("spin");
-      queryClient.invalidateQueries();
-
-      // TODO: change so checks that data was completely loaded before setting to complete
-      setTimeout(() => {
-        controls.start("complete");
-      }, 5000);
-    }
-  };
-
   return (
     <>
       <AnimatedPage>
         <HomeHeader></HomeHeader>
-        <RelPageContainer ref={relPageContainerRef}>
+        <SnapContainer ref={snapContainerRef}>
           <LoadingContainer>
             <motion.img
               initial="hidden"
@@ -98,14 +153,7 @@ const Home = () => {
               variants={refreshingVariants}
             />
           </LoadingContainer>
-          <DraggableMainContent
-            drag="y"
-            dragConstraints={relPageContainerRef}
-            style={{
-              y: scrollY,
-            }}
-            onDragEnd={onDragEnd}
-          >
+          <DraggableMainContent ref={mainContentRef}>
             <IonGrid>
               {!homeLoading ? (
                 <>
@@ -149,7 +197,7 @@ const Home = () => {
               </FixedCenterContainer>
             )}
           </DraggableMainContent>
-        </RelPageContainer>
+        </SnapContainer>
         <FloatingTabBar />
       </AnimatedPage>
     </>
