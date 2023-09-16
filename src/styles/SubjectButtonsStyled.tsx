@@ -54,6 +54,7 @@ export const SubjBtnDetailsTxt = styled.p<DetailsBtnProps>`
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
+  color: white;
 
   margin: 0;
   font-size: ${({ detailfontsize }) => detailfontsize};

@@ -33,6 +33,7 @@ const ReadingAndMeaningContainer = styled.div`
 
 const ReadingAndMeaningTxt = styled.p`
   margin: 5px 0;
+  color: white;
 `;
 
 const ReadingTxt = styled(ReadingAndMeaningTxt)`

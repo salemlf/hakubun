@@ -4,6 +4,42 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 
 :root {
+  /* start - temp dark colors below until light mode is implemented - start */
+  --ion-background-color: #30223a;
+  --ion-background-color-rgb: 48, 34, 58;
+
+  --ion-text-color: #ffffff;
+  --ion-text-color-rgb: 255, 255, 255;
+
+  --ion-color-step-50: #3a2d44;
+  --ion-color-step-100: #45384e;
+  --ion-color-step-150: #4f4358;
+  --ion-color-step-200: #594e61;
+  --ion-color-step-250: #64596b;
+  --ion-color-step-300: #6e6475;
+  --ion-color-step-350: #786f7f;
+  --ion-color-step-400: #837a89;
+  --ion-color-step-450: #8d8593;
+  --ion-color-step-500: #98919d;
+  --ion-color-step-550: #a29ca6;
+  --ion-color-step-600: #aca7b0;
+  --ion-color-step-650: #b7b2ba;
+  --ion-color-step-700: #c1bdc4;
+  --ion-color-step-750: #cbc8ce;
+  --ion-color-step-800: #d6d3d8;
+  --ion-color-step-850: #e0dee1;
+  --ion-color-step-900: #eae9eb;
+  --ion-color-step-950: #f5f4f5;
+
+  --color: #ffffff;
+
+  --ion-border-color: var(--light-greyish-purple);
+  --ion-item-background: var(--light-greyish-purple);
+  --ion-toolbar-background: var(--light-greyish-purple);
+  --ion-card-background: var(--light-greyish-purple);
+
+  /* end - temp dark colors until light mode is implemented - end */
+
   --ion-color-primary: #c86bfa;
   --ion-color-primary-rgb: 200, 107, 250;
   --ion-color-primary-contrast: #000000;
@@ -291,6 +327,11 @@ http://ionicframework.com/docs/theming/ */
     --ion-item-background: var(--light-greyish-purple);
     --ion-toolbar-background: var(--light-greyish-purple);
     --ion-card-background: var(--light-greyish-purple);
+
+    --ion-default-font: "Poppins", sans-serif;
+    --japanese-font-family: "Zen Kaku Gothic New", sans-serif;
+    --japanese-with-english-fallback-font-family: "Zen Kaku Gothic New",
+      "Poppins", sans-serif;
   }
 }
 

@@ -5,7 +5,6 @@ import {
   IonCardTitle,
   IonSkeletonText,
 } from "@ionic/react";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const Card = styled(IonCard)`
@@ -13,9 +12,9 @@ const Card = styled(IonCard)`
 `;
 
 const CardTitle = styled(IonCardTitle)`
-  @media (prefers-color-scheme: dark) {
-    color: white;
-  }
+  /* @media (prefers-color-scheme: dark) { */
+  color: white;
+  /* } */
 `;
 
 const CardContent = styled(IonCardContent)`
@@ -23,9 +22,9 @@ const CardContent = styled(IonCardContent)`
   padding-inline-end: 10px;
   padding-bottom: 12px;
 
-  @media (prefers-color-scheme: dark) {
-    color: white;
-  }
+  /* @media (prefers-color-scheme: dark) { */
+  color: white;
+  /* } */
 `;
 
 interface Props {

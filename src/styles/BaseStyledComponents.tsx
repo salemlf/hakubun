@@ -71,10 +71,10 @@ export const IconHeadingContainer = styled.div`
 
 // TODO: modify so can see textbox before click (has an outline)
 export const Alert = styled(IonAlert)`
-  @media (prefers-color-scheme: dark) {
-    .alert-message {
-      color: white;
-    }
+  /* @media (prefers-color-scheme: dark) { */
+  .alert-message {
+    color: white;
+    /* } */
   }
 `;
 

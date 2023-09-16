@@ -4,9 +4,13 @@ html,
 body {
   height: 100%;
 
-  @media (prefers-color-scheme: dark) {
-    color: white;
-  }
+  --ion-default-font: "Poppins", sans-serif;
+  --japanese-font-family: "Zen Kaku Gothic New", sans-serif;
+  --japanese-with-english-fallback-font-family: "Zen Kaku Gothic New", "Poppins",
+    sans-serif;
+  // @media (prefers-color-scheme: dark) {
+  color: white;
+  // }
 
   ion-app {
     overflow: -moz-hidden-unscrollable !important;
@@ -36,15 +40,15 @@ h6 {
     }
   }
 
-  @media (prefers-color-scheme: dark) {
-    .alert-message {
-      color: white;
-    }
-    .alert-button {
-      color: white;
-      background-color: var(--light-greyish-purple);
-    }
+  // @media (prefers-color-scheme: dark) {
+  .alert-message {
+    color: white;
   }
+  .alert-button {
+    color: white;
+    background-color: var(--light-greyish-purple);
+  }
+  // }
 }
 
 ion-toast {

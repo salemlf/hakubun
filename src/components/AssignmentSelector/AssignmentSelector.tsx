@@ -70,8 +70,9 @@ const NumSelectedTxt = styled.h2`
   font-size: 1.25rem;
 `;
 
-const LvlBadge = styled.p`
+const LvlBubble = styled.p`
   background-color: var(--ion-color-secondary);
+  color: white;
   margin: 0;
   padding: 6px;
   border-radius: 0.8rem;
@@ -155,7 +156,7 @@ function AssignmentSelector({
                     />
                   )
                 ) : (
-                  <LvlBadge>Lvl {subject.level}</LvlBadge>
+                  <LvlBubble>Lvl {subject.level}</LvlBubble>
                 )}
                 <AnimatePresence>
                   {selectedAdvancedSubjIDs.includes(`${subject.id}`) && (
