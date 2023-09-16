@@ -9,12 +9,15 @@ import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
 import FloatingTabBar from "../components/FloatingTabBar";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
+import ThinkingLogo from "../images/logo-thinking.svg";
+import QuestionLogo from "../images/logo-question.svg";
+import LogoExclamation from "../images/logo-exclamation.svg";
 import {
   ContentWithTabBar,
   FixedCenterContainer,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-import LoadingDots from "../components/LoadingDots";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -35,6 +38,19 @@ const List = styled(IonList)`
   padding: 8px 5px;
 `;
 
+const LogoSearchOutcomeContainer = styled(FixedCenterContainer)`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 16px;
+
+  h2 {
+    margin-bottom: 25px;
+  }
+`;
+
+// TODO: add text for each state, (loading, no results, empty input)
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useState("");
@@ -91,20 +107,54 @@ export const Search = () => {
             clearIcon={ClearIcon}
             onIonInput={(ev) => handleInput(ev)}
           ></SearchBar>
+          <AnimatePresence>
+            {query === "" && !allSubjectsLoading && (
+              <LogoSearchOutcomeContainer
+                as={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+              >
+                <h2>Try searching for something!</h2>
+                <img src={QuestionLogo} />
+              </LogoSearchOutcomeContainer>
+            )}
+          </AnimatePresence>
           {!allSubjectsLoading ? (
-            <List>
-              {results.map((subject: any) => (
-                <SubjectWideButton
-                  subject={subject}
-                  key={subject.id}
-                  findImages={true}
-                />
-              ))}
-            </List>
+            results.length === 0 && query !== "" ? (
+              <LogoSearchOutcomeContainer
+                as={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+              >
+                <h2>No Results Found!</h2>
+                <img src={LogoExclamation} />
+              </LogoSearchOutcomeContainer>
+            ) : (
+              <List>
+                {results.map((subject: any) => (
+                  <SubjectWideButton
+                    subject={subject}
+                    key={subject.id}
+                    findImages={true}
+                  />
+                ))}
+              </List>
+            )
           ) : (
-            <FixedCenterContainer>
-              <LoadingDots />
-            </FixedCenterContainer>
+            <LogoSearchOutcomeContainer
+              as={motion.div}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <h2>Loading...</h2>
+              <img src={ThinkingLogo} />
+            </LogoSearchOutcomeContainer>
           )}
         </ContentWithTabBar>
         {!shouldHide && <FloatingTabBar />}
