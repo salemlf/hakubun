@@ -41,6 +41,16 @@ const Username = styled.h2`
   text-align: center;
 `;
 
+const CreditsContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+
+  p {
+    margin: 10px 0;
+  }
+`;
+
 // TODO: change to get/set defaults from API
 function Settings() {
   const appContext = useUserAuth();
@@ -72,6 +82,16 @@ function Settings() {
             Logout
           </LogoutButton>
         </ButtonRow>
+        <CreditsContainer>
+          <h3>Credits</h3>
+          <p>
+            Logo by{" "}
+            <a href="https://www.instagram.com/calebsevenhawks">Caleb Walsh</a>
+          </p>
+          <p>
+            Other icons from <a href="https://icons8.com/">Icons8</a>
+          </p>
+        </CreditsContainer>
       </ContentWithTabBarNoPadding>
       <FloatingTabBar />
     </AnimatedPage>
