@@ -4,23 +4,16 @@ import { PopoverContentProps } from "@radix-ui/react-popover";
 import styled from "styled-components";
 
 const Content = styled(PopoverPrimitive.Content)`
-  border-radius: 4px;
+  border-radius: 10px;
   padding: 20px;
   width: 260px;
-  background-color: var(--offwhite-color);
-  color: black;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
-    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  background-color: var(--darkest-purple);
+  color: white;
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
   a {
-    color: var(--ion-color-secondary);
-  }
-
-  &:focus-visible {
-    box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
-      hsl(206 22% 7% / 20%) 0px 10px 20px -15px, 0 0 0 2px var(--darkest-purple);
+    color: var(--ion-color-primary);
   }
 
   &[data-state="open"][data-side="top"] {
@@ -82,7 +75,7 @@ const Content = styled(PopoverPrimitive.Content)`
 `;
 
 const Arrow = styled(PopoverPrimitive.Arrow)`
-  fill: white;
+  fill: var(--darkest-purple);
 `;
 
 export const PopoverRoot = PopoverPrimitive.Root;
