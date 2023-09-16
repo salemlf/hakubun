@@ -1,23 +1,93 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  IonInput,
-  IonSpinner,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButton,
-  IonSkeletonText,
-} from "@ionic/react";
+// TODO: change so not relying on IonIcon
+import { IonIcon } from "@ionic/react";
 import { useUserAuth } from "../contexts/AuthContext";
-import { MainContent } from "../styles/BaseStyledComponents";
+import LoadingDots from "../components/LoadingDots";
+import Button from "../components/Button";
+import AnimatedPage from "../components/AnimatedPage";
+import HelpSpan from "../components/HelpSpan";
+import FallingText from "../components/FallingText";
+import WavesBgImg from "../images/layered-waves-bg.svg";
+import {
+  FixedCenterContainer,
+  MainContent,
+} from "../styles/BaseStyledComponents";
+import LogoIcon from "../images/logo.svg";
+import styled from "styled-components";
 
-// TODO: change to use normal input instead of IonInput
+const Content = styled(MainContent)`
+  padding: 5px 15px;
+`;
+
+const TokenInputLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const Input = styled.input`
+  max-width: 400px;
+  background-color: white;
+  color: black;
+`;
+
+const SubmitButton = styled(Button)`
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 1rem;
+  margin-top: 10px;
+`;
+
+const Form = styled.form`
+  /* background-color: var(--light-greyish-purple);
+  padding: 16px 12px;
+  border-radius: 10px; */
+`;
+
+const InputContainer = styled.div`
+  background-color: var(--light-greyish-purple);
+  padding: 16px 12px;
+  border-radius: 10px;
+`;
+
+const HelpContentParagraph = styled.p`
+  margin: 0;
+  font-size: 1rem;
+`;
+
+// TODO: display error icon
+const ErrorTxt = styled.p`
+  margin-bottom: 0;
+`;
+
+const HeadingAndLogoContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 10px 10px;
+`;
+
+const LogoContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const Logo = styled(IonIcon)`
+  width: 60%;
+  height: 25vh;
+`;
+
+const ButtonRow = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const TokenInput = () => {
-  // TODO: change token to useRef?
-  const [token, setToken] = useState("");
   const [isAuthLoading, setIsAuthLoading] = useState(false);
-  const [authErr, setAuthErr] = useState("");
+  const [hasError, setHasError] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -29,97 +99,102 @@ const TokenInput = () => {
     }
   }, [auth.isAuthenticated]);
 
-  const setAuth = async () => {
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    const fd = new FormData(event.target);
+
+    const apiToken = fd.get("api-token");
+    if (apiToken === "") {
+      // TODO: show a toast
+      console.log("Hey, you need to enter a token!");
+    }
+    if (apiToken) {
+      setAuth(apiToken.toString());
+    }
+  };
+
+  const setAuth = async (token: string) => {
     let success = await auth.login(token);
 
     if (success) {
       console.log("Successfully logged in!");
-      setAuthErr("");
+      setHasError(false);
       navigate("/", { replace: true });
     } else {
-      setAuthErr(
-        "An error occurred retrieving your info, make sure your API token is correct"
-      );
+      setHasError(true);
     }
 
     setIsAuthLoading(false);
   };
 
-  const onInput = (ev: Event) => {
-    const value = (ev.target as HTMLInputElement).value as string;
-    setToken(value);
-  };
+  const HelpPopoverContents = (
+    <HelpContentParagraph>
+      You can find this on your{" "}
+      <a
+        href="https://www.wanikani.com/settings/personal_access_tokens"
+        target="_blank"
+      >
+        API tokens page
+      </a>
+      , make sure to allow all permissions
+    </HelpContentParagraph>
+  );
 
-  // TODO: make spinner (loading thingy) larger and center of screen
   return (
-    <>
+    <AnimatedPage bgImage={WavesBgImg}>
       {!loading ? (
         <>
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Authorize Hakubun</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <MainContent>
-            <IonInput
-              data-private
-              fill="outline"
-              label="WaniKani API Token"
-              style={styles.input}
-              onIonInput={onInput}
-            ></IonInput>
-            {authErr.length > 0 && <p style={styles.err}>{authErr}</p>}
-            {isAuthLoading && <IonSpinner name="dots"></IonSpinner>}
-            <IonButton
-              color="tertiary"
-              disabled={!token}
-              title="Submit"
-              onClick={setAuth}
-            >
-              Submit
-            </IonButton>
-          </MainContent>
+          <Content>
+            <HeadingAndLogoContainer>
+              <LogoContainer>
+                <Logo src={LogoIcon} />
+              </LogoContainer>
+              <FallingText text="Hakubun" delay={0.5} duration={0.25} />
+            </HeadingAndLogoContainer>
+            <p>
+              A <em>(third-party)</em> Japanese Study App for Wanikani
+            </p>
+            <Form onSubmit={handleSubmit}>
+              <InputContainer>
+                <TokenInputLabel>
+                  <HelpSpan helpPopoverContents={HelpPopoverContents}>
+                    Wanikani API Token
+                  </HelpSpan>
+                  <Input type="text" name="api-token" data-private />
+                </TokenInputLabel>
+                {hasError && (
+                  <ErrorTxt>
+                    Oh no! An error occurred retrieving your info, please make
+                    sure your API token is correct
+                  </ErrorTxt>
+                )}
+              </InputContainer>
+              <ButtonRow>
+                <SubmitButton
+                  type="submit"
+                  backgroundColor="var(--ion-color-tertiary)"
+                  color="black"
+                  style={{ fontSize: "1.25rem" }}
+                >
+                  Let's Study!
+                </SubmitButton>
+              </ButtonRow>
+            </Form>
+
+            {isAuthLoading && (
+              <FixedCenterContainer>
+                <LoadingDots />
+              </FixedCenterContainer>
+            )}
+          </Content>
         </>
       ) : (
-        <>
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>
-                <IonSkeletonText
-                  animated={true}
-                  style={{ height: "50px" }}
-                ></IonSkeletonText>
-              </IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <MainContent>
-            <IonInput label="WaniKani API Token Loading Skeleton">
-              <IonSkeletonText
-                animated={true}
-                style={{ height: "50px" }}
-              ></IonSkeletonText>
-            </IonInput>
-            <IonSkeletonText animated={true}></IonSkeletonText>
-          </MainContent>
-        </>
+        <FixedCenterContainer>
+          <LoadingDots />
+        </FixedCenterContainer>
       )}
-    </>
+    </AnimatedPage>
   );
 };
 
 export default TokenInput;
-
-// TODO: change to use css file
-const styles = {
-  // TODO: change this based on dark mode or light
-  input: {
-    borderColor: "gray",
-    width: "100%",
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-  },
-  err: {
-    color: "red",
-  },
-};

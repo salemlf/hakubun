@@ -2,16 +2,23 @@ import React from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
-const AnimatedPageContainer = styled(motion.div)`
+type AnimatedPageContainerProps = {
+  backgroundimg: any | undefined;
+};
+
+const AnimatedPageContainer = styled(motion.div)<AnimatedPageContainerProps>`
   display: flex;
   flex-direction: column;
-  /* height: 100%; */
   min-height: 100%;
   position: relative;
+  background-image: ${({ backgroundimg }) =>
+    backgroundimg ? `url(${backgroundimg})` : "none"};
+  background-size: cover;
 `;
 
 type Props = {
   children: React.ReactNode;
+  bgImage?: any;
 };
 
 const variants = {
@@ -21,7 +28,7 @@ const variants = {
 };
 
 // TODO: pass in a direction value so can transition in from left or right
-function AnimatedPage({ children }: Props) {
+function AnimatedPage({ children, bgImage }: Props) {
   return (
     <AnimatedPageContainer
       variants={variants}
@@ -29,6 +36,7 @@ function AnimatedPage({ children }: Props) {
       animate="enter"
       exit="exit"
       transition={{ type: "linear" }}
+      backgroundimg={bgImage}
     >
       {children}
     </AnimatedPageContainer>
