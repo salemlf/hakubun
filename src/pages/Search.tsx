@@ -50,7 +50,7 @@ const LogoSearchOutcomeContainer = styled(FixedCenterContainer)`
   }
 `;
 
-// TODO: add text for each state, (loading, no results, empty input)
+// TODO: improve animate presence delay/changes
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useState("");
