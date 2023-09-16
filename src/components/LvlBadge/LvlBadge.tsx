@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 // TODO: just use normal container and not badge
 const Badge = styled(IonBadge)`
-  background-color: #6930c3;
+  background-color: var(--ion-color-secondary);
   font-size: 1.75rem;
   margin-right: 0;
   color: white;

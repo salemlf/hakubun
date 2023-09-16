@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+// TODO: change so not relying on IonIcon
+import { IonIcon } from "@ionic/react";
 import { useUserAuth } from "../../contexts/AuthContext";
-import LvlBadge from "../LvlBadge/LvlBadge";
 import Button from "../Button";
 import RefreshHomeButton from "../RefreshHomeButton";
 import SettingsIcon from "../../images/settings.svg";
+import LogoIcon from "../../images/logo.svg";
 import { Header } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -21,6 +23,7 @@ const SettingsButton = styled(Button)`
 const HeaderWrapper = styled(Header)`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 const UserInfoContainer = styled.div`
@@ -50,6 +53,30 @@ const AppName = styled.h1`
   font-size: 1.25rem;
 `;
 
+const Logo = styled(IonIcon)`
+  width: 2em;
+  height: 2em;
+`;
+
+const FirstRow = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const SecondRow = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LevelTxt = styled.h2`
+  margin: 5px 0;
+  font-size: 1.5rem;
+`;
+
 // TODO: sometimes settings button somehow redirects to /reviews/settings and not settings? fix
 function HomeHeader() {
   const navigate = useNavigate();
@@ -70,20 +97,24 @@ function HomeHeader() {
   // TODO: show loading skeleton
   return (
     <HeaderWrapper bgcolor="var(--light-greyish-purple)">
-      <UserInfoContainer>
-        <LvlBadge level={level}></LvlBadge>
-        {/* <p>{username}</p> */}
-        <AppName>Hakubun</AppName>
-      </UserInfoContainer>
-      <RefreshAndSettingsContainer>
-        <RefreshHomeButton />
-        <SettingsButton
-          backgroundColor="transparent"
-          onPress={() => navigate("/settings")}
-        >
-          <SettingsImg src={SettingsIcon} alt="settings icon"></SettingsImg>
-        </SettingsButton>
-      </RefreshAndSettingsContainer>
+      <FirstRow>
+        <UserInfoContainer>
+          <Logo src={LogoIcon} />
+          <AppName>Hakubun</AppName>
+        </UserInfoContainer>
+        <RefreshAndSettingsContainer>
+          <RefreshHomeButton />
+          <SettingsButton
+            backgroundColor="transparent"
+            onPress={() => navigate("/settings")}
+          >
+            <SettingsImg src={SettingsIcon} alt="settings icon"></SettingsImg>
+          </SettingsButton>
+        </RefreshAndSettingsContainer>
+      </FirstRow>
+      <SecondRow>
+        <LevelTxt>Level {level}</LevelTxt>
+      </SecondRow>
     </HeaderWrapper>
   );
 }
