@@ -42,6 +42,7 @@ const TxtContainer = styled.div`
   text-align: center;
 `;
 
+// TODO: change to use custom popover component
 function SubjCardPopover({ subject, assignment, navigate }: Props) {
   let timeTill;
   if (assignment) {

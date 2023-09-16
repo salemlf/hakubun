@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import * as LogRocket from "logrocket";
+import { useQueryClient } from "@tanstack/react-query";
+import secureLocalStorage from "react-secure-storage";
+import { api, pagingApi } from "../api/ApiConfig";
 import { useUser } from "./useUser";
 import { useStorage } from "./useStorage";
-import { api, pagingApi } from "../api/ApiConfig";
 import { User } from "../types/UserTypes";
-import { useQueryClient } from "@tanstack/react-query";
 
 // TODO: update so user data is refetched if hard refresh (not implemented yet)
 export const useAuth = () => {
@@ -13,27 +14,23 @@ export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
 
-  const { getItem, setItem, removeItem } = useStorage();
+  // const { getItem, setItem, removeItem } = useStorage();
+  const { getItem } = useStorage();
 
   useEffect(() => {
     setAuthLoading(true);
     //* testing
     console.log("Ran useEffect in useAuth");
     //* testing
-    getItem("token").then((token) => {
-      if (token) {
-        //* testing
-        console.log("Found token in storage!");
-        //* testing
-        configureAxiosHeaders(token);
-      }
-    });
+    let token = secureLocalStorage.getItem("token");
+    if (token) {
+      //* testing
+      console.log("Found token in storage!");
+      //* testing
+      configureAxiosHeaders(token);
+    }
     getItem("user").then((user) => {
       if (user) {
-        //* testing
-        // console.log("Found user in storage!");
-        // console.log("🚀 ~ file: useAuth.tsx:24 ~ getItem ~ user:", user);
-        //* testing
         addUser(user);
         setIsAuthenticated(true);
       }
@@ -45,6 +42,7 @@ export const useAuth = () => {
     setToken(token);
     configureAxiosHeaders(token);
     setAuthLoading(true);
+
     try {
       let userData = await getUser();
       let userInfo: User = userData.data;
@@ -93,11 +91,13 @@ export const useAuth = () => {
   };
 
   const setToken = (token: string) => {
-    setItem("token", token);
+    // setItem("token", token);
+    secureLocalStorage.setItem("token", token);
   };
 
   const removeToken = () => {
-    removeItem("token");
+    // removeItem("token");
+    secureLocalStorage.removeItem("token");
   };
 
   return { user, isAuthenticated, authLoading, login, logout };
