@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
-import Loading from "../components/Loading";
+import LoadingDots from "../components/LoadingDots";
+import { FixedCenterContainer } from "../styles/BaseStyledComponents";
 
 type Props = {
   isAuthenticated: boolean;
@@ -36,7 +37,11 @@ const ProtectedRoute = ({
   }, [history]);
 
   if (authLoading) {
-    return <Loading />;
+    return (
+      <FixedCenterContainer>
+        <LoadingDots />
+      </FixedCenterContainer>
+    );
   }
 
   if (!isAuthenticated) {

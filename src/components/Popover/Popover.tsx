@@ -7,13 +7,16 @@ const Content = styled(PopoverPrimitive.Content)`
   border-radius: 4px;
   padding: 20px;
   width: 260px;
-  background-color: white;
+  background-color: var(--offwhite-color);
   color: black;
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
     hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
+  a {
+    color: var(--ion-color-secondary);
+  }
 
   &:focus-visible {
     box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
@@ -78,20 +81,24 @@ const Content = styled(PopoverPrimitive.Content)`
   }
 `;
 
-export const Popover = PopoverPrimitive.Root;
+const Arrow = styled(PopoverPrimitive.Arrow)`
+  fill: white;
+`;
+
+export const PopoverRoot = PopoverPrimitive.Root;
 export const PopoverTrigger = PopoverPrimitive.Trigger;
 
 type PopoverRef = HTMLDivElement;
 
+// TODO: improve styles
 const PopoverContent = React.forwardRef<PopoverRef, PopoverContentProps>(
   ({ children, ...props }, forwardedRef) => (
     <PopoverPrimitive.Portal>
       <Content sideOffset={5} {...props} ref={forwardedRef}>
         {children}
-        <PopoverPrimitive.Arrow />
+        <Arrow />
       </Content>
     </PopoverPrimitive.Portal>
   )
 );
-
 export default PopoverContent;

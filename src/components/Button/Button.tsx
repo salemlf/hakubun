@@ -23,6 +23,7 @@ interface Props extends AriaButtonProps {
   color?: string;
   className?: string;
   style?: CSSProperties;
+  disabled?: boolean;
 }
 
 function Button({
@@ -30,6 +31,7 @@ function Button({
   color = "white",
   className,
   style,
+  disabled,
   ...props
 }: Props) {
   let { children } = props;
@@ -52,6 +54,7 @@ function Button({
       tabIndex={0}
       className={className}
       style={style}
+      disabled={disabled}
     >
       {children}
     </ButtonContainer>

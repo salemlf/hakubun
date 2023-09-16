@@ -37,10 +37,15 @@ const LogoutButton = styled(Button)`
   border-radius: 12px;
 `;
 
+const Username = styled.h2`
+  text-align: center;
+`;
+
 // TODO: change to get/set defaults from API
 function Settings() {
   const appContext = useUserAuth();
   const navigate = useNavigate();
+  const username = appContext.user?.username;
 
   // TODO: add confirmation after pressing
   const removeAuth = () => {
@@ -55,6 +60,7 @@ function Settings() {
         <PageHeading>User Settings</PageHeading>
       </SettingsHeader>
       <ContentWithTabBarNoPadding>
+        {username && <Username>{username}</Username>}
         <GeneralUserSettings />
         <LessonUserSettings />
         <ReviewUserSettings />
