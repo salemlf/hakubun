@@ -41,7 +41,7 @@ function RadicalButton({ subject, showDetails, btnSize, onBtnClick }: Props) {
           <SubjInfoCol>
             <ImageFallback
               images={subject.availableImages}
-              altText={subject.meaning_mnemonic}
+              altText={`${getSubjectDisplayName(subject)} image`}
             ></ImageFallback>
             {showDetails && (
               <div>

@@ -49,6 +49,7 @@ export interface SubjectAuxiliaryMeaning {
   type: string;
 }
 
+// TODO: add content_type to SubjectCharacterImage
 export interface SubjectCharacterImage {
   url: string;
   metadata: SubjectMetadata;

@@ -15,16 +15,35 @@ import lessonsBgImg99 from "../images/bg_lessons_50-99.png";
 import lessonsBgImg249 from "../images/bg_lessons_100-249.png";
 import lessonsBgImg499 from "../images/bg_lessons_250-499.png";
 import lessonsBgImg500 from "../images/bg_lessons_500+.png";
-import { Subject } from "../types/Subject";
+import { Subject, SubjectCharacterImage } from "../types/Subject";
+
+// preferring svg images
+const sortCharacterImages = (
+  imgA: SubjectCharacterImage,
+  imgB: SubjectCharacterImage
+) => {
+  if (
+    imgA.content_type === "image/svg+xml" &&
+    imgB.content_type !== "image/svg+xml"
+  ) {
+    return 1;
+  }
+  if (
+    imgA.content_type !== "image/svg+xml" &&
+    imgB.content_type === "image/svg+xml"
+  ) {
+    return -1;
+  }
+  return 0;
+};
 
 export const setSubjectAvailImgs = (subject: Subject) => {
   let updatedSubj = subject;
   if (updatedSubj.characters === null || updatedSubj.characters === "") {
-    let availableImages = updatedSubj.character_images
-      ?.filter((image: any) => image.content_type === "image/png")
-      .map((image: any) => image.url);
+    let imagesSorted = updatedSubj.character_images?.sort(sortCharacterImages);
+    let imageUrls = imagesSorted?.map((image: any) => image.url);
 
-    updatedSubj.availableImages = availableImages;
+    updatedSubj.availableImages = imageUrls;
     updatedSubj.useImage = true;
   } else {
     updatedSubj.useImage = false;
