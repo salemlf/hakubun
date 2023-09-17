@@ -44,9 +44,11 @@ const LogoSearchOutcomeContainer = styled(FixedCenterContainer)`
   flex-wrap: wrap;
   justify-content: center;
   padding: 0 16px;
+  text-align: center;
 
   h2 {
     margin-bottom: 25px;
+    width: 100%;
   }
 `;
 
@@ -116,7 +118,7 @@ export const Search = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
               >
-                <h2>Try searching for something!</h2>
+                <h2>Try Searching for Something!</h2>
                 <img src={QuestionLogo} />
               </LogoSearchOutcomeContainer>
             )}
