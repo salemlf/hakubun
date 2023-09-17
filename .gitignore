@@ -48,3 +48,6 @@ yarn-error.log*
 
 # config for new component tool used 
 .new-component-config.json
+
+# android app signing junk
+hakubun-release-key.keystore
