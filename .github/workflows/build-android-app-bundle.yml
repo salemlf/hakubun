@@ -35,4 +35,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: hakubun-aab
-          path: app/build/outputs/app-release.aab
+          path: hakubun.aab
