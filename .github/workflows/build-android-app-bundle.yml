@@ -21,23 +21,17 @@ jobs:
         run: npm run build
       - name: Sync with capacitor
         run: npx cap sync
-      - name: Decode Keystore
-        env:
-          ENCODED_STRING: ${{ secrets.KEYSTORE }}
-        run: |
-          TMP_KEYSTORE_FILE_PATH="${RUNNER_TEMP}"/keystore
-          mkdir "${TMP_KEYSTORE_FILE_PATH}"
-          echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/hakubun_keystore.jks
-      - name: Make gradlew executable
-        run: chmod +x ./android/gradlew
-      - name: build prod
-        run: ./android/gradlew app:bundleRelease
-        env:
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-      - name: Upload
+      - name: Build Android Bundle
+        uses: sparkfabrik/android-build-action@v1.5.0
+        with:
+          project-path: android
+          output-path: hakubun.aab
+          gradle-task: bundleRelease
+          keystore-content: ${{ secrets.KEYSTORE }}
+          keystore-password: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          keystore-alias: ${{ secrets.SIGNING_KEY_ALIAS }}
+      - name: Upload Android AAB Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Build Artifacts
-          path: ./android/app/build/outputs/
+          name: hakubun-aab
+          path: hakubun.aab
