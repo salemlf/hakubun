@@ -28,6 +28,7 @@ jobs:
           output-path: hakubun.aab
           gradle-task: bundleRelease
           package-name: io.hakubun.app
+          build-type: bundle
           keystore-content: ${{ secrets.KEYSTORE }}
           keystore-password: ${{ secrets.SIGNING_STORE_PASSWORD }}
           keystore-alias: ${{ secrets.SIGNING_KEY_ALIAS }}
