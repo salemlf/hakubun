@@ -25,7 +25,6 @@ jobs:
         uses: sparkfabrik/android-build-action@v1.5.0
         with:
           project-path: android
-          output-path: hakubun.aab
           gradle-task: bundleRelease
           keystore-content: ${{ secrets.KEYSTORE }}
           keystore-password: ${{ secrets.SIGNING_STORE_PASSWORD }}
@@ -34,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: hakubun-aab
-          path: hakubun.aab
+          path: app/build/outputs/app-release.aab
