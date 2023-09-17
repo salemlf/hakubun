@@ -13,6 +13,7 @@ import ThinkingLogo from "../images/logo-thinking.svg";
 import QuestionLogo from "../images/logo-question.svg";
 import LogoExclamation from "../images/logo-exclamation.svg";
 import {
+  AbsoluteCenterContainer,
   ContentWithTabBar,
   FixedCenterContainer,
 } from "../styles/BaseStyledComponents";
@@ -38,7 +39,7 @@ const List = styled(IonList)`
   padding: 8px 5px;
 `;
 
-const LogoSearchOutcomeContainer = styled(FixedCenterContainer)`
+const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
   width: 100%;
   display: flex;
   flex-wrap: wrap;

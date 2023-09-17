@@ -227,6 +227,14 @@ export const FixedCenterContainer = styled.div`
   z-index: 12;
 `;
 
+export const AbsoluteCenterContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 12;
+`;
+
 export const LoadingContainer = styled.div`
   width: 100%;
   height: 100%;

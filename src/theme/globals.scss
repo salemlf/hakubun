@@ -19,6 +19,8 @@ body {
 
 body {
   font-family: "Poppins", sans-serif;
+  // to avoid absolute positioning issues based on viewport
+  position: relative;
 }
 
 h1,
