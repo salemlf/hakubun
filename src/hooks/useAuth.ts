@@ -52,8 +52,8 @@ export const useAuth = () => {
       // *testing
 
       addUser(userInfo);
-      LogRocket.identify(`${userInfo.username}}`, {
-        name: `${userInfo.username}}`,
+      LogRocket.identify(`${userInfo.username}`, {
+        name: `${userInfo.username}`,
       });
 
       setIsAuthenticated(true);

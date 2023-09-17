@@ -26,6 +26,7 @@ jobs:
         with:
           project-path: android
           gradle-task: bundleRelease
+          package-name: io.hakubun.app
           keystore-content: ${{ secrets.KEYSTORE }}
           keystore-password: ${{ secrets.SIGNING_STORE_PASSWORD }}
           keystore-alias: ${{ secrets.SIGNING_KEY_ALIAS }}

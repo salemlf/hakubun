@@ -49,6 +49,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
+// TODO: not running in prod, fix
 if (import.meta.env.MODE !== "development") {
   LogRocket.init("cleqvf/hakubun", {
     shouldCaptureIP: false,
