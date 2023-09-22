@@ -26,6 +26,11 @@ export type PopoverInfo = {
   messageType: PopoverMessageType;
 };
 
+export type PopoverStyles = {
+  bgColor: string;
+  fontColor: string;
+};
+
 export type BottomSheetSubjectProps = {
   reviewItem: AssignmentQueueItem;
   tabBgColor: string;

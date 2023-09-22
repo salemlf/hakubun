@@ -6,7 +6,10 @@ import {
   StudyMaterialPostDataWithID,
 } from "../types/MiscTypes";
 import { Collection } from "../types/Collection";
-import { PopoverMessageType } from "../types/AssignmentQueueTypes";
+import {
+  PopoverMessageType,
+  PopoverStyles,
+} from "../types/AssignmentQueueTypes";
 import { PronunciationVoice } from "../types/UserSettingsTypes";
 import { PronunciationAudio, Subject } from "../types/Subject";
 
@@ -142,14 +145,23 @@ export const shuffleArray = (array: any[]) => {
   return array;
 };
 
-const popoverColors: { [index: string]: string } = {
-  correct: "var(--ion-color-tertiary)",
-  incorrect: "var(--ion-color-danger)",
-  invalid: "var(--ion-color-warning)",
+const popoverStyles: { [index: string]: PopoverStyles } = {
+  correct: {
+    bgColor: "var(--ion-color-tertiary)",
+    fontColor: "black",
+  },
+  incorrect: {
+    bgColor: "var(--ion-color-danger)",
+    fontColor: "white",
+  },
+  invalid: {
+    bgColor: "var(--ion-color-warning)",
+    fontColor: "black",
+  },
 };
 
-export const getPopoverMsgColor = (messageType: PopoverMessageType) => {
-  return popoverColors[messageType as keyof {}];
+export const getPopoverStyles = (messageType: PopoverMessageType) => {
+  return popoverStyles[messageType as keyof {}];
 };
 
 export const getAudioUrlByGender = (

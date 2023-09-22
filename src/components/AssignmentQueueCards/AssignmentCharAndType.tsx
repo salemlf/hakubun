@@ -4,10 +4,9 @@ import {
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
 import { getReviewTypeColor } from "../../services/AssignmentQueueService";
-import { capitalizeWord, getPopoverMsgColor } from "../../services/MiscService";
+import { capitalizeWord, getPopoverStyles } from "../../services/MiscService";
 import { SubjectType } from "../../types/Subject";
 import {
-  PopoverMessageType,
   AssignmentQueueItem,
   ReviewType,
 } from "../../types/AssignmentQueueTypes";
@@ -51,7 +50,8 @@ const MessageWrapper = styled.div<MsgWrapperProps>`
 `;
 
 type MessageProps = {
-  messageType: PopoverMessageType;
+  bgcolor: string;
+  fontcolor: string;
 };
 
 const Message = styled.span<MessageProps>`
@@ -61,8 +61,8 @@ const Message = styled.span<MessageProps>`
   border-radius: 15px;
   font-size: 1rem;
   text-align: center;
-  background-color: ${({ messageType }) => getPopoverMsgColor(messageType)};
-  color: #fefefe;
+  background-color: ${({ bgcolor }) => bgcolor};
+  color: ${({ fontcolor }) => fontcolor};
 `;
 
 type CharColProps = {
@@ -88,6 +88,8 @@ function AssignmentCharAndType({
   const displayPopoverMsg = useQueueStore.use.displayPopoverMsg();
   const popoverInfo = useQueueStore.use.popoverInfo();
 
+  let popoverStyles = getPopoverStyles(popoverInfo.messageType);
+
   let subjType = currentReviewItem.object as SubjectType;
   let reviewType = currentReviewItem.review_type;
   let reviewTypeCapitalized = capitalizeWord(reviewType);
@@ -108,7 +110,11 @@ function AssignmentCharAndType({
           />
         </SubjectCharactersCol>
         <MessageWrapper displayMsg={displayPopoverMsg}>
-          <Message messageType={popoverInfo.messageType}>
+          {/* <Message messageType={popoverInfo.messageType}> */}
+          <Message
+            fontcolor={popoverStyles.fontColor}
+            bgcolor={popoverStyles.bgColor}
+          >
             {popoverInfo.message}
           </Message>
         </MessageWrapper>
