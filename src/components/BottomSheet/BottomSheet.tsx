@@ -127,12 +127,6 @@ function BottomSheetContentCore(
   ) => {
     let offsetTriggersChange = Math.abs(info.offset.y) > 300;
     let velocityTriggersChange = Math.abs(info.velocity.y) > 400;
-    // *testing
-    console.log(
-      "🚀 ~ file: BottomSheet.tsx:130 ~ velocityTriggersChange:",
-      velocityTriggersChange
-    );
-    // *testing
     console.log(
       "🚀 ~ file: BottomSheet.tsx:130 ~ info.velocity.y:",
       info.velocity.y

@@ -109,9 +109,12 @@ export const AssignmentQueueCard = ({
   };
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
-    if (info.offset.x > 200) {
+    if (info.offset.x > 200 || (info.offset.x > 100 && info.velocity.x) > 400) {
       attemptToAdvance();
-    } else if (info.offset.x < -200) {
+    } else if (
+      info.offset.x < -200 ||
+      (info.offset.x < -100 && info.velocity.x) < -400
+    ) {
       retryTriggered();
     }
   };
