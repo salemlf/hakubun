@@ -197,6 +197,8 @@ export const FullWidthColumn = styled.div`
 
 export const MainContent = styled.main`
   overflow-y: auto;
+  /* don't want to show scrollbar when swiping */
+  overflow-x: hidden;
 `;
 
 export const Section = styled.section<OptionalBgColor>`
