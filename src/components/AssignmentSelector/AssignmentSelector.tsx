@@ -42,6 +42,7 @@ const SubjectItem = styled(ToggleGroup.Item)<ItemContainerProps>`
   padding: 10px 15px;
   margin-bottom: 8px;
   border-radius: 10px;
+  gap: 10px;
 
   &:focus-visible {
     outline: 2px solid white;
