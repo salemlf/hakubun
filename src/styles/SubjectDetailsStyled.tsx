@@ -89,6 +89,6 @@ export const SubjDetailTabContainer = styled.div`
   justify-content: flex-start;
   padding: 16px;
   border-radius: 25px;
-  max-height: 75%;
+  max-height: 70%;
   overflow-y: auto;
 `;
