@@ -12,7 +12,6 @@ import styled from "styled-components";
 const TabListStyled = styled(Tabs.List)<TabContainerStyles>`
   display: flex;
   background-color: ${({ bgcolor }) => bgcolor};
-  /* !added */
   position: relative;
   background-color: ${({ bgcolor }) => bgcolor};
   padding: 0;
@@ -30,8 +29,6 @@ const TabListStyled = styled(Tabs.List)<TabContainerStyles>`
   /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-
-  /* !added */
 `;
 
 const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
@@ -45,6 +42,7 @@ const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
   transition-duration: 300ms;
   cursor: default;
   font-size: ${({ tabfontsize }) => tabfontsize};
+  font-weight: 500;
 
   margin: auto;
   position: relative;
