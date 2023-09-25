@@ -157,6 +157,7 @@ const CountSeparator = styled.p`
 const PageCountContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 `;
 
 const PrevPageButton = styled(Button)`
