@@ -13,6 +13,10 @@ import {
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
+const ContainerWithBottomMargin = styled(ContentWithTabBarNoPadding)`
+  margin-bottom: 6rem;
+`;
+
 const SettingsHeader = styled(Header)`
   padding: 14px 5px;
   display: grid;
@@ -69,7 +73,7 @@ function Settings() {
         <BackButton backgroundColor="var(--ion-color-secondary)" />
         <PageHeading>User Settings</PageHeading>
       </SettingsHeader>
-      <ContentWithTabBarNoPadding>
+      <ContainerWithBottomMargin>
         {username && <Username>{username}</Username>}
         <GeneralUserSettings />
         <LessonUserSettings />
@@ -92,7 +96,7 @@ function Settings() {
             Other icons from <a href="https://icons8.com/">Icons8</a>
           </p>
         </CreditsContainer>
-      </ContentWithTabBarNoPadding>
+      </ContainerWithBottomMargin>
       <FloatingTabBar />
     </AnimatedPage>
   );
