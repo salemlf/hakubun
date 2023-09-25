@@ -20,9 +20,11 @@ type Props = {
 };
 
 function KanjiDetailTabs({ kanji, scrollToDefault }: Props) {
-  const [selectedTabKey, setSelectedTabKey] = useState<string>(
-    kanji.review_type as string
-  );
+  const defaultTabKey = scrollToDefault
+    ? (kanji.review_type as string)
+    : "radicals";
+  const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
+
   return (
     <SwipeableTabs
       selectedTabKey={selectedTabKey}

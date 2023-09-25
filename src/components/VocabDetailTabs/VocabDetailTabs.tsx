@@ -101,15 +101,17 @@ type Props = {
 };
 
 function VocabDetailTabs({ vocab, scrollToDefault }: Props) {
-  const [selectedTabKey, setSelectedTabKey] = useState<string>(
-    vocab.review_type as string
-  );
+  let tabData = getTabsForVocab(vocab);
+  const defaultTabKey = scrollToDefault
+    ? (vocab.review_type as string)
+    : tabData[0].id;
+  const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
 
   return (
     <SwipeableTabs
       selectedTabKey={selectedTabKey}
       setSelectedTabKey={setSelectedTabKey}
-      tabs={getTabsForVocab(vocab)}
+      tabs={tabData}
       defaultValue={vocab.review_type as string}
       scrollToDefault={scrollToDefault}
     />
