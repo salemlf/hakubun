@@ -8,7 +8,6 @@ import {
 } from "./constants";
 import { TabData } from "../../types/MiscTypes";
 import { TabList } from "./TabList";
-import { TabListBlobs } from "./TabListBlobs";
 import styled from "styled-components";
 
 const TabsStyled = styled(Tabs.Root)`
@@ -67,7 +66,6 @@ type TabsComponentProps = {
   tabBgColor?: string;
   tabSelectionColor?: string;
   roundedContainer?: boolean;
-  blobs?: boolean;
   tabFontSize?: string;
 };
 
@@ -82,7 +80,6 @@ function SwipeableTabs({
   tabBgColor = TAB_BG_COLOR_DEFAULT,
   tabSelectionColor = TAB_SELECTION_COLOR_DEFAULT,
   roundedContainer = ROUNDED_CONTAINER_DEFAULT,
-  blobs = false,
   tabFontSize = "1rem",
 }: TabsComponentProps) {
   const tabListRef = useRef<HTMLDivElement | null>(null);
@@ -107,14 +104,6 @@ function SwipeableTabs({
 
   // Find all the tab elements so we can use their dimensions.
   const [tabElements, setTabElements] = useState<HTMLButtonElement[]>([]);
-
-  // *testing
-  if (blobs) {
-    console.log("BLOBS selectedTabKey: ", selectedTabKey);
-  } else {
-    console.log("NORMAL selectedTabKey: ", selectedTabKey);
-  }
-  // *testing
 
   const getIndex = useCallback(
     (x: number) => {
@@ -234,18 +223,16 @@ function SwipeableTabs({
 
   return (
     <TabsStyled value={selectedTabKey} onValueChange={onSelectionChange}>
-      {!blobs && (
-        <TabList
-          ref={tabListRef}
-          tabs={tabs}
-          tabElements={tabElements}
-          selectedTabKey={selectedTabKey}
-          tabBgColor={tabBgColor}
-          tabSelectionColor={tabSelectionColor}
-          roundedContainer={roundedContainer}
-          tabFontSize={tabFontSize}
-        />
-      )}
+      <TabList
+        ref={tabListRef}
+        tabs={tabs}
+        tabElements={tabElements}
+        selectedTabKey={selectedTabKey}
+        tabBgColor={tabBgColor}
+        tabSelectionColor={tabSelectionColor}
+        roundedContainer={roundedContainer}
+        tabFontSize={tabFontSize}
+      />
       <TabPanels ref={tabPanelsRef}>
         {tabs.map((tab) => (
           <TabPanelStyled key={tab.id} value={tab.id} forceMount={true}>
@@ -253,18 +240,6 @@ function SwipeableTabs({
           </TabPanelStyled>
         ))}
       </TabPanels>
-      {blobs && (
-        <TabListBlobs
-          ref={tabListRef}
-          tabs={tabs}
-          tabElements={tabElements}
-          selectedTabKey={selectedTabKey}
-          tabBgColor={tabBgColor}
-          tabSelectionColor={tabSelectionColor}
-          roundedContainer={roundedContainer}
-          tabFontSize={tabFontSize}
-        />
-      )}
     </TabsStyled>
   );
 }
