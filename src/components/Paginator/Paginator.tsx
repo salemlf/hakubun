@@ -27,6 +27,7 @@ type Props = {
   setCurrentPage: (updateProps: CurrPageUpdateProps) => void;
 };
 
+// TODO: improve animations between pages
 function Paginator({ pageArr, currentPage, direction, setCurrentPage }: Props) {
   const pageIndices = [...Array(pageArr.length).keys()];
   // *testing
