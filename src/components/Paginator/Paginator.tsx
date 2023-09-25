@@ -1,8 +1,9 @@
 import { useRef } from "react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
+// TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
 import Button from "../Button";
-// TODO: change so not relying on IonIcon
+import Counter from "../Counter";
 import NextArrowIcon from "../../images/next-arrow-color.svg";
 import PrevArrowIcon from "../../images/back-arrow-color.svg";
 import styled from "styled-components";
@@ -148,7 +149,11 @@ function Pages({ currentPage, setPage, direction, pageArr }: PagesProps) {
   );
 }
 
-const CurrPageNum = styled.p`
+const CountSeparator = styled.p`
+  margin: 0 0.45em;
+`;
+
+const PageCountContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
@@ -187,9 +192,11 @@ function PageIndicator({
 
   return (
     <>
-      <CurrPageNum>
-        {currentPage + 1} / {pageIndices.length}
-      </CurrPageNum>
+      <PageCountContainer>
+        <Counter value={currentPage + 1} maxNum={pageIndices.length} />
+        <CountSeparator>/</CountSeparator>
+        <Counter value={pageIndices.length} maxNum={pageIndices.length} />
+      </PageCountContainer>
       {currentPage !== 0 && (
         <PrevPageButton
           aria-label="Previous Page"
