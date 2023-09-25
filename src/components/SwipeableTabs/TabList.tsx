@@ -42,7 +42,7 @@ const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
   transition-duration: 300ms;
   cursor: default;
   font-size: ${({ tabfontsize }) => tabfontsize};
-  font-weight: 500;
+  font-weight: 600;
 
   margin: auto;
   position: relative;
@@ -72,7 +72,6 @@ type SwipeableTabsListProps = {
   tabFontSize: string;
 };
 
-// TODO: combine this and TabListBlobs into one component OR combine common styles
 function TabListCore(
   {
     tabs,
