@@ -2,14 +2,13 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
-import { TabData } from "../../types/MiscTypes";
 import { Subject, SubjectType } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
 import RadicalDetailTabs from "../RadicalDetailTabs";
 import KanjiDetailTabs from "../KanjiDetailTabs";
 import VocabDetailTabs from "../VocabDetailTabs";
-import SwipeableTabs from "../SwipeableTabs";
 import StartSessionButton from "../StartSessionButton";
+import Paginator from "../Paginator";
 import styled from "styled-components";
 
 type HeaderProps = {
@@ -18,7 +17,7 @@ type HeaderProps = {
 
 const LessonSessionHeader = styled.header<HeaderProps>`
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
-  padding: 75px 10px;
+  padding: 40px 10px;
 `;
 
 const LessonContent = styled.div`
@@ -61,46 +60,21 @@ type Props = {
   onStartLessonBtnClick: () => void;
 };
 
-// TODO: scrolls to last item by default for some reason, using temporary fix in meantime
 function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
-  let defaultTabKey = lessons[0].id.toString();
-  // *testing
-  console.log(
-    "🚀 ~ file: LessonCards.tsx:66 ~ LessonCards ~ defaultTabKey:",
-    defaultTabKey
-  );
-  // *testing
-  const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
-  // *testing
-  console.log(
-    "🚀 ~ file: LessonCards.tsx:67 ~ LessonCards ~ selectedTabKey:",
-    selectedTabKey
-  );
-  // *testing
-
-  const isLastIndex =
-    selectedTabKey === lessons[lessons.length - 1].id.toString();
-
-  let lessonTabs: TabData[] = lessons.map((lesson) => {
-    return {
-      id: lesson.id.toString(),
-      label: lesson.id.toString(),
-      tabContents: <LessonCard lesson={lesson} />,
-    };
-  });
+  const lessonPages = lessons.map((lesson) => <LessonCard lesson={lesson} />);
+  const [[currentPage, direction], setCurrentPage] = useState([0, 0]);
+  let isLastPage = currentPage === lessonPages.length - 1;
 
   return (
     <>
-      <SwipeableTabs
-        selectedTabKey={selectedTabKey}
-        setSelectedTabKey={setSelectedTabKey}
-        tabs={lessonTabs}
-        blobs={true}
-        scrollToDefault={true}
-        defaultValue={defaultTabKey}
+      <Paginator
+        pageArr={lessonPages}
+        currentPage={currentPage}
+        direction={direction}
+        setCurrentPage={setCurrentPage}
       />
       <AnimatePresence>
-        {isLastIndex && (
+        {isLastPage && (
           <StartSessionButton
             buttonType="quiz"
             onStartBtnClick={onStartLessonBtnClick}
