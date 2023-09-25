@@ -58,7 +58,7 @@ export const SubjBtnDetailsTxt = styled.p<DetailsBtnProps>`
 
   margin: 0;
   font-size: ${({ detailfontsize }) => detailfontsize};
-  overflow: hidden;
+  overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 4em;

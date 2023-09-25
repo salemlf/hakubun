@@ -353,7 +353,7 @@ const btnSizeInfo: { [index: string]: BtnSizeStyles } = {
   },
   lg: {
     containerSize: "5rem",
-    fontSize: "1.75rem",
+    fontSize: "1.5rem",
     fontSizeNoDetails: "2.25rem",
     detailFontSize: ".8rem",
   },
