@@ -1,10 +1,10 @@
+import { useState } from "react";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { Radical, Subject } from "../../types/Subject";
 import RadicalNameMnemonic from "../RadicalNameMnemonic";
 import SubjectMeanings from "../SubjectMeanings";
 import SwipeableTabs from "../SwipeableTabs";
 import { SubjDetailTabContainer } from "../../styles/SubjectDetailsStyled";
-import { useState } from "react";
 
 type Props = {
   radical: AssignmentQueueItem;

@@ -6,10 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import DailyReviewForecast from "./DailyReviewForecast";
 import SwipeableTabs from "../SwipeableTabs";
 import LoadingDots from "../LoadingDots";
-import {
-  FixedCenterContainer,
-  LoadingContainer,
-} from "../../styles/BaseStyledComponents";
+import { LoadingContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Container = styled.section`

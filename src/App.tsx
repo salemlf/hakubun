@@ -79,7 +79,7 @@ const App: React.FC = () => {
           </IonApp>
         </ToastPrimitive.Provider>
       </AuthProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 };
