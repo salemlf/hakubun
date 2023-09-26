@@ -1,7 +1,11 @@
+// TODO: change so not relying on IonIcon
+import { IonIcon } from "@ionic/react";
 import { getTimeFromNow, getSrsNameBySrsLvl } from "../../services/MiscService";
 import { getSrsLevelColor } from "../../services/SubjectAndAssignmentService";
 import { Assignment } from "../../types/Assignment";
 import { SrsLevelName } from "../../types/MiscTypes";
+import AlarmClockIcon from "../../images/alarm-clock.svg";
+import StairsIcon from "../../images/stairs.svg";
 import {
   SubjSummaryCol,
   SubjSummaryRow,
@@ -11,7 +15,6 @@ import styled from "styled-components";
 const AssignmentSrsContainer = styled(SubjSummaryCol)`
   justify-content: flex-end;
   padding: 5px 0;
-  /* flex: 0 0 40%; */
 
   p {
     margin: 5px 0;
@@ -23,23 +26,42 @@ const StagesRow = styled(SubjSummaryRow)`
   gap: 10px;
 `;
 
-type LvlTxtProps = {
+type SrsLvlProps = {
   srsStage: SrsLevelName;
 };
 
-const SrsLvlTxt = styled.p<LvlTxtProps>`
-  color: white;
+const SrsLvlContainer = styled.div<SrsLvlProps>`
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  align-items: center;
   padding: 5px;
   border-radius: 12px;
   background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
+`;
+
+const SrsLvlTxt = styled.p`
+  color: white;
   text-transform: capitalize;
 `;
 
-const TimeTillTxt = styled.p`
+const TimeTillContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  align-items: center;
   padding: 5px;
   border-radius: 12px;
   background: var(--ion-color-tertiary);
-  color: var(--dark-greyish-purple);
+`;
+
+const SrsIcon = styled(IonIcon)`
+  width: 1.5em;
+  height: 1.5em;
+`;
+
+const TimeTillTxt = styled.p`
+  color: black;
 `;
 
 type Props = {
@@ -59,10 +81,14 @@ function AssignmentSrs({ assignment }: Props) {
   return (
     <AssignmentSrsContainer>
       <StagesRow>
-        <TimeTillTxt>{timeTillReview}</TimeTillTxt>
-        <SrsLvlTxt srsStage={srsLevelName as SrsLevelName}>
-          {srsLevelName}
-        </SrsLvlTxt>
+        <TimeTillContainer>
+          <SrsIcon src={AlarmClockIcon} />
+          <TimeTillTxt>{timeTillReview}</TimeTillTxt>
+        </TimeTillContainer>
+        <SrsLvlContainer srsStage={srsLevelName as SrsLevelName}>
+          <SrsIcon src={StairsIcon} />
+          <SrsLvlTxt>{srsLevelName}</SrsLvlTxt>
+        </SrsLvlContainer>
       </StagesRow>
     </AssignmentSrsContainer>
   );
