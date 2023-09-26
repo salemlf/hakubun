@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import { toHiragana } from "wanakana";
 import { isUserAnswerValid } from "../../services/AssignmentQueueService";
+import { useQueueStore } from "../../stores/useQueueStore";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { SubjectType } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
@@ -23,7 +24,25 @@ import {
   AssignmentCardStyled,
   SwipeIcon,
 } from "./AssignmentQueueCardsStyled";
-import { useQueueStore } from "../../stores/useQueueStore";
+
+const exitTimeMs = 500;
+const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
+const queueCardVariants = {
+  submit: {
+    x: "150%",
+    transition: {
+      duration: exitTimeDecimal,
+    },
+  },
+  hideAbove: { y: "-150%", x: 0 },
+  fallDown: {
+    y: 0,
+    transition: {
+      delay: 0.5,
+    },
+  },
+  retry: { x: "-150%" },
+};
 
 type CardProps = {
   currentReviewItem: AssignmentQueueItem;
@@ -109,13 +128,27 @@ export const AssignmentQueueCard = ({
   };
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
-    if (info.offset.x > 200 || (info.offset.x > 100 && info.velocity.x) > 400) {
+    const xOffsetTrigger = 150;
+    const xMinOffset = 100;
+    const xMinVelocity = 400;
+    if (
+      info.offset.x > xOffsetTrigger ||
+      (info.offset.x > xMinOffset && info.velocity.x) > xMinVelocity
+    ) {
       attemptToAdvance();
     } else if (
-      info.offset.x < -200 ||
-      (info.offset.x < -100 && info.velocity.x) < -400
+      info.offset.x < -xOffsetTrigger ||
+      (info.offset.x < -xMinOffset && info.velocity.x) < -xMinVelocity
     ) {
       retryTriggered();
+    }
+    // going back to center position
+    else {
+      animateCard(
+        reviewCardRef.current,
+        { x: 0, y: 0 },
+        { duration: exitTimeDecimal }
+      );
     }
   };
 
@@ -126,8 +159,9 @@ export const AssignmentQueueCard = ({
           <AssignmentCardStyled
             ref={reviewCardRef}
             subjtype={currentReviewItem.object as SubjectType}
-            initial={{ y: "-150%" }}
-            animate={{ y: 0 }}
+            initial="hideAbove"
+            animate="fallDown"
+            variants={queueCardVariants}
             style={{
               x,
               rotate,
@@ -135,11 +169,9 @@ export const AssignmentQueueCard = ({
             }}
             drag="x"
             transition={{ type: "spring", duration: 1, bounce: 0.5 }}
-            dragSnapToOrigin={true}
             dragConstraints={{ left: 0, right: 0 }}
             dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
             onDragEnd={handleDragEnd}
-            dragDirectionLock={true}
             whileTap={{ cursor: "grabbing" }}
             dragElastic={0.5}
           >
