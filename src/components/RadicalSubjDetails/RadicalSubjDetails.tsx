@@ -16,23 +16,32 @@ type Props = {
 };
 
 function RadicalSubjDetails({ radical }: Props) {
+  const hasAmalgamationSubjs = radical.amalgamation_subject_ids.length > 0;
   const {
     isLoading: usedInKanjiSubjLoading,
     data: usedInKanjiSubjData,
     error: usedInKanjiSubjErr,
-  } = useSubjectsByIDs(radical.amalgamation_subject_ids, true, true);
+  } = useSubjectsByIDs(
+    radical.amalgamation_subject_ids,
+    hasAmalgamationSubjs,
+    true
+  );
 
   const {
     isLoading: usedInKanjiAssignmentsLoading,
     data: usedInKanjiAssignmentsData,
     error: usedInKanjiAssignmentsErr,
-  } = useAssignmentsBySubjIDs(radical.amalgamation_subject_ids);
+  } = useAssignmentsBySubjIDs(
+    radical.amalgamation_subject_ids,
+    hasAmalgamationSubjs
+  );
 
   let usedInKanjiLoading =
-    usedInKanjiSubjLoading ||
-    usedInKanjiSubjErr ||
-    usedInKanjiAssignmentsLoading ||
-    usedInKanjiAssignmentsErr;
+    hasAmalgamationSubjs &&
+    (usedInKanjiSubjLoading ||
+      usedInKanjiSubjErr ||
+      usedInKanjiAssignmentsLoading ||
+      usedInKanjiAssignmentsErr);
 
   // TODO: improve loading skeleton
   if (usedInKanjiLoading) {
@@ -52,11 +61,13 @@ function RadicalSubjDetails({ radical }: Props) {
       <RadicalNameMnemonic radical={radical} />
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
-        <SubjectButtonList
-          btnSize="lg"
-          subjList={usedInKanjiSubjData}
-          assignmentList={usedInKanjiAssignmentsData}
-        />
+        {hasAmalgamationSubjs && (
+          <SubjectButtonList
+            btnSize="lg"
+            subjList={usedInKanjiSubjData}
+            assignmentList={usedInKanjiAssignmentsData}
+          />
+        )}
       </SubjDetailSection>
     </SubjInfoContainer>
   );
