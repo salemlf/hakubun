@@ -30,6 +30,21 @@ h4,
 h5,
 h6 {
   font-family: "Montserrat", sans-serif;
+
+  &::selection {
+    background-color: var(--ion-color-primary);
+    color: black;
+  }
+}
+
+p::selection {
+  background-color: var(--ion-color-primary);
+  color: black;
+}
+
+input::selection {
+  background-color: var(--ion-color-primary);
+  color: black;
 }
 
 .custom-alert .alert-wrapper {
