@@ -17,6 +17,7 @@ import QueueHeader from "../components/QueueHeader";
 import Dialog from "../components/Dialog";
 import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
+import KeyboardShortcuts from "../components/KeyboardShortcuts";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -111,6 +112,7 @@ function LessonQuiz() {
           <AssignmentQueueCards submitItems={submitLessonQuiz} />
         )}
       </MainContentWithMargin>
+      <KeyboardShortcuts />
     </Page>
   );
 }

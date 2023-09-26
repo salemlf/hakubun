@@ -19,6 +19,7 @@ import AnimatedPage from "../components/AnimatedPage";
 import Dialog from "../components/Dialog/Dialog";
 import styled from "styled-components";
 import { MainContent } from "../styles/BaseStyledComponents";
+import KeyboardShortcuts from "../components/KeyboardShortcuts";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -28,19 +29,6 @@ const Page = styled(AnimatedPage)`
     color: white;
     opacity: 1;
   }
-`;
-
-const KeyBoardShortcuts = styled.div`
-  position: absolute;
-  width: 100%;
-  bottom: 10px;
-  display: flex;
-  justify-content: space-around;
-`;
-
-const Shortcut = styled.p`
-  margin: 0;
-  color: white;
 `;
 
 // TODO: improve "Loading..." text
@@ -143,10 +131,7 @@ export const ReviewSession = () => {
           <AssignmentQueueCards submitItems={submitReviews} />
         )}
       </MainContent>
-      <KeyBoardShortcuts>
-        <Shortcut>F6: Retry</Shortcut>
-        <Shortcut>F12: Next</Shortcut>
-      </KeyBoardShortcuts>
+      <KeyboardShortcuts />
     </Page>
   );
 };
