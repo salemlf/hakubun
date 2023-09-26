@@ -104,15 +104,16 @@ export const AssignmentQueueCard = ({
   };
 
   const attemptToAdvance = () => {
+    let strippedUserAnswer = userAnswer.trim();
     currentReviewItem.review_type === "reading" &&
-      setUserAnswer(toHiragana(userAnswer));
+      setUserAnswer(toHiragana(strippedUserAnswer));
 
-    let isValidInfo = isUserAnswerValid(currentReviewItem, userAnswer);
+    let isValidInfo = isUserAnswerValid(currentReviewItem, strippedUserAnswer);
     if (isValidInfo.isValid === false) {
       displayInvalidAnswerMsg(isValidInfo.message);
       setShakeInputTrigger((shakeInputTrigger) => shakeInputTrigger + 1);
     } else {
-      setSavedUserAnswer(userAnswer);
+      setSavedUserAnswer(strippedUserAnswer);
       animateCard(
         reviewCardRef.current,
         { x: "150%" },
@@ -121,7 +122,7 @@ export const AssignmentQueueCard = ({
 
       setTimeout(() => {
         x.set(0);
-        handleNextClick(currentReviewItem, userAnswer, setUserAnswer);
+        handleNextClick(currentReviewItem, strippedUserAnswer, setUserAnswer);
         // TODO: check if answer was correct or not, then show toast
       }, exitTimeMs);
     }
