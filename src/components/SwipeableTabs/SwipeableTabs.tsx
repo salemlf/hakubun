@@ -203,6 +203,9 @@ function SwipeableTabs({
         (tabPanel.scrollWidth * (index / tabs.length)) as any,
         {
           type: "spring",
+          damping: 30,
+          mass: 1.5,
+          stiffness: 250,
           bounce: 0.2,
           duration: 0.6,
           onUpdate: (v) => {
