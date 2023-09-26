@@ -30,6 +30,19 @@ const Page = styled(AnimatedPage)`
   }
 `;
 
+const KeyBoardShortcuts = styled.div`
+  position: absolute;
+  width: 100%;
+  bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const Shortcut = styled.p`
+  margin: 0;
+  color: white;
+`;
+
 // TODO: improve "Loading..." text
 // TODO: add button to abandon session
 // TODO: redirect to home if user somehow ends up on this screen without data passed
@@ -130,6 +143,10 @@ export const ReviewSession = () => {
           <AssignmentQueueCards submitItems={submitReviews} />
         )}
       </MainContent>
+      <KeyBoardShortcuts>
+        <Shortcut>F6: Retry</Shortcut>
+        <Shortcut>F12: Next</Shortcut>
+      </KeyBoardShortcuts>
     </Page>
   );
 };

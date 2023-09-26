@@ -72,7 +72,6 @@ export const AssignmentQueueCard = ({
     !isSecondClick || savedUserAnswer === null ? "" : savedUserAnswer;
   const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
 
-  // TODO: display these shortcuts on page so user knows about them
   useKeyDown(() => attemptToAdvance(), ["F12"]);
   useKeyDown(() => retryTriggered(), ["F6"]);
 
