@@ -99,6 +99,7 @@ type Props = RequireAtLeastOne<
   "controlledSettings" | "uncontrolledSettings"
 >;
 
+// TODO: change name to AlertDialog
 // TODO: improve trigger button or pass in trigger component as prop instead (more likely)
 function Dialog({
   controlledSettings,

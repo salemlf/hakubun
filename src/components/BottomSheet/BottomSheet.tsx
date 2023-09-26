@@ -50,7 +50,7 @@ const SheetContainer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 5;
+  z-index: 21;
   overflow-y: hidden;
   pointer-events: none;
 `;

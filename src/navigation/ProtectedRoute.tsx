@@ -20,6 +20,7 @@ const ProtectedRoute = ({
 }: Props) => {
   const navigate = useNavigate();
 
+  // TODO: prevent this behavior if on a page that uses bottomsheet
   // TODO: move to App.tsx
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
