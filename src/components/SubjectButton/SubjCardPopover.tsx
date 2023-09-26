@@ -1,10 +1,23 @@
-import { IonItem } from "@ionic/react";
+// TODO: change so not relying on IonIcon
+import { IonItem, IonIcon } from "@ionic/react";
 import { getTimeFromNow } from "../../services/MiscService";
 import { Subject, SubjectType } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 import SubjectChars from "../SubjectChars/SubjectChars";
-// import styled from "styled-components/macro";
+import AlarmClockIcon from "../../images/alarm-clock.svg";
 import styled from "styled-components";
+
+const AlarmClock = styled(IonIcon)`
+  width: 1.5em;
+  height: 1.5em;
+`;
+
+const TimeTillReviewContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+`;
 
 type Props = {
   subject: Subject;
@@ -62,7 +75,10 @@ function SubjCardPopover({ subject, assignment, navigate }: Props) {
     >
       <TxtContainer>
         <SubjectChars subject={subject} fontSize="4rem" />
-        <SubjectTimeTill>{timeTill}</SubjectTimeTill>
+        <TimeTillReviewContainer>
+          <AlarmClock src={AlarmClockIcon} />
+          <SubjectTimeTill>{timeTill}</SubjectTimeTill>
+        </TimeTillReviewContainer>
       </TxtContainer>
     </PopoverContainer>
   );
