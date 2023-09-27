@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useUserInfoStore } from "../stores/useUserInfoStore";
 import { LEVELS } from "../constants";
 import SwipeableTabs from "../components/SwipeableTabs";
 import AnimatedPage from "../components/AnimatedPage";
@@ -25,17 +25,17 @@ const SubjectsHeader = styled(Header)`
 
 export const Subjects = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { user } = useAuth();
+  const userInfo = useUserInfoStore.use.userInfo();
   const [level, setLevel] = useState<number>(0);
 
   useEffect(() => {
-    if (user && user.level) {
-      setLevel(user.level);
+    if (userInfo && userInfo.level) {
+      setLevel(userInfo.level);
       setIsLoading(false);
     } else {
       setIsLoading(true);
     }
-  }, [user, user?.level]);
+  }, [userInfo, userInfo?.level]);
 
   return (
     <>

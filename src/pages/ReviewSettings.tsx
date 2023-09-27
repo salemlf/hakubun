@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { IonHeader, IonButtons, IonToolbar } from "@ionic/react";
 import { useUserSettingsStore } from "../stores/useUserSettingsStore";
+import { useUserInfoStore } from "../stores/useUserInfoStore";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
-import { useAuth } from "../hooks/useAuth";
 import AnimatedPage from "../components/AnimatedPage";
 import ShiftBy from "../components/ShiftBy/ShiftBy";
 import BackButton from "../components/BackButton/BackButton";
@@ -32,17 +32,17 @@ const HeaderContainer = styled(IonHeader)`
 `;
 
 export const ReviewSettings = () => {
-  const { user } = useAuth();
+  const userInfo = useUserInfoStore.use.userInfo();
   const [isEnabled, setIsEnabled] = useState(false);
-  let currUserLevel = user?.level;
+  let currUserLevel = userInfo?.level;
 
   useEffect(() => {
-    if (user && user.level) {
+    if (userInfo && userInfo.level) {
       setIsEnabled(true);
     } else {
       setIsEnabled(false);
     }
-  }, [user]);
+  }, [userInfo]);
 
   const {
     isLoading: availForReviewLoading,

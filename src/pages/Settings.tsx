@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useUserAuth } from "../contexts/AuthContext";
+import { useUserInfoStore } from "../stores/useUserInfoStore";
+import { useUserLogin } from "../hooks/useUserLogin";
 import AnimatedPage from "../components/AnimatedPage";
 import BackButton from "../components/BackButton";
 import GeneralUserSettings from "../components/GeneralUserSettings";
@@ -57,13 +58,14 @@ const CreditsContainer = styled.div`
 
 // TODO: change to get/set defaults from API
 function Settings() {
-  const appContext = useUserAuth();
+  const { logout } = useUserLogin();
+  const userInfo = useUserInfoStore.use.userInfo();
   const navigate = useNavigate();
-  const username = appContext.user?.username;
+  const username = userInfo?.username;
 
   // TODO: add confirmation after pressing
   const removeAuth = () => {
-    appContext.logout();
+    logout();
     navigate("/authenticate");
   };
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { IonGrid, IonCol, IonRow, IonSkeletonText } from "@ionic/react";
-import { useUserAuth } from "../contexts/AuthContext";
+import { useUserInfoStore } from "../stores/useUserInfoStore";
 import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
 import HomeHeader from "../components/HomeHeader";
 import LessonsButton from "../components/LessonsButton/LessonsButton";
@@ -16,20 +16,19 @@ import { FixedCenterContainer } from "../styles/BaseStyledComponents";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 
 const Home = () => {
-  const appContext = useUserAuth();
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
+  const userInfo = useUserInfoStore.use.userInfo();
 
   useEffect(() => {
     setHomeLoading(true);
     setUserDetails();
     setHomeLoading(false);
-  }, [appContext.isAuthenticated]);
+  }, [userInfo]);
 
   const setUserDetails = () => {
-    let userData = appContext.user;
-    if (userData !== null) {
-      setLevel(userData.level);
+    if (userInfo) {
+      setLevel(userInfo.level);
     }
   };
 

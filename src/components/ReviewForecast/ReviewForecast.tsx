@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { IonCol } from "@ionic/react";
 import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
+import { useUserInfoStore } from "../../stores/useUserInfoStore";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
-import { useAuth } from "../../hooks/useAuth";
 import DailyReviewForecast from "./DailyReviewForecast";
 import SwipeableTabs from "../SwipeableTabs";
 import LoadingDots from "../LoadingDots";
@@ -71,17 +71,17 @@ function ReviewForecast() {
     StartAndEndTimeInfo[]
   >([]);
 
-  const { user } = useAuth();
+  const userInfo = useUserInfoStore.use.userInfo();
   const [isEnabled, setIsEnabled] = useState(false);
-  let currUserLevel = user?.level;
+  let currUserLevel = userInfo?.level;
 
   useEffect(() => {
-    if (user && user.level) {
+    if (userInfo && userInfo.level) {
       setIsEnabled(true);
     } else {
       setIsEnabled(false);
     }
-  }, [user]);
+  }, [userInfo]);
 
   const seedRunningTotalAvailableReviews =
     useForecastTotalsStore.use.seedRunningTotalAvailableReviews();

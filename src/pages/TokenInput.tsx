@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
-import { useUserAuth } from "../contexts/AuthContext";
+import { useAuthTokenStore } from "../stores/useAuthTokenStore";
+import { useUserLogin } from "../hooks/useUserLogin";
 import LoadingDots from "../components/LoadingDots";
 import Button from "../components/Button";
 import AnimatedPage from "../components/AnimatedPage";
@@ -37,12 +38,6 @@ const SubmitButton = styled(Button)`
   border-radius: 12px;
   font-size: 1rem;
   margin-top: 10px;
-`;
-
-const Form = styled.form`
-  /* background-color: var(--light-greyish-purple);
-  padding: 16px 12px;
-  border-radius: 10px; */
 `;
 
 const InputContainer = styled.div`
@@ -85,19 +80,12 @@ const ButtonRow = styled.div`
   justify-content: center;
 `;
 
+// TODO: show an overlay while loading
 const TokenInput = () => {
-  const [isAuthLoading, setIsAuthLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
-  const auth = useUserAuth();
-
-  useEffect(() => {
-    if (auth) {
-      setLoading(false);
-    }
-  }, [auth.isAuthenticated]);
+  const { login } = useUserLogin();
+  const [hasError, setHasError] = useState(false);
+  const isAuthLoading = useAuthTokenStore.use.isAuthLoading();
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -114,7 +102,7 @@ const TokenInput = () => {
   };
 
   const setAuth = async (token: string) => {
-    let success = await auth.login(token);
+    let success = await login(token);
 
     if (success) {
       console.log("Successfully logged in!");
@@ -123,8 +111,6 @@ const TokenInput = () => {
     } else {
       setHasError(true);
     }
-
-    setIsAuthLoading(false);
   };
 
   const HelpPopoverContents = (
@@ -142,57 +128,48 @@ const TokenInput = () => {
 
   return (
     <AnimatedPage bgImage={WavesBgImg}>
-      {!loading ? (
-        <>
-          <Content>
-            <HeadingAndLogoContainer>
-              <LogoContainer>
-                <Logo src={LogoIcon} />
-              </LogoContainer>
-              <FallingText text="Hakubun" delay={0.5} duration={0.25} />
-            </HeadingAndLogoContainer>
-            <p>
-              A <em>(third-party)</em> Japanese Study App for Wanikani
-            </p>
-            <Form onSubmit={handleSubmit}>
-              <InputContainer>
-                <TokenInputLabel>
-                  <HelpSpan helpPopoverContents={HelpPopoverContents}>
-                    Wanikani API Token
-                  </HelpSpan>
-                  <Input type="text" name="api-token" data-private />
-                </TokenInputLabel>
-                {hasError && (
-                  <ErrorTxt>
-                    Oh no! An error occurred retrieving your info, please make
-                    sure your API token is correct
-                  </ErrorTxt>
-                )}
-              </InputContainer>
-              <ButtonRow>
-                <SubmitButton
-                  type="submit"
-                  backgroundColor="var(--ion-color-tertiary)"
-                  color="black"
-                  style={{ fontSize: "1.25rem" }}
-                >
-                  Let's Study!
-                </SubmitButton>
-              </ButtonRow>
-            </Form>
-
-            {isAuthLoading && (
-              <FixedCenterContainer>
-                <LoadingDots />
-              </FixedCenterContainer>
+      <Content>
+        <HeadingAndLogoContainer>
+          <LogoContainer>
+            <Logo src={LogoIcon} />
+          </LogoContainer>
+          <FallingText text="Hakubun" delay={0.5} duration={0.25} />
+        </HeadingAndLogoContainer>
+        <p>
+          A <em>(third-party)</em> Japanese Study App for Wanikani
+        </p>
+        <form onSubmit={handleSubmit}>
+          <InputContainer>
+            <TokenInputLabel>
+              <HelpSpan helpPopoverContents={HelpPopoverContents}>
+                Wanikani API Token
+              </HelpSpan>
+              <Input type="text" name="api-token" data-private />
+            </TokenInputLabel>
+            {hasError && (
+              <ErrorTxt>
+                Oh no! An error occurred retrieving your info, please make sure
+                your API token is correct
+              </ErrorTxt>
             )}
-          </Content>
-        </>
-      ) : (
-        <FixedCenterContainer>
-          <LoadingDots />
-        </FixedCenterContainer>
-      )}
+          </InputContainer>
+          <ButtonRow>
+            <SubmitButton
+              type="submit"
+              backgroundColor="var(--ion-color-tertiary)"
+              color="black"
+              style={{ fontSize: "1.25rem" }}
+            >
+              Let's Study!
+            </SubmitButton>
+          </ButtonRow>
+        </form>
+        {isAuthLoading && (
+          <FixedCenterContainer>
+            <LoadingDots />
+          </FixedCenterContainer>
+        )}
+      </Content>
     </AnimatedPage>
   );
 };

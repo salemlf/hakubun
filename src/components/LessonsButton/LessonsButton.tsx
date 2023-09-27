@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "../../hooks/useAuth";
 import { setBtnBackground } from "../../services/ImageSrcService";
+import { useUserInfoStore } from "../../stores/useUserInfoStore";
 import Toast from "../Toast";
 import {
   BaseReviewLessonButton,
@@ -29,7 +29,7 @@ function LessonsButton() {
   const [displayToast, setDisplayToast] = useState<boolean>(false);
   const [toastTitle, setToastTitle] = useState<string>();
   const [toastContent, setToastContent] = useState<string>();
-  const { user } = useAuth();
+  const userInfo = useUserInfoStore.use.userInfo();
 
   const {
     isLoading: lessonsLoading,
@@ -42,26 +42,21 @@ function LessonsButton() {
   }
 
   const onLessonBtnClick = () => {
-    let paidSubscription = user && user.subscription.type !== "free";
+    let paidSubscription = userInfo && userInfo.subscription.type !== "free";
     if (lessonsData === undefined || lessonsData.length === 0) {
       setToastTitle("No lessons available!");
       setToastContent(
         "Looks like you don't have any lessons right now, work on reviews if you have some available :)"
       );
       setDisplayToast(true);
-    }
-    // trial user
-    else if (
-      user &&
+    } else if (
+      userInfo &&
       !paidSubscription &&
-      user.level > user.subscription.max_level_granted
+      userInfo.level > userInfo.subscription.max_level_granted
     ) {
       setToastTitle("No more free lessons, sorry :(");
       setToastContent("Looks like you've used up all your free lessons!");
       setDisplayToast(true);
-
-      console.log("No paid subscription");
-      console.log("user: ", user);
     } else {
       navigate("/lessons/settings");
     }

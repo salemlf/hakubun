@@ -13,7 +13,7 @@ import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AuthProvider, useUserAuth } from "./contexts/AuthContext";
+import { useAuthTokenStore } from "./stores/useAuthTokenStore";
 import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
 import { ReviewSettings } from "./pages/ReviewSettings";
@@ -49,7 +49,6 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
-// TODO: not running in prod, fix
 if (import.meta.env.MODE !== "development") {
   LogRocket.init("cleqvf/hakubun", {
     shouldCaptureIP: false,
@@ -72,13 +71,11 @@ const queryClient = new QueryClient({
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ToastPrimitive.Provider>
-          <IonApp>
-            <RouterProvider router={browserRouter} />
-          </IonApp>
-        </ToastPrimitive.Provider>
-      </AuthProvider>
+      <ToastPrimitive.Provider>
+        <IonApp>
+          <RouterProvider router={browserRouter} />
+        </IonApp>
+      </ToastPrimitive.Provider>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
@@ -86,7 +83,9 @@ const App: React.FC = () => {
 
 const AppElements = () => {
   const location = useLocation();
-  const { authLoading, isAuthenticated } = useUserAuth();
+
+  const isAuthenticated = useAuthTokenStore.use.isAuthenticated();
+  const isAuthLoading = useAuthTokenStore.use.isAuthLoading();
 
   return (
     <AnimatePresence>
@@ -97,7 +96,7 @@ const AppElements = () => {
           element={
             <ProtectedRoute
               isAuthenticated={isAuthenticated}
-              authLoading={authLoading}
+              authLoading={isAuthLoading}
             />
           }
         >
