@@ -51,10 +51,12 @@ function Accordion({ items }: Props) {
 
 const Trigger = styled(AccordionPrimitive.Trigger)`
   all: unset;
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 5px;
-  justify-items: end;
+  align-items: center;
+  justify-items: flex-start;
 
   &:focus-visible {
     outline: 2px solid white;
