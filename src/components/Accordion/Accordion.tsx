@@ -55,6 +55,10 @@ const Trigger = styled(AccordionPrimitive.Trigger)`
   grid-template-columns: 1fr auto;
   gap: 5px;
   justify-items: end;
+
+  &:focus-visible {
+    outline: 2px solid white;
+  }
 `;
 
 const TriggerHeader = styled(AccordionPrimitive.Header)`
