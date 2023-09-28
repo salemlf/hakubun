@@ -72,7 +72,7 @@ export type AssignmentBatch = {
 
 export type AccordionItemData = {
   value: string;
-  title: string;
+  title: string | React.ReactNode;
   content: React.ReactNode;
 };
 

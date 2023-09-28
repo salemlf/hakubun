@@ -185,7 +185,7 @@ const Item = styled(AccordionPrimitive.Item)`
 type ItemProps = {
   isOpen: boolean;
   value: string;
-  title: string;
+  title: string | React.ReactNode;
   children: React.ReactNode;
 };
 
