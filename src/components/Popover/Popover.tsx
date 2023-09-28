@@ -13,7 +13,7 @@ const Content = styled(PopoverPrimitive.Content)`
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
   a {
-    color: var(--ion-color-primary);
+    color: var(--ion-color-primary-lightest);
   }
 
   &[data-state="open"][data-side="top"] {
@@ -79,7 +79,14 @@ const Arrow = styled(PopoverPrimitive.Arrow)`
 `;
 
 export const PopoverRoot = PopoverPrimitive.Root;
-export const PopoverTrigger = PopoverPrimitive.Trigger;
+
+export const PopoverTrigger = styled(PopoverPrimitive.Trigger)`
+  all: unset;
+
+  &:focus-visible {
+    outline: 2px solid white;
+  }
+`;
 
 type PopoverRef = HTMLDivElement;
 
@@ -87,7 +94,7 @@ type PopoverRef = HTMLDivElement;
 const PopoverContent = React.forwardRef<PopoverRef, PopoverContentProps>(
   ({ children, ...props }, forwardedRef) => (
     <PopoverPrimitive.Portal>
-      <Content sideOffset={5} {...props} ref={forwardedRef}>
+      <Content sideOffset={5} {...props} ref={forwardedRef} side="top">
         {children}
         <Arrow />
       </Content>

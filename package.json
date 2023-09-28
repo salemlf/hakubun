@@ -13,6 +13,7 @@
     "@capacitor/status-bar": "^5.0.0",
     "@ionic/react": "^7.0.0",
     "@ionic/storage": "^3.0.6",
+    "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.4",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-navigation-menu": "^1.1.3",
