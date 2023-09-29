@@ -5,10 +5,7 @@ import Card from "../Card";
 import SubjectButtonList from "../SubjectButtonList";
 import SubjectWideBtnList from "../SubjectWideBtnList";
 import LoadingDots from "../LoadingDots";
-import {
-  FixedCenterContainer,
-  LoadingContainer,
-} from "../../styles/BaseStyledComponents";
+import { LoadingContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const SubjectCardContainer = styled.div`
@@ -34,7 +31,22 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
     isLoading: subjectCurrLvlLoading,
     data: subjectCurrLvlData,
     error: subjectCurrLvlErr,
-  } = useSubjectsByLevel(level, isSelected);
+  } = useSubjectsByLevel(level);
+
+  // *testing
+  console.log(
+    "🚀 ~ file: SubjectsOnLvlTab.tsx:38 ~ SubjectsOnLvlTab ~ isSelected:",
+    isSelected
+  );
+  console.log(
+    "🚀 ~ file: SubjectsOnLvlTab.tsx:38 ~ SubjectsOnLvlTab ~ subjectCurrLvlData:",
+    subjectCurrLvlData
+  );
+  console.log(
+    "🚀 ~ file: SubjectsOnLvlTab.tsx:38 ~ SubjectsOnLvlTab ~ subjectCurrLvlLoading:",
+    subjectCurrLvlLoading
+  );
+  // *testing
 
   useEffect(() => {
     if (!subjectCurrLvlLoading && subjectCurrLvlData) {

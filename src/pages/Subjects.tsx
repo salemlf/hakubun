@@ -12,6 +12,7 @@ import {
   Header,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
+import Paginator from "../components/Paginator";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -23,15 +24,22 @@ const SubjectsHeader = styled(Header)`
   text-align: center;
 `;
 
+const Content = styled(ContentWithTabBarNoPadding)`
+  /* height: 100%; */
+`;
+
 export const Subjects = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
   const [level, setLevel] = useState<number>(0);
+  console.log("🚀 ~ file: Subjects.tsx:30 ~ Subjects ~ user:", user);
+  console.log("🚀 ~ file: Subjects.tsx:33 ~ Subjects ~ isLoading:", isLoading);
 
   useEffect(() => {
     if (user && user.level) {
       setLevel(user.level);
       setIsLoading(false);
+      console.log("USER LEVEL: ", user.level);
     } else {
       setIsLoading(true);
     }
@@ -41,6 +49,7 @@ export const Subjects = () => {
     <>
       <Page>
         {isLoading ? (
+          // <p>Loading...</p>
           <FixedCenterContainer>
             <LoadingDots />
           </FixedCenterContainer>
@@ -57,16 +66,35 @@ type SubjectsContentProps = {
   level: number;
 };
 const SubjectsContent = ({ level }: SubjectsContentProps) => {
-  const [selectedTabKey, setSelectedTabKey] = useState<string>(
-    level.toString()
+  // const [selectedTabKey, setSelectedTabKey] = useState<string>(
+  //   level.toString()
+  // );
+  // !added
+  const [[currentPage, direction], setCurrentPage] = useState([level, 0]);
+  const levelPages = LEVELS.map((levelPg) => (
+    <SubjectsOnLvlTab
+      key={levelPg}
+      level={levelPg}
+      isSelected={currentPage === levelPg}
+    />
+  ));
+  console.log(
+    "🚀 ~ file: Subjects.tsx:79 ~ SubjectsContent ~ levelPages:",
+    levelPages
   );
+  console.log(
+    "🚀 ~ file: Subjects.tsx:71 ~ SubjectsContent ~ currentPage:",
+    currentPage
+  );
+  // !added
 
   return (
-    <ContentWithTabBarNoPadding>
+    // <Content>
+    <>
       <SubjectsHeader bgcolor="var(--ion-color-primary-tint)">
         Level
       </SubjectsHeader>
-      <SwipeableTabs
+      {/* <SwipeableTabs
         tabFontSize="1.5rem"
         tabBgColor="var(--ion-color-primary-tint)"
         roundedContainer={false}
@@ -79,15 +107,23 @@ const SubjectsContent = ({ level }: SubjectsContentProps) => {
             label: `${level}`,
             tabContents: (
               <SubjectsOnLvlTab
-                key={level}
-                level={level}
-                isSelected={selectedTabKey === level.toString()}
+              key={level}
+              level={level}
+              isSelected={selectedTabKey === level.toString()}
               />
-            ),
-          };
+              ),
+            };
         })}
         defaultValue={level.toString()}
+      /> */}
+      <Paginator
+        typeOfPaginator="tabs"
+        pageArr={levelPages}
+        currentPage={currentPage}
+        direction={direction}
+        setCurrentPage={setCurrentPage}
       />
-    </ContentWithTabBarNoPadding>
+    </>
+    // </Content>
   );
 };

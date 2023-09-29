@@ -68,6 +68,7 @@ function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
   return (
     <>
       <Paginator
+        typeOfPaginator="buttons"
         pageArr={lessonPages}
         currentPage={currentPage}
         direction={direction}
