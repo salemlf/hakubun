@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  checkIfAssignmentTypeInQueue,
   compareAssignmentsByAvailableDate,
   createAssignmentQueueItems,
   filterAssignmentsByType,
@@ -10,7 +11,7 @@ import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { INITIAL_ASSIGNMENT_TYPES } from "../../constants";
+import { ALL_ASSIGNMENT_TYPES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
@@ -79,29 +80,21 @@ function AssignmentSettings({
   const [selectedAdvancedSubjIDs, setSelectedAdvancedSubjIDs] = useState<
     string[]
   >([]);
+
+  const availableAssignmentTypes = ALL_ASSIGNMENT_TYPES.filter(
+    (assignmentType) => {
+      return checkIfAssignmentTypeInQueue(assignmentData, assignmentType);
+    }
+  );
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
-    Set<AssignmentType>
-  >(new Set(INITIAL_ASSIGNMENT_TYPES));
+    AssignmentType[]
+  >(availableAssignmentTypes);
 
   let tabBgColor =
     settingsType === "reviews"
       ? "var(--wanikani-review)"
       : "var(--wanikani-lesson)";
   let showMeaning = settingsType === "lessons";
-
-  const onSelectedAssignTypeChange = (
-    assignmentTypeUpdated: AssignmentType
-  ) => {
-    let updatedAssignTypes = selectedAssignmentTypes;
-
-    if (!updatedAssignTypes.has(assignmentTypeUpdated)) {
-      updatedAssignTypes.add(assignmentTypeUpdated);
-    } else {
-      updatedAssignTypes.delete(assignmentTypeUpdated);
-    }
-
-    setSelectedAssignmentTypes(updatedAssignTypes);
-  };
 
   const submitWithBasicSettings = (): AssignmentBatch => {
     let assignmentsFiltered = filterAssignmentsByType(
@@ -172,10 +165,12 @@ function AssignmentSettings({
                 label: "Basic",
                 tabContents: (
                   <BasicAssignmentSettings
+                    availableAssignmentTypes={availableAssignmentTypes}
                     assignmentData={assignmentData}
                     defaultBatchSize={batchSize}
                     setBatchSize={setBatchSize}
-                    onSelectedAssignTypeChange={onSelectedAssignTypeChange}
+                    selectedAssignmentTypes={selectedAssignmentTypes}
+                    setSelectedAssignmentTypes={setSelectedAssignmentTypes}
                   />
                 ),
               },

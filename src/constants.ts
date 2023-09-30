@@ -42,7 +42,7 @@ export const AUDIO_VOICES: PronunciationVoice[] = [
   },
 ];
 
-export const INITIAL_ASSIGNMENT_TYPES: AssignmentType[] = [
+export const ALL_ASSIGNMENT_TYPES: AssignmentType[] = [
   "radical",
   "kanji",
   "vocabulary",
