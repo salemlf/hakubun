@@ -7,6 +7,7 @@ import {
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
 } from "../../services/SubjectAndAssignmentService";
+import { capitalizeWord } from "../../services/MiscService";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
@@ -19,6 +20,7 @@ import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
 import LoadingDots from "../LoadingDots";
+import Toast from "../Toast";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
@@ -89,6 +91,7 @@ function AssignmentSettings({
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
     AssignmentType[]
   >(availableAssignmentTypes);
+  const [displayToast, setDisplayToast] = useState<boolean>(false);
 
   let tabBgColor =
     settingsType === "reviews"
@@ -130,6 +133,14 @@ function AssignmentSettings({
   };
 
   const onStartSessionBtnClick = () => {
+    let noAssignmentsSelected =
+      selectedAdvancedSubjIDs.length === 0 &&
+      selectedAssignmentTypes.length === 0;
+    if (noAssignmentsSelected) {
+      setDisplayToast(true);
+      return;
+    }
+
     let sessionData =
       selectedAdvancedSubjIDs.length === 0
         ? submitWithBasicSettings()
@@ -190,6 +201,12 @@ function AssignmentSettings({
             defaultValue="basic"
             scrollToDefault={false}
           />
+          <Toast
+            open={displayToast}
+            setOpen={setDisplayToast}
+            title={`No ${capitalizeWord(settingsType)} Selected`}
+            content={`Select some ${settingsType} using the settings above`}
+          ></Toast>
           <StartSessionButton
             onStartBtnClick={onStartSessionBtnClick}
             buttonType={settingsType}
