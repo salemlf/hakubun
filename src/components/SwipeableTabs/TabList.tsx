@@ -19,7 +19,7 @@ const TabListStyled = styled(Tabs.List)<TabContainerStyles>`
     roundedcontainer ? ".5rem" : "0"};
   max-width: 100vw;
   overflow-x: auto;
-  padding: 0 12px;
+  padding: 5px 12px;
   isolation: isolate;
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
@@ -32,7 +32,7 @@ const TabListStyled = styled(Tabs.List)<TabContainerStyles>`
 `;
 
 const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
-  padding: 12px;
+  padding: 6px 12px;
   outline-style: none;
   color: ${({ selectioncolor }) => selectioncolor};
   background-color: ${({ bgcolor }) => bgcolor};
@@ -48,6 +48,11 @@ const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
   position: relative;
   border-radius: 9999px;
   line-height: 1.25rem;
+
+  &:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
 `;
 
 const Selector = styled(motion.div)<CustomBgColor>`
@@ -59,7 +64,9 @@ const Selector = styled(motion.div)<CustomBgColor>`
   z-index: 10;
   background-color: ${({ bgcolor }) => bgcolor};
   mix-blend-mode: difference;
-  margin: 5px 0;
+  /* margin: 5px 0; */
+
+  margin: 0;
 `;
 
 type SwipeableTabsListProps = {

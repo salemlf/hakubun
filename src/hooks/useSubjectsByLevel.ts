@@ -9,6 +9,7 @@ export const useSubjectsByLevel = (level: any, enabled: boolean = true) => {
   return useQuery({
     queryKey: ["subjects-by-lvl", level],
     queryFn: () => WaniKaniAPI.getSubjectsByLevel(level),
+    keepPreviousData: true,
     enabled: !!level && enabled,
     select: useCallback(
       (data: any) => {

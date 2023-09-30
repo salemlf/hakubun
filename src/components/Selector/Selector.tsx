@@ -15,8 +15,7 @@ const Item = styled(SelectPrimitive.Item)`
   border-radius: 3px;
   display: flex;
   align-items: center;
-  height: 25px;
-  padding: 0 35px 0 25px;
+  padding: 10px 10px;
   position: relative;
   user-select: none;
 
@@ -29,6 +28,10 @@ const Item = styled(SelectPrimitive.Item)`
     outline: none;
     background-color: var(--ion-color-secondary-dark);
     color: white;
+  }
+
+  &:not(:first-child) {
+    border-top: 1px solid black;
   }
 `;
 
@@ -81,7 +84,8 @@ const Trigger = styled(SelectPrimitive.Trigger)`
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 2px black;
+    outline: 2px solid white;
+    outline-offset: 4px;
   }
 
   &[data-placeholder] {

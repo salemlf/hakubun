@@ -2,21 +2,12 @@ import { useRef } from "react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
+import { getPageIndex } from "../../services/MiscService";
 import Button from "../Button";
 import Counter from "../Counter";
 import NextArrowIcon from "../../images/next-arrow-color.svg";
 import PrevArrowIcon from "../../images/back-arrow-color.svg";
 import styled from "styled-components";
-
-const getPageIndex = (
-  currentPageNum: number,
-  updatedPageNum: number,
-  numPages: number
-) => {
-  // Using modulo so it loops back around if we go past the first or last page
-  const index = (currentPageNum + (updatedPageNum - currentPageNum)) % numPages;
-  return index < 0 ? index + numPages : index;
-};
 
 type CurrPageUpdateProps = [page: number, direction: number];
 
@@ -25,10 +16,20 @@ type Props = {
   currentPage: number;
   direction: number;
   setCurrentPage: (updateProps: CurrPageUpdateProps) => void;
+  showNavigationButtons: boolean;
+  hasTabBar?: boolean;
 };
 
+// TODO: make sure other pages aren't selectable with keyboard/screenreader when not selected
 // TODO: improve animations between pages
-function Paginator({ pageArr, currentPage, direction, setCurrentPage }: Props) {
+function Paginator({
+  pageArr,
+  currentPage,
+  direction,
+  setCurrentPage,
+  showNavigationButtons,
+  hasTabBar = false,
+}: Props) {
   const pageIndices = [...Array(pageArr.length).keys()];
   // *testing
   console.log(
@@ -51,12 +52,15 @@ function Paginator({ pageArr, currentPage, direction, setCurrentPage }: Props) {
         pageArr={pageArr}
         direction={direction}
         setPage={setPage}
+        hasTabBar={hasTabBar}
       />
-      <PageIndicator
-        currentPage={currentPage}
-        setPage={setPage}
-        pageIndices={pageIndices}
-      />
+      {showNavigationButtons && (
+        <PageIndicator
+          currentPage={currentPage}
+          setPage={setPage}
+          pageIndices={pageIndices}
+        />
+      )}
     </>
   );
 }
@@ -78,18 +82,24 @@ const variants = {
   }),
 };
 
+type WrapperProps = {
+  hasbottompadding: boolean;
+};
+
 const PagesWrapper = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
 `;
 
-const PageContainer = styled(motion.div)`
+const PageContainer = styled(motion.div)<WrapperProps>`
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+  overflow-y: auto;
+  padding-bottom: ${({ hasbottompadding }) => (hasbottompadding ? "60px" : 0)};
 `;
 
 type PagesProps = {
@@ -97,9 +107,16 @@ type PagesProps = {
   setPage: (page: number, direction: number) => void;
   direction: number;
   pageArr: React.ReactNode[];
+  hasTabBar: boolean;
 };
 
-function Pages({ currentPage, setPage, direction, pageArr }: PagesProps) {
+function Pages({
+  currentPage,
+  setPage,
+  direction,
+  pageArr,
+  hasTabBar,
+}: PagesProps) {
   const hasPaginated = useRef<boolean>(false);
 
   function onPageDrag(
@@ -130,6 +147,7 @@ function Pages({ currentPage, setPage, direction, pageArr }: PagesProps) {
     <PagesWrapper>
       <AnimatePresence initial={false} custom={direction}>
         <PageContainer
+          hasbottompadding={hasTabBar}
           key={currentPage}
           data-page={currentPage}
           variants={variants}

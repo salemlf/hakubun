@@ -30,6 +30,7 @@ type AssignTypeOptionProps = {
 
 const AssignmentTypeContainer = styled.div``;
 
+// TODO: change to use import ToggleGroup from radix-ui
 // TODO: update styles so bg color is duller if not checked
 const AssignTypeOption = styled.label<AssignTypeOptionProps>`
   color: white;

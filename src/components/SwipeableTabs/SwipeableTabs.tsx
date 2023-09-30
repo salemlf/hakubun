@@ -32,6 +32,10 @@ const TabPanelStyled = styled(Tabs.Content)`
   /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+
+  &:focus-visible {
+    outline: 2px solid white;
+  }
 `;
 
 const TabPanels = styled.div`
