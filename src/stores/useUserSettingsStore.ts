@@ -15,21 +15,25 @@ interface UserSettingsActions {
   setReviewBatchSize: (size: number) => void;
 }
 
+const initialState: UserSettingsState = {
+  pronunciationVoice: {
+    id: "female_tokyo",
+    details: {
+      gender: "female",
+      accent: "Tokyo",
+    },
+    displayName: "Female, Tokyo accent",
+  },
+  lessonBatchSize: 2,
+  reviewBatchSize: 5,
+};
+
 const useUserSettingsStoreBase = create<
   UserSettingsState & UserSettingsActions
 >()(
   persist(
     (set, get) => ({
-      pronunciationVoice: {
-        id: "female_tokyo",
-        details: {
-          gender: "female",
-          accent: "Tokyo",
-        },
-        displayName: "Female, Tokyo accent",
-      },
-      lessonBatchSize: 2,
-      reviewBatchSize: 5,
+      ...initialState,
       setPronunciationVoice: (voice: PronunciationVoice) =>
         set({ pronunciationVoice: voice }),
       setLessonBatchSize: (size: number) => set({ lessonBatchSize: size }),

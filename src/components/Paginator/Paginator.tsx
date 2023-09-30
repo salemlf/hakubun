@@ -2,21 +2,12 @@ import { useRef } from "react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
+import { getPageIndex } from "../../services/MiscService";
 import Button from "../Button";
 import Counter from "../Counter";
 import NextArrowIcon from "../../images/next-arrow-color.svg";
 import PrevArrowIcon from "../../images/back-arrow-color.svg";
 import styled from "styled-components";
-
-const getPageIndex = (
-  currentPageNum: number,
-  updatedPageNum: number,
-  numPages: number
-) => {
-  // Using modulo so it loops back around if we go past the first or last page
-  const index = (currentPageNum + (updatedPageNum - currentPageNum)) % numPages;
-  return index < 0 ? index + numPages : index;
-};
 
 type CurrPageUpdateProps = [page: number, direction: number];
 
@@ -25,7 +16,8 @@ type Props = {
   currentPage: number;
   direction: number;
   setCurrentPage: (updateProps: CurrPageUpdateProps) => void;
-  typeOfPaginator: "buttons" | "tabs";
+  showNavigationButtons: boolean;
+  hasTabBar?: boolean;
 };
 
 // TODO: make sure other pages aren't selectable with keyboard/screenreader when not selected
@@ -35,9 +27,9 @@ function Paginator({
   currentPage,
   direction,
   setCurrentPage,
-  typeOfPaginator,
+  showNavigationButtons,
+  hasTabBar = false,
 }: Props) {
-  // const showButtons = typeOfPaginator === "buttons";
   const pageIndices = [...Array(pageArr.length).keys()];
   // *testing
   console.log(
@@ -55,20 +47,14 @@ function Paginator({
 
   return (
     <>
-      {typeOfPaginator === "tabs" && (
-        <PageTabs
-          tabLabels={pageIndices.map((index) => index)}
-          selectedPage={currentPage}
-          setPage={setPage}
-        />
-      )}
       <Pages
         currentPage={currentPage}
         pageArr={pageArr}
         direction={direction}
         setPage={setPage}
+        hasTabBar={hasTabBar}
       />
-      {typeOfPaginator === "buttons" && (
+      {showNavigationButtons && (
         <PageIndicator
           currentPage={currentPage}
           setPage={setPage}
@@ -96,19 +82,24 @@ const variants = {
   }),
 };
 
+type WrapperProps = {
+  hasbottompadding: boolean;
+};
+
 const PagesWrapper = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
 `;
 
-const PageContainer = styled(motion.div)`
+const PageContainer = styled(motion.div)<WrapperProps>`
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   overflow-y: auto;
+  padding-bottom: ${({ hasbottompadding }) => (hasbottompadding ? "60px" : 0)};
 `;
 
 type PagesProps = {
@@ -116,9 +107,16 @@ type PagesProps = {
   setPage: (page: number, direction: number) => void;
   direction: number;
   pageArr: React.ReactNode[];
+  hasTabBar: boolean;
 };
 
-function Pages({ currentPage, setPage, direction, pageArr }: PagesProps) {
+function Pages({
+  currentPage,
+  setPage,
+  direction,
+  pageArr,
+  hasTabBar,
+}: PagesProps) {
   const hasPaginated = useRef<boolean>(false);
 
   function onPageDrag(
@@ -149,6 +147,7 @@ function Pages({ currentPage, setPage, direction, pageArr }: PagesProps) {
     <PagesWrapper>
       <AnimatePresence initial={false} custom={direction}>
         <PageContainer
+          hasbottompadding={hasTabBar}
           key={currentPage}
           data-page={currentPage}
           variants={variants}
@@ -247,90 +246,5 @@ function PageIndicator({
     </>
   );
 }
-
-const TabContainer = styled.div`
-  display: flex;
-  background-color: white;
-  position: relative;
-  background-color: white;
-  padding: 0;
-  max-width: 100vw;
-  overflow-x: auto;
-  padding: 0 12px;
-  isolation: isolate;
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-`;
-
-const PageTab = styled(Button)`
-  /* all: unset; */
-  padding: 12px;
-  outline-style: none;
-  color: black;
-  background-color: white;
-  transition-property: background-color, border-color, color, fill, stroke,
-    opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
-  cursor: default;
-  font-size: 1rem;
-  font-weight: 600;
-
-  margin: auto;
-  position: relative;
-  border-radius: 9999px;
-  line-height: 1.25rem;
-`;
-
-const Selector = styled(motion.div)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-  background-color: white;
-  mix-blend-mode: difference;
-  margin: 5px 0;
-`;
-
-type PageTabsProps = {
-  tabLabels: number[];
-  selectedPage: number;
-  setPage: (page: number) => void;
-};
-
-const PageTabs = ({ tabLabels, selectedPage, setPage }: PageTabsProps) => {
-  return (
-    <TabContainer>
-      {tabLabels.map((label) => {
-        return (
-          <PageTab
-            key={label}
-            onPress={() =>
-              setPage(getPageIndex(selectedPage, label, tabLabels.length))
-            }
-            backgroundColor="white"
-          >
-            {selectedPage === label && (
-              <Selector
-                style={{ borderRadius: 9999 }}
-                layoutId="selector"
-                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-              />
-            )}
-            {label}
-          </PageTab>
-        );
-      })}
-    </TabContainer>
-  );
-};
 
 export default Paginator;
