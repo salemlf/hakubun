@@ -3,6 +3,11 @@ import {
   SubjDetailSubHeading,
   SubjDetailTxt,
 } from "../../styles/SubjectDetailsStyled";
+import styled from "styled-components";
+
+const PartsOfSpeechTxt = styled(SubjDetailTxt)`
+  font-family: var(--japanese-with-english-fallback-font-family);
+`;
 
 type Props = {
   vocab: Vocabulary;
@@ -14,7 +19,7 @@ function PartsOfSpeech({ vocab }: Props) {
   return (
     <>
       <SubjDetailSubHeading>Parts of Speech</SubjDetailSubHeading>
-      <SubjDetailTxt>
+      <PartsOfSpeechTxt>
         {partsOfSpeech && partsOfSpeech.length
           ? partsOfSpeech
               .map((part: any) => {
@@ -22,7 +27,7 @@ function PartsOfSpeech({ vocab }: Props) {
               })
               .join(", ")
           : "-"}
-      </SubjDetailTxt>
+      </PartsOfSpeechTxt>
     </>
   );
 }
