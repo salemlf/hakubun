@@ -67,6 +67,7 @@ function ReviewsButton({ level }: Props) {
         </BaseReviewLessonButtonBadge>
       </ReviewsButtonStyled>
       <Toast
+        toastType="error"
         open={displayToast}
         setOpen={setDisplayToast}
         title="No reviews available!"

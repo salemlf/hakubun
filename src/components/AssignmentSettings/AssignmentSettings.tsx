@@ -206,6 +206,7 @@ function AssignmentSettings({
             setOpen={setDisplayToast}
             title={`No ${capitalizeWord(settingsType)} Selected`}
             content={`Select some ${settingsType} using the settings above`}
+            toastType="error"
           ></Toast>
           <StartSessionButton
             onStartBtnClick={onStartSessionBtnClick}
