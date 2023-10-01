@@ -7,6 +7,12 @@ import { Subject } from "../../types/Subject";
 import SubjectButton from "../SubjectButton/SubjectButton";
 import { SubjRow, SubjCol } from "../../styles/BaseStyledComponents";
 import { ButtonSize } from "../../types/MiscTypes";
+import styled from "styled-components";
+
+const ButtonRow = styled(SubjRow)`
+  margin-top: 10px;
+  gap: 10px;
+`;
 
 type Props = {
   subjList: Subject[];
@@ -22,7 +28,7 @@ function SubjectButtonList({
   justify = "center",
 }: Props) {
   return (
-    <SubjRow justify={justify}>
+    <ButtonRow justify={justify}>
       {(subjList as Subject[]).map((subject: any) => {
         return (
           <SubjCol key={`col_${subject.id}`}>
@@ -39,7 +45,7 @@ function SubjectButtonList({
           </SubjCol>
         );
       })}
-    </SubjRow>
+    </ButtonRow>
   );
 }
 
