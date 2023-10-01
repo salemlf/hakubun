@@ -30,13 +30,17 @@ type RowProps = {
   justify: string;
 };
 
-export const SubjRow = styled(IonRow)<RowProps>`
+export const SubjRow = styled.div<RowProps>`
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: ${({ justify }) => justify};
   margin-left: -3px;
 `;
 
-export const SubjCol = styled(IonCol)`
+export const SubjCol = styled.div`
+  display: flex;
+  flex-direction: column;
   flex-grow: 0;
   flex-shrink: 0;
 `;
