@@ -4,7 +4,7 @@ import * as RadixDialog from "@radix-ui/react-dialog";
 import { PanInfo, motion, useAnimation } from "framer-motion";
 import { FocusScope } from "react-aria";
 import Button from "../Button/Button";
-import GhostParentWrapper from "../GhostParentWrapper";
+import GhostParent from "../GhostParent";
 import styled from "styled-components";
 
 const Content = styled(RadixDialog.Content)`
@@ -202,7 +202,7 @@ function BottomSheetContentCore(
                 <SheetHeadingTxt>{title}</SheetHeadingTxt>
               </SheetHeader>
               {/* @ts-ignore using inert shows an annoying TypeScript error */}
-              <GhostParentWrapper inert>{children}</GhostParentWrapper>
+              <GhostParent inert="true">{children}</GhostParent>
             </>
           )}
         </motion.div>

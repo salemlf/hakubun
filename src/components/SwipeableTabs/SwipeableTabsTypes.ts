@@ -8,7 +8,7 @@ export interface CustomBgColor {
 
 export type TabContainerStyles = {
   bgcolor: string;
-  roundedcontainer: boolean;
+  $roundedcontainer: boolean;
 };
 
 export type BgColorSelectionAndHover = CustomSelectColor & CustomBgColor;

@@ -1,6 +1,6 @@
 import { Children, cloneElement, ReactElement, ReactNode } from "react";
 
-type GhostWrapperProps = {
+type GhostParentProps = {
   [key: string]: any;
   children: ReactNode;
 };
@@ -9,7 +9,7 @@ type GhostWrapperProps = {
  * Wraps child components with a ghost parent (adding no extra nodes), used to apply styles or other props to children
  * Considered calling this component "absent father" lol
  */
-function GhostParentWrapper({ children, ...props }: GhostWrapperProps) {
+function GhostParent({ children, ...props }: GhostParentProps) {
   return (
     <>
       {Children.map(children, (child) => {
@@ -19,4 +19,4 @@ function GhostParentWrapper({ children, ...props }: GhostWrapperProps) {
   );
 }
 
-export default GhostParentWrapper;
+export default GhostParent;
