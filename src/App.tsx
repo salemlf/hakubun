@@ -14,6 +14,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAuthTokenStore } from "./stores/useAuthTokenStore";
+import { api, pagingApi } from "./api/ApiConfig";
 import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
 import { ReviewSettings } from "./pages/ReviewSettings";
@@ -86,6 +87,40 @@ const AppElements = () => {
 
   const isAuthenticated = useAuthTokenStore.use.isAuthenticated();
   const isAuthLoading = useAuthTokenStore.use.isAuthLoading();
+  const authToken = useAuthTokenStore.use.authToken();
+
+  // setting the auth token headers for all api requests
+  api.interceptors.request.use(
+    function (config) {
+      if (authToken) {
+        config.headers["Authorization"] = `Bearer ${authToken}`;
+      }
+      return config;
+    },
+    function (error) {
+      console.log(
+        "An error occurred when setting token for paging api: ",
+        error
+      );
+      return Promise.reject(error);
+    }
+  );
+
+  pagingApi.interceptors.request.use(
+    function (config) {
+      if (authToken) {
+        config.headers["Authorization"] = `Bearer ${authToken}`;
+      }
+      return config;
+    },
+    function (error) {
+      console.log(
+        "An error occurred when setting token for paging api: ",
+        error
+      );
+      return Promise.reject(error);
+    }
+  );
 
   return (
     <AnimatePresence>
