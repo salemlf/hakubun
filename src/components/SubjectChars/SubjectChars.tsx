@@ -23,6 +23,9 @@ const CharDiv = styled.div<CharDivProps>`
 `;
 
 const DivWithTxt = styled(CharDiv)<CharDivProps>`
+  display: inline-block;
+  overflow-wrap: break-word;
+
   user-select: ${({ disableTextSelection }) =>
     disableTextSelection ? `none` : `text`};
   -webkit-user-select: ${({ disableTextSelection }) =>
@@ -32,15 +35,12 @@ const DivWithTxt = styled(CharDiv)<CharDivProps>`
   -ms-user-select: ${({ disableTextSelection }) =>
     disableTextSelection ? `none` : `text`};
 
-  overflow-wrap: break-word;
-
   p {
     font-family: var(--japanese-font-family);
     margin: 0;
     color: white;
     font-size: ${({ fontSize }) => fontSize};
     text-align: ${({ alignText }) => alignText};
-    /* word-break: keep-all; */
   }
 `;
 

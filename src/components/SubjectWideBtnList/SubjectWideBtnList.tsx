@@ -80,6 +80,7 @@ const SubjectItemContainer = styled.button<ItemContainerProps>`
   background-color: ${({ subjtype }) => getSubjectColor(subjtype)};
   width: 100%;
   display: flex;
+  gap: 6px;
   align-items: center;
   justify-content: space-between;
   padding: 5px 8px;
