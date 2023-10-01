@@ -33,7 +33,12 @@ type Props = {
 function BottomSheetHeader({ subject }: Props) {
   return (
     <Container subjType={subject.object}>
-      <SubjectChars subject={subject} fontSize="4rem" withBgColor={true} />
+      <SubjectChars
+        subject={subject}
+        fontSize="2.75rem"
+        withBgColor={true}
+        alignText="center"
+      />
     </Container>
   );
 }

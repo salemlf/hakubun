@@ -107,6 +107,7 @@ function AssignmentCharAndType({
             subject={currentReviewItem}
             fontSize="4rem"
             withBgColor={true}
+            alignText="center"
           />
         </SubjectCharactersCol>
         <MessageWrapper displayMsg={displayPopoverMsg}>

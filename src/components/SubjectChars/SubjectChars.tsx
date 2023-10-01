@@ -8,6 +8,7 @@ type CharDivProps = {
   subjType: SubjectType;
   fontSize: string;
   disableTextSelection: boolean;
+  alignText: "left" | "center";
 };
 
 const CharDiv = styled.div<CharDivProps>`
@@ -31,12 +32,15 @@ const DivWithTxt = styled(CharDiv)<CharDivProps>`
   -ms-user-select: ${({ disableTextSelection }) =>
     disableTextSelection ? `none` : `text`};
 
+  overflow-wrap: break-word;
+
   p {
     font-family: var(--japanese-font-family);
     margin: 0;
     color: white;
     font-size: ${({ fontSize }) => fontSize};
-    word-break: keep-all;
+    text-align: ${({ alignText }) => alignText};
+    /* word-break: keep-all; */
   }
 `;
 
@@ -67,11 +71,13 @@ type Props = {
   fontSize: string;
   withBgColor?: boolean;
   disableTextSelection?: boolean;
+  alignText?: "left" | "center";
 };
 
 function SubjectChars({
   subject,
   fontSize,
+  alignText = "left",
   withBgColor = false,
   disableTextSelection = false,
 }: Props) {
@@ -81,6 +87,7 @@ function SubjectChars({
     <>
       {subject.useImage ? (
         <DivWithImage
+          alignText={alignText}
           disableTextSelection={disableTextSelection}
           withBgColor={withBgColor}
           subjType={subjType}
@@ -93,6 +100,7 @@ function SubjectChars({
         </DivWithImage>
       ) : (
         <DivWithTxt
+          alignText={alignText}
           disableTextSelection={disableTextSelection}
           withBgColor={withBgColor}
           subjType={subjType}
