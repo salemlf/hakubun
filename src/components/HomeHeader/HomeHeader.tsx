@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
-import { useUserAuth } from "../../contexts/AuthContext";
 import Button from "../Button";
 import RefreshHomeButton from "../RefreshHomeButton";
 import SettingsIcon from "../../images/settings.svg";
 import LogoIcon from "../../images/logo.svg";
 import { Header } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
+import { useUserInfoStore } from "../../stores/useUserInfoStore";
 
 const SettingsImg = styled.img`
   width: 2.75em;
@@ -80,17 +80,19 @@ const LevelTxt = styled.h2`
 // TODO: sometimes settings button somehow redirects to /reviews/settings and not settings? fix
 function HomeHeader() {
   const navigate = useNavigate();
-  const auth = useUserAuth();
+  // !added
+  const userInfo = useUserInfoStore.use.userInfo();
+  // !added
   const [level, setLevel] = useState<number | undefined>();
 
   useEffect(() => {
     setUserDetails();
-  }, [auth.isAuthenticated]);
+  }, [userInfo]);
 
   const setUserDetails = () => {
-    let userData = auth.user;
-    if (userData !== null) {
-      setLevel(userData.level);
+    // let userData = appContext.user;
+    if (userInfo) {
+      setLevel(userInfo.level);
     }
   };
 

@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { useAuth } from "../hooks/useAuth";
+import { useUserInfoStore } from "../stores/useUserInfoStore";
 import { LEVELS } from "../constants";
 import { getPageIndex } from "../services/MiscService";
 import AnimatedPage from "../components/AnimatedPage";
@@ -25,20 +25,17 @@ const SubjectsHeader = styled(Header)`
 // TODO: separate paginator tabs into their own component and use radix ui tabs
 export const Subjects = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { user } = useAuth();
+  const userInfo = useUserInfoStore.use.userInfo();
   const [level, setLevel] = useState<number>(0);
-  console.log("🚀 ~ file: Subjects.tsx:30 ~ Subjects ~ user:", user);
-  console.log("🚀 ~ file: Subjects.tsx:33 ~ Subjects ~ isLoading:", isLoading);
 
   useEffect(() => {
-    if (user && user.level) {
-      setLevel(user.level);
+    if (userInfo && userInfo.level) {
+      setLevel(userInfo.level);
       setIsLoading(false);
-      console.log("USER LEVEL: ", user.level);
     } else {
       setIsLoading(true);
     }
-  }, [user, user?.level]);
+  }, [userInfo, userInfo?.level]);
 
   return (
     <>

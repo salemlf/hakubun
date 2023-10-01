@@ -13,7 +13,8 @@ import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AuthProvider, useUserAuth } from "./contexts/AuthContext";
+import { useAuthTokenStore } from "./stores/useAuthTokenStore";
+import { api, pagingApi } from "./api/ApiConfig";
 import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
 import { ReviewSettings } from "./pages/ReviewSettings";
@@ -49,9 +50,10 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
-// TODO: not running in prod, fix
+// TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development") {
   LogRocket.init("cleqvf/hakubun", {
+    release: "0.0.5-alpha",
     shouldCaptureIP: false,
   });
 }
@@ -72,13 +74,11 @@ const queryClient = new QueryClient({
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ToastPrimitive.Provider>
-          <IonApp>
-            <RouterProvider router={browserRouter} />
-          </IonApp>
-        </ToastPrimitive.Provider>
-      </AuthProvider>
+      <ToastPrimitive.Provider>
+        <IonApp>
+          <RouterProvider router={browserRouter} />
+        </IonApp>
+      </ToastPrimitive.Provider>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
@@ -86,7 +86,43 @@ const App: React.FC = () => {
 
 const AppElements = () => {
   const location = useLocation();
-  const { authLoading, isAuthenticated } = useUserAuth();
+
+  const isAuthenticated = useAuthTokenStore.use.isAuthenticated();
+  const isAuthLoading = useAuthTokenStore.use.isAuthLoading();
+  const authToken = useAuthTokenStore.use.authToken();
+
+  // setting the auth token headers for all api requests
+  api.interceptors.request.use(
+    function (config) {
+      if (authToken) {
+        config.headers["Authorization"] = `Bearer ${authToken}`;
+      }
+      return config;
+    },
+    function (error) {
+      console.log(
+        "An error occurred when setting token for paging api: ",
+        error
+      );
+      return Promise.reject(error);
+    }
+  );
+
+  pagingApi.interceptors.request.use(
+    function (config) {
+      if (authToken) {
+        config.headers["Authorization"] = `Bearer ${authToken}`;
+      }
+      return config;
+    },
+    function (error) {
+      console.log(
+        "An error occurred when setting token for paging api: ",
+        error
+      );
+      return Promise.reject(error);
+    }
+  );
 
   return (
     <AnimatePresence>
@@ -97,7 +133,7 @@ const AppElements = () => {
           element={
             <ProtectedRoute
               isAuthenticated={isAuthenticated}
-              authLoading={authLoading}
+              authLoading={isAuthLoading}
             />
           }
         >
