@@ -4,6 +4,10 @@ import { IonIcon } from "@ionic/react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ToastProps } from "@radix-ui/react-toast";
 import CloseIcon from "../../images/close.svg";
+import ErrorIcon from "../../images/error.svg";
+import InfoIcon from "../../images/info.svg";
+import SuccessIcon from "../../images/success.svg";
+import WarningIcon from "../../images/warning.svg";
 import styled from "styled-components";
 
 type ViewportProps = {
@@ -39,29 +43,27 @@ const Root = styled(ToastPrimitive.Root)<RootProps>`
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
     hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   padding: 15px;
-  display: grid;
-  grid-template-areas: "title close" "description description";
-  grid-template-columns: 1fr auto;
   column-gap: 15px;
   align-items: center;
 `;
 
 const Title = styled(ToastPrimitive.Title)`
-  grid-area: title;
-  margin-bottom: 5px;
   font-weight: 500;
   font-size: 1.25rem;
 `;
 
+const TitleIcon = styled(IonIcon)`
+  width: 2.25em;
+  height: 2.25em;
+`;
+
 const Description = styled(ToastPrimitive.Description)`
-  grid-area: description;
   margin: 0;
   font-size: 1rem;
   line-height: 1.3;
 `;
 
 const CloseButton = styled(ToastPrimitive.Close)`
-  grid-area: close;
   align-self: baseline;
   padding: 0;
   border-radius: 50%;
@@ -72,6 +74,43 @@ const Close = styled(IonIcon)`
   width: 2.25em;
   height: 2.25em;
 `;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+`;
+
+type ToastStyles = {
+  bgColor: string;
+  icon: string;
+};
+
+const toastTypeStylesMap: { [index: string]: ToastStyles } = {
+  info: {
+    bgColor: "var(--ion-color-primary)",
+    icon: InfoIcon,
+  },
+  success: {
+    bgColor: "var(--ion-color-success)",
+    icon: SuccessIcon,
+  },
+  warning: {
+    bgColor: "var(--ion-color-warning)",
+    icon: WarningIcon,
+  },
+  error: {
+    bgColor: "var(--ion-color-danger)",
+    icon: ErrorIcon,
+  },
+};
 
 interface ActionProps {
   altText: string;
@@ -87,13 +126,14 @@ interface Props extends ToastProps {
   showClose?: boolean;
   distanceFromBottom?: string;
   duration?: number;
+  toastType: "success" | "error" | "warning" | "info";
 }
 
 // TODO: add animation on entrance and exit
 const Toast = ({
   open,
   setOpen,
-  bgColor = "var(--ion-color-secondary)",
+  bgColor,
   textColor = "white",
   title,
   content,
@@ -103,28 +143,41 @@ const Toast = ({
   showClose = true,
   ...props
 }: Props) => {
+  let toastBgColor = toastTypeStylesMap[props.toastType];
+  let toastIcon = toastBgColor.icon;
+  // TODO: set icon based on toast type
+
   return (
     <>
       <Root
         duration={duration}
-        bgcolor={bgColor}
+        bgcolor={toastBgColor.bgColor}
         textcolor={textColor}
         {...props}
         open={open}
         onOpenChange={setOpen}
       >
-        {title && <Title>{title}</Title>}
-        {showClose && (
-          <CloseButton aria-label="Close">
-            <Close src={CloseIcon} />
-          </CloseButton>
-        )}
-        <Description>{content}</Description>
-        {action && action.children && (
-          <ToastPrimitive.Action asChild altText={action.altText}>
-            {action.children}
-          </ToastPrimitive.Action>
-        )}
+        <>
+          <HeaderContainer>
+            {title && (
+              <TitleContainer>
+                <TitleIcon src={toastIcon} />
+                <Title>{title}</Title>
+              </TitleContainer>
+            )}
+            {showClose && (
+              <CloseButton aria-label="Close">
+                <Close src={CloseIcon} />
+              </CloseButton>
+            )}
+          </HeaderContainer>
+          <Description>{content}</Description>
+          {action && action.children && (
+            <ToastPrimitive.Action asChild altText={action.altText}>
+              {action.children}
+            </ToastPrimitive.Action>
+          )}
+        </>
       </Root>
       <Viewport distancefrombottom={distanceFromBottom} />
     </>

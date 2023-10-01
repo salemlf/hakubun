@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  checkIfAssignmentTypeInQueue,
   compareAssignmentsByAvailableDate,
   createAssignmentQueueItems,
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
 } from "../../services/SubjectAndAssignmentService";
+import { capitalizeWord } from "../../services/MiscService";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { INITIAL_ASSIGNMENT_TYPES } from "../../constants";
+import { ALL_ASSIGNMENT_TYPES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
@@ -18,6 +20,7 @@ import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
 import LoadingDots from "../LoadingDots";
+import Toast from "../Toast";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
@@ -79,29 +82,22 @@ function AssignmentSettings({
   const [selectedAdvancedSubjIDs, setSelectedAdvancedSubjIDs] = useState<
     string[]
   >([]);
+
+  const availableAssignmentTypes = ALL_ASSIGNMENT_TYPES.filter(
+    (assignmentType) => {
+      return checkIfAssignmentTypeInQueue(assignmentData, assignmentType);
+    }
+  );
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
-    Set<AssignmentType>
-  >(new Set(INITIAL_ASSIGNMENT_TYPES));
+    AssignmentType[]
+  >(availableAssignmentTypes);
+  const [displayToast, setDisplayToast] = useState<boolean>(false);
 
   let tabBgColor =
     settingsType === "reviews"
       ? "var(--wanikani-review)"
       : "var(--wanikani-lesson)";
   let showMeaning = settingsType === "lessons";
-
-  const onSelectedAssignTypeChange = (
-    assignmentTypeUpdated: AssignmentType
-  ) => {
-    let updatedAssignTypes = selectedAssignmentTypes;
-
-    if (!updatedAssignTypes.has(assignmentTypeUpdated)) {
-      updatedAssignTypes.add(assignmentTypeUpdated);
-    } else {
-      updatedAssignTypes.delete(assignmentTypeUpdated);
-    }
-
-    setSelectedAssignmentTypes(updatedAssignTypes);
-  };
 
   const submitWithBasicSettings = (): AssignmentBatch => {
     let assignmentsFiltered = filterAssignmentsByType(
@@ -137,6 +133,14 @@ function AssignmentSettings({
   };
 
   const onStartSessionBtnClick = () => {
+    let noAssignmentsSelected =
+      selectedAdvancedSubjIDs.length === 0 &&
+      selectedAssignmentTypes.length === 0;
+    if (noAssignmentsSelected) {
+      setDisplayToast(true);
+      return;
+    }
+
     let sessionData =
       selectedAdvancedSubjIDs.length === 0
         ? submitWithBasicSettings()
@@ -172,10 +176,12 @@ function AssignmentSettings({
                 label: "Basic",
                 tabContents: (
                   <BasicAssignmentSettings
+                    availableAssignmentTypes={availableAssignmentTypes}
                     assignmentData={assignmentData}
                     defaultBatchSize={batchSize}
                     setBatchSize={setBatchSize}
-                    onSelectedAssignTypeChange={onSelectedAssignTypeChange}
+                    selectedAssignmentTypes={selectedAssignmentTypes}
+                    setSelectedAssignmentTypes={setSelectedAssignmentTypes}
                   />
                 ),
               },
@@ -195,6 +201,13 @@ function AssignmentSettings({
             defaultValue="basic"
             scrollToDefault={false}
           />
+          <Toast
+            open={displayToast}
+            setOpen={setDisplayToast}
+            title={`No ${capitalizeWord(settingsType)} Selected`}
+            content={`Select some ${settingsType} using the settings above`}
+            toastType="error"
+          ></Toast>
           <StartSessionButton
             onStartBtnClick={onStartSessionBtnClick}
             buttonType={settingsType}
