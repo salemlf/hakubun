@@ -50,8 +50,10 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
+// TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development") {
   LogRocket.init("cleqvf/hakubun", {
+    release: "0.0.5-alpha",
     shouldCaptureIP: false,
   });
 }
