@@ -67,12 +67,14 @@ const Message = styled.span<MessageProps>`
 
 type CharColProps = {
   subjType: SubjectType;
+  alignText: "center" | "left";
 };
 
 const SubjectCharactersCol = styled(IonCol)<CharColProps>`
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
   padding-bottom: 50px;
   border-radius: 10px 10px 0px 0px;
+  text-align: ${({ alignText }) => alignText};
 `;
 
 type Props = {
@@ -101,12 +103,13 @@ function AssignmentCharAndType({
   return (
     <>
       <SubjectCharRow>
-        <SubjectCharactersCol subjType={subjType}>
+        <SubjectCharactersCol subjType={subjType} alignText="center">
           <SubjectChars
             disableTextSelection={disableTextSelection}
             subject={currentReviewItem}
             fontSize="4rem"
             withBgColor={true}
+            alignText="center"
           />
         </SubjectCharactersCol>
         <MessageWrapper displayMsg={displayPopoverMsg}>

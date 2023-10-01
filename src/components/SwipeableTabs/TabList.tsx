@@ -15,8 +15,8 @@ const TabListStyled = styled(Tabs.List)<TabContainerStyles>`
   position: relative;
   background-color: ${({ bgcolor }) => bgcolor};
   padding: 0;
-  border-radius: ${({ roundedcontainer }) =>
-    roundedcontainer ? ".5rem" : "0"};
+  border-radius: ${({ $roundedcontainer }) =>
+    $roundedcontainer ? ".5rem" : "0"};
   max-width: 100vw;
   overflow-x: auto;
   padding: 5px 12px;
@@ -96,7 +96,7 @@ function TabListCore(
     <TabListStyled
       ref={tabListRef}
       bgcolor={tabBgColor}
-      roundedcontainer={roundedContainer}
+      $roundedcontainer={roundedContainer}
       {...props}
     >
       {tabs.map((tab) => (

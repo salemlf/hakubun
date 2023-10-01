@@ -37,6 +37,7 @@ function LessonCard({ lesson }: CardProps) {
           subject={lesson as Subject}
           fontSize="4rem"
           withBgColor={true}
+          alignText="center"
         />
       </LessonSessionHeader>
       <LessonContent>

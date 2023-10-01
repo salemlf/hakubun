@@ -4,8 +4,12 @@ import { nanoid } from "nanoid";
 
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import SubjectChars from "../SubjectChars/SubjectChars";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
+
+const CharRow = styled(SubjRow)`
+  flex-wrap: wrap;
+  gap: 8px;
+`;
 
 type CharContainerProps = {
   subjType: SubjectType;
@@ -28,7 +32,7 @@ type Props = {
 // TODO: turn into buttons that link to subject
 function SubjCharacterList({ subjList, justify = "center" }: Props) {
   return (
-    <SubjRow justify={justify}>
+    <CharRow justify={justify}>
       {(subjList as Subject[]).map((subject: any) => {
         return (
           <SubjCol key={`subj-name-${nanoid()}`}>
@@ -42,7 +46,7 @@ function SubjCharacterList({ subjList, justify = "center" }: Props) {
           </SubjCol>
         );
       })}
-    </SubjRow>
+    </CharRow>
   );
 }
 

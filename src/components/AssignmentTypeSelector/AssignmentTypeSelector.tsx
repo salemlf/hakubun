@@ -32,12 +32,12 @@ const AssignmentTypeOptions = styled(ToggleGroup.Root)`
 `;
 
 type AssignTypeOptionProps = {
-  assignType: AssignmentType;
+  assigntype: AssignmentType;
 };
 
 const AssignmentTypeItem = styled(ToggleGroup.Item)<AssignTypeOptionProps>`
   position: relative;
-  background-color: ${({ assignType }) => getSubjectColor(assignType)};
+  background-color: ${({ assigntype }) => getSubjectColor(assigntype)};
   padding: 10px 15px;
   border-radius: 10px;
   font-size: 0.8rem;
@@ -89,7 +89,8 @@ function AssignmentTypeSelector({
           (assignmentTypeInfo: AssignmentTypeName) => {
             return (
               <AssignmentTypeItem
-                assignType={assignmentTypeInfo.name}
+                key={assignmentTypeInfo.name}
+                assigntype={assignmentTypeInfo.name}
                 value={assignmentTypeInfo.name}
               >
                 {assignmentTypeInfo.displayName}

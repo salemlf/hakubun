@@ -1,6 +1,5 @@
-import { IonRow } from "@ionic/react";
-import { Subject } from "../../types/Subject";
 import { groupDataByProperty } from "../../services/AssignmentQueueService";
+import { Subject } from "../../types/Subject";
 import SubjCharacterList from "./SubjCharacterList";
 
 type Props = {
@@ -24,11 +23,7 @@ function GroupedReviewSummaryResults({ subjData }: Props) {
     let groupedBySRS = groupDataByProperty(subjectsByLevel[level], "srs_stage");
   }
 
-  return (
-    <IonRow>
-      <SubjCharacterList subjList={subjData} justify="flex-start" />
-    </IonRow>
-  );
+  return <SubjCharacterList subjList={subjData} justify="flex-start" />;
 }
 
 export default GroupedReviewSummaryResults;

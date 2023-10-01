@@ -50,9 +50,13 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
 
   useEffect(() => {
     if (!subjectCurrLvlLoading && subjectCurrLvlData) {
+      // removing any radicals without amalgamation_subject_ids, (AKA not actually used in kanji)
       setRadicals(
         subjectCurrLvlData.filter(
-          (subject: Subject) => subject.object === "radical"
+          (subject: Subject) =>
+            subject.object === "radical" &&
+            subject.amalgamation_subject_ids &&
+            subject.amalgamation_subject_ids.length !== 0
         )
       );
       setKanji(
