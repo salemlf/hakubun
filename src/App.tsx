@@ -92,37 +92,17 @@ const AppElements = () => {
   const authToken = useAuthTokenStore.use.authToken();
 
   // setting the auth token headers for all api requests
-  api.interceptors.request.use(
-    function (config) {
-      if (authToken) {
-        config.headers["Authorization"] = `Bearer ${authToken}`;
-      }
-      return config;
-    },
-    function (error) {
-      console.log(
-        "An error occurred when setting token for paging api: ",
-        error
-      );
-      return Promise.reject(error);
+  (function () {
+    if (authToken) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
+      pagingApi.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${authToken}`;
+    } else {
+      api.defaults.headers.common["Authorization"] = null;
+      pagingApi.defaults.headers.common["Authorization"] = null;
     }
-  );
-
-  pagingApi.interceptors.request.use(
-    function (config) {
-      if (authToken) {
-        config.headers["Authorization"] = `Bearer ${authToken}`;
-      }
-      return config;
-    },
-    function (error) {
-      console.log(
-        "An error occurred when setting token for paging api: ",
-        error
-      );
-      return Promise.reject(error);
-    }
-  );
+  })();
 
   return (
     <AnimatePresence>

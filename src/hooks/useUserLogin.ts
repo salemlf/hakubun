@@ -63,6 +63,8 @@ export const useUserLogin = () => {
     setIsAuthLoading(true);
     resetUserInfo();
     resetToken();
+    delete api.defaults.headers.common["Authorization"];
+    delete pagingApi.defaults.headers.common["Authorization"];
     setIsAuthenticated(false);
     setIsAuthLoading(false);
     queryClient.invalidateQueries();

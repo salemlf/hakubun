@@ -147,6 +147,7 @@ const TokenInput = () => {
   const navigate = useNavigate();
   const { login } = useUserLogin();
   const [hasError, setHasError] = useState(false);
+  const [tokenPageLoading, setTokenPageLoading] = useState(false);
   const isAuthLoading = useAuthTokenStore.use.isAuthLoading();
 
   const handleSubmit = (event: any) => {
@@ -164,6 +165,7 @@ const TokenInput = () => {
   };
 
   const setAuth = async (token: string) => {
+    setTokenPageLoading(true);
     let success = await login(token);
 
     if (success) {
@@ -171,6 +173,7 @@ const TokenInput = () => {
       setHasError(false);
       navigate("/", { replace: true });
     } else {
+      setTokenPageLoading(false);
       setHasError(true);
     }
   };
@@ -190,39 +193,50 @@ const TokenInput = () => {
 
   return (
     <AnimatedPage bgImage={WavesBgImg}>
-      <Content>
-        <HeadingAndLogoContainer>
-          <LogoContainer>
-            <Logo src={LogoIcon} />
-          </LogoContainer>
-          <FallingText text="Hakubun" delay={0.5} duration={0.25} />
-        </HeadingAndLogoContainer>
-        <p>
-          A <em>(third-party)</em> Japanese Study App for Wanikani
-        </p>
-        <form onSubmit={handleSubmit}>
-          <InputContainer>
-            <TokenInputLabel>
-              <HelpSpan helpPopoverContents={HelpPopoverContents}>
-                Wanikani API Token
-              </HelpSpan>
-              <Input type="text" name="api-token" data-private />
-            </TokenInputLabel>
-            {hasError && (
-              <ErrorTxt>
-                Oh no! An error occurred retrieving your info, please make sure
-                your API token is correct
-              </ErrorTxt>
-            )}
-          </InputContainer>
-        </form>
-        <Accordion items={accordionItems} />
-      </Content>
+      {!isAuthLoading && !tokenPageLoading ? (
+        <Content>
+          <HeadingAndLogoContainer>
+            <LogoContainer>
+              <Logo src={LogoIcon} />
+            </LogoContainer>
+            <FallingText text="Hakubun" delay={0.5} duration={0.25} />
+          </HeadingAndLogoContainer>
+          <p>
+            A <em>(third-party)</em> Japanese Study App for Wanikani
+          </p>
+          <form onSubmit={handleSubmit}>
+            <InputContainer>
+              <TokenInputLabel>
+                <HelpSpan helpPopoverContents={HelpPopoverContents}>
+                  Wanikani API Token
+                </HelpSpan>
+                <Input type="text" name="api-token" data-private />
+              </TokenInputLabel>
+              {hasError && (
+                <ErrorTxt>
+                  Oh no! An error occurred retrieving your info, please make
+                  sure your API token is correct
+                </ErrorTxt>
+              )}
+            </InputContainer>
+            <ButtonRow>
+              <SubmitButton
+                type="submit"
+                backgroundColor="var(--ion-color-tertiary)"
+                color="black"
+                style={{ fontSize: "1.25rem" }}
+              >
+                Let's Study!
+              </SubmitButton>
+            </ButtonRow>
+          </form>
+          <Accordion items={accordionItems} />
+        </Content>
       ) : (
-      <FixedCenterContainer>
-        <LoadingDots />
-      </FixedCenterContainer>
-      )
+        <FixedCenterContainer>
+          <LoadingDots />
+        </FixedCenterContainer>
+      )}
     </AnimatedPage>
   );
 };
