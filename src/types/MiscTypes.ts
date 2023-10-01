@@ -70,6 +70,12 @@ export type AssignmentBatch = {
   subjIDs: number[];
 };
 
+export type AccordionItemData = {
+  value: string;
+  title: string | React.ReactNode;
+  content: React.ReactNode;
+};
+
 // used for navigation blocking with react-router-prompt
 export declare enum HistoryAction {
   Pop = "POP",

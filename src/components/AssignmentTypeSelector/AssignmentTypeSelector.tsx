@@ -1,10 +1,10 @@
-import { Assignment, AssignmentType } from "../../types/Assignment";
-import {
-  checkIfAssignmentTypeInQueue,
-  getSubjectColor,
-  getSubjectTypeDisplayText,
-} from "../../services/SubjectAndAssignmentService";
-import { useToggle } from "../../hooks/useToggle";
+import * as ToggleGroup from "@radix-ui/react-toggle-group";
+// TODO: change so not relying on IonIcon
+import { IonIcon } from "@ionic/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { AssignmentType } from "../../types/Assignment";
+import CheckCircleIcon from "../../images/check-in-circle.svg";
 import styled from "styled-components";
 
 const AssignmentTypeFieldset = styled.fieldset`
@@ -24,198 +24,98 @@ const AssignmentTypeLegend = styled.legend`
   margin-bottom: 8px;
 `;
 
+const AssignmentTypeOptions = styled(ToggleGroup.Root)`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 6px 0;
+  gap: 12px;
+`;
+
 type AssignTypeOptionProps = {
   assignType: AssignmentType;
 };
 
-const AssignmentTypeContainer = styled.div``;
-
-// TODO: update styles so bg color is duller if not checked
-const AssignTypeOption = styled.label<AssignTypeOptionProps>`
-  color: white;
-  border-radius: 10px;
-  padding: 8px;
+const AssignmentTypeItem = styled(ToggleGroup.Item)<AssignTypeOptionProps>`
+  position: relative;
   background-color: ${({ assignType }) => getSubjectColor(assignType)};
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 0.8rem;
 
-  display: flex;
-  gap: 8px;
-  align-items: center;
-
-  &--disabled {
-    color: var(--form-control-disabled);
-    cursor: not-allowed;
-  }
-
-  /* below checkbox styles are adapted from Stephanie Eckles' tutorial: https://moderncss.dev/pure-css-custom-checkbox-style/*/
-  input[type="checkbox"] {
-    /* Add if not using autoprefixer */
-    -webkit-appearance: none;
-    /* Remove most all native input styles */
-    appearance: none;
-    /* For iOS < 15 */
-    background-color: var(--form-background);
-    /* Not removed via appearance */
-    margin: 0;
-
-    font: inherit;
-    color: currentColor;
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid currentColor;
-    border-radius: 5px;
-    transform: translateY(-0.075rem);
-
-    display: grid;
-    place-content: center;
-  }
-
-  input[type="checkbox"]::before {
-    content: "";
-    width: 0.65rem;
-    height: 0.65rem;
-    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-    transform: scale(0);
-    transform-origin: bottom left;
-    transition: 120ms transform ease-in-out;
-    box-shadow: inset 1em 1em var(--form-control-color);
-    /* Windows High Contrast Mode */
-    /* background-color: CanvasText; */
-    background-color: white;
-  }
-
-  input[type="checkbox"]:checked::before {
-    transform: scale(1);
-  }
-
-  input[type="checkbox"]:focus {
-    outline: max(2px, 0.1rem) solid currentColor;
-    outline-offset: max(2px, 0.1rem);
-  }
-
-  input[type="checkbox"]:disabled {
-    --form-control-color: var(--form-control-disabled);
-
-    color: var(--form-control-disabled);
-    cursor: not-allowed;
+  &:focus-visible {
+    outline: 2px solid white;
+    --outline: 2px solid white;
   }
 `;
 
-type AssignmentTypeCheckboxProps = {
-  assignmentType: AssignmentType;
-  isChecked: boolean;
-  onCheckValueChange: () => void;
-  pluralize?: boolean;
-};
+const CheckIconContainer = styled(motion.div)`
+  position: absolute;
+  top: -10px;
+  right: -10px;
+`;
 
-const AssignmentTypeCheckbox = ({
-  assignmentType,
-  isChecked,
-  onCheckValueChange,
-  pluralize = false,
-}: AssignmentTypeCheckboxProps) => {
-  let displayTxt = getSubjectTypeDisplayText(assignmentType, pluralize);
+const Check = styled(IonIcon)`
+  width: 2em;
+  height: 2em;
+`;
 
-  return (
-    <AssignmentTypeContainer>
-      <AssignTypeOption htmlFor={assignmentType} assignType={assignmentType}>
-        {displayTxt}
-        <input
-          id={assignmentType}
-          type="checkbox"
-          name={assignmentType}
-          value={assignmentType}
-          checked={isChecked}
-          onChange={onCheckValueChange}
-        />
-      </AssignTypeOption>
-    </AssignmentTypeContainer>
-  );
+type AssignmentTypeName = {
+  name: AssignmentType;
+  displayName: string;
 };
 
 type Props = {
-  assignmentData: Assignment[];
-  onSelectedAssignTypeChange: (assignmentTypeUpdated: AssignmentType) => void;
+  availableAssignmentTypeNames: AssignmentTypeName[];
+  selectedAssignmentTypes: AssignmentType[];
+  setSelectedAssignmentTypes: (
+    assignmentTypesSelected: AssignmentType[]
+  ) => void;
 };
 
 function AssignmentTypeSelector({
-  assignmentData,
-  onSelectedAssignTypeChange,
+  availableAssignmentTypeNames,
+  selectedAssignmentTypes,
+  setSelectedAssignmentTypes,
 }: Props) {
-  const [radicalsSelected, toggleRadicalsSelected] = useToggle(true);
-  const [kanjiSelected, toggleKanjiSelected] = useToggle(true);
-  const [vocabSelected, toggleVocabSelected] = useToggle(true);
-  const [kanaVocabSelected, toggleKanaVocabSelected] = useToggle(true);
-
-  // TODO: clean this up, ideally refactor so availForReviewData doesn't need to be passed in
-  let radicalsInQueue = checkIfAssignmentTypeInQueue(assignmentData, "radical");
-  let kanjiInQueue = checkIfAssignmentTypeInQueue(assignmentData, "kanji");
-  let vocabInQueue = checkIfAssignmentTypeInQueue(assignmentData, "vocabulary");
-  let kanaVocabInQueue = checkIfAssignmentTypeInQueue(
-    assignmentData,
-    "kana_vocabulary"
-  );
-
-  const updateSelectedAssignTypes = (
-    assignmentTypeUpdated: AssignmentType,
-    toggleFunc: () => void
-  ) => {
-    toggleFunc();
-    onSelectedAssignTypeChange(assignmentTypeUpdated);
-  };
-
   return (
     <AssignmentTypeFieldset>
       <AssignmentTypeLegend>Subject Types</AssignmentTypeLegend>
-      {radicalsInQueue && (
-        <AssignmentTypeCheckbox
-          assignmentType="radical"
-          isChecked={radicalsSelected}
-          onCheckValueChange={() =>
-            updateSelectedAssignTypes(
-              "radical" as AssignmentType,
-              toggleRadicalsSelected
-            )
+      <AssignmentTypeOptions
+        type="multiple"
+        onValueChange={setSelectedAssignmentTypes}
+        value={selectedAssignmentTypes}
+      >
+        {availableAssignmentTypeNames.map(
+          (assignmentTypeInfo: AssignmentTypeName) => {
+            return (
+              <AssignmentTypeItem
+                assignType={assignmentTypeInfo.name}
+                value={assignmentTypeInfo.name}
+              >
+                {assignmentTypeInfo.displayName}
+                <AnimatePresence>
+                  {selectedAssignmentTypes.includes(
+                    assignmentTypeInfo.name
+                  ) && (
+                    <CheckIconContainer
+                      transition={{
+                        type: "spring",
+                        duration: 0.75,
+                        bounce: 0.5,
+                      }}
+                      initial={{ scale: 0, rotate: 90 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      exit={{ scale: 0, rotate: 90 }}
+                    >
+                      <Check className="checkmark" src={CheckCircleIcon} />
+                    </CheckIconContainer>
+                  )}
+                </AnimatePresence>
+              </AssignmentTypeItem>
+            );
           }
-          pluralize={true}
-        />
-      )}
-      {kanjiInQueue && (
-        <AssignmentTypeCheckbox
-          assignmentType="kanji"
-          isChecked={kanjiSelected}
-          onCheckValueChange={() =>
-            updateSelectedAssignTypes(
-              "kanji" as AssignmentType,
-              toggleKanjiSelected
-            )
-          }
-        />
-      )}
-
-      {vocabInQueue && (
-        <AssignmentTypeCheckbox
-          assignmentType="vocabulary"
-          isChecked={vocabSelected}
-          onCheckValueChange={() =>
-            updateSelectedAssignTypes(
-              "vocabulary" as AssignmentType,
-              toggleVocabSelected
-            )
-          }
-        />
-      )}
-      {kanaVocabInQueue && (
-        <AssignmentTypeCheckbox
-          assignmentType="kana_vocabulary"
-          isChecked={kanaVocabSelected}
-          onCheckValueChange={() =>
-            updateSelectedAssignTypes(
-              "kana_vocabulary" as AssignmentType,
-              toggleKanaVocabSelected
-            )
-          }
-        />
-      )}
+        )}
+      </AssignmentTypeOptions>
     </AssignmentTypeFieldset>
   );
 }

@@ -2,20 +2,39 @@ import { Assignment, AssignmentType } from "../../types/Assignment";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
 import AssignmentTypeSelector from "../AssignmentTypeSelector";
+import { getSubjectTypeDisplayText } from "../../services/SubjectAndAssignmentService";
 
 type Props = {
   assignmentData: Assignment[];
   defaultBatchSize: number;
   setBatchSize: (size: number) => void;
-  onSelectedAssignTypeChange: (assignmentTypeUpdated: AssignmentType) => void;
+  availableAssignmentTypes: AssignmentType[];
+  selectedAssignmentTypes: AssignmentType[];
+  setSelectedAssignmentTypes: (
+    assignmentTypesSelected: AssignmentType[]
+  ) => void;
 };
 
 function BasicAssignmentSettings({
   assignmentData,
   defaultBatchSize,
   setBatchSize,
-  onSelectedAssignTypeChange,
+  availableAssignmentTypes,
+  selectedAssignmentTypes,
+  setSelectedAssignmentTypes,
 }: Props) {
+  const availableAssignmentTypeNames = availableAssignmentTypes.map(
+    (assignmentType) => {
+      return {
+        name: assignmentType,
+        displayName: getSubjectTypeDisplayText(
+          assignmentType,
+          assignmentType === "radical"
+        ),
+      };
+    }
+  );
+
   return (
     <Card>
       <BatchSizeOption
@@ -24,8 +43,9 @@ function BasicAssignmentSettings({
         onBatchSizeChange={(updatedBatchSize) => setBatchSize(updatedBatchSize)}
       />
       <AssignmentTypeSelector
-        assignmentData={assignmentData as Assignment[]}
-        onSelectedAssignTypeChange={onSelectedAssignTypeChange}
+        selectedAssignmentTypes={selectedAssignmentTypes}
+        availableAssignmentTypeNames={availableAssignmentTypeNames}
+        setSelectedAssignmentTypes={setSelectedAssignmentTypes}
       />
     </Card>
   );

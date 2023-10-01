@@ -362,3 +362,13 @@ const btnSizeInfo: { [index: string]: BtnSizeStyles } = {
 export const getSubjectBtnSize = (size: ButtonSize) => {
   return btnSizeInfo[size as keyof {}];
 };
+
+export const getPageIndex = (
+  currentPageNum: number,
+  updatedPageNum: number,
+  numPages: number
+) => {
+  // Using modulo so it loops back around if we go past the first or last page
+  const index = (currentPageNum + (updatedPageNum - currentPageNum)) % numPages;
+  return index < 0 ? index + numPages : index;
+};

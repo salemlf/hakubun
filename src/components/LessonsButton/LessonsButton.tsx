@@ -83,6 +83,7 @@ function LessonsButton() {
         setOpen={setDisplayToast}
         title={toastTitle}
         content={toastContent}
+        toastType="error"
       ></Toast>
     </>
   );

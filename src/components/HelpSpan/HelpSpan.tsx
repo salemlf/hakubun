@@ -6,9 +6,11 @@ const ContainerSpan = styled.span`
   display: inline-block;
   cursor: help;
   padding-right: 3px;
+  text-decoration: underline;
+  text-decoration-style: dashed;
 `;
 
-const QuestionMark = styled.button`
+const QuestionMark = styled.span`
   display: inline-block;
   font-size: 1em;
   font-weight: 700;
@@ -25,9 +27,9 @@ type Props = {
 function HelpSpan({ children, helpPopoverContents }: Props) {
   return (
     <ContainerSpan>
-      {children}
       <PopoverRoot>
-        <PopoverTrigger asChild>
+        <PopoverTrigger>
+          {children}
           <QuestionMark>?</QuestionMark>
         </PopoverTrigger>
         <PopoverContent>{helpPopoverContents}</PopoverContent>
