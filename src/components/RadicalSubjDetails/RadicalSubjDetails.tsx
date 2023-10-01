@@ -5,6 +5,7 @@ import { Radical } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
 import TxtWithSubjTags from "../TxtWithSubjTags/TxtWithSubjTags";
 import RadicalNameMnemonic from "../RadicalNameMnemonic/RadicalNameMnemonic";
+import Emoji from "../Emoji";
 import {
   SubjInfoContainer,
   SubjDetailSection,
@@ -61,12 +62,18 @@ function RadicalSubjDetails({ radical }: Props) {
       <RadicalNameMnemonic radical={radical} />
       <SubjDetailSection>
         <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
-        {hasAmalgamationSubjs && (
+        {hasAmalgamationSubjs ? (
           <SubjectButtonList
             btnSize="lg"
             subjList={usedInKanjiSubjData}
             assignmentList={usedInKanjiAssignmentsData}
           />
+        ) : (
+          <p>
+            Woah, you found one of the lonely radicals that have no related
+            kanji! A bit of an easter egg{" "}
+            <Emoji symbol="🥚" label="egg (pretend it's an easter egg)" />
+          </p>
         )}
       </SubjDetailSection>
     </SubjInfoContainer>

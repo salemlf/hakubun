@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 import { flattenData } from "../services/MiscService";
+import { Radical } from "../types/Subject";
 
 export const useRadicalSubjectsForLvl = (level: any) => {
   return useQuery({
@@ -23,7 +24,11 @@ export const useRadicalSubjectsForLvl = (level: any) => {
           return filtered;
         },
         []);
-        return radsUpdated;
+
+        let noLoneRadicalsAllowed = radsUpdated.filter(
+          (radical: Radical) => radical.amalgamation_subject_ids.length !== 0
+        );
+        return noLoneRadicalsAllowed;
       },
       [level]
     ),
