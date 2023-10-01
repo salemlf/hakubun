@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IonIcon } from "@ionic/react";
 import {
   useMotionValue,
   useTransform,
-  useWillChange,
-  useAnimate,
   AnimatePresence,
+  useAnimation,
 } from "framer-motion";
 import { toHiragana } from "wanakana";
 import { isUserAnswerValid } from "../../services/AssignmentQueueService";
@@ -25,28 +24,44 @@ import {
   SwipeIcon,
 } from "./AssignmentQueueCardsStyled";
 
-const exitTimeMs = 500;
-const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
 const queueCardVariants = {
-  submit: {
-    x: "150%",
+  submit: () => ({
+    x: 500,
     transition: {
-      duration: exitTimeDecimal,
+      duration: 0.5,
     },
-  },
+  }),
   hideAbove: {
     y: "-150%",
     x: 0,
   },
   fallDown: {
+    x: 0,
     y: 0,
     transition: {
       type: "spring",
       bounce: 0.5,
       delay: 0.5,
+      duration: 0.8,
     },
   },
-  retry: { x: "-150%" },
+  center: {
+    x: 0,
+    y: 0,
+    transition: {
+      type: "spring",
+      bounce: 0.5,
+      duration: 1,
+    },
+  },
+  retry: {
+    x: -500,
+    transition: {
+      type: "spring",
+      bounce: 0.5,
+      duration: 1,
+    },
+  },
 };
 
 type CardProps = {
@@ -80,31 +95,31 @@ export const AssignmentQueueCard = ({
   useKeyDown(() => attemptToAdvance(), ["F12"]);
   useKeyDown(() => retryTriggered(), ["F6"]);
 
+  const controls = useAnimation();
   const dragX = useMotionValue(0);
-  const [reviewCardRef, animateCard] = useAnimate();
   const opacityLeft = useTransform(dragX, [-100, 0], [1, 0]);
   const opacityRight = useTransform(dragX, [0, 100], [0, 1]);
-  const willChange = useWillChange();
   const rotate = useTransform(dragX, [-300, 0, 300], [-20, 0, 20]);
   const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
-  const exitTimeMs = 500;
-  const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
+  const exitTimeMs = 600;
 
-  // TODO: fix handleRetryClick being called even when showRetryButton shouldn't be visible
+  useEffect(() => {
+    controls.start("fallDown");
+  }, []);
+
   const retryTriggered = () => {
     // *testing
     console.log("Handling retry for item: ", currentReviewItem);
     // *testing
 
     if (showRetryButton) {
-      setTimeout(() => {
-        dragX.set(0);
-        handleRetryClick(currentReviewItem, setUserAnswer);
-      }, exitTimeMs);
+      controls.start("retry");
+      handleRetryClick(currentReviewItem, setUserAnswer);
+      controls.start("center");
     } else {
       // TODO: show some visual indication of this
       console.log("RETRY NOT AVAILABLE!");
-      dragX.set(0);
+      controls.start("center");
     }
   };
 
@@ -119,14 +134,11 @@ export const AssignmentQueueCard = ({
       setShakeInputTrigger((shakeInputTrigger) => shakeInputTrigger + 1);
     } else {
       setSavedUserAnswer(strippedUserAnswer);
-      animateCard(
-        reviewCardRef.current,
-        { x: "150%" },
-        { duration: exitTimeDecimal }
-      );
+      controls.start("submit");
 
       setTimeout(() => {
-        dragX.set(0);
+        controls.set("hideAbove");
+        controls.start("center");
         handleNextClick(currentReviewItem, strippedUserAnswer, setUserAnswer);
         // TODO: check if answer was correct or not, then show toast
       }, exitTimeMs);
@@ -147,14 +159,10 @@ export const AssignmentQueueCard = ({
       (info.offset.x < -xMinOffset && info.velocity.x) < -xMinVelocity
     ) {
       retryTriggered();
-    }
-    // going back to center position
-    else {
-      animateCard(
-        reviewCardRef.current,
-        { x: 0, y: 0 },
-        { duration: exitTimeDecimal }
-      );
+    } else {
+      console.log("DIDN'T MEET DRAG THRESHOLD");
+      controls.start("center");
+      // dragX.set(0);
     }
   };
 
@@ -163,20 +171,18 @@ export const AssignmentQueueCard = ({
       {currentReviewItem && (
         <>
           <AssignmentCardStyled
-            ref={reviewCardRef}
             subjtype={currentReviewItem.object as SubjectType}
             initial="hideAbove"
-            animate="fallDown"
+            animate={controls}
             variants={queueCardVariants}
             style={{
               x: dragX,
               rotate,
-              willChange,
             }}
             drag="x"
-            transition={{ type: "spring", duration: 1, bounce: 0.5 }}
+            transition={{ type: "spring", bounce: 0.5 }}
             dragConstraints={{ left: 0, right: 0 }}
-            dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
+            dragTransition={{ bounceStiffness: 300, bounceDamping: 20 }}
             onDragEnd={handleDragEnd}
             whileTap={{ cursor: "grabbing" }}
             dragElastic={0.5}
