@@ -34,10 +34,15 @@ const queueCardVariants = {
       duration: exitTimeDecimal,
     },
   },
-  hideAbove: { y: "-150%", x: 0 },
+  hideAbove: {
+    y: "-150%",
+    x: 0,
+  },
   fallDown: {
     y: 0,
     transition: {
+      type: "spring",
+      bounce: 0.5,
       delay: 0.5,
     },
   },
@@ -75,12 +80,12 @@ export const AssignmentQueueCard = ({
   useKeyDown(() => attemptToAdvance(), ["F12"]);
   useKeyDown(() => retryTriggered(), ["F6"]);
 
-  const x = useMotionValue(0);
+  const dragX = useMotionValue(0);
   const [reviewCardRef, animateCard] = useAnimate();
-  const opacityLeft = useTransform(x, [-100, 0], [1, 0]);
-  const opacityRight = useTransform(x, [0, 100], [0, 1]);
+  const opacityLeft = useTransform(dragX, [-100, 0], [1, 0]);
+  const opacityRight = useTransform(dragX, [0, 100], [0, 1]);
   const willChange = useWillChange();
-  const rotate = useTransform(x, [-300, 0, 300], [-20, 0, 20]);
+  const rotate = useTransform(dragX, [-300, 0, 300], [-20, 0, 20]);
   const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
   const exitTimeMs = 500;
   const exitTimeDecimal = (exitTimeMs / 1000).toFixed(1) as unknown as number;
@@ -93,12 +98,13 @@ export const AssignmentQueueCard = ({
 
     if (showRetryButton) {
       setTimeout(() => {
-        x.set(0);
+        dragX.set(0);
         handleRetryClick(currentReviewItem, setUserAnswer);
       }, exitTimeMs);
     } else {
       // TODO: show some visual indication of this
       console.log("RETRY NOT AVAILABLE!");
+      dragX.set(0);
     }
   };
 
@@ -120,7 +126,7 @@ export const AssignmentQueueCard = ({
       );
 
       setTimeout(() => {
-        x.set(0);
+        dragX.set(0);
         handleNextClick(currentReviewItem, strippedUserAnswer, setUserAnswer);
         // TODO: check if answer was correct or not, then show toast
       }, exitTimeMs);
@@ -130,7 +136,7 @@ export const AssignmentQueueCard = ({
   const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
     const xOffsetTrigger = 150;
     const xMinOffset = 100;
-    const xMinVelocity = 400;
+    const xMinVelocity = 350;
     if (
       info.offset.x > xOffsetTrigger ||
       (info.offset.x > xMinOffset && info.velocity.x) > xMinVelocity
@@ -163,7 +169,7 @@ export const AssignmentQueueCard = ({
             animate="fallDown"
             variants={queueCardVariants}
             style={{
-              x,
+              x: dragX,
               rotate,
               willChange,
             }}
