@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Keyboard } from "@capacitor/keyboard";
 import { Capacitor } from "@capacitor/core";
 
+// TODO: delete this now that using a different method?
 export const useHideOnKeyboardOpen = () => {
   const [shouldHide, setShouldHide] = useState<boolean>(false);
   console.debug(

@@ -57,7 +57,7 @@ const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useState("");
-  const { shouldHide } = useHideOnKeyboardOpen();
+  // const { shouldHide } = useHideOnKeyboardOpen();
 
   const options = {
     threshold: 0.1,
@@ -160,7 +160,8 @@ export const Search = () => {
             </LogoSearchOutcomeContainer>
           )}
         </ContentWithTabBar>
-        {!shouldHide && <FloatingTabBar />}
+        {/* {!shouldHide && <FloatingTabBar />} */}
+        <FloatingTabBar />
       </Page>
     </>
   );
