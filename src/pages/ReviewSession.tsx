@@ -16,7 +16,7 @@ import { PreFlattenedAssignment } from "../types/Assignment";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
 import AnimatedPage from "../components/AnimatedPage";
-import Dialog from "../components/Dialog/Dialog";
+import AlertDialog from "../components/AlertDialog/AlertDialog";
 import styled from "styled-components";
 import { MainContent } from "../styles/BaseStyledComponents";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
@@ -114,7 +114,7 @@ export const ReviewSession = () => {
           onCancel: () => void;
         }) =>
           isActive && (
-            <Dialog
+            <AlertDialog
               uncontrolledSettings={{ defaultOpen: isActive }}
               title="End Review Session?"
               confirmText="End Session"
