@@ -1,12 +1,14 @@
+import { useNavigate } from "react-router-dom";
 // TODO: change so not relying on IonIcon
 import { IonHeader, IonToolbar, IonButtons, IonIcon } from "@ionic/react";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import Button from "../Button/Button";
+import AssignmentSessionHelpDialog from "../AssignmentSessionHelpDialog";
 import HomeIconColor from "../../images/home-color.svg";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import Button from "../Button/Button";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 
+// TODO: change to use normal header
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;
 
@@ -75,6 +77,7 @@ function QueueHeader() {
           <HomeBtn onPress={() => navigate("/", { replace: true })}>
             <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
           </HomeBtn>
+          <AssignmentSessionHelpDialog sessionType="review" />
         </IonButtons>
         {numUniqueItemsInQueue !== undefined && (
           <NumReviewsLeftContainer>
