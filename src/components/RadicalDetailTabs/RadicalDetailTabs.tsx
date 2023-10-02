@@ -1,10 +1,18 @@
 import { useState } from "react";
+import { IonSkeletonText } from "@ionic/react";
+import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { Radical, Subject } from "../../types/Subject";
 import RadicalNameMnemonic from "../RadicalNameMnemonic";
 import SubjectMeanings from "../SubjectMeanings";
 import SwipeableTabs from "../SwipeableTabs";
-import { SubjDetailTabContainer } from "../../styles/SubjectDetailsStyled";
+import SubjectButtonList from "../SubjectButtonList";
+import {
+  SubjDetailSection,
+  SubjDetailSubHeading,
+  SubjDetailTabContainer,
+} from "../../styles/SubjectDetailsStyled";
 
 type Props = {
   radical: AssignmentQueueItem;
@@ -13,6 +21,32 @@ type Props = {
 
 function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>("name");
+  const hasAmalgamationSubjs = radical.amalgamation_subject_ids!.length > 0;
+  const {
+    isLoading: usedInKanjiSubjLoading,
+    data: usedInKanjiSubjData,
+    error: usedInKanjiSubjErr,
+  } = useSubjectsByIDs(
+    radical.amalgamation_subject_ids!,
+    hasAmalgamationSubjs,
+    true
+  );
+
+  const {
+    isLoading: usedInKanjiAssignmentsLoading,
+    data: usedInKanjiAssignmentsData,
+    error: usedInKanjiAssignmentsErr,
+  } = useAssignmentsBySubjIDs(
+    radical.amalgamation_subject_ids!,
+    hasAmalgamationSubjs
+  );
+
+  let usedInKanjiLoading =
+    hasAmalgamationSubjs &&
+    (usedInKanjiSubjLoading ||
+      usedInKanjiSubjErr ||
+      usedInKanjiAssignmentsLoading ||
+      usedInKanjiAssignmentsErr);
 
   return (
     <SwipeableTabs
@@ -29,6 +63,22 @@ function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
                 showPrimaryMeaning={true}
               />
               <RadicalNameMnemonic radical={radical as Radical} />
+              {usedInKanjiLoading ? (
+                <IonSkeletonText animated={true}></IonSkeletonText>
+              ) : (
+                <SubjDetailSection>
+                  <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
+                  {hasAmalgamationSubjs ? (
+                    <SubjectButtonList
+                      btnSize="lg"
+                      subjList={usedInKanjiSubjData}
+                      assignmentList={usedInKanjiAssignmentsData}
+                    />
+                  ) : (
+                    <p>Hmm, well this shouldn't happen..</p>
+                  )}
+                </SubjDetailSection>
+              )}
             </SubjDetailTabContainer>
           ),
         },

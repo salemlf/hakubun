@@ -67,6 +67,10 @@ export const ReadingsStyle = styled.div`
   -moz-user-select: text;
   -ms-user-select: text;
   font-family: var(--japanese-with-english-fallback-font-family);
+
+  strong {
+    font-family: var(--ion-default-font);
+  }
 `;
 
 export const JapaneseTxtInline = styled.span`

@@ -15,6 +15,7 @@ import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjI
 import { ALL_ASSIGNMENT_TYPES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
+import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
@@ -24,7 +25,7 @@ import Toast from "../Toast";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
-  settingsType: "lessons" | "reviews";
+  settingsType: AssignmentSessionType;
   // TODO: change so not using "any" type
   assignmentData: any;
   defaultBatchSize: number;
@@ -68,9 +69,9 @@ function AssignmentSettings({
         studyMaterialsData as StudyMaterial[]
       );
 
-      setAssignmentQueueData(assignmentQueue);
+      setAssignmentQueueData(assignmentQueue, settingsType);
 
-      if (settingsType === "reviews") {
+      if (settingsType === "review") {
         navigate("/reviews/session", { replace: true });
       } else {
         navigate("/lessons/session", { replace: true });
@@ -94,10 +95,10 @@ function AssignmentSettings({
   const [displayToast, setDisplayToast] = useState<boolean>(false);
 
   let tabBgColor =
-    settingsType === "reviews"
+    settingsType === "review"
       ? "var(--wanikani-review)"
       : "var(--wanikani-lesson)";
-  let showMeaning = settingsType === "lessons";
+  let showMeaning = settingsType === "lesson";
 
   const submitWithBasicSettings = (): AssignmentBatch => {
     let assignmentsFiltered = filterAssignmentsByType(
@@ -204,8 +205,8 @@ function AssignmentSettings({
           <Toast
             open={displayToast}
             setOpen={setDisplayToast}
-            title={`No ${capitalizeWord(settingsType)} Selected`}
-            content={`Select some ${settingsType} using the settings above`}
+            title={`No ${capitalizeWord(settingsType)}s Selected`}
+            content={`Select some ${settingsType}s using the settings above`}
             toastType="error"
           ></Toast>
           <StartSessionButton

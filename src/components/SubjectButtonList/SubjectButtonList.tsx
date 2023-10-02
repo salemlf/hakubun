@@ -12,6 +12,7 @@ import styled from "styled-components";
 const ButtonRow = styled(SubjRow)`
   margin-top: 10px;
   gap: 10px;
+  flex-wrap: wrap;
 `;
 
 type Props = {

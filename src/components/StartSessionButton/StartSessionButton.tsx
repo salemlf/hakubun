@@ -21,11 +21,16 @@ const StartTxt = styled.p`
 
 type Props = {
   onStartBtnClick: () => void;
-  buttonType: "lessons" | "reviews" | "quiz";
+  buttonType: "lesson" | "review" | "quiz";
 };
 
 // TODO: add aria label based on type of start button
 function StartSessionButton({ onStartBtnClick, buttonType }: Props) {
+  const displayTxt =
+    buttonType === "lesson" || buttonType === "review"
+      ? `${buttonType}s`
+      : buttonType;
+
   return (
     <FloatingButtonContainer
       distancefrombottom={buttonType === "quiz" ? "60px" : "35px"}
@@ -39,10 +44,10 @@ function StartSessionButton({ onStartBtnClick, buttonType }: Props) {
         color="black"
         onPress={onStartBtnClick}
       >
-        {buttonType === "reviews" && <StartIcon src={ReviewsIcon} />}
-        {buttonType === "lessons" && <StartIcon src={LessonsIcon} />}
+        {buttonType === "review" && <StartIcon src={ReviewsIcon} />}
+        {buttonType === "lesson" && <StartIcon src={LessonsIcon} />}
         {buttonType === "quiz" && <StartIcon src={LessonQuizIcon} />}
-        <StartTxt>Start {buttonType}</StartTxt>
+        <StartTxt>Start {displayTxt}</StartTxt>
       </FloatingButton>
     </FloatingButtonContainer>
   );

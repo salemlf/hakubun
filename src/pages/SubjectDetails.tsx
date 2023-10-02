@@ -1,9 +1,9 @@
-import { useParams } from "react-router-dom";
-import { IonGrid, IonSkeletonText } from "@ionic/react";
+import { useNavigate, useParams } from "react-router-dom";
+import { IonGrid, IonSkeletonText, IonIcon } from "@ionic/react";
 import { AnimatePresence } from "framer-motion";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useSubjectByID } from "../hooks/useSubjectByID";
-import { useHideOnKeyboardOpen } from "../hooks/useHideOnKeyboardOpen";
+// import { useHideOnKeyboardOpen } from "../hooks/useHideOnKeyboardOpen";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
 import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";
@@ -32,7 +32,13 @@ export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
   const isSessionInProgress = useAssignmentQueueStore.use.sessionInProgress();
-  const { shouldHide } = useHideOnKeyboardOpen();
+  // *testing
+  console.log(
+    "🚀 ~ file: SubjectDetails.tsx:35 ~ SubjectDetails ~ isSessionInProgress:",
+    isSessionInProgress
+  );
+  // *testing
+  // const { shouldHide } = useHideOnKeyboardOpen();
 
   const {
     isLoading: subjectLoading,
@@ -75,7 +81,8 @@ export const SubjectDetails = () => {
         </>
       )}
       <AnimatePresence>
-        {!shouldHide && !isSessionInProgress && <FloatingTabBar />}
+        {/* {!shouldHide && !isSessionInProgress && <FloatingTabBar />} */}
+        {!isSessionInProgress && <FloatingTabBar />}
       </AnimatePresence>
     </Page>
   );

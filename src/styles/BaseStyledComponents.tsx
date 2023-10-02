@@ -191,6 +191,9 @@ export const FloatingButtonContainer = styled(
   bottom: ${({ distancefrombottom }) => distancefrombottom};
   left: 50%;
   margin: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 export const FullWidthColumn = styled.div`

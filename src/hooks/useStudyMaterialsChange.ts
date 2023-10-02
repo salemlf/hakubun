@@ -43,8 +43,8 @@ type ActionUpdateFunction = (params: ActionUpdateParams) => void;
 type ActionCreateFunction = (params: ActionCreateParams) => void;
 
 export const useStudyMaterialsChange = () => {
-  const { mutate: createStudyMaterials } = useCreateStudyMaterials();
-  const { mutate: updateStudyMaterials } = useUpdateStudyMaterials();
+  const { mutateAsync: createStudyMaterials } = useCreateStudyMaterials();
+  const { mutateAsync: updateStudyMaterials } = useUpdateStudyMaterials();
   const isSessionInProgress = useAssignmentQueueStore.use.sessionInProgress();
   const updateQueueItemAltMeanings =
     useAssignmentQueueStore.use.updateQueueItemAltMeanings();
@@ -75,22 +75,17 @@ export const useStudyMaterialsChange = () => {
       ...(readingNoteToUpdate && { reading_note: readingNoteToUpdate }),
     }) as StudyMaterialPostData;
 
-    // *testing
-    console.log(
-      "🚀 ~ file: useStudyMaterialsChange.tsx:54 ~ createdStudyMaterialData:",
-      createdStudyMaterialData
-    );
-    // *testing
-
-    createStudyMaterials(
-      { studyMaterialsData: createdStudyMaterialData },
-      {
-        onSuccess: (data, variables, context) => {
-          let isMeaningBeingUpdated = userMeaningToUpdate !== undefined;
-          updateMeaningsInAssignmentQueue(data, isMeaningBeingUpdated);
-        },
-      }
-    );
+    createStudyMaterials({ studyMaterialsData: createdStudyMaterialData })
+      .then((data) => {
+        let isMeaningBeingUpdated = userMeaningToUpdate !== undefined;
+        updateMeaningsInAssignmentQueue(data, isMeaningBeingUpdated);
+      })
+      .catch((err) => {
+        console.error(
+          "Oh no, an error occurred when calling createStudyMaterials!",
+          err
+        );
+      });
   };
 
   // TODO: change to return a promise? (likely resolved within createStudyMaterials onSettled)
@@ -119,18 +114,20 @@ export const useStudyMaterialsChange = () => {
       action: actionType,
     });
 
-    updateStudyMaterials(
-      {
-        studyMaterialID: studyMaterialData.id,
-        updatedStudyMaterials: updatedStudyMaterialData,
-      },
-      {
-        onSuccess: (data, variables, context) => {
-          let isMeaningBeingUpdated = userMeaningToUpdate !== undefined;
-          updateMeaningsInAssignmentQueue(data, isMeaningBeingUpdated);
-        },
-      }
-    );
+    updateStudyMaterials({
+      studyMaterialID: studyMaterialData.id,
+      updatedStudyMaterials: updatedStudyMaterialData,
+    })
+      .then((data) => {
+        let isMeaningBeingUpdated = userMeaningToUpdate !== undefined;
+        updateMeaningsInAssignmentQueue(data, isMeaningBeingUpdated);
+      })
+      .catch((err) => {
+        console.error(
+          "Oh no, an error occurred when calling updateStudyMaterials!",
+          err
+        );
+      });
   };
 
   const updateMeaningsInAssignmentQueue = (
