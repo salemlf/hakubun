@@ -20,6 +20,7 @@ type Props = {
   subject: Subject;
 };
 
+// TODO: modify to use custom dialog
 function AddAltUserMeaningButton({ subject }: Props) {
   const {
     isLoading: studyMaterialLoading,

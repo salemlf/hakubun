@@ -294,7 +294,7 @@ export const isUserReadingAnswerCorrect = (
   });
   // *testing
   console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:193 ~ acceptedAnswers:",
+    "🚀 ~ file: AssignmentQueueService.tsx:297 ~ acceptedAnswers:",
     acceptedAnswers
   );
   // *testing
@@ -316,7 +316,7 @@ export const isUserMeaningAnswerCorrect = (
   });
   // *testing
   console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:200 ~ answersWithSynonyms:",
+    "🚀 ~ file: AssignmentQueueService.tsx:319 ~ answersWithSynonyms:",
     answersWithSynonyms
   );
   // *testing
