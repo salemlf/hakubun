@@ -15,6 +15,7 @@ import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import AssignmentCharAndType from "./AssignmentCharAndType";
 import AssignmentAnswerInput from "./AssignmentAnswerInput";
 import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
+import Emoji from "../Emoji";
 import RetryIcon from "../../images/retry.svg";
 import NextIcon from "../../images/next-item.svg";
 import {
@@ -23,6 +24,17 @@ import {
   AssignmentCardStyled,
   SwipeIcon,
 } from "./AssignmentQueueCardsStyled";
+import styled from "styled-components";
+
+const SwipeMeHint = styled.p`
+  font-size: 0.9rem;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  bottom: 0;
+  /* z-index: 12; */
+`;
 
 const queueCardVariants = {
   submit: () => ({
@@ -216,6 +228,9 @@ export const AssignmentQueueCard = ({
                 <IonIcon icon={NextIcon}></IonIcon>
               </SwipeIcon>
             </NextCardOverlay>
+            <SwipeMeHint>
+              Swipe me <Emoji symbol="😋" label="Tongue sticking out face" />
+            </SwipeMeHint>
           </AssignmentCardStyled>
           <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />
         </>
