@@ -14,6 +14,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAuthTokenStore } from "./stores/useAuthTokenStore";
+import { useUserInfoStore } from "./stores/useUserInfoStore";
 import { api, pagingApi } from "./api/ApiConfig";
 import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
@@ -90,6 +91,7 @@ const AppElements = () => {
   const isAuthenticated = useAuthTokenStore.use.isAuthenticated();
   const isAuthLoading = useAuthTokenStore.use.isAuthLoading();
   const authToken = useAuthTokenStore.use.authToken();
+  const userInfo = useUserInfoStore.use.userInfo();
 
   // setting the auth token headers for all api requests
   (function () {
@@ -103,6 +105,13 @@ const AppElements = () => {
       pagingApi.defaults.headers.common["Authorization"] = null;
     }
   })();
+
+  // setting current user if that info is available
+  if (userInfo) {
+    LogRocket.identify(`${userInfo.username}`, {
+      name: `${userInfo.username}`,
+    });
+  }
 
   return (
     <AnimatePresence>
