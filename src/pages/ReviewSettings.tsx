@@ -75,7 +75,7 @@ export const ReviewSettings = () => {
         )}
         {!availForReviewLoading && !availForReviewErr && availForReviewData && (
           <AssignmentSettings
-            settingsType="reviews"
+            settingsType="review"
             assignmentData={availForReviewData}
             defaultBatchSize={reviewBatchSize}
           />

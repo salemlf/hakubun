@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { IonGrid, IonSkeletonText } from "@ionic/react";
+import { IonGrid, IonSkeletonText, IonIcon } from "@ionic/react";
 import { AnimatePresence } from "framer-motion";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useSubjectByID } from "../hooks/useSubjectByID";
@@ -12,11 +12,7 @@ import VocabSubjDetails from "../components/VocabSubjDetails/VocabSubjDetails";
 import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
 import AnimatedPage from "../components/AnimatedPage";
 import FloatingTabBar from "../components/FloatingTabBar";
-import {
-  ContentWithTabBar,
-  FloatingButton,
-  FloatingButtonContainer,
-} from "../styles/BaseStyledComponents";
+import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const FullWidthGrid = styled(IonGrid)`
@@ -30,28 +26,6 @@ const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
   background-color: var(--dark-greyish-purple);
 `;
-
-function BackToSessionButton() {
-  const navigate = useNavigate();
-
-  return (
-    <FloatingButtonContainer
-      distancefrombottom="35px"
-      transition={{ type: "spring", delay: 0.5 }}
-      initial={{ scale: 0, x: "-50%" }}
-      animate={{ scale: 1 }}
-    >
-      <FloatingButton
-        backgroundColor="var(--ion-color-tertiary)"
-        color="black"
-        // onPress={() => navigate("/", { replace: true })}
-      >
-        {/* <HomeIcon src={ColorHomeIcon} /> */}
-        <p>Back To Session</p>
-      </FloatingButton>
-    </FloatingButtonContainer>
-  );
-}
 
 // TODO: show "back to review" button if routed to this page from a assignment session
 export const SubjectDetails = () => {
@@ -109,7 +83,6 @@ export const SubjectDetails = () => {
       <AnimatePresence>
         {/* {!shouldHide && !isSessionInProgress && <FloatingTabBar />} */}
         {!isSessionInProgress && <FloatingTabBar />}
-        {isSessionInProgress && <BackToSessionButton />}
       </AnimatePresence>
     </Page>
   );

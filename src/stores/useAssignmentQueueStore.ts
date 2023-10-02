@@ -1,11 +1,15 @@
 import { create } from "zustand";
 import { createSelectors } from "../utils";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
+import {
+  AssignmentQueueItem,
+  AssignmentSessionType,
+} from "../types/AssignmentQueueTypes";
 
 interface AssignmentQueueState {
   assignmentQueue: AssignmentQueueItem[];
   currQueueIndex: number;
   sessionInProgress: boolean;
+  sessionType: AssignmentSessionType;
 }
 
 interface AssignmentQueueActions {
@@ -14,7 +18,10 @@ interface AssignmentQueueActions {
     subjectID: number,
     altMeanings: string[]
   ) => void;
-  setAssignmentQueueData: (queueData: AssignmentQueueItem[]) => void;
+  setAssignmentQueueData: (
+    queueData: AssignmentQueueItem[],
+    sessionType: AssignmentSessionType
+  ) => void;
   incrementCurrQueueIndex: () => void;
   addToAssignmentQueue: (reviewItem: AssignmentQueueItem) => void;
   removeOldQueueItem: () => void;
@@ -24,6 +31,7 @@ const initialState: AssignmentQueueState = {
   currQueueIndex: 0,
   assignmentQueue: [],
   sessionInProgress: false,
+  sessionType: "review",
 };
 
 const useAssignmentQueueStoreBase = create<
@@ -79,9 +87,13 @@ const useAssignmentQueueStoreBase = create<
       assignmentQueue: queueItemsWithUpdatedMeanings,
     }));
   },
-  setAssignmentQueueData: (queueData: AssignmentQueueItem[]) => {
+  setAssignmentQueueData: (
+    queueData: AssignmentQueueItem[],
+    sessionType: AssignmentSessionType
+  ) => {
     set(() => ({
       assignmentQueue: queueData,
+      sessionType,
       sessionInProgress: true,
     }));
   },

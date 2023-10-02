@@ -54,7 +54,7 @@ function LessonSettings() {
         {!lessonsLoading && lessonsErr && <div>{`Error: ${lessonsErr}`}</div>}
         {!lessonsLoading && !lessonsErr && lessonsData && (
           <AssignmentSettings
-            settingsType="lessons"
+            settingsType="lesson"
             assignmentData={lessonsData}
             defaultBatchSize={lessonBatchSize}
           />
