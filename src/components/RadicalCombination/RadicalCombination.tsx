@@ -1,12 +1,14 @@
-import { IonRow, IonSkeletonText } from "@ionic/react";
+import { IonRow, IonSkeletonText, IonIcon } from "@ionic/react";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Kanji } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
+import PuzzleIcon from "../../images/puzzle.svg";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
+import { IconHeadingContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   kanji: Kanji;
@@ -48,7 +50,10 @@ function RadicalCombination({ kanji, displayQuestionTxt = false }: Props) {
 
   return (
     <SubjDetailSection>
-      <SubjDetailSubHeading>Radical Combination</SubjDetailSubHeading>
+      <IconHeadingContainer>
+        <IonIcon src={PuzzleIcon} />
+        <SubjDetailSubHeading>Radical Combination</SubjDetailSubHeading>
+      </IconHeadingContainer>
       {displayQuestionTxt && (
         <p>Can you see where the radicals fit in the kanji?</p>
       )}

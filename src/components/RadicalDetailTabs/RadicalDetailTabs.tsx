@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IonSkeletonText } from "@ionic/react";
+import { IonIcon, IonSkeletonText } from "@ionic/react";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
@@ -8,11 +8,13 @@ import RadicalNameMnemonic from "../RadicalNameMnemonic";
 import SubjectMeanings from "../SubjectMeanings";
 import SwipeableTabs from "../SwipeableTabs";
 import SubjectButtonList from "../SubjectButtonList";
+import MagnifyingGlassIcon from "../../images/magnifying-glass-color.svg";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
   SubjDetailTabContainer,
 } from "../../styles/SubjectDetailsStyled";
+import { FoundInHeadingContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   radical: AssignmentQueueItem;
@@ -67,7 +69,10 @@ function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
                 <IonSkeletonText animated={true}></IonSkeletonText>
               ) : (
                 <SubjDetailSection>
-                  <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
+                  <FoundInHeadingContainer>
+                    <IonIcon src={MagnifyingGlassIcon} />
+                    <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
+                  </FoundInHeadingContainer>
                   {hasAmalgamationSubjs ? (
                     <SubjectButtonList
                       btnSize="lg"

@@ -18,6 +18,7 @@ const MeaningsContainer = styled(SubjSummaryCol)`
   padding-right: 0;
   padding-bottom: 0;
   margin-bottom: 0;
+  margin-bottom: 12px;
 `;
 
 const SubjDetailHeadingNoBtmMargin = styled(SubjDetailSubHeading)`

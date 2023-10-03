@@ -1,5 +1,5 @@
 // TODO: change so not relying on IonIcon
-import { IonIcon, IonRow } from "@ionic/react";
+import { IonIcon } from "@ionic/react";
 import { useAudio } from "../../hooks/useAudio";
 import { getAudioForReading } from "../../services/MiscService";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
@@ -19,13 +19,10 @@ import {
 } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
-type AudioProps = {
-  url: string;
-};
-
 const Btn = styled(Button)`
   padding: 4px;
   border-radius: 8px;
+  margin-left: 5px;
 `;
 
 const AudioIcon = styled(IonIcon)`
@@ -33,11 +30,17 @@ const AudioIcon = styled(IonIcon)`
   height: 1em;
 `;
 
-const AudioBtn = ({ url }: AudioProps) => {
+type AudioProps = {
+  reading: string;
+  url: string;
+};
+
+const AudioBtn = ({ url, reading }: AudioProps) => {
   const [playing, toggle] = useAudio(url);
 
   return (
     <Btn
+      aria-label={`Pronunciation audio for ${reading} reading`}
       onPress={toggle}
       backgroundColor="var(--ion-color-tertiary)"
       color="black"
@@ -49,14 +52,25 @@ const AudioBtn = ({ url }: AudioProps) => {
 
 const VocabReadingContainer = styled.div`
   display: flex;
-  gap: 6px;
   align-items: baseline;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const VocabReadingsContainer = styled(ReadingsStyle)`
+  flex-wrap: wrap;
 `;
 
 const ReadingTxt = styled.p`
   margin: 5px 0;
   font-size: 1rem;
-  font-family: var(--japanese-font-family);
+`;
+
+const EnglishComma = styled.span`
+  font-family: var(--ion-default-font);
 `;
 
 type VocabReadingProps = {
@@ -73,42 +87,47 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
   return hasReadings ? (
     <ReadingContainer>
       {!hideReadingTxt && <SubjDetailSubHeading>Readings</SubjDetailSubHeading>}
-      <IonRow>
-        <ReadingsStyle>
+      <Row>
+        <VocabReadingsContainer>
           {readings && readings.length
             ? readings.map((vocabReading: SubjectReading, index: number) => {
                 return (
                   <VocabReadingContainer key={`reading_${index}`}>
                     <ReadingTxt>{vocabReading.reading}</ReadingTxt>
                     {hasReadings &&
-                      vocab.pronunciation_audios.some(
-                        (audioOption: PronunciationAudio) =>
-                          audioOption.metadata.pronunciation ===
-                          vocabReading.reading
-                      ) && (
-                        <AudioBtn
-                          url={getAudioForReading(
-                            vocab.pronunciation_audios,
-                            vocabReading.reading,
-                            pronunciationVoice
-                          )}
-                        />
-                      )}
+                    vocab.pronunciation_audios.some(
+                      (audioOption: PronunciationAudio) =>
+                        audioOption.metadata.pronunciation ===
+                        vocabReading.reading
+                    ) ? (
+                      <AudioBtn
+                        reading={vocabReading.reading}
+                        url={getAudioForReading(
+                          vocab.pronunciation_audios,
+                          vocabReading.reading,
+                          pronunciationVoice
+                        )}
+                      />
+                    ) : (
+                      index !== readings!.length - 1 && (
+                        <EnglishComma>, </EnglishComma>
+                      )
+                    )}
                   </VocabReadingContainer>
                 );
               })
             : "-"}
-        </ReadingsStyle>
-      </IonRow>
+        </VocabReadingsContainer>
+      </Row>
     </ReadingContainer>
   ) : (
     <ReadingContainer>
-      <IonRow>
+      <Row>
         <ReadingsStyle>
           <strong>Readings: </strong>
           <JapaneseTxtInline>{vocab.characters}</JapaneseTxtInline>
         </ReadingsStyle>
-      </IonRow>
+      </Row>
     </ReadingContainer>
   );
 }

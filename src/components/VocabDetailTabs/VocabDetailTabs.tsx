@@ -27,7 +27,7 @@ const VocabReadingSection = styled(SubjDetailSection)`
 `;
 
 const PartsOfSpeechContainer = styled(FullWidthColumn)`
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
 const getTabsForVocab = (vocabQueueItem: AssignmentQueueItem) => {

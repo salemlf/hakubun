@@ -8,6 +8,11 @@ import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
+import styled from "styled-components";
+
+const RadicalNameSection = styled(SubjDetailSection)`
+  margin-bottom: 18px;
+`;
 
 type Props = {
   radical: Radical;
@@ -15,7 +20,7 @@ type Props = {
 
 function RadicalNameMnemonic({ radical }: Props) {
   return (
-    <SubjDetailSection>
+    <RadicalNameSection>
       <IconHeadingContainer>
         <IonIcon src={MeaningIcon} />
         <SubjDetailSubHeading>Name Mnemonic</SubjDetailSubHeading>
@@ -26,7 +31,7 @@ function RadicalNameMnemonic({ radical }: Props) {
         noteType="meaning"
         isRadical={true}
       />
-    </SubjDetailSection>
+    </RadicalNameSection>
   );
 }
 
