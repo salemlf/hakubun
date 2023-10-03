@@ -15,6 +15,7 @@ const Content = styled(RadixDialog.Content)`
   overflow-y: clip;
   pointer-events: auto;
   position: absolute;
+  background-color: var(--dark-greyish-purple);
 `;
 
 const SheetHeader = styled.header`
