@@ -107,6 +107,7 @@ function HomeHeader() {
         <RefreshAndSettingsContainer>
           <RefreshHomeButton />
           <SettingsButton
+            aria-label="User settings page"
             backgroundColor="transparent"
             onPress={() => navigate("/settings")}
           >

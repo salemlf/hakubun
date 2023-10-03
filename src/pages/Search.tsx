@@ -158,7 +158,6 @@ export const Search = () => {
             </LogoSearchOutcomeContainer>
           )}
         </ContentWithTabBar>
-        {/* {!shouldHide && <FloatingTabBar />} */}
         <FloatingTabBar />
       </Page>
     </>

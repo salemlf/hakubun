@@ -36,6 +36,7 @@ function AddAltUserMeaningButton({ subject }: Props) {
       {!studyMaterialLoading ? (
         <>
           <AddButton
+            aria-label="Add alternative meaning"
             id="present-user-meaning-add"
             onPress={(e: any) => {
               presentAlert({

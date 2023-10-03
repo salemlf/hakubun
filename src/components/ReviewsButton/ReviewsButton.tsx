@@ -53,6 +53,7 @@ function ReviewsButton({ level }: Props) {
   return (
     <>
       <ReviewsButtonStyled
+        aria-label="Reviews"
         onPress={onReviewBtnClick}
         style={{
           backgroundImage: `url(${setBtnBackground({

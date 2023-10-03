@@ -190,7 +190,10 @@ function BottomSheetContentCore(
           {isFullyOpen ? (
             <FocusScope contain autoFocus>
               <SheetHeader ref={headerRef}>
-                <SheetOpenCloseButton onPress={onSheetBtnPress} />
+                <SheetOpenCloseButton
+                  onPress={onSheetBtnPress}
+                  aria-label="Open or close the bottom sheet"
+                />
                 <SheetHeadingTxt>{title}</SheetHeadingTxt>
               </SheetHeader>
               {children}

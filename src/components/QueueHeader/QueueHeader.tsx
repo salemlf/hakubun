@@ -72,7 +72,10 @@ function QueueHeader() {
     <SessionHeader>
       <Toolbar>
         <IonButtons slot="start">
-          <HomeBtn onPress={() => navigate("/", { replace: true })}>
+          <HomeBtn
+            onPress={() => navigate("/", { replace: true })}
+            aria-label="Home page"
+          >
             <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
           </HomeBtn>
         </IonButtons>

@@ -76,17 +76,28 @@ const TabLabel = styled.p`
 
 type PageLinkProps = {
   pathName: string;
+  pageName: string;
   children: React.ReactNode;
 };
 
-const PageLink = ({ pathName, children, ...props }: PageLinkProps) => {
+const PageLink = ({
+  pathName,
+  pageName,
+  children,
+  ...props
+}: PageLinkProps) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
   // TODO: make this match subpaths also
   const isActive = currentPath === pathName;
   return (
-    <TabButton asChild active={isActive} {...props}>
+    <TabButton
+      asChild
+      active={isActive}
+      {...props}
+      aria-label={`${pageName} page`}
+    >
       <NavLink to={pathName}>{children}</NavLink>
     </TabButton>
   );
@@ -97,19 +108,19 @@ function FloatingTabBar() {
     <TabBarContainer exit={{ y: -150 }} transition={{ type: "spring" }}>
       <TabList>
         <NavigationMenu.Item>
-          <PageLink pathName="/subjects">
+          <PageLink pathName="/subjects" pageName="Subjects">
             <IonIcon src={SubjectsIcon} />
             <TabLabel>Subjects</TabLabel>
           </PageLink>
         </NavigationMenu.Item>
         <NavigationMenu.Item>
-          <PageLink pathName="/">
+          <PageLink pathName="/" pageName="Home">
             <IonIcon src={HomeIcon} />
             <TabLabel>Home</TabLabel>
           </PageLink>
         </NavigationMenu.Item>
         <NavigationMenu.Item>
-          <PageLink pathName="/search">
+          <PageLink pathName="/search" pageName="Search">
             <IonIcon src={SearchIcon} />
             <TabLabel>Search</TabLabel>
           </PageLink>

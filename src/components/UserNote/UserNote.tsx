@@ -15,7 +15,7 @@ const AddButtonContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-  margin-top: 8px;
+  margin-top: 10px;
 `;
 
 const AddButton = styled(Chip)`
@@ -79,6 +79,7 @@ function UserNote({ subject, noteType, isRadical = false }: Props) {
           ) : (
             <AddButtonContainer>
               <AddButton
+                aria-label={`Add ${noteType} note`}
                 onPress={(e: any) => {
                   setEditingInProgress(true);
                 }}

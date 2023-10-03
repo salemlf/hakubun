@@ -221,6 +221,7 @@ const TokenInput = () => {
             </InputContainer>
             <ButtonRow>
               <SubmitButton
+                aria-label="Submit token"
                 type="submit"
                 backgroundColor="var(--ion-color-tertiary)"
                 color="black"

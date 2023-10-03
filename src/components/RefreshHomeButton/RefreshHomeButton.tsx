@@ -74,7 +74,11 @@ function RefreshHomeButton() {
   };
 
   return (
-    <RefreshButton onPress={onButtonClick} backgroundColor="transparent">
+    <RefreshButton
+      onPress={onButtonClick}
+      backgroundColor="transparent"
+      aria-label="Refresh lesson and review data"
+    >
       <RefreshImg
         initial="hidden"
         animate={controls}

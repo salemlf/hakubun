@@ -65,6 +65,7 @@ function LessonsButton() {
   return (
     <>
       <LessonsButtonStyled
+        aria-label="Lessons"
         onPress={onLessonBtnClick}
         style={{
           backgroundImage: `url(${setBtnBackground({

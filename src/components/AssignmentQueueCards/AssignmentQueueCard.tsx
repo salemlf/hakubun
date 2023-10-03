@@ -33,7 +33,6 @@ const SwipeMeHint = styled.p`
   left: 50%;
   transform: translate(-50%, -50%);
   bottom: 0;
-  /* z-index: 12; */
 `;
 
 const queueCardVariants = {
@@ -229,7 +228,7 @@ export const AssignmentQueueCard = ({
               </SwipeIcon>
             </NextCardOverlay>
             <SwipeMeHint>
-              Swipe me <Emoji symbol="😋" label="Tongue sticking out face" />
+              Swipe me <Emoji symbol="🙂" label="Smiling face" />
             </SwipeMeHint>
           </AssignmentCardStyled>
           <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />

@@ -95,7 +95,10 @@ function SrsStages() {
     <SrsButtonContainer>
       <ButtonRowContainer>
         <IonCol size-xs="6" size-md="3">
-          <SrsStageButton srsStage="apprentice">
+          <SrsStageButton
+            srsStage="apprentice"
+            aria-label="Apprentice SRS Stage"
+          >
             <div>
               {apprenticeStageData && (
                 <NumItemsInStage>{apprenticeStageData.length}</NumItemsInStage>
@@ -105,7 +108,7 @@ function SrsStages() {
           </SrsStageButton>
         </IonCol>
         <IonCol size-xs="6" size-md="3">
-          <SrsStageButton srsStage="guru">
+          <SrsStageButton srsStage="guru" aria-label="Guru SRS Stage">
             <div>
               {guruStageData && (
                 <NumItemsInStage>{guruStageData.length}</NumItemsInStage>
@@ -115,7 +118,7 @@ function SrsStages() {
           </SrsStageButton>
         </IonCol>
         <IonCol size-xs="6" size-md="3">
-          <SrsStageButton srsStage="master">
+          <SrsStageButton srsStage="master" aria-label="Master SRS Stage">
             <div>
               {masterStageData && (
                 <NumItemsInStage>{masterStageData.length}</NumItemsInStage>
@@ -125,7 +128,10 @@ function SrsStages() {
           </SrsStageButton>
         </IonCol>
         <IonCol size-xs="6" size-md="3">
-          <SrsStageButton srsStage="enlightened">
+          <SrsStageButton
+            srsStage="enlightened"
+            aria-label="Enlightened SRS Stage"
+          >
             <div>
               {enlightenedStageData && (
                 <NumItemsInStage>{enlightenedStageData.length}</NumItemsInStage>
@@ -135,7 +141,7 @@ function SrsStages() {
           </SrsStageButton>
         </IonCol>
         <IonCol size-xs="12" size-md="6">
-          <SrsStageButton srsStage="burned">
+          <SrsStageButton srsStage="burned" aria-label="Burned SRS Stage">
             <div>
               {burnedStageData && (
                 <NumItemsInStage>{burnedStageData.length}</NumItemsInStage>

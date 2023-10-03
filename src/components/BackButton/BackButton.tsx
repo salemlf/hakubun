@@ -29,6 +29,7 @@ function BackButton({ backgroundColor = "var(--darkest-purple)" }: Props) {
 
   return (
     <BackButtonStyled
+      aria-label="Back to previous page"
       backgroundColor={backgroundColor}
       onPress={() => navigate(-1)}
     >
