@@ -18,6 +18,7 @@ type HeaderProps = {
 const LessonSessionHeader = styled.header<HeaderProps>`
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
   padding: 40px 10px;
+  text-align: center;
 `;
 
 const LessonContent = styled.div`
