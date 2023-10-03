@@ -1,14 +1,14 @@
-import { IonSkeletonText } from "@ionic/react";
-
+import { IonIcon, IonSkeletonText } from "@ionic/react";
+import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
+import { Kanji } from "../../types/Subject";
+import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
+import SimilarCatsIcon from "../../images/similar-cats.svg";
 import {
   SubjDetailSubHeading,
   SubjDetailSection,
 } from "../../styles/SubjectDetailsStyled";
-
-import { Kanji } from "../../types/Subject";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
-import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
+import { IconHeadingContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   kanji: Kanji;
@@ -44,7 +44,10 @@ function VisuallySimilarKanji({ kanji }: Props) {
 
   return (
     <SubjDetailSection>
-      <SubjDetailSubHeading>Visually Similar Kanji</SubjDetailSubHeading>
+      <IconHeadingContainer>
+        <IonIcon src={SimilarCatsIcon} />
+        <SubjDetailSubHeading>Visually Similar Kanji</SubjDetailSubHeading>
+      </IconHeadingContainer>
       <SubjectButtonList
         btnSize="lg"
         subjList={similarKanjiSubjData}

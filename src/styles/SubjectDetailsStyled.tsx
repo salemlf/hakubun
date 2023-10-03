@@ -14,29 +14,29 @@ export const Col = ({ className, children }: RowColProps) => (
   <IonCol className={className}>{children}</IonCol>
 );
 
-export const SubjInfoContainer = styled(IonRow)`
+export const SubjInfoContainer = styled.div`
   --ion-background-color: var(--light-greyish-purple);
   background-color: var(--light-greyish-purple);
   border-radius: 25px;
   margin: 10px;
 
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
-  padding-inline-start: var(--ion-padding, 16px);
-  padding-inline-end: var(--ion-padding, 16px);
-  padding-top: var(--ion-padding, 16px);
-  padding-bottom: var(--ion-padding, 16px);
+  padding: 16px;
+  padding-top: 20px;
+  margin: 16px;
   margin-top: 0;
 `;
 
 // TODO: probably have to alter to account for desktop size
-export const SubjSummaryRow = styled(Row)`
+export const SubjSummaryRow = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: row;
+  width: 100%;
 `;
 
-export const SubjSummaryCol = styled(Col)`
+export const SubjSummaryCol = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -77,10 +77,10 @@ export const JapaneseTxtInline = styled.span`
   font-family: var(--japanese-font-family);
 `;
 
-export const ReadingContainer = styled(IonCol)`
+export const ReadingContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding-left: 0;
+  margin-bottom: 10px;
 `;
 
 // TODO: change to calculate height using some other method

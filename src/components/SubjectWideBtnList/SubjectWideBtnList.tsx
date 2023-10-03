@@ -83,7 +83,7 @@ const SubjectItemContainer = styled.button<ItemContainerProps>`
   gap: 6px;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 8px;
+  padding: 8px 8px;
   margin-bottom: 2px;
   border-radius: 10px;
 

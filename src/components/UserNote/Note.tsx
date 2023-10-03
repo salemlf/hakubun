@@ -164,7 +164,7 @@ function Note({
         {isEditable ? (
           <>
             <CancelButton
-              aria-label="Cancel"
+              aria-label="Cancel note"
               onPress={() =>
                 completeEditing({ saveEdit: false, remove: false })
               }
@@ -172,7 +172,7 @@ function Note({
               <IonIcon src={CancelIcon} />
             </CancelButton>
             <SaveButton
-              aria-label="Save"
+              aria-label="Save note"
               onPress={() => completeEditing({ saveEdit: true, remove: false })}
             >
               <IonIcon src={SaveIcon} />
@@ -181,7 +181,7 @@ function Note({
         ) : (
           <>
             <TrashButton
-              aria-label="Delete"
+              aria-label="Delete note"
               onPress={() =>
                 presentAlert({
                   header: noteHeadingsAndMsg.alertHeadingTxt,
@@ -205,7 +205,10 @@ function Note({
             >
               <IonIcon src={TrashIcon} />
             </TrashButton>
-            <PencilButton onPress={() => setIsEditable(true)} aria-label="Edit">
+            <PencilButton
+              onPress={() => setIsEditable(true)}
+              aria-label="Edit note"
+            >
               <IonIcon src={PencilIcon} />
             </PencilButton>
           </>

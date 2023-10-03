@@ -3,7 +3,6 @@ import { IonList, IonSearchbar } from "@ionic/react";
 import Fuse from "fuse.js";
 import { flattenSearchResults } from "../services/MiscService";
 import { useAllSubjects } from "../hooks/useAllSubjects";
-import { useHideOnKeyboardOpen } from "../hooks/useHideOnKeyboardOpen";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
 import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
 import FloatingTabBar from "../components/FloatingTabBar";
@@ -57,7 +56,6 @@ const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useState("");
-  // const { shouldHide } = useHideOnKeyboardOpen();
 
   const options = {
     threshold: 0.1,
@@ -160,7 +158,6 @@ export const Search = () => {
             </LogoSearchOutcomeContainer>
           )}
         </ContentWithTabBar>
-        {/* {!shouldHide && <FloatingTabBar />} */}
         <FloatingTabBar />
       </Page>
     </>

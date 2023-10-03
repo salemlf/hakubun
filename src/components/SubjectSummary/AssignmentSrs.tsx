@@ -6,25 +6,7 @@ import { Assignment } from "../../types/Assignment";
 import { SrsLevelName } from "../../types/MiscTypes";
 import AlarmClockIcon from "../../images/alarm-clock.svg";
 import StairsIcon from "../../images/stairs.svg";
-import {
-  SubjSummaryCol,
-  SubjSummaryRow,
-} from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
-
-const AssignmentSrsContainer = styled(SubjSummaryCol)`
-  justify-content: flex-end;
-  padding: 5px 0;
-
-  p {
-    margin: 5px 0;
-  }
-`;
-
-const StagesRow = styled(SubjSummaryRow)`
-  justify-content: flex-end;
-  gap: 10px;
-`;
 
 type SrsLvlProps = {
   srsStage: SrsLevelName;
@@ -40,7 +22,12 @@ const SrsLvlContainer = styled.div<SrsLvlProps>`
   background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
 `;
 
-const SrsLvlTxt = styled.p`
+const SrsTxt = styled.p`
+  margin: 5px 0;
+  text-align: center;
+`;
+
+const SrsLvlTxt = styled(SrsTxt)`
   color: white;
   text-transform: capitalize;
 `;
@@ -60,7 +47,7 @@ const SrsIcon = styled(IonIcon)`
   height: 1.5em;
 `;
 
-const TimeTillTxt = styled.p`
+const TimeTillTxt = styled(SrsTxt)`
   color: black;
 `;
 
@@ -79,18 +66,16 @@ function AssignmentSrs({ assignment }: Props) {
     : "N/A";
 
   return (
-    <AssignmentSrsContainer>
-      <StagesRow>
-        <TimeTillContainer>
-          <SrsIcon src={AlarmClockIcon} />
-          <TimeTillTxt>{timeTillReview}</TimeTillTxt>
-        </TimeTillContainer>
-        <SrsLvlContainer srsStage={srsLevelName as SrsLevelName}>
-          <SrsIcon src={StairsIcon} />
-          <SrsLvlTxt>{srsLevelName}</SrsLvlTxt>
-        </SrsLvlContainer>
-      </StagesRow>
-    </AssignmentSrsContainer>
+    <>
+      <TimeTillContainer>
+        <SrsIcon src={AlarmClockIcon} />
+        <TimeTillTxt>{timeTillReview}</TimeTillTxt>
+      </TimeTillContainer>
+      <SrsLvlContainer srsStage={srsLevelName as SrsLevelName}>
+        <SrsIcon src={StairsIcon} />
+        <SrsLvlTxt>{srsLevelName}</SrsLvlTxt>
+      </SrsLvlContainer>
+    </>
   );
 }
 

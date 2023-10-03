@@ -15,6 +15,7 @@ const Content = styled(RadixDialog.Content)`
   overflow-y: clip;
   pointer-events: auto;
   position: absolute;
+  background-color: var(--dark-greyish-purple);
 `;
 
 const SheetHeader = styled.header`
@@ -190,7 +191,10 @@ function BottomSheetContentCore(
           {isFullyOpen ? (
             <FocusScope contain autoFocus>
               <SheetHeader ref={headerRef}>
-                <SheetOpenCloseButton onPress={onSheetBtnPress} />
+                <SheetOpenCloseButton
+                  onPress={onSheetBtnPress}
+                  aria-label="Open or close the bottom sheet"
+                />
                 <SheetHeadingTxt>{title}</SheetHeadingTxt>
               </SheetHeader>
               {children}

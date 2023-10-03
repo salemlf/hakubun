@@ -12,10 +12,6 @@ import OpenEyeIcon from "../../images/open-eye.svg";
 import CrossedOutEyeIcon from "../../images/crossed-out-eye.svg";
 import styled from "styled-components";
 
-const ContextSentenceContainer = styled.div`
-  margin-left: -3px;
-`;
-
 const SentenceGroup = styled.div`
   display: flex;
   flex-basis: 100%;
@@ -88,7 +84,7 @@ function ContextSentences({ sentences }: Props) {
         <IonIcon src={ContextIcon} />
         <SubjDetailSubHeading>Context Sentences</SubjDetailSubHeading>
       </IconHeadingContainer>
-      <ContextSentenceContainer>
+      <div>
         {(sentences as ContextSentence[]).map(
           (sentence: ContextSentence, index: number) => {
             return (
@@ -113,7 +109,7 @@ function ContextSentences({ sentences }: Props) {
             );
           }
         )}
-      </ContextSentenceContainer>
+      </div>
     </SubjDetailSection>
   );
 }

@@ -347,12 +347,12 @@ const btnSizeInfo: { [index: string]: BtnSizeStyles } = {
   },
   md: {
     containerSize: "4rem",
-    fontSize: "1.45rem",
+    fontSize: "1.25rem",
     fontSizeNoDetails: "2rem",
     detailFontSize: ".7rem",
   },
   lg: {
-    containerSize: "5rem",
+    containerSize: "5.25rem",
     fontSize: "1.5rem",
     fontSizeNoDetails: "2.25rem",
     detailFontSize: ".8rem",

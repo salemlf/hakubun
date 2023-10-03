@@ -1,7 +1,6 @@
 import { IonBadge, IonSkeletonText } from "@ionic/react";
 import { SubjectType } from "../types/Subject";
 import Button from "../components/Button";
-import { Col } from "./SubjectDetailsStyled";
 import styled from "styled-components";
 
 type DefaultBtnProps = {
@@ -58,7 +57,8 @@ export const SubjBtnDetailsTxt = styled.p<DetailsBtnProps>`
 
   margin: 0;
   font-size: ${({ detailfontsize }) => detailfontsize};
-  overflow-x: hidden;
+  /* needs to be clipped, for some reason hidden also hides y-axis overflow */
+  overflow-x: clip;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 4em;
@@ -82,7 +82,7 @@ export const BtnWithImage = styled(DefaultBtn)`
   }
 `;
 
-export const SubjInfoCol = styled(Col)`
+export const SubjInfoCol = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;

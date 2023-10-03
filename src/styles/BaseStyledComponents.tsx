@@ -73,6 +73,10 @@ export const IconHeadingContainer = styled.div`
   }
 `;
 
+export const FoundInHeadingContainer = styled(IconHeadingContainer)`
+  margin-bottom: 10px;
+`;
+
 // TODO: modify so can see textbox before click (has an outline)
 export const Alert = styled(IonAlert)`
   /* @media (prefers-color-scheme: dark) { */

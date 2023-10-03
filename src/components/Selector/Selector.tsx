@@ -140,11 +140,17 @@ const Selector = React.forwardRef<ButtonRef, SelectorProps>(
         </Trigger>
         <SelectPrimitive.Portal>
           <SelectContent>
-            <SelectPrimitive.ScrollUpButton className="scrollButton">
+            <SelectPrimitive.ScrollUpButton
+              className="scrollButton"
+              aria-label="Scroll up"
+            >
               <IonIcon src={CollapseArrowIcon} />
             </SelectPrimitive.ScrollUpButton>
             <SelectViewport>{children}</SelectViewport>
-            <SelectPrimitive.ScrollDownButton className="scrollButton">
+            <SelectPrimitive.ScrollDownButton
+              className="scrollButton"
+              aria-label="Scroll down"
+            >
               <IonIcon src={ExpandArrowIcon} />
             </SelectPrimitive.ScrollDownButton>
           </SelectContent>

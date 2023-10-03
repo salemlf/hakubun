@@ -1,4 +1,4 @@
-import { IonRow, IonSkeletonText } from "@ionic/react";
+import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Kanji } from "../../types/Subject";
 import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic/KanjiMeaningMnemonic";
@@ -6,11 +6,13 @@ import RadicalCombination from "../RadicalCombination/RadicalCombination";
 import SubjectWideBtnList from "../SubjectWideBtnList/SubjectWideBtnList";
 import VisuallySimilarKanji from "./VisuallySimilarKanji";
 import KanjiReadingMnemonic from "../KanjiReadingMnemonic/KanjiReadingMnemonic";
+import MagnifyingGlassIcon from "../../images/magnifying-glass-color.svg";
 import {
   SubjInfoContainer,
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
+import { FoundInHeadingContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   kanji: Kanji;
@@ -45,7 +47,10 @@ function KanjiSubjDetails({ kanji }: Props) {
       <KanjiReadingMnemonic kanji={kanji} />
       {findSimilar && <VisuallySimilarKanji kanji={kanji} />}
       <SubjDetailSection>
-        <SubjDetailSubHeading>Found in Vocabulary</SubjDetailSubHeading>
+        <FoundInHeadingContainer>
+          <IonIcon src={MagnifyingGlassIcon} />
+          <SubjDetailSubHeading>Found in Vocabulary</SubjDetailSubHeading>
+        </FoundInHeadingContainer>
         {findVocab && <SubjectWideBtnList subjList={vocabFoundSubjData} />}
       </SubjDetailSection>
     </SubjInfoContainer>

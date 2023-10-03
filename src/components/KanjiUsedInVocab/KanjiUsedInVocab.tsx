@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { IonSkeletonText } from "@ionic/react";
+import { IonIcon, IonSkeletonText } from "@ionic/react";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Subject } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
+import PuzzleIcon from "../../images/puzzle.svg";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
+import { IconHeadingContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   kanjiIDs: number[];
@@ -66,7 +68,10 @@ function KanjiUsedInVocab({
 
   return (
     <SubjDetailSection>
-      <SubjDetailSubHeading>Kanji Used</SubjDetailSubHeading>
+      <IconHeadingContainer>
+        <IonIcon src={PuzzleIcon} />
+        <SubjDetailSubHeading>Kanji Used</SubjDetailSubHeading>
+      </IconHeadingContainer>
       <SubjectButtonList
         btnSize="lg"
         subjList={kanjiUsedSubjects}

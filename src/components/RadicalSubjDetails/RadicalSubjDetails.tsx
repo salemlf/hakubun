@@ -1,4 +1,4 @@
-import { IonRow, IonSkeletonText } from "@ionic/react";
+import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Radical } from "../../types/Subject";
@@ -6,11 +6,13 @@ import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
 import TxtWithSubjTags from "../TxtWithSubjTags/TxtWithSubjTags";
 import RadicalNameMnemonic from "../RadicalNameMnemonic/RadicalNameMnemonic";
 import Emoji from "../Emoji";
+import MagnifyingGlassIcon from "../../images/magnifying-glass-color.svg";
 import {
   SubjInfoContainer,
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
+import { FoundInHeadingContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   radical: Radical;
@@ -61,7 +63,10 @@ function RadicalSubjDetails({ radical }: Props) {
     <SubjInfoContainer>
       <RadicalNameMnemonic radical={radical} />
       <SubjDetailSection>
-        <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
+        <FoundInHeadingContainer>
+          <IonIcon src={MagnifyingGlassIcon} />
+          <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
+        </FoundInHeadingContainer>
         {hasAmalgamationSubjs ? (
           <SubjectButtonList
             btnSize="lg"
