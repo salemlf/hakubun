@@ -1,4 +1,4 @@
-import { IonRow, useIonPopover } from "@ionic/react";
+import { useIonPopover } from "@ionic/react";
 import { Subject } from "../../types/Subject";
 import SubjCardPopover from "./SubjCardPopover";
 import RadicalButton from "./RadicalButton";
@@ -52,7 +52,7 @@ function SubjectButton({
   };
 
   return (
-    <IonRow className="ion-justify-content-center">
+    <>
       {(subject && assignment) || (subject && locked) ? (
         subject.object === "radical" ? (
           <RadicalButton
@@ -73,7 +73,7 @@ function SubjectButton({
       ) : (
         <SubjectButtonLoading />
       )}
-    </IonRow>
+    </>
   );
 }
 
