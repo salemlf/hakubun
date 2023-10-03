@@ -3,6 +3,7 @@ import React from "react";
 import { IonIcon } from "@ionic/react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ToastProps } from "@radix-ui/react-toast";
+import { ToastType } from "./types";
 import CloseIcon from "../../images/close.svg";
 import ErrorIcon from "../../images/error.svg";
 import InfoIcon from "../../images/info.svg";
@@ -90,24 +91,29 @@ const HeaderContainer = styled.div`
 
 type ToastStyles = {
   bgColor: string;
+  textColor: string;
   icon: string;
 };
 
 const toastTypeStylesMap: { [index: string]: ToastStyles } = {
   info: {
     bgColor: "var(--ion-color-primary)",
+    textColor: "white",
     icon: InfoIcon,
   },
   success: {
     bgColor: "var(--ion-color-success)",
+    textColor: "black",
     icon: SuccessIcon,
   },
   warning: {
     bgColor: "var(--ion-color-warning)",
+    textColor: "black",
     icon: WarningIcon,
   },
   error: {
     bgColor: "var(--ion-color-danger)",
+    textColor: "white",
     icon: ErrorIcon,
   },
 };
@@ -120,21 +126,17 @@ interface ActionProps {
 interface Props extends ToastProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-  bgColor?: string;
-  textColor?: string;
   action?: ActionProps;
   showClose?: boolean;
   distanceFromBottom?: string;
   duration?: number;
-  toastType: "success" | "error" | "warning" | "info";
+  toastType: ToastType;
 }
 
 // TODO: add animation on entrance and exit
 const Toast = ({
   open,
   setOpen,
-  bgColor,
-  textColor = "white",
   title,
   content,
   action,
@@ -143,16 +145,16 @@ const Toast = ({
   showClose = true,
   ...props
 }: Props) => {
-  let toastBgColor = toastTypeStylesMap[props.toastType];
-  let toastIcon = toastBgColor.icon;
+  let toastStyles = toastTypeStylesMap[props.toastType];
+  let toastIcon = toastStyles.icon;
   // TODO: set icon based on toast type
 
   return (
     <>
       <Root
         duration={duration}
-        bgcolor={toastBgColor.bgColor}
-        textcolor={textColor}
+        bgcolor={toastStyles.bgColor}
+        textcolor={toastStyles.textColor}
         {...props}
         open={open}
         onOpenChange={setOpen}
