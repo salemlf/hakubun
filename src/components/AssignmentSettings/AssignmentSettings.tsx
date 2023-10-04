@@ -23,21 +23,26 @@ import StartSessionButton from "../StartSessionButton";
 import LoadingDots from "../LoadingDots";
 import Toast from "../Toast";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
+import { AssignmentSortOption } from "../SortOrderOption/types";
 
 type Props = {
   settingsType: AssignmentSessionType;
   // TODO: change so not using "any" type
   assignmentData: any;
   defaultBatchSize: number;
+  defaultSortOrder: AssignmentSortOption;
 };
 
 function AssignmentSettings({
   settingsType,
   assignmentData,
   defaultBatchSize,
+  defaultSortOrder,
 }: Props) {
   const navigate = useNavigate();
   const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
+  let [sortOption, setSortOption] =
+    useState<AssignmentSortOption>(defaultSortOrder);
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
 
   const resetQueueStore = useQueueStore.use.resetAll();
@@ -183,6 +188,8 @@ function AssignmentSettings({
                     setBatchSize={setBatchSize}
                     selectedAssignmentTypes={selectedAssignmentTypes}
                     setSelectedAssignmentTypes={setSelectedAssignmentTypes}
+                    sortOption={sortOption}
+                    setSortOption={setSortOption}
                   />
                 ),
               },

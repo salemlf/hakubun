@@ -1,9 +1,12 @@
+import { getSubjectTypeDisplayText } from "../../services/SubjectAndAssignmentService";
 import { Assignment, AssignmentType } from "../../types/Assignment";
+import { AssignmentSortOption } from "../SortOrderOption/types";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
 import AssignmentTypeSelector from "../AssignmentTypeSelector";
-import { getSubjectTypeDisplayText } from "../../services/SubjectAndAssignmentService";
+import SortOrderOption from "../SortOrderOption";
 
+// TODO: change so this isn't using so many props
 type Props = {
   assignmentData: Assignment[];
   defaultBatchSize: number;
@@ -13,6 +16,8 @@ type Props = {
   setSelectedAssignmentTypes: (
     assignmentTypesSelected: AssignmentType[]
   ) => void;
+  sortOption: AssignmentSortOption;
+  setSortOption: (sortOption: AssignmentSortOption) => void;
 };
 
 function BasicAssignmentSettings({
@@ -22,6 +27,8 @@ function BasicAssignmentSettings({
   availableAssignmentTypes,
   selectedAssignmentTypes,
   setSelectedAssignmentTypes,
+  sortOption,
+  setSortOption,
 }: Props) {
   const availableAssignmentTypeNames = availableAssignmentTypes.map(
     (assignmentType) => {
@@ -37,6 +44,7 @@ function BasicAssignmentSettings({
 
   return (
     <Card>
+      <SortOrderOption sortOption={sortOption} onSortUpdate={setSortOption} />
       <BatchSizeOption
         assignmentData={assignmentData}
         defaultSize={defaultBatchSize}

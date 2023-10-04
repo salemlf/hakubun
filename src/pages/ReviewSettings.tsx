@@ -51,6 +51,8 @@ export const ReviewSettings = () => {
   } = useAssignmentsAvailForReview(currUserLevel, isEnabled);
 
   const reviewBatchSize = useUserSettingsStore.use.reviewBatchSize();
+  const reviewSortOrderOption =
+    useUserSettingsStore.use.reviewSortOrderOption();
 
   return (
     <Page>
@@ -78,6 +80,7 @@ export const ReviewSettings = () => {
             settingsType="review"
             assignmentData={availForReviewData}
             defaultBatchSize={reviewBatchSize}
+            defaultSortOrder={reviewSortOrderOption}
           />
         )}
       </MainContent>

@@ -255,3 +255,10 @@ export const LoadingContainer = styled.div`
   justify-content: center;
   z-index: 12;
 `;
+
+export const SettingOptionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 16px 16px;
+  align-items: center;
+`;
