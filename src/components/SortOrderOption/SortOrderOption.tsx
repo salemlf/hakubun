@@ -1,39 +1,44 @@
-import { useState } from "react";
-import { SORT_OPTIONS } from "./constants";
-import { AssignmentSortOption } from "./types";
+import { getSortOrderOptionById } from "./SortOrderOption.service";
+import { SORT_OPTIONS } from "./SortOrderOption.constants";
+import { AssignmentSortOption } from "./SortOrderOption.types";
 import Label from "../Label";
 import Selector, { SelectItem } from "../Selector";
-import { SettingOptionContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   sortOption: AssignmentSortOption;
-  onSortUpdate: (sortOption: AssignmentSortOption) => void;
+  setSortOption: (sortOption: AssignmentSortOption) => void;
+  labelId?: string;
 };
 
-function SortOrderOption({ sortOption, onSortUpdate }: Props) {
-  console.log(
-    "🚀 ~ file: SortOrderOption.tsx:14 ~ SortOrderOption ~ sortOption:",
-    sortOption
-  );
+function SortOrderOption({
+  sortOption,
+  setSortOption,
+  labelId = "sort-option-selector",
+}: Props) {
+  const onSortUpdate = (sortOptionId: string) => {
+    let option = getSortOrderOptionById(sortOptionId);
+    setSortOption(option);
+  };
+
   return (
-    <SettingOptionContainer>
-      <Label labelText="Sort Order" idOfControl="sort-option-selector" />
+    <>
+      <Label labelText="Sort Order" idOfControl={labelId} />
       <Selector
-        id="sort-option-selector"
-        value={sortOption}
-        onValueChange={(updatedValue) =>
-          onSortUpdate(updatedValue as AssignmentSortOption)
-        }
+        id={labelId}
+        value={sortOption.id}
+        onValueChange={(updatedValue) => onSortUpdate(updatedValue)}
       >
-        {SORT_OPTIONS.map((option: string) => {
+        {SORT_OPTIONS.map((option: AssignmentSortOption) => {
           return (
-            <SelectItem key={`batch_${option}`} value={option}>
-              {option}
+            <SelectItem key={`batch_${option.id}`} value={option.id}>
+              {`${option.option}${
+                option.id !== "shuffled" ? ", " + option.order : ""
+              }`}
             </SelectItem>
           );
         })}
       </Selector>
-    </SettingOptionContainer>
+    </>
   );
 }
 

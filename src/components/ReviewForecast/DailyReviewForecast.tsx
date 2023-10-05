@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
+import { sortAssignmentsByAvailableDate } from "../../services/SubjectAndAssignmentService";
+import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
 import { useAssignmentsAvailableInRange } from "../../hooks/useAssignmentsAvailableInRange";
 import { Assignment } from "../../types/Assignment";
-import styled from "styled-components";
-import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
-import {
-  FixedCenterContainer,
-  LoadingContainer,
-} from "../../styles/BaseStyledComponents";
 import LoadingDots from "../LoadingDots";
+import { LoadingContainer } from "../../styles/BaseStyledComponents";
+import styled from "styled-components";
 
 const ChartContainer = styled.section`
   display: grid;
@@ -192,20 +190,24 @@ function DailyReviewForecast({
 
       updateRunningTotalAvailableReviews(assignments.length, index);
 
-      const sortedAssignments = assignments.sort(
-        (a: Assignment, b: Assignment) => {
-          if (a.available_at === null) {
-            return 1;
-          } else if (b.available_at === null) {
-            return -1;
-          } else {
-            return (
-              new Date(a.available_at).getTime() -
-              new Date(b.available_at).getTime()
-            );
-          }
-        }
+      const sortedAssignments = sortAssignmentsByAvailableDate(
+        assignments,
+        "asc"
       );
+      // const sortedAssignments = assignments.sort(
+      //   (a: Assignment, b: Assignment) => {
+      //     if (a.available_at === null) {
+      //       return 1;
+      //     } else if (b.available_at === null) {
+      //       return -1;
+      //     } else {
+      //       return (
+      //         new Date(a.available_at).getTime() -
+      //         new Date(b.available_at).getTime()
+      //       );
+      //     }
+      //   }
+      // );
 
       let reviewCalculations = calculateDailyReviewInfo(
         sortedAssignments,

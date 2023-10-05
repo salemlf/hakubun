@@ -22,7 +22,7 @@ type LabelProps = PrimitiveLabelProps & {
 function Label({
   idOfControl,
   labelText,
-  labelfontSize = "1.25rem",
+  labelfontSize = "1.2rem",
   color = "white",
 }: LabelProps) {
   return (

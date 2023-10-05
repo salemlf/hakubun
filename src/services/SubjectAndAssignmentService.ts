@@ -6,8 +6,9 @@ import {
 } from "../types/Subject";
 import { Assignment, AssignmentType } from "../types/Assignment";
 import { SrsLevelName, StudyMaterial, TagType } from "../types/MiscTypes";
-import { findStudyMaterialWithSubjID } from "./MiscService";
 import { AssignmentQueueItem, ReviewType } from "../types/AssignmentQueueTypes";
+import { SortOrder } from "../components/SortOrderOption/SortOrderOption.types";
+import { findStudyMaterialWithSubjID } from "./MiscService";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(
@@ -67,6 +68,15 @@ export const findAssignmentWithSubjID = (
 ) => {
   return assignmentsData.find(
     (assignment: Assignment) => assignment.subject_id === subject.id
+  );
+};
+
+export const findSubjectForAssignment = (
+  subjects: Subject[],
+  assignment: Assignment
+) => {
+  return subjects.find(
+    (subject: Subject) => subject.id === assignment.subject_id
   );
 };
 
@@ -159,6 +169,7 @@ export const getSubjIDsFromAssignments = (assignments: Assignment[]) => {
   return assignments.map((assignment) => assignment.subject_id);
 };
 
+// TODO: delete and just use sort function below?
 export const compareAssignmentsByAvailableDate = (
   assignment1: Assignment,
   assignment2: Assignment
@@ -221,4 +232,61 @@ export const createAssignmentQueueItems = (
   ];
 
   return meaningAndReadingQueue;
+};
+
+export const sortAssignmentsByAvailableDate = (
+  assignments: Assignment[],
+  sortOrder: SortOrder
+): Assignment[] => {
+  const assignmentsCopyToSort = [...assignments];
+  return assignmentsCopyToSort.sort((a: Assignment, b: Assignment) => {
+    if (a.available_at === null) {
+      return sortOrder === "asc" ? 1 : -1;
+    } else if (b.available_at === null) {
+      return sortOrder === "asc" ? -1 : 1;
+    }
+    return sortOrder === "asc"
+      ? new Date(a.available_at).getTime() - new Date(b.available_at).getTime()
+      : new Date(b.available_at).getTime() - new Date(a.available_at).getTime();
+  });
+};
+
+export const sortAssignmentsByLevel = (
+  assignments: Assignment[],
+  sortOrder: SortOrder,
+  subjects: Subject[]
+): Assignment[] => {
+  // *testing
+  console.log(
+    "🚀 ~ file: SubjectAndAssignmentService.ts:261 ~ subjects:",
+    subjects
+  );
+  // *testing
+  const assignmentsCopyToSort = [...assignments];
+  return assignmentsCopyToSort.sort((a: Assignment, b: Assignment) => {
+    let subjectInfoA = findSubjectForAssignment(subjects, a);
+    let subjectInfoB = findSubjectForAssignment(subjects, b);
+    if (subjectInfoA === undefined) {
+      return sortOrder === "asc" ? 1 : -1;
+    }
+    if (subjectInfoB === undefined) {
+      return sortOrder === "asc" ? -1 : 1;
+    }
+
+    return sortOrder === "asc"
+      ? subjectInfoA.level - subjectInfoB.level
+      : subjectInfoB.level - subjectInfoA.level;
+  });
+};
+
+export const sortAssignmentsBySrsStage = (
+  assignments: Assignment[],
+  sortOrder: SortOrder
+): Assignment[] => {
+  const assignmentsCopyToSort = [...assignments];
+  return assignmentsCopyToSort.sort((a: Assignment, b: Assignment) => {
+    return sortOrder === "asc"
+      ? a.srs_stage - b.srs_stage
+      : b.srs_stage - a.srs_stage;
+  });
 };

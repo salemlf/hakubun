@@ -1,8 +1,8 @@
 import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
 import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import Card from "../Card";
-import Label from "../Label";
-import Selector, { SelectItem } from "../Selector";
+import BatchSizeOption from "../BatchSizeOption";
+import SortOrderOption from "../SortOrderOption";
 import { SettingRow } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -13,32 +13,27 @@ const SettingCategory = styled(Card)`
 function LessonUserSettings() {
   const lessonBatchSize = useUserSettingsStore.use.lessonBatchSize();
   const setLessonBatchSize = useUserSettingsStore.use.setLessonBatchSize();
-
-  const onBatchUpdate = (batchStr: string) => {
-    let batchNum = parseInt(batchStr);
-    setLessonBatchSize(batchNum);
-  };
+  const lessonSortOrderOption =
+    useUserSettingsStore.use.lessonSortOrderOption();
+  const setLessonSortOrderOption =
+    useUserSettingsStore.use.setLessonSortOrderOption();
 
   return (
     <SettingCategory title="Lessons" headerBgColor="var(--wanikani-lesson)">
       <SettingRow>
-        <Label
-          labelText="Default Batch Size"
-          idOfControl="user-default-lesson-batch-size-selector"
+        <BatchSizeOption
+          batchSize={lessonBatchSize}
+          availableSizes={ASSIGNMENT_BATCH_SIZES}
+          onBatchSizeChange={setLessonBatchSize}
+          labelId="user-default-lesson-batch-size-selector"
         />
-        <Selector
-          id="user-default-lesson-batch-size-selector"
-          value={lessonBatchSize.toString()}
-          onValueChange={(updatedValue) => onBatchUpdate(updatedValue)}
-        >
-          {ASSIGNMENT_BATCH_SIZES.map((batch: number) => {
-            return (
-              <SelectItem key={`batch_${batch}`} value={batch.toString()}>
-                {batch}
-              </SelectItem>
-            );
-          })}
-        </Selector>
+      </SettingRow>
+      <SettingRow>
+        <SortOrderOption
+          sortOption={lessonSortOrderOption}
+          setSortOption={setLessonSortOrderOption}
+          labelId="user-default-lesson-sort-order-selector"
+        />
       </SettingRow>
     </SettingCategory>
   );

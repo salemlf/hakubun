@@ -1,10 +1,12 @@
 import { getSubjectTypeDisplayText } from "../../services/SubjectAndAssignmentService";
+import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
-import { AssignmentSortOption } from "../SortOrderOption/types";
+import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
 import AssignmentTypeSelector from "../AssignmentTypeSelector";
 import SortOrderOption from "../SortOrderOption";
+import { SettingOptionContainer } from "../../styles/BaseStyledComponents";
 
 // TODO: change so this isn't using so many props
 type Props = {
@@ -42,14 +44,31 @@ function BasicAssignmentSettings({
     }
   );
 
+  let availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter(
+    (batchSize) => batchSize <= assignmentData.length
+  );
+  let selectedBatchSize =
+    defaultBatchSize <= assignmentData.length
+      ? defaultBatchSize
+      : Math.max(...availBatchSizes);
+
   return (
     <Card>
-      <SortOrderOption sortOption={sortOption} onSortUpdate={setSortOption} />
-      <BatchSizeOption
-        assignmentData={assignmentData}
-        defaultSize={defaultBatchSize}
-        onBatchSizeChange={(updatedBatchSize) => setBatchSize(updatedBatchSize)}
-      />
+      <SettingOptionContainer>
+        <BatchSizeOption
+          availableSizes={availBatchSizes}
+          batchSize={selectedBatchSize}
+          onBatchSizeChange={(updatedBatchSize) =>
+            setBatchSize(updatedBatchSize)
+          }
+        />
+      </SettingOptionContainer>
+      <SettingOptionContainer>
+        <SortOrderOption
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+        />
+      </SettingOptionContainer>
       <AssignmentTypeSelector
         selectedAssignmentTypes={selectedAssignmentTypes}
         availableAssignmentTypeNames={availableAssignmentTypeNames}

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   checkIfAssignmentTypeInQueue,
-  compareAssignmentsByAvailableDate,
   createAssignmentQueueItems,
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
@@ -23,7 +22,9 @@ import StartSessionButton from "../StartSessionButton";
 import LoadingDots from "../LoadingDots";
 import Toast from "../Toast";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
-import { AssignmentSortOption } from "../SortOrderOption/types";
+import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
+import { sortAssignmentsWithOption } from "../SortOrderOption/SortOrderOption.service";
+import { Subject } from "../../types/Subject";
 
 type Props = {
   settingsType: AssignmentSessionType;
@@ -47,13 +48,13 @@ function AssignmentSettings({
 
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const setAssignmentQueueData =
     useAssignmentQueueStore.use.setAssignmentQueueData();
 
-  const [subjIDs, setSubjIDs] = useState<number[]>([]);
-  const [assignmentBatch, setAssignmentBatch] = useState<Assignment[]>([]);
-  let queriesEnabled = subjIDs.length !== 0 && assignmentBatch.length !== 0;
+  let subjIDs = getSubjIDsFromAssignments(assignmentData);
+  let queriesEnabled = subjIDs.length !== 0;
+
   const { data: subjectsData, isLoading: subjectsLoading } = useSubjectsByIDs(
     subjIDs,
     queriesEnabled
@@ -68,19 +69,7 @@ function AssignmentSettings({
       subjectsData.length !== 0 &&
       studyMaterialsData !== undefined
     ) {
-      let assignmentQueue = createAssignmentQueueItems(
-        assignmentBatch,
-        subjectsData,
-        studyMaterialsData as StudyMaterial[]
-      );
-
-      setAssignmentQueueData(assignmentQueue, settingsType);
-
-      if (settingsType === "review") {
-        navigate("/reviews/session", { replace: true });
-      } else {
-        navigate("/lessons/session", { replace: true });
-      }
+      setIsLoading(false);
     }
   }, [subjectsLoading, studyMaterialsLoading]);
 
@@ -111,12 +100,13 @@ function AssignmentSettings({
       Array.from(selectedAssignmentTypes)
     );
 
-    //TODO: sorting by available date ascending as default (oldest to newest), add other sort options
-    let assignmentsByAvailDate = assignmentsFiltered.sort(
-      compareAssignmentsByAvailableDate
+    let sorted = sortAssignmentsWithOption(
+      assignmentsFiltered,
+      sortOption,
+      subjectsData
     );
 
-    let assignmentBatch = assignmentsByAvailDate.slice(0, batchSize);
+    const assignmentBatch = sorted.slice(0, batchSize);
     let subjIDs = getSubjIDsFromAssignments(assignmentBatch);
 
     return {
@@ -158,8 +148,33 @@ function AssignmentSettings({
 
     // getting data for assignment queue
     setIsLoading(true);
-    setSubjIDs(sessionData.subjIDs);
-    setAssignmentBatch(sessionData.assignmentBatch);
+
+    let subjects = subjectsData.filter((subject: Subject) => {
+      return sessionData.subjIDs.includes(subject.id);
+    });
+
+    let assignmentQueue = createAssignmentQueueItems(
+      sessionData.assignmentBatch,
+      subjects,
+      studyMaterialsData as StudyMaterial[]
+    );
+
+    // TODO: shuffle these before calling setAssignmentQueueData, unless reading -> meaning or...
+    // TODO: ... meaning -> reading seeting setting is chosen (not implemented yet)
+    // *testing
+    console.log(
+      "🚀 ~ file: AssignmentSettings.tsx:170 ~ onStartSessionBtnClick ~ assignmentQueue:",
+      assignmentQueue
+    );
+    // *testing
+
+    setAssignmentQueueData(assignmentQueue, settingsType);
+
+    if (settingsType === "review") {
+      navigate("/reviews/session", { replace: true });
+    } else {
+      navigate("/lessons/session", { replace: true });
+    }
   };
 
   return (

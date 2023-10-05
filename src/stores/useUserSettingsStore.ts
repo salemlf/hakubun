@@ -2,7 +2,8 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { createSelectors } from "../utils";
 import { PronunciationVoice } from "../types/UserSettingsTypes";
-import { AssignmentSortOption } from "../components/SortOrderOption/types";
+import { AssignmentSortOption } from "../components/SortOrderOption/SortOrderOption.types";
+import { getSortOrderOptionById } from "../components/SortOrderOption/SortOrderOption.service";
 
 interface UserSettingsState {
   pronunciationVoice: PronunciationVoice;
@@ -31,8 +32,8 @@ const initialState: UserSettingsState = {
   },
   lessonBatchSize: 2,
   reviewBatchSize: 5,
-  lessonSortOrderOption: "level, asc",
-  reviewSortOrderOption: "shuffled",
+  lessonSortOrderOption: getSortOrderOptionById("level_asc"),
+  reviewSortOrderOption: getSortOrderOptionById("shuffled"),
 };
 
 const useUserSettingsStoreBase = create<

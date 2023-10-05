@@ -13,6 +13,7 @@ const Item = styled(SelectPrimitive.Item)`
   line-height: 1.3;
   color: var(--darkest-purple);
   display: flex;
+  gap: 5px;
   align-items: center;
   padding: 10px 10px;
   position: relative;
@@ -44,12 +45,12 @@ const Item = styled(SelectPrimitive.Item)`
 `;
 
 const ItemIndicator = styled(SelectPrimitive.ItemIndicator)`
-  position: absolute;
   right: 0;
   width: 25px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  margin-left: 5px;
 `;
 
 type SelectItemRef = HTMLDivElement;
@@ -78,7 +79,7 @@ const Trigger = styled(SelectPrimitive.Trigger)`
   align-items: center;
   border-radius: 4px;
   padding: 5px 12px;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   line-height: 1.3;
   gap: 8px;
   background-color: white;
