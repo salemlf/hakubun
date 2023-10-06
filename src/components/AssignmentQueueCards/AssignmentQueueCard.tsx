@@ -12,6 +12,7 @@ import { useQueueStore } from "../../stores/useQueueStore";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { SubjectType } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import { ToastType } from "../Toast/types";
 import AssignmentCharAndType from "./AssignmentCharAndType";
 import AssignmentAnswerInput from "./AssignmentAnswerInput";
 import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
@@ -23,10 +24,13 @@ import {
   NextCardOverlay,
   RetryCardOverlay,
   AssignmentCardStyled,
-  SwipeIcon,
+  SwipeIconAndText,
+  Retry,
+  Next,
+  RetryTxt,
+  NextTxt,
 } from "./AssignmentQueueCardsStyled";
 import styled from "styled-components";
-import { ToastType } from "../Toast/types";
 
 const SwipeMeHint = styled.p`
   font-size: 0.9rem;
@@ -242,18 +246,24 @@ export const AssignmentQueueCard = ({
                 opacity: opacityLeft,
               }}
             >
-              <SwipeIcon>
-                <IonIcon icon={RetryIcon}></IonIcon>
-              </SwipeIcon>
+              <SwipeIconAndText>
+                <Retry>
+                  <IonIcon icon={RetryIcon}></IonIcon>
+                </Retry>
+                <RetryTxt>Retry</RetryTxt>
+              </SwipeIconAndText>
             </RetryCardOverlay>
             <NextCardOverlay
               style={{
                 opacity: opacityRight,
               }}
             >
-              <SwipeIcon>
-                <IonIcon icon={NextIcon}></IonIcon>
-              </SwipeIcon>
+              <SwipeIconAndText>
+                <Next>
+                  <IonIcon icon={NextIcon}></IonIcon>
+                </Next>
+                <NextTxt>Next</NextTxt>
+              </SwipeIconAndText>
             </NextCardOverlay>
             <SwipeMeHint>
               Swipe me <Emoji symbol="🙂" label="Smiling face" />

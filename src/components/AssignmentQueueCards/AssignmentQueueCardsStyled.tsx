@@ -42,19 +42,27 @@ export const SwipeOverlay = styled(motion.div)`
   opacity: 0;
 `;
 
-export const SwipeIcon = styled(motion.div)`
+export const SwipeIconAndText = styled.div`
   position: absolute;
+  padding: 20px;
+  border-radius: 50%;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+export const SwipeIcon = styled(motion.div)`
   padding: 20px;
   border-radius: 50%;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 200px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 
   ion-icon {
     width: 85px;
@@ -62,19 +70,35 @@ export const SwipeIcon = styled(motion.div)`
   }
 `;
 
+export const Retry = styled(SwipeIcon)`
+  color: white;
+  border: 2px solid white;
+`;
+
+export const Next = styled(SwipeIcon)`
+  color: black;
+  border: 2px solid black;
+`;
+
+export const SwipeTxt = styled.p`
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin: 16px 0;
+  text-transform: uppercase;
+`;
+
+export const RetryTxt = styled(SwipeTxt)`
+  color: white;
+`;
+
+export const NextTxt = styled(SwipeTxt)`
+  color: black;
+`;
+
 export const NextCardOverlay = styled(SwipeOverlay)`
   background-color: var(--ion-color-tertiary);
-
-  div {
-    color: black;
-    border: 2px solid black;
-  }
 `;
 
 export const RetryCardOverlay = styled(SwipeOverlay)`
   background-color: var(--ion-color-secondary);
-  div {
-    color: white;
-    border: 2px solid white;
-  }
 `;
