@@ -83,7 +83,6 @@ const queueCardVariants = {
 
 type CardProps = {
   currentReviewItem: AssignmentQueueItem;
-  displayInvalidAnswerMsg: (message: string) => void;
   handleNextClick: (
     currentReviewItem: AssignmentQueueItem,
     userAnswer: string,
@@ -97,7 +96,6 @@ type CardProps = {
 
 export const AssignmentQueueCard = ({
   currentReviewItem,
-  displayInvalidAnswerMsg,
   handleNextClick,
   handleRetryClick,
 }: CardProps) => {
@@ -275,6 +273,8 @@ export const AssignmentQueueCard = ({
             setOpen={setDisplayToast}
             title={toastInfo.title}
             content={toastInfo.content}
+            distanceFromBottom="inherit"
+            distanceFromTop="0"
           ></Toast>
           <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />
         </>
