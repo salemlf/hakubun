@@ -73,10 +73,6 @@ function AssignmentQueueCards({ submitItems }: Props) {
     showPopoverMsg(popoverToDisplay);
   };
 
-  const displayInvalidAnswerMsg = (message: string) => {
-    showPopoverMsg({ message, messageType: "invalid" });
-  };
-
   // TODO: clean up this logic
   const playAudioIfReadingAndAvailable = (
     assignmentQueueItem: AssignmentQueueItem,
@@ -250,7 +246,6 @@ function AssignmentQueueCards({ submitItems }: Props) {
         <AssignmentCardContainer>
           <AssignmentQueueCard
             currentReviewItem={assignmentQueue[currQueueIndex]}
-            displayInvalidAnswerMsg={displayInvalidAnswerMsg}
             handleNextClick={handleNextClick}
             handleRetryClick={handleRetryClick}
           />
