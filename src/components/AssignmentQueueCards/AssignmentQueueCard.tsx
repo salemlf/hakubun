@@ -12,17 +12,23 @@ import { useQueueStore } from "../../stores/useQueueStore";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { SubjectType } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import { ToastType } from "../Toast/types";
 import AssignmentCharAndType from "./AssignmentCharAndType";
 import AssignmentAnswerInput from "./AssignmentAnswerInput";
 import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
 import Emoji from "../Emoji";
+import Toast from "../Toast";
 import RetryIcon from "../../images/retry.svg";
 import NextIcon from "../../images/next-item.svg";
 import {
   NextCardOverlay,
   RetryCardOverlay,
   AssignmentCardStyled,
-  SwipeIcon,
+  SwipeIconAndText,
+  Retry,
+  Next,
+  RetryTxt,
+  NextTxt,
 } from "./AssignmentQueueCardsStyled";
 import styled from "styled-components";
 
@@ -102,6 +108,20 @@ export const AssignmentQueueCard = ({
   let initialUserAnswer =
     !isSecondClick || savedUserAnswer === null ? "" : savedUserAnswer;
   const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
+  // !added
+  type ToastInfo = {
+    toastType: ToastType;
+    title: string;
+    content: string;
+  };
+  const initialToastValue: ToastInfo = {
+    toastType: "info",
+    title: "",
+    content: "",
+  };
+  const [toastInfo, setToastInfo] = useState<ToastInfo>(initialToastValue);
+  const [displayToast, setDisplayToast] = useState<boolean>(false);
+  // !added
 
   useKeyDown(() => attemptToAdvance(), ["F12"]);
   useKeyDown(() => retryTriggered(), ["F6"]);
@@ -110,7 +130,7 @@ export const AssignmentQueueCard = ({
   const dragX = useMotionValue(0);
   const opacityLeft = useTransform(dragX, [-100, 0], [1, 0]);
   const opacityRight = useTransform(dragX, [0, 100], [0, 1]);
-  const rotate = useTransform(dragX, [-300, 0, 300], [-20, 0, 20]);
+  const rotate = useTransform(dragX, [-250, 0, 250], [-20, 0, 20]);
   const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
   const exitTimeMs = 600;
 
@@ -118,7 +138,10 @@ export const AssignmentQueueCard = ({
     controls.start("fallDown");
   }, []);
 
+  // TODO: sometimes on retry drag motion value somehow becomes NaN (maybe somehow gets cancelled?) and...
+  // TODO: ...freezes up the dragging. Tough bug to fix, may be a library issue
   const retryTriggered = () => {
+    setDisplayToast(false);
     // *testing
     console.log("Handling retry for item: ", currentReviewItem);
     // *testing
@@ -128,20 +151,32 @@ export const AssignmentQueueCard = ({
       handleRetryClick(currentReviewItem, setUserAnswer);
       controls.start("center");
     } else {
-      // TODO: show some visual indication of this
-      console.log("RETRY NOT AVAILABLE!");
+      setToastInfo({
+        toastType: "warning",
+        title: "Can't Retry!",
+        content:
+          "Looks like your answer was correct or input is empty, you can't retry this item!",
+      });
+      setDisplayToast(true);
       controls.start("center");
     }
   };
 
   const attemptToAdvance = () => {
+    setDisplayToast(false);
     let strippedUserAnswer = userAnswer.trim();
     currentReviewItem.review_type === "reading" &&
       setUserAnswer(toHiragana(strippedUserAnswer));
 
     let isValidInfo = isUserAnswerValid(currentReviewItem, strippedUserAnswer);
     if (isValidInfo.isValid === false) {
-      displayInvalidAnswerMsg(isValidInfo.message);
+      // displayInvalidAnswerMsg(isValidInfo.message);
+      setToastInfo({
+        toastType: "warning",
+        title: "Invalid Answer",
+        content: isValidInfo.message,
+      });
+      setDisplayToast(true);
       setShakeInputTrigger((shakeInputTrigger) => shakeInputTrigger + 1);
     } else {
       setSavedUserAnswer(strippedUserAnswer);
@@ -173,7 +208,6 @@ export const AssignmentQueueCard = ({
     } else {
       console.log("DIDN'T MEET DRAG THRESHOLD");
       controls.start("center");
-      // dragX.set(0);
     }
   };
 
@@ -191,9 +225,7 @@ export const AssignmentQueueCard = ({
               rotate,
             }}
             drag="x"
-            transition={{ type: "spring", bounce: 0.5 }}
             dragConstraints={{ left: 0, right: 0 }}
-            dragTransition={{ bounceStiffness: 300, bounceDamping: 20 }}
             onDragEnd={handleDragEnd}
             whileTap={{ cursor: "grabbing" }}
             dragElastic={0.5}
@@ -214,23 +246,36 @@ export const AssignmentQueueCard = ({
                 opacity: opacityLeft,
               }}
             >
-              <SwipeIcon>
-                <IonIcon icon={RetryIcon}></IonIcon>
-              </SwipeIcon>
+              <SwipeIconAndText>
+                <Retry>
+                  <IonIcon icon={RetryIcon}></IonIcon>
+                </Retry>
+                <RetryTxt>Retry</RetryTxt>
+              </SwipeIconAndText>
             </RetryCardOverlay>
             <NextCardOverlay
               style={{
                 opacity: opacityRight,
               }}
             >
-              <SwipeIcon>
-                <IonIcon icon={NextIcon}></IonIcon>
-              </SwipeIcon>
+              <SwipeIconAndText>
+                <Next>
+                  <IonIcon icon={NextIcon}></IonIcon>
+                </Next>
+                <NextTxt>Next</NextTxt>
+              </SwipeIconAndText>
             </NextCardOverlay>
             <SwipeMeHint>
               Swipe me <Emoji symbol="🙂" label="Smiling face" />
             </SwipeMeHint>
           </AssignmentCardStyled>
+          <Toast
+            toastType={toastInfo.toastType}
+            open={displayToast}
+            setOpen={setDisplayToast}
+            title={toastInfo.title}
+            content={toastInfo.content}
+          ></Toast>
           <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />
         </>
       )}
