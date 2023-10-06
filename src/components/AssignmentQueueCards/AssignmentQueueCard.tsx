@@ -276,6 +276,8 @@ export const AssignmentQueueCard = ({
             setOpen={setDisplayToast}
             title={toastInfo.title}
             content={toastInfo.content}
+            distanceFromBottom="inherit"
+            distanceFromTop="0"
           ></Toast>
           <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />
         </>
