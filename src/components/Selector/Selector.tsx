@@ -15,6 +15,7 @@ const Item = styled(SelectPrimitive.Item)`
   display: flex;
   gap: 5px;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 10px;
   position: relative;
   user-select: none;
