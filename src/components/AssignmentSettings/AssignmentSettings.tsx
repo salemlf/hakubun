@@ -6,7 +6,7 @@ import {
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
 } from "../../services/SubjectAndAssignmentService";
-import { capitalizeWord } from "../../services/MiscService";
+import { capitalizeWord, shuffleArray } from "../../services/MiscService";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
@@ -159,8 +159,10 @@ function AssignmentSettings({
       studyMaterialsData as StudyMaterial[]
     );
 
-    // TODO: shuffle these before calling setAssignmentQueueData, unless reading -> meaning or...
-    // TODO: ... meaning -> reading seeting setting is chosen (not implemented yet)
+    let shuffledAssignmentQueue = shuffleArray(assignmentQueue);
+
+    // TODO: update this so shuffle is only called if reading -> meaning or...
+    // TODO: ... meaning -> reading setting is not chosen (those aren't implemented yet)
     // *testing
     console.log(
       "🚀 ~ file: AssignmentSettings.tsx:170 ~ onStartSessionBtnClick ~ assignmentQueue:",
@@ -168,7 +170,7 @@ function AssignmentSettings({
     );
     // *testing
 
-    setAssignmentQueueData(assignmentQueue, settingsType);
+    setAssignmentQueueData(shuffledAssignmentQueue, settingsType);
 
     if (settingsType === "review") {
       navigate("/reviews/session", { replace: true });
