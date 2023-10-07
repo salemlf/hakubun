@@ -22,6 +22,7 @@ interface AssignmentQueueActions {
     queueData: AssignmentQueueItem[],
     sessionType: AssignmentSessionType
   ) => void;
+  updateAssignmentQueueData: (queueData: AssignmentQueueItem[]) => void;
   incrementCurrQueueIndex: () => void;
   addToAssignmentQueue: (reviewItem: AssignmentQueueItem) => void;
   removeOldQueueItem: () => void;
@@ -110,6 +111,11 @@ const useAssignmentQueueStoreBase = create<
         ...state.assignmentQueue.slice(0, indexToRemove),
         ...state.assignmentQueue.slice(indexToRemove + 1),
       ],
+    }));
+  },
+  updateAssignmentQueueData: (queueData: AssignmentQueueItem[]) => {
+    set(() => ({
+      assignmentQueue: queueData,
     }));
   },
   resetAll: () => {
