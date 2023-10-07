@@ -4,6 +4,7 @@ import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSele
 import Card from "../Card";
 import AssignmentSelector from "../AssignmentSelector";
 import AdvancedAssignmentFilters from "../AdvancedAssignmentFilters";
+import { SettingOptionContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   assignmentData: Assignment[];
@@ -30,11 +31,13 @@ function AdvancedAssignmentSettings({
 
   return (
     <Card>
-      <AdvancedAssignmentFilters
-        availableAssignmentTypeNames={availableAssignmentTypeNames}
-        selectedAssignmentTypes={selectedAssignmentTypes}
-        setSelectedAssignmentTypes={setSelectedAssignmentTypes}
-      />
+      <SettingOptionContainer>
+        <AdvancedAssignmentFilters
+          availableAssignmentTypeNames={availableAssignmentTypeNames}
+          selectedAssignmentTypes={selectedAssignmentTypes}
+          setSelectedAssignmentTypes={setSelectedAssignmentTypes}
+        />
+      </SettingOptionContainer>
       <AssignmentSelector
         selectedAdvancedSubjIDs={selectedAdvancedSubjIDs}
         setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}

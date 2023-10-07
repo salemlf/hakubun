@@ -259,6 +259,10 @@ export const LoadingContainer = styled.div`
 export const SettingOptionContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 10px 16px 16px;
+  margin: 22px 16px;
   align-items: center;
+
+  &:first-child {
+    margin-top: 10px;
+  }
 `;

@@ -1,10 +1,10 @@
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
+import { AnimatePresence, motion } from "framer-motion";
 import CollapseArrowColorIcon from "../../images/collapse-arrow-color.svg";
 import ExpandArrowColorIcon from "../../images/expand-arrow-color.svg";
 import styled from "styled-components";
-import { AnimatePresence, motion } from "framer-motion";
 
 const TriggerWithTitle = styled.div`
   display: flex;

@@ -15,7 +15,8 @@ const AssignmentTypeFieldset = styled.fieldset`
   border: none;
   padding-left: 12px;
   gap: 10px;
-  margin-bottom: 10px;
+  margin: 0;
+  padding: 0;
 `;
 
 type AssignmentTypeLegendProps = {
@@ -23,7 +24,6 @@ type AssignmentTypeLegendProps = {
 };
 
 const AssignmentTypeLegend = styled.legend<AssignmentTypeLegendProps>`
-  /* font-size: 1.25rem; */
   font-size: ${({ headingfontsize }) => headingfontsize};
   color: white;
   padding-top: 0;
@@ -50,6 +50,7 @@ const AssignmentTypeItem = styled(ToggleGroup.Item)<AssignTypeOptionProps>`
 
   &:focus-visible {
     outline: 2px solid white;
+    outline-offset: 2px;
     --outline: 2px solid white;
   }
 `;

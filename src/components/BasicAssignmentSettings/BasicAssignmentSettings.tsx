@@ -57,12 +57,14 @@ function BasicAssignmentSettings({
           setSortOption={setSortOption}
         />
       </SettingOptionContainer>
-      <AssignmentTypeSelector
-        headingFontSize="large"
-        selectedAssignmentTypes={selectedAssignmentTypes}
-        availableAssignmentTypeNames={availableAssignmentTypeNames}
-        setSelectedAssignmentTypes={setSelectedAssignmentTypes}
-      />
+      <SettingOptionContainer>
+        <AssignmentTypeSelector
+          headingFontSize="large"
+          selectedAssignmentTypes={selectedAssignmentTypes}
+          availableAssignmentTypeNames={availableAssignmentTypeNames}
+          setSelectedAssignmentTypes={setSelectedAssignmentTypes}
+        />
+      </SettingOptionContainer>
     </Card>
   );
 }
