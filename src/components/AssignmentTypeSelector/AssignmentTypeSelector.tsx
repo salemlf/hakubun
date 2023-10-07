@@ -33,7 +33,7 @@ const AssignmentTypeLegend = styled.legend<AssignmentTypeLegendProps>`
 const AssignmentTypeOptions = styled(ToggleGroup.Root)`
   display: flex;
   flex-wrap: wrap;
-  padding: 6px 0;
+  padding: 6px 2px;
   gap: 12px;
 `;
 
@@ -89,10 +89,7 @@ function AssignmentTypeSelector({
   headingFontSize,
 }: Props) {
   let headingSize = headingFontSizeMap[headingFontSize];
-  console.log(
-    "🚀 ~ file: AssignmentTypeSelector.tsx:91 ~ headingSize:",
-    headingSize
-  );
+
   return (
     <AssignmentTypeFieldset>
       <AssignmentTypeLegend headingfontsize={headingSize}>

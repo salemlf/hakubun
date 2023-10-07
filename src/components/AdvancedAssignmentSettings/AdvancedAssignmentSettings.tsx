@@ -24,10 +24,13 @@ function AdvancedAssignmentSettings({
   availableAssignmentTypes,
   availableAssignmentTypeNames,
 }: Props) {
-  // TODO: filter based on selected types
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState(
     availableAssignmentTypes
   );
+
+  // !temp
+  const [selectedSubjIDs, setSelectedSubjIDs] = useState<string[]>([]);
+  // !temp
 
   return (
     <Card>
@@ -39,8 +42,10 @@ function AdvancedAssignmentSettings({
         />
       </SettingOptionContainer>
       <AssignmentSelector
-        selectedAdvancedSubjIDs={selectedAdvancedSubjIDs}
-        setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}
+        // selectedAdvancedSubjIDs={selectedAdvancedSubjIDs}
+        // setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}
+        selectedAdvancedSubjIDs={selectedSubjIDs}
+        setSelectedAdvancedSubjIDs={setSelectedSubjIDs}
         showMeaning={showMeaning}
         assignmentData={assignmentData}
         assignmentFilters={selectedAssignmentTypes}
