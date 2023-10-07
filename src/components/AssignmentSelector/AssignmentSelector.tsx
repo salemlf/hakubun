@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 // TODO: change so not relying on IonIcon
 import { IonSkeletonText, IonIcon } from "@ionic/react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import {
+  filterAssignmentsByType,
+  filterSubjectsByType,
+  getSubjectColor,
+} from "../../services/SubjectAndAssignmentService";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { Assignment } from "../../types/Assignment";
+import { Assignment, AssignmentType } from "../../types/Assignment";
 import {
   KanaVocabulary,
   Kanji,
@@ -99,16 +103,30 @@ type Props = {
   assignmentData: Assignment[];
   selectedAdvancedSubjIDs: string[];
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
+  assignmentFilters?: AssignmentType[];
   showMeaning?: boolean;
 };
 
+// TODO: add layout animations when selecting and deselecting items
 // TODO: improve "no assignments available" message
 function AssignmentSelector({
   assignmentData,
   selectedAdvancedSubjIDs,
   setSelectedAdvancedSubjIDs,
+  assignmentFilters,
   showMeaning = true,
 }: Props) {
+  // *testing
+  console.log(
+    "🚀 ~ file: AssignmentSelector.tsx:112 ~ assignmentData:",
+    assignmentData
+  );
+  // *testing
+  // const [assignmentsFiltered, setAssignmentsFiltered] = useState<Assignment[]>(assignmentData);
+  // let assignmentsFiltered = assignmentFilters? filterAssignmentsByType(
+  //   assignmentData,
+  //   Array.from(assignmentFilters)
+  // ): assignmentData;
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
 
   let assignmentSubjIDs = assignmentData.map(
@@ -118,12 +136,19 @@ function AssignmentSelector({
   const { isLoading: subjectsLoading, data: subjectsData } =
     useSubjectsByIDs(assignmentSubjIDs);
 
+  // TODO: make sure to deselect items if not in selectedAssignmentTypes
   useEffect(() => {
     if (subjectsData) {
       let sortedAssignments = sortBySubjectTypeAndLevel(subjectsData);
-      setAvailableSubjects(sortedAssignments);
+      // setAvailableSubjects(sortedAssignments);
+
+      let subjectsFiltered = assignmentFilters
+        ? filterSubjectsByType(sortedAssignments, Array.from(assignmentFilters))
+        : sortedAssignments;
+
+      setAvailableSubjects(subjectsFiltered);
     }
-  }, [subjectsLoading]);
+  }, [subjectsLoading, assignmentFilters]);
 
   return (
     <>
