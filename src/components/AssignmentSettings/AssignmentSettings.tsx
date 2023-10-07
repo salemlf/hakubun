@@ -5,6 +5,7 @@ import {
   createAssignmentQueueItems,
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
+  getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
 import { capitalizeWord, shuffleArray } from "../../services/MiscService";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
@@ -83,6 +84,17 @@ function AssignmentSettings({
       return checkIfAssignmentTypeInQueue(assignmentData, assignmentType);
     }
   );
+  const availableAssignmentTypeNames = availableAssignmentTypes.map(
+    (assignmentType) => {
+      return {
+        name: assignmentType,
+        displayName: getSubjectTypeDisplayText(
+          assignmentType,
+          assignmentType === "radical"
+        ),
+      };
+    }
+  );
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
     AssignmentType[]
   >(availableAssignmentTypes);
@@ -153,16 +165,13 @@ function AssignmentSettings({
       return sessionData.subjIDs.includes(subject.id);
     });
 
+    // TODO: pass in prop to either shuffle, sort by meaning -> reading, or sort by reading -> meaning
     let assignmentQueue = createAssignmentQueueItems(
       sessionData.assignmentBatch,
       subjects,
       studyMaterialsData as StudyMaterial[]
     );
 
-    let shuffledAssignmentQueue = shuffleArray(assignmentQueue);
-
-    // TODO: update this so shuffle is only called if reading -> meaning or...
-    // TODO: ... meaning -> reading setting is not chosen (those aren't implemented yet)
     // *testing
     console.log(
       "🚀 ~ file: AssignmentSettings.tsx:170 ~ onStartSessionBtnClick ~ assignmentQueue:",
@@ -170,7 +179,7 @@ function AssignmentSettings({
     );
     // *testing
 
-    setAssignmentQueueData(shuffledAssignmentQueue, settingsType);
+    setAssignmentQueueData(assignmentQueue, settingsType);
 
     if (settingsType === "review") {
       navigate("/reviews/session", { replace: true });
@@ -199,7 +208,7 @@ function AssignmentSettings({
                 label: "Basic",
                 tabContents: (
                   <BasicAssignmentSettings
-                    availableAssignmentTypes={availableAssignmentTypes}
+                    availableAssignmentTypeNames={availableAssignmentTypeNames}
                     assignmentData={assignmentData}
                     defaultBatchSize={batchSize}
                     setBatchSize={setBatchSize}
@@ -219,6 +228,8 @@ function AssignmentSettings({
                     setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}
                     showMeaning={showMeaning}
                     assignmentData={assignmentData}
+                    availableAssignmentTypeNames={availableAssignmentTypeNames}
+                    availableAssignmentTypes={availableAssignmentTypes}
                   />
                 ),
               },
