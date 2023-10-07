@@ -1,7 +1,7 @@
-import { getSubjectTypeDisplayText } from "../../services/SubjectAndAssignmentService";
 import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
+import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
 import AssignmentTypeSelector from "../AssignmentTypeSelector";
@@ -13,7 +13,7 @@ type Props = {
   assignmentData: Assignment[];
   defaultBatchSize: number;
   setBatchSize: (size: number) => void;
-  availableAssignmentTypes: AssignmentType[];
+  availableAssignmentTypeNames: AssignmentTypeName[];
   selectedAssignmentTypes: AssignmentType[];
   setSelectedAssignmentTypes: (
     assignmentTypesSelected: AssignmentType[]
@@ -26,24 +26,12 @@ function BasicAssignmentSettings({
   assignmentData,
   defaultBatchSize,
   setBatchSize,
-  availableAssignmentTypes,
+  availableAssignmentTypeNames,
   selectedAssignmentTypes,
   setSelectedAssignmentTypes,
   sortOption,
   setSortOption,
 }: Props) {
-  const availableAssignmentTypeNames = availableAssignmentTypes.map(
-    (assignmentType) => {
-      return {
-        name: assignmentType,
-        displayName: getSubjectTypeDisplayText(
-          assignmentType,
-          assignmentType === "radical"
-        ),
-      };
-    }
-  );
-
   let availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter(
     (batchSize) => batchSize <= assignmentData.length
   );
@@ -70,6 +58,7 @@ function BasicAssignmentSettings({
         />
       </SettingOptionContainer>
       <AssignmentTypeSelector
+        headingFontSize="large"
         selectedAssignmentTypes={selectedAssignmentTypes}
         availableAssignmentTypeNames={availableAssignmentTypeNames}
         setSelectedAssignmentTypes={setSelectedAssignmentTypes}
