@@ -5,13 +5,6 @@ import { AssignmentType } from "../../types/Assignment";
 import Collapsible from "../Collapsible";
 import styled from "styled-components";
 
-// const AdvancedFiltersHeading = styled.h2`
-//   font-size: 1.25rem;
-//   color: white;
-//   padding-left: 12px;
-//   margin-top: 10px;
-// `;
-
 type Props = {
   availableAssignmentTypeNames: AssignmentTypeName[];
   selectedAssignmentTypes: AssignmentType[];
@@ -34,7 +27,6 @@ function AdvancedAssignmentFilters({
       isOpen={isOpen}
       setIsOpen={setIsOpen}
     >
-      {/* <AdvancedFiltersHeading>Filters and Sorting</AdvancedFiltersHeading> */}
       <AssignmentTypeSelector
         headingFontSize="small"
         availableAssignmentTypeNames={availableAssignmentTypeNames}

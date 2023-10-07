@@ -259,7 +259,7 @@ export const LoadingContainer = styled.div`
 export const SettingOptionContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 22px 16px;
+  margin: 22px 12px;
   align-items: center;
 
   &:first-child {

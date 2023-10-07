@@ -20,6 +20,7 @@ const Title = styled.h3<TitleProps>`
   font-size: ${({ titlefontsize }) => titlefontsize};
   font-size: 1.25rem;
   color: white;
+  margin: 10px 0;
 `;
 
 const CollapseOrExpandIcon = styled(IonIcon)`

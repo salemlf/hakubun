@@ -26,7 +26,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const SubjectList = styled(ToggleGroup.Root)`
   display: flex;
   border-radius: 4px;
-  padding: 15px 10px;
+  padding: 15px 10px 32px;
   flex-direction: column;
   max-height: 65vh;
   overflow-y: scroll;
