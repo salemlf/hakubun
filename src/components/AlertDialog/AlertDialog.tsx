@@ -1,14 +1,14 @@
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { RequireAtLeastOne } from "../../types/Global";
 import styled from "styled-components";
 
-const Overlay = styled(AlertDialog.Overlay)`
+const Overlay = styled(AlertDialogPrimitive.Overlay)`
   background-color: rgba(0, 0, 0, 0.447);
   position: fixed;
   inset: 0;
 `;
 
-const Content = styled(AlertDialog.Content)`
+const Content = styled(AlertDialogPrimitive.Content)`
   background-color: var(--ion-color-secondary);
   color: white;
   border-radius: 12px;
@@ -27,14 +27,14 @@ const Content = styled(AlertDialog.Content)`
   }
 `;
 
-const Title = styled(AlertDialog.Title)`
+const Title = styled(AlertDialogPrimitive.Title)`
   margin: 0;
   margin-bottom: 10px;
   font-size: 1.25rem;
   font-weight: 500;
 `;
 
-const Description = styled(AlertDialog.Description)`
+const Description = styled(AlertDialogPrimitive.Description)`
   margin-bottom: 20px;
   font-size: 1rem;
   line-height: 1.5;
@@ -91,6 +91,9 @@ type PropsWithControlChoice = {
   cancelText: string;
   onCancelClick: (e: any) => void;
   onConfirmClick: (e: any) => void;
+  addtlActionText?: string;
+  showAddtlAction?: boolean;
+  onAddtlActionClick?: (e: any) => void;
 };
 
 // TODO: this type isn't perfect since it doesn't check for the case where both are defined, in that case controlled will override uncontrolled
@@ -99,9 +102,8 @@ type Props = RequireAtLeastOne<
   "controlledSettings" | "uncontrolledSettings"
 >;
 
-// TODO: change name to AlertDialog
 // TODO: improve trigger button or pass in trigger component as prop instead (more likely)
-function Dialog({
+function AlertDialog({
   controlledSettings,
   uncontrolledSettings = { defaultOpen: false },
   programmaticTrigger = true,
@@ -111,29 +113,44 @@ function Dialog({
   cancelText,
   onConfirmClick,
   onCancelClick,
+  addtlActionText,
+  showAddtlAction = false,
+  onAddtlActionClick,
 }: Props) {
   return (
-    <AlertDialog.Root {...controlledSettings} {...uncontrolledSettings}>
-      {!programmaticTrigger && <AlertDialog.Trigger>Open</AlertDialog.Trigger>}
-      <AlertDialog.Portal>
+    <AlertDialogPrimitive.Root
+      {...controlledSettings}
+      {...uncontrolledSettings}
+    >
+      {!programmaticTrigger && (
+        <AlertDialogPrimitive.Trigger>Open</AlertDialogPrimitive.Trigger>
+      )}
+      <AlertDialogPrimitive.Portal>
         <Overlay />
         <Content>
           <Title>{title}</Title>
           {description && <Description>{description}</Description>}
           <ButtonContainer>
-            <AlertDialog.Cancel asChild>
+            <AlertDialogPrimitive.Cancel asChild>
               <CancelButton onClick={onCancelClick}>{cancelText}</CancelButton>
-            </AlertDialog.Cancel>
-            <AlertDialog.Action asChild>
+            </AlertDialogPrimitive.Cancel>
+            <AlertDialogPrimitive.Action asChild>
               <ConfirmButton onClick={onConfirmClick}>
                 {confirmText}
               </ConfirmButton>
-            </AlertDialog.Action>
+            </AlertDialogPrimitive.Action>
+            {showAddtlAction && (
+              <AlertDialogPrimitive.Action asChild>
+                <ConfirmButton onClick={onAddtlActionClick}>
+                  {addtlActionText}
+                </ConfirmButton>
+              </AlertDialogPrimitive.Action>
+            )}
           </ButtonContainer>
         </Content>
-      </AlertDialog.Portal>
-    </AlertDialog.Root>
+      </AlertDialogPrimitive.Portal>
+    </AlertDialogPrimitive.Root>
   );
 }
 
-export default Dialog;
+export default AlertDialog;
