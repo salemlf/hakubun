@@ -4,6 +4,7 @@ import { IonIcon } from "@ionic/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { AssignmentType } from "../../types/Assignment";
+import { AssignmentTypeName } from "./AssignmentTypeSelector.types";
 import CheckCircleIcon from "../../images/check-in-circle.svg";
 import styled from "styled-components";
 
@@ -17,8 +18,13 @@ const AssignmentTypeFieldset = styled.fieldset`
   margin-bottom: 10px;
 `;
 
-const AssignmentTypeLegend = styled.legend`
-  font-size: 1.25rem;
+type AssignmentTypeLegendProps = {
+  headingfontsize: string;
+};
+
+const AssignmentTypeLegend = styled.legend<AssignmentTypeLegendProps>`
+  /* font-size: 1.25rem; */
+  font-size: ${({ headingfontsize }) => headingfontsize};
   color: white;
   padding-top: 0;
   margin-bottom: 8px;
@@ -59,9 +65,11 @@ const Check = styled(IonIcon)`
   height: 2em;
 `;
 
-type AssignmentTypeName = {
-  name: AssignmentType;
-  displayName: string;
+type AssignmentTypeSelectorHeadingFontSize = "small" | "large";
+
+const headingFontSizeMap: { [index: string]: string } = {
+  small: "1rem",
+  large: "1.25rem",
 };
 
 type Props = {
@@ -70,16 +78,25 @@ type Props = {
   setSelectedAssignmentTypes: (
     assignmentTypesSelected: AssignmentType[]
   ) => void;
+  headingFontSize: AssignmentTypeSelectorHeadingFontSize;
 };
 
 function AssignmentTypeSelector({
   availableAssignmentTypeNames,
   selectedAssignmentTypes,
   setSelectedAssignmentTypes,
+  headingFontSize,
 }: Props) {
+  let headingSize = headingFontSizeMap[headingFontSize];
+  console.log(
+    "🚀 ~ file: AssignmentTypeSelector.tsx:91 ~ headingSize:",
+    headingSize
+  );
   return (
     <AssignmentTypeFieldset>
-      <AssignmentTypeLegend>Subject Types</AssignmentTypeLegend>
+      <AssignmentTypeLegend headingfontsize={headingSize}>
+        Subject Types
+      </AssignmentTypeLegend>
       <AssignmentTypeOptions
         type="multiple"
         onValueChange={setSelectedAssignmentTypes}
