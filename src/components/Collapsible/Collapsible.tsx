@@ -4,7 +4,7 @@ import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import CollapseArrowColorIcon from "../../images/collapse-arrow-color.svg";
 import ExpandArrowColorIcon from "../../images/expand-arrow-color.svg";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const TriggerWithTitle = styled.div`
   display: flex;
@@ -27,8 +27,7 @@ const CollapseOrExpandIcon = styled(IonIcon)`
   height: 1.5em;
 `;
 
-const TriggerButton = styled.button`
-  display: flex;
+const TriggerButton = styled(CollapsiblePrimitive.Trigger)`
   padding: 5px;
   border-radius: 8px;
   background-color: var(--offwhite-color);
@@ -37,6 +36,14 @@ const TriggerButton = styled.button`
     outline: 2px solid white;
     outline-offset: 2px;
   }
+`;
+
+const IconContainer = styled(motion.div)`
+  display: flex;
+`;
+
+const Root = styled(CollapsiblePrimitive.Root)`
+  width: 100%;
 `;
 
 const Content = styled(CollapsiblePrimitive.Content)`
@@ -91,18 +98,30 @@ function Collapsible({
   titleFontSize = "1.25rem",
 }: Props) {
   return (
-    <CollapsiblePrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
+    <Root open={isOpen} onOpenChange={setIsOpen}>
       <TriggerWithTitle>
         <Title titlefontsize={titleFontSize}>{title}</Title>
-        <CollapsiblePrimitive.Trigger asChild>
-          <TriggerButton
-            aria-label={isOpen ? "Collapse content" : "Expand content"}
-          >
-            <CollapseOrExpandIcon
-              src={isOpen ? CollapseArrowColorIcon : ExpandArrowColorIcon}
-            />
-          </TriggerButton>
-        </CollapsiblePrimitive.Trigger>
+        <TriggerButton
+          aria-label={isOpen ? "Collapse content" : "Expand content"}
+        >
+          <AnimatePresence initial={false} mode="wait">
+            <IconContainer
+              key={isOpen ? "minus" : "plus"}
+              transition={{
+                type: "spring",
+                duration: 0.3,
+                bounce: 0.5,
+              }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+            >
+              <CollapseOrExpandIcon
+                src={isOpen ? CollapseArrowColorIcon : ExpandArrowColorIcon}
+              />
+            </IconContainer>
+          </AnimatePresence>
+        </TriggerButton>
       </TriggerWithTitle>
 
       <Content
@@ -113,7 +132,7 @@ function Collapsible({
       >
         {children}
       </Content>
-    </CollapsiblePrimitive.Root>
+    </Root>
   );
 }
 
