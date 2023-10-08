@@ -317,3 +317,7 @@ export const sortAssignmentsBySrsStage = (
       : b.srs_stage - a.srs_stage;
   });
 };
+
+export const filterSubjectsByLevel = (subjects: Subject[], level: number) => {
+  return subjects.filter((subject) => subject.level === level);
+};

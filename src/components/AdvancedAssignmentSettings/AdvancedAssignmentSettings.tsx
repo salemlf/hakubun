@@ -34,10 +34,15 @@ function AdvancedAssignmentSettings({
     availableAssignmentTypes
   );
 
+  const [filterByCurrentLevel, setFilterByCurrentLevel] =
+    useState<boolean>(false);
+
   return (
     <Card>
       <SettingOptionContainer>
         <AdvancedAssignmentFilters
+          filterByCurrentLevel={filterByCurrentLevel}
+          setFilterByCurrentLevel={setFilterByCurrentLevel}
           availableAssignmentTypeNames={availableAssignmentTypeNames}
           selectedAssignmentTypes={selectedAssignmentTypes}
           setSelectedAssignmentTypes={setSelectedAssignmentTypes}
@@ -51,7 +56,8 @@ function AdvancedAssignmentSettings({
         setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}
         showMeaning={showMeaning}
         assignmentData={assignmentData}
-        assignmentFilters={selectedAssignmentTypes}
+        filterByCurrentLevel={filterByCurrentLevel}
+        assignmentTypeFilter={selectedAssignmentTypes}
       ></AssignmentSelector>
     </Card>
   );

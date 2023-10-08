@@ -4,9 +4,11 @@ import { IonSkeletonText, IonIcon } from "@ionic/react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  filterSubjectsByLevel,
   filterSubjectsByType,
   getSubjectColor,
 } from "../../services/SubjectAndAssignmentService";
+import { useUserInfoStore } from "../../stores/useUserInfoStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import {
@@ -106,7 +108,6 @@ const ButtonWrapper = styled(motion.div)`
   padding: 0;
 `;
 
-// const SelectDeselectAllButton = styled(Button)`
 const SelectDeselectAllButton = styled(Button)`
   display: flex;
   align-items: center;
@@ -146,20 +147,24 @@ type Props = {
   assignmentData: Assignment[];
   selectedAdvancedSubjIDs: string[];
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
-  assignmentFilters?: AssignmentType[];
+  filterByCurrentLevel: boolean;
+  assignmentTypeFilter?: AssignmentType[];
   showMeaning?: boolean;
 };
 
+// TODO: break this down into smaller components
 // TODO: allow different sort orders
 function AssignmentSelector({
   assignmentData,
   selectedAdvancedSubjIDs,
   setSelectedAdvancedSubjIDs,
-  assignmentFilters,
+  assignmentTypeFilter,
+  filterByCurrentLevel,
   showMeaning = true,
 }: Props) {
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
   const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
+  const userInfo = useUserInfoStore.use.userInfo();
 
   let assignmentSubjIDs = assignmentData.map(
     (assignmentItem: any) => assignmentItem.subject_id
@@ -172,13 +177,21 @@ function AssignmentSelector({
     if (subjectsData) {
       let sortedAssignments = sortBySubjectTypeAndLevel(subjectsData);
 
-      let subjectsFiltered = assignmentFilters
-        ? filterSubjectsByType(sortedAssignments, Array.from(assignmentFilters))
+      let subjectsFiltered = assignmentTypeFilter
+        ? filterSubjectsByType(
+            sortedAssignments,
+            Array.from(assignmentTypeFilter)
+          )
         : sortedAssignments;
 
-      setAvailableSubjects(subjectsFiltered);
+      let subjectsFilteredByLevel =
+        filterByCurrentLevel && userInfo && userInfo.level
+          ? filterSubjectsByLevel(subjectsFiltered, userInfo.level)
+          : subjectsFiltered;
+
+      setAvailableSubjects(subjectsFilteredByLevel);
     }
-  }, [subjectsLoading, assignmentFilters]);
+  }, [subjectsLoading, assignmentTypeFilter, filterByCurrentLevel]);
 
   const onSelectDeselectAllPress = () => {
     if (areAllSelected) {
