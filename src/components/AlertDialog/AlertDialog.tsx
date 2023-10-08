@@ -52,11 +52,10 @@ const DialogButton = styled.button`
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  padding: 0 15px;
+  padding: 6px 15px;
   font-size: 1rem;
   line-height: 1;
   font-weight: 500;
-  height: 35px;
 
   &:focus-visible {
     outline: 2px solid white;
@@ -64,12 +63,16 @@ const DialogButton = styled.button`
 `;
 
 const ConfirmButton = styled(DialogButton)`
-  background-color: var(--ion-color-primary);
+  background-color: var(--ion-color-danger);
 `;
 
 const CancelButton = styled(DialogButton)`
   background-color: var(--ion-color-tertiary);
   color: black;
+`;
+
+const MiscButton = styled(DialogButton)`
+  background-color: var(--ion-color-primary);
 `;
 
 type UncontrolledDialogProps = {
@@ -141,9 +144,9 @@ function AlertDialog({
             </AlertDialogPrimitive.Action>
             {showAddtlAction && (
               <AlertDialogPrimitive.Action asChild>
-                <ConfirmButton onClick={onAddtlActionClick}>
+                <MiscButton onClick={onAddtlActionClick}>
                   {addtlActionText}
-                </ConfirmButton>
+                </MiscButton>
               </AlertDialogPrimitive.Action>
             )}
           </ButtonContainer>
