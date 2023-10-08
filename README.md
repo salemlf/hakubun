@@ -8,7 +8,7 @@ Hakubun is a Japanese learning app that can be used with Wanikani, an SRS-based 
 
 ## Download the App
 
-The iOS and web versions are still being tested, but the alpha version Android of is [available on the Play Store through early access!](https://play.google.com/store/apps/details?id=io.hakubun.app)
+The iOS and web versions are still being tested, but the alpha version Android is [available on the Play Store through early access!](https://play.google.com/store/apps/details?id=io.hakubun.app)
 
 ### Interface
 
