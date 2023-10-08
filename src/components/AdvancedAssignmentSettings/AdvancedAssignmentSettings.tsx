@@ -28,10 +28,6 @@ function AdvancedAssignmentSettings({
     availableAssignmentTypes
   );
 
-  // !temp
-  const [selectedSubjIDs, setSelectedSubjIDs] = useState<string[]>([]);
-  // !temp
-
   return (
     <Card>
       <SettingOptionContainer>
@@ -42,10 +38,8 @@ function AdvancedAssignmentSettings({
         />
       </SettingOptionContainer>
       <AssignmentSelector
-        // selectedAdvancedSubjIDs={selectedAdvancedSubjIDs}
-        // setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}
-        selectedAdvancedSubjIDs={selectedSubjIDs}
-        setSelectedAdvancedSubjIDs={setSelectedSubjIDs}
+        selectedAdvancedSubjIDs={selectedAdvancedSubjIDs}
+        setSelectedAdvancedSubjIDs={setSelectedAdvancedSubjIDs}
         showMeaning={showMeaning}
         assignmentData={assignmentData}
         assignmentFilters={selectedAssignmentTypes}

@@ -2,9 +2,9 @@ import Selector, { SelectItem } from "../Selector";
 import Label from "../Label";
 
 type Props = {
-  batchSize: number;
-  availableSizes: number[];
-  onBatchSizeChange: (batchSize: number) => void;
+  batchSize: string;
+  availableSizes: string[];
+  onBatchSizeChange: (batchSize: string) => void;
   labelId?: string;
 };
 
@@ -14,22 +14,17 @@ function BatchSizeOption({
   onBatchSizeChange,
   labelId = "batch-size-selector",
 }: Props) {
-  const onBatchUpdate = (batchStr: string) => {
-    let batchNum = parseInt(batchStr);
-    onBatchSizeChange(batchNum);
-  };
-
   return (
     <>
       <Label labelText="Batch Size" idOfControl={labelId} />
       <Selector
         id={labelId}
         value={batchSize.toString()}
-        onValueChange={(updatedValue) => onBatchUpdate(updatedValue)}
+        onValueChange={(updatedValue) => onBatchSizeChange(updatedValue)}
       >
-        {availableSizes.map((batchSize: number) => {
+        {availableSizes.map((batchSize: string) => {
           return (
-            <SelectItem key={`batch_${batchSize}`} value={batchSize.toString()}>
+            <SelectItem key={`batch_${batchSize}`} value={batchSize}>
               {batchSize}
             </SelectItem>
           );

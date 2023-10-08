@@ -31,7 +31,8 @@ type Props = {
   settingsType: AssignmentSessionType;
   // TODO: change so not using "any" type
   assignmentData: any;
-  defaultBatchSize: number;
+  // defaultBatchSize: number;
+  defaultBatchSize: number | string;
   defaultSortOrder: AssignmentSortOption;
 };
 
@@ -42,7 +43,15 @@ function AssignmentSettings({
   defaultSortOrder,
 }: Props) {
   const navigate = useNavigate();
-  const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
+  // const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
+  // !changed
+  const [batchSize, setBatchSize] = useState<string>(
+    defaultBatchSize.toString()
+  );
+  // *testing
+  console.log("🚀 ~ file: AssignmentSettings.tsx:51 ~ batchSize:", batchSize);
+  // *testing
+  // !changed
   let [sortOption, setSortOption] =
     useState<AssignmentSortOption>(defaultSortOrder);
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
@@ -118,7 +127,12 @@ function AssignmentSettings({
       subjectsData
     );
 
-    const assignmentBatch = sorted.slice(0, batchSize);
+    // const assignmentBatch = sorted.slice(0, batchSize);
+
+    const assignmentBatch =
+      batchSize === "All"
+        ? sorted
+        : sorted.slice(0, Number.parseInt(batchSize));
     let subjIDs = getSubjIDsFromAssignments(assignmentBatch);
 
     return {

@@ -13,8 +13,7 @@ type Props = {
   ) => void;
 };
 
-// TODO: add a "select all/deselect all" button
-// TODO: make collapsible
+// TODO: add "current level only" option
 function AdvancedAssignmentFilters({
   availableAssignmentTypeNames,
   selectedAssignmentTypes,

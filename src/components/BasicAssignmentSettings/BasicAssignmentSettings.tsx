@@ -11,8 +11,8 @@ import { SettingOptionContainer } from "../../styles/BaseStyledComponents";
 // TODO: change so this isn't using so many props
 type Props = {
   assignmentData: Assignment[];
-  defaultBatchSize: number;
-  setBatchSize: (size: number) => void;
+  defaultBatchSize: string;
+  setBatchSize: (size: string) => void;
   availableAssignmentTypeNames: AssignmentTypeName[];
   selectedAssignmentTypes: AssignmentType[];
   setSelectedAssignmentTypes: (
@@ -32,19 +32,37 @@ function BasicAssignmentSettings({
   sortOption,
   setSortOption,
 }: Props) {
-  let availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter(
-    (batchSize) => batchSize <= assignmentData.length
-  );
-  let selectedBatchSize =
-    defaultBatchSize <= assignmentData.length
+  let availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter((batchSize) => {
+    return Number.parseInt(batchSize)
+      ? Number.parseInt(batchSize) <= assignmentData.length
+      : true;
+  });
+
+  let availBatchSizesStr = availBatchSizes as string[];
+
+  let batchSizeWithoutAll = availBatchSizes.filter((batchSize) => {
+    return batchSize !== "All";
+  });
+
+  let batchSizeNumbers = batchSizeWithoutAll.map((batchSize) => {
+    return Number.parseInt(batchSize);
+  });
+
+  let defaultBatchSizeNum =
+    defaultBatchSize === "All"
+      ? assignmentData.length
+      : parseInt(defaultBatchSize);
+  let selectedBatchSize = (
+    defaultBatchSizeNum <= assignmentData.length
       ? defaultBatchSize
-      : Math.max(...availBatchSizes);
+      : Math.max(...batchSizeNumbers)
+  ) as string;
 
   return (
     <Card>
       <SettingOptionContainer>
         <BatchSizeOption
-          availableSizes={availBatchSizes}
+          availableSizes={availBatchSizesStr}
           batchSize={selectedBatchSize}
           onBatchSizeChange={(updatedBatchSize) =>
             setBatchSize(updatedBatchSize)
