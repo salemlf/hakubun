@@ -54,7 +54,7 @@ import "./theme/globals.scss";
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development") {
   LogRocket.init("cleqvf/hakubun", {
-    release: "0.1.0-alpha",
+    release: "0.1.1-alpha",
     shouldCaptureIP: false,
   });
 }
