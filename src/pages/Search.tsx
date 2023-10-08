@@ -14,7 +14,6 @@ import LogoExclamation from "../images/logo-exclamation.svg";
 import {
   AbsoluteCenterContainer,
   ContentWithTabBar,
-  FixedCenterContainer,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";

@@ -27,6 +27,8 @@ import Counter from "../Counter";
 import CheckCircleIcon from "../../images/check-in-circle.svg";
 import RemoveIcon from "../../images/close.svg";
 import CheckIcon from "../../images/checkmark.svg";
+import LogoExclamation from "../../images/logo-exclamation.svg";
+import { AbsoluteCenterContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const SubjectList = styled(ToggleGroup.Root)`
@@ -129,6 +131,33 @@ const SelectDeselectIcon = styled(IonIcon)`
   height: 1.5em;
 `;
 
+const NoAssignmentsContainer = styled.div`
+  position: relative;
+  width: 100%;
+  z-index: 5;
+  min-height: 350px;
+  margin-bottom: 70px;
+`;
+
+const LogoContainer = styled(AbsoluteCenterContainer)`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 16px;
+  text-align: center;
+  z-index: 5;
+
+  h5 {
+    margin: 0 0 25px 0;
+    width: 100%;
+  }
+
+  img {
+    height: 250px;
+  }
+`;
+
 type Props = {
   assignmentData: Assignment[];
   selectedAdvancedSubjIDs: string[];
@@ -194,9 +223,18 @@ function AssignmentSelector({
     <>
       {availableSubjects ? (
         availableSubjects.length === 0 ? (
-          <NoAssignmentsTxt>
-            Hmm, looks like we can't find any assignments using those filters...
-          </NoAssignmentsTxt>
+          // <NoAssignmentsTxt>
+          //   Hmm, looks like we can't find any assignments using those filters...
+          // </NoAssignmentsTxt>
+          <NoAssignmentsContainer>
+            <LogoContainer>
+              <h5>
+                Hmm, looks like we can't find any assignments using those
+                filters...
+              </h5>
+              <img src={LogoExclamation} />
+            </LogoContainer>
+          </NoAssignmentsContainer>
         ) : (
           <>
             <SelectedInfoContainer>
