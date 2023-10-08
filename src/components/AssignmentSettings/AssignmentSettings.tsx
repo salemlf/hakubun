@@ -236,6 +236,9 @@ function AssignmentSettings({
                     assignmentData={assignmentData}
                     availableAssignmentTypeNames={availableAssignmentTypeNames}
                     availableAssignmentTypes={availableAssignmentTypes}
+                    showBackToBackOption={settingsType === "review"}
+                    backToBackChoice={backToBackChoice}
+                    setBackToBackChoice={setBackToBackChoice}
                   />
                 ),
               },

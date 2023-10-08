@@ -44,6 +44,7 @@ function ReviewUserSettings() {
         <BackToBackOption
           backToBackChoice={reviewBackToBackOption}
           onBackToBackChoiceChange={setReviewBackToBackOption}
+          headingFontSize="large"
           labelId="user-default-review-back-to-back-selector"
         />
       </SettingRow>

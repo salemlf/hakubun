@@ -96,6 +96,7 @@ function BasicAssignmentSettings({
           <BackToBackOption
             backToBackChoice={backToBackChoice}
             onBackToBackChoiceChange={setBackToBackChoice}
+            headingFontSize="large"
           />
         </SettingOptionContainer>
       )}

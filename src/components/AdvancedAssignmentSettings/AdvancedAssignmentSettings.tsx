@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
+import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import Card from "../Card";
 import AssignmentSelector from "../AssignmentSelector";
 import AdvancedAssignmentFilters from "../AdvancedAssignmentFilters";
@@ -13,6 +14,9 @@ type Props = {
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
   availableAssignmentTypes: AssignmentType[];
   availableAssignmentTypeNames: AssignmentTypeName[];
+  showBackToBackOption: boolean;
+  backToBackChoice: BackToBackChoice;
+  setBackToBackChoice: (choice: BackToBackChoice) => void;
 };
 
 function AdvancedAssignmentSettings({
@@ -22,6 +26,9 @@ function AdvancedAssignmentSettings({
   showMeaning,
   availableAssignmentTypes,
   availableAssignmentTypeNames,
+  showBackToBackOption,
+  backToBackChoice,
+  setBackToBackChoice,
 }: Props) {
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState(
     availableAssignmentTypes
@@ -34,6 +41,9 @@ function AdvancedAssignmentSettings({
           availableAssignmentTypeNames={availableAssignmentTypeNames}
           selectedAssignmentTypes={selectedAssignmentTypes}
           setSelectedAssignmentTypes={setSelectedAssignmentTypes}
+          showBackToBackOption={showBackToBackOption}
+          backToBackChoice={backToBackChoice}
+          setBackToBackChoice={setBackToBackChoice}
         />
       </SettingOptionContainer>
       <AssignmentSelector

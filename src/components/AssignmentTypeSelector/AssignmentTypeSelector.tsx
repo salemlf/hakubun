@@ -3,8 +3,10 @@ import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { IonIcon } from "@ionic/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { getSettingHeadingFontSize } from "../AssignmentSettings/AssignmentSettings.service";
 import { AssignmentType } from "../../types/Assignment";
 import { AssignmentTypeName } from "./AssignmentTypeSelector.types";
+import { SettingHeadingFontSize } from "../AssignmentSettings/AssignmentSettings.types";
 import CheckCircleIcon from "../../images/check-in-circle.svg";
 import styled from "styled-components";
 
@@ -66,20 +68,13 @@ const Check = styled(IonIcon)`
   height: 2em;
 `;
 
-type AssignmentTypeSelectorHeadingFontSize = "small" | "large";
-
-const headingFontSizeMap: { [index: string]: string } = {
-  small: "1rem",
-  large: "1.25rem",
-};
-
 type Props = {
   availableAssignmentTypeNames: AssignmentTypeName[];
   selectedAssignmentTypes: AssignmentType[];
   setSelectedAssignmentTypes: (
     assignmentTypesSelected: AssignmentType[]
   ) => void;
-  headingFontSize: AssignmentTypeSelectorHeadingFontSize;
+  headingFontSize: SettingHeadingFontSize;
 };
 
 function AssignmentTypeSelector({
@@ -88,7 +83,7 @@ function AssignmentTypeSelector({
   setSelectedAssignmentTypes,
   headingFontSize,
 }: Props) {
-  let headingSize = headingFontSizeMap[headingFontSize];
+  let headingSize = getSettingHeadingFontSize(headingFontSize);
 
   return (
     <AssignmentTypeFieldset>
