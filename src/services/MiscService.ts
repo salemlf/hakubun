@@ -139,9 +139,9 @@ export const flattenSearchResults = (data: any) => {
 
 export const shuffleArray = (array: any[]) => {
   const arrCopyToSort = [...array];
-  for (let i = array.length - 1; i > 0; i--) {
+  for (let i = arrCopyToSort.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [arrCopyToSort[i], arrCopyToSort[j]] = [arrCopyToSort[j], arrCopyToSort[i]];
   }
   return arrCopyToSort;
 };
