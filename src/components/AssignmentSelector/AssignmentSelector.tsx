@@ -20,6 +20,7 @@ import {
   SubjectType,
   Vocabulary,
 } from "../../types/Subject";
+import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import SubjectChars from "../SubjectChars";
 import { RadicalMeaning, ReadingAndMeaning } from "../SubjectWideBtnList";
 import Button from "../Button";
@@ -90,10 +91,6 @@ const LvlBubble = styled.p`
   border: 1px solid white;
 `;
 
-const NoAssignmentsTxt = styled.p`
-  margin: 16px;
-`;
-
 const SelectedInfoContainer = styled.div`
   display: flex;
   align-items: center;
@@ -148,14 +145,14 @@ const LogoContainer = styled(AbsoluteCenterContainer)`
   text-align: center;
   z-index: 5;
 
-  h5 {
-    margin: 0 0 25px 0;
-    width: 100%;
-  }
-
   img {
     height: 250px;
   }
+`;
+
+const LogoContainerHeading = styled.h5`
+  margin: 0 0 25px 0;
+  width: 100%;
 `;
 
 type Props = {
@@ -163,6 +160,7 @@ type Props = {
   selectedAdvancedSubjIDs: string[];
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
   filterByCurrentLevel: boolean;
+  settingsType: AssignmentSessionType;
   assignmentTypeFilter?: AssignmentType[];
   showMeaning?: boolean;
 };
@@ -173,8 +171,9 @@ function AssignmentSelector({
   assignmentData,
   selectedAdvancedSubjIDs,
   setSelectedAdvancedSubjIDs,
-  assignmentTypeFilter,
   filterByCurrentLevel,
+  settingsType,
+  assignmentTypeFilter,
   showMeaning = true,
 }: Props) {
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
@@ -223,15 +222,12 @@ function AssignmentSelector({
     <>
       {availableSubjects ? (
         availableSubjects.length === 0 ? (
-          // <NoAssignmentsTxt>
-          //   Hmm, looks like we can't find any assignments using those filters...
-          // </NoAssignmentsTxt>
           <NoAssignmentsContainer>
             <LogoContainer>
-              <h5>
-                Hmm, looks like we can't find any assignments using those
+              <LogoContainerHeading>
+                Hmm, looks like we can't find any {settingsType}s using those
                 filters...
-              </h5>
+              </LogoContainerHeading>
               <img src={LogoExclamation} />
             </LogoContainer>
           </NoAssignmentsContainer>

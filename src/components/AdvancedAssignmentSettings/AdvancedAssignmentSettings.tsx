@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
+import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import Card from "../Card";
 import AssignmentSelector from "../AssignmentSelector";
 import AdvancedAssignmentFilters from "../AdvancedAssignmentFilters";
@@ -17,6 +18,7 @@ type Props = {
   showBackToBackOption: boolean;
   backToBackChoice: BackToBackChoice;
   setBackToBackChoice: (choice: BackToBackChoice) => void;
+  settingsType: AssignmentSessionType;
 };
 
 function AdvancedAssignmentSettings({
@@ -29,6 +31,7 @@ function AdvancedAssignmentSettings({
   showBackToBackOption,
   backToBackChoice,
   setBackToBackChoice,
+  settingsType,
 }: Props) {
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState(
     availableAssignmentTypes
@@ -58,6 +61,7 @@ function AdvancedAssignmentSettings({
         assignmentData={assignmentData}
         filterByCurrentLevel={filterByCurrentLevel}
         assignmentTypeFilter={selectedAssignmentTypes}
+        settingsType={settingsType}
       ></AssignmentSelector>
     </Card>
   );
