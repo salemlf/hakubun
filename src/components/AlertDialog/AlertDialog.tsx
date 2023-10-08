@@ -1,6 +1,7 @@
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { RequireAtLeastOne } from "../../types/Global";
 import styled from "styled-components";
+import React from "react";
 
 const Overlay = styled(AlertDialogPrimitive.Overlay)`
   background-color: rgba(0, 0, 0, 0.447);
@@ -9,7 +10,8 @@ const Overlay = styled(AlertDialogPrimitive.Overlay)`
 `;
 
 const Content = styled(AlertDialogPrimitive.Content)`
-  background-color: var(--ion-color-secondary);
+  /* background-color: var(--ion-color-secondary); */
+  background-color: var(--light-greyish-purple);
   color: white;
   border-radius: 12px;
   box-shadow: 0 2px 15px #1b0f24;
@@ -59,6 +61,7 @@ const DialogButton = styled.button`
 
   &:focus-visible {
     outline: 2px solid white;
+    outline-offset: 2px;
   }
 `;
 
@@ -89,7 +92,7 @@ type PropsWithControlChoice = {
   uncontrolledSettings?: UncontrolledDialogProps;
   title: string;
   programmaticTrigger?: boolean;
-  description?: string;
+  description?: string | React.ReactNode;
   confirmText: string;
   cancelText: string;
   onCancelClick: (e: any) => void;
