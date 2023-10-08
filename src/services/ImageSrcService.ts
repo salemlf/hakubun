@@ -17,21 +17,17 @@ import lessonsBgImg499 from "../images/bg_lessons_250-499.png";
 import lessonsBgImg500 from "../images/bg_lessons_500+.png";
 import { Subject, SubjectCharacterImage } from "../types/Subject";
 
-// preferring svg images
+// preferring png images, svg never seems to work so always uses fallback
 const sortCharacterImages = (
   imgA: SubjectCharacterImage,
   imgB: SubjectCharacterImage
 ) => {
-  if (
-    imgA.content_type === "image/svg+xml" &&
-    imgB.content_type !== "image/svg+xml"
-  ) {
+  let pngFileType = "image/png";
+
+  if (imgA.content_type === pngFileType && imgB.content_type !== pngFileType) {
     return 1;
   }
-  if (
-    imgA.content_type !== "image/svg+xml" &&
-    imgB.content_type === "image/svg+xml"
-  ) {
+  if (imgA.content_type !== pngFileType && imgB.content_type === pngFileType) {
     return -1;
   }
   return 0;
