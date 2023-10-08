@@ -5,6 +5,7 @@ import BatchSizeOption from "../BatchSizeOption";
 import SortOrderOption from "../SortOrderOption";
 import { SettingRow } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
+import BackToBackOption from "../BackToBackOption";
 
 const SettingCategory = styled(Card)`
   display: flex;
@@ -17,6 +18,10 @@ function ReviewUserSettings() {
     useUserSettingsStore.use.reviewSortOrderOption();
   const setReviewSortOrderOption =
     useUserSettingsStore.use.setReviewSortOrderOption();
+  const reviewBackToBackOption =
+    useUserSettingsStore.use.reviewBackToBackOption();
+  const setReviewBackToBackOption =
+    useUserSettingsStore.use.setReviewBackToBackOption();
 
   return (
     <SettingCategory title="Reviews" headerBgColor="var(--wanikani-review)">
@@ -33,6 +38,13 @@ function ReviewUserSettings() {
           sortOption={reviewSortOrderOption}
           setSortOption={setReviewSortOrderOption}
           labelId="user-default-review-sort-order-selector"
+        />
+      </SettingRow>
+      <SettingRow>
+        <BackToBackOption
+          backToBackChoice={reviewBackToBackOption}
+          onBackToBackChoiceChange={setReviewBackToBackOption}
+          labelId="user-default-review-back-to-back-selector"
         />
       </SettingRow>
     </SettingCategory>
