@@ -69,6 +69,7 @@ http://ionicframework.com/docs/theming/ */
   --offwhite-color-lightest: #f9f4fa;
   --light-greyish-purple: #423949;
   --dark-greyish-purple: #30223a;
+  --dark-greyish-purple-overlay: rgba(48, 34, 58, 92%);
   --darkest-purple: #1b0f24;
 
   --wanikani-purple: #aa00ff;
