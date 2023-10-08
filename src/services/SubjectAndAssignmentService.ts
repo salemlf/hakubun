@@ -321,3 +321,23 @@ export const sortAssignmentsBySrsStage = (
 export const filterSubjectsByLevel = (subjects: Subject[], level: number) => {
   return subjects.filter((subject) => subject.level === level);
 };
+
+export const sortBySubjectTypeAndLevel = (subjArr: Subject[]): Subject[] => {
+  const subjectOrder: SubjectType[] = [
+    "radical",
+    "kanji",
+    "vocabulary",
+    "kana_vocabulary",
+  ];
+
+  return subjArr.sort((subjA, subjB) => {
+    const indexA = subjectOrder.indexOf(subjA.object);
+    const indexB = subjectOrder.indexOf(subjB.object);
+    if (indexA !== indexB) {
+      return indexA - indexB;
+    }
+
+    // if same subject type, sort by level
+    return subjA.level - subjB.level;
+  });
+};

@@ -7,6 +7,7 @@ import {
   filterSubjectsByLevel,
   filterSubjectsByType,
   getSubjectColor,
+  sortBySubjectTypeAndLevel,
 } from "../../services/SubjectAndAssignmentService";
 import { useUserInfoStore } from "../../stores/useUserInfoStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
@@ -127,27 +128,6 @@ const SelectDeselectIcon = styled(IonIcon)`
   width: 1.5em;
   height: 1.5em;
 `;
-
-// TODO: move this to more general file
-const sortBySubjectTypeAndLevel = (subjArr: Subject[]): Subject[] => {
-  const subjectOrder: SubjectType[] = [
-    "radical",
-    "kanji",
-    "vocabulary",
-    "kana_vocabulary",
-  ];
-
-  return subjArr.sort((subjA, subjB) => {
-    const indexA = subjectOrder.indexOf(subjA.object);
-    const indexB = subjectOrder.indexOf(subjB.object);
-    if (indexA !== indexB) {
-      return indexA - indexB;
-    }
-
-    // if same subject type, sort by level
-    return subjA.level - subjB.level;
-  });
-};
 
 type Props = {
   assignmentData: Assignment[];
