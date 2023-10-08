@@ -6,21 +6,14 @@ import CollapseArrowColorIcon from "../../images/collapse-arrow-color.svg";
 import ExpandArrowColorIcon from "../../images/expand-arrow-color.svg";
 import styled from "styled-components";
 
-const TriggerWithTitle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
 type TitleProps = {
   titlefontsize: string;
 };
 
 const Title = styled.h3<TitleProps>`
   font-size: ${({ titlefontsize }) => titlefontsize};
-  font-size: 1.25rem;
-  color: white;
-  margin: 10px 0;
+  color: black;
+  margin: 0;
 `;
 
 const CollapseOrExpandIcon = styled(IonIcon)`
@@ -29,7 +22,11 @@ const CollapseOrExpandIcon = styled(IonIcon)`
 `;
 
 const TriggerButton = styled(CollapsiblePrimitive.Trigger)`
-  padding: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
   border-radius: 8px;
   background-color: var(--offwhite-color);
 
@@ -45,10 +42,15 @@ const IconContainer = styled(motion.div)`
 
 const Root = styled(CollapsiblePrimitive.Root)`
   width: 100%;
+  background-color: var(--light-grey);
+  border-radius: 8px 8px;
 `;
 
 const Content = styled(CollapsiblePrimitive.Content)`
   overflow: hidden;
+  background-color: var(--light-grey);
+  padding: 10px 5px;
+  border-radius: 0 0 8px 8px;
 `;
 
 const collapsibleContentVariants = {
@@ -96,34 +98,32 @@ function Collapsible({
   setIsOpen,
   title,
   children,
-  titleFontSize = "1.25rem",
+  titleFontSize = "1.2rem",
 }: Props) {
   return (
     <Root open={isOpen} onOpenChange={setIsOpen}>
-      <TriggerWithTitle>
+      <TriggerButton
+        aria-label={isOpen ? "Collapse content" : "Expand content"}
+      >
         <Title titlefontsize={titleFontSize}>{title}</Title>
-        <TriggerButton
-          aria-label={isOpen ? "Collapse content" : "Expand content"}
-        >
-          <AnimatePresence initial={false} mode="wait">
-            <IconContainer
-              key={isOpen ? "minus" : "plus"}
-              transition={{
-                type: "spring",
-                duration: 0.3,
-                bounce: 0.5,
-              }}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-            >
-              <CollapseOrExpandIcon
-                src={isOpen ? CollapseArrowColorIcon : ExpandArrowColorIcon}
-              />
-            </IconContainer>
-          </AnimatePresence>
-        </TriggerButton>
-      </TriggerWithTitle>
+        <AnimatePresence initial={false} mode="wait">
+          <IconContainer
+            key={isOpen ? "minus" : "plus"}
+            transition={{
+              type: "spring",
+              duration: 0.3,
+              bounce: 0.5,
+            }}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+          >
+            <CollapseOrExpandIcon
+              src={isOpen ? CollapseArrowColorIcon : ExpandArrowColorIcon}
+            />
+          </IconContainer>
+        </AnimatePresence>
+      </TriggerButton>
 
       <Content
         as={motion.div}

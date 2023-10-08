@@ -13,7 +13,6 @@ type Props = {
   ) => void;
 };
 
-// TODO: make whole title clickable
 // TODO: add "current level only" option
 function AdvancedAssignmentFilters({
   availableAssignmentTypeNames,
