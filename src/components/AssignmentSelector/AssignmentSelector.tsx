@@ -22,6 +22,7 @@ import {
 import SubjectChars from "../SubjectChars";
 import { RadicalMeaning, ReadingAndMeaning } from "../SubjectWideBtnList";
 import Button from "../Button";
+import Counter from "../Counter";
 import CheckCircleIcon from "../../images/check-in-circle.svg";
 import RemoveIcon from "../../images/close.svg";
 import CheckIcon from "../../images/checkmark.svg";
@@ -30,7 +31,7 @@ import styled from "styled-components";
 const SubjectList = styled(ToggleGroup.Root)`
   display: flex;
   border-radius: 4px;
-  padding: 15px 10px 32px;
+  padding: 15px 10px 6rem;
   flex-wrap: wrap;
   max-height: 65vh;
   overflow-y: scroll;
@@ -93,14 +94,19 @@ const NoAssignmentsTxt = styled.p`
 const SelectedInfoContainer = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  margin: 0 12px 10px 12px;
   justify-content: space-between;
-  margin: 16px 12px 8px 12px;
+  gap: 10px 5px;
 `;
 
-const NumSelectedTxt = styled.h2`
+const NumSelectedContainer = styled.div`
+  display: flex;
   margin: 0;
-  padding-right: 10px;
-  font-size: 1.25rem;
+  font-size: 1rem;
+  gap: 5px;
+  align-items: center;
+  text-align: center;
 `;
 
 const ButtonWrapper = styled(motion.div)`
@@ -214,9 +220,17 @@ function AssignmentSelector({
         ) : (
           <>
             <SelectedInfoContainer>
-              <NumSelectedTxt>
-                {selectedAdvancedSubjIDs.length} selected
-              </NumSelectedTxt>
+              <NumSelectedContainer>
+                <Counter
+                  value={selectedAdvancedSubjIDs.length}
+                  maxNum={availableSubjects.length}
+                />
+                selected out of{" "}
+                <Counter
+                  value={availableSubjects.length}
+                  maxNum={availableSubjects.length}
+                />
+              </NumSelectedContainer>
               <AnimatePresence mode="wait">
                 {areAllSelected ? (
                   <ButtonWrapper

@@ -19,7 +19,7 @@ const CounterContainer = styled.div<CounterContainerProps>`
   margin-left: 0;
   border-radius: 0.25rem;
   line-height: 1;
-  color: #111827;
+  color: black;
   background-color: #ffffff;
 `;
 
@@ -50,7 +50,8 @@ const DigitContainer = styled.div<DigitContainerProps>`
   position: relative;
   font-variant-numeric: tabular-nums;
   width: 1ch;
-  height: ${({ containerheight }) => containerheight};
+  height: 2.5ch;
+  /* height: ${({ containerheight }) => containerheight}; */
 `;
 
 type DigitProps = {
