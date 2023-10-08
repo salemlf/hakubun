@@ -110,7 +110,7 @@ export const AccordionTrigger = forwardRef<TriggerRef, TriggerProps>(
 
 const Content = styled(AccordionPrimitive.Content)`
   overflow: hidden;
-  font-size: 15px;
+  font-size: 1rem;
   color: white;
   background-color: var(--light-grey);
 

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { IonIcon } from "@ionic/react";
 import { useAuthTokenStore } from "../stores/useAuthTokenStore";
 import { useUserLogin } from "../hooks/useUserLogin";
-// import { useUserAuth } from "../contexts/AuthContext";
 import { AccordionItemData } from "../types/MiscTypes";
 import LoadingDots from "../components/LoadingDots";
 import Button from "../components/Button";
@@ -99,7 +98,7 @@ const List = styled.ol`
 
 const accordionItems: AccordionItemData[] = [
   {
-    value: "test",
+    value: "help-info",
     title: (
       <Title>
         Erm I'm confused, how do I use this app?{" "}

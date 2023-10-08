@@ -5,21 +5,21 @@ import { useNavigate } from "react-router-dom";
 import ReactRouterPrompt from "react-router-prompt";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { useCreateReview } from "../hooks/useCreateReview";
 import {
   blockUserLeavingPage,
   createReviewPostData,
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
+import { useCreateReview } from "../hooks/useCreateReview";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import { PreFlattenedAssignment } from "../types/Assignment";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
 import AnimatedPage from "../components/AnimatedPage";
-import Dialog from "../components/Dialog/Dialog";
-import styled from "styled-components";
-import { MainContent } from "../styles/BaseStyledComponents";
+import AlertDialog from "../components/AlertDialog";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
+import { MainContent } from "../styles/BaseStyledComponents";
+import styled from "styled-components";
 
 const Page = styled(AnimatedPage)`
   --ion-background-color: var(--dark-greyish-purple);
@@ -31,7 +31,6 @@ const Page = styled(AnimatedPage)`
   }
 `;
 
-// TODO: improve "Loading..." text
 // TODO: add button to abandon session
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 export const ReviewSession = () => {
@@ -39,6 +38,11 @@ export const ReviewSession = () => {
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
   const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
+  // !added
+  const currQueueIndex = useAssignmentQueueStore.use.currQueueIndex();
+  const updateAssignmentQueueData =
+    useAssignmentQueueStore.use.updateAssignmentQueueData();
+  // !added
   const { mutateAsync: createReviewsAsync } = useCreateReview();
 
   useEffect(() => {
@@ -50,6 +54,56 @@ export const ReviewSession = () => {
   const endReviewSession = () => {
     resetQueueStore();
     resetAssignmentQueue();
+  };
+
+  const wrapUpReviewSession = (cancelPageLeave: () => void) => {
+    //  TODO: get all reviews that have not been started (is_reviewed is false), make sure any other items in queue with...
+    // TODO: ...matching assignment_id but different itemID also have is_reviewed as false
+    // TODO: ...if that's true, remove items from queue
+    // TODO: DO NOT remove item at currQueueIndex or it's corresponding item
+
+    // *testing
+    console.log(
+      "🚀 ~ file: ReviewSession.tsx:82 ~ reviewedItems ~ assignmentQueue BEFORE filter:",
+      assignmentQueue
+    );
+    // *testing
+
+    let reviewedItems = assignmentQueue.filter((item) => {
+      return (
+        item.is_reviewed === true ||
+        assignmentQueue.some((otherItem) => {
+          return (
+            otherItem.assignment_id === item.assignment_id &&
+            otherItem.is_reviewed === true &&
+            otherItem.itemID !== item.itemID
+          );
+        }) ||
+        assignmentQueue.indexOf(item) === currQueueIndex ||
+        assignmentQueue.some((otherItem) => {
+          return (
+            otherItem.assignment_id === item.assignment_id &&
+            assignmentQueue.indexOf(otherItem) === currQueueIndex
+          );
+        })
+      );
+    });
+    // *testing
+    console.log(
+      "🚀 ~ file: ReviewSession.tsx:63 ~ wrapUpReviewSession ~ reviewedItems:",
+      reviewedItems
+    );
+    // *testing
+
+    updateAssignmentQueueData(reviewedItems);
+    // *testing
+    console.log(
+      "🚀 ~ file: ReviewSession.tsx:87 ~ reviewedItems ~ assignmentQueue AFTER update:",
+      assignmentQueue
+    );
+    // *testing
+
+    cancelPageLeave();
   };
 
   const submitReviews = (queueData: AssignmentQueueItem[]) => {
@@ -114,13 +168,18 @@ export const ReviewSession = () => {
           onCancel: () => void;
         }) =>
           isActive && (
-            <Dialog
+            <AlertDialog
               uncontrolledSettings={{ defaultOpen: isActive }}
               title="End Review Session?"
               confirmText="End Session"
               cancelText="Cancel"
               onConfirmClick={onConfirm}
               onCancelClick={onCancel}
+              showAddtlAction={true}
+              addtlActionText="Wrap Up"
+              onAddtlActionClick={() => {
+                wrapUpReviewSession(onCancel);
+              }}
             />
           )
         }

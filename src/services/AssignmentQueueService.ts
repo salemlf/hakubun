@@ -520,3 +520,22 @@ export const playAudioForAssignmentQueueItem = (url: string) => {
   let audio = new Audio(url!);
   audio.play();
 };
+
+export const sortQueueItemsByMeaningAndReading = (
+  queueItems: AssignmentQueueItem[],
+  meaningFirst: boolean
+) => {
+  const queueItemsCopyToSort = [...queueItems];
+
+  return queueItemsCopyToSort.sort((a, b) => {
+    if (a.assignment_id < b.assignment_id) return -1;
+    if (a.assignment_id > b.assignment_id) return 1;
+
+    if (a.review_type === "reading" && b.review_type === "meaning")
+      return meaningFirst ? 1 : -1;
+    if (a.review_type === "meaning" && b.review_type === "reading")
+      return meaningFirst ? -1 : 1;
+
+    return 0;
+  });
+};

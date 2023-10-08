@@ -227,9 +227,13 @@ export const Header = styled.header<CustomBgColor>`
 export const SettingRow = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 16px 6px;
+  margin: 20px 6px;
   align-items: center;
   gap: 10px;
+
+  &:first-child {
+    margin-top: 10px;
+  }
 `;
 
 export const FixedCenterContainer = styled.div`
@@ -254,4 +258,15 @@ export const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   z-index: 12;
+`;
+
+export const SettingOptionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 22px 12px;
+  align-items: center;
+
+  &:first-child {
+    margin-top: 10px;
+  }
 `;

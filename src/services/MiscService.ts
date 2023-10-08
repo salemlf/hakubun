@@ -138,11 +138,12 @@ export const flattenSearchResults = (data: any) => {
 };
 
 export const shuffleArray = (array: any[]) => {
-  for (let i = array.length - 1; i > 0; i--) {
+  const arrCopyToSort = [...array];
+  for (let i = arrCopyToSort.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [arrCopyToSort[i], arrCopyToSort[j]] = [arrCopyToSort[j], arrCopyToSort[i]];
   }
-  return array;
+  return arrCopyToSort;
 };
 
 const popoverStyles: { [index: string]: PopoverStyles } = {

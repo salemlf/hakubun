@@ -1,52 +1,105 @@
+import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
+import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
+import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
+import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
 import AssignmentTypeSelector from "../AssignmentTypeSelector";
-import { getSubjectTypeDisplayText } from "../../services/SubjectAndAssignmentService";
+import SortOrderOption from "../SortOrderOption";
+import BackToBackOption from "../BackToBackOption";
+import { SettingOptionContainer } from "../../styles/BaseStyledComponents";
 
+// TODO: change so this isn't using so many props
 type Props = {
   assignmentData: Assignment[];
-  defaultBatchSize: number;
-  setBatchSize: (size: number) => void;
-  availableAssignmentTypes: AssignmentType[];
+  defaultBatchSize: string;
+  setBatchSize: (size: string) => void;
+  availableAssignmentTypeNames: AssignmentTypeName[];
   selectedAssignmentTypes: AssignmentType[];
   setSelectedAssignmentTypes: (
     assignmentTypesSelected: AssignmentType[]
   ) => void;
+  sortOption: AssignmentSortOption;
+  setSortOption: (sortOption: AssignmentSortOption) => void;
+  showBackToBackOption: boolean;
+  backToBackChoice: BackToBackChoice;
+  setBackToBackChoice: (choice: BackToBackChoice) => void;
 };
 
 function BasicAssignmentSettings({
   assignmentData,
   defaultBatchSize,
   setBatchSize,
-  availableAssignmentTypes,
+  availableAssignmentTypeNames,
   selectedAssignmentTypes,
   setSelectedAssignmentTypes,
+  sortOption,
+  setSortOption,
+  showBackToBackOption,
+  backToBackChoice,
+  setBackToBackChoice,
 }: Props) {
-  const availableAssignmentTypeNames = availableAssignmentTypes.map(
-    (assignmentType) => {
-      return {
-        name: assignmentType,
-        displayName: getSubjectTypeDisplayText(
-          assignmentType,
-          assignmentType === "radical"
-        ),
-      };
-    }
-  );
+  let availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter((batchSize) => {
+    return Number.parseInt(batchSize)
+      ? Number.parseInt(batchSize) <= assignmentData.length
+      : true;
+  });
+
+  let availBatchSizesStr = availBatchSizes as string[];
+
+  let batchSizeWithoutAll = availBatchSizes.filter((batchSize) => {
+    return batchSize !== "All";
+  });
+
+  let batchSizeNumbers = batchSizeWithoutAll.map((batchSize) => {
+    return Number.parseInt(batchSize);
+  });
+
+  let defaultBatchSizeNum =
+    defaultBatchSize === "All"
+      ? assignmentData.length
+      : parseInt(defaultBatchSize);
+  let selectedBatchSize = (
+    defaultBatchSizeNum <= assignmentData.length
+      ? defaultBatchSize
+      : Math.max(...batchSizeNumbers)
+  ) as string;
 
   return (
     <Card>
-      <BatchSizeOption
-        assignmentData={assignmentData}
-        defaultSize={defaultBatchSize}
-        onBatchSizeChange={(updatedBatchSize) => setBatchSize(updatedBatchSize)}
-      />
-      <AssignmentTypeSelector
-        selectedAssignmentTypes={selectedAssignmentTypes}
-        availableAssignmentTypeNames={availableAssignmentTypeNames}
-        setSelectedAssignmentTypes={setSelectedAssignmentTypes}
-      />
+      <SettingOptionContainer>
+        <BatchSizeOption
+          availableSizes={availBatchSizesStr}
+          batchSize={selectedBatchSize}
+          onBatchSizeChange={(updatedBatchSize) =>
+            setBatchSize(updatedBatchSize)
+          }
+        />
+      </SettingOptionContainer>
+      <SettingOptionContainer>
+        <SortOrderOption
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+        />
+      </SettingOptionContainer>
+      <SettingOptionContainer>
+        <AssignmentTypeSelector
+          headingFontSize="large"
+          selectedAssignmentTypes={selectedAssignmentTypes}
+          availableAssignmentTypeNames={availableAssignmentTypeNames}
+          setSelectedAssignmentTypes={setSelectedAssignmentTypes}
+        />
+      </SettingOptionContainer>
+      {showBackToBackOption && (
+        <SettingOptionContainer>
+          <BackToBackOption
+            backToBackChoice={backToBackChoice}
+            onBackToBackChoiceChange={setBackToBackChoice}
+            headingFontSize="large"
+          />
+        </SettingOptionContainer>
+      )}
     </Card>
   );
 }

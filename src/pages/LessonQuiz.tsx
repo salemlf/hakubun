@@ -14,7 +14,7 @@ import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import AssignmentQueueCards from "../components/AssignmentQueueCards";
 import AnimatedPage from "../components/AnimatedPage";
 import QueueHeader from "../components/QueueHeader";
-import Dialog from "../components/Dialog";
+import AlertDialog from "../components/AlertDialog";
 import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
@@ -95,7 +95,7 @@ function LessonQuiz() {
           onCancel: () => void;
         }) =>
           isActive && (
-            <Dialog
+            <AlertDialog
               uncontrolledSettings={{ defaultOpen: isActive }}
               title="End Lesson Quiz?"
               confirmText="End Quiz"

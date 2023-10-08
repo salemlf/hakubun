@@ -32,6 +32,8 @@ function LessonSettings() {
   } = useLessons();
 
   const lessonBatchSize = useUserSettingsStore.use.lessonBatchSize();
+  const lessonSortOrderOption =
+    useUserSettingsStore.use.lessonSortOrderOption();
 
   return (
     <Page>
@@ -57,6 +59,7 @@ function LessonSettings() {
             settingsType="lesson"
             assignmentData={lessonsData}
             defaultBatchSize={lessonBatchSize}
+            defaultSortOrder={lessonSortOrderOption}
           />
         )}
       </MainContent>

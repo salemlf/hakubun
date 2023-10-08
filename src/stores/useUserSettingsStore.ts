@@ -2,17 +2,26 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { createSelectors } from "../utils";
 import { PronunciationVoice } from "../types/UserSettingsTypes";
+import { AssignmentSortOption } from "../components/SortOrderOption/SortOrderOption.types";
+import { getSortOrderOptionById } from "../components/SortOrderOption/SortOrderOption.service";
+import { BackToBackChoice } from "../components/BackToBackOption/BackToBackOption.types";
 
 interface UserSettingsState {
   pronunciationVoice: PronunciationVoice;
-  lessonBatchSize: number;
-  reviewBatchSize: number;
+  lessonBatchSize: string;
+  reviewBatchSize: string;
+  lessonSortOrderOption: AssignmentSortOption;
+  reviewSortOrderOption: AssignmentSortOption;
+  reviewBackToBackOption: BackToBackChoice;
 }
 
 interface UserSettingsActions {
   setPronunciationVoice: (voice: PronunciationVoice) => void;
-  setLessonBatchSize: (size: number) => void;
-  setReviewBatchSize: (size: number) => void;
+  setLessonBatchSize: (size: string) => void;
+  setReviewBatchSize: (size: string) => void;
+  setLessonSortOrderOption: (sortOption: AssignmentSortOption) => void;
+  setReviewSortOrderOption: (sortOption: AssignmentSortOption) => void;
+  setReviewBackToBackOption: (backToBackChoice: BackToBackChoice) => void;
 }
 
 const initialState: UserSettingsState = {
@@ -24,8 +33,11 @@ const initialState: UserSettingsState = {
     },
     displayName: "Female, Tokyo accent",
   },
-  lessonBatchSize: 2,
-  reviewBatchSize: 5,
+  lessonBatchSize: "2",
+  reviewBatchSize: "5",
+  lessonSortOrderOption: getSortOrderOptionById("level_asc"),
+  reviewSortOrderOption: getSortOrderOptionById("shuffled"),
+  reviewBackToBackOption: "disabled",
 };
 
 const useUserSettingsStoreBase = create<
@@ -36,8 +48,14 @@ const useUserSettingsStoreBase = create<
       ...initialState,
       setPronunciationVoice: (voice: PronunciationVoice) =>
         set({ pronunciationVoice: voice }),
-      setLessonBatchSize: (size: number) => set({ lessonBatchSize: size }),
-      setReviewBatchSize: (size: number) => set({ reviewBatchSize: size }),
+      setLessonBatchSize: (size: string) => set({ lessonBatchSize: size }),
+      setReviewBatchSize: (size: string) => set({ reviewBatchSize: size }),
+      setLessonSortOrderOption: (sortOption: AssignmentSortOption) =>
+        set({ lessonSortOrderOption: sortOption }),
+      setReviewSortOrderOption: (sortOption: AssignmentSortOption) =>
+        set({ reviewSortOrderOption: sortOption }),
+      setReviewBackToBackOption: (backToBackChoice: BackToBackChoice) =>
+        set({ reviewBackToBackOption: backToBackChoice }),
     }),
     {
       name: "user-settings-storage",

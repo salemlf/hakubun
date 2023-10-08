@@ -26,11 +26,15 @@ const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
 `;
 
-// TODO: show "back to review" button if routed to this page from a assignment session
+// TODO: sometimes has isSessionInProgress as true when it should be false, investigate
 export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
   const isSessionInProgress = useAssignmentQueueStore.use.sessionInProgress();
+  console.log(
+    "🚀 ~ file: SubjectDetails.tsx:34 ~ SubjectDetails ~ isSessionInProgress:",
+    isSessionInProgress
+  );
 
   const {
     isLoading: subjectLoading,

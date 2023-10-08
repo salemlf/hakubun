@@ -106,7 +106,7 @@ export const AssignmentQueueCard = ({
   let initialUserAnswer =
     !isSecondClick || savedUserAnswer === null ? "" : savedUserAnswer;
   const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
-  // !added
+
   type ToastInfo = {
     toastType: ToastType;
     title: string;
@@ -119,14 +119,13 @@ export const AssignmentQueueCard = ({
   };
   const [toastInfo, setToastInfo] = useState<ToastInfo>(initialToastValue);
   const [displayToast, setDisplayToast] = useState<boolean>(false);
-  // !added
 
   useKeyDown(() => attemptToAdvance(), ["F12"]);
   useKeyDown(() => retryTriggered(), ["F6"]);
 
   const controls = useAnimation();
   const dragX = useMotionValue(0);
-  const opacityLeft = useTransform(dragX, [-100, 0], [1, 0]);
+  const opacityLeft = useTransform(dragX, [-100, 1], [1, 0]);
   const opacityRight = useTransform(dragX, [0, 100], [0, 1]);
   const rotate = useTransform(dragX, [-250, 0, 250], [-20, 0, 20]);
   const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
@@ -140,9 +139,6 @@ export const AssignmentQueueCard = ({
   // TODO: ...freezes up the dragging. Tough bug to fix, may be a library issue
   const retryTriggered = () => {
     setDisplayToast(false);
-    // *testing
-    console.log("Handling retry for item: ", currentReviewItem);
-    // *testing
 
     if (showRetryButton) {
       controls.start("retry");
@@ -168,7 +164,6 @@ export const AssignmentQueueCard = ({
 
     let isValidInfo = isUserAnswerValid(currentReviewItem, strippedUserAnswer);
     if (isValidInfo.isValid === false) {
-      // displayInvalidAnswerMsg(isValidInfo.message);
       setToastInfo({
         toastType: "warning",
         title: "Invalid Answer",
@@ -195,12 +190,12 @@ export const AssignmentQueueCard = ({
     const xMinVelocity = 350;
     if (
       info.offset.x > xOffsetTrigger ||
-      (info.offset.x > xMinOffset && info.velocity.x) > xMinVelocity
+      (info.offset.x > xMinOffset && info.velocity.x > xMinVelocity)
     ) {
       attemptToAdvance();
     } else if (
       info.offset.x < -xOffsetTrigger ||
-      (info.offset.x < -xMinOffset && info.velocity.x) < -xMinVelocity
+      (info.offset.x < -xMinOffset && info.velocity.x < -xMinVelocity)
     ) {
       retryTriggered();
     } else {

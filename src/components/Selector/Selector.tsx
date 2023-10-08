@@ -10,14 +10,16 @@ import styled from "styled-components";
 
 const Item = styled(SelectPrimitive.Item)`
   font-size: 1.2rem;
-  line-height: 1;
+  line-height: 1.3;
   color: var(--darkest-purple);
-  border-radius: 3px;
   display: flex;
+  gap: 5px;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 10px;
   position: relative;
   user-select: none;
+  text-transform: capitalize;
 
   &[data-disabled] {
     color: var(--dark-greyish-purple);
@@ -30,18 +32,26 @@ const Item = styled(SelectPrimitive.Item)`
     color: white;
   }
 
+  &:first-child {
+    border-radius: 6px 6px 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 6px 6px;
+  }
+
   &:not(:first-child) {
     border-top: 1px solid black;
   }
 `;
 
 const ItemIndicator = styled(SelectPrimitive.ItemIndicator)`
-  position: absolute;
   right: 0;
   width: 25px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  margin-left: 5px;
 `;
 
 type SelectItemRef = HTMLDivElement;
@@ -67,14 +77,16 @@ const SelectorRoot = styled(SelectPrimitive.Root)`
 
 const Trigger = styled(SelectPrimitive.Trigger)`
   display: flex;
+  align-items: center;
   border-radius: 4px;
   padding: 5px 12px;
-  font-size: 1.2rem;
-  line-height: 1;
+  font-size: 0.9rem;
+  line-height: 1.3;
   gap: 8px;
   background-color: white;
   color: var(--darkest-purple);
   box-shadow: 0 2px 10px #1b0f24;
+  text-transform: capitalize;
 
   /* max width so doesn't take up a crazy amount, will use ellipsis if overflow */
   max-width: 55vw;
@@ -117,6 +129,10 @@ const SelectContent = styled(SelectPrimitive.Content)`
   }
 `;
 
+const Expand = styled(SelectPrimitive.Icon)`
+  display: flex;
+`;
+
 const SelectViewport = styled(SelectPrimitive.Viewport)`
   padding: 5px;
 `;
@@ -134,9 +150,9 @@ const Selector = React.forwardRef<ButtonRef, SelectorProps>(
       <SelectorRoot {...props}>
         <Trigger ref={forwardedRef} id={id}>
           <SelectPrimitive.Value />
-          <SelectPrimitive.Icon>
+          <Expand>
             <IonIcon src={ExpandArrowIcon} />
-          </SelectPrimitive.Icon>
+          </Expand>
         </Trigger>
         <SelectPrimitive.Portal>
           <SelectContent>
