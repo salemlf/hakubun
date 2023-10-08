@@ -14,20 +14,22 @@ function BackToBackOption({
   onBackToBackChoiceChange,
   labelId = "back-to-back-option-selector",
 }: Props) {
+  const updateBackToBackChoice = (updatedValue: string) => {
+    onBackToBackChoiceChange(updatedValue as BackToBackChoice);
+  };
+
   return (
     <>
-      <Label labelText="Batch Size" idOfControl={labelId} />
+      <Label labelText="Batch to Back" idOfControl={labelId} />
       <Selector
         id={labelId}
-        value={backToBackChoice}
-        onValueChange={(updatedValue) =>
-          onBackToBackChoiceChange(updatedValue as BackToBackChoice)
-        }
+        value={backToBackChoice.toString()}
+        onValueChange={(updatedValue) => updateBackToBackChoice(updatedValue)}
       >
         {BACK_TO_BACK_CHOICES.map((backToBackChoice: BackToBackChoice) => {
           return (
             <SelectItem
-              key={`batch_${backToBackChoice}`}
+              key={`back_to_back_${backToBackChoice}`}
               value={backToBackChoice}
             >
               {backToBackChoice}

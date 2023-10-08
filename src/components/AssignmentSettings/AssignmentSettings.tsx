@@ -10,12 +10,15 @@ import {
 import { capitalizeWord, shuffleArray } from "../../services/MiscService";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../../stores/useQueueStore";
+import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { ALL_ASSIGNMENT_TYPES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
+import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
+import { Subject } from "../../types/Subject";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
@@ -25,14 +28,12 @@ import Toast from "../Toast";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
 import { sortAssignmentsWithOption } from "../SortOrderOption/SortOrderOption.service";
-import { Subject } from "../../types/Subject";
 
 type Props = {
   settingsType: AssignmentSessionType;
   // TODO: change so not using "any" type
   assignmentData: any;
-  // defaultBatchSize: number;
-  defaultBatchSize: number | string;
+  defaultBatchSize: string;
   defaultSortOrder: AssignmentSortOption;
 };
 
@@ -43,15 +44,12 @@ function AssignmentSettings({
   defaultSortOrder,
 }: Props) {
   const navigate = useNavigate();
-  // const [batchSize, setBatchSize] = useState<number>(defaultBatchSize);
-  // !changed
-  const [batchSize, setBatchSize] = useState<string>(
-    defaultBatchSize.toString()
+  const [batchSize, setBatchSize] = useState<string>(defaultBatchSize);
+  const backToBackOptionDefault =
+    useUserSettingsStore.use.reviewBackToBackOption();
+  const [backToBackChoice, setBackToBackChoice] = useState<BackToBackChoice>(
+    backToBackOptionDefault
   );
-  // *testing
-  console.log("🚀 ~ file: AssignmentSettings.tsx:51 ~ batchSize:", batchSize);
-  // *testing
-  // !changed
   let [sortOption, setSortOption] =
     useState<AssignmentSortOption>(defaultSortOrder);
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
@@ -191,6 +189,12 @@ function AssignmentSettings({
       "🚀 ~ file: AssignmentSettings.tsx:170 ~ onStartSessionBtnClick ~ assignmentQueue:",
       assignmentQueue
     );
+
+    let assignmentQueueShuffled = shuffleArray(assignmentQueue);
+    console.log(
+      "🚀 ~ file: AssignmentSettings.tsx:187 ~ onStartSessionBtnClick ~ assignmentQueueShuffled:",
+      assignmentQueueShuffled
+    );
     // *testing
 
     setAssignmentQueueData(assignmentQueue, settingsType);
@@ -230,6 +234,9 @@ function AssignmentSettings({
                     setSelectedAssignmentTypes={setSelectedAssignmentTypes}
                     sortOption={sortOption}
                     setSortOption={setSortOption}
+                    showBackToBackOption={settingsType === "review"}
+                    backToBackChoice={backToBackChoice}
+                    setBackToBackChoice={setBackToBackChoice}
                   />
                 ),
               },

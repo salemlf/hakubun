@@ -2,10 +2,12 @@ import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
+import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
 import AssignmentTypeSelector from "../AssignmentTypeSelector";
 import SortOrderOption from "../SortOrderOption";
+import BackToBackOption from "../BackToBackOption";
 import { SettingOptionContainer } from "../../styles/BaseStyledComponents";
 
 // TODO: change so this isn't using so many props
@@ -20,6 +22,9 @@ type Props = {
   ) => void;
   sortOption: AssignmentSortOption;
   setSortOption: (sortOption: AssignmentSortOption) => void;
+  showBackToBackOption: boolean;
+  backToBackChoice: BackToBackChoice;
+  setBackToBackChoice: (choice: BackToBackChoice) => void;
 };
 
 function BasicAssignmentSettings({
@@ -31,6 +36,9 @@ function BasicAssignmentSettings({
   setSelectedAssignmentTypes,
   sortOption,
   setSortOption,
+  showBackToBackOption,
+  backToBackChoice,
+  setBackToBackChoice,
 }: Props) {
   let availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter((batchSize) => {
     return Number.parseInt(batchSize)
@@ -83,6 +91,14 @@ function BasicAssignmentSettings({
           setSelectedAssignmentTypes={setSelectedAssignmentTypes}
         />
       </SettingOptionContainer>
+      {showBackToBackOption && (
+        <SettingOptionContainer>
+          <BackToBackOption
+            backToBackChoice={backToBackChoice}
+            onBackToBackChoiceChange={setBackToBackChoice}
+          />
+        </SettingOptionContainer>
+      )}
     </Card>
   );
 }
