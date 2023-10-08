@@ -19,7 +19,10 @@ import {
 } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
 import { RadicalMeaning, ReadingAndMeaning } from "../SubjectWideBtnList";
+import Button from "../Button";
 import CheckCircleIcon from "../../images/check-in-circle.svg";
+import RemoveIcon from "../../images/close.svg";
+import CheckIcon from "../../images/checkmark.svg";
 import styled from "styled-components";
 
 const SubjectList = styled(ToggleGroup.Root)`
@@ -72,11 +75,6 @@ const Characters = styled(SubjectChars)`
   flex-direction: column;
 `;
 
-const NumSelectedTxt = styled.h2`
-  margin: 16px 12px 12px 12px;
-  font-size: 1.25rem;
-`;
-
 const LvlBubble = styled.p`
   background-color: var(--ion-color-secondary);
   color: white;
@@ -88,6 +86,39 @@ const LvlBubble = styled.p`
 
 const NoAssignmentsTxt = styled.p`
   margin: 16px;
+`;
+
+const SelectedInfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 12px 8px 12px;
+`;
+
+const NumSelectedTxt = styled.h2`
+  margin: 0;
+  padding-right: 10px;
+  font-size: 1.25rem;
+`;
+
+const ButtonWrapper = styled(motion.div)`
+  margin: 0;
+  padding: 0;
+`;
+
+// const SelectDeselectAllButton = styled(Button)`
+const SelectDeselectAllButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  padding: 5px;
+  border-radius: 8px;
+`;
+
+const SelectDeselectIcon = styled(IonIcon)`
+  width: 1.8em;
+  height: 1.8em;
 `;
 
 // TODO: move this to more general file
@@ -128,6 +159,7 @@ function AssignmentSelector({
   showMeaning = true,
 }: Props) {
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
+  const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
 
   let assignmentSubjIDs = assignmentData.map(
     (assignmentItem: any) => assignmentItem.subject_id
@@ -148,6 +180,17 @@ function AssignmentSelector({
     }
   }, [subjectsLoading, assignmentFilters]);
 
+  const onSelectDeselectAllPress = () => {
+    if (areAllSelected) {
+      setSelectedAdvancedSubjIDs([]);
+    } else {
+      setSelectedAdvancedSubjIDs(
+        availableSubjects.map((subject) => `${subject.id}`)
+      );
+    }
+    setAreAllSelected(!areAllSelected);
+  };
+
   return (
     <>
       {availableSubjects ? (
@@ -157,9 +200,57 @@ function AssignmentSelector({
           </NoAssignmentsTxt>
         ) : (
           <>
-            <NumSelectedTxt>
-              {selectedAdvancedSubjIDs.length} selected
-            </NumSelectedTxt>
+            <SelectedInfoContainer>
+              <NumSelectedTxt>
+                {selectedAdvancedSubjIDs.length} selected
+              </NumSelectedTxt>
+              <AnimatePresence mode="wait">
+                {areAllSelected ? (
+                  <ButtonWrapper
+                    key="deselect_all"
+                    transition={{
+                      type: "spring",
+                      duration: 0.5,
+                      bounce: 0.5,
+                    }}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                  >
+                    <SelectDeselectAllButton
+                      onPress={onSelectDeselectAllPress}
+                      backgroundColor="var(--ion-color-danger)"
+                    >
+                      Deselect All
+                      <SelectDeselectIcon src={RemoveIcon} />
+                    </SelectDeselectAllButton>
+                  </ButtonWrapper>
+                ) : (
+                  <ButtonWrapper
+                    key="select_all"
+                    transition={{
+                      type: "spring",
+                      duration: 0.75,
+                      bounce: 0.5,
+                    }}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                  >
+                    <SelectDeselectAllButton
+                      onPress={onSelectDeselectAllPress}
+                      backgroundColor="var(--ion-color-success)"
+                      color="black"
+                    >
+                      Select All
+                      <SelectDeselectIcon
+                        src={areAllSelected ? RemoveIcon : CheckIcon}
+                      />
+                    </SelectDeselectAllButton>
+                  </ButtonWrapper>
+                )}
+              </AnimatePresence>
+            </SelectedInfoContainer>
             <SubjectList
               type="multiple"
               value={selectedAdvancedSubjIDs}
