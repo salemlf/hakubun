@@ -7,6 +7,7 @@ import {
   filterSubjectsByLevel,
   filterSubjectsByType,
   getSubjectColor,
+  sortBySubjectTypeAndLevel,
 } from "../../services/SubjectAndAssignmentService";
 import { useUserInfoStore } from "../../stores/useUserInfoStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
@@ -19,6 +20,7 @@ import {
   SubjectType,
   Vocabulary,
 } from "../../types/Subject";
+import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import SubjectChars from "../SubjectChars";
 import { RadicalMeaning, ReadingAndMeaning } from "../SubjectWideBtnList";
 import Button from "../Button";
@@ -26,6 +28,8 @@ import Counter from "../Counter";
 import CheckCircleIcon from "../../images/check-in-circle.svg";
 import RemoveIcon from "../../images/close.svg";
 import CheckIcon from "../../images/checkmark.svg";
+import LogoExclamation from "../../images/logo-exclamation.svg";
+import { AbsoluteCenterContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const SubjectList = styled(ToggleGroup.Root)`
@@ -87,10 +91,6 @@ const LvlBubble = styled.p`
   border: 1px solid white;
 `;
 
-const NoAssignmentsTxt = styled.p`
-  margin: 16px;
-`;
-
 const SelectedInfoContainer = styled.div`
   display: flex;
   align-items: center;
@@ -128,32 +128,39 @@ const SelectDeselectIcon = styled(IonIcon)`
   height: 1.5em;
 `;
 
-// TODO: move this to more general file
-const sortBySubjectTypeAndLevel = (subjArr: Subject[]): Subject[] => {
-  const subjectOrder: SubjectType[] = [
-    "radical",
-    "kanji",
-    "vocabulary",
-    "kana_vocabulary",
-  ];
+const NoAssignmentsContainer = styled.div`
+  position: relative;
+  width: 100%;
+  z-index: 5;
+  min-height: 350px;
+  margin-bottom: 70px;
+`;
 
-  return subjArr.sort((subjA, subjB) => {
-    const indexA = subjectOrder.indexOf(subjA.object);
-    const indexB = subjectOrder.indexOf(subjB.object);
-    if (indexA !== indexB) {
-      return indexA - indexB;
-    }
+const LogoContainer = styled(AbsoluteCenterContainer)`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 16px;
+  text-align: center;
+  z-index: 5;
 
-    // if same subject type, sort by level
-    return subjA.level - subjB.level;
-  });
-};
+  img {
+    height: 250px;
+  }
+`;
+
+const LogoContainerHeading = styled.h5`
+  margin: 0 0 25px 0;
+  width: 100%;
+`;
 
 type Props = {
   assignmentData: Assignment[];
   selectedAdvancedSubjIDs: string[];
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
   filterByCurrentLevel: boolean;
+  settingsType: AssignmentSessionType;
   assignmentTypeFilter?: AssignmentType[];
   showMeaning?: boolean;
 };
@@ -164,8 +171,9 @@ function AssignmentSelector({
   assignmentData,
   selectedAdvancedSubjIDs,
   setSelectedAdvancedSubjIDs,
-  assignmentTypeFilter,
   filterByCurrentLevel,
+  settingsType,
+  assignmentTypeFilter,
   showMeaning = true,
 }: Props) {
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
@@ -214,9 +222,15 @@ function AssignmentSelector({
     <>
       {availableSubjects ? (
         availableSubjects.length === 0 ? (
-          <NoAssignmentsTxt>
-            Hmm, looks like we can't find any assignments using those filters...
-          </NoAssignmentsTxt>
+          <NoAssignmentsContainer>
+            <LogoContainer>
+              <LogoContainerHeading>
+                Hmm, looks like we can't find any {settingsType}s using those
+                filters...
+              </LogoContainerHeading>
+              <img src={LogoExclamation} />
+            </LogoContainer>
+          </NoAssignmentsContainer>
         ) : (
           <>
             <SelectedInfoContainer>

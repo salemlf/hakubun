@@ -239,6 +239,7 @@ function AssignmentSettings({
                     showBackToBackOption={settingsType === "review"}
                     backToBackChoice={backToBackChoice}
                     setBackToBackChoice={setBackToBackChoice}
+                    settingsType={settingsType}
                   />
                 ),
               },

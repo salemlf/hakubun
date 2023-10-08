@@ -198,6 +198,7 @@ export const FloatingButtonContainer = styled(
   width: 100%;
   display: flex;
   justify-content: center;
+  z-index: 10;
 `;
 
 export const FullWidthColumn = styled.div`
@@ -263,6 +264,7 @@ export const LoadingContainer = styled.div`
 export const SettingOptionContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 10px;
   margin: 22px 12px;
   align-items: center;
 

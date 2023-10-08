@@ -27,7 +27,7 @@ function BackToBackOption({
   return (
     <>
       <Label
-        labelText="Batch to Back"
+        labelText="Back to Back"
         idOfControl={labelId}
         labelfontSize={headingSize}
       />
