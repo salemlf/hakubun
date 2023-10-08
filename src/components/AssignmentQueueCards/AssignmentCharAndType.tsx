@@ -100,6 +100,13 @@ function AssignmentCharAndType({
     false
   );
 
+  // TODO: Not an ideal fix, so do padding/margin bottom and input focus fix later
+  // Decreasing font size for vocab to avoid keyboard hidding input
+  let charFontSize =
+    subjType === "vocabulary" || subjType === "kana_vocabulary"
+      ? "2rem"
+      : "4rem";
+
   return (
     <>
       <SubjectCharRow>
@@ -107,7 +114,7 @@ function AssignmentCharAndType({
           <SubjectChars
             disableTextSelection={disableTextSelection}
             subject={currentReviewItem}
-            fontSize="4rem"
+            fontSize={charFontSize}
             withBgColor={true}
             alignText="center"
           />
