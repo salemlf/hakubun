@@ -15,7 +15,6 @@ type Props = {
   availableAssignmentTypeNames: AssignmentTypeName[];
 };
 
-// TODO: make sure to deselect items if not in selectedAssignmentTypes
 function AdvancedAssignmentSettings({
   assignmentData,
   selectedAdvancedSubjIDs,

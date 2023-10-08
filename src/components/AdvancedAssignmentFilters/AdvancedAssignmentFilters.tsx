@@ -13,6 +13,7 @@ type Props = {
   ) => void;
 };
 
+// TODO: make whole title clickable
 // TODO: add "current level only" option
 function AdvancedAssignmentFilters({
   availableAssignmentTypeNames,
@@ -21,11 +22,7 @@ function AdvancedAssignmentFilters({
 }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <Collapsible
-      title="Filters and Sorting"
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-    >
+    <Collapsible title="Filters" isOpen={isOpen} setIsOpen={setIsOpen}>
       <AssignmentTypeSelector
         headingFontSize="small"
         availableAssignmentTypeNames={availableAssignmentTypeNames}
