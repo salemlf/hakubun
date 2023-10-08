@@ -1,3 +1,4 @@
+import { findStudyMaterialWithSubjID } from "./MiscService";
 import {
   ReadingType,
   Subject,
@@ -8,7 +9,8 @@ import { Assignment, AssignmentType } from "../types/Assignment";
 import { SrsLevelName, StudyMaterial, TagType } from "../types/MiscTypes";
 import { AssignmentQueueItem, ReviewType } from "../types/AssignmentQueueTypes";
 import { SortOrder } from "../components/SortOrderOption/SortOrderOption.types";
-import { findStudyMaterialWithSubjID } from "./MiscService";
+import { BackToBackChoice } from "../components/BackToBackOption/BackToBackOption.types";
+import { orderQueueItemsWithBackToBackOption } from "../components/BackToBackOption/BackToBackOption.service";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(
@@ -206,7 +208,8 @@ export const compareAssignmentsByAvailableDate = (
 export const createAssignmentQueueItems = (
   assignments: Assignment[],
   subjects: Subject[],
-  studyMaterials: StudyMaterial[]
+  studyMaterials: StudyMaterial[],
+  backToBackChoice: BackToBackChoice
 ): AssignmentQueueItem[] => {
   const subjectsWithQueueProps = (subjects as AssignmentQueueItem[]).map(
     (subject, index) => {
@@ -250,7 +253,12 @@ export const createAssignmentQueueItems = (
     })),
   ];
 
-  return meaningAndReadingQueue;
+  let queueItemsWithBackToBackChoice = orderQueueItemsWithBackToBackOption(
+    meaningAndReadingQueue,
+    backToBackChoice
+  );
+
+  return queueItemsWithBackToBackChoice;
 };
 
 export const sortAssignmentsByAvailableDate = (

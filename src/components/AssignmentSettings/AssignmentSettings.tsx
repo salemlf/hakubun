@@ -125,8 +125,6 @@ function AssignmentSettings({
       subjectsData
     );
 
-    // const assignmentBatch = sorted.slice(0, batchSize);
-
     const assignmentBatch =
       batchSize === "All"
         ? sorted
@@ -177,25 +175,12 @@ function AssignmentSettings({
       return sessionData.subjIDs.includes(subject.id);
     });
 
-    // TODO: pass in prop to either shuffle, sort by meaning -> reading, or sort by reading -> meaning
     let assignmentQueue = createAssignmentQueueItems(
       sessionData.assignmentBatch,
       subjects,
-      studyMaterialsData as StudyMaterial[]
+      studyMaterialsData as StudyMaterial[],
+      backToBackChoice
     );
-
-    // *testing
-    console.log(
-      "🚀 ~ file: AssignmentSettings.tsx:170 ~ onStartSessionBtnClick ~ assignmentQueue:",
-      assignmentQueue
-    );
-
-    let assignmentQueueShuffled = shuffleArray(assignmentQueue);
-    console.log(
-      "🚀 ~ file: AssignmentSettings.tsx:187 ~ onStartSessionBtnClick ~ assignmentQueueShuffled:",
-      assignmentQueueShuffled
-    );
-    // *testing
 
     setAssignmentQueueData(assignmentQueue, settingsType);
 
