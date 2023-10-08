@@ -117,8 +117,8 @@ const SelectDeselectAllButton = styled(Button)`
 `;
 
 const SelectDeselectIcon = styled(IonIcon)`
-  width: 1.8em;
-  height: 1.8em;
+  width: 1.5em;
+  height: 1.5em;
 `;
 
 // TODO: move this to more general file
@@ -239,7 +239,7 @@ function AssignmentSelector({
                   >
                     <SelectDeselectAllButton
                       onPress={onSelectDeselectAllPress}
-                      backgroundColor="var(--ion-color-success)"
+                      backgroundColor="var(--ion-color-tertiary)"
                       color="black"
                     >
                       Select All
