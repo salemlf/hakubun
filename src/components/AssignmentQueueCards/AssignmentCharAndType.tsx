@@ -5,6 +5,7 @@ import {
 } from "../../services/SubjectAndAssignmentService";
 import { getReviewTypeColor } from "../../services/AssignmentQueueService";
 import { capitalizeWord, getPopoverStyles } from "../../services/MiscService";
+import { useQueueStore } from "../../stores/useQueueStore";
 import { SubjectType } from "../../types/Subject";
 import {
   AssignmentQueueItem,
@@ -12,7 +13,6 @@ import {
 } from "../../types/AssignmentQueueTypes";
 import SubjectChars from "../SubjectChars/SubjectChars";
 import styled from "styled-components";
-import { useQueueStore } from "../../stores/useQueueStore";
 
 type AssignmentItemTypeProps = {
   reviewType: ReviewType;
@@ -104,7 +104,7 @@ function AssignmentCharAndType({
   // Decreasing font size for vocab to avoid keyboard hidding input
   let charFontSize =
     subjType === "vocabulary" || subjType === "kana_vocabulary"
-      ? "2rem"
+      ? "3rem"
       : "4rem";
 
   return (
