@@ -101,10 +101,10 @@ export const AssignmentQueueCard = ({
 }: CardProps) => {
   const savedUserAnswer = useQueueStore.use.savedUserAnswer();
   const setSavedUserAnswer = useQueueStore.use.setSavedUserAnswer();
-  const isSecondClick = useQueueStore.use.isSecondClick();
-  const showRetryButton = useQueueStore.use.showRetryButton();
+  const isSubmittingAnswer = useQueueStore.use.isSubmittingAnswer();
+  const isRetryAllowed = useQueueStore.use.isRetryAllowed();
   let initialUserAnswer =
-    !isSecondClick || savedUserAnswer === null ? "" : savedUserAnswer;
+    !isSubmittingAnswer || savedUserAnswer === null ? "" : savedUserAnswer;
   const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
 
   type ToastInfo = {
@@ -140,7 +140,7 @@ export const AssignmentQueueCard = ({
   const retryTriggered = () => {
     setDisplayToast(false);
 
-    if (showRetryButton) {
+    if (isRetryAllowed) {
       controls.start("retry");
       handleRetryClick(currentReviewItem, setUserAnswer);
       controls.start("center");

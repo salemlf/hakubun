@@ -20,7 +20,7 @@ export const useAssignmentQueue = () => {
   const correctMoveToNext = useQueueStore.use.correctMoveToNext();
   const wrongMoveToNext = useQueueStore.use.wrongMoveToNext();
   const wrongShowResult = useQueueStore.use.wrongShowResult();
-  const isSecondClick = useQueueStore.use.isSecondClick();
+  const isSubmittingAnswer = useQueueStore.use.isSubmittingAnswer();
   const submitChoice = useQueueStore.use.submitChoice();
   const retryReview = useQueueStore.use.retryReview();
 
@@ -179,7 +179,7 @@ export const useAssignmentQueue = () => {
     // *testing
     let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
 
-    let moveToNextItem = isSecondClick;
+    let moveToNextItem = isSubmittingAnswer;
     isCorrectAnswer
       ? handleCorrectAnswer(
           currReviewItem,
