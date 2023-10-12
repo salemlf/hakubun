@@ -43,13 +43,13 @@ function AssignmentAnswerInput({
   nextBtnClicked,
   shakeInputTrigger,
 }: Props) {
-  const isSecondClick = useQueueStore.use.isSecondClick();
+  const isSubmittingAnswer = useQueueStore.use.isSubmittingAnswer();
   let reviewType = currentReviewItem.review_type;
   const inputRef = useRef<HTMLInputElement>();
   const [inputContainerRef, animate] = useAnimate();
   let isReadingType = reviewType === "reading";
 
-  let inputColor = isSecondClick
+  let inputColor = isSubmittingAnswer
     ? currentReviewItem.is_correct_answer
       ? "var(--ion-color-tertiary)"
       : "var(--ion-color-danger)"
@@ -89,7 +89,7 @@ function AssignmentAnswerInput({
         }}
         translateToHiragana={isReadingType}
         onChange={(e: any) => setUserAnswer(e.target.value)}
-        disabled={isSecondClick}
+        disabled={isSubmittingAnswer}
         placeholder={isReadingType ? "答え" : ""}
       />
     </InputRow>

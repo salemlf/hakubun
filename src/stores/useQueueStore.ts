@@ -3,16 +3,15 @@ import { createSelectors } from "../utils";
 import { PopoverInfo } from "../types/AssignmentQueueTypes";
 
 interface QueueState {
-  isSecondClick: boolean;
+  isSubmittingAnswer: boolean;
   isBottomSheetVisible: boolean;
-  showRetryButton: boolean;
   popoverInfo: PopoverInfo;
   displayPopoverMsg: boolean;
   savedUserAnswer: string | null;
 }
 
 interface QueueActions {
-  setSecondClick: (isSecondClick: boolean) => void;
+  setIsSubmittingAnswer: (isSubmittingAnswer: boolean) => void;
   retryReview: () => void;
   showPopoverMsg: (popoverInfo: PopoverInfo) => void;
   setSavedUserAnswer: (savedUserAnswer: string | null) => void;
@@ -25,9 +24,8 @@ interface QueueActions {
 }
 
 const initialState: QueueState = {
-  isSecondClick: false,
+  isSubmittingAnswer: false,
   isBottomSheetVisible: false,
-  showRetryButton: false,
   popoverInfo: { message: "", messageType: "invalid" },
   displayPopoverMsg: false,
   savedUserAnswer: null,
@@ -35,13 +33,15 @@ const initialState: QueueState = {
 
 const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
   ...initialState,
-  setSecondClick: (isSecondClick) => set({ isSecondClick }),
+  setIsSubmittingAnswer: (isSubmittingAnswer) =>
+    set({
+      isSubmittingAnswer,
+    }),
   retryReview: () =>
     set({
-      isSecondClick: false,
+      isSubmittingAnswer: false,
       displayPopoverMsg: false,
       isBottomSheetVisible: false,
-      showRetryButton: false,
     }),
   showPopoverMsg: (state) =>
     set({ popoverInfo: { ...state }, displayPopoverMsg: true }),
@@ -53,11 +53,15 @@ const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
     set({
       isBottomSheetVisible: false,
       displayPopoverMsg: false,
-      showRetryButton: false,
     }),
   wrongShowResult: () =>
-    set({ isBottomSheetVisible: true, showRetryButton: true }),
-  submitChoice: () => set({ isSecondClick: !get().isSecondClick }),
+    set({
+      isBottomSheetVisible: true,
+    }),
+  submitChoice: () =>
+    set({
+      isSubmittingAnswer: !get().isSubmittingAnswer,
+    }),
   resetAll: () => {
     set(initialState);
   },

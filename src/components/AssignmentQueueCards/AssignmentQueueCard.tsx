@@ -83,28 +83,28 @@ const queueCardVariants = {
 
 type CardProps = {
   currentReviewItem: AssignmentQueueItem;
-  handleNextClick: (
+  handleNextCard: (
     currentReviewItem: AssignmentQueueItem,
     userAnswer: string,
     setUserAnswer: (userAnswer: string) => void
   ) => void;
-  handleRetryClick: (
+  handleRetryCard: (
     currentReviewItem: AssignmentQueueItem,
+    userAnswer: string,
     setUserAnswer: (userAnswer: string) => void
   ) => void;
 };
 
 export const AssignmentQueueCard = ({
   currentReviewItem,
-  handleNextClick,
-  handleRetryClick,
+  handleNextCard,
+  handleRetryCard,
 }: CardProps) => {
   const savedUserAnswer = useQueueStore.use.savedUserAnswer();
   const setSavedUserAnswer = useQueueStore.use.setSavedUserAnswer();
-  const isSecondClick = useQueueStore.use.isSecondClick();
-  const showRetryButton = useQueueStore.use.showRetryButton();
+  const isSubmittingAnswer = useQueueStore.use.isSubmittingAnswer();
   let initialUserAnswer =
-    !isSecondClick || savedUserAnswer === null ? "" : savedUserAnswer;
+    !isSubmittingAnswer || savedUserAnswer === null ? "" : savedUserAnswer;
   const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
 
   type ToastInfo = {
@@ -139,17 +139,22 @@ export const AssignmentQueueCard = ({
   // TODO: ...freezes up the dragging. Tough bug to fix, may be a library issue
   const retryTriggered = () => {
     setDisplayToast(false);
+    let strippedUserAnswer = userAnswer.trim();
 
-    if (showRetryButton) {
+    if (isSubmittingAnswer) {
       controls.start("retry");
-      handleRetryClick(currentReviewItem, setUserAnswer);
+      handleRetryCard(currentReviewItem, strippedUserAnswer, setUserAnswer);
       controls.start("center");
     } else {
+      let cantRetryMsg =
+        strippedUserAnswer === ""
+          ? "Input is empty, you can't retry this item!"
+          : "You haven't submitted your answer, you can't retry this item!";
+
       setToastInfo({
         toastType: "warning",
         title: "Can't Retry!",
-        content:
-          "Looks like your answer was correct or input is empty, you can't retry this item!",
+        content: cantRetryMsg,
       });
       setDisplayToast(true);
       controls.start("center");
@@ -178,7 +183,7 @@ export const AssignmentQueueCard = ({
       setTimeout(() => {
         controls.set("hideAbove");
         controls.start("center");
-        handleNextClick(currentReviewItem, strippedUserAnswer, setUserAnswer);
+        handleNextCard(currentReviewItem, strippedUserAnswer, setUserAnswer);
         // TODO: check if answer was correct or not, then show toast
       }, exitTimeMs);
     }
