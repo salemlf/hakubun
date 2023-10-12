@@ -48,20 +48,6 @@ const queueCardVariants = {
       duration: 0.5,
     },
   }),
-  hideAbove: {
-    y: "-150%",
-    x: 0,
-  },
-  fallDown: {
-    x: 0,
-    y: 0,
-    transition: {
-      type: "spring",
-      bounce: 0.5,
-      delay: 0.5,
-      duration: 0.8,
-    },
-  },
   center: {
     x: 0,
     y: 0,
@@ -76,6 +62,26 @@ const queueCardVariants = {
     transition: {
       type: "spring",
       bounce: 0.5,
+      duration: 1,
+    },
+  },
+  hideVisibility: {
+    scale: 0.33,
+    opacity: 0,
+    x: 0,
+    transition: {
+      type: "spring",
+      bounce: 0,
+      duration: 0.1,
+    },
+  },
+  fadeForward: {
+    x: 0,
+    scale: 1,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      bounce: 0.3,
       duration: 1,
     },
   },
@@ -132,7 +138,11 @@ export const AssignmentQueueCard = ({
   const exitTimeMs = 600;
 
   useEffect(() => {
-    controls.start("fallDown");
+    // slightly delaying so user has time to see screen before card appears
+    setTimeout(() => {
+      hideAndMoveCenter();
+      fadeForward();
+    }, 500);
   }, []);
 
   // TODO: sometimes on retry drag motion value somehow becomes NaN (maybe somehow gets cancelled?) and...
@@ -181,12 +191,21 @@ export const AssignmentQueueCard = ({
       controls.start("submit");
 
       setTimeout(() => {
-        controls.set("hideAbove");
-        controls.start("center");
+        hideAndMoveCenter();
+        fadeForward();
         handleNextCard(currentReviewItem, strippedUserAnswer, setUserAnswer);
         // TODO: check if answer was correct or not, then show toast
       }, exitTimeMs);
     }
+  };
+
+  const hideAndMoveCenter = async () => {
+    await controls.set("hideVisibility");
+    await controls.start("center");
+  };
+
+  const fadeForward = async () => {
+    controls.start("fadeForward");
   };
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
@@ -215,7 +234,7 @@ export const AssignmentQueueCard = ({
         <>
           <AssignmentCardStyled
             subjtype={currentReviewItem.object as SubjectType}
-            initial="hideAbove"
+            initial="hideVisibility"
             animate={controls}
             variants={queueCardVariants}
             style={{

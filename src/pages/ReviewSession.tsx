@@ -23,6 +23,10 @@ import FinishFlagIcon from "../images/finish-flag.svg";
 import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
+const Content = styled(MainContent)`
+  height: 100%;
+`;
+
 const WrapUpFlagContainer = styled(motion.div)`
   position: absolute;
   top: 0;
@@ -37,15 +41,19 @@ const WrapUpFlagContainer = styled(motion.div)`
 
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   padding: 0 16px;
   text-align: center;
 
   img {
-    height: 200px;
+    height: 100%;
   }
+`;
+
+const FlagAndTxtContainer = styled(motion.div)`
+  padding-top: 12vh;
 `;
 
 const WrappingUpTxt = styled.h4`
@@ -78,7 +86,7 @@ const flagImgAndTxtVariants = {
     scale: 1,
     transition: {
       type: "spring",
-      bounce: 0.4,
+      bounce: 0.3,
       duration: animationDuration,
     },
   },
@@ -274,7 +282,7 @@ export const ReviewSession = () => {
         }
       </ReactRouterPrompt>
       {assignmentQueue.length !== 0 && <QueueHeader />}
-      <MainContent>
+      <Content>
         <>
           {assignmentQueue.length !== 0 && (
             <AssignmentQueueCards submitItems={submitReviews} />
@@ -284,17 +292,17 @@ export const ReviewSession = () => {
             animate={bgControls}
             initial="hidden"
           >
-            <motion.div
+            <FlagAndTxtContainer
               variants={flagImgAndTxtVariants}
               animate={flgImgAndTxtControls}
               initial="hideAbove"
             >
               <img src={FinishFlagIcon} />
               <WrappingUpTxt>Wrapping Up!</WrappingUpTxt>
-            </motion.div>
+            </FlagAndTxtContainer>
           </WrapUpFlagContainer>
         </>
-      </MainContent>
+      </Content>
       <KeyboardShortcuts />
     </Page>
   );
