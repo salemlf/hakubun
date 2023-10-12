@@ -75,3 +75,35 @@ Please [email me](mailto:salemlfenn@gmail.com) if you have any questions or conc
 ### Subject Details
 
 <img src="./resources/app-screenshots/subject-details/vocab-and-user-meaning.jpg" width="300" alt="subject details page for vocabulary with user-added meaning" /> <img src="./resources/app-screenshots/subject-details/vocab-context-sentences.jpg" width="300" alt="subject details page for vocabulary, showing context sentences with translations that can be hidden and shown" /> <img src="./resources/app-screenshots/subject-details/kanji-entering-user-note.jpg" width="300" alt="subject details page for kanji with user entering their own meaning note" /> <img src="./resources/app-screenshots/subject-details/kanji-reading-user-note.jpg" width="300" alt="subject details page for kanji with saved meaning note by user, displaying reading section below" />
+
+## Code Implementation and Future Goals for this Project
+
+### Cross-Platform Framework
+
+Hakubun is written in React TypeScript, and uses [Capacitor](https://capacitorjs.com/) to create a cross-platform app experience. When I started this project though, it was actually in React Native! I quickly realized that the language/framework I wanted to build my project on required more investigation and thought, so I decided to evaluate the pros and cons of the options out there.
+
+#### Why not Flutter?
+
+The other main contender was [Flutter](https://flutter.dev/), a cross-platform, natively complied framework that's pretty well-known in the cross-platform/hybrid app world.
+
+I didn't go with this for a couple reasons:
+
+**Flutter Apps are Written in Dart**
+Why is this a problem?
+
+- Dart is a relatively new language on the scene, and not well-known
+- Dart is also used almost exclusively for writing Flutter apps. _It's not a widespread, multi-purpose language like JavaScript, TypeScript, or Python are_
+
+I want this project to be written in a language that a large portion of programmers can understand. That way, if others want to contribute to the app or if I stop maintaining it, it's easier for others to learn and add on to the existing codebase. Dart is such a niche language that I don't feel it's accessible for the everyday programmer/software engineer.
+
+**Google has a tendency to axe their creations**
+
+- They're a massive company that handles all sorts of apps and services, so this isn't surprising
+
+#### Why Capacitor?
+
+I want my apps to be flexible and accessible to as many people as possible. [Capacitor](https://capacitorjs.com/) is described as a "cross-platform native runtime for web apps". It's essentially something you can stick onto web apps that creates iOS and Android versions of it. Using this approach, I can use the libraries and packages I want and modify those as requirements change. There are of course some tradeoffs to this approach (as with anything in software), but it's worked out well so far.
+
+### Future Goals and Improvements
+
+...
