@@ -48,6 +48,10 @@ const WrapUpFlagContainer = styled(motion.div)`
   }
 `;
 
+const Content = styled(MainContent)`
+  height: 100%;
+`;
+
 const WrappingUpTxt = styled.h4`
   width: 100%;
   font-size: 1.5rem;
@@ -274,7 +278,7 @@ export const ReviewSession = () => {
         }
       </ReactRouterPrompt>
       {assignmentQueue.length !== 0 && <QueueHeader />}
-      <MainContent>
+      <Content>
         <>
           {assignmentQueue.length !== 0 && (
             <AssignmentQueueCards submitItems={submitReviews} />
@@ -294,7 +298,7 @@ export const ReviewSession = () => {
             </motion.div>
           </WrapUpFlagContainer>
         </>
-      </MainContent>
+      </Content>
       <KeyboardShortcuts />
     </Page>
   );
