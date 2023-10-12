@@ -98,7 +98,7 @@ export const useAssignmentQueue = () => {
       incrementQueueIndex();
       setUserAnswer("");
     } else {
-      correctFirstClick(currReviewItem, userAnswer);
+      correctonFirstSubmit(currReviewItem, userAnswer);
     }
   };
 
@@ -128,7 +128,7 @@ export const useAssignmentQueue = () => {
     }
   };
 
-  const correctFirstClick = (
+  const correctonFirstSubmit = (
     currReviewItem: AssignmentQueueItem,
     userAnswer: string
   ) => {
@@ -166,7 +166,7 @@ export const useAssignmentQueue = () => {
     correctShowResult();
   };
 
-  const handleNextClick = (
+  const handleNextCard = (
     currReviewItem: AssignmentQueueItem,
     userAnswer: string,
     setUserAnswer: (value: string) => void
@@ -192,10 +192,19 @@ export const useAssignmentQueue = () => {
     submitChoice();
   };
 
-  const handleRetryClick = (
+  const handleRetryCard = (
     currReviewItem: AssignmentQueueItem,
+    userAnswer: string,
     setUserAnswer: (value: string) => void
   ) => {
+    // if the current answer is correct, we don't wanna mess with the number of incorrect answers (could have been marked wrong previously)
+    let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
+    if (isCorrectAnswer) {
+      setUserAnswer("");
+      retryReview();
+      return;
+    }
+
     let updatedReviewItem = currReviewItem;
     updatedReviewItem.is_correct_answer = null;
     updatedReviewItem.is_reviewed = false;
@@ -216,5 +225,5 @@ export const useAssignmentQueue = () => {
     retryReview();
   };
 
-  return { handleNextClick, handleRetryClick };
+  return { handleNextCard, handleRetryCard };
 };

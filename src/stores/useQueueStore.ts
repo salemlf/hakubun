@@ -5,7 +5,6 @@ import { PopoverInfo } from "../types/AssignmentQueueTypes";
 interface QueueState {
   isSubmittingAnswer: boolean;
   isBottomSheetVisible: boolean;
-  isRetryAllowed: boolean;
   popoverInfo: PopoverInfo;
   displayPopoverMsg: boolean;
   savedUserAnswer: string | null;
@@ -27,7 +26,6 @@ interface QueueActions {
 const initialState: QueueState = {
   isSubmittingAnswer: false,
   isBottomSheetVisible: false,
-  isRetryAllowed: false,
   popoverInfo: { message: "", messageType: "invalid" },
   displayPopoverMsg: false,
   savedUserAnswer: null,
@@ -44,7 +42,6 @@ const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
       isSubmittingAnswer: false,
       displayPopoverMsg: false,
       isBottomSheetVisible: false,
-      isRetryAllowed: false,
     }),
   showPopoverMsg: (state) =>
     set({ popoverInfo: { ...state }, displayPopoverMsg: true }),
@@ -56,12 +53,10 @@ const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
     set({
       isBottomSheetVisible: false,
       displayPopoverMsg: false,
-      isRetryAllowed: false,
     }),
   wrongShowResult: () =>
     set({
       isBottomSheetVisible: true,
-      isRetryAllowed: true,
     }),
   submitChoice: () =>
     set({

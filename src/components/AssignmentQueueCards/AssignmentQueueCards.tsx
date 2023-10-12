@@ -12,7 +12,7 @@ type Props = {
 };
 
 function AssignmentQueueCards({ submitItems }: Props) {
-  const { handleNextClick, handleRetryClick } = useAssignmentQueue();
+  const { handleNextCard, handleRetryCard } = useAssignmentQueue();
   const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
   let currQueueIndex = useAssignmentQueueStore.use.currQueueIndex();
 
@@ -36,8 +36,8 @@ function AssignmentQueueCards({ submitItems }: Props) {
         <AssignmentCardContainer>
           <AssignmentQueueCard
             currentReviewItem={assignmentQueue[currQueueIndex]}
-            handleNextClick={handleNextClick}
-            handleRetryClick={handleRetryClick}
+            handleNextCard={handleNextCard}
+            handleRetryCard={handleRetryCard}
           />
         </AssignmentCardContainer>
       )}
