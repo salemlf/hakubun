@@ -38,7 +38,7 @@ const SubjectList = styled(ToggleGroup.Root)`
   padding: 15px 10px 6rem;
   flex-wrap: wrap;
   max-height: 65vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   align-items: center;
   justify-content: center;
 `;

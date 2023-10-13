@@ -7,12 +7,13 @@ import {
   getSubjIDsFromAssignments,
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
-import { capitalizeWord, shuffleArray } from "../../services/MiscService";
+import { capitalizeWord } from "../../services/MiscService";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
+import { useVirtualKeyboardInfo } from "../../hooks/useVirtualKeyboardInfo";
 import { ALL_ASSIGNMENT_TYPES } from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
@@ -44,6 +45,7 @@ function AssignmentSettings({
   defaultSortOrder,
 }: Props) {
   const navigate = useNavigate();
+  const { isKeyboardVisible } = useVirtualKeyboardInfo();
   const [batchSize, setBatchSize] = useState<string>(defaultBatchSize);
   const backToBackOptionDefault =
     useUserSettingsStore.use.reviewBackToBackOption();
@@ -254,10 +256,12 @@ function AssignmentSettings({
             content={`Select some ${settingsType}s using the settings above`}
             toastType="error"
           ></Toast>
-          <StartSessionButton
-            onStartBtnClick={onStartSessionBtnClick}
-            buttonType={settingsType}
-          />
+          {!isKeyboardVisible && (
+            <StartSessionButton
+              onStartBtnClick={onStartSessionBtnClick}
+              buttonType={settingsType}
+            />
+          )}
         </>
       )}
     </>

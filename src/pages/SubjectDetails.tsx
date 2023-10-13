@@ -3,6 +3,7 @@ import { IonGrid, IonSkeletonText } from "@ionic/react";
 import { AnimatePresence } from "framer-motion";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useSubjectByID } from "../hooks/useSubjectByID";
+import { useVirtualKeyboardInfo } from "../hooks/useVirtualKeyboardInfo";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
 import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";
@@ -30,6 +31,7 @@ const Page = styled(AnimatedPage)`
 export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
+  const { isKeyboardVisible } = useVirtualKeyboardInfo();
   const isSessionInProgress = useAssignmentQueueStore.use.sessionInProgress();
   console.log(
     "🚀 ~ file: SubjectDetails.tsx:34 ~ SubjectDetails ~ isSessionInProgress:",
@@ -77,7 +79,7 @@ export const SubjectDetails = () => {
         </>
       )}
       <AnimatePresence>
-        {!isSessionInProgress && <FloatingTabBar />}
+        {!isSessionInProgress && !isKeyboardVisible && <FloatingTabBar />}
       </AnimatePresence>
     </Page>
   );

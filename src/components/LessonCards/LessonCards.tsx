@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { useVirtualKeyboardInfo } from "../../hooks/useVirtualKeyboardInfo";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { Subject, SubjectType } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
@@ -63,6 +64,7 @@ type Props = {
 };
 
 function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
+  const { isKeyboardVisible } = useVirtualKeyboardInfo();
   const lessonPages = lessons.map((lesson) => <LessonCard lesson={lesson} />);
   const [[currentPage, direction], setCurrentPage] = useState([0, 0]);
   let isLastPage = currentPage === lessonPages.length - 1;
@@ -77,7 +79,7 @@ function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
         setCurrentPage={setCurrentPage}
       />
       <AnimatePresence>
-        {isLastPage && (
+        {isLastPage && !isKeyboardVisible && (
           <StartSessionButton
             buttonType="quiz"
             onStartBtnClick={onStartLessonBtnClick}
