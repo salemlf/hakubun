@@ -3,6 +3,7 @@ import { IonList, IonSearchbar } from "@ionic/react";
 import Fuse from "fuse.js";
 import { flattenSearchResults } from "../services/MiscService";
 import { useAllSubjects } from "../hooks/useAllSubjects";
+import { useVirtualKeyboardInfo } from "../hooks/useVirtualKeyboardInfo";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
 import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
 import FloatingTabBar from "../components/FloatingTabBar";
@@ -53,6 +54,7 @@ const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
 
 // TODO: improve animate presence delay/changes
 export const Search = () => {
+  const { isKeyboardVisible } = useVirtualKeyboardInfo();
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useState("");
 
@@ -157,7 +159,7 @@ export const Search = () => {
             </LogoSearchOutcomeContainer>
           )}
         </ContentWithTabBar>
-        <FloatingTabBar />
+        {!isKeyboardVisible && <FloatingTabBar />}
       </Page>
     </>
   );
