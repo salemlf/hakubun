@@ -27,6 +27,13 @@ export const useStartAssignment = () => {
       queryClient.invalidateQueries({
         queryKey: ["available-lessons"],
       });
+      // refreshing data for radical and kanji assignments on home page
+      queryClient.invalidateQueries({
+        queryKey: ["radical-assignments-for-lvl"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["kanji-assignments-for-lvl"],
+      });
     },
   });
 };
