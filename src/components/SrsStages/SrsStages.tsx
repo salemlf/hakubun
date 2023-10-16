@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { SrsLevelName } from "../../types/MiscTypes";
 import { getSrsLevelColor } from "../../services/SubjectAndAssignmentService";
+import { countAssignmentTypesInSrsStage } from "./SrsStages.service";
 import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
 import SrsStagesLoadingSkeleton from "./SrsStagesLoadingSkeleton";
 import styled from "styled-components";
@@ -46,8 +48,10 @@ const StageName = styled.p`
   text-transform: uppercase;
 `;
 
+// TODO: create active state of SrsStageButton where displays srs stage count by subject type
 // TODO: count up radicals, kanji, and vocab in each stage
 function SrsStages() {
+  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
   const {
     isLoading: apprenticeStageDataLoading,
     data: apprenticeStageData,
@@ -84,6 +88,17 @@ function SrsStages() {
     masterStageDataLoading ||
     enlightenedStageDataLoading ||
     burnedStageDataLoading;
+
+  useEffect(() => {
+    if (!stagesLoading) {
+      let apprenticeCount = countAssignmentTypesInSrsStage(apprenticeStageData);
+      let guruCount = countAssignmentTypesInSrsStage(guruStageData);
+      let masterCount = countAssignmentTypesInSrsStage(masterStageData);
+      let enlightenedCount =
+        countAssignmentTypesInSrsStage(enlightenedStageData);
+      let burnedCount = countAssignmentTypesInSrsStage(burnedStageData);
+    }
+  }, [stagesLoading]);
 
   if (stagesLoading) {
     <SrsButtonContainer>
