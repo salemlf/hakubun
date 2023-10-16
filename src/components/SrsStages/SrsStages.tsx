@@ -1,19 +1,16 @@
-import { IonCol, IonGrid, IonRow } from "@ionic/react";
 import { SrsLevelName } from "../../types/MiscTypes";
 import { getSrsLevelColor } from "../../services/SubjectAndAssignmentService";
 import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
 import SrsStagesLoadingSkeleton from "./SrsStagesLoadingSkeleton";
 import styled from "styled-components";
 
-const SrsButtonContainer = styled(IonGrid)`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 0;
-`;
-
-const ButtonRowContainer = styled(IonRow)`
+const SrsButtonContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  padding: 5px;
   width: 100%;
+  gap: 5px;
 `;
 
 type ButtonProps = {
@@ -33,6 +30,10 @@ const SrsStageButton = styled.button<ButtonProps>`
   }
 `;
 
+const BurnedButton = styled(SrsStageButton)`
+  grid-column: 1 / 3;
+`;
+
 const NumItemsInStage = styled.p`
   margin: 5px 0;
   font-size: 1.25rem;
@@ -45,6 +46,7 @@ const StageName = styled.p`
   text-transform: uppercase;
 `;
 
+// TODO: count up radicals, kanji, and vocab in each stage
 function SrsStages() {
   const {
     isLoading: apprenticeStageDataLoading,
@@ -85,72 +87,52 @@ function SrsStages() {
 
   if (stagesLoading) {
     <SrsButtonContainer>
-      <ButtonRowContainer>
-        <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
-      </ButtonRowContainer>
+      <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
     </SrsButtonContainer>;
   }
 
   return (
     <SrsButtonContainer>
-      <ButtonRowContainer>
-        <IonCol size-xs="6" size-md="3">
-          <SrsStageButton
-            srsStage="apprentice"
-            aria-label="Apprentice SRS Stage"
-          >
-            <div>
-              {apprenticeStageData && (
-                <NumItemsInStage>{apprenticeStageData.length}</NumItemsInStage>
-              )}
-              <StageName>Apprentice</StageName>
-            </div>
-          </SrsStageButton>
-        </IonCol>
-        <IonCol size-xs="6" size-md="3">
-          <SrsStageButton srsStage="guru" aria-label="Guru SRS Stage">
-            <div>
-              {guruStageData && (
-                <NumItemsInStage>{guruStageData.length}</NumItemsInStage>
-              )}
-              <StageName>Guru</StageName>
-            </div>
-          </SrsStageButton>
-        </IonCol>
-        <IonCol size-xs="6" size-md="3">
-          <SrsStageButton srsStage="master" aria-label="Master SRS Stage">
-            <div>
-              {masterStageData && (
-                <NumItemsInStage>{masterStageData.length}</NumItemsInStage>
-              )}
-              <StageName>Master</StageName>
-            </div>
-          </SrsStageButton>
-        </IonCol>
-        <IonCol size-xs="6" size-md="3">
-          <SrsStageButton
-            srsStage="enlightened"
-            aria-label="Enlightened SRS Stage"
-          >
-            <div>
-              {enlightenedStageData && (
-                <NumItemsInStage>{enlightenedStageData.length}</NumItemsInStage>
-              )}
-              <StageName>Enlightened</StageName>
-            </div>
-          </SrsStageButton>
-        </IonCol>
-        <IonCol size-xs="12" size-md="6">
-          <SrsStageButton srsStage="burned" aria-label="Burned SRS Stage">
-            <div>
-              {burnedStageData && (
-                <NumItemsInStage>{burnedStageData.length}</NumItemsInStage>
-              )}
-              <StageName>Burned</StageName>
-            </div>
-          </SrsStageButton>
-        </IonCol>
-      </ButtonRowContainer>
+      <SrsStageButton srsStage="apprentice" aria-label="Apprentice SRS Stage">
+        <div>
+          {apprenticeStageData && (
+            <NumItemsInStage>{apprenticeStageData.length}</NumItemsInStage>
+          )}
+          <StageName>Apprentice</StageName>
+        </div>
+      </SrsStageButton>
+      <SrsStageButton srsStage="guru" aria-label="Guru SRS Stage">
+        <div>
+          {guruStageData && (
+            <NumItemsInStage>{guruStageData.length}</NumItemsInStage>
+          )}
+          <StageName>Guru</StageName>
+        </div>
+      </SrsStageButton>
+      <SrsStageButton srsStage="master" aria-label="Master SRS Stage">
+        <div>
+          {masterStageData && (
+            <NumItemsInStage>{masterStageData.length}</NumItemsInStage>
+          )}
+          <StageName>Master</StageName>
+        </div>
+      </SrsStageButton>
+      <SrsStageButton srsStage="enlightened" aria-label="Enlightened SRS Stage">
+        <div>
+          {enlightenedStageData && (
+            <NumItemsInStage>{enlightenedStageData.length}</NumItemsInStage>
+          )}
+          <StageName>Enlightened</StageName>
+        </div>
+      </SrsStageButton>
+      <BurnedButton srsStage="burned" aria-label="Burned SRS Stage">
+        <div>
+          {burnedStageData && (
+            <NumItemsInStage>{burnedStageData.length}</NumItemsInStage>
+          )}
+          <StageName>Burned</StageName>
+        </div>
+      </BurnedButton>
     </SrsButtonContainer>
   );
 }
