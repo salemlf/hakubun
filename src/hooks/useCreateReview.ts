@@ -31,6 +31,13 @@ export const useCreateReview = () => {
       queryClient.invalidateQueries({
         queryKey: ["assignments-available-in-range"],
       });
+      // refreshing data for radical and kanji assignments on home page
+      queryClient.invalidateQueries({
+        queryKey: ["radical-assignments-for-lvl"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["kanji-assignments-for-lvl"],
+      });
     },
   });
 };
