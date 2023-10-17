@@ -149,12 +149,11 @@ export const getSubjectTypeDisplayText = (
   return displayText;
 };
 
-// TODO: change kana vocab to some other color?
 const subjColors: { [index: string]: string } = {
   radical: "var(--wanikani-radical)",
   kanji: "var(--wanikani-kanji)",
   vocabulary: "var(--wanikani-vocab)",
-  kana_vocabulary: "var(--wanikani-vocab)",
+  kana_vocabulary: "var(--wanikani-kana-vocab)",
 };
 
 const tagColors: { [index: string]: string } = {
