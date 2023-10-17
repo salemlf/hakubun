@@ -1,11 +1,11 @@
 import { groupDataByProperty } from "../../utils";
 import { Assignment } from "../../types/Assignment";
 import { ALL_ASSIGNMENT_TYPES } from "../../constants";
-import { AssignmentTypeCount } from "./SrsStages.types";
+import { AssignmentTypeGroupCount } from "./SrsStages.types";
 
 export const countAssignmentTypesInSrsStage = (
   assignments: Assignment[]
-): AssignmentTypeCount => {
+): AssignmentTypeGroupCount => {
   let assignmentsBySubjType = groupDataByProperty(assignments, "subject_type");
 
   // setting missing assignment types to empty arrays
@@ -16,12 +16,6 @@ export const countAssignmentTypesInSrsStage = (
   });
 
   let countedWithSubjType = countWithDisplayName(assignmentsBySubjType);
-  // *testing
-  console.log(
-    "🚀 ~ file: SrsStages.service.ts:50 ~ countAssignmentTypesInSrsStage ~ countedWithSubjType:",
-    countedWithSubjType
-  );
-  // *testing
   return countedWithSubjType;
 };
 

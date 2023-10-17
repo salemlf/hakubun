@@ -13,8 +13,11 @@ export type SrsLevelNumsAndSubLevels = {
   subLevels: number[] | null;
 };
 
-export type AssignmentTypeCount = {
-  assignmentTypeCount: {
-    [key in SrsStageName]: number;
-  };
-};
+enum AssignmentTypeKeys {
+  RADICAL = "radical",
+  KANJI = "kanji",
+  VOCABULARY = "vocabulary",
+  KANA_VOCABULARY = "kana_vocabulary",
+}
+
+export type AssignmentTypeGroupCount = Record<AssignmentTypeKeys, number>;

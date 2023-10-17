@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { SrsLevelName } from "../../types/MiscTypes";
 import {
   getSrsLevelColor,
@@ -6,11 +7,10 @@ import {
 } from "../../services/SubjectAndAssignmentService";
 import { countAssignmentTypesInSrsStage } from "./SrsStages.service";
 import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
+import { AssignmentTypeGroupCount, SrsStageName } from "./SrsStages.types";
+import { Assignment, AssignmentType } from "../../types/Assignment";
 import SrsStagesLoadingSkeleton from "./SrsStagesLoadingSkeleton";
 import styled from "styled-components";
-import { SrsStageName } from "./SrsStages.types";
-import { Assignment, AssignmentType } from "../../types/Assignment";
-import { motion } from "framer-motion";
 
 const SrsButtonContainer = styled.div`
   display: grid;
@@ -21,7 +21,6 @@ const SrsButtonContainer = styled.div`
   gap: 5px;
 `;
 
-// TODO: animate bottom expanding
 function SrsStages() {
   const [showStageDetails, setShowStageDetails] = useState<boolean>(false);
 
@@ -63,13 +62,11 @@ function SrsStages() {
     burnedStageDataLoading;
 
   if (stagesLoading) {
-    <SrsButtonContainer>
-      <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
-      <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
-      <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
-      <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
-      <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
-    </SrsButtonContainer>;
+    return (
+      <SrsButtonContainer>
+        <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
+      </SrsButtonContainer>
+    );
   }
 
   return (
@@ -236,16 +233,8 @@ const SRSButton = ({
   setShowDetails,
   fullWidth = false,
 }: SRSStageButtonProps) => {
-  // TODO: create type for this data
-  let stageGroupedByAssignmentType: any =
+  let stageGroupedByAssignmentType: AssignmentTypeGroupCount =
     countAssignmentTypesInSrsStage(stageData);
-
-  // *testing
-  console.log(
-    "🚀 ~ file: SrsStages.tsx:181 ~ stageGroupedByAssignmentType:",
-    stageGroupedByAssignmentType
-  );
-  // *testing
 
   return (
     <SrsStageButton
