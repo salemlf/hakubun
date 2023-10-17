@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SrsLevelName } from "../../types/MiscTypes";
-import { getSrsLevelColor } from "../../services/SubjectAndAssignmentService";
+import {
+  getSrsLevelColor,
+  getSubjectColor,
+} from "../../services/SubjectAndAssignmentService";
 import { countAssignmentTypesInSrsStage } from "./SrsStages.service";
 import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
 import SrsStagesLoadingSkeleton from "./SrsStagesLoadingSkeleton";
 import styled from "styled-components";
+import { SrsStageName } from "./SrsStages.types";
+import { Assignment, AssignmentType } from "../../types/Assignment";
 
 const SrsButtonContainer = styled.div`
   display: grid;
@@ -15,43 +20,10 @@ const SrsButtonContainer = styled.div`
   gap: 5px;
 `;
 
-type ButtonProps = {
-  srsStage: SrsLevelName;
-};
-
-const SrsStageButton = styled.button<ButtonProps>`
-  width: 100%;
-  margin: 0;
-  padding: 10px 0;
-  color: white;
-  border-radius: 6px;
-  background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
-  &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
-  }
-`;
-
-const BurnedButton = styled(SrsStageButton)`
-  grid-column: 1 / 3;
-`;
-
-const NumItemsInStage = styled.p`
-  margin: 5px 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-`;
-
-const StageName = styled.p`
-  margin: 5px 0;
-  font-size: 1rem;
-  text-transform: uppercase;
-`;
-
-// TODO: create active state of SrsStageButton where displays srs stage count by subject type
-// TODO: count up radicals, kanji, and vocab in each stage
+// TODO: animate bottom expanding
 function SrsStages() {
-  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
+  const [showStageDetails, setShowStageDetails] = useState<boolean>(false);
+
   const {
     isLoading: apprenticeStageDataLoading,
     data: apprenticeStageData,
@@ -89,67 +61,192 @@ function SrsStages() {
     enlightenedStageDataLoading ||
     burnedStageDataLoading;
 
-  useEffect(() => {
-    if (!stagesLoading) {
-      let apprenticeCount = countAssignmentTypesInSrsStage(apprenticeStageData);
-      let guruCount = countAssignmentTypesInSrsStage(guruStageData);
-      let masterCount = countAssignmentTypesInSrsStage(masterStageData);
-      let enlightenedCount =
-        countAssignmentTypesInSrsStage(enlightenedStageData);
-      let burnedCount = countAssignmentTypesInSrsStage(burnedStageData);
-    }
-  }, [stagesLoading]);
-
   if (stagesLoading) {
     <SrsButtonContainer>
+      <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
+      <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
+      <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
+      <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
       <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
     </SrsButtonContainer>;
   }
 
   return (
     <SrsButtonContainer>
-      <SrsStageButton srsStage="apprentice" aria-label="Apprentice SRS Stage">
-        <div>
-          {apprenticeStageData && (
-            <NumItemsInStage>{apprenticeStageData.length}</NumItemsInStage>
-          )}
-          <StageName>Apprentice</StageName>
-        </div>
-      </SrsStageButton>
-      <SrsStageButton srsStage="guru" aria-label="Guru SRS Stage">
-        <div>
-          {guruStageData && (
-            <NumItemsInStage>{guruStageData.length}</NumItemsInStage>
-          )}
-          <StageName>Guru</StageName>
-        </div>
-      </SrsStageButton>
-      <SrsStageButton srsStage="master" aria-label="Master SRS Stage">
-        <div>
-          {masterStageData && (
-            <NumItemsInStage>{masterStageData.length}</NumItemsInStage>
-          )}
-          <StageName>Master</StageName>
-        </div>
-      </SrsStageButton>
-      <SrsStageButton srsStage="enlightened" aria-label="Enlightened SRS Stage">
-        <div>
-          {enlightenedStageData && (
-            <NumItemsInStage>{enlightenedStageData.length}</NumItemsInStage>
-          )}
-          <StageName>Enlightened</StageName>
-        </div>
-      </SrsStageButton>
-      <BurnedButton srsStage="burned" aria-label="Burned SRS Stage">
-        <div>
-          {burnedStageData && (
-            <NumItemsInStage>{burnedStageData.length}</NumItemsInStage>
-          )}
-          <StageName>Burned</StageName>
-        </div>
-      </BurnedButton>
+      <SRSButton
+        stageName="apprentice"
+        stageData={apprenticeStageData}
+        ariaLabel="Apprentice SRS Stage"
+        showStageDetails={showStageDetails}
+        setShowDetails={setShowStageDetails}
+      />
+      <SRSButton
+        stageName="guru"
+        stageData={guruStageData}
+        ariaLabel="Guru SRS Stage"
+        showStageDetails={showStageDetails}
+        setShowDetails={setShowStageDetails}
+      />
+      <SRSButton
+        stageName="master"
+        stageData={masterStageData}
+        ariaLabel="Master SRS Stage"
+        showStageDetails={showStageDetails}
+        setShowDetails={setShowStageDetails}
+      />
+      <SRSButton
+        stageName="enlightened"
+        stageData={enlightenedStageData}
+        ariaLabel="Enlightened SRS Stage"
+        showStageDetails={showStageDetails}
+        setShowDetails={setShowStageDetails}
+      />
+      <SRSButton
+        stageName="burned"
+        stageData={burnedStageData}
+        ariaLabel="Burned SRS Stage"
+        showStageDetails={showStageDetails}
+        setShowDetails={setShowStageDetails}
+        fullWidth={true}
+      />
     </SrsButtonContainer>
   );
 }
+
+const NumItemsInStage = styled.p`
+  margin: 5px 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+`;
+
+const StageName = styled.p`
+  margin: 5px 0 10px 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+`;
+
+type ButtonProps = {
+  srsStage: SrsLevelName;
+  fullWidth: boolean;
+};
+
+const SrsStageButton = styled.button<ButtonProps>`
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  padding-top: 10px;
+  color: white;
+  border-radius: 6px;
+  background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
+  &:focus-visible {
+    outline: 2px solid white;
+    --outline: 2px solid white;
+  }
+  grid-column: ${({ fullWidth }) => fullWidth && "1 / 3"};
+  display: grid;
+
+  align-content: flex-end;
+`;
+
+const SubjTypeContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(1fr, 4);
+`;
+
+type SubjTypeRowProps = {
+  assignmentType: AssignmentType;
+};
+
+const SubjTypeRow = styled.div<SubjTypeRowProps>`
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 5px 8px;
+  background: ${({ assignmentType }) => getSubjectColor(assignmentType)};
+  font-size: 1rem;
+  &:last-child {
+    border-radius: 0 0 6px 6px;
+  }
+`;
+
+const SubjTypeLabel = styled.p`
+  font-size: 1rem;
+  margin: 0;
+`;
+
+const SubjTypeCount = styled.p`
+  font-size: 1rem;
+  margin: 0;
+`;
+
+type SRSStageButtonProps = {
+  stageData: Assignment[];
+  stageName: SrsStageName;
+  ariaLabel: string;
+  showStageDetails: boolean;
+  setShowDetails: (shouldShow: boolean) => void;
+  fullWidth?: boolean;
+};
+
+const SRSButton = ({
+  stageData,
+  stageName,
+  ariaLabel,
+  showStageDetails,
+  setShowDetails,
+  fullWidth = false,
+}: SRSStageButtonProps) => {
+  // TODO: create type for this data
+  let stageGroupedByAssignmentType: any =
+    countAssignmentTypesInSrsStage(stageData);
+
+  console.log(
+    "🚀 ~ file: SrsStages.tsx:181 ~ stageGroupedByAssignmentType:",
+    stageGroupedByAssignmentType
+  );
+
+  return (
+    <SrsStageButton
+      srsStage={stageName}
+      aria-label={ariaLabel}
+      onClick={() => setShowDetails(!showStageDetails)}
+      fullWidth={fullWidth}
+    >
+      {!showStageDetails && (
+        <div>
+          <NumItemsInStage>{stageData.length}</NumItemsInStage>
+        </div>
+      )}
+      <StageName>{stageName}</StageName>
+      {showStageDetails && (
+        <SubjTypeContainer>
+          <SubjTypeRow assignmentType="radical">
+            <SubjTypeLabel>Radicals</SubjTypeLabel>
+            <SubjTypeCount>
+              {stageGroupedByAssignmentType.radical}
+            </SubjTypeCount>
+          </SubjTypeRow>
+          <SubjTypeRow assignmentType="kanji">
+            <SubjTypeLabel>Kanji</SubjTypeLabel>
+            <SubjTypeCount>{stageGroupedByAssignmentType.kanji}</SubjTypeCount>
+          </SubjTypeRow>
+          <SubjTypeRow assignmentType="vocabulary">
+            <SubjTypeLabel>Vocabulary</SubjTypeLabel>
+            <SubjTypeCount>
+              {stageGroupedByAssignmentType.vocabulary}
+            </SubjTypeCount>
+          </SubjTypeRow>
+          <SubjTypeRow assignmentType="kana_vocabulary">
+            <SubjTypeLabel>Kana Vocabulary</SubjTypeLabel>
+            <SubjTypeCount>
+              {stageGroupedByAssignmentType.kana_vocabulary}
+            </SubjTypeCount>
+          </SubjTypeRow>
+        </SubjTypeContainer>
+      )}
+    </SrsStageButton>
+  );
+};
 
 export default SrsStages;

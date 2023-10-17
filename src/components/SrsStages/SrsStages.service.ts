@@ -1,18 +1,12 @@
 import { groupDataByProperty } from "../../utils";
-import { getSubjectTypeDisplayText } from "../../services/SubjectAndAssignmentService";
 import { Assignment } from "../../types/Assignment";
-import { SubjectType } from "../../types/Subject";
 import { ALL_ASSIGNMENT_TYPES } from "../../constants";
+import { AssignmentTypeCount } from "./SrsStages.types";
 
-export const countAssignmentTypesInSrsStage = (assignments: Assignment[]) => {
+export const countAssignmentTypesInSrsStage = (
+  assignments: Assignment[]
+): AssignmentTypeCount => {
   let assignmentsBySubjType = groupDataByProperty(assignments, "subject_type");
-
-  // *testing
-  console.log(
-    "🚀 ~ file: SrsStages.service.ts:11 ~ assignmentsBySubjType:",
-    assignmentsBySubjType
-  );
-  // *testing
 
   // setting missing assignment types to empty arrays
   ALL_ASSIGNMENT_TYPES.forEach((assignmentType) => {
@@ -28,13 +22,12 @@ export const countAssignmentTypesInSrsStage = (assignments: Assignment[]) => {
     countedWithSubjType
   );
   // *testing
+  return countedWithSubjType;
 };
 
 const countWithDisplayName = (assignmentTypeGroups: any) => {
   const assignmentTypeCounts = Object.keys(assignmentTypeGroups).map((key) => {
-    const assignmentTypeKey =
-      getSubjectTypeDisplayText(key as SubjectType, true) || key;
-    return { [assignmentTypeKey]: assignmentTypeGroups[key].length };
+    return { [key]: assignmentTypeGroups[key].length };
   });
   return Object.assign({}, ...assignmentTypeCounts);
 };

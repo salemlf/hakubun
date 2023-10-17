@@ -12,3 +12,9 @@ export type SrsLevelNumsAndSubLevels = {
   stageNums: SrsStageNum[];
   subLevels: number[] | null;
 };
+
+export type AssignmentTypeCount = {
+  assignmentTypeCount: {
+    [key in SrsStageName]: number;
+  };
+};
