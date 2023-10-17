@@ -112,9 +112,17 @@ function SrsStages() {
 }
 
 const NumItemsInStage = styled.p`
-  margin: 5px 0;
+  margin: 8px 0 5px 0;
   font-size: 1.25rem;
   font-weight: 700;
+`;
+
+const StageNameAndNumItemsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
 `;
 
 const NumInStageContainer = styled(motion.div)`
@@ -122,7 +130,8 @@ const NumInStageContainer = styled(motion.div)`
 `;
 
 const StageName = styled.p`
-  margin: 5px 0 15px 0;
+  margin: 8px 0;
+  flex-basis: 100%;
   font-size: 1rem;
   text-transform: uppercase;
 `;
@@ -136,7 +145,6 @@ const SrsStageButton = styled.button<ButtonProps>`
   width: 100%;
   margin: 0;
   padding: 0;
-  padding-top: 10px;
   color: white;
   border-radius: 6px;
   background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
@@ -147,7 +155,7 @@ const SrsStageButton = styled.button<ButtonProps>`
   grid-column: ${({ fullWidth }) => fullWidth && "1 / 3"};
   display: grid;
 
-  align-content: flex-end;
+  align-items: flex-end;
 `;
 
 const SubjTypeContainer = styled(motion.div)`
@@ -242,15 +250,21 @@ const SRSButton = ({
       aria-label={ariaLabel}
       onClick={() => setShowDetails(!showStageDetails)}
       fullWidth={fullWidth}
+      style={{
+        alignItems: showStageDetails ? "flex-end" : "center",
+        padding: showStageDetails ? 0 : "5px",
+      }}
     >
-      <NumInStageContainer
-        initial={false}
-        variants={buttonVariants}
-        animate={showStageDetails ? "hide" : "display"}
-      >
-        <NumItemsInStage>{stageData.length}</NumItemsInStage>
-      </NumInStageContainer>
-      <StageName>{stageName}</StageName>
+      <StageNameAndNumItemsContainer>
+        <NumInStageContainer
+          initial={false}
+          variants={buttonVariants}
+          animate={showStageDetails ? "hide" : "display"}
+        >
+          <NumItemsInStage>{stageData.length}</NumItemsInStage>
+        </NumInStageContainer>
+        <StageName>{stageName}</StageName>
+      </StageNameAndNumItemsContainer>
       <SubjTypeContainer
         initial={false}
         variants={buttonVariants}
