@@ -10,6 +10,7 @@ import SrsStagesLoadingSkeleton from "./SrsStagesLoadingSkeleton";
 import styled from "styled-components";
 import { SrsStageName } from "./SrsStages.types";
 import { Assignment, AssignmentType } from "../../types/Assignment";
+import { motion } from "framer-motion";
 
 const SrsButtonContainer = styled.div`
   display: grid;
@@ -119,8 +120,12 @@ const NumItemsInStage = styled.p`
   font-weight: 700;
 `;
 
+const NumInStageContainer = styled(motion.div)`
+  overflow: hidden;
+`;
+
 const StageName = styled.p`
-  margin: 5px 0 10px 0;
+  margin: 5px 0 15px 0;
   font-size: 1rem;
   text-transform: uppercase;
 `;
@@ -148,10 +153,11 @@ const SrsStageButton = styled.button<ButtonProps>`
   align-content: flex-end;
 `;
 
-const SubjTypeContainer = styled.div`
+const SubjTypeContainer = styled(motion.div)`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(1fr, 4);
+  overflow: hidden;
 `;
 
 type SubjTypeRowProps = {
@@ -161,6 +167,7 @@ type SubjTypeRowProps = {
 const SubjTypeRow = styled.div<SubjTypeRowProps>`
   display: flex;
   justify-content: space-between;
+  gap: 4px;
   margin: 0;
   padding: 5px 8px;
   background: ${({ assignmentType }) => getSubjectColor(assignmentType)};
@@ -179,6 +186,38 @@ const SubjTypeCount = styled.p`
   font-size: 1rem;
   margin: 0;
 `;
+
+const buttonVariants = {
+  display: {
+    height: "auto",
+    opacity: 1,
+    display: "block",
+    transition: {
+      height: {
+        duration: 0.4,
+      },
+      opacity: {
+        duration: 0.25,
+        delay: 0.15,
+      },
+    },
+  },
+  hide: {
+    height: 0,
+    opacity: 0,
+    transition: {
+      height: {
+        duration: 0.4,
+      },
+      opacity: {
+        duration: 0.25,
+      },
+    },
+    transitionEnd: {
+      display: "none",
+    },
+  },
+};
 
 type SRSStageButtonProps = {
   stageData: Assignment[];
@@ -201,10 +240,12 @@ const SRSButton = ({
   let stageGroupedByAssignmentType: any =
     countAssignmentTypesInSrsStage(stageData);
 
+  // *testing
   console.log(
     "🚀 ~ file: SrsStages.tsx:181 ~ stageGroupedByAssignmentType:",
     stageGroupedByAssignmentType
   );
+  // *testing
 
   return (
     <SrsStageButton
@@ -213,38 +254,40 @@ const SRSButton = ({
       onClick={() => setShowDetails(!showStageDetails)}
       fullWidth={fullWidth}
     >
-      {!showStageDetails && (
-        <div>
-          <NumItemsInStage>{stageData.length}</NumItemsInStage>
-        </div>
-      )}
+      <NumInStageContainer
+        initial={false}
+        variants={buttonVariants}
+        animate={showStageDetails ? "hide" : "display"}
+      >
+        <NumItemsInStage>{stageData.length}</NumItemsInStage>
+      </NumInStageContainer>
       <StageName>{stageName}</StageName>
-      {showStageDetails && (
-        <SubjTypeContainer>
-          <SubjTypeRow assignmentType="radical">
-            <SubjTypeLabel>Radicals</SubjTypeLabel>
-            <SubjTypeCount>
-              {stageGroupedByAssignmentType.radical}
-            </SubjTypeCount>
-          </SubjTypeRow>
-          <SubjTypeRow assignmentType="kanji">
-            <SubjTypeLabel>Kanji</SubjTypeLabel>
-            <SubjTypeCount>{stageGroupedByAssignmentType.kanji}</SubjTypeCount>
-          </SubjTypeRow>
-          <SubjTypeRow assignmentType="vocabulary">
-            <SubjTypeLabel>Vocabulary</SubjTypeLabel>
-            <SubjTypeCount>
-              {stageGroupedByAssignmentType.vocabulary}
-            </SubjTypeCount>
-          </SubjTypeRow>
-          <SubjTypeRow assignmentType="kana_vocabulary">
-            <SubjTypeLabel>Kana Vocabulary</SubjTypeLabel>
-            <SubjTypeCount>
-              {stageGroupedByAssignmentType.kana_vocabulary}
-            </SubjTypeCount>
-          </SubjTypeRow>
-        </SubjTypeContainer>
-      )}
+      <SubjTypeContainer
+        initial={false}
+        variants={buttonVariants}
+        animate={showStageDetails ? "display" : "hide"}
+      >
+        <SubjTypeRow assignmentType="radical">
+          <SubjTypeLabel>Radicals</SubjTypeLabel>
+          <SubjTypeCount>{stageGroupedByAssignmentType.radical}</SubjTypeCount>
+        </SubjTypeRow>
+        <SubjTypeRow assignmentType="kanji">
+          <SubjTypeLabel>Kanji</SubjTypeLabel>
+          <SubjTypeCount>{stageGroupedByAssignmentType.kanji}</SubjTypeCount>
+        </SubjTypeRow>
+        <SubjTypeRow assignmentType="vocabulary">
+          <SubjTypeLabel>Vocabulary</SubjTypeLabel>
+          <SubjTypeCount>
+            {stageGroupedByAssignmentType.vocabulary}
+          </SubjTypeCount>
+        </SubjTypeRow>
+        <SubjTypeRow assignmentType="kana_vocabulary">
+          <SubjTypeLabel>Kana Vocabulary</SubjTypeLabel>
+          <SubjTypeCount>
+            {stageGroupedByAssignmentType.kana_vocabulary}
+          </SubjTypeCount>
+        </SubjTypeRow>
+      </SubjTypeContainer>
     </SrsStageButton>
   );
 };
