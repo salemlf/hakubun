@@ -1,25 +1,23 @@
-// import { fireEvent, render, screen } from "@testing-library/react";
-// TODO: fix so no need for relative path for test-utils
 import { describe, test, expect } from "vitest";
-import { render } from "../../../testing/test-utils";
-import "@testing-library/jest-dom";
+// TODO: fix so no need for relative path for test-utils
+import { render } from "../../testing/test-utils";
+import { screen } from "@testing-library/react";
 import LevelProgressBar from ".";
 
-// test("displays", async () => {
-//   render(<LevelProgressBar level={5} />);
-
-//   // ACT
-//   // await userEvent.click(screen.getByText("Load Greeting"));
-//   // await screen.findByRole("heading");
-
-//   // ASSERT
-//   // expect(screen.getByRole('heading')).toHaveTextContent('hello there')
-//   // expect(screen.getByRole('button')).toBeDisabled()
-// });
-
-describe("<LevelProgressBar />", () => {
+describe("<LevelProgressBar/>", () => {
+  let currentLevel = 5;
   test("LevelProgressBar renders without crashing", () => {
-    const { baseElement } = render(<LevelProgressBar level={5} />);
+    const { baseElement } = renderComponent(currentLevel);
     expect(baseElement).toBeDefined();
   });
+
+  test("Level is rendered to screen", async () => {
+    renderComponent(currentLevel);
+
+    expect(await screen.findByText(/^5$/)).toBeInTheDocument();
+  });
 });
+
+const renderComponent = (level: number) => {
+  return render(<LevelProgressBar level={level} />);
+};

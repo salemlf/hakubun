@@ -3,6 +3,7 @@ import { render, RenderOptions } from "@testing-library/react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { IonApp, setupIonicReact } from "@ionic/react";
+import { BrowserRouter } from "react-router-dom";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -21,8 +22,8 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
 /* Theme variables */
-import "../src/theme/variables.css";
-import "../src/theme/globals.scss";
+import "../theme/variables.css";
+import "../theme/globals.scss";
 
 setupIonicReact();
 
@@ -55,5 +56,25 @@ const customRender = (
   options?: Omit<RenderOptions, "wrapper">
 ) => render(ui, { wrapper: TestingApp, ...options });
 
+const TestingAppWithBrowserRouter = ({ children }: TestAppProps) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ToastPrimitive.Provider>
+        <IonApp>
+          <BrowserRouter>{children}</BrowserRouter>
+        </IonApp>
+      </ToastPrimitive.Provider>
+    </QueryClientProvider>
+  );
+};
+
+const renderWithRouter = (ui: ReactElement, { route = "/" } = {}) => {
+  window.history.pushState({}, "Test page", route);
+
+  return {
+    ...render(ui, { wrapper: TestingAppWithBrowserRouter }),
+  };
+};
+
 export * from "@testing-library/react";
-export { customRender as render };
+export { customRender as render, renderWithRouter };

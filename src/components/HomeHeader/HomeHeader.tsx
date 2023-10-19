@@ -1,19 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
 import Button from "../Button";
 import RefreshHomeButton from "../RefreshHomeButton";
-import SettingsIcon from "../../images/settings.svg";
-import LogoIcon from "../../images/logo.svg";
+import SettingsIcon from "../../images/settings.svg?react";
+import LogoIcon from "../../images/logo.svg?react";
 import { Header } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 import { useUserInfoStore } from "../../stores/useUserInfoStore";
-
-const SettingsImg = styled.img`
-  width: 2.75em;
-  height: 2.75em;
-`;
+import SvgIcon from "../SvgIcon";
 
 const SettingsButton = styled(Button)`
   border-radius: 12px;
@@ -53,11 +47,6 @@ const AppName = styled.h1`
   font-size: 1.25rem;
 `;
 
-const Logo = styled(IonIcon)`
-  width: 2em;
-  height: 2em;
-`;
-
 const FirstRow = styled.div`
   width: 100%;
   display: flex;
@@ -88,7 +77,6 @@ function HomeHeader() {
   }, [userInfo]);
 
   const setUserDetails = () => {
-    // let userData = appContext.user;
     if (userInfo) {
       setLevel(userInfo.level);
     }
@@ -99,7 +87,7 @@ function HomeHeader() {
     <HeaderWrapper bgcolor="var(--light-greyish-purple)">
       <FirstRow>
         <UserInfoContainer>
-          <Logo src={LogoIcon} />
+          <SvgIcon icon={<LogoIcon />} width="2em" height="2em" />
           <AppName>Hakubun</AppName>
         </UserInfoContainer>
         <RefreshAndSettingsContainer>
@@ -109,12 +97,12 @@ function HomeHeader() {
             backgroundColor="transparent"
             onPress={() => navigate("/settings")}
           >
-            <SettingsImg src={SettingsIcon} alt="settings icon"></SettingsImg>
+            <SvgIcon icon={<SettingsIcon />} width="2.75em" height="2.75em" />
           </SettingsButton>
         </RefreshAndSettingsContainer>
       </FirstRow>
       <SecondRow>
-        <LevelTxt>Level {level}</LevelTxt>
+        <LevelTxt data-testid="level-num">Level {level}</LevelTxt>
       </SecondRow>
     </HeaderWrapper>
   );

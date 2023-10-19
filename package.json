@@ -94,9 +94,14 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "jsdom": "^22.1.0",
+    "msw": "^1.3.2",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
+    "vite-plugin-svgr": "^4.1.0",
     "vitest": "^0.34.6"
   },
-  "description": "A Japanese study app for Wanikani"
+  "description": "A Japanese study app for Wanikani",
+  "msw": {
+    "workerDirectory": "public"
+  }
 }

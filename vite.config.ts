@@ -1,6 +1,8 @@
 /// <reference types="vitest" />
+/// <reference types="vite-plugin-svgr/client" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,11 +20,12 @@ export default defineConfig({
         ],
       },
     }),
+    svgr({ svgrOptions: { icon: true } }),
   ],
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: "./testing/setup.ts",
+    setupFiles: "./src/testing/setup.ts",
   },
   define: {
     "process.env": {},

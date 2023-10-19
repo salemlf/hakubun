@@ -21,8 +21,13 @@
 
     /* Type checking */
     "jsx": "react-jsx",
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    "types": [
+      "vitest/globals",
+      "@testing-library/jest-dom",
+      "vite/client",
+      "vite-plugin-svgr/client"
+    ]
   },
-  "include": ["src", "testing/setup.ts"],
+  "include": ["src", "./src/testing/setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
