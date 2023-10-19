@@ -1,18 +1,13 @@
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { useQuery } from "@tanstack/react-query";
 
-import { User } from "../types/UserTypes";
-
-type Props = {
-  token: string | undefined;
-};
-
-// TODO: use in useAuth?
-export const useUserInfo = ({ token }: Props) => {
+export const useUserInfo = () => {
   return useQuery({
-    queryKey: ["user-info", token],
+    queryKey: ["user-info"],
     queryFn: WaniKaniAPI.getUser,
-    enabled: !!token,
-    select: (data) => data.data as User,
+    // stale time of 4 hours
+    staleTime: 4 * 60 * (60 * 1000),
+    // cache time of 5 hours
+    cacheTime: 5 * 60 * (60 * 1000),
   });
 };

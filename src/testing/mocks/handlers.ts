@@ -28,8 +28,8 @@ export const handlers = [
       data_updated_at: "2018-04-06T14:26:53.022245Z",
       data: {
         id: "5a6a5234-a392-4a87-8f3f-33342afe8a42",
-        username: "example_user",
-        level: 5,
+        username: "test_user",
+        level: 15,
         profile_url: "https://www.wanikani.com/users/example_user",
         started_at: "2012-05-11T00:52:18.958466Z",
         current_vacation_started_at: null,

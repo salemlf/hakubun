@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { IonGrid, IonCol, IonRow, IonSkeletonText } from "@ionic/react";
 import { useUserInfoStore } from "../stores/useUserInfoStore";
+import { useUserInfo } from "../hooks/useUserInfo";
 import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
 import HomeHeader from "../components/HomeHeader";
 import LessonsButton from "../components/LessonsButton/LessonsButton";
@@ -15,10 +16,12 @@ import LoadingDots from "../components/LoadingDots";
 import { FixedCenterContainer } from "../styles/BaseStyledComponents";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 
+// TODO: save previous level value and show animation/congrats when level increases
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
   const userInfo = useUserInfoStore.use.userInfo();
+  const setUserInfo = useUserInfoStore.use.setUserInfo();
 
   useEffect(() => {
     setHomeLoading(true);
@@ -31,6 +34,21 @@ const Home = () => {
       setLevel(userInfo.level);
     }
   };
+
+  // technically this would get the data again after initial user login, but one extra query ain't that big of a deal
+  const {
+    isLoading: userInfoLoading,
+    data: userInfoData,
+    error: userInfoErr,
+  } = useUserInfo();
+
+  useEffect(() => {
+    if (!userInfoLoading && userInfoData) {
+      if (!userInfoErr && userInfoData.data) {
+        setUserInfo(userInfoData.data);
+      }
+    }
+  }, [userInfoLoading]);
 
   return (
     <AnimatedPage>
