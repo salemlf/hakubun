@@ -15,6 +15,10 @@ describe("<LevelProgressBar/>", () => {
     renderComponent(currentLevel);
 
     expect(await screen.findByText(/^5$/)).toBeInTheDocument();
+
+    // !added
+    screen.logTestingPlaygroundURL();
+    // !added
   });
 });
 
