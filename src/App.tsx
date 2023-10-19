@@ -30,6 +30,8 @@ import { SubjectDetails } from "./pages/SubjectDetails";
 import Home from "./pages/Home";
 import LessonSummary from "./pages/LessonSummary";
 import Settings from "./pages/Settings";
+// const { worker } = require("./mocks/browser");
+import { worker } from "./testing/mocks/worker";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -54,9 +56,13 @@ import "./theme/globals.scss";
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development") {
   LogRocket.init("cleqvf/hakubun", {
-    release: "0.1.5-alpha",
+    release: "0.1.6-alpha",
     shouldCaptureIP: false,
   });
+}
+
+if (import.meta.env.MODE === "development") {
+  worker.start();
 }
 
 // TODO: change so not using setupIonicReact and IonApp

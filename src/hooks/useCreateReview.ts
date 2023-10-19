@@ -24,6 +24,11 @@ export const useCreateReview = () => {
         data
       );
       // *testing
+
+      // refreshing user data in case they leveled up
+      queryClient.invalidateQueries({
+        queryKey: ["user-info"],
+      });
       queryClient.invalidateQueries({
         queryKey: ["assignments-available-for-review"],
       });
