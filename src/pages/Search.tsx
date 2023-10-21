@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { IonList, IonSearchbar } from "@ionic/react";
 import Fuse from "fuse.js";
@@ -12,15 +13,15 @@ import ClearIcon from "../images/clear.svg";
 import ThinkingLogo from "../images/logo-thinking.svg";
 import QuestionLogo from "../images/logo-question.svg";
 import LogoExclamation from "../images/logo-exclamation.svg";
-import {
-  AbsoluteCenterContainer,
-  ContentWithTabBar,
-} from "../styles/BaseStyledComponents";
+import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-import { AnimatePresence, motion } from "framer-motion";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
+`;
+
+const SearchPageContent = styled(ContentWithTabBar)`
+  min-height: 100%;
 `;
 
 const SearchBar = styled(IonSearchbar)`
@@ -38,18 +39,22 @@ const List = styled(IonList)`
   padding: 8px 5px;
 `;
 
-const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
+const LogoSearchOutcomeContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   padding: 0 16px;
   text-align: center;
+`;
 
-  h2 {
-    margin-bottom: 25px;
-    width: 100%;
-  }
+const LogoSearchOutcomeTitle = styled.h2`
+  margin-bottom: 25px;
+  width: 100%;
+`;
+
+const CrabigatorImg = styled.img`
+  max-height: 350px;
 `;
 
 // TODO: improve animate presence delay/changes
@@ -102,7 +107,7 @@ export const Search = () => {
   return (
     <>
       <Page>
-        <ContentWithTabBar>
+        <SearchPageContent>
           <SearchBar
             debounce={1800}
             searchIcon={SearchIcon}
@@ -118,8 +123,10 @@ export const Search = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
               >
-                <h2>Try Searching for Something!</h2>
-                <img src={QuestionLogo} />
+                <LogoSearchOutcomeTitle>
+                  Try Searching for Something!
+                </LogoSearchOutcomeTitle>
+                <CrabigatorImg src={QuestionLogo} />
               </LogoSearchOutcomeContainer>
             )}
           </AnimatePresence>
@@ -132,8 +139,10 @@ export const Search = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
               >
-                <h2>No Results Found!</h2>
-                <img src={LogoExclamation} />
+                <LogoSearchOutcomeTitle>
+                  No Results Found!
+                </LogoSearchOutcomeTitle>
+                <CrabigatorImg src={LogoExclamation} />
               </LogoSearchOutcomeContainer>
             ) : (
               <List>
@@ -154,11 +163,11 @@ export const Search = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <h2>Loading...</h2>
-              <img src={ThinkingLogo} />
+              <LogoSearchOutcomeTitle>Loading...</LogoSearchOutcomeTitle>
+              <CrabigatorImg src={ThinkingLogo} />
             </LogoSearchOutcomeContainer>
           )}
-        </ContentWithTabBar>
+        </SearchPageContent>
         {!isKeyboardVisible && <FloatingTabBar />}
       </Page>
     </>
