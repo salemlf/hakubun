@@ -73,6 +73,15 @@ export const IconHeadingContainer = styled.div`
   }
 `;
 
+// TODO: replace IconHeadingContainer with this
+export const SvgIconHeadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+
+  gap: 5px;
+`;
+
 export const FoundInHeadingContainer = styled(IconHeadingContainer)`
   margin-bottom: 10px;
 `;
