@@ -18,9 +18,9 @@ const TabListStyled = styled(Tabs.List)<TabContainerStyles>`
   border-radius: ${({ $roundedcontainer }) =>
     $roundedcontainer ? ".5rem" : "0"};
   max-width: 100vw;
-  overflow-x: auto;
   padding: 5px 12px;
-  isolation: isolate;
+  overflow-x: auto;
+  /* isolation: isolate; */
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: none;
@@ -64,7 +64,10 @@ const Selector = styled(motion.div)<CustomBgColor>`
   z-index: 10;
   background-color: ${({ bgcolor }) => bgcolor};
   mix-blend-mode: difference;
-  /* margin: 5px 0; */
+
+  /* prevents the issue where selector becomes partially cut off */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 
   margin: 0;
 `;
@@ -109,7 +112,7 @@ function TabListCore(
         >
           {selectedTabKey === tab.id && (
             <Selector
-              style={{ borderRadius: 9999 }}
+              style={{ borderRadius: 9999, backgroundColor: tabBgColor }}
               bgcolor={tabBgColor}
               layoutId="selector"
               transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
