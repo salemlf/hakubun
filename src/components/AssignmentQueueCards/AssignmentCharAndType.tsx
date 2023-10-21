@@ -12,13 +12,15 @@ import {
   ReviewType,
 } from "../../types/AssignmentQueueTypes";
 import SubjectChars from "../SubjectChars/SubjectChars";
+import SvgIcon from "../SvgIcon";
+import ReadingIcon from "../../images/reading.svg?react";
+import MeaningIcon from "../../images/meaning.svg?react";
 import styled from "styled-components";
 
 type AssignmentItemTypeProps = {
   reviewType: ReviewType;
 };
 
-// TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
 const AssignmentTypeRow = styled(IonRow)<AssignmentItemTypeProps>`
   justify-content: center;
   width: 100%;
@@ -77,6 +79,18 @@ const SubjectCharactersCol = styled(IonCol)<CharColProps>`
   text-align: ${({ alignText }) => alignText};
 `;
 
+export const AssignmentTypeHeadingSvgContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  gap: 5px;
+`;
+
+const AssignmentTypeHeading = styled.h5`
+  font-size: 1rem;
+  margin: 4px 0 4px;
+`;
+
 type Props = {
   currentReviewItem: AssignmentQueueItem;
   disableTextSelection?: boolean;
@@ -120,7 +134,6 @@ function AssignmentCharAndType({
           />
         </SubjectCharactersCol>
         <MessageWrapper displayMsg={displayPopoverMsg}>
-          {/* <Message messageType={popoverInfo.messageType}> */}
           <Message
             fontcolor={popoverStyles.fontColor}
             bgcolor={popoverStyles.bgColor}
@@ -130,9 +143,16 @@ function AssignmentCharAndType({
         </MessageWrapper>
       </SubjectCharRow>
       <AssignmentTypeRow reviewType={reviewType}>
-        <p>
-          {reviewDisplayTxt} {reviewTypeCapitalized}
-        </p>
+        <AssignmentTypeHeadingSvgContainer>
+          {reviewType === "meaning" ? (
+            <SvgIcon icon={<MeaningIcon />} width="1.75em" height="1.75em" />
+          ) : (
+            <SvgIcon icon={<ReadingIcon />} width="1.75em" height="1.75em" />
+          )}
+          <AssignmentTypeHeading>
+            {reviewDisplayTxt} {reviewTypeCapitalized}
+          </AssignmentTypeHeading>
+        </AssignmentTypeHeadingSvgContainer>
       </AssignmentTypeRow>
     </>
   );

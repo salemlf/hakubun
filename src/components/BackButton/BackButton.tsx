@@ -10,9 +10,10 @@ const BackButtonStyled = styled(Button)`
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  margin-left: 5px;
   padding: 8px;
   border-radius: 10px;
+  position: absolute;
+  left: 15px;
 `;
 
 const BackIcon = styled(IonIcon)`

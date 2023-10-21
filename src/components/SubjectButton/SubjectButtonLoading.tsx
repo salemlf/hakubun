@@ -1,18 +1,34 @@
 import { IonSkeletonText } from "@ionic/react";
-// import styled from "styled-components/macro";
+import { getSubjectBtnSize } from "../../services/MiscService";
+import { ButtonSize } from "../../types/MiscTypes";
 import styled from "styled-components";
 
-const SubjectButtonSkeleton = styled(IonSkeletonText)`
+type SkeletonProps = {
+  containersize: string;
+};
+
+const SubjectButtonSkeleton = styled(IonSkeletonText)<SkeletonProps>`
+  display: flex;
+  width: ${({ containersize }) => containersize};
+  height: ${({ containersize }) => containersize};
   margin: 0;
   border-radius: 12px;
-  display: flex;
-  width: 3rem;
-  height: 3rem;
 `;
 
+type Props = {
+  btnSize: ButtonSize;
+};
+
 // TODO: use prop for specifying size
-function SubjectButtonLoading() {
-  return <SubjectButtonSkeleton animated={true}></SubjectButtonSkeleton>;
+function SubjectButtonLoading({ btnSize }: Props) {
+  const containerSize = getSubjectBtnSize(btnSize).containerSize;
+
+  return (
+    <SubjectButtonSkeleton
+      animated={true}
+      containersize={containerSize}
+    ></SubjectButtonSkeleton>
+  );
 }
 
 export default SubjectButtonLoading;

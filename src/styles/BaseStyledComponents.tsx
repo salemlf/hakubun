@@ -73,6 +73,15 @@ export const IconHeadingContainer = styled.div`
   }
 `;
 
+// TODO: replace IconHeadingContainer with this
+export const SvgIconHeadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+
+  gap: 5px;
+`;
+
 export const FoundInHeadingContainer = styled(IconHeadingContainer)`
   margin-bottom: 10px;
 `;
@@ -140,17 +149,6 @@ export const ContentWithTabBar = styled.main`
 export const ContentWithTabBarNoPadding = styled.main`
   overflow-y: auto;
   padding: 0;
-`;
-
-export const SettingsTitle = styled(IonTitle)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0 90px 1px;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  font-size: 1.5rem;
 `;
 
 type ButtonContainerProps = {

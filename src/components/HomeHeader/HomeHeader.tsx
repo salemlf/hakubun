@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUserInfoStore } from "../../stores/useUserInfoStore";
 import Button from "../Button";
 import RefreshHomeButton from "../RefreshHomeButton";
+import SvgIcon from "../SvgIcon";
 import SettingsIcon from "../../images/settings.svg?react";
 import LogoIcon from "../../images/logo.svg?react";
 import { Header } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
-import { useUserInfoStore } from "../../stores/useUserInfoStore";
-import SvgIcon from "../SvgIcon";
 
 const SettingsButton = styled(Button)`
   border-radius: 12px;
