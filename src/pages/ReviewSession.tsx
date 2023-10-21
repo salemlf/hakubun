@@ -12,6 +12,7 @@ import {
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
 import { useCreateReview } from "../hooks/useCreateReview";
+import { useVirtualKeyboardInfo } from "../hooks/useVirtualKeyboardInfo";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import { PreFlattenedAssignment } from "../types/Assignment";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
@@ -140,6 +141,7 @@ const Page = styled(AnimatedPage)`
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 export const ReviewSession = () => {
   const navigate = useNavigate();
+  const { isKeyboardVisible } = useVirtualKeyboardInfo();
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
   const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
@@ -303,7 +305,7 @@ export const ReviewSession = () => {
           </WrapUpFlagContainer>
         </>
       </Content>
-      <KeyboardShortcuts />
+      {!isKeyboardVisible && <KeyboardShortcuts />}
     </Page>
   );
 };

@@ -10,6 +10,7 @@ import {
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useStartAssignment } from "../hooks/useStartAssignment";
+import { useVirtualKeyboardInfo } from "../hooks/useVirtualKeyboardInfo";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import AssignmentQueueCards from "../components/AssignmentQueueCards";
 import AnimatedPage from "../components/AnimatedPage";
@@ -29,6 +30,7 @@ const MainContentWithMargin = styled(MainContent)`
 
 function LessonQuiz() {
   const navigate = useNavigate();
+  const { isKeyboardVisible } = useVirtualKeyboardInfo();
   const resetQueueStore = useQueueStore.use.resetAll();
   const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
   const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
@@ -112,6 +114,7 @@ function LessonQuiz() {
           <AssignmentQueueCards submitItems={submitLessonQuiz} />
         )}
       </MainContentWithMargin>
+      {!isKeyboardVisible && <KeyboardShortcuts />}
       <KeyboardShortcuts />
     </Page>
   );
