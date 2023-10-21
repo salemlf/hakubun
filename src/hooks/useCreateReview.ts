@@ -24,12 +24,24 @@ export const useCreateReview = () => {
         data
       );
       // *testing
+
+      // refreshing user data in case they leveled up
+      queryClient.invalidateQueries({
+        queryKey: ["user-info"],
+      });
       queryClient.invalidateQueries({
         queryKey: ["assignments-available-for-review"],
       });
       queryClient.invalidateQueries({ queryKey: ["available-num-reviews"] });
       queryClient.invalidateQueries({
         queryKey: ["assignments-available-in-range"],
+      });
+      // refreshing data for radical and kanji assignments on home page
+      queryClient.invalidateQueries({
+        queryKey: ["radical-assignments-for-lvl"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["kanji-assignments-for-lvl"],
       });
     },
   });

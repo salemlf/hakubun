@@ -4,7 +4,6 @@ import { getTagColor } from "../../services/SubjectAndAssignmentService";
 import { generateXNumUUIDs } from "../../utils";
 import { TAG_REGEXES } from "./constants";
 import { TagType } from "../../types/MiscTypes";
-import { SubjDetailTxt } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
 type TagRegexes = {
@@ -36,8 +35,14 @@ const JapaneseTxt = styled.span`
   font-family: var(--japanese-font-family);
 `;
 
-const TaggedTxt = styled(SubjDetailTxt)`
+type TaggedTxtProps = {
+  txtsize: string;
+};
+
+const TaggedTxt = styled.p<TaggedTxtProps>`
+  font-size: ${({ txtsize }) => txtsize};
   line-height: 2;
+  margin: 5px 0;
   user-select: text;
   -webkit-user-select: text;
   -moz-user-select: text;
@@ -89,7 +94,9 @@ const createSubjectTags = (
 
     return (
       <Fragment key={`radical-tag${uuid}`}>
-        <Tag tagType="radical">{match}</Tag>
+        <Tag tagType="radical" aria-label="Radical Subject">
+          {match}
+        </Tag>
         <Goo />
       </Fragment>
     );
@@ -103,7 +110,9 @@ const createSubjectTags = (
       currUUIDArrIndex++;
       return (
         <Fragment key={`kanji-ja-tag${uuid}`}>
-          <JapaneseTag tagType="kanji">{match}</JapaneseTag>
+          <JapaneseTag tagType="kanji" aria-label="Kanji Subject">
+            {match}
+          </JapaneseTag>
           <Goo />
         </Fragment>
       );
@@ -118,7 +127,9 @@ const createSubjectTags = (
       currUUIDArrIndex++;
       return (
         <Fragment key={`kanji-tag${uuid}`}>
-          <Tag tagType="kanji">{match}</Tag>
+          <Tag tagType="kanji" aria-label="Kanji Subject">
+            {match}
+          </Tag>
           <Goo />
         </Fragment>
       );
@@ -139,13 +150,15 @@ const createSubjectTags = (
         <Fragment key={`vocabulary-tag${uuid}`}>
           {found ? (
             <>
-              <JapaneseTag tagType="vocabulary">
+              <JapaneseTag tagType="vocabulary" aria-label="Vocabulary Subject">
                 {found[found.length - 1]}
               </JapaneseTag>
               <JapaneseTxt>{leftover}</JapaneseTxt>
             </>
           ) : (
-            <Tag tagType="vocabulary">{match}</Tag>
+            <Tag tagType="vocabulary" aria-label="Vocabulary Subject">
+              {match}
+            </Tag>
           )}
           <Goo />
         </Fragment>
@@ -162,7 +175,9 @@ const createSubjectTags = (
 
       return (
         <Fragment key={`reading-ja-tag${uuid}`}>
-          <JapaneseTag tagType="reading">{match}</JapaneseTag>
+          <JapaneseTag tagType="reading" aria-label="Subject Reading">
+            {match}
+          </JapaneseTag>
           <Goo />
         </Fragment>
       );
@@ -183,11 +198,13 @@ const createSubjectTags = (
         <Fragment key={`japanese-tag${uuid}`}>
           {found ? (
             <>
-              <Tag tagType="reading">{found[found.length - 1]}</Tag>
+              <Tag tagType="reading" aria-label="Subject Reading">
+                {found[found.length - 1]}
+              </Tag>
               <JapaneseTxt>{leftover}</JapaneseTxt>
             </>
           ) : (
-            <JapaneseTxt>{match}</JapaneseTxt>
+            <JapaneseTxt aria-label="Subject Reading">{match}</JapaneseTxt>
           )}
           <Goo />
         </Fragment>
@@ -204,7 +221,9 @@ const createSubjectTags = (
 
       return (
         <Fragment key={`reading-tag${uuid}`}>
-          <Tag tagType="reading">{match}</Tag>
+          <Tag tagType="reading" aria-label="Subject Reading">
+            {match}
+          </Tag>
           <Goo />
         </Fragment>
       );
@@ -220,7 +239,9 @@ const createSubjectTags = (
 
       return (
         <Fragment key={`meaning-tag${uuid}`}>
-          <Tag tagType="meaning">{match}</Tag>
+          <Tag tagType="meaning" aria-label="Subject Meaning">
+            {match}
+          </Tag>
           <Goo />
         </Fragment>
       );
@@ -244,13 +265,14 @@ const getKeysForTags = (textWithTags: string, regexForTags: TagRegexes) => {
 
 type Props = {
   textWithTags: string;
+  txtSize?: string;
 };
 
-function TxtWithSubjTags({ textWithTags }: Props) {
+function TxtWithSubjTags({ textWithTags, txtSize = "1rem" }: Props) {
   let uuids = getKeysForTags(textWithTags, TAG_REGEXES);
 
   return (
-    <TaggedTxt>
+    <TaggedTxt txtsize={txtSize}>
       {uuids.length
         ? createSubjectTags(textWithTags, TAG_REGEXES, uuids)
         : textWithTags}

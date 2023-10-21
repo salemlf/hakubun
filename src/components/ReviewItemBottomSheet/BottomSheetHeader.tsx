@@ -22,6 +22,7 @@ const Container = styled(IonHeader)<ContainerProps>`
   }
 
   padding: 10px 0;
+  margin-bottom: 10px;
   transition: height 2s;
   box-shadow: none;
 `;

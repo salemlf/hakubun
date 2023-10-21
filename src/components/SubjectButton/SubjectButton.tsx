@@ -71,7 +71,7 @@ function SubjectButton({
           />
         )
       ) : (
-        <SubjectButtonLoading />
+        <SubjectButtonLoading btnSize={btnSize} />
       )}
     </>
   );

@@ -18,7 +18,7 @@ function Hint({ hint }: Props) {
         <IonIcon src={hintIcon} />
         <NoteHintHeading>Hint</NoteHintHeading>
       </IconHeadingContainer>
-      <TxtWithSubjTags textWithTags={hint} />
+      <TxtWithSubjTags textWithTags={hint} txtSize=".9rem" />
     </NoteHintContainer>
   );
 }

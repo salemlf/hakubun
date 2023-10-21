@@ -2,33 +2,17 @@ import { useNavigate } from "react-router-dom";
 import { useUserInfoStore } from "../stores/useUserInfoStore";
 import { useUserLogin } from "../hooks/useUserLogin";
 import AnimatedPage from "../components/AnimatedPage";
-import BackButton from "../components/BackButton";
 import GeneralUserSettings from "../components/GeneralUserSettings";
 import LessonUserSettings from "../components/LessonUserSettings";
 import ReviewUserSettings from "../components/ReviewUserSettings/ReviewUserSettings";
 import Button from "../components/Button";
 import FloatingTabBar from "../components/FloatingTabBar";
-import {
-  ContentWithTabBarNoPadding,
-  Header,
-} from "../styles/BaseStyledComponents";
+import PageHeader from "../components/PageHeader";
+import { ContentWithTabBarNoPadding } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const ContainerWithBottomMargin = styled(ContentWithTabBarNoPadding)`
   margin-bottom: 6rem;
-`;
-
-const SettingsHeader = styled(Header)`
-  padding: 14px 5px;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-`;
-
-const PageHeading = styled.h1`
-  margin: 0;
-  margin-right: 16px;
-  text-align: center;
 `;
 
 const ButtonRow = styled.div`
@@ -71,10 +55,7 @@ function Settings() {
 
   return (
     <AnimatedPage>
-      <SettingsHeader bgcolor="var(--light-greyish-purple)">
-        <BackButton backgroundColor="var(--ion-color-secondary)" />
-        <PageHeading>User Settings</PageHeading>
-      </SettingsHeader>
+      <PageHeader title="User Settings" />
       <ContainerWithBottomMargin>
         {username && <Username>{username}</Username>}
         <GeneralUserSettings />

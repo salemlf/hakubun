@@ -213,16 +213,6 @@ export const getCompletedAssignmentQueueData = (
   return combinedQueueItems;
 };
 
-export const groupDataByProperty = function (dataToGroup: any[], key: string) {
-  return dataToGroup.reduce(function (objWithGroups, item) {
-    let group = item[key];
-    objWithGroups[group] = objWithGroups[group] || [];
-    objWithGroups[group].push(item);
-
-    return objWithGroups;
-  }, {});
-};
-
 type AnswersForReviewsParams = {
   reviewItem: AssignmentQueueItem;
   acceptedAnswersOnly: boolean;

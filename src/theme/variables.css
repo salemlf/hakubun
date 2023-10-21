@@ -83,6 +83,7 @@ http://ionicframework.com/docs/theming/ */
   --wanikani-radical: #0af;
   --wanikani-kanji: #f0a;
   --wanikani-vocab: #aa00ff;
+  --wanikani-kana-vocab: #8800cc;
   --wanikani-reading: var(--darkest-purple);
 
   --wanikani-apprentice: #dd0093;

@@ -30,13 +30,7 @@ export const WaniKaniAPI = {
   getAssignmentsAvailForReview: async function (currLevel: number) {
     if (currLevel === 0) return { data: [], total: 0 };
 
-    let levelRange = [];
-    for (let i = 1; i <= currLevel; i++) {
-      levelRange.push(i);
-    }
-    let levelRangeString = levelRange.join(",");
-
-    let url = `${baseUrl}assignments?immediately_available_for_review&levels=${levelRangeString}`;
+    let url = `${baseUrl}assignments?immediately_available_for_review`;
 
     let reviews = await PagingAPI.iterateOverPages(url, []);
     let reviewsCombined = PagingAPI.combinePages(reviews);

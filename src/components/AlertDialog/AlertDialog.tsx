@@ -44,9 +44,10 @@ const Description = styled(AlertDialogPrimitive.Description)`
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
-  gap: 25px;
+  justify-content: center;
+  gap: 10px;
   padding-top: 10px;
+  flex-wrap: wrap;
 `;
 
 const DialogButton = styled.button`
@@ -54,8 +55,8 @@ const DialogButton = styled.button`
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  padding: 6px 15px;
-  font-size: 1rem;
+  padding: 12px;
+  font-size: 0.9rem;
   line-height: 1;
   font-weight: 500;
 

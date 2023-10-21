@@ -1,4 +1,4 @@
-import { groupDataByProperty } from "../../services/AssignmentQueueService";
+import { groupDataByProperty } from "../../utils";
 import { Subject } from "../../types/Subject";
 import SubjCharacterList from "./SubjCharacterList";
 
