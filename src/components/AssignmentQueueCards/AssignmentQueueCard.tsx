@@ -15,7 +15,7 @@ import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { ToastType } from "../Toast/types";
 import AssignmentCharAndType from "./AssignmentCharAndType";
 import AssignmentAnswerInput from "./AssignmentAnswerInput";
-import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
+import ReviewItemBottomSheet from "../AssignmentQueueItemBottomSheet";
 import Emoji from "../Emoji";
 import Toast from "../Toast";
 import RetryIcon from "../../images/retry.svg";
