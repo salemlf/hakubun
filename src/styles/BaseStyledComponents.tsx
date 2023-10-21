@@ -151,17 +151,6 @@ export const ContentWithTabBarNoPadding = styled.main`
   padding: 0;
 `;
 
-export const SettingsTitle = styled(IonTitle)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0 90px 1px;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  font-size: 1.5rem;
-`;
-
 type ButtonContainerProps = {
   isPressed: boolean;
   backgroundcolor: string;

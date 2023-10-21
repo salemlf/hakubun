@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
-import { IonHeader, IonButtons, IonToolbar } from "@ionic/react";
 import { useUserSettingsStore } from "../stores/useUserSettingsStore";
 import { useUserInfoStore } from "../stores/useUserInfoStore";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
 import AnimatedPage from "../components/AnimatedPage";
-import ShiftBy from "../components/ShiftBy/ShiftBy";
-import BackButton from "../components/BackButton/BackButton";
 import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
 import LoadingDots from "../components/LoadingDots";
+import PageHeader from "../components/PageHeader";
 import {
   FixedCenterContainer,
   MainContent,
-  SettingsTitle,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -22,13 +19,6 @@ const Page = styled(AnimatedPage)`
     color: white;
     opacity: 1;
   }
-`;
-
-const HeaderContainer = styled(IonHeader)`
-  background: var(--wanikani-review);
-  --ion-toolbar-background: var(--wanikani-review);
-  padding: 10px 0;
-  box-shadow: none;
 `;
 
 export const ReviewSettings = () => {
@@ -56,16 +46,7 @@ export const ReviewSettings = () => {
 
   return (
     <Page>
-      <HeaderContainer>
-        <IonToolbar>
-          <ShiftBy x={10}>
-            <IonButtons slot="start">
-              <BackButton />
-            </IonButtons>
-          </ShiftBy>
-          <SettingsTitle>Review Settings</SettingsTitle>
-        </IonToolbar>
-      </HeaderContainer>
+      <PageHeader title="Review Settings" bgColor="var(--wanikani-review)" />
       <MainContent>
         {availForReviewLoading && (
           <FixedCenterContainer>
