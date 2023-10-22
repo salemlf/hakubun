@@ -31,7 +31,7 @@ export const Subjects = () => {
 
   useEffect(() => {
     if (userInfo && userInfo.level) {
-      if (userInfo.level === 0) {
+      if (level === 0) {
         setLevel(userInfo.level);
       }
       setIsLoading(false);
