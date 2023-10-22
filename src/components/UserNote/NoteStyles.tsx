@@ -66,10 +66,15 @@ export const EditableNote = styled.textarea`
   width: 100%;
   background-color: var(--light-grey);
   line-height: 1;
-  padding: 3px 2px;
+  padding: 10px 5px;
   margin: 0;
   display: block;
-  border: none;
+  border: 1px solid white;
+  border-radius: 8px;
+
+  &:focus-visible {
+    outline: 2px solid white;
+  }
 `;
 
 export const NoteContents = styled.div`
