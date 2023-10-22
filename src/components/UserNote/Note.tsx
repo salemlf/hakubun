@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { IonIcon, useIonAlert } from "@ionic/react";
+import { scrollIntoView } from "seamless-scroll-polyfill";
+import { capitalizeWord } from "../../services/MiscService";
 import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
-
+import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
+import { Subject } from "../../types/Subject";
 import NoteIcon from "../../images/note.svg";
 import PencilIcon from "../../images/pencil.svg";
 import TrashIcon from "../../images/trash.svg";
@@ -11,9 +14,6 @@ import {
   NoteHintHeading,
   IconHeadingContainer,
 } from "../../styles/BaseStyledComponents";
-import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
-import { Subject } from "../../types/Subject";
-import { capitalizeWord } from "../../services/MiscService";
 import {
   EditableNote,
   NoteContents,
@@ -52,7 +52,7 @@ type Props = {
   isRadical: boolean;
 };
 
-const generateNoteHeadingsAngMsg = (
+const generateNoteHeadingsAndMsg = (
   isRadical: boolean,
   noteType: UserNoteType
 ) => {
@@ -98,11 +98,16 @@ function Note({
     if (isEditable && textareaRef.current) {
       textareaRef.current.focus();
       textareaRef.current.selectionStart = textareaRef.current.value.length;
+      scrollIntoView(textareaRef.current, {
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      });
     }
   }, [isEditable]);
   const [presentAlert] = useIonAlert();
 
-  let noteHeadingsAndMsg = generateNoteHeadingsAngMsg(isRadical, noteType);
+  let noteHeadingsAndMsg = generateNoteHeadingsAndMsg(isRadical, noteType);
 
   const handleTextAreaUpdate = (
     evt: React.ChangeEvent<HTMLTextAreaElement>
