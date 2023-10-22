@@ -1,5 +1,6 @@
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
+import { motion } from "framer-motion";
 import { useAudio } from "../../hooks/useAudio";
 import { getAudioForReading } from "../../services/MiscService";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
@@ -11,6 +12,7 @@ import {
 } from "../../types/Subject";
 import Button from "../Button/Button";
 import SoundIcon from "../../images/sound.svg";
+import SoundOffIcon from "../../images/sound-off.svg";
 import {
   ReadingContainer,
   SubjDetailSubHeading,
@@ -22,13 +24,28 @@ import styled from "styled-components";
 const Btn = styled(Button)`
   padding: 4px;
   border-radius: 8px;
+  width: 100%;
+`;
+
+const AudioBtnContainer = styled(motion.div)`
+  margin: 0;
   margin-left: 5px;
+  padding: 0;
 `;
 
 const AudioIcon = styled(IonIcon)`
   width: 1em;
   height: 1em;
 `;
+
+const AudioBtnVariants = {
+  initial: {
+    scale: 1,
+  },
+  animate: {
+    scale: 1.2,
+  },
+};
 
 type AudioProps = {
   reading: string;
@@ -37,16 +54,23 @@ type AudioProps = {
 
 const AudioBtn = ({ url, reading }: AudioProps) => {
   const [playing, toggle] = useAudio(url);
+  console.log("🚀 ~ file: VocabReadings.tsx:41 ~ AudioBtn ~ playing:", playing);
 
   return (
-    <Btn
-      aria-label={`Pronunciation audio for ${reading} reading`}
-      onPress={toggle}
-      backgroundColor="var(--ion-color-tertiary)"
-      color="black"
+    <AudioBtnContainer
+      variants={AudioBtnVariants}
+      initial="initial"
+      animate={playing ? "animate" : "initial"}
     >
-      <AudioIcon icon={SoundIcon} />
-    </Btn>
+      <Btn
+        aria-label={`Pronunciation audio for ${reading} reading`}
+        onPress={toggle}
+        backgroundColor="var(--ion-color-tertiary)"
+        color="black"
+      >
+        <AudioIcon icon={playing ? SoundIcon : SoundOffIcon} />
+      </Btn>
+    </AudioBtnContainer>
   );
 };
 
