@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useUserInfoStore } from "../stores/useUserInfoStore";
+import { useStickyState } from "../hooks/useStickyState";
 import { LEVELS } from "../constants";
 import { getPageIndex } from "../services/MiscService";
 import AnimatedPage from "../components/AnimatedPage";
@@ -22,15 +23,17 @@ const SubjectsHeader = styled(Header)`
   padding: 10px 0;
 `;
 
-// TODO: separate paginator tabs into their own component and use radix ui tabs
+// TODO: add indicator for current level (since not always the one selected)
 export const Subjects = () => {
   const [isLoading, setIsLoading] = useState(true);
   const userInfo = useUserInfoStore.use.userInfo();
-  const [level, setLevel] = useState<number>(0);
+  const [level, setLevel] = useStickyState(0, "subjects-pg-level-selected");
 
   useEffect(() => {
     if (userInfo && userInfo.level) {
-      setLevel(userInfo.level);
+      if (userInfo.level === 0) {
+        setLevel(userInfo.level);
+      }
       setIsLoading(false);
     } else {
       setIsLoading(true);
@@ -45,7 +48,7 @@ export const Subjects = () => {
             <LoadingDots />
           </FixedCenterContainer>
         ) : (
-          <SubjectsContent level={level} />
+          <SubjectsContent level={level} setLevel={setLevel} />
         )}
       </Page>
       <FloatingTabBar />
@@ -55,9 +58,10 @@ export const Subjects = () => {
 
 type SubjectsContentProps = {
   level: number;
+  setLevel: (level: number) => void;
 };
 
-const SubjectsContent = ({ level }: SubjectsContentProps) => {
+const SubjectsContent = ({ level, setLevel }: SubjectsContentProps) => {
   const [[currentPage, direction], setCurrentPage] = useState([level - 1, 0]);
   const levelPages = LEVELS.map((levelPg) => (
     <SubjectsOnLvlTab
@@ -72,6 +76,7 @@ const SubjectsContent = ({ level }: SubjectsContentProps) => {
     newDirection: number = newPage - currentPage
   ) => {
     setCurrentPage([newPage, newDirection]);
+    setLevel(newPage + 1);
   };
 
   return (
