@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { useLessonPaginatorStore } from "../../stores/useLessonPaginatorStore";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { Subject, SubjectType } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
@@ -64,17 +64,21 @@ type Props = {
 
 function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
   const lessonPages = lessons.map((lesson) => <LessonCard lesson={lesson} />);
-  const [[currentPage, direction], setCurrentPage] = useState([0, 0]);
-  let isLastPage = currentPage === lessonPages.length - 1;
+  const currentLessonPage = useLessonPaginatorStore.use.currentLessonPage();
+  const currentLessonDir = useLessonPaginatorStore.use.currentLessonDir();
+  const setCurrentLessonPageAndDir =
+    useLessonPaginatorStore.use.setCurrentLessonPageAndDir();
+
+  let isLastPage = currentLessonPage === lessonPages.length - 1;
 
   return (
     <>
       <Paginator
         showNavigationButtons={true}
         pageArr={lessonPages}
-        currentPage={currentPage}
-        direction={direction}
-        setCurrentPage={setCurrentPage}
+        currentPage={currentLessonPage}
+        direction={currentLessonDir}
+        setCurrentPage={setCurrentLessonPageAndDir}
       />
       <AnimatePresence>
         {isLastPage && (

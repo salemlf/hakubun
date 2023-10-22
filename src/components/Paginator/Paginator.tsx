@@ -31,12 +31,6 @@ function Paginator({
   hasTabBar = false,
 }: Props) {
   const pageIndices = [...Array(pageArr.length).keys()];
-  // *testing
-  console.log(
-    "🚀 ~ file: Paginator.tsx:17 ~ Paginator ~ currentPage:",
-    currentPage
-  );
-  // *testing
 
   const setPage = (
     newPage: number,
