@@ -55,7 +55,6 @@ const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
 // TODO: improve animate presence delay/changes
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
-  // const [query, setQuery] = useState("");
   const [query, setQuery] = useStickyState("", "search-page-query");
 
   const options = {
