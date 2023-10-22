@@ -30,6 +30,7 @@ type CardProps = {
   lesson: AssignmentQueueItem;
 };
 
+// TODO: persist selected tab so doesn't reset when leaving page and coming back
 function LessonCard({ lesson }: CardProps) {
   return (
     <>

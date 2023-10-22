@@ -89,12 +89,6 @@ export const filterAssignmentsByType = (
   let filteredAssignments = assignments.filter(function (assignment) {
     return assignmentTypes.indexOf(assignment.subject_type) !== -1;
   });
-  // *testing
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:86 ~ filteredAssignments ~ filteredAssignments:",
-    filteredAssignments
-  );
-  // *testing
 
   return filteredAssignments;
 };
@@ -106,12 +100,6 @@ export const filterSubjectsByType = (
   let filteredAssignments = subjects.filter(function (subject) {
     return subjectTypes.indexOf(subject.object) !== -1;
   });
-  // *testing
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.tsx:86 ~ filteredAssignments ~ filteredAssignments:",
-    filteredAssignments
-  );
-  // *testing
 
   return filteredAssignments;
 };
