@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import { IonIcon } from "@ionic/react";
 import AnimatedPage from "../components/AnimatedPage";
 import { useNavigate } from "react-router-dom";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
+import { useLessonPaginatorStore } from "../stores/useLessonPaginatorStore";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import LessonCards from "../components/LessonCards";
 import Button from "../components/Button";
 import HomeIconColor from "../images/home-color.svg";
 import styled from "styled-components";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
@@ -35,6 +36,7 @@ function LessonSession() {
   const [uniqueLessonQueue, setUniqueLessonQueue] = useState<
     AssignmentQueueItem[]
   >([]);
+  const resetLessonPaginator = useLessonPaginatorStore.use.reset();
 
   useEffect(() => {
     if (lessonQueue.length === 0) {
@@ -50,6 +52,7 @@ function LessonSession() {
 
   const onStartLessonBtnClick = () => {
     navigate("/lessons/quiz", { replace: true });
+    resetLessonPaginator();
   };
 
   return (

@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useUserSettingsStore } from "../stores/useUserSettingsStore";
+import { useLessonPaginatorStore } from "../stores/useLessonPaginatorStore";
 import { useLessons } from "../hooks/useLessons";
 import AnimatedPage from "../components/AnimatedPage";
 import AssignmentSettings from "../components/AssignmentSettings";
@@ -24,6 +26,11 @@ function LessonSettings() {
   const lessonBatchSize = useUserSettingsStore.use.lessonBatchSize();
   const lessonSortOrderOption =
     useUserSettingsStore.use.lessonSortOrderOption();
+  const resetLessonPaginator = useLessonPaginatorStore.use.reset();
+
+  useEffect(() => {
+    resetLessonPaginator();
+  }, []);
 
   return (
     <Page>
