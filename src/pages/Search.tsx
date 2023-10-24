@@ -4,7 +4,6 @@ import Fuse from "fuse.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { flattenSearchResults } from "../services/MiscService";
 import { useAllSubjects } from "../hooks/useAllSubjects";
-import { useStickyState } from "../hooks/useStickyState";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
 import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
 import FloatingTabBar from "../components/FloatingTabBar";
@@ -55,7 +54,7 @@ const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
 // TODO: improve animate presence delay/changes
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
-  const [query, setQuery] = useStickyState("", "search-page-query");
+  const [query, setQuery] = useState("");
 
   const options = {
     threshold: 0.1,
@@ -107,7 +106,6 @@ export const Search = () => {
             searchIcon={SearchIcon}
             clearIcon={ClearIcon}
             onIonInput={(ev) => handleInput(ev)}
-            value={query}
           ></SearchBar>
           <AnimatePresence>
             {query === "" && !allSubjectsLoading && (
