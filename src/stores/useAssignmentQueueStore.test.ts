@@ -3,7 +3,7 @@ import { useAssignmentQueueStore } from "./useAssignmentQueueStore";
 
 describe("useAssignmentQueueStore", () => {
   it("Initial store values", () => {
-    test("Initial value are as expected", () => {
+    test("Initial values are as expected", () => {
       const { result } = renderHook(() => useAssignmentQueueStore());
       expect(result.current.currQueueIndex).toEqual(0);
       expect(result.current.sessionInProgress).toEqual(false);
