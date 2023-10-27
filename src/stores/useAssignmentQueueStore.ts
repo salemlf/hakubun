@@ -42,7 +42,6 @@ export const useAssignmentQueueStore = create<
   ...initialState,
   incrementCurrQueueIndex: () =>
     set((state) => ({ currQueueIndex: state.currQueueIndex + 1 })),
-  resetQueueIndex: () => set({ currQueueIndex: 0 }),
   updateQueueItem: (item) => {
     const lastIndexOfItem =
       get().assignmentQueue.length -
