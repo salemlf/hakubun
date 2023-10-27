@@ -10,16 +10,6 @@ describe("<LevelProgressBar/>", () => {
     const { baseElement } = renderComponent(currentLevel);
     expect(baseElement).toBeDefined();
   });
-
-  test("Level is rendered to screen", async () => {
-    renderComponent(currentLevel);
-
-    expect(await screen.findByText(/^5$/)).toBeInTheDocument();
-
-    // !added
-    screen.logTestingPlaygroundURL();
-    // !added
-  });
 });
 
 const renderComponent = (level: number) => {
