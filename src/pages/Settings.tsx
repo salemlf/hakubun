@@ -43,7 +43,7 @@ const CreditsContainer = styled.div`
 // TODO: change to get/set defaults from API
 function Settings() {
   const { logout } = useUserLogin();
-  const userInfo = useUserInfoStore.use.userInfo();
+  const userInfo = useUserInfoStore((state) => state.userInfo);
   const navigate = useNavigate();
   const username = userInfo?.username;
 

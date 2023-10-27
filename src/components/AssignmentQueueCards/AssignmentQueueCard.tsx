@@ -106,9 +106,9 @@ export const AssignmentQueueCard = ({
   handleNextCard,
   handleRetryCard,
 }: CardProps) => {
-  const savedUserAnswer = useQueueStore.use.savedUserAnswer();
-  const setSavedUserAnswer = useQueueStore.use.setSavedUserAnswer();
-  const isSubmittingAnswer = useQueueStore.use.isSubmittingAnswer();
+  const savedUserAnswer = useQueueStore((state) => state.savedUserAnswer);
+  const setSavedUserAnswer = useQueueStore((state) => state.setSavedUserAnswer);
+  const isSubmittingAnswer = useQueueStore((state) => state.isSubmittingAnswer);
   let initialUserAnswer =
     !isSubmittingAnswer || savedUserAnswer === null ? "" : savedUserAnswer;
   const [userAnswer, setUserAnswer] = useState(initialUserAnswer);

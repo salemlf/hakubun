@@ -11,12 +11,18 @@ const SettingCategory = styled(Card)`
 `;
 
 function LessonUserSettings() {
-  const lessonBatchSize = useUserSettingsStore.use.lessonBatchSize();
-  const setLessonBatchSize = useUserSettingsStore.use.setLessonBatchSize();
-  const lessonSortOrderOption =
-    useUserSettingsStore.use.lessonSortOrderOption();
-  const setLessonSortOrderOption =
-    useUserSettingsStore.use.setLessonSortOrderOption();
+  const lessonBatchSize = useUserSettingsStore(
+    (state) => state.lessonBatchSize
+  );
+  const setLessonBatchSize = useUserSettingsStore(
+    (state) => state.setLessonBatchSize
+  );
+  const lessonSortOrderOption = useUserSettingsStore(
+    (state) => state.lessonSortOrderOption
+  );
+  const setLessonSortOrderOption = useUserSettingsStore(
+    (state) => state.setLessonSortOrderOption
+  );
 
   return (
     <SettingCategory title="Lessons" headerBgColor="var(--wanikani-lesson)">

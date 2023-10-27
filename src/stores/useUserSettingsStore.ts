@@ -1,9 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { createSelectors } from "../utils";
+import { getSortOrderOptionById } from "../components/SortOrderOption/SortOrderOption.service";
 import { PronunciationVoice } from "../types/UserSettingsTypes";
 import { AssignmentSortOption } from "../components/SortOrderOption/SortOrderOption.types";
-import { getSortOrderOptionById } from "../components/SortOrderOption/SortOrderOption.service";
 import { BackToBackChoice } from "../components/BackToBackOption/BackToBackOption.types";
 
 interface UserSettingsState {
@@ -40,7 +39,7 @@ const initialState: UserSettingsState = {
   reviewBackToBackOption: "disabled",
 };
 
-const useUserSettingsStoreBase = create<
+export const useUserSettingsStore = create<
   UserSettingsState & UserSettingsActions
 >()(
   persist(
@@ -63,5 +62,3 @@ const useUserSettingsStoreBase = create<
     }
   )
 );
-
-export const useUserSettingsStore = createSelectors(useUserSettingsStoreBase);

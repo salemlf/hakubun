@@ -20,8 +20,8 @@ import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
-  const userInfo = useUserInfoStore.use.userInfo();
-  const setUserInfo = useUserInfoStore.use.setUserInfo();
+  const userInfo = useUserInfoStore((state) => state.userInfo);
+  const setUserInfo = useUserInfoStore((state) => state.setUserInfo);
 
   useEffect(() => {
     setHomeLoading(true);

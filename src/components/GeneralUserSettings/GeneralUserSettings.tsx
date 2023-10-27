@@ -13,11 +13,14 @@ const SettingCategory = styled(Card)`
 
 // TODO: add disclaimer about kyoto accent not always being available for vocab
 function GeneralUserSettings() {
-  const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
+  const pronunciationVoice = useUserSettingsStore(
+    (state) => state.pronunciationVoice
+  );
   const voiceID = pronunciationVoice.id;
 
-  const setPronunciationVoice =
-    useUserSettingsStore.use.setPronunciationVoice();
+  const setPronunciationVoice = useUserSettingsStore(
+    (state) => state.setPronunciationVoice
+  );
 
   const updateSelectedVoice = (newVoiceID: string) => {
     let newVoice = AUDIO_VOICES.find((voice) => voice.id === newVoiceID)!;

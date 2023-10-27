@@ -69,7 +69,7 @@ const LevelTxt = styled.h2`
 // TODO: sometimes settings button somehow redirects to /reviews/settings and not settings? fix
 function HomeHeader() {
   const navigate = useNavigate();
-  const userInfo = useUserInfoStore.use.userInfo();
+  const userInfo = useUserInfoStore((state) => state.userInfo);
   const [level, setLevel] = useState<number | undefined>();
 
   useEffect(() => {

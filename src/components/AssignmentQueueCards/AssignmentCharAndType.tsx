@@ -101,8 +101,8 @@ function AssignmentCharAndType({
   currentReviewItem,
   disableTextSelection = false,
 }: Props) {
-  const displayPopoverMsg = useQueueStore.use.displayPopoverMsg();
-  const popoverInfo = useQueueStore.use.popoverInfo();
+  const displayPopoverMsg = useQueueStore((state) => state.displayPopoverMsg);
+  const popoverInfo = useQueueStore((state) => state.popoverInfo);
 
   let popoverStyles = getPopoverStyles(popoverInfo.messageType);
 

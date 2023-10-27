@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { createSelectors } from "../utils";
 import { PopoverInfo } from "../types/AssignmentQueueTypes";
 
 interface QueueState {
@@ -31,7 +30,7 @@ const initialState: QueueState = {
   savedUserAnswer: null,
 };
 
-const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
+export const useQueueStore = create<QueueState & QueueActions>((set, get) => ({
   ...initialState,
   setIsSubmittingAnswer: (isSubmittingAnswer) =>
     set({
@@ -66,5 +65,3 @@ const useQueueStoreBase = create<QueueState & QueueActions>((set, get) => ({
     set(initialState);
   },
 }));
-
-export const useQueueStore = createSelectors(useQueueStoreBase);

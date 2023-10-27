@@ -43,7 +43,7 @@ function AssignmentAnswerInput({
   nextBtnClicked,
   shakeInputTrigger,
 }: Props) {
-  const isSubmittingAnswer = useQueueStore.use.isSubmittingAnswer();
+  const isSubmittingAnswer = useQueueStore((state) => state.isSubmittingAnswer);
   let reviewType = currentReviewItem.review_type;
   const inputRef = useRef<HTMLInputElement>();
   const [inputContainerRef, animate] = useAnimate();

@@ -23,10 +23,13 @@ function LessonSettings() {
     error: lessonsErr,
   } = useLessons();
 
-  const lessonBatchSize = useUserSettingsStore.use.lessonBatchSize();
-  const lessonSortOrderOption =
-    useUserSettingsStore.use.lessonSortOrderOption();
-  const resetLessonPaginator = useLessonPaginatorStore.use.reset();
+  const lessonBatchSize = useUserSettingsStore(
+    (state) => state.lessonBatchSize
+  );
+  const lessonSortOrderOption = useUserSettingsStore(
+    (state) => state.lessonSortOrderOption
+  );
+  const resetLessonPaginator = useLessonPaginatorStore((state) => state.reset);
 
   useEffect(() => {
     resetLessonPaginator();

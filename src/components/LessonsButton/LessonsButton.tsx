@@ -29,7 +29,7 @@ function LessonsButton() {
   const [displayToast, setDisplayToast] = useState<boolean>(false);
   const [toastTitle, setToastTitle] = useState<string>();
   const [toastContent, setToastContent] = useState<string>();
-  const userInfo = useUserInfoStore.use.userInfo();
+  const userInfo = useUserInfoStore((state) => state.userInfo);
 
   const {
     isLoading: lessonsLoading,

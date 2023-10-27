@@ -106,7 +106,9 @@ type VocabReadingProps = {
 function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
   let hasReadings = vocab.readings && vocab.readings.length !== 0;
   let readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
-  const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
+  const pronunciationVoice = useUserSettingsStore(
+    (state) => state.pronunciationVoice
+  );
 
   return hasReadings ? (
     <ReadingContainer>

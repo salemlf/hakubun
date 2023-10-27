@@ -59,8 +59,12 @@ const calculateNumItemsInQueue = (queue: AssignmentQueueItem[]) => {
 
 function QueueHeader() {
   const navigate = useNavigate();
-  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
-  const currQueueIndex = useAssignmentQueueStore.use.currQueueIndex();
+  const assignmentQueue = useAssignmentQueueStore(
+    (state) => state.assignmentQueue
+  );
+  const currQueueIndex = useAssignmentQueueStore(
+    (state) => state.currQueueIndex
+  );
 
   let currentQueueItem = assignmentQueue[currQueueIndex];
 

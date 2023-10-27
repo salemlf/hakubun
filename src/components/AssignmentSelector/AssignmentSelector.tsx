@@ -178,7 +178,7 @@ function AssignmentSelector({
 }: Props) {
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
   const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
-  const userInfo = useUserInfoStore.use.userInfo();
+  const userInfo = useUserInfoStore((state) => state.userInfo);
 
   let assignmentSubjIDs = assignmentData.map(
     (assignmentItem: any) => assignmentItem.subject_id

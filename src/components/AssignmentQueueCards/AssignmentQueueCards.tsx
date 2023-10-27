@@ -11,10 +11,15 @@ type Props = {
   submitItems: (reviewData: AssignmentQueueItem[]) => void;
 };
 
+// TODO: submit items in batches of 10
 function AssignmentQueueCards({ submitItems }: Props) {
   const { handleNextCard, handleRetryCard } = useAssignmentQueue();
-  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
-  let currQueueIndex = useAssignmentQueueStore.use.currQueueIndex();
+  const assignmentQueue = useAssignmentQueueStore(
+    (state) => state.assignmentQueue
+  );
+  const currQueueIndex = useAssignmentQueueStore(
+    (state) => state.currQueueIndex
+  );
 
   useEffect(() => {
     if (

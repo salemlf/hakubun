@@ -29,9 +29,13 @@ const MainContentWithMargin = styled(MainContent)`
 
 function LessonQuiz() {
   const navigate = useNavigate();
-  const resetQueueStore = useQueueStore.use.resetAll();
-  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
-  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
+  const resetQueueStore = useQueueStore((state) => state.resetAll);
+  const resetAssignmentQueue = useAssignmentQueueStore(
+    (state) => state.resetAll
+  );
+  const assignmentQueue = useAssignmentQueueStore(
+    (state) => state.assignmentQueue
+  );
   const { mutateAsync: startAssignmentAsync } = useStartAssignment();
 
   useEffect(() => {

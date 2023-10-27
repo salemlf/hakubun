@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { createSelectors } from "../utils";
 
 interface LessonPaginatorState {
   currentLessonPage: number;
@@ -19,7 +18,7 @@ const initialState: LessonPaginatorState = {
   currentLessonDir: 0,
 };
 
-const useLessonPaginatorStoreBase = create<
+export const useLessonPaginatorStore = create<
   LessonPaginatorState & LessonPaginatorActions
 >()(
   persist(
@@ -39,8 +38,4 @@ const useLessonPaginatorStoreBase = create<
       storage: createJSONStorage(() => localStorage),
     }
   )
-);
-
-export const useLessonPaginatorStore = createSelectors(
-  useLessonPaginatorStoreBase
 );

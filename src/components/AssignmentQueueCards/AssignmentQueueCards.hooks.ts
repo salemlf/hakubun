@@ -14,25 +14,36 @@ import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 
+// TODO: clean this up using store slices pattern
 export const useAssignmentQueue = () => {
-  const showPopoverMsg = useQueueStore.use.showPopoverMsg();
-  const correctShowResult = useQueueStore.use.correctShowResult();
-  const correctMoveToNext = useQueueStore.use.correctMoveToNext();
-  const wrongMoveToNext = useQueueStore.use.wrongMoveToNext();
-  const wrongShowResult = useQueueStore.use.wrongShowResult();
-  const isSubmittingAnswer = useQueueStore.use.isSubmittingAnswer();
-  const submitChoice = useQueueStore.use.submitChoice();
-  const retryReview = useQueueStore.use.retryReview();
+  const showPopoverMsg = useQueueStore((state) => state.showPopoverMsg);
+  const correctShowResult = useQueueStore((state) => state.correctShowResult);
+  const correctMoveToNext = useQueueStore((state) => state.correctMoveToNext);
+  const wrongMoveToNext = useQueueStore((state) => state.wrongMoveToNext);
+  const wrongShowResult = useQueueStore((state) => state.wrongShowResult);
+  const isSubmittingAnswer = useQueueStore((state) => state.isSubmittingAnswer);
+  const submitChoice = useQueueStore((state) => state.submitChoice);
+  const retryReview = useQueueStore((state) => state.retryReview);
 
-  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
-  let updateItem = useAssignmentQueueStore.use.updateQueueItem();
-  let incrementQueueIndex =
-    useAssignmentQueueStore.use.incrementCurrQueueIndex();
-  const addItemToQueue = useAssignmentQueueStore.use.addToAssignmentQueue();
-  const removeOldItemFromQueue =
-    useAssignmentQueueStore.use.removeOldQueueItem();
+  const assignmentQueue = useAssignmentQueueStore(
+    (state) => state.assignmentQueue
+  );
+  const updateQueueItem = useAssignmentQueueStore(
+    (state) => state.updateQueueItem
+  );
+  const incrementCurrQueueIndex = useAssignmentQueueStore(
+    (state) => state.incrementCurrQueueIndex
+  );
+  const addToAssignmentQueue = useAssignmentQueueStore(
+    (state) => state.addToAssignmentQueue
+  );
+  const removeOldQueueItem = useAssignmentQueueStore(
+    (state) => state.removeOldQueueItem
+  );
 
-  const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
+  const pronunciationVoice = useUserSettingsStore(
+    (state) => state.pronunciationVoice
+  );
 
   const displaySRSStatus = (reviewItem: AssignmentQueueItem) => {
     let endingSRS = reviewItem.ending_srs_stage!;
@@ -95,7 +106,7 @@ export const useAssignmentQueue = () => {
     if (moveToNextItem) {
       correctMoveToNext();
 
-      incrementQueueIndex();
+      incrementCurrQueueIndex();
       setUserAnswer("");
     } else {
       correctonFirstSubmit(currReviewItem, userAnswer);
@@ -110,8 +121,8 @@ export const useAssignmentQueue = () => {
     let updatedReviewItem = currReviewItem;
 
     if (moveToNextItem) {
-      addItemToQueue(updatedReviewItem);
-      removeOldItemFromQueue();
+      addToAssignmentQueue(updatedReviewItem);
+      removeOldQueueItem();
       wrongMoveToNext();
       setUserAnswer("");
     } else {
@@ -123,7 +134,7 @@ export const useAssignmentQueue = () => {
         ? (updatedReviewItem.incorrect_reading_answers += 1)
         : (updatedReviewItem.incorrect_meaning_answers += 1);
 
-      updateItem(updatedReviewItem);
+      updateQueueItem(updatedReviewItem);
       wrongShowResult();
     }
   };
@@ -153,14 +164,14 @@ export const useAssignmentQueue = () => {
       // keeping answer as incorrect and is_reviewed as true
       updatedReviewItem.is_reviewed = true;
 
-      updateItem(updatedReviewItem);
+      updateQueueItem(updatedReviewItem);
     }
 
     // user got answer correct first try
     else {
       updatedReviewItem.is_correct_answer = true;
       updatedReviewItem.is_reviewed = true;
-      updateItem(updatedReviewItem);
+      updateQueueItem(updatedReviewItem);
     }
 
     correctShowResult();
@@ -220,7 +231,7 @@ export const useAssignmentQueue = () => {
         : updatedReviewItem.incorrect_meaning_answers;
     }
 
-    updateItem(updatedReviewItem);
+    updateQueueItem(updatedReviewItem);
     setUserAnswer("");
     retryReview();
   };

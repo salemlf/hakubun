@@ -7,12 +7,14 @@ import { User } from "../types/UserTypes";
 
 export const useUserLogin = () => {
   const queryClient = useQueryClient();
-  const setIsAuthLoading = useAuthTokenStore.use.setIsAuthLoading();
-  const setIsAuthenticated = useAuthTokenStore.use.setIsAuthenticated();
-  const setAuthToken = useAuthTokenStore.use.setAuthToken();
-  const resetToken = useAuthTokenStore.use.reset();
-  const setUserInfo = useUserInfoStore.use.setUserInfo();
-  const resetUserInfo = useUserInfoStore.use.reset();
+  const setIsAuthLoading = useAuthTokenStore((state) => state.setIsAuthLoading);
+  const setIsAuthenticated = useAuthTokenStore(
+    (state) => state.setIsAuthenticated
+  );
+  const setAuthToken = useAuthTokenStore((state) => state.setAuthToken);
+  const resetToken = useAuthTokenStore((state) => state.reset);
+  const setUserInfo = useUserInfoStore((state) => state.setUserInfo);
+  const resetUserInfo = useUserInfoStore((state) => state.reset);
 
   const configureAxiosHeaders = (newToken: any) => {
     api.defaults.headers["Authorization"] = `Bearer ${newToken}`;

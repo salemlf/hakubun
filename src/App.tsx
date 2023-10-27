@@ -94,10 +94,10 @@ const App: React.FC = () => {
 const AppElements = () => {
   const location = useLocation();
 
-  const isAuthenticated = useAuthTokenStore.use.isAuthenticated();
-  const isAuthLoading = useAuthTokenStore.use.isAuthLoading();
-  const authToken = useAuthTokenStore.use.authToken();
-  const userInfo = useUserInfoStore.use.userInfo();
+  const isAuthenticated = useAuthTokenStore((state) => state.isAuthenticated);
+  const isAuthLoading = useAuthTokenStore((state) => state.isAuthLoading);
+  const authToken = useAuthTokenStore((state) => state.authToken);
+  const userInfo = useUserInfoStore((state) => state.userInfo);
 
   // setting the auth token headers for all api requests
   (function () {

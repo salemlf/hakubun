@@ -47,8 +47,10 @@ type SubjectsGroupedByType = {
 
 function LessonSummary() {
   const location = useLocation();
-  const resetQueueStore = useQueueStore.use.resetAll();
-  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
+  const resetQueueStore = useQueueStore((state) => state.resetAll);
+  const resetAssignmentQueue = useAssignmentQueueStore(
+    (state) => state.resetAll
+  );
   const lessonsStartedData: AssignmentQueueItem[] =
     location.state.lessonResponses;
   const [subjectsByType, setSubjectsByType] = useState<SubjectsGroupedByType>(

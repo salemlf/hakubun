@@ -32,11 +32,11 @@ const HomeIconStyled = styled(IonIcon)`
 
 function LessonSession() {
   const navigate = useNavigate();
-  const lessonQueue = useAssignmentQueueStore.use.assignmentQueue();
+  const lessonQueue = useAssignmentQueueStore((state) => state.assignmentQueue);
   const [uniqueLessonQueue, setUniqueLessonQueue] = useState<
     AssignmentQueueItem[]
   >([]);
-  const resetLessonPaginator = useLessonPaginatorStore.use.reset();
+  const resetLessonPaginator = useLessonPaginatorStore((state) => state.reset);
 
   useEffect(() => {
     if (lessonQueue.length === 0) {

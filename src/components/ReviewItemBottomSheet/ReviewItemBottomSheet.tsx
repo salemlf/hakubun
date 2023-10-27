@@ -26,11 +26,9 @@ type Props = {
 // TODO: modify how BottomSheet component is displayed, rn it's isOpen prop will always be true lol
 function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   const location = useLocation();
-  const showBottomSheet = useQueueStore.use.isBottomSheetVisible();
+  const showBottomSheet = useQueueStore((state) => state.isBottomSheetVisible);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  // !added
   const { height } = useWindowSize();
-  // !added
 
   // TODO: also reopen to previous breakpoint on return?
   useEffect(() => {

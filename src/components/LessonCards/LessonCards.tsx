@@ -65,10 +65,15 @@ type Props = {
 
 function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
   const lessonPages = lessons.map((lesson) => <LessonCard lesson={lesson} />);
-  const currentLessonPage = useLessonPaginatorStore.use.currentLessonPage();
-  const currentLessonDir = useLessonPaginatorStore.use.currentLessonDir();
-  const setCurrentLessonPageAndDir =
-    useLessonPaginatorStore.use.setCurrentLessonPageAndDir();
+  const currentLessonPage = useLessonPaginatorStore(
+    (state) => state.currentLessonPage
+  );
+  const currentLessonDir = useLessonPaginatorStore(
+    (state) => state.currentLessonDir
+  );
+  const setCurrentLessonPageAndDir = useLessonPaginatorStore(
+    (state) => state.setCurrentLessonPageAndDir
+  );
 
   let isLastPage = currentLessonPage === lessonPages.length - 1;
 

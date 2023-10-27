@@ -10,7 +10,7 @@ type Props = {
 export const useCreateReview = () => {
   const queryClient = useQueryClient();
   // used so review forecast data will update after creating a review
-  const resetForecastTotals = useForecastTotalsStore.use.resetAll();
+  const resetForecastTotals = useForecastTotalsStore((state) => state.resetAll);
 
   return useMutation({
     mutationFn: ({ reviewSessionData }: Props) =>

@@ -26,7 +26,7 @@ const SubjectsHeader = styled(Header)`
 // TODO: add indicator for current level (since not always the one selected)
 export const Subjects = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const userInfo = useUserInfoStore.use.userInfo();
+  const userInfo = useUserInfoStore((state) => state.userInfo);
   const [level, setLevel] = useStickyState(0, "subjects-pg-level-selected");
 
   useEffect(() => {

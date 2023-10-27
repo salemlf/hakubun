@@ -9,7 +9,7 @@ type Props = {
 export const useStartAssignment = () => {
   const queryClient = useQueryClient();
   // used so review forecast data will update after starting an assignment
-  const resetForecastTotals = useForecastTotalsStore.use.resetAll();
+  const resetForecastTotals = useForecastTotalsStore((state) => state.resetAll);
 
   return useMutation({
     mutationFn: ({ assignmentID }: Props) => startAssignment(assignmentID),

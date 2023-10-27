@@ -140,12 +140,19 @@ const Page = styled(AnimatedPage)`
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 export const ReviewSession = () => {
   const navigate = useNavigate();
-  const resetQueueStore = useQueueStore.use.resetAll();
-  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
-  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
-  const currQueueIndex = useAssignmentQueueStore.use.currQueueIndex();
-  const updateAssignmentQueueData =
-    useAssignmentQueueStore.use.updateAssignmentQueueData();
+  const resetQueueStore = useQueueStore((state) => state.resetAll);
+  const resetAssignmentQueue = useAssignmentQueueStore(
+    (state) => state.resetAll
+  );
+  const assignmentQueue = useAssignmentQueueStore(
+    (state) => state.assignmentQueue
+  );
+  const currQueueIndex = useAssignmentQueueStore(
+    (state) => state.currQueueIndex
+  );
+  const updateAssignmentQueueData = useAssignmentQueueStore(
+    (state) => state.updateAssignmentQueueData
+  );
   const { mutateAsync: createReviewsAsync } = useCreateReview();
 
   const bgControls = useAnimation();

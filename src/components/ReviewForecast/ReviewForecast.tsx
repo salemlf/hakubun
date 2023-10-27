@@ -71,7 +71,7 @@ function ReviewForecast() {
     StartAndEndTimeInfo[]
   >([]);
 
-  const userInfo = useUserInfoStore.use.userInfo();
+  const userInfo = useUserInfoStore((state) => state.userInfo);
   const [isEnabled, setIsEnabled] = useState(false);
   let currUserLevel = userInfo?.level;
 
@@ -83,10 +83,12 @@ function ReviewForecast() {
     }
   }, [userInfo]);
 
-  const seedRunningTotalAvailableReviews =
-    useForecastTotalsStore.use.seedRunningTotalAvailableReviews();
-  const runningTotals =
-    useForecastTotalsStore.use.runningTotalAvailableReviews();
+  const seedRunningTotalAvailableReviews = useForecastTotalsStore(
+    (state) => state.seedRunningTotalAvailableReviews
+  );
+  const runningTotals = useForecastTotalsStore(
+    (state) => state.runningTotalAvailableReviews
+  );
 
   const {
     isLoading: availForReviewLoading,

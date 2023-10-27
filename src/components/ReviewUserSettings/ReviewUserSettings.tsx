@@ -12,16 +12,24 @@ const SettingCategory = styled(Card)`
 `;
 
 function ReviewUserSettings() {
-  const reviewBatchSize = useUserSettingsStore.use.reviewBatchSize();
-  const setReviewBatchSize = useUserSettingsStore.use.setReviewBatchSize();
-  const reviewSortOrderOption =
-    useUserSettingsStore.use.reviewSortOrderOption();
-  const setReviewSortOrderOption =
-    useUserSettingsStore.use.setReviewSortOrderOption();
-  const reviewBackToBackOption =
-    useUserSettingsStore.use.reviewBackToBackOption();
-  const setReviewBackToBackOption =
-    useUserSettingsStore.use.setReviewBackToBackOption();
+  const reviewBatchSize = useUserSettingsStore(
+    (state) => state.reviewBatchSize
+  );
+  const setReviewBatchSize = useUserSettingsStore(
+    (state) => state.setReviewBatchSize
+  );
+  const reviewSortOrderOption = useUserSettingsStore(
+    (state) => state.reviewSortOrderOption
+  );
+  const setReviewSortOrderOption = useUserSettingsStore(
+    (state) => state.setReviewSortOrderOption
+  );
+  const reviewBackToBackOption = useUserSettingsStore(
+    (state) => state.reviewBackToBackOption
+  );
+  const setReviewBackToBackOption = useUserSettingsStore(
+    (state) => state.setReviewBackToBackOption
+  );
 
   return (
     <SettingCategory title="Reviews" headerBgColor="var(--wanikani-review)">

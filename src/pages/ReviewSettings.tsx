@@ -22,7 +22,7 @@ const Page = styled(AnimatedPage)`
 `;
 
 export const ReviewSettings = () => {
-  const userInfo = useUserInfoStore.use.userInfo();
+  const userInfo = useUserInfoStore((state) => state.userInfo);
   const [isEnabled, setIsEnabled] = useState(false);
   let currUserLevel = userInfo?.level;
 
@@ -40,9 +40,12 @@ export const ReviewSettings = () => {
     error: availForReviewErr,
   } = useAssignmentsAvailForReview(currUserLevel, isEnabled);
 
-  const reviewBatchSize = useUserSettingsStore.use.reviewBatchSize();
-  const reviewSortOrderOption =
-    useUserSettingsStore.use.reviewSortOrderOption();
+  const reviewBatchSize = useUserSettingsStore(
+    (state) => state.reviewBatchSize
+  );
+  const reviewSortOrderOption = useUserSettingsStore(
+    (state) => state.reviewSortOrderOption
+  );
 
   return (
     <Page>

@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { createSelectors } from "../utils";
 import { User } from "../types/UserTypes";
 
 interface UserInfoState {
@@ -16,7 +15,7 @@ const initialState: UserInfoState = {
   userInfo: undefined,
 };
 
-const useUserInfoStoreBase = create<UserInfoState & UserInfoActions>()(
+export const useUserInfoStore = create<UserInfoState & UserInfoActions>()(
   persist(
     (set, get) => ({
       ...initialState,
@@ -31,5 +30,3 @@ const useUserInfoStoreBase = create<UserInfoState & UserInfoActions>()(
     }
   )
 );
-
-export const useUserInfoStore = createSelectors(useUserInfoStoreBase);

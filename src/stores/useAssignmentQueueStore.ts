@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { createSelectors } from "../utils";
 import {
   AssignmentQueueItem,
   AssignmentSessionType,
@@ -10,6 +9,7 @@ interface AssignmentQueueState {
   currQueueIndex: number;
   sessionInProgress: boolean;
   sessionType: AssignmentSessionType;
+  submittedAssignmentIDs: number[];
 }
 
 interface AssignmentQueueActions {
@@ -33,9 +33,10 @@ const initialState: AssignmentQueueState = {
   assignmentQueue: [],
   sessionInProgress: false,
   sessionType: "review",
+  submittedAssignmentIDs: [],
 };
 
-const useAssignmentQueueStoreBase = create<
+export const useAssignmentQueueStore = create<
   AssignmentQueueState & AssignmentQueueActions
 >((set, get) => ({
   ...initialState,
@@ -122,7 +123,3 @@ const useAssignmentQueueStoreBase = create<
     set(initialState);
   },
 }));
-
-export const useAssignmentQueueStore = createSelectors(
-  useAssignmentQueueStoreBase
-);

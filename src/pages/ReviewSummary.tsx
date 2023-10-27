@@ -24,8 +24,10 @@ const Grid = styled(FullWidthGridDiv)`
 
 function ReviewSummary() {
   const location = useLocation();
-  const resetQueueStore = useQueueStore.use.resetAll();
-  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
+  const resetQueueStore = useQueueStore((state) => state.resetAll);
+  const resetAssignmentQueue = useAssignmentQueueStore(
+    (state) => state.resetAll
+  );
   const reviewData: AssignmentQueueItem[] = location.state.reviewData;
   const errors: AssignmentQueueItem[] = location.state.errors;
   // *testing

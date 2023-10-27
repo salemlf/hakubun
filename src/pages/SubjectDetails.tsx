@@ -30,7 +30,9 @@ const Page = styled(AnimatedPage)`
 export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
-  const isSessionInProgress = useAssignmentQueueStore.use.sessionInProgress();
+  const isSessionInProgress = useAssignmentQueueStore(
+    (state) => state.sessionInProgress
+  );
   console.log(
     "🚀 ~ file: SubjectDetails.tsx:34 ~ SubjectDetails ~ isSessionInProgress:",
     isSessionInProgress

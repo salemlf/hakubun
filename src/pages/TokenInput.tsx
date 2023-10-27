@@ -147,7 +147,7 @@ const TokenInput = () => {
   const { login } = useUserLogin();
   const [hasError, setHasError] = useState(false);
   const [tokenPageLoading, setTokenPageLoading] = useState(false);
-  const isAuthLoading = useAuthTokenStore.use.isAuthLoading();
+  const isAuthLoading = useAuthTokenStore((state) => state.isAuthLoading);
 
   const handleSubmit = (event: any) => {
     event.preventDefault();

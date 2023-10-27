@@ -45,8 +45,9 @@ function AssignmentSettings({
 }: Props) {
   const navigate = useNavigate();
   const [batchSize, setBatchSize] = useState<string>(defaultBatchSize);
-  const backToBackOptionDefault =
-    useUserSettingsStore.use.reviewBackToBackOption();
+  const backToBackOptionDefault = useUserSettingsStore(
+    (state) => state.reviewBackToBackOption
+  );
   const [backToBackChoice, setBackToBackChoice] = useState<BackToBackChoice>(
     backToBackOptionDefault
   );
@@ -54,11 +55,14 @@ function AssignmentSettings({
     useState<AssignmentSortOption>(defaultSortOrder);
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
 
-  const resetQueueStore = useQueueStore.use.resetAll();
-  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
+  const resetQueueStore = useQueueStore((state) => state.resetAll);
+  const resetAssignmentQueue = useAssignmentQueueStore(
+    (state) => state.resetAll
+  );
   const [isLoading, setIsLoading] = useState(true);
-  const setAssignmentQueueData =
-    useAssignmentQueueStore.use.setAssignmentQueueData();
+  const setAssignmentQueueData = useAssignmentQueueStore(
+    (state) => state.setAssignmentQueueData
+  );
 
   let subjIDs = getSubjIDsFromAssignments(assignmentData);
   let queriesEnabled = subjIDs.length !== 0;
