@@ -7,13 +7,17 @@ import {
   getSubjIDsFromAssignments,
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
-import { capitalizeWord, shuffleArray } from "../../services/MiscService";
+import { capitalizeWord } from "../../services/MiscService";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
+import { useAssignmentSubmitStore } from "../../stores/useAssignmentSubmitStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { ALL_ASSIGNMENT_TYPES } from "../../constants";
+import {
+  ALL_ASSIGNMENT_TYPES,
+  MAX_ASSIGNMENTS_BEFORE_SUBMIT,
+} from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
@@ -59,9 +63,15 @@ function AssignmentSettings({
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );
+  const resetAssignmentSubmit = useAssignmentSubmitStore(
+    (state) => state.resetAll
+  );
   const [isLoading, setIsLoading] = useState(true);
   const setAssignmentQueueData = useAssignmentQueueStore(
     (state) => state.setAssignmentQueueData
+  );
+  const setShouldBatchSubmit = useAssignmentSubmitStore(
+    (state) => state.setShouldBatchSubmit
   );
 
   let subjIDs = getSubjIDsFromAssignments(assignmentData);
@@ -171,10 +181,10 @@ function AssignmentSettings({
     // ending in case some weirdness occurred and there's a review session or lesson quiz in progress
     resetQueueStore();
     resetAssignmentQueue();
-
-    // getting data for assignment queue
+    resetAssignmentSubmit();
     setIsLoading(true);
 
+    // getting data for assignment queue
     let subjects = subjectsData.filter((subject: Subject) => {
       return sessionData.subjIDs.includes(subject.id);
     });
@@ -185,6 +195,10 @@ function AssignmentSettings({
       studyMaterialsData as StudyMaterial[],
       backToBackChoice
     );
+
+    if (sessionData.assignmentBatch.length > MAX_ASSIGNMENTS_BEFORE_SUBMIT) {
+      setShouldBatchSubmit(true);
+    }
 
     setAssignmentQueueData(assignmentQueue, settingsType);
 

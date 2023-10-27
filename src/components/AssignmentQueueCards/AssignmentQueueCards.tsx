@@ -11,7 +11,7 @@ type Props = {
   submitItems: (reviewData: AssignmentQueueItem[]) => void;
 };
 
-// TODO: submit items in batches of 10
+// TODO: submit items in batches of 5
 function AssignmentQueueCards({ submitItems }: Props) {
   const { handleNextCard, handleRetryCard } = useAssignmentQueue();
   const assignmentQueue = useAssignmentQueueStore(

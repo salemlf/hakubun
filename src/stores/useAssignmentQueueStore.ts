@@ -9,7 +9,6 @@ interface AssignmentQueueState {
   currQueueIndex: number;
   sessionInProgress: boolean;
   sessionType: AssignmentSessionType;
-  submittedAssignmentIDs: number[];
 }
 
 interface AssignmentQueueActions {
@@ -33,7 +32,6 @@ const initialState: AssignmentQueueState = {
   assignmentQueue: [],
   sessionInProgress: false,
   sessionType: "review",
-  submittedAssignmentIDs: [],
 };
 
 export const useAssignmentQueueStore = create<

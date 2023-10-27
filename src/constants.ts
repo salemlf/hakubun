@@ -3,6 +3,8 @@ import { PronunciationVoice } from "./types/UserSettingsTypes";
 
 export const LEVELS = Array.from({ length: 60 }, (_, index) => index + 1);
 
+export const MAX_ASSIGNMENTS_BEFORE_SUBMIT = 5;
+
 export const ASSIGNMENT_BATCH_SIZES = [
   "All",
   "1",
