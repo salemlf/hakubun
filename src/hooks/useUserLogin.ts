@@ -48,6 +48,8 @@ export const useUserLogin = () => {
       });
 
       setIsAuthenticated(true);
+      queryClient.clear();
+      queryClient.invalidateQueries();
       setIsAuthLoading(false);
       return true;
     } catch (error) {
