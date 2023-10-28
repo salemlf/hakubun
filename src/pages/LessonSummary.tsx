@@ -5,8 +5,8 @@ import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../stores/useQueueStore";
 import { flattenData } from "../services/MiscService";
 import { useSubjectsByIDs } from "../hooks/useSubjectsByIDs";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
-import { Assignment } from "../types/Assignment";
+import { AssignmentSubmitInfo } from "../types/AssignmentQueueTypes";
+import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
 import { Subject } from "../types/Subject";
 import Card from "../components/Card/Card";
 import AnimatedPage from "../components/AnimatedPage";
@@ -45,14 +45,16 @@ type SubjectsGroupedByType = {
   kana_vocabulary?: Subject[];
 };
 
+// TODO: change to use submit store data
 function LessonSummary() {
   const location = useLocation();
   const resetQueueStore = useQueueStore((state) => state.resetAll);
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );
-  const lessonsStartedData: AssignmentQueueItem[] =
-    location.state.lessonResponses;
+  const startedLessonsInfo: AssignmentSubmitInfo = location.state;
+  const lessonsStartedData: PreFlattenedAssignment[] =
+    startedLessonsInfo.submitResponses;
   const [subjectsByType, setSubjectsByType] = useState<SubjectsGroupedByType>(
     {} as SubjectsGroupedByType
   );

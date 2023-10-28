@@ -5,7 +5,10 @@ import { flattenData } from "../services/MiscService";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
+import {
+  AssignmentQueueItem,
+  AssignmentSubmitInfo,
+} from "../types/AssignmentQueueTypes";
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import AnimatedPage from "../components/AnimatedPage";
@@ -22,14 +25,20 @@ const Grid = styled(FullWidthGridDiv)`
   margin-top: 10px;
 `;
 
+const WarningMsg = styled.p`
+  margin: 16px;
+`;
+
+// TODO: change to use submit store data
 function ReviewSummary() {
   const location = useLocation();
   const resetQueueStore = useQueueStore((state) => state.resetAll);
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );
-  const reviewData: AssignmentQueueItem[] = location.state.reviewData;
-  const errors: AssignmentQueueItem[] = location.state.errors;
+  const submittedReviewInfo: AssignmentSubmitInfo = location.state;
+  const reviewData: AssignmentQueueItem[] = submittedReviewInfo.assignmentData;
+  const errors: AssignmentQueueItem[] = submittedReviewInfo.errors;
   // *testing
   if (errors.length > 0) {
     console.log("errors: ", errors);
@@ -45,7 +54,7 @@ function ReviewSummary() {
   // *testing
 
   const reviewResponses: PreFlattenedAssignment[] =
-    location.state.reviewResponses;
+    submittedReviewInfo.submitResponses;
 
   const flattenedAssignmentData: Assignment[] = flattenData(
     reviewResponses,
@@ -82,10 +91,10 @@ function ReviewSummary() {
             numCorrect={numCorrect}
           />
           {errors.length > 0 && (
-            <p>
+            <WarningMsg>
               Oh no, looks like we weren't able to submit all your reviews for
               some reason...
-            </p>
+            </WarningMsg>
           )}
         </Grid>
         <FloatingHomeButton />
