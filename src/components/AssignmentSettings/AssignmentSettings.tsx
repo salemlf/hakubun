@@ -33,7 +33,7 @@ import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
 import { sortAssignmentsWithOption } from "../SortOrderOption/SortOrderOption.service";
 
-type Props = {
+export type AssignmentSettingsProps = {
   settingsType: AssignmentSessionType;
   // TODO: change so not using "any" type
   assignmentData: any;
@@ -46,7 +46,7 @@ function AssignmentSettings({
   assignmentData,
   defaultBatchSize,
   defaultSortOrder,
-}: Props) {
+}: AssignmentSettingsProps) {
   const navigate = useNavigate();
   const [batchSize, setBatchSize] = useState<string>(defaultBatchSize);
   const backToBackOptionDefault = useUserSettingsStore(
