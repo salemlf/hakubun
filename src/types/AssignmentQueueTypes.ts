@@ -1,5 +1,6 @@
 import { Subject } from "./Subject";
 import { RequireAtLeastOne } from "./Global";
+import { PreFlattenedAssignment } from "./Assignment";
 
 export type ReviewType = "reading" | "meaning";
 
@@ -14,6 +15,7 @@ export interface AssignmentQueueItem extends Subject {
   incorrect_meaning_answers: number;
   incorrect_reading_answers: number;
   ending_srs_stage: number | null;
+  isSubmitted: boolean;
 }
 
 // TODO: remove, change to be SRS level popover type once using toast for this functionality
@@ -65,6 +67,12 @@ export type ReviewPostData = {
 };
 
 export type AssignmentSessionType = "lesson" | "review";
+
+export type AssignmentSubmitInfo = {
+  assignmentData: AssignmentQueueItem[];
+  submitResponses: PreFlattenedAssignment[];
+  errors: AssignmentQueueItem[];
+};
 
 // TODO: make data structure same as resources_updated.assignment
 // interface ReviewPostResponseUpdate {

@@ -198,6 +198,25 @@ export const getReviewsGroupedByResult = (
   return { correct, incorrect };
 };
 
+export const getReviewedAssignmentQueueItems = (
+  assignmentQueueData: AssignmentQueueItem[]
+) => {
+  return assignmentQueueData.filter((item) => {
+    let reviewPair = assignmentQueueData.find((otherItem) => {
+      return (
+        otherItem.assignment_id === item.assignment_id &&
+        otherItem.itemID !== item.itemID
+      );
+    });
+
+    return (
+      item.isSubmitted === false &&
+      item.is_reviewed === true &&
+      (!reviewPair || reviewPair.is_reviewed)
+    );
+  });
+};
+
 // combining objects with same IDs (subject IDs)
 export const getCompletedAssignmentQueueData = (
   reviewQueue: AssignmentQueueItem[]

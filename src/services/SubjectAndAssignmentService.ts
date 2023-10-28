@@ -5,7 +5,11 @@ import {
   SubjectReading,
   SubjectType,
 } from "../types/Subject";
-import { Assignment, AssignmentType } from "../types/Assignment";
+import {
+  Assignment,
+  AssignmentType,
+  PreFlattenedAssignment,
+} from "../types/Assignment";
 import { SrsLevelName, StudyMaterial, TagType } from "../types/MiscTypes";
 import { AssignmentQueueItem, ReviewType } from "../types/AssignmentQueueTypes";
 import { SortOrder } from "../components/SortOrderOption/SortOrderOption.types";
@@ -192,6 +196,7 @@ export const compareAssignmentsByAvailableDate = (
   );
 };
 
+// TODO: move this into AssignmentQueueService
 export const createAssignmentQueueItems = (
   assignments: Assignment[],
   subjects: Subject[],
@@ -223,6 +228,7 @@ export const createAssignmentQueueItems = (
         ending_srs_stage: null,
         incorrect_meaning_answers: 0,
         incorrect_reading_answers: 0,
+        isSubmitted: false,
       };
     }
   );
@@ -327,4 +333,10 @@ export const sortBySubjectTypeAndLevel = (subjArr: Subject[]): Subject[] => {
     // if same subject type, sort by level
     return subjA.level - subjB.level;
   });
+};
+
+export const getAssignmentIDs = (
+  assignments: Assignment[] | PreFlattenedAssignment[]
+) => {
+  return assignments.map((assignment) => assignment.id);
 };
