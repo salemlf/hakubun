@@ -10,7 +10,11 @@ import {
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useStartAssignment } from "../hooks/useStartAssignment";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
+import {
+  AssignmentQueueItem,
+  AssignmentSubmitInfo,
+} from "../types/AssignmentQueueTypes";
+import { PreFlattenedAssignment } from "../types/Assignment";
 import AssignmentQueueCards from "../components/AssignmentQueueCards";
 import AnimatedPage from "../components/AnimatedPage";
 import QueueHeader from "../components/QueueHeader";
@@ -49,7 +53,12 @@ function LessonQuiz() {
     resetAssignmentQueue();
   };
 
-  const submitLessonQuiz = (queueData: AssignmentQueueItem[]) => {
+  const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
+    let submittedLessonInfo = await submitBatch(queueData);
+    navigate("/lessons/summary", { state: submittedLessonInfo, replace: true });
+  };
+
+  const submitBatch = (queueData: AssignmentQueueItem[]) => {
     let completedLessonData = getCompletedAssignmentQueueData(queueData);
 
     // TODO: change to actually catch errors
@@ -58,9 +67,6 @@ function LessonQuiz() {
         assignmentID: lessonItem.assignment_id,
       })
         .then(function (results) {
-          // *testing
-          console.log("🚀 ~ file: LessonQuiz.tsx:77 ~ results:", results);
-          // *testing
           return results;
         })
         .catch((err) => {
@@ -69,15 +75,29 @@ function LessonQuiz() {
           // *testing
         });
     });
-    Promise.all(promises).then(function (results) {
+    return Promise.all(promises).then(function (results) {
       // *testing
-      console.log(results);
+      console.log("🚀 ~ file: LessonQuiz.tsx:82 ~ results:", results);
       // *testing
 
-      let lessonInfo = {
-        lessonResponses: results,
+      let unableToUpdate: AssignmentQueueItem[] = [];
+      let lessonResponses: PreFlattenedAssignment[] = [];
+
+      results.forEach((response, index) => {
+        if (response === undefined) {
+          unableToUpdate.push(completedLessonData[index]);
+        } else {
+          lessonResponses.push(response);
+        }
+      });
+
+      let lessonInfo: AssignmentSubmitInfo = {
+        assignmentData: completedLessonData,
+        submitResponses: lessonResponses,
+        errors: unableToUpdate,
       };
-      navigate("/lessons/summary", { state: lessonInfo, replace: true });
+
+      return lessonInfo;
     });
   };
 
@@ -113,7 +133,10 @@ function LessonQuiz() {
       {assignmentQueue.length !== 0 && <QueueHeader />}
       <MainContentWithMargin>
         {assignmentQueue.length !== 0 && (
-          <AssignmentQueueCards submitItems={submitLessonQuiz} />
+          <AssignmentQueueCards
+            submitItems={submitAndRedirect}
+            submitBatch={submitBatch}
+          />
         )}
       </MainContentWithMargin>
       <KeyboardShortcuts />

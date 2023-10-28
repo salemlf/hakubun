@@ -12,7 +12,10 @@ import {
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
 import { useCreateReview } from "../hooks/useCreateReview";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
+import {
+  AssignmentQueueItem,
+  AssignmentSubmitInfo,
+} from "../types/AssignmentQueueTypes";
 import { PreFlattenedAssignment } from "../types/Assignment";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
@@ -153,6 +156,7 @@ export const ReviewSession = () => {
   const updateAssignmentQueueData = useAssignmentQueueStore(
     (state) => state.updateAssignmentQueueData
   );
+
   const { mutateAsync: createReviewsAsync } = useCreateReview();
 
   const bgControls = useAnimation();
@@ -209,8 +213,18 @@ export const ReviewSession = () => {
     await bgControls.start("hidden");
   };
 
-  const submitReviews = (queueData: AssignmentQueueItem[]) => {
+  // TODO: add to submit store and just use data from that on summary pages
+  const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
+    let reviewInfo = await submitBatch(queueData);
+    navigate("/reviews/summary", { state: reviewInfo, replace: true });
+  };
+
+  const submitBatch = (queueData: AssignmentQueueItem[]) => {
     let reviewData = getCompletedAssignmentQueueData(queueData);
+    console.log(
+      "🚀 ~ file: ReviewSession.tsx:224 ~ submitBatch ~ reviewData:",
+      reviewData
+    );
     let reviewPostData = createReviewPostData(reviewData);
 
     // TODO: change to actually catch errors
@@ -228,7 +242,8 @@ export const ReviewSession = () => {
         });
     });
 
-    Promise.all(promises).then(function (results) {
+    // TODO: keep getting response code 422: created_at must be in acceptable time range
+    return Promise.all(promises).then(function (results) {
       // *testing
       console.log(results);
       // *testing
@@ -243,13 +258,13 @@ export const ReviewSession = () => {
         }
       });
 
-      let reviewInfo = {
-        reviewData,
-        reviewResponses,
+      let reviewInfo: AssignmentSubmitInfo = {
+        assignmentData: reviewData,
+        submitResponses: reviewResponses,
         errors: unableToUpdate,
       };
 
-      navigate("/reviews/summary", { state: reviewInfo, replace: true });
+      return reviewInfo;
     });
   };
 
@@ -292,7 +307,10 @@ export const ReviewSession = () => {
       <Content>
         <>
           {assignmentQueue.length !== 0 && (
-            <AssignmentQueueCards submitItems={submitReviews} />
+            <AssignmentQueueCards
+              submitItems={submitAndRedirect}
+              submitBatch={submitBatch}
+            />
           )}
           <WrapUpFlagContainer
             variants={finishFlagBgVariants}
