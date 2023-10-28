@@ -26,3 +26,19 @@ export const groupDataByProperty = function (dataToGroup: any[], key: string) {
     return objWithGroups;
   }, {});
 };
+
+export const getNumObjsWithDistinctPropValue = function (
+  data: any[],
+  prop: string
+) {
+  const distinctValues: Record<string, number> = {};
+
+  return data.reduce((count, obj) => {
+    const value = obj[prop as keyof {}];
+    if (!distinctValues[value]) {
+      distinctValues[value] = 1;
+      return count + 1;
+    }
+    return count;
+  }, 0);
+};

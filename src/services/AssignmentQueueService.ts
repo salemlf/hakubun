@@ -8,14 +8,16 @@ import {
   isKatakana,
   toHiragana,
 } from "wanakana";
+import Fuse from "fuse.js";
+import { getNumObjsWithDistinctPropValue } from "../utils";
+import { INVALID_ANSWER_CHARS } from "../constants";
 import {
   GroupedReviewItems,
   ReviewAnswerValidResult,
   AssignmentQueueItem,
   ReviewType,
+  ReviewedQueueItemInfo,
 } from "../types/AssignmentQueueTypes";
-import { INVALID_ANSWER_CHARS } from "../constants";
-import Fuse from "fuse.js";
 import { HistoryAction } from "../types/MiscTypes";
 
 const reviewColors: { [index: string]: string } = {
@@ -200,8 +202,8 @@ export const getReviewsGroupedByResult = (
 
 export const getReviewedAssignmentQueueItems = (
   assignmentQueueData: AssignmentQueueItem[]
-) => {
-  return assignmentQueueData.filter((item) => {
+): ReviewedQueueItemInfo => {
+  let reviewedQueueItems = assignmentQueueData.filter((item) => {
     let reviewPair = assignmentQueueData.find((otherItem) => {
       return (
         otherItem.assignment_id === item.assignment_id &&
@@ -215,6 +217,17 @@ export const getReviewedAssignmentQueueItems = (
       (!reviewPair || reviewPair.is_reviewed)
     );
   });
+
+  let prop = "assignment_id";
+  let totalUniqueItems = getNumObjsWithDistinctPropValue(
+    reviewedQueueItems,
+    prop
+  );
+
+  return {
+    reviewedQueueItems,
+    totalUniqueItems,
+  };
 };
 
 // combining objects with same IDs (subject IDs)
