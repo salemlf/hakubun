@@ -4,13 +4,11 @@ import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 
 interface AssignmentSubmitState {
   shouldBatchSubmit: boolean;
-  submittedAssignmentIDs: number[];
   submittedAssignmentResponses: PreFlattenedAssignment[];
   submittedAssignmentsWithErrs: AssignmentQueueItem[];
 }
 
 interface AssignmentSubmitActions {
-  updateSubmittedAssignments: (assignmentIDs: number[]) => void;
   updateSubmittedAssignmentResponses: (
     assignmentResponses: PreFlattenedAssignment[]
   ) => void;
@@ -21,25 +19,17 @@ interface AssignmentSubmitActions {
   resetAll: () => void;
 }
 const initialState: AssignmentSubmitState = {
-  submittedAssignmentIDs: [],
   submittedAssignmentResponses: [],
   submittedAssignmentsWithErrs: [],
   shouldBatchSubmit: false,
 };
 
+// TODO: remove the errors for assignments that were able to update before end of session
 // TODO: persist this state?
 export const useAssignmentSubmitStore = create<
   AssignmentSubmitState & AssignmentSubmitActions
 >((set, get) => ({
   ...initialState,
-  updateSubmittedAssignments: (submittedAssignmentIDs: number[]) => {
-    set((state) => ({
-      submittedAssignmentIDs: [
-        ...state.submittedAssignmentIDs,
-        ...submittedAssignmentIDs,
-      ],
-    }));
-  },
   updateSubmittedAssignmentResponses: (
     assignmentResponses: PreFlattenedAssignment[]
   ) => {
