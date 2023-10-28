@@ -1,4 +1,4 @@
-import { ResponseStructure } from "./MiscTypes";
+import { ApiResponse } from "./MiscTypes";
 
 export type AssignmentType =
   | "radical"
@@ -6,7 +6,7 @@ export type AssignmentType =
   | "vocabulary"
   | "kana_vocabulary";
 
-export interface PreFlattenedAssignment {
+interface AssignmentAttrs {
   created_at: Date;
   unlocked_at: Date | null;
   started_at: Date | null;
@@ -19,12 +19,9 @@ export interface PreFlattenedAssignment {
   subject_id: number;
   subject_type: AssignmentType;
 }
-export interface Assignment extends PreFlattenedAssignment {
-  id: number;
-  url: string;
-  data_updated_at: Date | null;
+
+export interface PreFlattenedAssignment extends ApiResponse {
+  data: AssignmentAttrs;
 }
 
-export interface AssignmentData extends ResponseStructure {
-  id: number;
-}
+export interface Assignment extends AssignmentAttrs, ApiResponse {}

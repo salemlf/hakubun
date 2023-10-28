@@ -74,6 +74,11 @@ export type AssignmentSubmitInfo = {
   errors: AssignmentQueueItem[];
 };
 
+export type ReviewedQueueItemInfo = {
+  totalUniqueItems: number;
+  reviewedQueueItems: AssignmentQueueItem[];
+};
+
 // TODO: make data structure same as resources_updated.assignment
 // interface ReviewPostResponseUpdate {
 //       "id": 1422,
