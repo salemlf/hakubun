@@ -11,6 +11,9 @@ import {
 import Fuse from "fuse.js";
 import { getNumObjsWithDistinctPropValue } from "../utils";
 import { INVALID_ANSWER_CHARS } from "../constants";
+import { findAssignmentWithSubjID } from "./SubjectAndAssignmentService";
+import { findStudyMaterialWithSubjID } from "./MiscService";
+import { orderQueueItemsWithBackToBackOption } from "../components/BackToBackOption/BackToBackOption.service";
 import {
   GroupedReviewItems,
   ReviewAnswerValidResult,
@@ -18,7 +21,10 @@ import {
   ReviewType,
   ReviewedQueueItemInfo,
 } from "../types/AssignmentQueueTypes";
-import { HistoryAction } from "../types/MiscTypes";
+import { HistoryAction, StudyMaterial } from "../types/MiscTypes";
+import { Assignment } from "../types/Assignment";
+import { Subject } from "../types/Subject";
+import { BackToBackChoice } from "../components/BackToBackOption/BackToBackOption.types";
 
 const reviewColors: { [index: string]: string } = {
   reading: `var(--ion-color-primary)`,
@@ -71,7 +77,7 @@ export const getCorrespondingReview = (
 export const calculateSRSLevel = (
   reviewQueue: AssignmentQueueItem[],
   reviewItem: AssignmentQueueItem
-) => {
+): AssignmentQueueItem => {
   let matchingItem = getCorrespondingReview(reviewQueue, reviewItem);
 
   let incorrectMeaningNum = reviewItem.incorrect_meaning_answers;
@@ -560,4 +566,62 @@ export const sortQueueItemsByMeaningAndReading = (
 
     return 0;
   });
+};
+
+export const createAssignmentQueueItems = (
+  assignments: Assignment[],
+  subjects: Subject[],
+  studyMaterials: StudyMaterial[],
+  backToBackChoice: BackToBackChoice
+): AssignmentQueueItem[] => {
+  const subjectsWithQueueProps = (subjects as AssignmentQueueItem[]).map(
+    (subject, index) => {
+      let foundAssignment = findAssignmentWithSubjID(assignments, subject);
+      let foundStudyMaterial = findStudyMaterialWithSubjID(
+        studyMaterials,
+        subject
+      );
+
+      // this should always be true since we retrieved the subjects based on the assignments
+      let assignment = foundAssignment!;
+
+      return {
+        ...subject,
+        assignment_id: assignment.id,
+        srs_stage: assignment.srs_stage,
+        is_reviewed: false,
+        itemID: `meaning${index}`,
+        meaning_synonyms: foundStudyMaterial
+          ? foundStudyMaterial.meaning_synonyms
+          : [],
+        review_type: "meaning" as ReviewType,
+        is_correct_answer: null,
+        starting_srs_stage: assignment.srs_stage,
+        ending_srs_stage: null,
+        incorrect_meaning_answers: 0,
+        incorrect_reading_answers: 0,
+        isSubmitted: false,
+      };
+    }
+  );
+  // adds reading items to queue if the subject has readings (radicals and kana vocab don't)
+  const itemsWithReadings = subjectsWithQueueProps.filter(
+    (queueItem) => queueItem.readings !== undefined
+  );
+
+  const meaningAndReadingQueue = [
+    ...subjectsWithQueueProps,
+    ...itemsWithReadings.map((itemWithReadings, index) => ({
+      ...itemWithReadings,
+      review_type: "reading" as ReviewType,
+      itemID: `reading${index}`,
+    })),
+  ];
+
+  let queueItemsWithBackToBackChoice = orderQueueItemsWithBackToBackOption(
+    meaningAndReadingQueue,
+    backToBackChoice
+  );
+
+  return queueItemsWithBackToBackChoice;
 };
