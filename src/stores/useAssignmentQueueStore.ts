@@ -22,7 +22,9 @@ interface AssignmentQueueActions {
     sessionType: AssignmentSessionType
   ) => void;
   updateAssignmentQueueData: (queueData: AssignmentQueueItem[]) => void;
-  updateAssignmentSubmittedStates: (assignmentIDs: number[]) => void;
+  updateAssignmentSubmittedStates: (
+    assignmentIDs: number[]
+  ) => AssignmentQueueItem[];
   incrementCurrQueueIndex: () => void;
   addToAssignmentQueue: (reviewItem: AssignmentQueueItem) => void;
   removeOldQueueItem: () => void;
@@ -132,6 +134,8 @@ export const useAssignmentQueueStore = create<
     set(() => ({
       assignmentQueue: queueItemsWithUpdatedSubmit,
     }));
+
+    return get().assignmentQueue;
   },
   resetAll: () => {
     set(initialState);
