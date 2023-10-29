@@ -225,6 +225,7 @@ export const createAssignmentQueueItems = (
           : [],
         review_type: "meaning" as ReviewType,
         is_correct_answer: null,
+        starting_srs_stage: assignment.srs_stage,
         ending_srs_stage: null,
         incorrect_meaning_answers: 0,
         incorrect_reading_answers: 0,
