@@ -28,68 +28,20 @@ function ReviewSummary() {
   const submittedAssignmentQueueItems = useAssignmentSubmitStore(
     (state) => state.submittedAssignmentQueueItems
   );
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewSummary.tsx:38 ~ ReviewSummary ~ submittedAssignmentQueueItems:",
-    submittedAssignmentQueueItems
-  );
-  // *testing
 
   const submittedAssignmentsWithErrs = useAssignmentSubmitStore(
     (state) => state.submittedAssignmentsWithErrs
   );
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewSummary.tsx:45 ~ ReviewSummary ~ submittedAssignmentsWithErrs:",
-    submittedAssignmentsWithErrs
-  );
-  // *testing
 
   const allSubmitted = [
     ...submittedAssignmentQueueItems,
     ...submittedAssignmentsWithErrs,
   ];
 
-  // const location = useLocation();
   const resetQueueStore = useQueueStore((state) => state.resetAll);
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );
-
-  // const submittedReviewInfo: AssignmentSubmitInfo = location.state;
-  // const reviewData: AssignmentQueueItem[] = submittedReviewInfo.assignmentData;
-  // const errors: AssignmentQueueItem[] = submittedReviewInfo.errors;
-  // *testing
-  // if (errors.length > 0) {
-  //   console.log("errors: ", errors);
-  // }
-  // console.log(
-  //   "🚀 ~ file: ReviewSummary.tsx:52 ~ ReviewSummary ~ location.state:",
-  //   location.state
-  // );
-  // console.log(
-  //   "🚀 ~ file: ReviewSummary.tsx:52 ~ ReviewSummary ~ reviewData:",
-  //   reviewData
-  // );
-  // *testing
-
-  // const reviewResponses: PreFlattenedAssignment[] =
-  //   submittedReviewInfo.submitResponses;
-
-  // const flattenedAssignmentData: Assignment[] = flattenData(
-  //   reviewResponses,
-  //   false
-  // );
-  // *testing
-  // console.log(
-  //   "🚀 ~ file: ReviewSummary.tsx:55 ~ ReviewSummary ~ reviewResponses:",
-  //   reviewResponses
-  // );
-  // console.log(
-  //   "🚀 ~ file: ReviewSummary.tsx:69 ~ ReviewSummary ~ flattenedAssignmentData:",
-  //   flattenedAssignmentData
-  // );
-  // *testing
 
   useEffect(() => {
     resetQueueStore();
@@ -99,8 +51,6 @@ function ReviewSummary() {
     };
   }, []);
 
-  // TODO: uncomment below
-  // let groupedReviewItems = getReviewsGroupedByResult(reviewData);
   let groupedReviewItems = getReviewsGroupedByResult(allSubmitted);
   let numCorrect = groupedReviewItems.correct.length;
   let numWrong = groupedReviewItems.incorrect.length;
