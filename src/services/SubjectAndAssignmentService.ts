@@ -1,3 +1,4 @@
+import { findStudyMaterialWithSubjID } from "./MiscService";
 import {
   ReadingType,
   Subject,
@@ -9,8 +10,11 @@ import {
   AssignmentType,
   PreFlattenedAssignment,
 } from "../types/Assignment";
-import { SrsLevelName, TagType } from "../types/MiscTypes";
+import { SrsLevelName, StudyMaterial, TagType } from "../types/MiscTypes";
+import { AssignmentQueueItem, ReviewType } from "../types/AssignmentQueueTypes";
 import { SortOrder } from "../components/SortOrderOption/SortOrderOption.types";
+import { BackToBackChoice } from "../components/BackToBackOption/BackToBackOption.types";
+import { orderQueueItemsWithBackToBackOption } from "../components/BackToBackOption/BackToBackOption.service";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(
@@ -190,6 +194,65 @@ export const compareAssignmentsByAvailableDate = (
     new Date(assignment1.available_at).getTime() -
     new Date(assignment2.available_at).getTime()
   );
+};
+
+// TODO: move this into AssignmentQueueService
+export const createAssignmentQueueItems = (
+  assignments: Assignment[],
+  subjects: Subject[],
+  studyMaterials: StudyMaterial[],
+  backToBackChoice: BackToBackChoice
+): AssignmentQueueItem[] => {
+  const subjectsWithQueueProps = (subjects as AssignmentQueueItem[]).map(
+    (subject, index) => {
+      let foundAssignment = findAssignmentWithSubjID(assignments, subject);
+      let foundStudyMaterial = findStudyMaterialWithSubjID(
+        studyMaterials,
+        subject
+      );
+
+      // this should always be true since we retrieved the subjects based on the assignments
+      let assignment = foundAssignment!;
+
+      return {
+        ...subject,
+        assignment_id: assignment.id,
+        srs_stage: assignment.srs_stage,
+        is_reviewed: false,
+        itemID: `meaning${index}`,
+        meaning_synonyms: foundStudyMaterial
+          ? foundStudyMaterial.meaning_synonyms
+          : [],
+        review_type: "meaning" as ReviewType,
+        is_correct_answer: null,
+        starting_srs_stage: assignment.srs_stage,
+        ending_srs_stage: null,
+        incorrect_meaning_answers: 0,
+        incorrect_reading_answers: 0,
+        isSubmitted: false,
+      };
+    }
+  );
+  // adds reading items to queue if the subject has readings (radicals and kana vocab don't)
+  const itemsWithReadings = subjectsWithQueueProps.filter(
+    (queueItem) => queueItem.readings !== undefined
+  );
+
+  const meaningAndReadingQueue = [
+    ...subjectsWithQueueProps,
+    ...itemsWithReadings.map((itemWithReadings, index) => ({
+      ...itemWithReadings,
+      review_type: "reading" as ReviewType,
+      itemID: `reading${index}`,
+    })),
+  ];
+
+  let queueItemsWithBackToBackChoice = orderQueueItemsWithBackToBackOption(
+    meaningAndReadingQueue,
+    backToBackChoice
+  );
+
+  return queueItemsWithBackToBackChoice;
 };
 
 export const sortAssignmentsByAvailableDate = (
