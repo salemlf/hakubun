@@ -12,6 +12,7 @@ import {
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
 import { useCreateReview } from "../hooks/useCreateReview";
+import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
 import {
   AssignmentQueueItem,
   AssignmentSubmitInfo,
@@ -156,6 +157,7 @@ export const ReviewSession = () => {
   const updateAssignmentQueueData = useAssignmentQueueStore(
     (state) => state.updateAssignmentQueueData
   );
+  const updateSubmitted = useSubmittedQueueUpdate();
 
   const { mutateAsync: createReviewsAsync } = useCreateReview();
 
@@ -196,8 +198,6 @@ export const ReviewSession = () => {
 
     updateAssignmentQueueData(reviewedItems);
     cancelPageLeave();
-    // TODO: display "wrapping up" message
-
     playFinishFlagAnimation();
   };
 
@@ -215,11 +215,12 @@ export const ReviewSession = () => {
 
   // TODO: add to submit store and just use data from that on summary pages
   const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
-    let reviewInfo = await submitBatch(queueData);
-    navigate("/reviews/summary", { state: reviewInfo, replace: true });
+    let reviewInfo = await submitReviewBatch(queueData);
+    updateSubmitted(reviewInfo);
+    navigate("/reviews/summary", { replace: true });
   };
 
-  const submitBatch = (queueData: AssignmentQueueItem[]) => {
+  const submitReviewBatch = (queueData: AssignmentQueueItem[]) => {
     let reviewData = getCompletedAssignmentQueueData(queueData);
     console.log(
       "🚀 ~ file: ReviewSession.tsx:224 ~ submitBatch ~ reviewData:",
@@ -233,7 +234,7 @@ export const ReviewSession = () => {
         reviewSessionData: reviewItem,
       })
         .then(function (results) {
-          return results.resources_updated.assignment;
+          return results?.resources_updated.assignment;
         })
         .catch((err) => {
           // *testing
@@ -242,7 +243,6 @@ export const ReviewSession = () => {
         });
     });
 
-    // TODO: keep getting response code 422: created_at must be in acceptable time range
     return Promise.all(promises).then(function (results) {
       // *testing
       console.log(results);
@@ -309,7 +309,8 @@ export const ReviewSession = () => {
           {assignmentQueue.length !== 0 && (
             <AssignmentQueueCards
               submitItems={submitAndRedirect}
-              submitBatch={submitBatch}
+              submitBatch={submitReviewBatch}
+              updateSubmitted={updateSubmitted}
             />
           )}
           <WrapUpFlagContainer

@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 // TODO: instead add a module declaration file for react-router-prompt
 // @ts-ignore: Could not find a declaration file for module
 import ReactRouterPrompt from "react-router-prompt";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import {
   blockUserLeavingPage,
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useStartAssignment } from "../hooks/useStartAssignment";
+import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
 import {
   AssignmentQueueItem,
   AssignmentSubmitInfo,
@@ -40,6 +41,8 @@ function LessonQuiz() {
   const assignmentQueue = useAssignmentQueueStore(
     (state) => state.assignmentQueue
   );
+  const updateSubmitted = useSubmittedQueueUpdate();
+
   const { mutateAsync: startAssignmentAsync } = useStartAssignment();
 
   useEffect(() => {
@@ -54,11 +57,13 @@ function LessonQuiz() {
   };
 
   const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
-    let submittedLessonInfo = await submitBatch(queueData);
-    navigate("/lessons/summary", { state: submittedLessonInfo, replace: true });
+    let submittedLessonInfo = await submitLessonBatch(queueData);
+    updateSubmitted(submittedLessonInfo);
+    // navigate("/lessons/summary", { state: submittedLessonInfo, replace: true });
+    navigate("/lessons/summary", { replace: true });
   };
 
-  const submitBatch = (queueData: AssignmentQueueItem[]) => {
+  const submitLessonBatch = (queueData: AssignmentQueueItem[]) => {
     let completedLessonData = getCompletedAssignmentQueueData(queueData);
 
     // TODO: change to actually catch errors
@@ -135,7 +140,8 @@ function LessonQuiz() {
         {assignmentQueue.length !== 0 && (
           <AssignmentQueueCards
             submitItems={submitAndRedirect}
-            submitBatch={submitBatch}
+            submitBatch={submitLessonBatch}
+            updateSubmitted={updateSubmitted}
           />
         )}
       </MainContentWithMargin>
