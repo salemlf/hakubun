@@ -1,26 +1,24 @@
 import { create } from "zustand";
-import { PreFlattenedAssignment } from "../types/Assignment";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 
 interface AssignmentSubmitState {
   shouldBatchSubmit: boolean;
-  submittedAssignmentResponses: PreFlattenedAssignment[];
+  // TODO: remove responses, using queue items instead
+  submittedAssignmentQueueItems: AssignmentQueueItem[];
   submittedAssignmentsWithErrs: AssignmentQueueItem[];
 }
 
 interface AssignmentSubmitActions {
-  updateSubmittedAssignmentResponses: (
-    assignmentResponses: PreFlattenedAssignment[]
-  ) => void;
-  updateSubmittedAssignmentsWithErrs: (
-    assignmentResponses: AssignmentQueueItem[]
+  updateQueueItemsWithErrs: (assignmentErrs: AssignmentQueueItem[]) => void;
+  updateSubmittedQueueItems: (
+    assignmentQueueItems: AssignmentQueueItem[]
   ) => void;
   setShouldBatchSubmit: (shouldBatchSubmit: boolean) => void;
   resetAll: () => void;
 }
 const initialState: AssignmentSubmitState = {
-  submittedAssignmentResponses: [],
   submittedAssignmentsWithErrs: [],
+  submittedAssignmentQueueItems: [],
   shouldBatchSubmit: false,
 };
 
@@ -30,19 +28,15 @@ export const useAssignmentSubmitStore = create<
   AssignmentSubmitState & AssignmentSubmitActions
 >((set, get) => ({
   ...initialState,
-  updateSubmittedAssignmentResponses: (
-    assignmentResponses: PreFlattenedAssignment[]
-  ) => {
+  updateSubmittedQueueItems: (assignmentQueueItems: AssignmentQueueItem[]) => {
     set((state) => ({
-      submittedAssignmentResponses: [
-        ...state.submittedAssignmentResponses,
-        ...assignmentResponses,
+      submittedAssignmentQueueItems: [
+        ...state.submittedAssignmentQueueItems,
+        ...assignmentQueueItems,
       ],
     }));
   },
-  updateSubmittedAssignmentsWithErrs: (
-    assignmentErrs: AssignmentQueueItem[]
-  ) => {
+  updateQueueItemsWithErrs: (assignmentErrs: AssignmentQueueItem[]) => {
     set((state) => ({
       submittedAssignmentsWithErrs: [
         ...state.submittedAssignmentsWithErrs,
