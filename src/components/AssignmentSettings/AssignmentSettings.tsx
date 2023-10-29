@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  ALL_ASSIGNMENT_TYPES,
+  MAX_ASSIGNMENTS_BEFORE_SUBMIT,
+} from "../../constants";
+import {
   checkIfAssignmentTypeInQueue,
-  createAssignmentQueueItems,
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
 import { capitalizeWord } from "../../services/MiscService";
+import { createAssignmentQueueItems } from "../../services/AssignmentQueueService";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
 import { useAssignmentSubmitStore } from "../../stores/useAssignmentSubmitStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import {
-  ALL_ASSIGNMENT_TYPES,
-  MAX_ASSIGNMENTS_BEFORE_SUBMIT,
-} from "../../constants";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
