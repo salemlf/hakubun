@@ -1,14 +1,8 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { getReviewsGroupedByResult } from "../services/AssignmentQueueService";
-import { flattenData } from "../services/MiscService";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
-import {
-  AssignmentQueueItem,
-  AssignmentSubmitInfo,
-} from "../types/AssignmentQueueTypes";
+import { useAssignmentSubmitStore } from "../stores/useAssignmentSubmitStore";
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import AnimatedPage from "../components/AnimatedPage";
@@ -29,60 +23,91 @@ const WarningMsg = styled.p`
   margin: 16px;
 `;
 
-// TODO: change to use submit store data
+// TODO: make sure to attempt to resubmit reviews that had errors
 function ReviewSummary() {
-  const location = useLocation();
+  const submittedAssignmentQueueItems = useAssignmentSubmitStore(
+    (state) => state.submittedAssignmentQueueItems
+  );
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewSummary.tsx:38 ~ ReviewSummary ~ submittedAssignmentQueueItems:",
+    submittedAssignmentQueueItems
+  );
+  // *testing
+
+  const submittedAssignmentsWithErrs = useAssignmentSubmitStore(
+    (state) => state.submittedAssignmentsWithErrs
+  );
+  // *testing
+  console.log(
+    "🚀 ~ file: ReviewSummary.tsx:45 ~ ReviewSummary ~ submittedAssignmentsWithErrs:",
+    submittedAssignmentsWithErrs
+  );
+  // *testing
+
+  const allSubmitted = [
+    ...submittedAssignmentQueueItems,
+    ...submittedAssignmentsWithErrs,
+  ];
+
+  // const location = useLocation();
   const resetQueueStore = useQueueStore((state) => state.resetAll);
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );
-  const submittedReviewInfo: AssignmentSubmitInfo = location.state;
-  const reviewData: AssignmentQueueItem[] = submittedReviewInfo.assignmentData;
-  const errors: AssignmentQueueItem[] = submittedReviewInfo.errors;
+
+  // const submittedReviewInfo: AssignmentSubmitInfo = location.state;
+  // const reviewData: AssignmentQueueItem[] = submittedReviewInfo.assignmentData;
+  // const errors: AssignmentQueueItem[] = submittedReviewInfo.errors;
   // *testing
-  if (errors.length > 0) {
-    console.log("errors: ", errors);
-  }
-  console.log(
-    "🚀 ~ file: ReviewSummary.tsx:52 ~ ReviewSummary ~ location.state:",
-    location.state
-  );
-  console.log(
-    "🚀 ~ file: ReviewSummary.tsx:52 ~ ReviewSummary ~ reviewData:",
-    reviewData
-  );
+  // if (errors.length > 0) {
+  //   console.log("errors: ", errors);
+  // }
+  // console.log(
+  //   "🚀 ~ file: ReviewSummary.tsx:52 ~ ReviewSummary ~ location.state:",
+  //   location.state
+  // );
+  // console.log(
+  //   "🚀 ~ file: ReviewSummary.tsx:52 ~ ReviewSummary ~ reviewData:",
+  //   reviewData
+  // );
   // *testing
 
-  const reviewResponses: PreFlattenedAssignment[] =
-    submittedReviewInfo.submitResponses;
+  // const reviewResponses: PreFlattenedAssignment[] =
+  //   submittedReviewInfo.submitResponses;
 
-  const flattenedAssignmentData: Assignment[] = flattenData(
-    reviewResponses,
-    false
-  );
+  // const flattenedAssignmentData: Assignment[] = flattenData(
+  //   reviewResponses,
+  //   false
+  // );
   // *testing
-  console.log(
-    "🚀 ~ file: ReviewSummary.tsx:55 ~ ReviewSummary ~ reviewResponses:",
-    reviewResponses
-  );
-  console.log(
-    "🚀 ~ file: ReviewSummary.tsx:69 ~ ReviewSummary ~ flattenedAssignmentData:",
-    flattenedAssignmentData
-  );
+  // console.log(
+  //   "🚀 ~ file: ReviewSummary.tsx:55 ~ ReviewSummary ~ reviewResponses:",
+  //   reviewResponses
+  // );
+  // console.log(
+  //   "🚀 ~ file: ReviewSummary.tsx:69 ~ ReviewSummary ~ flattenedAssignmentData:",
+  //   flattenedAssignmentData
+  // );
   // *testing
 
   useEffect(() => {
     resetQueueStore();
     resetAssignmentQueue();
+    return () => {
+      // TODO: call resetAll on submit store?
+    };
   }, []);
 
-  let groupedReviewItems = getReviewsGroupedByResult(reviewData);
+  // TODO: uncomment below
+  // let groupedReviewItems = getReviewsGroupedByResult(reviewData);
+  let groupedReviewItems = getReviewsGroupedByResult(allSubmitted);
   let numCorrect = groupedReviewItems.correct.length;
   let numWrong = groupedReviewItems.incorrect.length;
 
   return (
     <Page>
-      <ResultsHeader numCorrect={numCorrect} numReviews={reviewData.length} />
+      <ResultsHeader numCorrect={numCorrect} numReviews={allSubmitted.length} />
       <MainContent>
         <Grid>
           <ReviewResults
@@ -90,10 +115,10 @@ function ReviewSummary() {
             numWrong={numWrong}
             numCorrect={numCorrect}
           />
-          {errors.length > 0 && (
+          {submittedAssignmentsWithErrs.length > 0 && (
             <WarningMsg>
               Oh no, looks like we weren't able to submit all your reviews for
-              some reason...
+              some reason... {submittedAssignmentsWithErrs.length} had errors!
             </WarningMsg>
           )}
         </Grid>

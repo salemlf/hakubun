@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { groupDataByProperty } from "../utils";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../stores/useQueueStore";
-import { flattenData } from "../services/MiscService";
+import { useAssignmentSubmitStore } from "../stores/useAssignmentSubmitStore";
 import { useSubjectsByIDs } from "../hooks/useSubjectsByIDs";
-import { AssignmentSubmitInfo } from "../types/AssignmentQueueTypes";
-import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
+import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import { Subject } from "../types/Subject";
 import Card from "../components/Card/Card";
 import AnimatedPage from "../components/AnimatedPage";
@@ -16,6 +14,7 @@ import LoadingDots from "../components/LoadingDots";
 import {
   ContentWithTabBar,
   FixedCenterContainer,
+  FullWidthGridDiv,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -38,6 +37,14 @@ const SubjectCard = styled(Card)`
   display: flex;
 `;
 
+const Grid = styled(FullWidthGridDiv)`
+  margin-top: 10px;
+`;
+
+const WarningMsg = styled.p`
+  margin: 16px;
+`;
+
 type SubjectsGroupedByType = {
   radical?: Subject[];
   kanji?: Subject[];
@@ -45,26 +52,29 @@ type SubjectsGroupedByType = {
   kana_vocabulary?: Subject[];
 };
 
-// TODO: change to use submit store data
 function LessonSummary() {
-  const location = useLocation();
+  const submittedAssignmentQueueItems = useAssignmentSubmitStore(
+    (state) => state.submittedAssignmentQueueItems
+  );
+  const submittedAssignmentsWithErrs = useAssignmentSubmitStore(
+    (state) => state.submittedAssignmentsWithErrs
+  );
+
+  const allSubmitted = [
+    ...submittedAssignmentQueueItems,
+    ...submittedAssignmentsWithErrs,
+  ];
+
   const resetQueueStore = useQueueStore((state) => state.resetAll);
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );
-  const startedLessonsInfo: AssignmentSubmitInfo = location.state;
-  const lessonsStartedData: PreFlattenedAssignment[] =
-    startedLessonsInfo.submitResponses;
   const [subjectsByType, setSubjectsByType] = useState<SubjectsGroupedByType>(
     {} as SubjectsGroupedByType
   );
 
-  const flattenedAssignmentData: Assignment[] = flattenData(
-    lessonsStartedData,
-    false
-  );
-  let lessonSubjIDs = flattenedAssignmentData.map(
-    (reviewItem: any) => reviewItem.subject_id
+  let lessonSubjIDs = allSubmitted.map(
+    (reviewItem: AssignmentQueueItem) => reviewItem.id
   );
 
   const { isLoading: lessonSubjectsLoading, data: lessonSubjectsData } =
@@ -84,6 +94,9 @@ function LessonSummary() {
   useEffect(() => {
     resetQueueStore();
     resetAssignmentQueue();
+    return () => {
+      // TODO: call resetAll on submit store?
+    };
   }, []);
 
   return (
@@ -97,51 +110,59 @@ function LessonSummary() {
             <LoadingDots />
           </FixedCenterContainer>
         )}
-        {Object.keys(subjectsByType).length !== 0 && (
-          <>
-            <SubjectCard
-              title={`${
-                (subjectsByType.radical ?? []).length
-              } Radicals Learned`}
-              headerBgColor="var(--wanikani-radical)"
-            >
-              <SubjCharacterList
-                subjList={subjectsByType.radical ?? []}
-                justify="flex-start"
-              />
-            </SubjectCard>
-            <SubjectCard
-              title={`${(subjectsByType.kanji ?? []).length} Kanji Learned`}
-              headerBgColor="var(--wanikani-kanji)"
-            >
-              <SubjCharacterList
-                subjList={subjectsByType.kanji ?? []}
-                justify="flex-start"
-              />
-            </SubjectCard>
-            <SubjectCard
-              title={`${
-                (
-                  [
-                    ...(subjectsByType.vocabulary ?? []),
-                    ...(subjectsByType.kana_vocabulary ?? []),
-                  ] ?? []
-                ).length
-              } Vocabulary Learned`}
-              headerBgColor="var(--wanikani-vocab)"
-            >
-              <SubjCharacterList
-                subjList={
-                  [
-                    ...(subjectsByType.vocabulary ?? []),
-                    ...(subjectsByType.kana_vocabulary ?? []),
-                  ] ?? []
-                }
-                justify="flex-start"
-              />
-            </SubjectCard>
-          </>
-        )}
+        <Grid>
+          {Object.keys(subjectsByType).length !== 0 && (
+            <>
+              <SubjectCard
+                title={`${
+                  (subjectsByType.radical ?? []).length
+                } Radicals Learned`}
+                headerBgColor="var(--wanikani-radical)"
+              >
+                <SubjCharacterList
+                  subjList={subjectsByType.radical ?? []}
+                  justify="flex-start"
+                />
+              </SubjectCard>
+              <SubjectCard
+                title={`${(subjectsByType.kanji ?? []).length} Kanji Learned`}
+                headerBgColor="var(--wanikani-kanji)"
+              >
+                <SubjCharacterList
+                  subjList={subjectsByType.kanji ?? []}
+                  justify="flex-start"
+                />
+              </SubjectCard>
+              <SubjectCard
+                title={`${
+                  (
+                    [
+                      ...(subjectsByType.vocabulary ?? []),
+                      ...(subjectsByType.kana_vocabulary ?? []),
+                    ] ?? []
+                  ).length
+                } Vocabulary Learned`}
+                headerBgColor="var(--wanikani-vocab)"
+              >
+                <SubjCharacterList
+                  subjList={
+                    [
+                      ...(subjectsByType.vocabulary ?? []),
+                      ...(subjectsByType.kana_vocabulary ?? []),
+                    ] ?? []
+                  }
+                  justify="flex-start"
+                />
+              </SubjectCard>
+            </>
+          )}
+          {submittedAssignmentsWithErrs.length > 0 && (
+            <WarningMsg>
+              Oh no, looks like we weren't able to start all your lessons for
+              some reason... {submittedAssignmentsWithErrs.length} had errors!
+            </WarningMsg>
+          )}
+        </Grid>
         <FloatingHomeButton />
       </ContentWithTabBar>
     </Page>
