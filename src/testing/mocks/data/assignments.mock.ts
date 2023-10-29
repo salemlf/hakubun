@@ -1,5 +1,6 @@
 import { SubjectType } from "../../../types/Subject";
 
+// TODO: add vocab and kana vocab mock items
 export const mockAssignmentsAvailForReview = [
   {
     id: 360096444,
