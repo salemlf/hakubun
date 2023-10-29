@@ -62,7 +62,8 @@ if (import.meta.env.MODE !== "development") {
 }
 
 if (import.meta.env.MODE === "development") {
-  worker.start();
+  // bypassing warnings in console since clog it up and aren't very useful imo
+  worker.start({ onUnhandledRequest: "bypass" });
 }
 
 // TODO: change so not using setupIonicReact and IonApp
