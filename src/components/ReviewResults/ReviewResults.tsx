@@ -1,7 +1,7 @@
 import { IonSkeletonText } from "@ionic/react";
 import styled from "styled-components";
-import { GroupedReviewItems } from "../../types/AssignmentQueueTypes";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { GroupedReviewItems } from "../../types/AssignmentQueueTypes";
 import GroupedReviewSummaryResults from "./GroupedReviewSummaryResults";
 import Card from "../Card";
 
@@ -15,7 +15,6 @@ type Props = {
   numCorrect: number;
 };
 
-// TODO: change to use custom Card component
 function ReviewResults({ groupedReviewItems, numWrong, numCorrect }: Props) {
   // *testing
   console.log(

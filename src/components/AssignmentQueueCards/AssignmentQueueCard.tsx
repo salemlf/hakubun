@@ -223,7 +223,6 @@ export const AssignmentQueueCard = ({
     ) {
       retryTriggered();
     } else {
-      console.log("DIDN'T MEET DRAG THRESHOLD");
       controls.start("center");
     }
   };

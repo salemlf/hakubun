@@ -54,7 +54,6 @@ type AudioProps = {
 
 const AudioBtn = ({ url, reading }: AudioProps) => {
   const [playing, toggle] = useAudio(url);
-  console.log("🚀 ~ file: VocabReadings.tsx:41 ~ AudioBtn ~ playing:", playing);
 
   return (
     <AudioBtnContainer
