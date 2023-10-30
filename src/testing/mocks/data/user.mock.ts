@@ -1,3 +1,9 @@
+import {
+  LessonsPresentationOrder,
+  ReviewsPresentationOrder,
+  SubscriptionType,
+} from "../../../types/UserTypes";
+
 export const mockUserLvl5 = {
   object: "user",
   url: "https://api.wanikani.com/v2/user",
@@ -11,7 +17,7 @@ export const mockUserLvl5 = {
     current_vacation_started_at: null,
     subscription: {
       active: true,
-      type: "recurring",
+      type: "recurring" as SubscriptionType,
       max_level_granted: 60,
       period_ends_at: new Date("2018-12-11T13:32:19.485748Z"),
     },
@@ -20,10 +26,11 @@ export const mockUserLvl5 = {
       extra_study_autoplay_audio: false,
       lessons_autoplay_audio: false,
       lessons_batch_size: 10,
-      lessons_presentation_order: "ascending_level_then_subject",
+      lessons_presentation_order:
+        "ascending_level_then_subject" as LessonsPresentationOrder,
       reviews_autoplay_audio: false,
       reviews_display_srs_indicator: true,
-      reviews_presentation_order: "shuffled",
+      reviews_presentation_order: "shuffled" as ReviewsPresentationOrder,
     },
   },
 };
