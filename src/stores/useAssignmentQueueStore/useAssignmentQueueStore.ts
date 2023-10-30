@@ -2,16 +2,16 @@ import { create } from "zustand";
 import {
   AssignmentQueueItem,
   AssignmentSessionType,
-} from "../types/AssignmentQueueTypes";
+} from "../../types/AssignmentQueueTypes";
 
-interface AssignmentQueueState {
+export interface AssignmentQueueState {
   assignmentQueue: AssignmentQueueItem[];
   currQueueIndex: number;
   sessionInProgress: boolean;
   sessionType: AssignmentSessionType;
 }
 
-interface AssignmentQueueActions {
+export interface AssignmentQueueActions {
   updateQueueItem: (item: AssignmentQueueItem) => void;
   updateQueueItemAltMeanings: (
     subjectID: number,

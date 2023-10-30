@@ -1,14 +1,14 @@
 import { create } from "zustand";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 
-interface AssignmentSubmitState {
+export interface AssignmentSubmitState {
   shouldBatchSubmit: boolean;
   // TODO: remove responses, using queue items instead
   submittedAssignmentQueueItems: AssignmentQueueItem[];
   submittedAssignmentsWithErrs: AssignmentQueueItem[];
 }
 
-interface AssignmentSubmitActions {
+export interface AssignmentSubmitActions {
   updateQueueItemsWithErrs: (assignmentErrs: AssignmentQueueItem[]) => void;
   updateSubmittedQueueItems: (
     assignmentQueueItems: AssignmentQueueItem[]

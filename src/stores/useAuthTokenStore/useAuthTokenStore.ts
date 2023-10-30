@@ -2,13 +2,13 @@ import { create } from "zustand";
 import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
 import secureLocalStorage from "react-secure-storage";
 
-interface AuthTokenState {
+export interface AuthTokenState {
   authToken: string | null;
   isAuthenticated: boolean;
   isAuthLoading: boolean;
 }
 
-interface AuthTokenActions {
+export interface AuthTokenActions {
   setAuthToken: (token: string | null) => void;
   setIsAuthLoading: (loading: boolean) => void;
   setIsAuthenticated: (authenticated: boolean) => void;

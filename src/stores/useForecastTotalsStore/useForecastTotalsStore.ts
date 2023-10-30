@@ -1,10 +1,10 @@
 import { create } from "zustand";
 
-interface ForeCastTotalsState {
+export interface ForeCastTotalsState {
   runningTotalAvailableReviews: number[];
 }
 
-interface ForeCastTotalsActions {
+export interface ForeCastTotalsActions {
   seedRunningTotalAvailableReviews: (reviewsAvailableNow: number) => void;
   updateRunningTotalAvailableReviews: (
     totalAvailableForDay: number,

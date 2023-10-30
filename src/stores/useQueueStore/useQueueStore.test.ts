@@ -1,9 +1,9 @@
-import { act, renderHook } from "../testing/test-utils";
-import { useQueueStore } from "./useQueueStore";
+import { act, renderHook } from "../../testing/test-utils";
+import useQueueStoreFacade from "./useQueueStore.facade";
 
 describe("useQueueStore", () => {
   test("Initial values are as expected", () => {
-    const { result } = renderHook(() => useQueueStore());
+    const { result } = renderHook(() => useQueueStoreFacade());
     expect(result.current.isSubmittingAnswer).toEqual(false);
     expect(result.current.isBottomSheetVisible).toEqual(false);
     expect(result.current.popoverInfo).toEqual({
@@ -15,7 +15,7 @@ describe("useQueueStore", () => {
   });
 
   test("isSubmittingAnswer updates", () => {
-    const { result } = renderHook(() => useQueueStore());
+    const { result } = renderHook(() => useQueueStoreFacade());
     expect(result.current.isSubmittingAnswer).toEqual(false);
     act(() => result.current.setIsSubmittingAnswer(true));
     expect(result.current.isSubmittingAnswer).toEqual(true);
@@ -24,7 +24,7 @@ describe("useQueueStore", () => {
   });
 
   test("isSubmittingAnswer resets", () => {
-    const { result } = renderHook(() => useQueueStore());
+    const { result } = renderHook(() => useQueueStoreFacade());
     expect(result.current.isSubmittingAnswer).toEqual(false);
     act(() => result.current.setIsSubmittingAnswer(true));
     expect(result.current.isSubmittingAnswer).toEqual(true);

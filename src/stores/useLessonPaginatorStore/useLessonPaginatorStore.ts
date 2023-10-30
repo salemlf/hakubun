@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-interface LessonPaginatorState {
+export interface LessonPaginatorState {
   currentLessonPage: number;
   currentLessonDir: number;
 }
 
 type LessonPageAndDir = [currentPage: number, direction: number];
 
-interface LessonPaginatorActions {
+export interface LessonPaginatorActions {
   setCurrentLessonPageAndDir: (lessonPageAndDir: LessonPageAndDir) => void;
   reset: () => void;
 }

@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { PopoverInfo } from "../types/AssignmentQueueTypes";
+import { PopoverInfo } from "../../types/AssignmentQueueTypes";
 
-interface QueueState {
+export interface QueueState {
   isSubmittingAnswer: boolean;
   isBottomSheetVisible: boolean;
   popoverInfo: PopoverInfo;
@@ -9,7 +9,7 @@ interface QueueState {
   savedUserAnswer: string | null;
 }
 
-interface QueueActions {
+export interface QueueActions {
   setIsSubmittingAnswer: (isSubmittingAnswer: boolean) => void;
   retryReview: () => void;
   showPopoverMsg: (popoverInfo: PopoverInfo) => void;
@@ -30,6 +30,7 @@ const initialState: QueueState = {
   savedUserAnswer: null,
 };
 
+// TODO: split this into smaller stores
 export const useQueueStore = create<QueueState & QueueActions>((set, get) => ({
   ...initialState,
   setIsSubmittingAnswer: (isSubmittingAnswer) =>

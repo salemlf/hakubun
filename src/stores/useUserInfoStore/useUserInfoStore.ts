@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { User } from "../types/UserTypes";
+import { User } from "../../types/UserTypes";
 
-interface UserInfoState {
+export interface UserInfoState {
   userInfo: User | undefined;
 }
 
-interface UserInfoActions {
+export interface UserInfoActions {
   setUserInfo: (userInfo: User) => void;
   reset: () => void;
 }
