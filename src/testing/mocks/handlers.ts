@@ -6,5 +6,10 @@ const kanjiAssignmentsEndpoint = new RegExp(
   "gi"
 );
 
+const subjsBySubjIDsEndpoint = new RegExp(
+  `${baseUrl}subjects\?ids=[0-9]+(,[0-9]+)*`,
+  "gi"
+);
+
 // TODO: create and use mock zustand
 export const handlers = [];

@@ -196,7 +196,6 @@ export const compareAssignmentsByAvailableDate = (
   );
 };
 
-// TODO: move this into AssignmentQueueService
 export const createAssignmentQueueItems = (
   assignments: Assignment[],
   subjects: Subject[],
@@ -277,12 +276,6 @@ export const sortAssignmentsByLevel = (
   sortOrder: SortOrder,
   subjects: Subject[]
 ): Assignment[] => {
-  // *testing
-  console.log(
-    "🚀 ~ file: SubjectAndAssignmentService.ts:261 ~ subjects:",
-    subjects
-  );
-  // *testing
   const assignmentsCopyToSort = [...assignments];
   return assignmentsCopyToSort.sort((a: Assignment, b: Assignment) => {
     let subjectInfoA = findSubjectForAssignment(subjects, a);

@@ -1,5 +1,4 @@
 import { Subject } from "./Subject";
-import { RequireAtLeastOne } from "./Global";
 import { PreFlattenedAssignment } from "./Assignment";
 
 export type ReviewType = "reading" | "meaning";

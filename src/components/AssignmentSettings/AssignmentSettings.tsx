@@ -35,8 +35,7 @@ import { sortAssignmentsWithOption } from "../SortOrderOption/SortOrderOption.se
 
 export type AssignmentSettingsProps = {
   settingsType: AssignmentSessionType;
-  // TODO: change so not using "any" type
-  assignmentData: any;
+  assignmentData: Assignment[];
   defaultBatchSize: string;
   defaultSortOrder: AssignmentSortOption;
 };
