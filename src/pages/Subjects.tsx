@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { useUserInfoStore } from "../stores/useUserInfoStore";
+import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useStickyState } from "../hooks/useStickyState";
 import { LEVELS } from "../constants";
 import { getPageIndex } from "../services/MiscService";
@@ -26,7 +26,7 @@ const SubjectsHeader = styled(Header)`
 // TODO: add indicator for current level (since not always the one selected)
 export const Subjects = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const userInfo = useUserInfoStore.use.userInfo();
+  const { userInfo } = useUserInfoStoreFacade();
   const [level, setLevel] = useStickyState(0, "subjects-pg-level-selected");
 
   useEffect(() => {

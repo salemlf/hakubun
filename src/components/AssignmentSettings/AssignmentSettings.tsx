@@ -7,18 +7,22 @@ import {
   getSubjIDsFromAssignments,
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
-import { capitalizeWord, shuffleArray } from "../../services/MiscService";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
-import { useQueueStore } from "../../stores/useQueueStore";
-import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
+import { capitalizeWord } from "../../services/MiscService";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { ALL_ASSIGNMENT_TYPES } from "../../constants";
-import { Assignment, AssignmentType } from "../../types/Assignment";
+import {
+  ALL_ASSIGNMENT_TYPES,
+  MAX_ASSIGNMENTS_BEFORE_SUBMIT,
+} from "../../constants";
+import { Assignment } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
-import { Subject } from "../../types/Subject";
+import { Subject, SubjectType } from "../../types/Subject";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
@@ -29,10 +33,9 @@ import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
 import { sortAssignmentsWithOption } from "../SortOrderOption/SortOrderOption.service";
 
-type Props = {
+export type AssignmentSettingsProps = {
   settingsType: AssignmentSessionType;
-  // TODO: change so not using "any" type
-  assignmentData: any;
+  assignmentData: Assignment[];
   defaultBatchSize: string;
   defaultSortOrder: AssignmentSortOption;
 };
@@ -42,11 +45,11 @@ function AssignmentSettings({
   assignmentData,
   defaultBatchSize,
   defaultSortOrder,
-}: Props) {
+}: AssignmentSettingsProps) {
   const navigate = useNavigate();
   const [batchSize, setBatchSize] = useState<string>(defaultBatchSize);
-  const backToBackOptionDefault =
-    useUserSettingsStore.use.reviewBackToBackOption();
+  const { reviewBackToBackOption: backToBackOptionDefault } =
+    useUserSettingsStoreFacade();
   const [backToBackChoice, setBackToBackChoice] = useState<BackToBackChoice>(
     backToBackOptionDefault
   );
@@ -54,11 +57,16 @@ function AssignmentSettings({
     useState<AssignmentSortOption>(defaultSortOrder);
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
 
-  const resetQueueStore = useQueueStore.use.resetAll();
-  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
+  const { resetAll: resetQueueStore } = useQueueStoreFacade();
+  const resetAssignmentQueue = useAssignmentQueueStore(
+    (state) => state.resetAll
+  );
+  const { resetAll: resetAssignmentSubmit, setShouldBatchSubmit } =
+    useAssignmentSubmitStoreFacade();
+  const setAssignmentQueueData = useAssignmentQueueStore(
+    (state) => state.setAssignmentQueueData
+  );
   const [isLoading, setIsLoading] = useState(true);
-  const setAssignmentQueueData =
-    useAssignmentQueueStore.use.setAssignmentQueueData();
 
   let subjIDs = getSubjIDsFromAssignments(assignmentData);
   let queriesEnabled = subjIDs.length !== 0;
@@ -103,7 +111,7 @@ function AssignmentSettings({
     }
   );
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
-    AssignmentType[]
+    SubjectType[]
   >(availableAssignmentTypes);
   const [displayToast, setDisplayToast] = useState<boolean>(false);
 
@@ -167,10 +175,10 @@ function AssignmentSettings({
     // ending in case some weirdness occurred and there's a review session or lesson quiz in progress
     resetQueueStore();
     resetAssignmentQueue();
-
-    // getting data for assignment queue
+    resetAssignmentSubmit();
     setIsLoading(true);
 
+    // getting data for assignment queue
     let subjects = subjectsData.filter((subject: Subject) => {
       return sessionData.subjIDs.includes(subject.id);
     });
@@ -181,6 +189,10 @@ function AssignmentSettings({
       studyMaterialsData as StudyMaterial[],
       backToBackChoice
     );
+
+    if (sessionData.assignmentBatch.length > MAX_ASSIGNMENTS_BEFORE_SUBMIT) {
+      setShouldBatchSubmit(true);
+    }
 
     setAssignmentQueueData(assignmentQueue, settingsType);
 

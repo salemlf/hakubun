@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { sortAssignmentsByAvailableDate } from "../../services/SubjectAndAssignmentService";
-import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
+import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
 import { useAssignmentsAvailableInRange } from "../../hooks/useAssignmentsAvailableInRange";
 import { Assignment } from "../../types/Assignment";
 import LoadingDots from "../LoadingDots";
@@ -147,25 +147,11 @@ function DailyReviewForecast({
   endDateIsoString,
   index,
 }: Props) {
-  // *testing
-  // console.log("🚀 ~ file: DailyReviewForecast.tsx:155 ~ index:", index);
-  // *testing
-  const runningTotals =
-    useForecastTotalsStore.use.runningTotalAvailableReviews();
-  const updateRunningTotalAvailableReviews =
-    useForecastTotalsStore.use.updateRunningTotalAvailableReviews();
+  const {
+    runningTotalAvailableReviews: runningTotals,
+    updateRunningTotalAvailableReviews,
+  } = useForecastTotalsStoreFacade();
   let enabled = runningTotals[index] !== undefined;
-  // console.log("🚀 ~ file: DailyReviewForecast.tsx:156 ~ enabled:", enabled);
-  // *testing
-  //   console.log(
-  //     "🚀 ~ file: DailyReviewForecast.tsx:160 ~ startDateIsoString:",
-  //     startDateIsoString
-  //   );
-  //   console.log(
-  //     "🚀 ~ file: DailyReviewForecast.tsx:160 ~ endDateIsoString:",
-  //     endDateIsoString
-  //   );
-  // *testing
 
   const [isLoading, setIsLoading] = useState(true);
   const [reviewsByHour, setReviewsByHour] = useState<ReviewsByHourData>({});
@@ -184,30 +170,12 @@ function DailyReviewForecast({
 
   useEffect(() => {
     if (!assignmentLoading && assignments && enabled) {
-      // *testing
-      // console.log("assignments", assignments);
-      // *testing
-
       updateRunningTotalAvailableReviews(assignments.length, index);
 
       const sortedAssignments = sortAssignmentsByAvailableDate(
         assignments,
         "asc"
       );
-      // const sortedAssignments = assignments.sort(
-      //   (a: Assignment, b: Assignment) => {
-      //     if (a.available_at === null) {
-      //       return 1;
-      //     } else if (b.available_at === null) {
-      //       return -1;
-      //     } else {
-      //       return (
-      //         new Date(a.available_at).getTime() -
-      //         new Date(b.available_at).getTime()
-      //       );
-      //     }
-      //   }
-      // );
 
       let reviewCalculations = calculateDailyReviewInfo(
         sortedAssignments,

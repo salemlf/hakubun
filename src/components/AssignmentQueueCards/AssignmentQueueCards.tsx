@@ -1,29 +1,77 @@
 import { useEffect } from "react";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
-import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
-import { AssignmentQueueCard } from "./AssignmentQueueCard";
-import { AssignmentCardContainer } from "./AssignmentQueueCardsStyled";
-import LoadingDots from "../LoadingDots";
-import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
+import { getReviewedAssignmentQueueItems } from "../../services/AssignmentQueueService";
+import { MAX_ASSIGNMENTS_BEFORE_SUBMIT } from "../../constants";
 import { useAssignmentQueue } from "./AssignmentQueueCards.hooks";
+import {
+  AssignmentQueueItem,
+  AssignmentSubmitInfo,
+} from "../../types/AssignmentQueueTypes";
+import { AssignmentQueueCard } from "./AssignmentQueueCard";
+import LoadingDots from "../LoadingDots";
+import { AssignmentCardContainer } from "./AssignmentQueueCardsStyled";
+import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 
-type Props = {
+export type CardProps = {
   submitItems: (reviewData: AssignmentQueueItem[]) => void;
+  submitBatch: (
+    reviewData: AssignmentQueueItem[]
+  ) => Promise<AssignmentSubmitInfo>;
+  updateSubmitted: (submittedInfo: AssignmentSubmitInfo) => void;
 };
 
-function AssignmentQueueCards({ submitItems }: Props) {
+function AssignmentQueueCards({
+  submitItems,
+  submitBatch,
+  updateSubmitted,
+}: CardProps) {
   const { handleNextCard, handleRetryCard } = useAssignmentQueue();
-  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
-  let currQueueIndex = useAssignmentQueueStore.use.currQueueIndex();
+  const assignmentQueue = useAssignmentQueueStore(
+    (state) => state.assignmentQueue
+  );
+  const currQueueIndex = useAssignmentQueueStore(
+    (state) => state.currQueueIndex
+  );
+  const { shouldBatchSubmit } = useAssignmentSubmitStoreFacade();
 
   useEffect(() => {
+    // if we've gone past the last item in the queue, submit
     if (
       currQueueIndex === assignmentQueue.length &&
       assignmentQueue.length !== 0
     ) {
-      submitItems(assignmentQueue);
+      let reviewedItemsInfo = getReviewedAssignmentQueueItems(assignmentQueue);
+      submitItems(reviewedItemsInfo.reviewedQueueItems);
     }
   }, [assignmentQueue[currQueueIndex]]);
+
+  useEffect(() => {
+    const checkForReviewedBatch =
+      shouldBatchSubmit &&
+      assignmentQueue.length > 0 &&
+      !(currQueueIndex >= assignmentQueue.length - 1);
+    if (checkForReviewedBatch) {
+      let reviewedItemsInfo = getReviewedAssignmentQueueItems(assignmentQueue);
+
+      // *testing
+      console.log(
+        "🚀 ~ file: AssignmentQueueCards.tsx:62 ~ useEffect ~ reviewedItemsInfo:",
+        reviewedItemsInfo
+      );
+      // *testing
+      if (reviewedItemsInfo.totalUniqueItems >= MAX_ASSIGNMENTS_BEFORE_SUBMIT) {
+        // *testing
+        console.log("SUBMITTING BATCH");
+        // *testing
+        submitBatch(reviewedItemsInfo.reviewedQueueItems).then(
+          (submittedInfo) => {
+            updateSubmitted(submittedInfo);
+          }
+        );
+      }
+    }
+  }, [currQueueIndex]);
 
   return (
     <>

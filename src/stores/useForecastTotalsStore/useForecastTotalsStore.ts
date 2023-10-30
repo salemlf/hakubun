@@ -1,11 +1,10 @@
 import { create } from "zustand";
-import { createSelectors } from "../utils";
 
-interface ForeCastTotalsState {
+export interface ForeCastTotalsState {
   runningTotalAvailableReviews: number[];
 }
 
-interface ForeCastTotalsActions {
+export interface ForeCastTotalsActions {
   seedRunningTotalAvailableReviews: (reviewsAvailableNow: number) => void;
   updateRunningTotalAvailableReviews: (
     totalAvailableForDay: number,
@@ -18,7 +17,7 @@ const initialState: ForeCastTotalsState = {
   runningTotalAvailableReviews: [],
 };
 
-const useForecastTotalsStoreBase = create<
+export const useForecastTotalsStore = create<
   ForeCastTotalsState & ForeCastTotalsActions
 >((set, get) => ({
   ...initialState,
@@ -40,7 +39,3 @@ const useForecastTotalsStoreBase = create<
     set(initialState);
   },
 }));
-
-export const useForecastTotalsStore = createSelectors(
-  useForecastTotalsStoreBase
-);

@@ -2,7 +2,7 @@ import { useState } from "react";
 import AssignmentTypeSelector from "../AssignmentTypeSelector";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
-import { AssignmentType } from "../../types/Assignment";
+import { SubjectType } from "../../types/Subject";
 import Collapsible from "../Collapsible";
 import BackToBackOption from "../BackToBackOption";
 import CurrentLevelOnlyOption from "../CurrentLevelOnlyOption";
@@ -18,10 +18,8 @@ const FilterSettingContainer = styled.div`
 
 type Props = {
   availableAssignmentTypeNames: AssignmentTypeName[];
-  selectedAssignmentTypes: AssignmentType[];
-  setSelectedAssignmentTypes: (
-    assignmentTypesSelected: AssignmentType[]
-  ) => void;
+  selectedAssignmentTypes: SubjectType[];
+  setSelectedAssignmentTypes: (assignmentTypesSelected: SubjectType[]) => void;
   showBackToBackOption: boolean;
   backToBackChoice: BackToBackChoice;
   setBackToBackChoice: (choice: BackToBackChoice) => void;

@@ -27,18 +27,18 @@ export const groupDataByProperty = function (dataToGroup: any[], key: string) {
   }, {});
 };
 
-type WithSelectors<S> = S extends { getState: () => infer T }
-  ? S & { use: { [K in keyof T]: () => T[K] } }
-  : never;
+export const getNumObjsWithDistinctPropValue = function (
+  data: any[],
+  prop: string
+) {
+  const distinctValues: Record<string, number> = {};
 
-export const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(
-  _store: S
-) => {
-  let store = _store as WithSelectors<typeof _store>;
-  store.use = {};
-  for (let k of Object.keys(store.getState())) {
-    (store.use as any)[k] = () => store((s) => s[k as keyof typeof s]);
-  }
-
-  return store;
+  return data.reduce((count, obj) => {
+    const value = obj[prop as keyof {}];
+    if (!distinctValues[value]) {
+      distinctValues[value] = 1;
+      return count + 1;
+    }
+    return count;
+  }, 0);
 };

@@ -2,7 +2,7 @@ import {
   constructStudyMaterialData,
   updateValsInStudyMaterialData,
 } from "../services/MiscService";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import { useCreateStudyMaterials } from "./useCreateStudyMaterials";
 import { useUpdateStudyMaterials } from "./useUpdateStudyMaterials";
 import {
@@ -45,9 +45,12 @@ type ActionCreateFunction = (params: ActionCreateParams) => void;
 export const useStudyMaterialsChange = () => {
   const { mutateAsync: createStudyMaterials } = useCreateStudyMaterials();
   const { mutateAsync: updateStudyMaterials } = useUpdateStudyMaterials();
-  const isSessionInProgress = useAssignmentQueueStore.use.sessionInProgress();
-  const updateQueueItemAltMeanings =
-    useAssignmentQueueStore.use.updateQueueItemAltMeanings();
+  const isSessionInProgress = useAssignmentQueueStore(
+    (state) => state.sessionInProgress
+  );
+  const updateQueueItemAltMeanings = useAssignmentQueueStore(
+    (state) => state.updateQueueItemAltMeanings
+  );
 
   const getDataChangeMethod = (
     studyMaterialData: StudyMaterialDataResponse

@@ -4,15 +4,19 @@ import { useNavigate } from "react-router-dom";
 // @ts-ignore: Could not find a declaration file for module
 import ReactRouterPrompt from "react-router-prompt";
 import { motion, useAnimation } from "framer-motion";
-import { useQueueStore } from "../stores/useQueueStore";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
+import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import {
   blockUserLeavingPage,
   createReviewPostData,
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
 import { useCreateReview } from "../hooks/useCreateReview";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
+import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
+import {
+  AssignmentQueueItem,
+  AssignmentSubmitInfo,
+} from "../types/AssignmentQueueTypes";
 import { PreFlattenedAssignment } from "../types/Assignment";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
@@ -140,12 +144,21 @@ const Page = styled(AnimatedPage)`
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 export const ReviewSession = () => {
   const navigate = useNavigate();
-  const resetQueueStore = useQueueStore.use.resetAll();
-  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
-  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
-  const currQueueIndex = useAssignmentQueueStore.use.currQueueIndex();
-  const updateAssignmentQueueData =
-    useAssignmentQueueStore.use.updateAssignmentQueueData();
+  const { resetAll: resetQueueStore } = useQueueStoreFacade();
+  const resetAssignmentQueue = useAssignmentQueueStore(
+    (state) => state.resetAll
+  );
+  const assignmentQueue = useAssignmentQueueStore(
+    (state) => state.assignmentQueue
+  );
+  const currQueueIndex = useAssignmentQueueStore(
+    (state) => state.currQueueIndex
+  );
+  const updateAssignmentQueueData = useAssignmentQueueStore(
+    (state) => state.updateAssignmentQueueData
+  );
+  const updateSubmitted = useSubmittedQueueUpdate();
+
   const { mutateAsync: createReviewsAsync } = useCreateReview();
 
   const bgControls = useAnimation();
@@ -185,8 +198,6 @@ export const ReviewSession = () => {
 
     updateAssignmentQueueData(reviewedItems);
     cancelPageLeave();
-    // TODO: display "wrapping up" message
-
     playFinishFlagAnimation();
   };
 
@@ -202,8 +213,19 @@ export const ReviewSession = () => {
     await bgControls.start("hidden");
   };
 
-  const submitReviews = (queueData: AssignmentQueueItem[]) => {
+  // TODO: add to submit store and just use data from that on summary pages
+  const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
+    let reviewInfo = await submitReviewBatch(queueData);
+    updateSubmitted(reviewInfo);
+    navigate("/reviews/summary", { replace: true });
+  };
+
+  const submitReviewBatch = (queueData: AssignmentQueueItem[]) => {
     let reviewData = getCompletedAssignmentQueueData(queueData);
+    console.log(
+      "🚀 ~ file: ReviewSession.tsx:224 ~ submitBatch ~ reviewData:",
+      reviewData
+    );
     let reviewPostData = createReviewPostData(reviewData);
 
     // TODO: change to actually catch errors
@@ -212,7 +234,7 @@ export const ReviewSession = () => {
         reviewSessionData: reviewItem,
       })
         .then(function (results) {
-          return results.resources_updated.assignment;
+          return results?.resources_updated.assignment;
         })
         .catch((err) => {
           // *testing
@@ -221,7 +243,7 @@ export const ReviewSession = () => {
         });
     });
 
-    Promise.all(promises).then(function (results) {
+    return Promise.all(promises).then(function (results) {
       // *testing
       console.log(results);
       // *testing
@@ -236,13 +258,13 @@ export const ReviewSession = () => {
         }
       });
 
-      let reviewInfo = {
-        reviewData,
-        reviewResponses,
+      let reviewInfo: AssignmentSubmitInfo = {
+        assignmentData: reviewData,
+        submitResponses: reviewResponses,
         errors: unableToUpdate,
       };
 
-      navigate("/reviews/summary", { state: reviewInfo, replace: true });
+      return reviewInfo;
     });
   };
 
@@ -285,7 +307,11 @@ export const ReviewSession = () => {
       <Content>
         <>
           {assignmentQueue.length !== 0 && (
-            <AssignmentQueueCards submitItems={submitReviews} />
+            <AssignmentQueueCards
+              submitItems={submitAndRedirect}
+              submitBatch={submitReviewBatch}
+              updateSubmitted={updateSubmitted}
+            />
           )}
           <WrapUpFlagContainer
             variants={finishFlagBgVariants}

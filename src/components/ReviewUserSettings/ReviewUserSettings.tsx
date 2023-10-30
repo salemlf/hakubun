@@ -1,4 +1,4 @@
-import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
@@ -12,16 +12,14 @@ const SettingCategory = styled(Card)`
 `;
 
 function ReviewUserSettings() {
-  const reviewBatchSize = useUserSettingsStore.use.reviewBatchSize();
-  const setReviewBatchSize = useUserSettingsStore.use.setReviewBatchSize();
-  const reviewSortOrderOption =
-    useUserSettingsStore.use.reviewSortOrderOption();
-  const setReviewSortOrderOption =
-    useUserSettingsStore.use.setReviewSortOrderOption();
-  const reviewBackToBackOption =
-    useUserSettingsStore.use.reviewBackToBackOption();
-  const setReviewBackToBackOption =
-    useUserSettingsStore.use.setReviewBackToBackOption();
+  const {
+    reviewBatchSize,
+    setReviewBatchSize,
+    reviewSortOrderOption,
+    setReviewSortOrderOption,
+    reviewBackToBackOption,
+    setReviewBackToBackOption,
+  } = useUserSettingsStoreFacade();
 
   return (
     <SettingCategory title="Reviews" headerBgColor="var(--wanikani-review)">

@@ -1,15 +1,14 @@
 import { create } from "zustand";
 import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
 import secureLocalStorage from "react-secure-storage";
-import { createSelectors } from "../utils";
 
-interface AuthTokenState {
+export interface AuthTokenState {
   authToken: string | null;
   isAuthenticated: boolean;
   isAuthLoading: boolean;
 }
 
-interface AuthTokenActions {
+export interface AuthTokenActions {
   setAuthToken: (token: string | null) => void;
   setIsAuthLoading: (loading: boolean) => void;
   setIsAuthenticated: (authenticated: boolean) => void;
@@ -34,7 +33,7 @@ const initialState: AuthTokenState = {
   isAuthLoading: false,
 };
 
-const useAuthTokenStoreBase = create<AuthTokenState & AuthTokenActions>()(
+export const useAuthTokenStore = create<AuthTokenState & AuthTokenActions>()(
   persist(
     (set, get) => ({
       ...initialState,
@@ -52,5 +51,3 @@ const useAuthTokenStoreBase = create<AuthTokenState & AuthTokenActions>()(
     }
   )
 );
-
-export const useAuthTokenStore = createSelectors(useAuthTokenStoreBase);

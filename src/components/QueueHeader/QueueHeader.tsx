@@ -5,7 +5,7 @@ import HomeIconColor from "../../images/home-color.svg";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;
@@ -59,8 +59,12 @@ const calculateNumItemsInQueue = (queue: AssignmentQueueItem[]) => {
 
 function QueueHeader() {
   const navigate = useNavigate();
-  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
-  const currQueueIndex = useAssignmentQueueStore.use.currQueueIndex();
+  const assignmentQueue = useAssignmentQueueStore(
+    (state) => state.assignmentQueue
+  );
+  const currQueueIndex = useAssignmentQueueStore(
+    (state) => state.currQueueIndex
+  );
 
   let currentQueueItem = assignmentQueue[currQueueIndex];
 

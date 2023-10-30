@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { IonGrid, IonCol, IonRow, IonSkeletonText } from "@ionic/react";
-import { useUserInfoStore } from "../stores/useUserInfoStore";
+import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserInfo } from "../hooks/useUserInfo";
 import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
 import HomeHeader from "../components/HomeHeader";
@@ -20,8 +20,7 @@ import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number>(0);
-  const userInfo = useUserInfoStore.use.userInfo();
-  const setUserInfo = useUserInfoStore.use.setUserInfo();
+  const { setUserInfo, userInfo } = useUserInfoStoreFacade();
 
   useEffect(() => {
     setHomeLoading(true);

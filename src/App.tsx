@@ -13,8 +13,8 @@ import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useAuthTokenStore } from "./stores/useAuthTokenStore";
-import { useUserInfoStore } from "./stores/useUserInfoStore";
+import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
+import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
 import { api, pagingApi } from "./api/ApiConfig";
 import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
@@ -56,13 +56,14 @@ import "./theme/globals.scss";
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development") {
   LogRocket.init("cleqvf/hakubun", {
-    release: "0.2.0-alpha",
+    release: "0.2.1-alpha",
     shouldCaptureIP: false,
   });
 }
 
 if (import.meta.env.MODE === "development") {
-  worker.start();
+  // bypassing warnings in console since clog it up and aren't very useful imo
+  worker.start({ onUnhandledRequest: "bypass" });
 }
 
 // TODO: change so not using setupIonicReact and IonApp
@@ -94,10 +95,9 @@ const App: React.FC = () => {
 const AppElements = () => {
   const location = useLocation();
 
-  const isAuthenticated = useAuthTokenStore.use.isAuthenticated();
-  const isAuthLoading = useAuthTokenStore.use.isAuthLoading();
-  const authToken = useAuthTokenStore.use.authToken();
-  const userInfo = useUserInfoStore.use.userInfo();
+  const { isAuthenticated, isAuthLoading, authToken } =
+    useAuthTokenStoreFacade();
+  const { userInfo } = useUserInfoStoreFacade();
 
   // setting the auth token headers for all api requests
   (function () {

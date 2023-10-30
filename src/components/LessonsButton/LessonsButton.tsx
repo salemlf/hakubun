@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { setBtnBackground } from "../../services/ImageSrcService";
-import { useUserInfoStore } from "../../stores/useUserInfoStore";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import Toast from "../Toast";
 import {
   BaseReviewLessonButton,
@@ -29,7 +29,7 @@ function LessonsButton() {
   const [displayToast, setDisplayToast] = useState<boolean>(false);
   const [toastTitle, setToastTitle] = useState<string>();
   const [toastContent, setToastContent] = useState<string>();
-  const userInfo = useUserInfoStore.use.userInfo();
+  const { userInfo } = useUserInfoStoreFacade();
 
   const {
     isLoading: lessonsLoading,

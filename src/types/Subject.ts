@@ -1,4 +1,4 @@
-import { ResponseStructure } from "./MiscTypes";
+import { ApiResponse } from "./MiscTypes";
 
 export type SubjectType =
   | "radical"
@@ -6,7 +6,7 @@ export type SubjectType =
   | "vocabulary"
   | "kana_vocabulary";
 
-export interface PreFlattenedSubject {
+interface SubjectAttrs {
   object: SubjectType;
   amalgamation_subject_ids?: number[];
   auxiliary_meanings: SubjectAuxiliaryMeaning[];
@@ -34,14 +34,11 @@ export interface PreFlattenedSubject {
   useImage?: boolean;
 }
 
-export interface Subject extends PreFlattenedSubject {
-  id: number;
-  url: string;
-  data_updated_at: Date | null;
+export interface PreFlattenedSubject extends ApiResponse {
+  data: SubjectAttrs;
 }
-
-export interface SubjectData extends ResponseStructure {
-  id: number;
+export interface Subject extends ApiResponse, SubjectAttrs {
+  object: SubjectType;
 }
 
 export interface SubjectAuxiliaryMeaning {
@@ -57,7 +54,7 @@ export interface SubjectCharacterImage {
 }
 
 export interface SubjectMetadata {
-  inlineStyles: boolean;
+  inline_styles?: boolean;
 }
 
 export interface SubjectMeaning {

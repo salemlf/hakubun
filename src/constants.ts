@@ -1,7 +1,9 @@
-import { AssignmentType } from "./types/Assignment";
+import { SubjectType } from "./types/Subject";
 import { PronunciationVoice } from "./types/UserSettingsTypes";
 
 export const LEVELS = Array.from({ length: 60 }, (_, index) => index + 1);
+
+export const MAX_ASSIGNMENTS_BEFORE_SUBMIT = 5;
 
 export const ASSIGNMENT_BATCH_SIZES = [
   "All",
@@ -54,7 +56,7 @@ export const AUDIO_VOICES: PronunciationVoice[] = [
   },
 ];
 
-export const ALL_ASSIGNMENT_TYPES: AssignmentType[] = [
+export const ALL_ASSIGNMENT_TYPES: SubjectType[] = [
   "radical",
   "kanji",
   "vocabulary",

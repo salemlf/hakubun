@@ -8,19 +8,18 @@ const { create: actualCreate, createStore: actualCreateStore } =
 // a variable to hold reset functions for all stores declared in the app
 export const storeResetFns = new Set<() => void>();
 
-// when creating a store, we get its initial state, create a reset function and add it in the set
-export const create = (<T>() => {
-  console.log("zustand create mock");
+export const create = <S>(createState: zustand.StateCreator<S>) => {
+  return typeof createState === "function"
+    ? createInternalFn(createState)
+    : createInternalFn;
+};
 
-  return (stateCreator: zustand.StateCreator<T>) => {
-    const store = actualCreate(stateCreator);
-    const initialState = store.getState();
-    storeResetFns.add(() => {
-      store.setState(initialState, true);
-    });
-    return store;
-  };
-}) as typeof zustand.create;
+const createInternalFn = <S>(createState: zustand.StateCreator<S>) => {
+  const store = actualCreate(createState);
+  const initialState = store.getState();
+  storeResetFns.add(() => store.setState(initialState, true));
+  return store;
+};
 
 // when creating a store, we get its initial state, create a reset function and add it in the set
 export const createStore = (<T>(stateCreator: zustand.StateCreator<T>) => {

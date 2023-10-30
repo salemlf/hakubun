@@ -9,30 +9,31 @@ import {
   getAudioForReading,
   getSrsNameBySrsLvl,
 } from "../../services/MiscService";
-import { useQueueStore } from "../../stores/useQueueStore";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
-import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 
 export const useAssignmentQueue = () => {
-  const showPopoverMsg = useQueueStore.use.showPopoverMsg();
-  const correctShowResult = useQueueStore.use.correctShowResult();
-  const correctMoveToNext = useQueueStore.use.correctMoveToNext();
-  const wrongMoveToNext = useQueueStore.use.wrongMoveToNext();
-  const wrongShowResult = useQueueStore.use.wrongShowResult();
-  const isSubmittingAnswer = useQueueStore.use.isSubmittingAnswer();
-  const submitChoice = useQueueStore.use.submitChoice();
-  const retryReview = useQueueStore.use.retryReview();
+  const {
+    showPopoverMsg,
+    correctShowResult,
+    correctMoveToNext,
+    wrongMoveToNext,
+    wrongShowResult,
+    isSubmittingAnswer,
+    submitChoice,
+    retryReview,
+  } = useQueueStoreFacade();
 
-  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
-  let updateItem = useAssignmentQueueStore.use.updateQueueItem();
-  let incrementQueueIndex =
-    useAssignmentQueueStore.use.incrementCurrQueueIndex();
-  const addItemToQueue = useAssignmentQueueStore.use.addToAssignmentQueue();
-  const removeOldItemFromQueue =
-    useAssignmentQueueStore.use.removeOldQueueItem();
-
-  const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
+  const {
+    assignmentQueue,
+    updateQueueItem,
+    incrementCurrQueueIndex,
+    addToAssignmentQueue,
+    removeOldQueueItem,
+  } = useAssignmentQueueStoreFacade();
+  const { pronunciationVoice } = useUserSettingsStoreFacade();
 
   const displaySRSStatus = (reviewItem: AssignmentQueueItem) => {
     let endingSRS = reviewItem.ending_srs_stage!;
@@ -95,7 +96,7 @@ export const useAssignmentQueue = () => {
     if (moveToNextItem) {
       correctMoveToNext();
 
-      incrementQueueIndex();
+      incrementCurrQueueIndex();
       setUserAnswer("");
     } else {
       correctonFirstSubmit(currReviewItem, userAnswer);
@@ -110,8 +111,8 @@ export const useAssignmentQueue = () => {
     let updatedReviewItem = currReviewItem;
 
     if (moveToNextItem) {
-      addItemToQueue(updatedReviewItem);
-      removeOldItemFromQueue();
+      addToAssignmentQueue(updatedReviewItem);
+      removeOldQueueItem();
       wrongMoveToNext();
       setUserAnswer("");
     } else {
@@ -123,7 +124,7 @@ export const useAssignmentQueue = () => {
         ? (updatedReviewItem.incorrect_reading_answers += 1)
         : (updatedReviewItem.incorrect_meaning_answers += 1);
 
-      updateItem(updatedReviewItem);
+      updateQueueItem(updatedReviewItem);
       wrongShowResult();
     }
   };
@@ -153,14 +154,14 @@ export const useAssignmentQueue = () => {
       // keeping answer as incorrect and is_reviewed as true
       updatedReviewItem.is_reviewed = true;
 
-      updateItem(updatedReviewItem);
+      updateQueueItem(updatedReviewItem);
     }
 
     // user got answer correct first try
     else {
       updatedReviewItem.is_correct_answer = true;
       updatedReviewItem.is_reviewed = true;
-      updateItem(updatedReviewItem);
+      updateQueueItem(updatedReviewItem);
     }
 
     correctShowResult();
@@ -220,7 +221,7 @@ export const useAssignmentQueue = () => {
         : updatedReviewItem.incorrect_meaning_answers;
     }
 
-    updateItem(updatedReviewItem);
+    updateQueueItem(updatedReviewItem);
     setUserAnswer("");
     retryReview();
   };

@@ -9,9 +9,8 @@ import {
   getSubjectColor,
   sortBySubjectTypeAndLevel,
 } from "../../services/SubjectAndAssignmentService";
-import { useUserInfoStore } from "../../stores/useUserInfoStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { Assignment, AssignmentType } from "../../types/Assignment";
+import { Assignment } from "../../types/Assignment";
 import {
   KanaVocabulary,
   Kanji,
@@ -31,6 +30,7 @@ import CheckIcon from "../../images/checkmark.svg";
 import LogoExclamation from "../../images/logo-exclamation.svg";
 import { AbsoluteCenterContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 
 const SubjectList = styled(ToggleGroup.Root)`
   display: flex;
@@ -161,7 +161,7 @@ type Props = {
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
   filterByCurrentLevel: boolean;
   settingsType: AssignmentSessionType;
-  assignmentTypeFilter?: AssignmentType[];
+  assignmentTypeFilter?: SubjectType[];
   showMeaning?: boolean;
 };
 
@@ -178,7 +178,7 @@ function AssignmentSelector({
 }: Props) {
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
   const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
-  const userInfo = useUserInfoStore.use.userInfo();
+  const { userInfo } = useUserInfoStoreFacade();
 
   let assignmentSubjIDs = assignmentData.map(
     (assignmentItem: any) => assignmentItem.subject_id

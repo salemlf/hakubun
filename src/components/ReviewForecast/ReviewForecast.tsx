@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IonCol } from "@ionic/react";
-import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
-import { useUserInfoStore } from "../../stores/useUserInfoStore";
+import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
 import DailyReviewForecast from "./DailyReviewForecast";
 import SwipeableTabs from "../SwipeableTabs";
@@ -71,7 +71,7 @@ function ReviewForecast() {
     StartAndEndTimeInfo[]
   >([]);
 
-  const userInfo = useUserInfoStore.use.userInfo();
+  const { userInfo } = useUserInfoStoreFacade();
   const [isEnabled, setIsEnabled] = useState(false);
   let currUserLevel = userInfo?.level;
 
@@ -83,10 +83,10 @@ function ReviewForecast() {
     }
   }, [userInfo]);
 
-  const seedRunningTotalAvailableReviews =
-    useForecastTotalsStore.use.seedRunningTotalAvailableReviews();
-  const runningTotals =
-    useForecastTotalsStore.use.runningTotalAvailableReviews();
+  const {
+    seedRunningTotalAvailableReviews,
+    runningTotalAvailableReviews: runningTotals,
+  } = useForecastTotalsStoreFacade();
 
   const {
     isLoading: availForReviewLoading,

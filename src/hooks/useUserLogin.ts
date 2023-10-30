@@ -1,18 +1,19 @@
 import * as LogRocket from "logrocket";
 import { useQueryClient } from "@tanstack/react-query";
 import { api, pagingApi } from "../api/ApiConfig";
-import { useAuthTokenStore } from "../stores/useAuthTokenStore";
-import { useUserInfoStore } from "../stores/useUserInfoStore";
+import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
+import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import { User } from "../types/UserTypes";
 
 export const useUserLogin = () => {
   const queryClient = useQueryClient();
-  const setIsAuthLoading = useAuthTokenStore.use.setIsAuthLoading();
-  const setIsAuthenticated = useAuthTokenStore.use.setIsAuthenticated();
-  const setAuthToken = useAuthTokenStore.use.setAuthToken();
-  const resetToken = useAuthTokenStore.use.reset();
-  const setUserInfo = useUserInfoStore.use.setUserInfo();
-  const resetUserInfo = useUserInfoStore.use.reset();
+  const {
+    setIsAuthLoading,
+    setIsAuthenticated,
+    setAuthToken,
+    reset: resetToken,
+  } = useAuthTokenStoreFacade();
+  const { setUserInfo, reset: resetUserInfo } = useUserInfoStoreFacade();
 
   const configureAxiosHeaders = (newToken: any) => {
     api.defaults.headers["Authorization"] = `Bearer ${newToken}`;
@@ -46,6 +47,8 @@ export const useUserLogin = () => {
       });
 
       setIsAuthenticated(true);
+      queryClient.clear();
+      queryClient.invalidateQueries();
       setIsAuthLoading(false);
       return true;
     } catch (error) {

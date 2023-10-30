@@ -3,14 +3,19 @@ import { useNavigate } from "react-router-dom";
 // TODO: instead add a module declaration file for react-router-prompt
 // @ts-ignore: Could not find a declaration file for module
 import ReactRouterPrompt from "react-router-prompt";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import {
   blockUserLeavingPage,
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { useQueueStore } from "../stores/useQueueStore";
+import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import { useStartAssignment } from "../hooks/useStartAssignment";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
+import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
+import {
+  AssignmentQueueItem,
+  AssignmentSubmitInfo,
+} from "../types/AssignmentQueueTypes";
+import { PreFlattenedAssignment } from "../types/Assignment";
 import AssignmentQueueCards from "../components/AssignmentQueueCards";
 import AnimatedPage from "../components/AnimatedPage";
 import QueueHeader from "../components/QueueHeader";
@@ -29,9 +34,15 @@ const MainContentWithMargin = styled(MainContent)`
 
 function LessonQuiz() {
   const navigate = useNavigate();
-  const resetQueueStore = useQueueStore.use.resetAll();
-  const resetAssignmentQueue = useAssignmentQueueStore.use.resetAll();
-  const assignmentQueue = useAssignmentQueueStore.use.assignmentQueue();
+  const { resetAll: resetQueueStore } = useQueueStoreFacade();
+  const resetAssignmentQueue = useAssignmentQueueStore(
+    (state) => state.resetAll
+  );
+  const assignmentQueue = useAssignmentQueueStore(
+    (state) => state.assignmentQueue
+  );
+  const updateSubmitted = useSubmittedQueueUpdate();
+
   const { mutateAsync: startAssignmentAsync } = useStartAssignment();
 
   useEffect(() => {
@@ -45,7 +56,13 @@ function LessonQuiz() {
     resetAssignmentQueue();
   };
 
-  const submitLessonQuiz = (queueData: AssignmentQueueItem[]) => {
+  const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
+    let submittedLessonInfo = await submitLessonBatch(queueData);
+    updateSubmitted(submittedLessonInfo);
+    navigate("/lessons/summary", { replace: true });
+  };
+
+  const submitLessonBatch = (queueData: AssignmentQueueItem[]) => {
     let completedLessonData = getCompletedAssignmentQueueData(queueData);
 
     // TODO: change to actually catch errors
@@ -54,9 +71,6 @@ function LessonQuiz() {
         assignmentID: lessonItem.assignment_id,
       })
         .then(function (results) {
-          // *testing
-          console.log("🚀 ~ file: LessonQuiz.tsx:77 ~ results:", results);
-          // *testing
           return results;
         })
         .catch((err) => {
@@ -65,15 +79,29 @@ function LessonQuiz() {
           // *testing
         });
     });
-    Promise.all(promises).then(function (results) {
+    return Promise.all(promises).then(function (results) {
       // *testing
-      console.log(results);
+      console.log("🚀 ~ file: LessonQuiz.tsx:82 ~ results:", results);
       // *testing
 
-      let lessonInfo = {
-        lessonResponses: results,
+      let unableToUpdate: AssignmentQueueItem[] = [];
+      let lessonResponses: PreFlattenedAssignment[] = [];
+
+      results.forEach((response, index) => {
+        if (response === undefined) {
+          unableToUpdate.push(completedLessonData[index]);
+        } else {
+          lessonResponses.push(response);
+        }
+      });
+
+      let lessonInfo: AssignmentSubmitInfo = {
+        assignmentData: completedLessonData,
+        submitResponses: lessonResponses,
+        errors: unableToUpdate,
       };
-      navigate("/lessons/summary", { state: lessonInfo, replace: true });
+
+      return lessonInfo;
     });
   };
 
@@ -109,7 +137,11 @@ function LessonQuiz() {
       {assignmentQueue.length !== 0 && <QueueHeader />}
       <MainContentWithMargin>
         {assignmentQueue.length !== 0 && (
-          <AssignmentQueueCards submitItems={submitLessonQuiz} />
+          <AssignmentQueueCards
+            submitItems={submitAndRedirect}
+            submitBatch={submitLessonBatch}
+            updateSubmitted={updateSubmitted}
+          />
         )}
       </MainContentWithMargin>
       <KeyboardShortcuts />

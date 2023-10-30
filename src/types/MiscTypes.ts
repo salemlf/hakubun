@@ -1,11 +1,11 @@
 import { Assignment } from "./Assignment";
 import { SubjectType } from "./Subject";
 
-export interface ResponseStructure {
+export interface ApiResponse {
+  id: number;
   object: string;
   url: string;
   data_updated_at: Date | null;
-  data: [];
 }
 
 export type SrsLevelName =

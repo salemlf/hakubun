@@ -1,18 +1,17 @@
 import { create } from "zustand";
-import { createSelectors } from "../utils";
 import {
   AssignmentQueueItem,
   AssignmentSessionType,
-} from "../types/AssignmentQueueTypes";
+} from "../../types/AssignmentQueueTypes";
 
-interface AssignmentQueueState {
+export interface AssignmentQueueState {
   assignmentQueue: AssignmentQueueItem[];
   currQueueIndex: number;
   sessionInProgress: boolean;
   sessionType: AssignmentSessionType;
 }
 
-interface AssignmentQueueActions {
+export interface AssignmentQueueActions {
   updateQueueItem: (item: AssignmentQueueItem) => void;
   updateQueueItemAltMeanings: (
     subjectID: number,
@@ -23,6 +22,9 @@ interface AssignmentQueueActions {
     sessionType: AssignmentSessionType
   ) => void;
   updateAssignmentQueueData: (queueData: AssignmentQueueItem[]) => void;
+  updateAssignmentSubmittedStates: (
+    assignmentIDs: number[]
+  ) => AssignmentQueueItem[];
   incrementCurrQueueIndex: () => void;
   addToAssignmentQueue: (reviewItem: AssignmentQueueItem) => void;
   removeOldQueueItem: () => void;
@@ -35,13 +37,12 @@ const initialState: AssignmentQueueState = {
   sessionType: "review",
 };
 
-const useAssignmentQueueStoreBase = create<
+export const useAssignmentQueueStore = create<
   AssignmentQueueState & AssignmentQueueActions
 >((set, get) => ({
   ...initialState,
   incrementCurrQueueIndex: () =>
     set((state) => ({ currQueueIndex: state.currQueueIndex + 1 })),
-  resetQueueIndex: () => set({ currQueueIndex: 0 }),
   updateQueueItem: (item) => {
     const lastIndexOfItem =
       get().assignmentQueue.length -
@@ -118,11 +119,25 @@ const useAssignmentQueueStoreBase = create<
       assignmentQueue: queueData,
     }));
   },
+  updateAssignmentSubmittedStates: (submittedIDs: number[]) => {
+    const queueItemsWithUpdatedSubmit = get().assignmentQueue.map(
+      (assignmentQueueItem: AssignmentQueueItem) => {
+        if (submittedIDs.includes(assignmentQueueItem.assignment_id)) {
+          return {
+            ...assignmentQueueItem,
+            isSubmitted: true,
+          };
+        }
+        return assignmentQueueItem;
+      }
+    );
+    set(() => ({
+      assignmentQueue: queueItemsWithUpdatedSubmit,
+    }));
+
+    return get().assignmentQueue;
+  },
   resetAll: () => {
     set(initialState);
   },
 }));
-
-export const useAssignmentQueueStore = createSelectors(
-  useAssignmentQueueStoreBase
-);

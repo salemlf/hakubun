@@ -1,27 +1,48 @@
-// TODO: fix so no need for relative path for test-utils
-import { describe, test, expect } from "vitest";
+import { rest } from "msw";
 import { screen, waitFor } from "@testing-library/react";
-import { renderWithRouter } from "../../testing/test-utils";
+import { baseUrl } from "../../api/ApiConfig";
+import {
+  renderHook,
+  act,
+  renderWithRouter,
+  createWrapper,
+} from "../../testing/test-utils";
+import { server } from "../../testing/mocks/server";
+import { mockUserLvl5 } from "../../testing/mocks/data/user.mock";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import HomeHeader from ".";
 
-describe("<HomeHeader/>", () => {
-  test("HomeHeader renders without crashing", () => {
-    const { baseElement } = renderComponent();
-    expect(baseElement).toBeDefined();
+server.use(
+  rest.get(`${baseUrl}user`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(mockUserLvl5));
+  })
+);
+
+test("HomeHeader renders", () => {
+  const { baseElement } = renderComponent();
+  expect(baseElement).toBeDefined();
+});
+
+test("App name is rendered to screen", async () => {
+  renderComponent();
+
+  expect(await screen.findByText(/^Hakubun$/)).toBeInTheDocument();
+});
+
+// TODO: change to wait for userInfo to be defined
+test("User level is rendered to screen", async () => {
+  const { result } = renderHook(() => useUserInfoStoreFacade(), {
+    wrapper: createWrapper(),
   });
 
-  test("App name is rendered to screen", async () => {
-    renderComponent();
+  let userData = mockUserLvl5.data;
 
-    expect(await screen.findByText(/^Hakubun$/)).toBeInTheDocument();
-  });
+  act(() => result.current.setUserInfo(userData));
 
-  test("Level is rendered to screen", async () => {
-    renderComponent();
-
-    let levelTxt = await waitFor(() => screen.getByTestId("level-num"));
-    expect(levelTxt).toHaveTextContent(/^Level$/);
-  });
+  renderComponent();
+  let userLvl = mockUserLvl5.data.level;
+  let levelTxt = await waitFor(() => screen.getByTestId("level-num"));
+  expect(levelTxt).toHaveTextContent(`Level ${userLvl}`);
 });
 
 const renderComponent = () => {

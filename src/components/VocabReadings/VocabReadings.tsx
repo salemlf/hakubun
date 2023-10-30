@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useAudio } from "../../hooks/useAudio";
 import { getAudioForReading } from "../../services/MiscService";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
-import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import {
   Vocabulary,
   SubjectReading,
@@ -54,7 +54,6 @@ type AudioProps = {
 
 const AudioBtn = ({ url, reading }: AudioProps) => {
   const [playing, toggle] = useAudio(url);
-  console.log("🚀 ~ file: VocabReadings.tsx:41 ~ AudioBtn ~ playing:", playing);
 
   return (
     <AudioBtnContainer
@@ -106,7 +105,7 @@ type VocabReadingProps = {
 function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
   let hasReadings = vocab.readings && vocab.readings.length !== 0;
   let readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
-  const pronunciationVoice = useUserSettingsStore.use.pronunciationVoice();
+  const { pronunciationVoice } = useUserSettingsStoreFacade();
 
   return hasReadings ? (
     <ReadingContainer>

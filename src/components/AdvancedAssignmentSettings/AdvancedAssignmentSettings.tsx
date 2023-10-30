@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Assignment, AssignmentType } from "../../types/Assignment";
+import { Assignment } from "../../types/Assignment";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
+import { SubjectType } from "../../types/Subject";
 import Card from "../Card";
 import AssignmentSelector from "../AssignmentSelector";
 import AdvancedAssignmentFilters from "../AdvancedAssignmentFilters";
@@ -13,7 +14,7 @@ type Props = {
   showMeaning: boolean;
   selectedAdvancedSubjIDs: string[];
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
-  availableAssignmentTypes: AssignmentType[];
+  availableAssignmentTypes: SubjectType[];
   availableAssignmentTypeNames: AssignmentTypeName[];
   showBackToBackOption: boolean;
   backToBackChoice: BackToBackChoice;
