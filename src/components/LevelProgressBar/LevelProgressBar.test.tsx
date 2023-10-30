@@ -1,5 +1,3 @@
-import { describe, test, expect } from "vitest";
-// TODO: fix so no need for relative path for test-utils
 import { render } from "../../testing/test-utils";
 import { screen } from "@testing-library/react";
 import LevelProgressBar from ".";

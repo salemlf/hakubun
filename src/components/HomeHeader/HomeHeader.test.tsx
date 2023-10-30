@@ -1,11 +1,15 @@
 import { rest } from "msw";
-// TODO: fix so no need for relative path for test-utils
-import { describe, test, expect } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { baseUrl } from "../../api/ApiConfig";
-import { renderWithRouter } from "../../testing/test-utils";
+import {
+  renderHook,
+  act,
+  renderWithRouter,
+  createWrapper,
+} from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { mockUserLvl5 } from "../../testing/mocks/data/user.mock";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import HomeHeader from ".";
 
 server.use(
@@ -28,6 +32,14 @@ describe("<HomeHeader/>", () => {
 
   // TODO: change to wait for userInfo to be defined
   test("User level is rendered to screen", async () => {
+    const { result } = renderHook(() => useUserInfoStoreFacade(), {
+      wrapper: createWrapper(),
+    });
+
+    let userData = mockUserLvl5.data;
+
+    act(() => result.current.setUserInfo(userData));
+
     renderComponent();
     let userLvl = mockUserLvl5.data.level;
     let levelTxt = await waitFor(() => screen.getByTestId("level-num"));
