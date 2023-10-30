@@ -1,5 +1,23 @@
 import { PreFlattenedAssignment } from "./Assignment";
+import { RequireAtLeastOne } from "./Global";
 import { ApiResponse } from "./MiscTypes";
+
+interface ReviewPostItemOptional {
+  assignment_id?: number;
+  subject_id?: number;
+  incorrect_meaning_answers: number;
+  incorrect_reading_answers: number;
+  created_at?: Date;
+}
+
+export type ReviewPostItem = RequireAtLeastOne<
+  ReviewPostItemOptional,
+  "assignment_id" | "subject_id"
+>;
+
+export type ReviewPostData = {
+  review: ReviewPostItem;
+};
 
 interface ReviewAttrs {
   created_at: Date | null;

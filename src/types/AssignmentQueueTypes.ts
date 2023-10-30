@@ -50,23 +50,6 @@ export type GroupedReviewItems = {
   incorrect: AssignmentQueueItem[];
 };
 
-interface ReviewPostItemOptional {
-  assignment_id?: number;
-  subject_id?: number;
-  incorrect_meaning_answers: number;
-  incorrect_reading_answers: number;
-  created_at?: Date;
-}
-
-export type ReviewPostItem = RequireAtLeastOne<
-  ReviewPostItemOptional,
-  "assignment_id" | "subject_id"
->;
-
-export type ReviewPostData = {
-  review: ReviewPostItem;
-};
-
 export type AssignmentSessionType = "lesson" | "review";
 
 export type AssignmentSubmitInfo = {
