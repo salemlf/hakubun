@@ -1,8 +1,10 @@
+import { SubjectType } from "../../../types/Subject";
+
 // TODO: add vocab and kana vocab mock items
 export const mockSubjects = [
   {
     id: 1,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/1",
     data_updated_at: new Date("2023-09-26T22:33:09.776898Z"),
     created_at: new Date("2012-02-27T18:08:16.000000Z"),
@@ -107,7 +109,7 @@ export const mockSubjects = [
   },
   {
     id: 2,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/2",
     data_updated_at: new Date("2023-09-26T22:33:09.759579Z"),
     created_at: new Date("2012-02-27T18:11:07.000000Z"),
@@ -208,7 +210,7 @@ export const mockSubjects = [
   },
   {
     id: 3,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/3",
     data_updated_at: new Date("2023-09-26T22:33:09.720634Z"),
     created_at: new Date("2012-02-27T18:12:15.000000Z"),
@@ -311,7 +313,7 @@ export const mockSubjects = [
   },
   {
     id: 4,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/4",
     data_updated_at: new Date("2023-09-26T22:33:09.953016Z"),
     created_at: new Date("2012-02-27T18:13:40.000000Z"),
@@ -414,7 +416,7 @@ export const mockSubjects = [
   },
   {
     id: 5,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/5",
     data_updated_at: new Date("2023-09-26T22:33:09.970197Z"),
     created_at: new Date("2012-02-27T18:14:26.000000Z"),
@@ -516,7 +518,7 @@ export const mockSubjects = [
   },
   {
     id: 6,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/6",
     data_updated_at: new Date("2023-09-26T22:33:09.648751Z"),
     created_at: new Date("2012-02-27T18:15:18.000000Z"),
@@ -614,7 +616,7 @@ export const mockSubjects = [
   },
   {
     id: 7,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/7",
     data_updated_at: new Date("2023-09-26T22:33:10.057159Z"),
     created_at: new Date("2012-02-27T18:16:05.000000Z"),
@@ -719,7 +721,7 @@ export const mockSubjects = [
   },
   {
     id: 9,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/9",
     data_updated_at: new Date("2023-09-26T22:33:09.900969Z"),
     created_at: new Date("2012-02-27T18:17:34.000000Z"),
@@ -819,7 +821,7 @@ export const mockSubjects = [
   },
   {
     id: 11,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/11",
     data_updated_at: new Date("2023-09-26T22:33:09.883982Z"),
     created_at: new Date("2012-02-27T18:20:08.000000Z"),
@@ -924,7 +926,7 @@ export const mockSubjects = [
   },
   {
     id: 12,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/12",
     data_updated_at: new Date("2023-09-26T22:33:09.739125Z"),
     created_at: new Date("2012-02-27T18:24:26.000000Z"),
@@ -1022,7 +1024,7 @@ export const mockSubjects = [
   },
   {
     id: 14,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/14",
     data_updated_at: new Date("2023-09-26T22:33:08.556062Z"),
     created_at: new Date("2012-02-27T18:40:12.000000Z"),
@@ -1129,7 +1131,7 @@ export const mockSubjects = [
   },
   {
     id: 15,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/15",
     data_updated_at: new Date("2023-09-26T22:33:09.703043Z"),
     created_at: new Date("2012-02-27T18:40:49.000000Z"),
@@ -1232,7 +1234,7 @@ export const mockSubjects = [
   },
   {
     id: 18,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/18",
     data_updated_at: new Date("2023-09-26T22:33:09.667297Z"),
     created_at: new Date("2012-02-27T18:43:11.000000Z"),
@@ -1334,7 +1336,7 @@ export const mockSubjects = [
   },
   {
     id: 19,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/19",
     data_updated_at: new Date("2023-09-26T22:33:10.074685Z"),
     created_at: new Date("2012-02-27T18:43:53.000000Z"),
@@ -1437,7 +1439,7 @@ export const mockSubjects = [
   },
   {
     id: 20,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/20",
     data_updated_at: new Date("2023-09-26T22:33:09.851090Z"),
     created_at: new Date("2012-02-27T18:44:33.000000Z"),
@@ -1539,7 +1541,7 @@ export const mockSubjects = [
   },
   {
     id: 21,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/21",
     data_updated_at: new Date("2023-10-03T02:42:57.883141Z"),
     created_at: new Date("2012-02-27T18:45:14.000000Z"),
@@ -1637,7 +1639,7 @@ export const mockSubjects = [
   },
   {
     id: 22,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/22",
     data_updated_at: new Date("2023-09-26T22:33:10.003480Z"),
     created_at: new Date("2012-02-27T18:45:52.000000Z"),
@@ -1743,7 +1745,7 @@ export const mockSubjects = [
   },
   {
     id: 23,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/23",
     data_updated_at: new Date("2023-09-26T22:33:10.036605Z"),
     created_at: new Date("2012-02-27T18:46:18.000000Z"),
@@ -1852,7 +1854,7 @@ export const mockSubjects = [
   },
   {
     id: 25,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/25",
     data_updated_at: new Date("2023-09-26T22:33:09.684742Z"),
     created_at: new Date("2012-02-28T20:27:19.000000Z"),
@@ -1953,7 +1955,7 @@ export const mockSubjects = [
   },
   {
     id: 8761,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/8761",
     data_updated_at: new Date("2023-09-26T22:33:09.986332Z"),
     created_at: new Date("2012-02-27T18:34:03.000000Z"),
@@ -2063,7 +2065,7 @@ export const mockSubjects = [
   },
   {
     id: 8762,
-    object: "radical",
+    object: "radical" as SubjectType,
     url: "https://api.wanikani.com/v2/subjects/8762",
     data_updated_at: new Date("2023-09-26T22:33:09.795744Z"),
     created_at: new Date("2012-02-27T18:34:58.000000Z"),

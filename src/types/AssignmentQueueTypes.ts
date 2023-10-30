@@ -1,9 +1,10 @@
-import { Subject } from "./Subject";
-import { PreFlattenedAssignment } from "./Assignment";
+import { Subject, SubjectType } from "./Subject";
+import { Assignment, PreFlattenedAssignment } from "./Assignment";
 
 export type ReviewType = "reading" | "meaning";
 
-export interface AssignmentQueueItem extends Subject {
+export interface AssignmentQueueItem extends Subject, Assignment {
+  object: SubjectType;
   itemID: string;
   assignment_id: number;
   is_reviewed: boolean;
