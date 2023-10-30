@@ -1,4 +1,4 @@
-import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
@@ -11,18 +11,12 @@ const SettingCategory = styled(Card)`
 `;
 
 function LessonUserSettings() {
-  const lessonBatchSize = useUserSettingsStore(
-    (state) => state.lessonBatchSize
-  );
-  const setLessonBatchSize = useUserSettingsStore(
-    (state) => state.setLessonBatchSize
-  );
-  const lessonSortOrderOption = useUserSettingsStore(
-    (state) => state.lessonSortOrderOption
-  );
-  const setLessonSortOrderOption = useUserSettingsStore(
-    (state) => state.setLessonSortOrderOption
-  );
+  const {
+    lessonBatchSize,
+    setLessonBatchSize,
+    lessonSortOrderOption,
+    setLessonSortOrderOption,
+  } = useUserSettingsStoreFacade();
 
   return (
     <SettingCategory title="Lessons" headerBgColor="var(--wanikani-lesson)">

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
-import { useAuthTokenStore } from "../stores/useAuthTokenStore";
+import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import { useUserLogin } from "../hooks/useUserLogin";
 import { AccordionItemData } from "../types/MiscTypes";
 import LoadingDots from "../components/LoadingDots";
@@ -147,7 +147,7 @@ const TokenInput = () => {
   const { login } = useUserLogin();
   const [hasError, setHasError] = useState(false);
   const [tokenPageLoading, setTokenPageLoading] = useState(false);
-  const isAuthLoading = useAuthTokenStore((state) => state.isAuthLoading);
+  const { isAuthLoading } = useAuthTokenStoreFacade();
 
   const handleSubmit = (event: any) => {
     event.preventDefault();

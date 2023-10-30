@@ -1,4 +1,4 @@
-import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import { AUDIO_VOICES } from "../../constants";
 import { PronunciationVoice } from "../../types/UserSettingsTypes";
 import Label from "../Label";
@@ -13,14 +13,9 @@ const SettingCategory = styled(Card)`
 
 // TODO: add disclaimer about kyoto accent not always being available for vocab
 function GeneralUserSettings() {
-  const pronunciationVoice = useUserSettingsStore(
-    (state) => state.pronunciationVoice
-  );
+  const { pronunciationVoice, setPronunciationVoice } =
+    useUserSettingsStoreFacade();
   const voiceID = pronunciationVoice.id;
-
-  const setPronunciationVoice = useUserSettingsStore(
-    (state) => state.setPronunciationVoice
-  );
 
   const updateSelectedVoice = (newVoiceID: string) => {
     let newVoice = AUDIO_VOICES.find((voice) => voice.id === newVoiceID)!;

@@ -5,7 +5,7 @@ import {
 } from "../../services/SubjectAndAssignmentService";
 import { getReviewTypeColor } from "../../services/AssignmentQueueService";
 import { capitalizeWord, getPopoverStyles } from "../../services/MiscService";
-import { useQueueStore } from "../../stores/useQueueStore";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import { SubjectType } from "../../types/Subject";
 import {
   AssignmentQueueItem,
@@ -101,8 +101,7 @@ function AssignmentCharAndType({
   currentReviewItem,
   disableTextSelection = false,
 }: Props) {
-  const displayPopoverMsg = useQueueStore((state) => state.displayPopoverMsg);
-  const popoverInfo = useQueueStore((state) => state.popoverInfo);
+  const { displayPopoverMsg, popoverInfo } = useQueueStoreFacade();
 
   let popoverStyles = getPopoverStyles(popoverInfo.messageType);
 

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { useForecastTotalsStore } from "../stores/useForecastTotalsStore";
-import { ReviewPostItem } from "../types/AssignmentQueueTypes";
+import useForecastTotalsStoreFacade from "../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
+import { ReviewPostItem } from "../types/Review";
 
 type Props = {
   reviewSessionData: ReviewPostItem;
@@ -10,7 +10,7 @@ type Props = {
 export const useCreateReview = () => {
   const queryClient = useQueryClient();
   // used so review forecast data will update after creating a review
-  const resetForecastTotals = useForecastTotalsStore((state) => state.resetAll);
+  const { resetAll: resetForecastTotals } = useForecastTotalsStoreFacade();
 
   return useMutation({
     mutationFn: ({ reviewSessionData }: Props) =>

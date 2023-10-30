@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 // TODO: instead add a module declaration file for react-router-prompt
 // @ts-ignore: Could not find a declaration file for module
 import ReactRouterPrompt from "react-router-prompt";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import {
   blockUserLeavingPage,
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
-import { useQueueStore } from "../stores/useQueueStore";
+import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import { useStartAssignment } from "../hooks/useStartAssignment";
 import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
 import {
@@ -34,7 +34,7 @@ const MainContentWithMargin = styled(MainContent)`
 
 function LessonQuiz() {
   const navigate = useNavigate();
-  const resetQueueStore = useQueueStore((state) => state.resetAll);
+  const { resetAll: resetQueueStore } = useQueueStoreFacade();
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );

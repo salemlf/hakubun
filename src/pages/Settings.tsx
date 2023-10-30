@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useUserInfoStore } from "../stores/useUserInfoStore";
+import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserLogin } from "../hooks/useUserLogin";
 import AnimatedPage from "../components/AnimatedPage";
 import GeneralUserSettings from "../components/GeneralUserSettings";
@@ -43,7 +43,7 @@ const CreditsContainer = styled.div`
 // TODO: change to get/set defaults from API
 function Settings() {
   const { logout } = useUserLogin();
-  const userInfo = useUserInfoStore((state) => state.userInfo);
+  const { userInfo } = useUserInfoStoreFacade();
   const navigate = useNavigate();
   const username = userInfo?.username;
 

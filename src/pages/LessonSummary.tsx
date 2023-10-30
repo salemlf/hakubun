@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { groupDataByProperty } from "../utils";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { useQueueStore } from "../stores/useQueueStore";
-import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore.facade";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
+import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { useSubjectsByIDs } from "../hooks/useSubjectsByIDs";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import { Subject } from "../types/Subject";
@@ -61,7 +61,7 @@ function LessonSummary() {
     ...submittedAssignmentsWithErrs,
   ];
 
-  const resetQueueStore = useQueueStore((state) => state.resetAll);
+  const { resetAll: resetQueueStore } = useQueueStoreFacade();
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );

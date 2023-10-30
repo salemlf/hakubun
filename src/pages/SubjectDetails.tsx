@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { IonGrid, IonSkeletonText } from "@ionic/react";
 import { AnimatePresence } from "framer-motion";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import { useSubjectByID } from "../hooks/useSubjectByID";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";

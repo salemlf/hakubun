@@ -8,10 +8,10 @@ import {
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
 import { capitalizeWord } from "../../services/MiscService";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
-import { useQueueStore } from "../../stores/useQueueStore";
-import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
-import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore.facade";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import {
@@ -49,9 +49,8 @@ function AssignmentSettings({
 }: AssignmentSettingsProps) {
   const navigate = useNavigate();
   const [batchSize, setBatchSize] = useState<string>(defaultBatchSize);
-  const backToBackOptionDefault = useUserSettingsStore(
-    (state) => state.reviewBackToBackOption
-  );
+  const { reviewBackToBackOption: backToBackOptionDefault } =
+    useUserSettingsStoreFacade();
   const [backToBackChoice, setBackToBackChoice] = useState<BackToBackChoice>(
     backToBackOptionDefault
   );
@@ -59,7 +58,7 @@ function AssignmentSettings({
     useState<AssignmentSortOption>(defaultSortOrder);
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
 
-  const resetQueueStore = useQueueStore((state) => state.resetAll);
+  const { resetAll: resetQueueStore } = useQueueStoreFacade();
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );

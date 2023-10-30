@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { useWindowSize } from "usehooks-ts";
-import { useQueueStore } from "../../stores/useQueueStore";
+import { useQueueStore } from "../../stores/useQueueStore/useQueueStore";
 import { Subject } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import BottomSheetHeader from "./BottomSheetHeader";
@@ -11,6 +11,7 @@ import VocabDetailTabs from "../VocabDetailTabs/VocabDetailTabs";
 import BottomSheetRoot, { BottomSheetContent } from "../BottomSheet";
 import { Section } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 
 const SectionWithPadding = styled(Section)`
   padding: 12px;
@@ -26,7 +27,7 @@ type Props = {
 // TODO: modify how BottomSheet component is displayed, rn it's isOpen prop will always be true lol
 function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   const location = useLocation();
-  const showBottomSheet = useQueueStore((state) => state.isBottomSheetVisible);
+  const { isBottomSheetVisible: showBottomSheet } = useQueueStoreFacade();
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const { height } = useWindowSize();
 

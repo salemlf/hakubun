@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useUserSettingsStore } from "../stores/useUserSettingsStore";
-import { useUserInfoStore } from "../stores/useUserInfoStore";
+import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
 import AnimatedPage from "../components/AnimatedPage";
 import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
@@ -22,7 +22,7 @@ const Page = styled(AnimatedPage)`
 `;
 
 export const ReviewSettings = () => {
-  const userInfo = useUserInfoStore((state) => state.userInfo);
+  const { userInfo } = useUserInfoStoreFacade();
   const [isEnabled, setIsEnabled] = useState(false);
   let currUserLevel = userInfo?.level;
 
@@ -40,12 +40,8 @@ export const ReviewSettings = () => {
     error: availForReviewErr,
   } = useAssignmentsAvailForReview(currUserLevel, isEnabled);
 
-  const reviewBatchSize = useUserSettingsStore(
-    (state) => state.reviewBatchSize
-  );
-  const reviewSortOrderOption = useUserSettingsStore(
-    (state) => state.reviewSortOrderOption
-  );
+  const { reviewBatchSize, reviewSortOrderOption } =
+    useUserSettingsStoreFacade();
 
   return (
     <Page>

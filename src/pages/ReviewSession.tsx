@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 // @ts-ignore: Could not find a declaration file for module
 import ReactRouterPrompt from "react-router-prompt";
 import { motion, useAnimation } from "framer-motion";
-import { useQueueStore } from "../stores/useQueueStore";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
+import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import {
   blockUserLeavingPage,
   createReviewPostData,
@@ -144,7 +144,7 @@ const Page = styled(AnimatedPage)`
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 export const ReviewSession = () => {
   const navigate = useNavigate();
-  const resetQueueStore = useQueueStore((state) => state.resetAll);
+  const { resetAll: resetQueueStore } = useQueueStoreFacade();
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );

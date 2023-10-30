@@ -13,8 +13,8 @@ import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useAuthTokenStore } from "./stores/useAuthTokenStore";
-import { useUserInfoStore } from "./stores/useUserInfoStore";
+import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
+import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
 import { api, pagingApi } from "./api/ApiConfig";
 import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
@@ -95,10 +95,9 @@ const App: React.FC = () => {
 const AppElements = () => {
   const location = useLocation();
 
-  const isAuthenticated = useAuthTokenStore((state) => state.isAuthenticated);
-  const isAuthLoading = useAuthTokenStore((state) => state.isAuthLoading);
-  const authToken = useAuthTokenStore((state) => state.authToken);
-  const userInfo = useUserInfoStore((state) => state.userInfo);
+  const { isAuthenticated, isAuthLoading, authToken } =
+    useAuthTokenStoreFacade();
+  const { userInfo } = useUserInfoStoreFacade();
 
   // setting the auth token headers for all api requests
   (function () {

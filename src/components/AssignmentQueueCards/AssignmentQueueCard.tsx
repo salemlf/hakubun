@@ -7,8 +7,8 @@ import {
   useAnimation,
 } from "framer-motion";
 import { toHiragana } from "wanakana";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import { isUserAnswerValid } from "../../services/AssignmentQueueService";
-import { useQueueStore } from "../../stores/useQueueStore";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { SubjectType } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
@@ -106,9 +106,8 @@ export const AssignmentQueueCard = ({
   handleNextCard,
   handleRetryCard,
 }: CardProps) => {
-  const savedUserAnswer = useQueueStore((state) => state.savedUserAnswer);
-  const setSavedUserAnswer = useQueueStore((state) => state.setSavedUserAnswer);
-  const isSubmittingAnswer = useQueueStore((state) => state.isSubmittingAnswer);
+  const { savedUserAnswer, setSavedUserAnswer, isSubmittingAnswer } =
+    useQueueStoreFacade();
   let initialUserAnswer =
     !isSubmittingAnswer || savedUserAnswer === null ? "" : savedUserAnswer;
   const [userAnswer, setUserAnswer] = useState(initialUserAnswer);

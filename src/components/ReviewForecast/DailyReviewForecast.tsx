@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { sortAssignmentsByAvailableDate } from "../../services/SubjectAndAssignmentService";
-import { useForecastTotalsStore } from "../../stores/useForecastTotalsStore";
+import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
 import { useAssignmentsAvailableInRange } from "../../hooks/useAssignmentsAvailableInRange";
 import { Assignment } from "../../types/Assignment";
 import LoadingDots from "../LoadingDots";
@@ -147,12 +147,10 @@ function DailyReviewForecast({
   endDateIsoString,
   index,
 }: Props) {
-  const runningTotals = useForecastTotalsStore(
-    (state) => state.runningTotalAvailableReviews
-  );
-  const updateRunningTotalAvailableReviews = useForecastTotalsStore(
-    (state) => state.updateRunningTotalAvailableReviews
-  );
+  const {
+    runningTotalAvailableReviews: runningTotals,
+    updateRunningTotalAvailableReviews,
+  } = useForecastTotalsStoreFacade();
   let enabled = runningTotals[index] !== undefined;
 
   const [isLoading, setIsLoading] = useState(true);

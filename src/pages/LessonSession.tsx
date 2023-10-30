@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { IonIcon } from "@ionic/react";
 import AnimatedPage from "../components/AnimatedPage";
 import { useNavigate } from "react-router-dom";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { useLessonPaginatorStore } from "../stores/useLessonPaginatorStore";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import LessonCards from "../components/LessonCards";
 import Button from "../components/Button";
@@ -36,7 +36,7 @@ function LessonSession() {
   const [uniqueLessonQueue, setUniqueLessonQueue] = useState<
     AssignmentQueueItem[]
   >([]);
-  const resetLessonPaginator = useLessonPaginatorStore((state) => state.reset);
+  const { reset: resetLessonPaginator } = useLessonPaginatorStoreFacade();
 
   useEffect(() => {
     if (lessonQueue.length === 0) {

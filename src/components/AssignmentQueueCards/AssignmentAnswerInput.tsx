@@ -2,7 +2,7 @@ import { SetStateAction, useEffect, useRef } from "react";
 import { motion, useAnimate } from "framer-motion";
 import WanakanaInput from "./WanakanaInput";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
-import { useQueueStore } from "../../stores/useQueueStore";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import styled from "styled-components";
 
 const InputRow = styled(motion.div)`
@@ -43,7 +43,7 @@ function AssignmentAnswerInput({
   nextBtnClicked,
   shakeInputTrigger,
 }: Props) {
-  const isSubmittingAnswer = useQueueStore((state) => state.isSubmittingAnswer);
+  const { isSubmittingAnswer } = useQueueStoreFacade();
   let reviewType = currentReviewItem.review_type;
   const inputRef = useRef<HTMLInputElement>();
   const [inputContainerRef, animate] = useAnimate();

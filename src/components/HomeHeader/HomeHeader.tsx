@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserInfoStore } from "../../stores/useUserInfoStore";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import Button from "../Button";
 import RefreshHomeButton from "../RefreshHomeButton";
 import SvgIcon from "../SvgIcon";
@@ -69,7 +69,7 @@ const LevelTxt = styled.h2`
 // TODO: sometimes settings button somehow redirects to /reviews/settings and not settings? fix
 function HomeHeader() {
   const navigate = useNavigate();
-  const userInfo = useUserInfoStore((state) => state.userInfo);
+  const { userInfo } = useUserInfoStoreFacade();
   const [level, setLevel] = useState<number | undefined>();
 
   useEffect(() => {

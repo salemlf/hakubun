@@ -9,7 +9,6 @@ import {
   getSubjectColor,
   sortBySubjectTypeAndLevel,
 } from "../../services/SubjectAndAssignmentService";
-import { useUserInfoStore } from "../../stores/useUserInfoStore";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Assignment, AssignmentType } from "../../types/Assignment";
 import {
@@ -31,6 +30,7 @@ import CheckIcon from "../../images/checkmark.svg";
 import LogoExclamation from "../../images/logo-exclamation.svg";
 import { AbsoluteCenterContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 
 const SubjectList = styled(ToggleGroup.Root)`
   display: flex;
@@ -178,7 +178,7 @@ function AssignmentSelector({
 }: Props) {
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
   const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
-  const userInfo = useUserInfoStore((state) => state.userInfo);
+  const { userInfo } = useUserInfoStoreFacade();
 
   let assignmentSubjIDs = assignmentData.map(
     (assignmentItem: any) => assignmentItem.subject_id

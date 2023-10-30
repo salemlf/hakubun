@@ -1,6 +1,6 @@
 import { getAssignmentIDs } from "../services/SubjectAndAssignmentService";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore.facade";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { AssignmentSubmitInfo } from "../types/AssignmentQueueTypes";
 
 // TODO: also update SRS level based on responses?

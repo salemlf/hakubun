@@ -9,41 +9,31 @@ import {
   getAudioForReading,
   getSrsNameBySrsLvl,
 } from "../../services/MiscService";
-import { useQueueStore } from "../../stores/useQueueStore";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
-import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 
-// TODO: clean this up using store slices pattern
 export const useAssignmentQueue = () => {
-  const showPopoverMsg = useQueueStore((state) => state.showPopoverMsg);
-  const correctShowResult = useQueueStore((state) => state.correctShowResult);
-  const correctMoveToNext = useQueueStore((state) => state.correctMoveToNext);
-  const wrongMoveToNext = useQueueStore((state) => state.wrongMoveToNext);
-  const wrongShowResult = useQueueStore((state) => state.wrongShowResult);
-  const isSubmittingAnswer = useQueueStore((state) => state.isSubmittingAnswer);
-  const submitChoice = useQueueStore((state) => state.submitChoice);
-  const retryReview = useQueueStore((state) => state.retryReview);
+  const {
+    showPopoverMsg,
+    correctShowResult,
+    correctMoveToNext,
+    wrongMoveToNext,
+    wrongShowResult,
+    isSubmittingAnswer,
+    submitChoice,
+    retryReview,
+  } = useQueueStoreFacade();
 
-  const assignmentQueue = useAssignmentQueueStore(
-    (state) => state.assignmentQueue
-  );
-  const updateQueueItem = useAssignmentQueueStore(
-    (state) => state.updateQueueItem
-  );
-  const incrementCurrQueueIndex = useAssignmentQueueStore(
-    (state) => state.incrementCurrQueueIndex
-  );
-  const addToAssignmentQueue = useAssignmentQueueStore(
-    (state) => state.addToAssignmentQueue
-  );
-  const removeOldQueueItem = useAssignmentQueueStore(
-    (state) => state.removeOldQueueItem
-  );
-
-  const pronunciationVoice = useUserSettingsStore(
-    (state) => state.pronunciationVoice
-  );
+  const {
+    assignmentQueue,
+    updateQueueItem,
+    incrementCurrQueueIndex,
+    addToAssignmentQueue,
+    removeOldQueueItem,
+  } = useAssignmentQueueStoreFacade();
+  const { pronunciationVoice } = useUserSettingsStoreFacade();
 
   const displaySRSStatus = (reviewItem: AssignmentQueueItem) => {
     let endingSRS = reviewItem.ending_srs_stage!;

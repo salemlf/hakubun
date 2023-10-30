@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { getReviewsGroupedByResult } from "../services/AssignmentQueueService";
-import { useQueueStore } from "../stores/useQueueStore";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore.facade";
+import { useQueueStore } from "../stores/useQueueStore/useQueueStore";
+import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import AnimatedPage from "../components/AnimatedPage";
