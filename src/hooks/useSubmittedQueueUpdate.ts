@@ -1,6 +1,6 @@
 import { getAssignmentIDs } from "../services/SubjectAndAssignmentService";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { useAssignmentSubmitStore } from "../stores/useAssignmentSubmitStore";
+import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore.facade";
 import { AssignmentSubmitInfo } from "../types/AssignmentQueueTypes";
 
 // TODO: also update SRS level based on responses?
@@ -9,12 +9,8 @@ export const useSubmittedQueueUpdate = () => {
     (state) => state.updateAssignmentSubmittedStates
   );
 
-  const updateSubmittedQueueItems = useAssignmentSubmitStore(
-    (state) => state.updateSubmittedQueueItems
-  );
-  const updateQueueItemsWithErrs = useAssignmentSubmitStore(
-    (state) => state.updateQueueItemsWithErrs
-  );
+  const { updateSubmittedQueueItems, updateQueueItemsWithErrs } =
+    useAssignmentSubmitStoreFacade();
 
   const updateSubmitted = (submittedInfo: AssignmentSubmitInfo) => {
     updateQueueItemsWithErrs(submittedInfo.errors);
@@ -27,20 +23,11 @@ export const useSubmittedQueueUpdate = () => {
       submittedAssignmentIDs
     );
 
-    // TODO: get the assignment queue items that were submitted, add them to...
-    // TODO: ...submittedAssignmentQueueItems in useAssignmentSubmitStore
     const updatedQueueItems = updatedAssignmentQueue.filter((queueItem) => {
       return submittedAssignmentIDs.includes(queueItem.assignment_id);
     });
 
     updateSubmittedQueueItems(updatedQueueItems);
-
-    // *testing
-    console.log(
-      "🚀 ~ file: ReviewSession.tsx:298 ~ updatedQueueItems ~ updatedQueueItems:",
-      updatedQueueItems
-    );
-    // *testing
   };
 
   return updateSubmitted;

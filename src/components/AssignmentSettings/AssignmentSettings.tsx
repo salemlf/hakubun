@@ -11,7 +11,7 @@ import { capitalizeWord } from "../../services/MiscService";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../../stores/useQueueStore";
 import { useUserSettingsStore } from "../../stores/useUserSettingsStore";
-import { useAssignmentSubmitStore } from "../../stores/useAssignmentSubmitStore";
+import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore.facade";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import {
@@ -63,16 +63,12 @@ function AssignmentSettings({
   const resetAssignmentQueue = useAssignmentQueueStore(
     (state) => state.resetAll
   );
-  const resetAssignmentSubmit = useAssignmentSubmitStore(
-    (state) => state.resetAll
-  );
-  const [isLoading, setIsLoading] = useState(true);
+  const { resetAll: resetAssignmentSubmit, setShouldBatchSubmit } =
+    useAssignmentSubmitStoreFacade();
   const setAssignmentQueueData = useAssignmentQueueStore(
     (state) => state.setAssignmentQueueData
   );
-  const setShouldBatchSubmit = useAssignmentSubmitStore(
-    (state) => state.setShouldBatchSubmit
-  );
+  const [isLoading, setIsLoading] = useState(true);
 
   let subjIDs = getSubjIDsFromAssignments(assignmentData);
   let queriesEnabled = subjIDs.length !== 0;

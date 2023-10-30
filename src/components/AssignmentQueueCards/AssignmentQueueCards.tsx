@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore";
-import { useAssignmentSubmitStore } from "../../stores/useAssignmentSubmitStore";
+import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore.facade";
 import { getReviewedAssignmentQueueItems } from "../../services/AssignmentQueueService";
 import { MAX_ASSIGNMENTS_BEFORE_SUBMIT } from "../../constants";
 import { useAssignmentQueue } from "./AssignmentQueueCards.hooks";
@@ -33,9 +33,7 @@ function AssignmentQueueCards({
   const currQueueIndex = useAssignmentQueueStore(
     (state) => state.currQueueIndex
   );
-  const shouldBatchSubmit = useAssignmentSubmitStore(
-    (state) => state.shouldBatchSubmit
-  );
+  const { shouldBatchSubmit } = useAssignmentSubmitStoreFacade();
 
   useEffect(() => {
     // if we've gone past the last item in the queue, submit

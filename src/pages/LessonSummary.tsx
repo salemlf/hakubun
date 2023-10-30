@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { groupDataByProperty } from "../utils";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
 import { useQueueStore } from "../stores/useQueueStore";
-import { useAssignmentSubmitStore } from "../stores/useAssignmentSubmitStore";
+import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore.facade";
 import { useSubjectsByIDs } from "../hooks/useSubjectsByIDs";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import { Subject } from "../types/Subject";
@@ -53,12 +53,8 @@ type SubjectsGroupedByType = {
 };
 
 function LessonSummary() {
-  const submittedAssignmentQueueItems = useAssignmentSubmitStore(
-    (state) => state.submittedAssignmentQueueItems
-  );
-  const submittedAssignmentsWithErrs = useAssignmentSubmitStore(
-    (state) => state.submittedAssignmentsWithErrs
-  );
+  const { submittedAssignmentQueueItems, submittedAssignmentsWithErrs } =
+    useAssignmentSubmitStoreFacade();
 
   const allSubmitted = [
     ...submittedAssignmentQueueItems,

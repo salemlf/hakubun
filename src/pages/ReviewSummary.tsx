@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getReviewsGroupedByResult } from "../services/AssignmentQueueService";
 import { useQueueStore } from "../stores/useQueueStore";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore";
-import { useAssignmentSubmitStore } from "../stores/useAssignmentSubmitStore";
+import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore.facade";
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import AnimatedPage from "../components/AnimatedPage";
@@ -25,13 +25,8 @@ const WarningMsg = styled.p`
 
 // TODO: make sure to attempt to resubmit reviews that had errors
 function ReviewSummary() {
-  const submittedAssignmentQueueItems = useAssignmentSubmitStore(
-    (state) => state.submittedAssignmentQueueItems
-  );
-
-  const submittedAssignmentsWithErrs = useAssignmentSubmitStore(
-    (state) => state.submittedAssignmentsWithErrs
-  );
+  const { submittedAssignmentQueueItems, submittedAssignmentsWithErrs } =
+    useAssignmentSubmitStoreFacade();
 
   const allSubmitted = [
     ...submittedAssignmentQueueItems,
