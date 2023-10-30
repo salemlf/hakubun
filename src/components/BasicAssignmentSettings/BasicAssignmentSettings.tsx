@@ -1,8 +1,9 @@
 import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
-import { Assignment, AssignmentType } from "../../types/Assignment";
+import { Assignment } from "../../types/Assignment";
 import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
+import { SubjectType } from "../../types/Subject";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
 import AssignmentTypeSelector from "../AssignmentTypeSelector";
@@ -16,10 +17,8 @@ type Props = {
   defaultBatchSize: string;
   setBatchSize: (size: string) => void;
   availableAssignmentTypeNames: AssignmentTypeName[];
-  selectedAssignmentTypes: AssignmentType[];
-  setSelectedAssignmentTypes: (
-    assignmentTypesSelected: AssignmentType[]
-  ) => void;
+  selectedAssignmentTypes: SubjectType[];
+  setSelectedAssignmentTypes: (assignmentTypesSelected: SubjectType[]) => void;
   sortOption: AssignmentSortOption;
   setSortOption: (sortOption: AssignmentSortOption) => void;
   showBackToBackOption: boolean;

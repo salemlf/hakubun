@@ -1,6 +1,6 @@
-import { AssignmentType } from "../../types/Assignment";
+import { SubjectType } from "../../types/Subject";
 
 export type AssignmentTypeName = {
-  name: AssignmentType;
+  name: SubjectType;
   displayName: string;
 };

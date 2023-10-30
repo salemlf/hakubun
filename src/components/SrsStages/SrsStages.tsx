@@ -8,7 +8,8 @@ import {
 import { countAssignmentTypesInSrsStage } from "./SrsStages.service";
 import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
 import { AssignmentTypeGroupCount, SrsStageName } from "./SrsStages.types";
-import { Assignment, AssignmentType } from "../../types/Assignment";
+import { Assignment } from "../../types/Assignment";
+import { SubjectType } from "../../types/Subject";
 import SrsStagesLoadingSkeleton from "./SrsStagesLoadingSkeleton";
 import styled from "styled-components";
 
@@ -166,7 +167,7 @@ const SubjTypeContainer = styled(motion.div)`
 `;
 
 type SubjTypeRowProps = {
-  assignmentType: AssignmentType;
+  assignmentType: SubjectType;
 };
 
 const SubjTypeRow = styled.div<SubjTypeRowProps>`

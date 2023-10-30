@@ -1,10 +1,5 @@
 import { ApiResponse } from "./MiscTypes";
-
-export type AssignmentType =
-  | "radical"
-  | "kanji"
-  | "vocabulary"
-  | "kana_vocabulary";
+import { SubjectType } from "./Subject";
 
 interface AssignmentAttrs {
   created_at: Date;
@@ -17,7 +12,7 @@ interface AssignmentAttrs {
   hidden: boolean;
   srs_stage: number;
   subject_id: number;
-  subject_type: AssignmentType;
+  subject_type: SubjectType;
 }
 
 export interface PreFlattenedAssignment extends ApiResponse {

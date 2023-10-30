@@ -5,11 +5,7 @@ import {
   SubjectReading,
   SubjectType,
 } from "../types/Subject";
-import {
-  Assignment,
-  AssignmentType,
-  PreFlattenedAssignment,
-} from "../types/Assignment";
+import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
 import { SrsLevelName, StudyMaterial, TagType } from "../types/MiscTypes";
 import { AssignmentQueueItem, ReviewType } from "../types/AssignmentQueueTypes";
 import { SortOrder } from "../components/SortOrderOption/SortOrderOption.types";
@@ -88,7 +84,7 @@ export const findSubjectForAssignment = (
 
 export const filterAssignmentsByType = (
   assignments: Assignment[],
-  assignmentTypes: AssignmentType[]
+  assignmentTypes: SubjectType[]
 ) => {
   let filteredAssignments = assignments.filter(function (assignment) {
     return assignmentTypes.indexOf(assignment.subject_type) !== -1;
@@ -111,12 +107,12 @@ export const filterSubjectsByType = (
 /**
  * @description Determines whether an array of assignments contains a certain assignment type
  * @param {Assignment[]} assignmentsData array of assignments to search through
- * @param {AssignmentType} assignmentType  type of assignment to look for
+ * @param {SubjectType} assignmentType  type of assignment to look for
  * @returns {boolean} whether or not assignment type is in queue
  */
 export const checkIfAssignmentTypeInQueue = (
   assignmentsData: Assignment[],
-  assignmentType: AssignmentType
+  assignmentType: SubjectType
 ) => {
   return assignmentsData.some(
     (assignment: Assignment) => assignment.subject_type === assignmentType
@@ -215,6 +211,8 @@ export const createAssignmentQueueItems = (
 
       return {
         ...subject,
+        ...assignment,
+        object: subject.object,
         assignment_id: assignment.id,
         srs_stage: assignment.srs_stage,
         is_reviewed: false,

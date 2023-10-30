@@ -4,9 +4,9 @@ import { IonIcon } from "@ionic/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { getSettingHeadingFontSize } from "../AssignmentSettings/AssignmentSettings.service";
-import { AssignmentType } from "../../types/Assignment";
 import { AssignmentTypeName } from "./AssignmentTypeSelector.types";
 import { SettingHeadingFontSize } from "../AssignmentSettings/AssignmentSettings.types";
+import { SubjectType } from "../../types/Subject";
 import CheckCircleIcon from "../../images/check-in-circle.svg";
 import styled from "styled-components";
 
@@ -40,7 +40,7 @@ const AssignmentTypeOptions = styled(ToggleGroup.Root)`
 `;
 
 type AssignTypeOptionProps = {
-  assigntype: AssignmentType;
+  assigntype: SubjectType;
 };
 
 const AssignmentTypeItem = styled(ToggleGroup.Item)<AssignTypeOptionProps>`
@@ -70,10 +70,8 @@ const Check = styled(IonIcon)`
 
 type Props = {
   availableAssignmentTypeNames: AssignmentTypeName[];
-  selectedAssignmentTypes: AssignmentType[];
-  setSelectedAssignmentTypes: (
-    assignmentTypesSelected: AssignmentType[]
-  ) => void;
+  selectedAssignmentTypes: SubjectType[];
+  setSelectedAssignmentTypes: (assignmentTypesSelected: SubjectType[]) => void;
   headingFontSize: SettingHeadingFontSize;
 };
 

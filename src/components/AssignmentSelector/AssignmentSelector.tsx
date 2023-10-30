@@ -10,7 +10,7 @@ import {
   sortBySubjectTypeAndLevel,
 } from "../../services/SubjectAndAssignmentService";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { Assignment, AssignmentType } from "../../types/Assignment";
+import { Assignment } from "../../types/Assignment";
 import {
   KanaVocabulary,
   Kanji,
@@ -161,7 +161,7 @@ type Props = {
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
   filterByCurrentLevel: boolean;
   settingsType: AssignmentSessionType;
-  assignmentTypeFilter?: AssignmentType[];
+  assignmentTypeFilter?: SubjectType[];
   showMeaning?: boolean;
 };
 

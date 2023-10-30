@@ -18,11 +18,11 @@ import {
   ALL_ASSIGNMENT_TYPES,
   MAX_ASSIGNMENTS_BEFORE_SUBMIT,
 } from "../../constants";
-import { Assignment, AssignmentType } from "../../types/Assignment";
+import { Assignment } from "../../types/Assignment";
 import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
-import { Subject } from "../../types/Subject";
+import { Subject, SubjectType } from "../../types/Subject";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
@@ -111,7 +111,7 @@ function AssignmentSettings({
     }
   );
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
-    AssignmentType[]
+    SubjectType[]
   >(availableAssignmentTypes);
   const [displayToast, setDisplayToast] = useState<boolean>(false);
 

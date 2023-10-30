@@ -16,13 +16,6 @@ type Props = {
 };
 
 function ReviewResults({ groupedReviewItems, numWrong, numCorrect }: Props) {
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewResults.tsx:58 ~ ReviewResults ~ groupedReviewItems:",
-    groupedReviewItems
-  );
-  // *testing
-
   return (
     <>
       <ReviewCard
