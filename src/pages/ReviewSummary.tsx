@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { getReviewsGroupedByResult } from "../services/AssignmentQueueService";
+import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService";
 import { useQueueStore } from "../stores/useQueueStore/useQueueStore";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
@@ -41,12 +42,11 @@ function ReviewSummary() {
   useEffect(() => {
     resetQueueStore();
     resetAssignmentQueue();
-    return () => {
-      // TODO: call resetAll on submit store?
-    };
   }, []);
 
-  let groupedReviewItems = getReviewsGroupedByResult(allSubmitted);
+  // combine queue items so reading and meaning aren't separate anymore
+  let completedReviews = getCompletedAssignmentQueueData(allSubmitted);
+  let groupedReviewItems = getReviewsGroupedByResult(completedReviews);
   let numCorrect = groupedReviewItems.correct.length;
   let numWrong = groupedReviewItems.incorrect.length;
 
