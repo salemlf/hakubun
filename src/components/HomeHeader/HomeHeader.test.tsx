@@ -31,10 +31,6 @@ describe("<HomeHeader/>", () => {
     renderComponent();
     let userLvl = mockUserLvl5.data.level;
     let levelTxt = await waitFor(() => screen.getByTestId("level-num"));
-    console.log(
-      "🚀 ~ file: HomeHeader.test.tsx:33 ~ test ~ levelTxt:",
-      levelTxt
-    );
     expect(levelTxt).toHaveTextContent(`Level ${userLvl}`);
   });
 });

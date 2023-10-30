@@ -1,23 +1,48 @@
-import { renderWithRouter } from "../testing/test-utils";
+import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
+import { mockAssignmentQueueItems } from "../testing/mocks/data/assignmentQueueItems.mock";
+import {
+  renderHook,
+  act,
+  renderWithRouter,
+  screen,
+} from "../testing/test-utils";
 import LessonSummary from "./LessonSummary";
 
-describe("<LessonSummary/>", () => {
-  test("LessonSummary renders", () => {
-    const { baseElement } = renderComponent();
-    expect(baseElement).toBeDefined();
+test("LessonSummary renders", () => {
+  const { baseElement } = renderComponent();
+  expect(baseElement).toBeDefined();
+});
+
+test("Learned lessons displayed", () => {
+  const { result } = renderHook(() => useAssignmentSubmitStoreFacade());
+  expect(result.current.submittedAssignmentQueueItems).toEqual([]);
+  act(() => result.current.updateSubmittedQueueItems(mockAssignmentQueueItems));
+  expect(result.current.submittedAssignmentQueueItems).toEqual(
+    mockAssignmentQueueItems
+  );
+
+  const txtQueueItems: string[] = [];
+  const imageQueueItems: string[] = [];
+  result.current.submittedAssignmentQueueItems.forEach((queueItem) => {
+    if (!queueItem.useImage) {
+      queueItem.characters !== null && txtQueueItems.push(queueItem.characters);
+    } else {
+      imageQueueItems.push(queueItem.meaning_mnemonic);
+    }
   });
-  //   });
 
-  // TODO: add items to submittedAssignmentQueueItems with useAssignmentSubmitStore, check that those items...
-  // TODO: ...are rendered in LessonSummary
-  //   it("Learned lessons displayed", () => {
-  //     test("LessonSummary renders without crashing", () => {
-  //       const { baseElement } = renderComponent();
+  renderComponent();
 
-  //       //   let userLvl = mockUserLvl5.data.level;
-  //       //   let levelTxt = await waitFor(() => screen.getByTestId("level-num"));
-  //       //   expect(levelTxt).toHaveTextContent(`Level ${userLvl}`);
-  //     });
+  imageQueueItems.forEach(async (altTxt) => {
+    expect(
+      screen.getByRole("img", {
+        name: `${altTxt}`,
+      })
+    ).toBeDefined();
+  });
+  txtQueueItems.forEach((char) => {
+    expect(screen.getByText(`${char}`)).toBeDefined();
+  });
 });
 
 const renderComponent = () => {
