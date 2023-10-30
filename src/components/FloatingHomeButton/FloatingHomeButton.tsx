@@ -1,17 +1,11 @@
 import { useNavigate } from "react-router-dom";
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
+import SvgIcon from "../SvgIcon";
 import {
   FloatingButton,
   FloatingButtonContainer,
 } from "../../styles/BaseStyledComponents";
-import ColorHomeIcon from "../../images/home-color.svg";
+import ColorHomeIcon from "../../images/home-color.svg?react";
 import styled from "styled-components";
-
-const HomeIcon = styled(IonIcon)`
-  width: 1.5em;
-  height: 1.5em;
-`;
 
 const HomeTxt = styled.p`
   margin: 0;
@@ -33,7 +27,7 @@ function FloatingHomeButton() {
         color="black"
         onPress={() => navigate("/", { replace: true })}
       >
-        <HomeIcon src={ColorHomeIcon} />
+        <SvgIcon icon={<ColorHomeIcon />} width="1.5em" height="1.5em" />
         <HomeTxt>Home</HomeTxt>
       </FloatingButton>
     </FloatingButtonContainer>
