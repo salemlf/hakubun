@@ -18,33 +18,31 @@ server.use(
   })
 );
 
-describe("<HomeHeader/>", () => {
-  test("HomeHeader renders", () => {
-    const { baseElement } = renderComponent();
-    expect(baseElement).toBeDefined();
+test("HomeHeader renders", () => {
+  const { baseElement } = renderComponent();
+  expect(baseElement).toBeDefined();
+});
+
+test("App name is rendered to screen", async () => {
+  renderComponent();
+
+  expect(await screen.findByText(/^Hakubun$/)).toBeInTheDocument();
+});
+
+// TODO: change to wait for userInfo to be defined
+test("User level is rendered to screen", async () => {
+  const { result } = renderHook(() => useUserInfoStoreFacade(), {
+    wrapper: createWrapper(),
   });
 
-  test("App name is rendered to screen", async () => {
-    renderComponent();
+  let userData = mockUserLvl5.data;
 
-    expect(await screen.findByText(/^Hakubun$/)).toBeInTheDocument();
-  });
+  act(() => result.current.setUserInfo(userData));
 
-  // TODO: change to wait for userInfo to be defined
-  test("User level is rendered to screen", async () => {
-    const { result } = renderHook(() => useUserInfoStoreFacade(), {
-      wrapper: createWrapper(),
-    });
-
-    let userData = mockUserLvl5.data;
-
-    act(() => result.current.setUserInfo(userData));
-
-    renderComponent();
-    let userLvl = mockUserLvl5.data.level;
-    let levelTxt = await waitFor(() => screen.getByTestId("level-num"));
-    expect(levelTxt).toHaveTextContent(`Level ${userLvl}`);
-  });
+  renderComponent();
+  let userLvl = mockUserLvl5.data.level;
+  let levelTxt = await waitFor(() => screen.getByTestId("level-num"));
+  expect(levelTxt).toHaveTextContent(`Level ${userLvl}`);
 });
 
 const renderComponent = () => {
