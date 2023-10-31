@@ -284,6 +284,6 @@ export const SubjectButtonAndProgress = styled.div`
 
 export const SubjForLvlGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(3.125rem, 1fr));
   gap: 5px;
 `;
