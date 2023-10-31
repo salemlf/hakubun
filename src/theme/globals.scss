@@ -73,6 +73,12 @@ ion-toast {
   z-index: 2000 !important;
 }
 
+// keeps toast region from being on same level as ion-app, weird bug where can't apply in normal styled components
+div[role="region"] {
+  position: fixed;
+  z-index: 2000;
+}
+
 ion-toast.custom-toast.warning-toast {
   --background: var(--ion-color-warning);
   --color: black;
