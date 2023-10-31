@@ -7,6 +7,8 @@ import {
 import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { mockAssignmentQueueItems } from "../testing/mocks/data/assignmentQueueItems.mock";
 import ReviewSummary from "./ReviewSummary";
+import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
+import { Subject } from "../types/Subject";
 
 test("ReviewSummary renders", () => {
   const { baseElement } = renderComponent();
@@ -27,7 +29,7 @@ test("Reviewed assignments displayed", () => {
     if (!queueItem.useImage) {
       queueItem.characters !== null && txtQueueItems.push(queueItem.characters);
     } else {
-      imageQueueItems.push(queueItem.meaning_mnemonic);
+      imageQueueItems.push(getSubjectDisplayName(queueItem as Subject));
     }
   });
 
@@ -36,7 +38,7 @@ test("Reviewed assignments displayed", () => {
   imageQueueItems.forEach(async (altTxt) => {
     expect(
       screen.getByRole("img", {
-        name: `${altTxt}`,
+        name: `${altTxt} image`,
       })
     ).toBeDefined();
   });
