@@ -8,7 +8,7 @@ import { Subject } from "../types/Subject";
 import Card from "../components/Card/Card";
 import AnimatedPage from "../components/AnimatedPage";
 import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
-import SubjCharacterList from "../components/ReviewResults/SubjCharacterList";
+import SubjCharacterList from "../components/SubjCharacterList";
 import {
   ContentWithTabBar,
   FullWidthGridDiv,

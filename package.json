@@ -63,8 +63,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "test": "vitest",
-    "coverage": "vitest run --coverage",
+    "test": "vitest --environment=jsdom",
+    "test:ui": "vitest --environment=jsdom --ui",
+    "coverage": "vitest --environment=jsdom run --coverage",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -90,6 +91,7 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
+    "@vitest/ui": "^0.34.6",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",

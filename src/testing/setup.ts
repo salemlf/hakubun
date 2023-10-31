@@ -5,6 +5,9 @@ import "@testing-library/jest-dom";
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { server } from "./mocks/server";
 
+// TODO: getting this error every once in a while while testing, fix...
+// TODO: ...ReferenceError: window is not defined...
+// TODO: ...❯ Timeout._onTimeout node_modules/@ionic/core/components/ion-app.js:19:50
 setupIonicReact();
 
 // Mock matchmedia

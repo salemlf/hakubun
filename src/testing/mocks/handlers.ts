@@ -1,15 +1,20 @@
 import { baseUrl } from "../../api/ApiConfig";
 
 // TODO: use this endpoint in KanjiForLevelCard test
-const kanjiAssignmentsEndpoint = new RegExp(
+export const kanjiAssignmentsByLvlEndpoint = new RegExp(
   `${baseUrl}assignments\?levels=[0-9][0-9]?&subject_types=kanji`,
   "gi"
 );
 
-const subjsBySubjIDsEndpoint = new RegExp(
+export const kanjiSubjectsByLvlEndpoint = new RegExp(
+  `${baseUrl}assignments\?levels=[0-9][0-9]?&subject_types=kanji`,
+  "gi"
+);
+
+export const subjsBySubjIDsEndpoint = new RegExp(
   `${baseUrl}subjects\?ids=[0-9]+(,[0-9]+)*`,
   "gi"
 );
 
-// TODO: create and use mock zustand
+// TODO: remove this and rename file? just use this file to export endpoints
 export const handlers = [];
