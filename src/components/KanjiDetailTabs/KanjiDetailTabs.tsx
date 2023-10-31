@@ -132,7 +132,6 @@ function KanjiDetailTabs({ kanji, scrollToDefault }: Props) {
                     width="1.5em"
                     height="1.5em"
                   />
-                  {/* <IonIcon src={MagnifyingGlassIcon} /> */}
                   <SubjDetailSubHeading>
                     Found in Vocabulary
                   </SubjDetailSubHeading>
