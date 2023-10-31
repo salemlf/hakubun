@@ -1,5 +1,8 @@
 import { ReactNode } from "react";
-import { Header } from "../../styles/BaseStyledComponents";
+import {
+  CustomBgColor,
+  CustomFontSize,
+} from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 type CardContainerProps = {
@@ -11,9 +14,16 @@ const CardContainer = styled.div<CardContainerProps>`
   background-color: ${({ cardbgcolor }) => cardbgcolor};
   border-radius: 8px;
   color: white;
+
+  &:not(:first-child) {
+    margin-top: 0;
+  }
 `;
 
-const CardHeader = styled(Header)`
+const CardHeader = styled.header<CustomBgColor & CustomFontSize>`
+  background-color: ${({ bgcolor }) => bgcolor};
+  font-size: ${({ sizeoffont }) => sizeoffont};
+  padding: 10px;
   border-radius: 8px 8px 0 0;
 `;
 
@@ -28,6 +38,7 @@ type Props = {
   cardBgColor?: string;
   headerBgColor?: string;
   margin?: string;
+  headerFontSize?: string;
 };
 
 function Card({
@@ -36,10 +47,15 @@ function Card({
   cardBgColor = "var(--light-greyish-purple)",
   headerBgColor = "var(--light-greyish-purple)",
   margin = "16px",
+  headerFontSize = "1.5rem",
 }: Props) {
   return (
     <CardContainer cardbgcolor={cardBgColor} margin={margin}>
-      {title && <CardHeader bgcolor={headerBgColor}>{title}</CardHeader>}
+      {title && (
+        <CardHeader bgcolor={headerBgColor} sizeoffont={headerFontSize}>
+          {title}
+        </CardHeader>
+      )}
       <CardContent>{children}</CardContent>
     </CardContainer>
   );
