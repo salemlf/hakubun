@@ -9,11 +9,11 @@ import { Subject } from "../../types/Subject";
 import SubjectButton from "../SubjectButton";
 import BasicCard from "../BasicCard";
 import SrsStageProgressBar from "../SrsStageProgressBar/SrsStageProgressBar";
-import styled from "styled-components";
-
-const KanjiItemContainer = styled(IonCol)`
-  margin-bottom: 10px;
-`;
+import Card from "../Card";
+import {
+  SubjForLvlGrid,
+  SubjectButtonAndProgress,
+} from "../../styles/BaseStyledComponents";
 
 interface Props {
   level: number | undefined;
@@ -39,41 +39,41 @@ function KanjiForLvlCard({ level }: Props) {
   if (kanjiLoading) {
     return (
       <BasicCard title="" isLoading={true}>
-        <IonRow>
+        <SubjForLvlGrid>
           <IonSkeletonText
             animated={true}
             style={{ height: "50px" }}
           ></IonSkeletonText>
-        </IonRow>
-        <IonRow>
+        </SubjForLvlGrid>
+        <SubjForLvlGrid>
           <IonSkeletonText
             animated={true}
             style={{ height: "50px" }}
           ></IonSkeletonText>
-        </IonRow>
-        <IonRow>
+        </SubjForLvlGrid>
+        <SubjForLvlGrid>
           <IonSkeletonText
             animated={true}
             style={{ height: "50px" }}
           ></IonSkeletonText>
-        </IonRow>
-        <IonRow>
+        </SubjForLvlGrid>
+        <SubjForLvlGrid>
           <IonSkeletonText
             animated={true}
             style={{ height: "50px" }}
           ></IonSkeletonText>
-        </IonRow>
+        </SubjForLvlGrid>
       </BasicCard>
     );
   }
 
   // TODO: sort so locked kanji are last
   return (
-    <BasicCard title="Kanji" isLoading={false}>
-      <IonRow class="ion-align-items-center ion-justify-content-start">
+    <Card title="Kanji" margin="12px 0">
+      <SubjForLvlGrid>
         {(subjectsData as Subject[]).map((kanjiItem: any) => {
           return (
-            <KanjiItemContainer key={`col_${kanjiItem.id}`} size="2">
+            <SubjectButtonAndProgress key={`col_${kanjiItem.id}`}>
               {assignmentsData && (
                 <>
                   <SubjectButton
@@ -96,11 +96,11 @@ function KanjiForLvlCard({ level }: Props) {
                   />
                 </>
               )}
-            </KanjiItemContainer>
+            </SubjectButtonAndProgress>
           );
         })}
-      </IonRow>
-    </BasicCard>
+      </SubjForLvlGrid>
+    </Card>
   );
 }
 
