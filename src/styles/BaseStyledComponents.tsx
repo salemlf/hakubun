@@ -1,4 +1,4 @@
-import { IonAlert, IonCol, IonGrid, IonRow, IonTitle } from "@ionic/react";
+import { IonAlert, IonGrid, IonRow } from "@ionic/react";
 import { motion } from "framer-motion";
 import Button from "../components/Button/Button";
 import styled from "styled-components";
@@ -273,4 +273,17 @@ export const SettingOptionContainer = styled.div`
   &:first-child {
     margin-top: 10px;
   }
+`;
+
+export const SubjectButtonAndProgress = styled.div`
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const SubjForLvlGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
+  gap: 5px;
 `;

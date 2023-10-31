@@ -17,7 +17,7 @@ const SrsButtonContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  padding: 5px;
+  padding: 5px 0;
   width: 100%;
   gap: 5px;
 `;
