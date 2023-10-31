@@ -15,6 +15,18 @@ import ReviewForecast from "../components/ReviewForecast";
 import LoadingDots from "../components/LoadingDots";
 import { FixedCenterContainer } from "../styles/BaseStyledComponents";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
+import styled from "styled-components";
+
+const HomePageContainer = styled(ContentWithTabBar)`
+  margin: 0 8px;
+`;
+
+const LessonAndReviewButtonsContainer = styled.div`
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 16px;
+`;
 
 // TODO: save previous level value and show animation/congrats when level increases
 const Home = () => {
@@ -52,50 +64,28 @@ const Home = () => {
   return (
     <AnimatedPage>
       <HomeHeader></HomeHeader>
-      <ContentWithTabBar>
-        <IonGrid>
-          {!homeLoading ? (
-            <>
-              <IonRow>
-                <IonCol>
-                  <LessonsButton />
-                </IonCol>
-                <IonCol>
-                  <ReviewsButton level={level}></ReviewsButton>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <LevelProgressBar level={level} />
-                </IonCol>
-              </IonRow>
-              <IonRow class="ion-justify-content-start">
-                <IonCol>
-                  <RadicalForLvlCard level={level}></RadicalForLvlCard>
-                </IonCol>
-              </IonRow>
-              <IonRow class="ion-justify-content-start">
-                <IonCol>
-                  <KanjiForLvlCard level={level}></KanjiForLvlCard>
-                </IonCol>
-              </IonRow>
-              <IonRow class="ion-justify-content-start">
-                <SrsStages></SrsStages>
-              </IonRow>
-              <IonRow class="ion-justify-content-start">
-                <ReviewForecast />
-              </IonRow>
-            </>
-          ) : (
-            <IonSkeletonText animated={true}></IonSkeletonText>
-          )}
-        </IonGrid>
+      <HomePageContainer>
+        {!homeLoading ? (
+          <>
+            <LessonAndReviewButtonsContainer>
+              <LessonsButton />
+              <ReviewsButton level={level}></ReviewsButton>
+            </LessonAndReviewButtonsContainer>
+            <LevelProgressBar level={level} />
+            <RadicalForLvlCard level={level}></RadicalForLvlCard>
+            <KanjiForLvlCard level={level}></KanjiForLvlCard>
+            <SrsStages></SrsStages>
+            <ReviewForecast />
+          </>
+        ) : (
+          <IonSkeletonText animated={true}></IonSkeletonText>
+        )}
         {homeLoading && (
           <FixedCenterContainer>
             <LoadingDots />
           </FixedCenterContainer>
         )}
-      </ContentWithTabBar>
+      </HomePageContainer>
       <FloatingTabBar />
     </AnimatedPage>
   );

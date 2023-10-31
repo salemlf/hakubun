@@ -18,7 +18,6 @@ type ViewportProps = {
 };
 
 const Viewport = styled(ToastPrimitive.Viewport)<ViewportProps>`
-  position: fixed;
   bottom: ${({ distancefrombottom }) => distancefrombottom};
   top: ${({ distancefromtop }) => distancefromtop};
   left: 50%;
@@ -32,7 +31,6 @@ const Viewport = styled(ToastPrimitive.Viewport)<ViewportProps>`
   list-style: none;
   transform: translate(-50%, 0);
   outline: none;
-  z-index: 20;
 `;
 
 type RootProps = {
