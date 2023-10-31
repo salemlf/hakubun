@@ -2175,3 +2175,1216 @@ export const mockSubjects = [
     useImage: true,
   },
 ];
+
+export const mockKanjiSubjectsForLvl1 = {
+  data: [
+    {
+      id: 440,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/440",
+      data_updated_at: new Date("2023-10-30T22:33:12.721048Z"),
+      data: {
+        created_at: new Date("2012-02-27T19:55:19.000000Z"),
+        level: 1,
+        slug: "一",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E4%B8%80",
+        characters: "一",
+        meanings: [
+          {
+            meaning: "One",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "1",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "いち",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "ひと",
+            accepted_answer: false,
+          },
+          {
+            type: "nanori",
+            primary: false,
+            reading: "かず",
+            accepted_answer: false,
+          },
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "いつ",
+            accepted_answer: true,
+          },
+        ],
+        component_subject_ids: [1],
+        amalgamation_subject_ids: [
+          2467, 2468, 2477, 2510, 2544, 2588, 2627, 2660, 2665, 2672, 2679,
+          2721, 2730, 2751, 2959, 3048, 3256, 3335, 3348, 3349, 3372, 3481,
+          3527, 3528, 3656, 3663, 4133, 4173, 4258, 4282, 4563, 4615, 4701,
+          4823, 4906, 5050, 5224, 5237, 5349, 5362, 5838, 6010, 6029, 6150,
+          6169, 6209, 6210, 6346, 6584, 6614, 6723, 6811, 6851, 7037, 7293,
+          7305, 7451, 7561, 7617, 7734, 7780, 7927, 8209, 8214, 8414, 8456,
+          8583, 8709, 8896, 8921, 9056, 9103, 9268,
+        ],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "Lying on the <radical>ground</radical> is something that looks just like the ground, the number <kanji>One</kanji>. Why is this One lying down? It's been shot by the number two. It's lying there, bleeding out and dying. The number One doesn't have long to live.",
+        meaning_hint:
+          "To remember the meaning of <kanji>One</kanji>, imagine yourself there at the scene of the crime. You grab <kanji>One</kanji> in your arms, trying to prop it up, trying to hear its last words. Instead, it just splatters some blood on your face. \"Who did this to you?\" you ask. The number One points weakly, and you see number Two running off into an alleyway. He's always been jealous of number One and knows he can be number one now that he's taken the real number one out.",
+        reading_mnemonic:
+          "As you're sitting there next to <kanji>One</kanji>, holding him up, you start feeling a weird sensation all over your skin. From the wound comes a fine powder (obviously coming from the special bullet used to kill One) that causes the person it touches to get extremely <reading>itchy</reading> (<ja>いち</ja>).",
+        reading_hint:
+          "Make sure you feel the ridiculously <reading>itchy</reading> sensation covering your body. It climbs from your hands, where you're holding the number <kanji>One</kanji> up, and then goes through your arms, crawls up your neck, goes down your body, and then covers everything. It becomes uncontrollable, and you're scratching everywhere, writhing on the ground. It's so itchy that it's the most painful thing you've ever experienced (you should imagine this vividly, so you remember the reading of this kanji).",
+        lesson_position: 26,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 441,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/441",
+      data_updated_at: new Date("2023-09-18T23:36:24.288310Z"),
+      data: {
+        created_at: new Date("2012-02-27T20:15:43.000000Z"),
+        level: 1,
+        slug: "二",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E4%BA%8C",
+        characters: "二",
+        meanings: [
+          {
+            meaning: "Two",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "2",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "に",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "ふた",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [7],
+        amalgamation_subject_ids: [
+          2473, 2474, 2476, 2545, 2589, 2628, 2683, 2712, 2960, 3049, 3153,
+          3237, 3339, 3347, 3373, 3374, 4141, 4826, 5238, 6048, 6615, 6992,
+          7515, 7565, 8897,
+        ],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "The kanji <kanji>two</kanji> and the radical <radical>two</radical> are the exact same things. Therefore, you know the kanji for two already!",
+        meaning_hint:
+          "More simply put, you can just know that this kanji is the double of One. It's two lines, that's not all that hard to remember!",
+        reading_mnemonic:
+          "Think of all the things you have <kanji>Two</kanji> of. What is the most important? Some would say eyes, some would say ears. I would say the <reading>knee</reading> (<ja>に</ja>) because if you didn't have them, it'd be really hard to go up stairs.",
+        reading_hint:
+          "Imagine yourself without two knees, and see what it would be like. What would give you trouble? What couldn't you do? Just imagining this for a minute or two will help you to remember the reading of this kanji more effectively.",
+        lesson_position: 27,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 442,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/442",
+      data_updated_at: new Date("2023-09-18T23:36:24.305271Z"),
+      data: {
+        created_at: new Date("2012-02-27T22:33:25.000000Z"),
+        level: 1,
+        slug: "九",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E4%B9%9D",
+        characters: "九",
+        meanings: [
+          {
+            meaning: "Nine",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "9",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "く",
+            accepted_answer: true,
+          },
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "きゅう",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "ここの",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [11],
+        amalgamation_subject_ids: [2471, 2472, 2864, 7614],
+        visually_similar_subject_ids: [467, 447],
+        meaning_mnemonic:
+          "Nice! This kanji is the same as the radical that looks just like it (down to the meaning, even!). The radical is <radical>nine</radical> and the kanji is <kanji>nine</kanji>, making the meaning of this kanji really easy to remember as long as you know the radical first.",
+        meaning_hint:
+          "If you know your radicals well, this kanji will be a breeze!",
+        reading_mnemonic:
+          "Although this kanji has two on'yomi to learn, the pronunciations of those two on'yomi are very similar, so that should make them easier to remember.\r\n\r\nWhen you were <kanji>nine</kanji> your favorite foods were <reading>coo</reading>kies (<ja>く</ja>) and <reading>cu</reading>cumbers (<ja>きゅう</ja>). Yum yum!",
+        reading_hint:
+          "Picture nine-year-old you, lining up nine cookies and nine cucumbers. You dip a cookie in milk and bite into it, then dip a cucumber in and take a bite. Nine bites each until they're all gone. Ah, you miss being nine.",
+        lesson_position: 28,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 443,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/443",
+      data_updated_at: new Date("2023-09-18T23:36:24.321723Z"),
+      data: {
+        created_at: new Date("2012-02-27T22:38:57.000000Z"),
+        level: 1,
+        slug: "七",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E4%B8%83",
+        characters: "七",
+        meanings: [
+          {
+            meaning: "Seven",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "7",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "しち",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "なな",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "なの",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [4],
+        amalgamation_subject_ids: [2469, 2470, 7562, 9055],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "Lucky for you (as is the case with many of the lower-stroke kanji), this kanji is the same as the radical you've already learned. The radical that makes up this kanji is <radical>seven</radical> and the kanji (which is exactly the same) is also <kanji>seven</kanji>. So, if you know the radical, you know the meaning of the kanji as well.",
+        meaning_hint:
+          "Make sure you know your radicals well and you'll be A-Okay on this one!",
+        reading_mnemonic:
+          "You know this kanji means <kanji>Seven</kanji>, so let's use that to remember the reading too. <kanji>Seven</kanji> is a lucky number, usually, but this time it wasn't so good. \r\n\r\n<kanji>Seven</kanji> percent is all she got on her test after <reading>she chea</reading>ted (<ja>しち</ja>) on it.",
+        reading_hint:
+          "How unbelievable is it that someone got <kanji>seven</kanji> percent on a test, especially if you try to cheat? Imagine the girl you loathe the most from school, and imagine her cheating on the test (it's important it's a girl, because of the \"she\" part in <reading>she chea</reading>ted (<ja>しち</ja>). Then, imagine your happiness when she's super upset about getting seven percent on it. Serves her right, obviously.",
+        lesson_position: 29,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 444,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/444",
+      data_updated_at: new Date("2023-09-18T23:36:24.339543Z"),
+      data: {
+        created_at: new Date("2012-02-27T22:41:23.000000Z"),
+        level: 1,
+        slug: "人",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E4%BA%BA",
+        characters: "人",
+        meanings: [
+          {
+            meaning: "Person",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "People",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "にん",
+            accepted_answer: true,
+          },
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "じん",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "ひと",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "と",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [9],
+        amalgamation_subject_ids: [
+          2475, 2476, 2477, 2478, 2479, 2488, 2502, 2582, 2604, 2632, 2655,
+          2674, 2691, 2715, 2719, 2782, 2887, 2989, 2995, 3014, 3061, 3069,
+          3141, 3202, 3232, 3254, 3264, 3356, 3358, 3402, 3407, 3412, 3420,
+          3452, 3540, 3606, 3621, 3699, 3708, 3724, 3748, 3793, 3862, 3898,
+          3899, 3907, 3936, 4130, 4153, 4158, 4203, 4257, 4305, 4344, 4365,
+          4385, 4433, 4909, 4964, 4982, 4985, 5014, 5144, 5224, 5474, 5510,
+          5524, 5733, 6029, 6154, 6209, 6260, 6283, 6450, 6613, 6870, 7218,
+          7462, 7465, 7517, 7560, 7757, 7783, 8005, 8255, 8384, 8551, 8604,
+          8659, 8735, 8805, 8987, 9042, 9155,
+        ],
+        visually_similar_subject_ids: [445],
+        meaning_mnemonic:
+          "Remember how the radical version of this kanji meant <radical>person</radical> because it's a person walking from the side with their arms down? Well this is a <kanji>person</kanji> too!",
+        meaning_hint: "Know the radicals, and you shall know the kanji.",
+        reading_mnemonic:
+          "Only one <kanji>person</kanji> at <reading>Nin</reading>tendo (<ja>にん</ja>) complained about the new <reading>jean</reading>s (<ja>じん</ja>) policy, and that person was you.",
+        reading_hint:
+          "Imagine how angry you were about the policy. You'll have to come up with something to be angry about yourself (pick something that would actually make you angry, like maybe you're only allowed to wear cut off short-shorts jeans at Nintendo now), but if you pick something good, you'll definitely remember the two readings for this. Just remember you're working at <reading>Nin</reading>tendo, and the policy has to be something about <reading>jean</reading>s. Then, imagine yourself as the only <kanji>person</kanji> complaining and everyone else in their dumb jeans (or lack-thereof) shaking their head at you because you're being a fool.",
+        lesson_position: 30,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 445,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/445",
+      data_updated_at: new Date("2023-09-18T23:36:24.396279Z"),
+      data: {
+        created_at: new Date("2012-02-27T22:43:03.000000Z"),
+        level: 1,
+        slug: "入",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E5%85%A5",
+        characters: "入",
+        meanings: [
+          {
+            meaning: "Enter",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "にゅう",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "はい",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "い",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [12],
+        amalgamation_subject_ids: [
+          2480, 2481, 2498, 2671, 2790, 2831, 3036, 3039, 3592, 3869, 4105,
+          4180, 4312, 4354, 4590, 4976, 5212, 5248, 5370, 5388, 5507, 5674,
+          5880, 5914, 6553, 6850, 6966, 6995, 7116, 7267, 7628, 8733, 9269,
+        ],
+        visually_similar_subject_ids: [444],
+        meaning_mnemonic:
+          "The kanji and the radical are the same, so remembering the meaning of this kanji is as simple as making sure you know the radical for <radical>enter</radical> first! If you know the radical, you know this kanji means <kanji>enter</kanji> as well.",
+        meaning_hint: "Make sure you know those radicals, yo!",
+        reading_mnemonic:
+          "Turns out, after you <kanji>enter</kanji> the teepee (you'll remember that the radical is a teepee with a big entrance to it), you're given a <reading>new</reading> (<ja>にゅう</ja>) one! Now you have two teepees!",
+        reading_hint:
+          "Imagine lights turning on and flashing, and an entire audience inside. You're at a gameshow, and the announcer announces the <reading>neeeeew</reading> teepee in his announcey voice. Feel the surprise. Feel the happiness. Feel the excitement. A beautiful new teepee all for you! ",
+        lesson_position: 31,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 446,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/446",
+      data_updated_at: new Date("2023-09-18T23:36:24.374704Z"),
+      data: {
+        created_at: new Date("2012-02-27T22:47:16.000000Z"),
+        level: 1,
+        slug: "八",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E5%85%AB",
+        characters: "八",
+        meanings: [
+          {
+            meaning: "Eight",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "8",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "はち",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "や",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "よう",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [2],
+        amalgamation_subject_ids: [2482, 2483, 4172, 7615],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "This isn't exactly the same as the <radical>fins</radical> radical, but it's close. Sometimes this will happen (where we have to use a slightly \"modified radical\" version of the original), so it's good to understand that now, early on. In this case, we have fins. How many fins? <kanji>Eight</kanji> fins. How do you know that? Because you caught four fish with two fins each.",
+        meaning_hint:
+          'Count the fins out in front of you, all the way from one to eight. It\'ll help if you actually do this. Now smell each fin, and think "Wow, I have to smell all eight of these?" Yes, you do.',
+        reading_mnemonic:
+          "After you count and smell all <kanji>eight</kanji> of your fins, it's time to put them away. You open a large <reading>hatch</reading> (<ja>はち</ja>) and put them in. This is where you keep your fins, always putting in eight at a time because that's what the boss wants.",
+        reading_hint:
+          "You've asked him why you can only put eight fins at a time in the hatch, but he never wants to answer. What could be down in the hole that the hatch covers? Why is there a hatch at all? What's with numbers and hatches being mysterious?",
+        lesson_position: 32,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 447,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/447",
+      data_updated_at: new Date("2023-09-18T23:36:24.391449Z"),
+      data: {
+        created_at: new Date("2012-02-28T01:32:14.000000Z"),
+        level: 1,
+        slug: "力",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E5%8A%9B",
+        characters: "力",
+        meanings: [
+          {
+            meaning: "Power",
+            primary: true,
+            accepted_answer: true,
+          },
+          {
+            meaning: "Strength",
+            primary: false,
+            accepted_answer: true,
+          },
+          {
+            meaning: "Ability",
+            primary: false,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "Force",
+          },
+          {
+            type: "whitelist",
+            meaning: "Energy",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "りょく",
+            accepted_answer: true,
+          },
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "りき",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "ちから",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [13],
+        amalgamation_subject_ids: [
+          2484, 2807, 2855, 2970, 2991, 2998, 3081, 3104, 3269, 3536, 3661,
+          3722, 4018, 4176, 4211, 4266, 4397, 4523, 4808, 5135, 5296, 6100,
+          6597, 7197, 8689, 8733, 8958,
+        ],
+        visually_similar_subject_ids: [467, 442, 458],
+        meaning_mnemonic:
+          "The radical and the meaning of this kanji are the same. Both are <kanji>power</kanji>.",
+        meaning_hint:
+          "If you know the radicals, you should be feeling fine... No, you should feel powerful!",
+        reading_mnemonic:
+          "Who has the most power of anyone? It's the <kanji>Power</kanji> Rangers. They are battling their arch enemy <reading>Ricky</reading> (<ja>りき</ja>). They defeat him and <reading>lock</reading> (<ja>りょく</ja>) him up, so that he can't hurt anyone ever again.",
+        reading_hint:
+          "Know anyone named <reading>Ricky</reading> (<ja>りき</ja>), even a famous person like Ricky Ricardo or Ricky Gervais? Imagine that person's face on the monster the <kanji>Power</kanji> Rangers are fighting. Now, imagine the Power Rangers <reading>lock</reading>ing (<ja>りょく</ja>) him up. He looks much less scary once he's locked up. Phew.",
+        lesson_position: 33,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 448,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/448",
+      data_updated_at: new Date("2023-10-24T05:33:21.240982Z"),
+      data: {
+        created_at: new Date("2012-02-28T01:36:02.000000Z"),
+        level: 1,
+        slug: "十",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E5%8D%81",
+        characters: "十",
+        meanings: [
+          {
+            meaning: "Ten",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "10",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "じゅう",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "とお",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [15],
+        amalgamation_subject_ids: [
+          2485, 2524, 2530, 2543, 2566, 2590, 2630, 3237, 3374, 4253, 6992,
+          7565, 7616, 9255,
+        ],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "This <radical>cross</radical> is the symbol for the number <kanji>ten</kanji>. A good way to remember this is to think about all the religions that have crosses and also important sets of tens. ",
+        meaning_hint:
+          "If you're familiar with Christianity, they have a cross and ten commandments. Cross = ten, you see?",
+        reading_mnemonic:
+          "This cross in particular has <kanji>ten</kanji> <reading>jew</reading>els (<ja>じゅう</ja>) on it. Two on each arm and two in the middle. That's ten jewels!",
+        reading_hint:
+          "Picture the jewels on this cross. Maybe draw it out on a piece of paper so the visual really sticks. Each cross is really a symbol for different sets of ten things, and in this case, it's ten jewels.",
+        lesson_position: 34,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 449,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/449",
+      data_updated_at: new Date("2023-09-18T23:36:24.424451Z"),
+      data: {
+        created_at: new Date("2012-02-28T01:43:58.000000Z"),
+        level: 1,
+        slug: "三",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E4%B8%89",
+        characters: "三",
+        meanings: [
+          {
+            meaning: "Three",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "3",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "さん",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "み",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [1, 7],
+        amalgamation_subject_ids: [
+          2486, 2487, 2488, 2713, 2836, 3553, 4171, 4260, 5239, 5844, 7456,
+          7563, 7678, 9159, 9169, 9255,
+        ],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          'This kanji is made up of the ground radical (which also happens to be the kanji for "one") and the radical for two. Combine <radical>one</radical> and <radical>two</radical> together and what do you get? <kanji>Three</kanji>!',
+        meaning_hint:
+          "This one should be pretty self explanatory! Even easier, you can look at this kanji and see it has three straight lines. You know what one looks like. You know what two looks like. So... this is three!",
+        reading_mnemonic:
+          "<kanji>Three</kanji> is the number of chances you get with <reading>San</reading>ta-san (<ja>さん</ja>). He has a list, and when you get to three \"naughty things\" lines, that's it. You're on Santa-san's three strikes and you're out list.",
+        reading_hint:
+          "Picture Santa-san sitting at his desk at the North Pole, eating cookies, and marking one, two, then finally three lines next to names. Once the third line appears, the kid doesn't get presents anymore.",
+        lesson_position: 35,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 450,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/450",
+      data_updated_at: new Date("2023-09-18T23:36:24.440082Z"),
+      data: {
+        created_at: new Date("2012-02-28T01:46:31.000000Z"),
+        level: 1,
+        slug: "上",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E4%B8%8A",
+        characters: "上",
+        meanings: [
+          {
+            meaning: "Above",
+            primary: true,
+            accepted_answer: true,
+          },
+          {
+            meaning: "Up",
+            primary: false,
+            accepted_answer: true,
+          },
+          {
+            meaning: "Over",
+            primary: false,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "じょう",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "うえ",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "あ",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "のぼ",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "うわ",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "かみ",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [10, 1],
+        amalgamation_subject_ids: [
+          2489, 2490, 2491, 2492, 2539, 2817, 2939, 3304, 3441, 3461, 3745,
+          4051, 4743, 4825, 4910, 5841, 6038, 6086, 6544, 7087, 7459, 7577,
+          7598, 7968, 8959, 9238,
+        ],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "You find a <radical>toe</radical> on the <radical>ground</radical>. It's weird, because it's <kanji>above</kanji> the ground, not where toes belong.",
+        meaning_hint:
+          "Focus your imagination on how body parts should be buried, not above ground like this. Sure, finding a toe is a little strange, but finding a toe above the ground? Downright silly.",
+        reading_mnemonic:
+          "Of course when you find a toe <kanji>above</kanji> the ground, you want to know where the toe came from. When you examine it, you see a name written on there. This toe belongs to the local clumsy farmhand, <reading>Jou</reading>rm (<ja>じょう</ja>).",
+        reading_hint:
+          "Try to remember Jourm, the local farmhand. He is a recurring character that will come up anytime the reading for a kanji is <ja>じょう</ja>.\r\n\r\nHe is a very big man, and he wears farmer's clothes. It's important to imagine your version of Jourm as very big, because it will help us to differentiate him from Jo-Anne, who is the character associated with the similar, but shorter reading (and character) <ja>じょ</ja>. Although Jourm will develop as you go through all the <ja>じょう</ja> reading kanji, for now just imagine him as a big, kinda slow dude who works for a local farmer. Also, he only has nine or fewer toes, apparently.",
+        lesson_position: 36,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 451,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/451",
+      data_updated_at: new Date("2023-09-18T23:36:24.455046Z"),
+      data: {
+        created_at: new Date("2012-02-28T01:48:12.000000Z"),
+        level: 1,
+        slug: "下",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E4%B8%8B",
+        characters: "下",
+        meanings: [
+          {
+            meaning: "Below",
+            primary: true,
+            accepted_answer: true,
+          },
+          {
+            meaning: "Down",
+            primary: false,
+            accepted_answer: true,
+          },
+          {
+            meaning: "Under",
+            primary: false,
+            accepted_answer: true,
+          },
+          {
+            meaning: "Beneath",
+            primary: false,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "Underneath",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "か",
+            accepted_answer: true,
+          },
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "げ",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "した",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "さ",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "くだ",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "お",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "しも",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "もと",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [1, 10],
+        amalgamation_subject_ids: [
+          2493, 2494, 2495, 2496, 2538, 2848, 3201, 3396, 3410, 3446, 3818,
+          4104, 4824, 5099, 5428, 5441, 6087, 6185, 7004, 7086, 7329, 7371,
+          8640, 8663, 8960, 8977, 9249, 9261,
+        ],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "There's a <radical>toe</radical> <kanji>below</kanji> <radical>ground</radical>.",
+        meaning_hint:
+          "So, where is the <radical>toe</radical> now? It's <kanji>below</kanji> ground. Imagine yourself digging it out, and thinking... ugh, why does it have to be <kanji>below</kanji> ground like this? So irritating. Will I be able to sew it back on in time to save it?",
+        reading_mnemonic:
+          "You keep digging for the <radical>toe</radical> <kanji>below</kanji> the <radical>ground</radical>, and instead of hitting a <radical>toe</radical> you hit something hard and metallic. You keep digging and digging around it, but it's huge. Turns out, you found yourself a <reading>car</reading> (<ja>か</ja>). Keep digging until you unearth the car. Inside, you find the toe you were looking for.",
+        reading_hint:
+          "There's another useful on'yomi reading that just isn't useful enough for you to learn now. That reading is <ja>げ</ja>, but we're only going to worry about that much, much later when you have to learn one or two vocab words that read <ja>下</ja> as <ja>げ</ja>. That's the problem with really common kanji - too many readings.",
+        lesson_position: 37,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 452,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/452",
+      data_updated_at: new Date("2023-09-18T23:36:24.471347Z"),
+      data: {
+        created_at: new Date("2012-02-28T01:52:02.000000Z"),
+        level: 1,
+        slug: "口",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E5%8F%A3",
+        characters: "口",
+        meanings: [
+          {
+            meaning: "Mouth",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "こう",
+            accepted_answer: true,
+          },
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "く",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "くち",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [16],
+        amalgamation_subject_ids: [
+          2497, 2498, 2558, 2611, 3402, 3432, 3439, 3458, 3891, 4246, 4360,
+          5622, 5690, 5942, 6938, 7021, 7685, 8812, 8961,
+        ],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "The <radical>mouth</radical> radical and the <kanji>mouth</kanji> kanji are exactly the same!",
+        meaning_hint:
+          "If you learned your radicals–which the WaniKani system forces you to do (unless you're cheating)–you'll already know the meaning of the kanji.",
+        reading_mnemonic:
+          "Do you remember seeing the construction worker <ja>こういち</ja> earlier in the <ja>工</ja> mnemonic? If you haven't yet, not to worry! \r\nFor kanji with <ja>こう</ja> readings (there are a lot of them!) we will use the character <ja>こういち</ja> every time. He's one of the people who started this website, so we'll do our best in the mnemonics to embarrass him as much as possible. Anyways, remember that whenever you see <ja>こう</ja>, think <ja>こういち</ja>.\r\n\r\nEveryone agrees, (<reading><ja>こう</ja></reading><ja>いち</ja>)'s <kanji>mouth</kanji> is his best feature. You stare at it lovingly as he whispers sweet kanji readings to you.\r\n\r\n",
+        reading_hint:
+          "You just can't forget all the cool things about kanji learning he said from that mouth. What a great mouth <ja>こういち</ja> has. How are the lips of his mouth both so skinny and fat at the same time?",
+        lesson_position: 39,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 453,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/453",
+      data_updated_at: new Date("2023-09-18T23:36:24.487163Z"),
+      data: {
+        created_at: new Date("2012-02-28T01:54:53.000000Z"),
+        level: 1,
+        slug: "大",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E5%A4%A7",
+        characters: "大",
+        meanings: [
+          {
+            meaning: "Big",
+            primary: true,
+            accepted_answer: true,
+          },
+          {
+            meaning: "Large",
+            primary: false,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "たい",
+            accepted_answer: true,
+          },
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "だい",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "おお",
+            accepted_answer: false,
+          },
+          {
+            type: "nanori",
+            primary: false,
+            reading: "ひろ",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [18],
+        amalgamation_subject_ids: [
+          2499, 2500, 2501, 2502, 2602, 2661, 2741, 2792, 2812, 2815, 3001,
+          3016, 3085, 3332, 3436, 3581, 3731, 3751, 3918, 3952, 4052, 4129,
+          4206, 4249, 4405, 4525, 4536, 4727, 4842, 4868, 4987, 5013, 5045,
+          5193, 5202, 5259, 5274, 5424, 5425, 5481, 5518, 5642, 5823, 5961,
+          6085, 6822, 7035, 7077, 7151, 7224, 7304, 7416, 7528, 7609, 7676,
+          7784, 7915, 7974, 8270, 8401, 8559, 8574, 8576, 8659, 8661, 8666,
+          8668, 8694, 9029, 9102,
+        ],
+        visually_similar_subject_ids: [505, 481],
+        meaning_mnemonic:
+          "The <radical>big</radical> radical and the <kanji>big</kanji> kanji are exactly the same!",
+        meaning_hint:
+          "So, if you know the radical, you know the meaning of this kanji as well.",
+        reading_mnemonic:
+          "There's this big guy (that's how you remember the radical, remember?), and he's wearing a huge <reading>Tie Dye</reading> (<ja>たい</ja>, <ja>だい</ja>) shirt. Because he's so huge, the tie dye shirt is also super huge. Everything about him is pretty big, but the tie dye stands out more than anything.",
+        reading_hint:
+          "When you look at the big guy in your head, imagine him covered in tie dye head to toe. Think about how ridiculous it looks on him, especially since he's such a big guy. Shirt. Sweatpants. Hat. Shoes... it goes on and on.",
+        lesson_position: 40,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 454,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/454",
+      data_updated_at: new Date("2023-09-18T23:36:24.503825Z"),
+      data: {
+        created_at: new Date("2012-02-28T01:56:16.000000Z"),
+        level: 1,
+        slug: "女",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E5%A5%B3",
+        characters: "女",
+        meanings: [
+          {
+            meaning: "Woman",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "Female",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "じょ",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "おんな",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "め",
+            accepted_answer: false,
+          },
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "にょ",
+            accepted_answer: true,
+          },
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "にょう",
+            accepted_answer: true,
+          },
+        ],
+        component_subject_ids: [19],
+        amalgamation_subject_ids: [
+          2503, 2512, 2514, 2554, 2555, 3678, 4435, 4872, 6030, 6978, 7518,
+          7583, 8475, 8515, 8735,
+        ],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "The radical for <radical>woman</radical> and the kanji for <kanji>woman</kanji> are exactly the same.",
+        meaning_hint:
+          "That means if you know your radicals well, you know the meaning of this kanji as well! How swell.",
+        reading_mnemonic:
+          'When you think of a <kanji>woman</kanji>, think of <reading>Jo</reading>-Anne (<ja>じょ</ja>), though she usually goes by just "Jo."',
+        reading_hint:
+          "Whenever the reading <ja>じょ</ja> comes up, we will use the character Jo-Anne. She's quite a short woman, which is to help us differentiate <ja>じょ</ja> from <ja>じょう</ja> (who is the giant, oafish farmhand Jourm). <ja>じょ</ja> is a smaller lady, <ja>じょう</ja> is a giant man.",
+        lesson_position: 41,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 455,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/455",
+      data_updated_at: new Date("2023-09-18T23:36:24.519276Z"),
+      data: {
+        created_at: new Date("2012-02-28T01:57:19.000000Z"),
+        level: 1,
+        slug: "山",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E5%B1%B1",
+        characters: "山",
+        meanings: [
+          {
+            meaning: "Mountain",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "さん",
+            accepted_answer: true,
+          },
+          {
+            type: "kunyomi",
+            primary: false,
+            reading: "やま",
+            accepted_answer: false,
+          },
+        ],
+        component_subject_ids: [20],
+        amalgamation_subject_ids: [
+          2504, 2505, 2549, 3392, 3652, 4440, 5475, 5490, 5923, 5925, 6534,
+          6708, 7858, 8140, 8233, 8410, 8678, 8957, 8962, 9041,
+        ],
+        visually_similar_subject_ids: [1720],
+        meaning_mnemonic:
+          "The <radical>mountain</radical> radical and the <kanji>mountain</kanji> kanji are the same.",
+        meaning_hint:
+          "Make sure you're studying your radicals. If you are, then you're studying your kanji as well!",
+        reading_mnemonic:
+          'Think about <kanji>mountains</kanji> talking to each other, calling each other by their names and adding the Japanese name-ender <reading>san</reading> (<ja>さん</ja>) to each of their names. "Hello, Everest-<reading>san</reading>." "Oh hi, Fuji-<reading>san</reading>."',
+        reading_hint:
+          "Be sure to imagine this vividly. The more absurdly you can imagine it, the more likely you are to remember the reading, <reading>san</reading>.",
+        lesson_position: 42,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 456,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/456",
+      data_updated_at: new Date("2023-10-03T02:42:04.269606Z"),
+      data: {
+        created_at: new Date("2012-02-28T01:59:43.000000Z"),
+        level: 1,
+        slug: "川",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E5%B7%9D",
+        characters: "川",
+        meanings: [
+          {
+            meaning: "River",
+            primary: true,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [
+          {
+            type: "whitelist",
+            meaning: "Stream",
+          },
+          {
+            type: "whitelist",
+            meaning: "Brook",
+          },
+        ],
+        readings: [
+          {
+            type: "onyomi",
+            primary: false,
+            reading: "せん",
+            accepted_answer: false,
+          },
+          {
+            type: "kunyomi",
+            primary: true,
+            reading: "かわ",
+            accepted_answer: true,
+          },
+        ],
+        component_subject_ids: [21],
+        amalgamation_subject_ids: [
+          2506, 3993, 4620, 5495, 5978, 6117, 6930, 7073, 7413, 9120,
+        ],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "The <radical>river</radical> radical and the <kanji>river</kanji> kanji are the same as each other!",
+        meaning_hint: "So, if you know the radical you know the kanji as well.",
+        reading_mnemonic:
+          "You're standing next to a <kanji>river</kanji> that's actually used as a <reading>ca</reading>r <reading>wa</reading>sh (<ja>かわ</ja>). ",
+        reading_hint:
+          "Imagine standing by the river, watching all those cars floating by. They start off really dirty, but the river washes them all clean.",
+        lesson_position: 43,
+        spaced_repetition_system_id: 2,
+      },
+    },
+    {
+      id: 457,
+      object: "kanji",
+      url: "https://api.wanikani.com/v2/subjects/457",
+      data_updated_at: new Date("2023-09-18T23:36:24.556662Z"),
+      data: {
+        created_at: new Date("2012-02-28T20:45:58.000000Z"),
+        level: 1,
+        slug: "工",
+        hidden_at: null,
+        document_url: "https://www.wanikani.com/kanji/%E5%B7%A5",
+        characters: "工",
+        meanings: [
+          {
+            meaning: "Construction",
+            primary: true,
+            accepted_answer: true,
+          },
+          {
+            meaning: "Industry",
+            primary: false,
+            accepted_answer: true,
+          },
+        ],
+        auxiliary_meanings: [],
+        readings: [
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "こう",
+            accepted_answer: true,
+          },
+          {
+            type: "onyomi",
+            primary: true,
+            reading: "く",
+            accepted_answer: true,
+          },
+        ],
+        component_subject_ids: [25],
+        amalgamation_subject_ids: [
+          2791, 2811, 3033, 3037, 3084, 3193, 7560, 8855,
+        ],
+        visually_similar_subject_ids: [],
+        meaning_mnemonic:
+          "The <radical>construction</radical> radical and the <kanji>construction</kanji> kanji are the same!\r\n\r\nThis kanji also means <kanji>industry</kanji>, which is what construction is, if you think about it. It's all part of the construction industry.",
+        meaning_hint:
+          "Know your radicals and you'll know this kanji's meaning.",
+        reading_mnemonic:
+          "For kanji that use the <ja>こう</ja> (there are a lot of them!) we will use the character <ja>こういち</ja> every time. He's one of the people who started this website, so we'll do our best in the mnemonics to embarrass him as much as possible. Anyways, remember that whenever you see <ja>こう</ja>, think <ja>こういち</ja>.\r\n\r\nYou see some <kanji>construction</kanji> in front of you. There, standing shirtless (only a suspender and hard hat) is (<ja><reading>こう</reading>いち</ja>), looking back at you.",
+        reading_hint:
+          "If <ja>こういち</ja> as a construction worker standing in a construction site some how doesn't make your legs tremble, that's okay and totally normal. Do make sure you take this story to a ridiculous enough level to hook a memory into that brain of yours. Be mad at him for not following construction site regulations (where's his shirt, shoes, and pants!?). Why is he using that bulldozer like that?\r\n\r\nAlternatively, say you really do like what you see (you're going to have to imagine a much better looking version of <ja>こういち</ja>'s actual face, though). You and <ja>こういち</ja> make eye contact a little too long. He nods, puts his cigarette out, and takes off his hard hat, letting his long Fabio-esque locks flow. You beckon him over and he comes. What happens next is up to you and your own imagination. My guess is you have a very deep conversation about kanji and the best ways to learn it.\r\n\r\nHint: When you see <ja>工</ja> in a kanji it will often take the <ja>こう</ja> reading. Remember that, because it comes up quite a bit!",
+        lesson_position: 38,
+        spaced_repetition_system_id: 2,
+      },
+    },
+  ],
+  total: 18,
+};
