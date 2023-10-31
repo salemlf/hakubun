@@ -332,3 +332,22 @@ export const getAssignmentIDs = (
 ) => {
   return assignments.map((assignment) => assignment.id);
 };
+
+const srsStagesNumMap: { [index: string]: number[] } = {
+  locked: [-1],
+  initiate: [0],
+  apprentice: [1, 2, 3, 4],
+  guru: [5, 6],
+  master: [7],
+  enlightened: [8],
+  burned: [9],
+};
+
+export const getSrsStageNameByNum = (srsStageNum: number) => {
+  for (const [key, values] of Object.entries(srsStagesNumMap)) {
+    if (values.includes(srsStageNum)) {
+      return key;
+    }
+  }
+  return undefined;
+};

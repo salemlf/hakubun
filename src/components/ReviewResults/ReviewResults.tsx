@@ -1,6 +1,4 @@
-import { IonSkeletonText } from "@ionic/react";
 import styled from "styled-components";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { GroupedReviewItems } from "../../types/AssignmentQueueTypes";
 import GroupedReviewSummaryResults from "./GroupedReviewSummaryResults";
 import Card from "../Card";
@@ -9,24 +7,27 @@ const ReviewCard = styled(Card)`
   display: flex;
 `;
 
-type Props = {
+export type ReviewResultsProps = {
   groupedReviewItems: GroupedReviewItems;
-  numWrong: number;
-  numCorrect: number;
 };
 
-function ReviewResults({ groupedReviewItems, numWrong, numCorrect }: Props) {
+function ReviewResults({ groupedReviewItems }: ReviewResultsProps) {
+  let numCorrect = groupedReviewItems.correct.length;
+  let numWrong = groupedReviewItems.incorrect.length;
+
   return (
     <>
       <ReviewCard
         title={`${numCorrect} Answered Correctly`}
         headerBgColor="var(--ion-color-success-dark)"
+        headerFontSize="1.25rem"
       >
         <GroupedReviewSummaryResults queueItems={groupedReviewItems.correct} />
       </ReviewCard>
       <ReviewCard
         title={`${numWrong} Answered Incorrectly`}
         headerBgColor="var(--ion-color-danger)"
+        headerFontSize="1.25rem"
       >
         <GroupedReviewSummaryResults
           queueItems={groupedReviewItems.incorrect}

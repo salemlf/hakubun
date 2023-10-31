@@ -3,8 +3,12 @@ import { motion } from "framer-motion";
 import Button from "../components/Button/Button";
 import styled from "styled-components";
 
-type CustomBgColor = {
+export type CustomBgColor = {
   bgcolor: string;
+};
+
+export type CustomFontSize = {
+  sizeoffont: string;
 };
 
 type OptionalBgColor = {

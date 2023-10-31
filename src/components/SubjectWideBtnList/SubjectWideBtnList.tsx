@@ -1,4 +1,3 @@
-import { IonCol, IonRow } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 import { setSubjectAvailImgs } from "../../services/ImageSrcService";
 import {
@@ -22,13 +21,26 @@ export const Characters = styled(SubjectChars)`
   flex-direction: column;
 `;
 
-const ReadingAndMeaningContainer = styled.div`
-  text-align: right;
-
+const MeaningContainer = styled.div`
   user-select: text;
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
+`;
+
+type ReadingAndMeaningContainerProps = {
+  align: string;
+};
+
+const ReadingAndMeaningContainer = styled(
+  MeaningContainer
+)<ReadingAndMeaningContainerProps>`
+  /* text-align: right; */
+  text-align: ${({ align }) => align};
+`;
+
+const RadicalMeaningContainer = styled(MeaningContainer)`
+  text-align: right;
 `;
 
 const ReadingAndMeaningTxt = styled.p`
@@ -46,22 +58,26 @@ type RadInfoProps = {
 
 export const RadicalMeaning = ({ radical }: RadInfoProps) => {
   return (
-    <ReadingAndMeaningContainer>
+    <RadicalMeaningContainer>
       <ReadingAndMeaningTxt>
         {getSubjectDisplayName(radical)}
       </ReadingAndMeaningTxt>
-    </ReadingAndMeaningContainer>
+    </RadicalMeaningContainer>
   );
 };
 
 type ReadingMeaningProps = {
   subject: Kanji | Vocabulary | KanaVocabulary;
+  align?: string;
 };
 
-export const ReadingAndMeaning = ({ subject }: ReadingMeaningProps) => {
+export const ReadingAndMeaning = ({
+  subject,
+  align = "right",
+}: ReadingMeaningProps) => {
   let hasReadings = subject.readings && subject.readings.length !== 0;
   return (
-    <ReadingAndMeaningContainer>
+    <ReadingAndMeaningContainer align={align}>
       {hasReadings && (
         <ReadingTxt>{getPrimaryReading(subject.readings!)}</ReadingTxt>
       )}
@@ -127,13 +143,14 @@ export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
   );
 };
 
-const SubjCol = styled(IonCol)`
+const SubjCol = styled.div`
+  display: flex;
   flex-basis: 100%;
   display: flex;
   padding: 0;
 `;
 
-const SubjRow = styled(IonRow)`
+const SubjRow = styled.div`
   margin-left: -3px;
 `;
 
@@ -147,9 +164,7 @@ function SubjectWideBtnList({ subjList }: ListProps) {
       {(subjList as Subject[]).map((subject: any) => {
         return (
           <SubjCol key={`col_${subject.id}`}>
-            <>
-              <SubjectWideButton subject={subject} />
-            </>
+            <SubjectWideButton subject={subject} />
           </SubjCol>
         );
       })}

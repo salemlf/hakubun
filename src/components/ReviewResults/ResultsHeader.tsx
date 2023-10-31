@@ -8,12 +8,17 @@ const ReviewSummaryHeader = styled.header`
 `;
 
 const ReviewSummaryHeadingTxt = styled.h1`
-  font-size: 1.75rem;
-  margin: 20px 0;
+  font-size: 1.5rem;
+  margin: 15px 0;
 `;
 
 const Percentage = styled.h2`
-  font-size: 2rem;
+  font-size: 1.75rem;
+  margin-top: 10px;
+`;
+
+const AnsweredCorrectly = styled.p`
+  margin: 10px;
 `;
 
 type Props = {
@@ -29,7 +34,7 @@ function ResultsHeader({ numCorrect, numReviews }: Props) {
     <ReviewSummaryHeader>
       <ReviewSummaryHeadingTxt>Review Summary</ReviewSummaryHeadingTxt>
       <Percentage>{percentageCorrect}%</Percentage>
-      <p>Answered Correctly</p>
+      <AnsweredCorrectly>Answered Correctly</AnsweredCorrectly>
     </ReviewSummaryHeader>
   );
 }

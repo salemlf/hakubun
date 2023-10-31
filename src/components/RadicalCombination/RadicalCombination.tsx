@@ -9,6 +9,12 @@ import {
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
 import { IconHeadingContainer } from "../../styles/BaseStyledComponents";
+import styled from "styled-components";
+
+const SubjBtnListWrapper = styled.div`
+  margin: 0;
+  margin-top: 10px;
+`;
 
 type Props = {
   kanji: Kanji;
@@ -57,11 +63,13 @@ function RadicalCombination({ kanji, displayQuestionTxt = false }: Props) {
       {displayQuestionTxt && (
         <p>Can you see where the radicals fit in the kanji?</p>
       )}
-      <SubjectButtonList
-        btnSize="lg"
-        subjList={radicalsUsedSubjData}
-        assignmentList={radicalsUsedAssignmentsData}
-      />
+      <SubjBtnListWrapper>
+        <SubjectButtonList
+          btnSize="lg"
+          subjList={radicalsUsedSubjData}
+          assignmentList={radicalsUsedAssignmentsData}
+        />
+      </SubjBtnListWrapper>
     </SubjDetailSection>
   );
 }
