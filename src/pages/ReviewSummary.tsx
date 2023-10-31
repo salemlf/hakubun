@@ -8,16 +8,15 @@ import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import AnimatedPage from "../components/AnimatedPage";
 import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
-import { FullWidthGridDiv, MainContent } from "../styles/BaseStyledComponents";
+import {
+  ContentWithTabBar,
+  FullWidthGridDiv,
+} from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 // TODO: figure out why background color isn't changing, fix and change to --light-greyish-purple background, then cards to --light-grey
 const Page = styled(AnimatedPage)`
   background-color: var(--dark-greyish-purple);
-`;
-
-const Grid = styled(FullWidthGridDiv)`
-  margin-top: 10px;
 `;
 
 const WarningMsg = styled.p`
@@ -47,28 +46,25 @@ function ReviewSummary() {
   // combine queue items so reading and meaning aren't separate anymore
   let completedReviews = getCompletedAssignmentQueueData(allSubmitted);
   let groupedReviewItems = getReviewsGroupedByResult(completedReviews);
-  let numCorrect = groupedReviewItems.correct.length;
-  let numWrong = groupedReviewItems.incorrect.length;
 
   return (
     <Page>
-      <ResultsHeader numCorrect={numCorrect} numReviews={allSubmitted.length} />
-      <MainContent>
-        <Grid>
-          <ReviewResults
-            groupedReviewItems={groupedReviewItems}
-            numWrong={numWrong}
-            numCorrect={numCorrect}
-          />
+      <ResultsHeader
+        numCorrect={groupedReviewItems.correct.length}
+        numReviews={allSubmitted.length}
+      />
+      <ContentWithTabBar>
+        <FullWidthGridDiv>
+          <ReviewResults groupedReviewItems={groupedReviewItems} />
           {submittedAssignmentsWithErrs.length > 0 && (
             <WarningMsg>
               Oh no, looks like we weren't able to submit all your reviews for
               some reason... {submittedAssignmentsWithErrs.length} had errors!
             </WarningMsg>
           )}
-        </Grid>
+        </FullWidthGridDiv>
         <FloatingHomeButton />
-      </MainContent>
+      </ContentWithTabBar>
     </Page>
   );
 }
