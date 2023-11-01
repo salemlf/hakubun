@@ -1,3 +1,4 @@
+import { rest } from "msw";
 import { baseUrl } from "../../api/ApiConfig";
 
 // TODO: use this endpoint in KanjiForLevelCard test
@@ -16,5 +17,11 @@ export const subjsBySubjIDsEndpoint = new RegExp(
   "gi"
 );
 
-// TODO: remove this and rename file? just use this file to export endpoints
-export const handlers = [];
+const sentryEndpointRegex = /https:\/\/.*sentry\.io\/api\/.*/;
+
+export const handlers = [
+  // allowing sentry endpoint
+  rest.post(sentryEndpointRegex, (req, res, ctx) => {
+    return req.passthrough();
+  }),
+];

@@ -1,12 +1,20 @@
 import * as LogRocket from "logrocket";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import * as Sentry from "@sentry/react";
+import {
+  createBrowserRouter,
+  createRoutesFromChildren,
+  matchRoutes,
+  RouterProvider,
+  useLocation,
+  useNavigationType,
+} from "react-router-dom";
 import { IonApp, setupIonicReact } from "@ionic/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
-import { api, pagingApi } from "./api/ApiConfig";
+import { api, baseUrlRegex, pagingApi } from "./api/ApiConfig";
 import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
 import { ReviewSettings } from "./pages/ReviewSettings";
@@ -44,6 +52,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 import RootContainer from "./components/RootContainer";
+import React from "react";
 
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development") {
@@ -53,6 +62,33 @@ if (import.meta.env.MODE !== "development") {
   });
 }
 
+Sentry.init({
+  dsn: "https://c33a7ec41c615b225a80cf2713ee2313@o4505806285242368.ingest.sentry.io/4506149307744256",
+  tracePropagationTargets: [baseUrlRegex],
+  environment: import.meta.env.MODE,
+  integrations: [
+    new Sentry.BrowserTracing({
+      routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+        React.useEffect,
+        useLocation,
+        useNavigationType,
+        createRoutesFromChildren,
+        matchRoutes
+      ),
+    }),
+    new Sentry.Replay(),
+  ],
+  // Performance Monitoring
+  tracesSampleRate: 1.0, // Capture 100% of the transactions
+  // Session Replay
+  replaysSessionSampleRate: 1.0,
+  replaysOnErrorSampleRate: 1.0,
+});
+
+const sentryCreateBrowserRouter =
+  Sentry.wrapCreateBrowserRouter(createBrowserRouter);
+
+// for msw (used for testing)
 if (import.meta.env.MODE === "development") {
   // bypassing warnings in console since clog it up and aren't very useful imo
   worker.start({ onUnhandledRequest: "bypass" });
@@ -83,9 +119,6 @@ const App: React.FC = () => {
 
   // setting the auth token headers for all api requests
   (function () {
-    // *testing
-    console.log("authToken: ", authToken);
-    // *testing
     if (authToken) {
       api.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
       pagingApi.defaults.headers.common[
@@ -125,7 +158,7 @@ const getBrowserRouter = ({
   isAuthenticated,
   isAuthLoading,
 }: BrowserRouterProps) =>
-  createBrowserRouter([
+  sentryCreateBrowserRouter([
     {
       errorElement: <ErrorOccurred />,
       element: <RootContainer />,
