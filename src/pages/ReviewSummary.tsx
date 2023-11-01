@@ -6,18 +6,12 @@ import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAs
 import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
-import AnimatedPage from "../components/AnimatedPage";
 import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
 import {
   ContentWithTabBar,
   FullWidthGridDiv,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-
-// TODO: figure out why background color isn't changing, fix and change to --light-greyish-purple background, then cards to --light-grey
-const Page = styled(AnimatedPage)`
-  background-color: var(--dark-greyish-purple);
-`;
 
 const WarningMsg = styled.p`
   margin: 16px;
@@ -48,7 +42,7 @@ function ReviewSummary() {
   let groupedReviewItems = getReviewsGroupedByResult(completedReviews);
 
   return (
-    <Page>
+    <>
       <ResultsHeader
         numCorrect={groupedReviewItems.correct.length}
         numReviews={allSubmitted.length}
@@ -65,7 +59,7 @@ function ReviewSummary() {
         </FullWidthGridDiv>
         <FloatingHomeButton />
       </ContentWithTabBar>
-    </Page>
+    </>
   );
 }
 

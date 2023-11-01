@@ -17,16 +17,11 @@ import {
 } from "../types/AssignmentQueueTypes";
 import { PreFlattenedAssignment } from "../types/Assignment";
 import AssignmentQueueCards from "../components/AssignmentQueueCards";
-import AnimatedPage from "../components/AnimatedPage";
 import QueueHeader from "../components/QueueHeader";
 import AlertDialog from "../components/AlertDialog";
+import KeyboardShortcuts from "../components/KeyboardShortcuts";
 import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-import KeyboardShortcuts from "../components/KeyboardShortcuts";
-
-const Page = styled(AnimatedPage)`
-  background-color: var(--dark-greyish-purple);
-`;
 
 const MainContentWithMargin = styled(MainContent)`
   margin: 10px;
@@ -106,7 +101,7 @@ function LessonQuiz() {
   };
 
   return (
-    <Page>
+    <>
       <ReactRouterPrompt
         when={blockUserLeavingPage}
         beforeConfirm={() => {
@@ -145,7 +140,7 @@ function LessonQuiz() {
         )}
       </MainContentWithMargin>
       <KeyboardShortcuts />
-    </Page>
+    </>
   );
 }
 

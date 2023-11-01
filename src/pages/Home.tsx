@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IonGrid, IonCol, IonRow, IonSkeletonText } from "@ionic/react";
+import { IonSkeletonText } from "@ionic/react";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserInfo } from "../hooks/useUserInfo";
 import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
@@ -9,8 +9,6 @@ import ReviewsButton from "../components/ReviewsButton/ReviewsButton";
 import RadicalForLvlCard from "../components/RadicalForLvlCard/RadicalForLvlCard";
 import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
 import SrsStages from "../components/SrsStages/SrsStages";
-import AnimatedPage from "../components/AnimatedPage";
-import FloatingTabBar from "../components/FloatingTabBar";
 import ReviewForecast from "../components/ReviewForecast";
 import LoadingDots from "../components/LoadingDots";
 import { FixedCenterContainer } from "../styles/BaseStyledComponents";
@@ -62,7 +60,7 @@ const Home = () => {
   }, [userInfoLoading]);
 
   return (
-    <AnimatedPage>
+    <>
       <HomeHeader></HomeHeader>
       <HomePageContainer>
         {!homeLoading ? (
@@ -86,8 +84,7 @@ const Home = () => {
           </FixedCenterContainer>
         )}
       </HomePageContainer>
-      <FloatingTabBar />
-    </AnimatedPage>
+    </>
   );
 };
 

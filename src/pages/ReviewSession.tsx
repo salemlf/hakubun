@@ -20,7 +20,6 @@ import {
 import { PreFlattenedAssignment } from "../types/Assignment";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
-import AnimatedPage from "../components/AnimatedPage";
 import AlertDialog from "../components/AlertDialog";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
 import FinishFlagIcon from "../images/finish-flag.svg";
@@ -130,16 +129,6 @@ const Description = () => {
     </AlertDialogDescription>
   );
 };
-
-const Page = styled(AnimatedPage)`
-  --ion-background-color: var(--dark-greyish-purple);
-  background-color: var(--dark-greyish-purple);
-
-  ion-select::part(icon) {
-    color: white;
-    opacity: 1;
-  }
-`;
 
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 export const ReviewSession = () => {
@@ -269,7 +258,7 @@ export const ReviewSession = () => {
   };
 
   return (
-    <Page>
+    <>
       <ReactRouterPrompt
         when={blockUserLeavingPage}
         beforeConfirm={() => {
@@ -330,6 +319,6 @@ export const ReviewSession = () => {
         </>
       </Content>
       <KeyboardShortcuts />
-    </Page>
+    </>
   );
 };

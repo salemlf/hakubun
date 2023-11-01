@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
-import AnimatedPage from "../components/AnimatedPage";
 import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
 import LoadingDots from "../components/LoadingDots";
 import PageHeader from "../components/PageHeader";
@@ -10,16 +9,6 @@ import {
   FixedCenterContainer,
   MainContent,
 } from "../styles/BaseStyledComponents";
-import styled from "styled-components";
-
-const Page = styled(AnimatedPage)`
-  background-color: var(--dark-greyish-purple);
-
-  ion-select::part(icon) {
-    color: white;
-    opacity: 1;
-  }
-`;
 
 export const ReviewSettings = () => {
   const { userInfo } = useUserInfoStoreFacade();
@@ -44,7 +33,7 @@ export const ReviewSettings = () => {
     useUserSettingsStoreFacade();
 
   return (
-    <Page>
+    <>
       <PageHeader title="Review Settings" bgColor="var(--wanikani-review)" />
       <MainContent>
         {availForReviewLoading && (
@@ -64,6 +53,6 @@ export const ReviewSettings = () => {
           />
         )}
       </MainContent>
-    </Page>
+    </>
   );
 };

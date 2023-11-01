@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { IonGrid, IonSkeletonText } from "@ionic/react";
-import { AnimatePresence } from "framer-motion";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { useSubjectByID } from "../hooks/useSubjectByID";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
@@ -9,8 +8,6 @@ import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDeta
 import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
 import VocabSubjDetails from "../components/VocabSubjDetails/VocabSubjDetails";
 import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
-import AnimatedPage from "../components/AnimatedPage";
-import FloatingTabBar from "../components/FloatingTabBar";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -21,18 +18,13 @@ const FullWidthGrid = styled(IonGrid)`
   padding-right: 0;
 `;
 
-const Page = styled(AnimatedPage)`
-  --ion-background-color: var(--dark-greyish-purple);
-  background-color: var(--dark-greyish-purple);
-`;
-
 // TODO: sometimes has isSessionInProgress as true when it should be false, investigate
 export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
-  const isSessionInProgress = useAssignmentQueueStore(
-    (state) => state.sessionInProgress
-  );
+
+  const { sessionInProgress: isSessionInProgress } =
+    useAssignmentQueueStoreFacade();
   console.log(
     "🚀 ~ file: SubjectDetails.tsx:34 ~ SubjectDetails ~ isSessionInProgress:",
     isSessionInProgress
@@ -46,7 +38,7 @@ export const SubjectDetails = () => {
 
   // TODO: display loading skeleton for each component until all content on page is loaded
   return (
-    <Page>
+    <>
       {subjectLoading ? (
         <ContentWithTabBar>
           <IonSkeletonText
@@ -78,9 +70,6 @@ export const SubjectDetails = () => {
           )}
         </>
       )}
-      <AnimatePresence>
-        {!isSessionInProgress && <FloatingTabBar />}
-      </AnimatePresence>
-    </Page>
+    </>
   );
 };

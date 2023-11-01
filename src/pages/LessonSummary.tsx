@@ -6,7 +6,6 @@ import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/u
 import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService";
 import { Subject } from "../types/Subject";
 import Card from "../components/Card/Card";
-import AnimatedPage from "../components/AnimatedPage";
 import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
 import SubjCharacterList from "../components/SubjCharacterList";
 import {
@@ -14,10 +13,6 @@ import {
   FullWidthGridDiv,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-
-const Page = styled(AnimatedPage)`
-  background-color: var(--dark-greyish-purple);
-`;
 
 const LessonSummaryHeader = styled.header`
   background-color: var(--wanikani-lesson);
@@ -78,7 +73,7 @@ function LessonSummary() {
   }, []);
 
   return (
-    <Page>
+    <>
       <LessonSummaryHeader>
         <LessonSummaryHeadingTxt>Lesson Summary</LessonSummaryHeadingTxt>
       </LessonSummaryHeader>
@@ -136,7 +131,7 @@ function LessonSummary() {
         </Grid>
         <FloatingHomeButton />
       </ContentWithTabBar>
-    </Page>
+    </>
   );
 }
 

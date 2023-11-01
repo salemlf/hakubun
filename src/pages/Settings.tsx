@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserLogin } from "../hooks/useUserLogin";
-import AnimatedPage from "../components/AnimatedPage";
 import GeneralUserSettings from "../components/GeneralUserSettings";
 import LessonUserSettings from "../components/LessonUserSettings";
 import ReviewUserSettings from "../components/ReviewUserSettings/ReviewUserSettings";
 import Button from "../components/Button";
-import FloatingTabBar from "../components/FloatingTabBar";
 import PageHeader from "../components/PageHeader";
 import { ContentWithTabBarNoPadding } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
@@ -54,7 +52,7 @@ function Settings() {
   };
 
   return (
-    <AnimatedPage>
+    <>
       <PageHeader title="User Settings" />
       <ContainerWithBottomMargin>
         {username && <Username>{username}</Username>}
@@ -80,8 +78,7 @@ function Settings() {
           </p>
         </CreditsContainer>
       </ContainerWithBottomMargin>
-      <FloatingTabBar />
-    </AnimatedPage>
+    </>
   );
 }
 

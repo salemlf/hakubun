@@ -1,15 +1,6 @@
 import * as LogRocket from "logrocket";
-import {
-  Route,
-  Routes,
-  useLocation,
-  createBrowserRouter,
-  createRoutesFromElements,
-  RouterProvider,
-  useRouteError,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { IonApp, setupIonicReact } from "@ionic/react";
-import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -20,6 +11,7 @@ import ProtectedRoute from "./navigation/ProtectedRoute";
 import TokenInput from "./pages/TokenInput";
 import { ReviewSettings } from "./pages/ReviewSettings";
 import { ReviewSession } from "./pages/ReviewSession";
+import ErrorOccurred from "./pages/ErrorOccurred";
 import ReviewSummary from "./pages/ReviewSummary";
 import LessonSettings from "./pages/LessonSettings";
 import LessonSession from "./pages/LessonSession";
@@ -30,7 +22,6 @@ import { SubjectDetails } from "./pages/SubjectDetails";
 import Home from "./pages/Home";
 import LessonSummary from "./pages/LessonSummary";
 import Settings from "./pages/Settings";
-// const { worker } = require("./mocks/browser");
 import { worker } from "./testing/mocks/worker";
 
 /* Core CSS required for Ionic components to work properly */
@@ -52,6 +43,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/globals.scss";
+import RootContainer from "./components/RootContainer";
 
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development") {
@@ -80,27 +72,20 @@ const queryClient = new QueryClient({
 });
 
 const App: React.FC = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ToastPrimitive.Provider>
-        <IonApp>
-          <RouterProvider router={browserRouter} />
-        </IonApp>
-      </ToastPrimitive.Provider>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-    </QueryClientProvider>
-  );
-};
-
-const AppElements = () => {
-  const location = useLocation();
-
   const { isAuthenticated, isAuthLoading, authToken } =
     useAuthTokenStoreFacade();
   const { userInfo } = useUserInfoStoreFacade();
 
+  const browserRouter = getBrowserRouter({
+    isAuthenticated,
+    isAuthLoading,
+  });
+
   // setting the auth token headers for all api requests
   (function () {
+    // *testing
+    console.log("authToken: ", authToken);
+    // *testing
     if (authToken) {
       api.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
       pagingApi.defaults.headers.common[
@@ -120,57 +105,168 @@ const AppElements = () => {
   }
 
   return (
-    <AnimatePresence>
-      <Routes location={location} key={location.pathname}>
-        <Route element={<TokenInput />} />
-        <Route path="/authenticate" element={<TokenInput />} />
-        <Route
-          element={
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            />
-          }
-        >
-          <Route index path="/" element={<Home />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/reviews/settings" element={<ReviewSettings />} />
-          <Route path="/reviews/session" element={<ReviewSession />}></Route>
-          <Route path="/reviews/summary" element={<ReviewSummary />} />
-          <Route path="/lessons/settings" element={<LessonSettings />} />
-          <Route path="/lessons/session" element={<LessonSession />} />
-          <Route path="/lessons/quiz" element={<LessonQuiz />} />
-          <Route path="/lessons/summary" element={<LessonSummary />} />
-          <Route path="/subjects" element={<Subjects />} />
-          <Route path="/subjects/:id" element={<SubjectDetails />} />
-          <Route path="/search" element={<Search />} />
-        </Route>
-        <Route path="*" element={<p>Oh no, 404!</p>} />
-      </Routes>
-    </AnimatePresence>
+    <QueryClientProvider client={queryClient}>
+      <ToastPrimitive.Provider>
+        <IonApp>
+          <RouterProvider router={browserRouter} />
+        </IonApp>
+      </ToastPrimitive.Provider>
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+    </QueryClientProvider>
   );
 };
 
-function ErrorBoundary() {
-  let error = useRouteError();
-  console.error(error);
-  // Uncaught ReferenceError: path is not defined
-  return (
-    <div>
-      <p>Woah! Something went really wrong :(</p>
-      <p>Error: {`${error}`}</p>
-    </div>
-  );
-}
+type BrowserRouterProps = {
+  isAuthenticated: boolean;
+  isAuthLoading: boolean;
+};
 
-const browserRouter = createBrowserRouter(
-  createRoutesFromElements(
-    <Route
-      path="*"
-      element={<AppElements />}
-      errorElement={<ErrorBoundary />}
-    />
-  )
-);
+const getBrowserRouter = ({
+  isAuthenticated,
+  isAuthLoading,
+}: BrowserRouterProps) =>
+  createBrowserRouter([
+    {
+      errorElement: <ErrorOccurred />,
+      element: <RootContainer />,
+      children: [
+        { path: "/authenticate", element: <TokenInput /> },
+        {
+          index: true,
+          path: "/",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <Home />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/settings",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <Settings />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/reviews/session",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <ReviewSession />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/reviews/settings",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <ReviewSettings />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/lessons/settings",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <LessonSettings />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/reviews/summary",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <ReviewSummary />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/lessons/session",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <LessonSession />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/lessons/quiz",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <LessonQuiz />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/lessons/summary",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <LessonSummary />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/subjects",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <Subjects />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/subjects/:id",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <SubjectDetails />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/search",
+          element: (
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              authLoading={isAuthLoading}
+            >
+              <Search />
+            </ProtectedRoute>
+          ),
+        },
+        { path: "*", element: <p>Oh no, 404!</p> },
+      ],
+    },
+  ]);
 
 export default App;
