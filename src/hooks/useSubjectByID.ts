@@ -22,5 +22,6 @@ export const useSubjectByID = (id: number) => {
     staleTime: 60 * (60 * 1000),
     // cache time of 1hr 15 minutes
     cacheTime: 75 * (60 * 1000),
+    refetchOnWindowFocus: false,
   });
 };
