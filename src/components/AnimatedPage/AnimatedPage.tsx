@@ -30,16 +30,16 @@ const variants = {
 // TODO: pass in a direction value so can transition in from left or right
 function AnimatedPage({ children, bgImage }: Props) {
   return (
-    <AnimatedPageContainer
-      variants={variants}
-      initial="hidden"
-      animate="enter"
-      exit="exit"
-      transition={{ type: "linear" }}
-      backgroundimg={bgImage}
-    >
-      {children}
-    </AnimatedPageContainer>
+    // <AnimatedPageContainer
+    //   variants={variants}
+    //   initial="hidden"
+    //   animate="enter"
+    //   exit="exit"
+    //   transition={{ type: "linear" }}
+    //   backgroundimg={bgImage}
+    // >
+    <>{children}</>
+    // </AnimatedPageContainer>
   );
 }
 

@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
+import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserLogin } from "../hooks/useUserLogin";
 import { AccordionItemData } from "../types/MiscTypes";
 import LoadingDots from "../components/LoadingDots";
 import Button from "../components/Button";
-import AnimatedPage from "../components/AnimatedPage";
 import HelpSpan from "../components/HelpSpan";
 import FallingText from "../components/FallingText";
 import Emoji from "../components/Emoji";
@@ -21,7 +21,11 @@ import LogoIcon from "../images/logo.svg";
 import styled from "styled-components";
 
 const Content = styled(MainContent)`
+  height: 100%;
   padding: 20px 15px;
+  background-color: var(--dark-greyish-purple);
+  background-image: url(${WavesBgImg});
+  background-size: cover;
 `;
 
 const TokenInputLabel = styled.label`
@@ -142,12 +146,20 @@ const accordionItems: AccordionItemData[] = [
   },
 ];
 
+// TODO: change so bg image is set for page content instead of page
 const TokenInput = () => {
   const navigate = useNavigate();
   const { login } = useUserLogin();
   const [hasError, setHasError] = useState(false);
   const [tokenPageLoading, setTokenPageLoading] = useState(false);
   const { isAuthLoading } = useAuthTokenStoreFacade();
+
+  const { userInfo } = useUserInfoStoreFacade();
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      navigate("/", { replace: true });
+    }
+  }, [userInfo]);
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -166,11 +178,13 @@ const TokenInput = () => {
   const setAuth = async (token: string) => {
     setTokenPageLoading(true);
     let success = await login(token);
+    // *testing
+    console.log("🚀 ~ file: TokenInput.tsx:170 ~ setAuth ~ success:", success);
+    // *testing
 
     if (success) {
       console.log("Successfully logged in!");
       setHasError(false);
-      navigate("/", { replace: true });
     } else {
       setTokenPageLoading(false);
       setHasError(true);
@@ -191,7 +205,7 @@ const TokenInput = () => {
   );
 
   return (
-    <AnimatedPage bgImage={WavesBgImg}>
+    <>
       {!isAuthLoading && !tokenPageLoading ? (
         <Content>
           <HeadingAndLogoContainer>
@@ -237,7 +251,7 @@ const TokenInput = () => {
           <LoadingDots />
         </FixedCenterContainer>
       )}
-    </AnimatedPage>
+    </>
   );
 };
 
