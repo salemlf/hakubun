@@ -1,34 +1,12 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useLocation, useOutlet } from "react-router";
+import { AnimatePresence, motion } from "framer-motion";
 import styled from "styled-components";
-import { usePrevious } from "../../hooks/usePrevious";
 
 export const containerVariants = {
-  initial: ({ direction }: { direction: "forward" | "backward" }) => ({
-    x: direction === "backward" ? "-100%" : "100%",
-    transition: {
-      type: "spring",
-      duration: 1,
-      delay: 0.1,
-    },
-  }),
-  in: {
-    x: 0,
-    transition: {
-      type: "spring",
-      duration: 1,
-      delay: 0.1,
-    },
-  },
-  out: ({ direction }: { direction: "forward" | "backward" }) => ({
-    x: direction === "backward" ? "100%" : "-100%",
-    transition: {
-      type: "spring",
-      duration: 1,
-      delay: 0.1,
-    },
-  }),
+  initial: { opacity: 0, y: 20 },
+  in: { opacity: 1, y: 0 },
+  out: { opacity: 0, y: -20 },
 };
 
 const PageContainer = styled(motion.div)`
@@ -48,27 +26,16 @@ const AnimatedOutlet: React.FC = () => {
 
 function RootContainer() {
   const routerLocation = useLocation();
-  const previousLocation = usePrevious(location.pathname);
-  console.log(
-    "🚀 ~ file: RootContainer.tsx:52 ~ RootContainer ~ previousLocation:",
-    previousLocation
-  );
-  // TODO: somehow pass in direction using previousLocation and current location
-
-  console.log(
-    "🚀 ~ file: App.tsx:269 ~ RootContainer ~ normie location:",
-    location
-  );
 
   return (
     <AnimatePresence mode="popLayout">
       <PageContainer
-        key={routerLocation.pathname}
-        custom={{ direction: "forward" }}
+        key={routerLocation.key}
         initial="initial"
         animate="in"
         exit="out"
         variants={containerVariants}
+        transition={{ duration: 0.5 }}
       >
         <AnimatedOutlet />
       </PageContainer>
