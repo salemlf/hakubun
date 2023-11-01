@@ -5,7 +5,6 @@ import { useStickyState } from "../hooks/useStickyState";
 import { LEVELS } from "../constants";
 import { getPageIndex } from "../services/MiscService";
 import AnimatedPage from "../components/AnimatedPage";
-import FloatingTabBar from "../components/FloatingTabBar";
 import SubjectsOnLvlTab from "../components/SubjectsOnLvlTab/SubjectsOnLvlTab";
 import LoadingDots from "../components/LoadingDots";
 import Paginator from "../components/Paginator";
@@ -51,7 +50,6 @@ export const Subjects = () => {
           <SubjectsContent level={level} setLevel={setLevel} />
         )}
       </Page>
-      <FloatingTabBar />
     </>
   );
 };

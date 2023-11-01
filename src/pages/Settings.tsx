@@ -6,7 +6,6 @@ import GeneralUserSettings from "../components/GeneralUserSettings";
 import LessonUserSettings from "../components/LessonUserSettings";
 import ReviewUserSettings from "../components/ReviewUserSettings/ReviewUserSettings";
 import Button from "../components/Button";
-import FloatingTabBar from "../components/FloatingTabBar";
 import PageHeader from "../components/PageHeader";
 import { ContentWithTabBarNoPadding } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
@@ -80,7 +79,6 @@ function Settings() {
           </p>
         </CreditsContainer>
       </ContainerWithBottomMargin>
-      <FloatingTabBar />
     </AnimatedPage>
   );
 }

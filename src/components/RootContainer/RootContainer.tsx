@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useLocation, useOutlet } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import FloatingTabBar from "../FloatingTabBar";
 import styled from "styled-components";
 
 export const containerVariants = {
@@ -26,20 +28,33 @@ const AnimatedOutlet: React.FC = () => {
 
 function RootContainer() {
   const routerLocation = useLocation();
+  const { sessionInProgress: isSessionInProgress } =
+    useAssignmentQueueStoreFacade();
+
+  const pgsToShowTabBar = ["/", "/search", "/subjects"];
+  const subjectDetailsPgRegex = /\/subjects\/\d+/;
+
+  const shouldShow =
+    pgsToShowTabBar.includes(routerLocation.pathname) ||
+    (!isSessionInProgress &&
+      subjectDetailsPgRegex.test(routerLocation.pathname));
 
   return (
-    <AnimatePresence mode="popLayout">
-      <PageContainer
-        key={routerLocation.key}
-        initial="initial"
-        animate="in"
-        exit="out"
-        variants={containerVariants}
-        transition={{ duration: 0.5 }}
-      >
-        <AnimatedOutlet />
-      </PageContainer>
-    </AnimatePresence>
+    <>
+      <AnimatePresence mode="popLayout">
+        <PageContainer
+          key={routerLocation.key}
+          initial="initial"
+          animate="in"
+          exit="out"
+          variants={containerVariants}
+          transition={{ duration: 0.5 }}
+        >
+          <AnimatedOutlet />
+        </PageContainer>
+      </AnimatePresence>
+      <AnimatePresence>{shouldShow && <FloatingTabBar />}</AnimatePresence>
+    </>
   );
 }
 

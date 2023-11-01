@@ -6,7 +6,6 @@ import { flattenSearchResults } from "../services/MiscService";
 import { useAllSubjects } from "../hooks/useAllSubjects";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
 import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
-import FloatingTabBar from "../components/FloatingTabBar";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
 import ThinkingLogo from "../images/logo-thinking.svg";
@@ -157,7 +156,6 @@ export const Search = () => {
             </LogoSearchOutcomeContainer>
           )}
         </ContentWithTabBar>
-        <FloatingTabBar />
       </Page>
     </>
   );

@@ -9,7 +9,6 @@ import ReviewsButton from "../components/ReviewsButton/ReviewsButton";
 import RadicalForLvlCard from "../components/RadicalForLvlCard/RadicalForLvlCard";
 import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
 import SrsStages from "../components/SrsStages/SrsStages";
-import FloatingTabBar from "../components/FloatingTabBar";
 import ReviewForecast from "../components/ReviewForecast";
 import LoadingDots from "../components/LoadingDots";
 import { FixedCenterContainer } from "../styles/BaseStyledComponents";
@@ -85,7 +84,7 @@ const Home = () => {
           </FixedCenterContainer>
         )}
       </HomePageContainer>
-      <FloatingTabBar />
+      {/* <FloatingTabBar /> */}
     </>
   );
 };
