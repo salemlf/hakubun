@@ -1,13 +1,6 @@
-import { useState } from "react";
 import * as LogRocket from "logrocket";
-import {
-  useLocation,
-  createBrowserRouter,
-  RouterProvider,
-  useOutlet,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { IonApp, setupIonicReact } from "@ionic/react";
-import { AnimatePresence, motion } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -30,7 +23,6 @@ import Home from "./pages/Home";
 import LessonSummary from "./pages/LessonSummary";
 import Settings from "./pages/Settings";
 import { worker } from "./testing/mocks/worker";
-import styled from "styled-components";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
