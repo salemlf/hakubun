@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { flattenSearchResults } from "../services/MiscService";
 import { useAllSubjects } from "../hooks/useAllSubjects";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
-import AnimatedPage from "../components/AnimatedPage/AnimatedPage";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg";
 import ThinkingLogo from "../images/logo-thinking.svg";
@@ -16,10 +15,6 @@ import {
   ContentWithTabBar,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-
-const Page = styled(AnimatedPage)`
-  background-color: var(--dark-greyish-purple);
-`;
 
 const SearchBar = styled(IonSearchbar)`
   --background: var(--offwhite-color);
@@ -98,52 +93,15 @@ export const Search = () => {
 
   return (
     <>
-      <Page>
-        <ContentWithTabBar>
-          <SearchBar
-            debounce={1800}
-            searchIcon={SearchIcon}
-            clearIcon={ClearIcon}
-            onIonInput={(ev) => handleInput(ev)}
-          ></SearchBar>
-          <AnimatePresence>
-            {query === "" && !allSubjectsLoading && (
-              <LogoSearchOutcomeContainer
-                as={motion.div}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-              >
-                <h2>Try Searching for Something!</h2>
-                <img src={QuestionLogo} />
-              </LogoSearchOutcomeContainer>
-            )}
-          </AnimatePresence>
-          {!allSubjectsLoading ? (
-            results.length === 0 && query !== "" ? (
-              <LogoSearchOutcomeContainer
-                as={motion.div}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-              >
-                <h2>No Results Found!</h2>
-                <img src={LogoExclamation} />
-              </LogoSearchOutcomeContainer>
-            ) : (
-              <List>
-                {results.map((subject: any) => (
-                  <SubjectWideButton
-                    subject={subject}
-                    key={subject.id}
-                    findImages={true}
-                  />
-                ))}
-              </List>
-            )
-          ) : (
+      <ContentWithTabBar>
+        <SearchBar
+          debounce={1800}
+          searchIcon={SearchIcon}
+          clearIcon={ClearIcon}
+          onIonInput={(ev) => handleInput(ev)}
+        ></SearchBar>
+        <AnimatePresence>
+          {query === "" && !allSubjectsLoading && (
             <LogoSearchOutcomeContainer
               as={motion.div}
               initial={{ opacity: 0 }}
@@ -151,12 +109,47 @@ export const Search = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <h2>Loading...</h2>
-              <img src={ThinkingLogo} />
+              <h2>Try Searching for Something!</h2>
+              <img src={QuestionLogo} />
             </LogoSearchOutcomeContainer>
           )}
-        </ContentWithTabBar>
-      </Page>
+        </AnimatePresence>
+        {!allSubjectsLoading ? (
+          results.length === 0 && query !== "" ? (
+            <LogoSearchOutcomeContainer
+              as={motion.div}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <h2>No Results Found!</h2>
+              <img src={LogoExclamation} />
+            </LogoSearchOutcomeContainer>
+          ) : (
+            <List>
+              {results.map((subject: any) => (
+                <SubjectWideButton
+                  subject={subject}
+                  key={subject.id}
+                  findImages={true}
+                />
+              ))}
+            </List>
+          )
+        ) : (
+          <LogoSearchOutcomeContainer
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <h2>Loading...</h2>
+            <img src={ThinkingLogo} />
+          </LogoSearchOutcomeContainer>
+        )}
+      </ContentWithTabBar>
     </>
   );
 };

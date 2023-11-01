@@ -84,7 +84,6 @@ const Home = () => {
           </FixedCenterContainer>
         )}
       </HomePageContainer>
-      {/* <FloatingTabBar /> */}
     </>
   );
 };

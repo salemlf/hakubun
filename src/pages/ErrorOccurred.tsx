@@ -1,12 +1,6 @@
 import { useRouteError } from "react-router-dom";
-import AnimatedPage from "../components/AnimatedPage";
-import { ContentWithTabBar } from "../styles/BaseStyledComponents";
-import styled from "styled-components";
 import FloatingHomeButton from "../components/FloatingHomeButton";
-
-const Page = styled(AnimatedPage)`
-  background-color: var(--dark-greyish-purple);
-`;
+import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 
 function ErrorOccurred() {
   let error = useRouteError();
@@ -14,13 +8,11 @@ function ErrorOccurred() {
 
   return (
     <>
-      <Page>
-        <ContentWithTabBar>
-          <p>Woah! Something went really wrong :(</p>
-          <p>Error: {`${error}`}</p>
-        </ContentWithTabBar>
-        <FloatingHomeButton />
-      </Page>
+      <ContentWithTabBar>
+        <p>Woah! Something went really wrong :(</p>
+        <p>Error: {`${error}`}</p>
+      </ContentWithTabBar>
+      <FloatingHomeButton />
     </>
   );
 }

@@ -4,17 +4,11 @@ import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.
 import { useStickyState } from "../hooks/useStickyState";
 import { LEVELS } from "../constants";
 import { getPageIndex } from "../services/MiscService";
-import AnimatedPage from "../components/AnimatedPage";
 import SubjectsOnLvlTab from "../components/SubjectsOnLvlTab/SubjectsOnLvlTab";
 import LoadingDots from "../components/LoadingDots";
 import Paginator from "../components/Paginator";
 import { FixedCenterContainer, Header } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-
-const Page = styled(AnimatedPage)`
-  --ion-background-color: var(--dark-greyish-purple);
-  background-color: var(--dark-greyish-purple);
-`;
 
 const SubjectsHeader = styled(Header)`
   color: black;
@@ -41,15 +35,13 @@ export const Subjects = () => {
 
   return (
     <>
-      <Page>
-        {isLoading ? (
-          <FixedCenterContainer>
-            <LoadingDots />
-          </FixedCenterContainer>
-        ) : (
-          <SubjectsContent level={level} setLevel={setLevel} />
-        )}
-      </Page>
+      {isLoading ? (
+        <FixedCenterContainer>
+          <LoadingDots />
+        </FixedCenterContainer>
+      ) : (
+        <SubjectsContent level={level} setLevel={setLevel} />
+      )}
     </>
   );
 };
