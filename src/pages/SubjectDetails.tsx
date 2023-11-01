@@ -38,7 +38,7 @@ export const SubjectDetails = () => {
 
   // TODO: display loading skeleton for each component until all content on page is loaded
   return (
-    <Page>
+    <>
       {subjectLoading ? (
         <ContentWithTabBar>
           <IonSkeletonText
@@ -70,6 +70,6 @@ export const SubjectDetails = () => {
           )}
         </>
       )}
-    </Page>
+    </>
   );
 };
