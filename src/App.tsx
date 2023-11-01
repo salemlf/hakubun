@@ -63,7 +63,8 @@ if (import.meta.env.MODE !== "development") {
 }
 
 Sentry.init({
-  dsn: "https://c33a7ec41c615b225a80cf2713ee2313@o4505806285242368.ingest.sentry.io/4506149307744256",
+  release: "0.2.2-alpha",
+  dsn: import.meta.env.VITE_SENTRY_DSN,
   tracePropagationTargets: [baseUrlRegex],
   environment: import.meta.env.MODE,
   integrations: [
@@ -81,7 +82,7 @@ Sentry.init({
   // Performance Monitoring
   tracesSampleRate: 1.0, // Capture 100% of the transactions
   // Session Replay
-  replaysSessionSampleRate: 1.0,
+  replaysSessionSampleRate: 0.5,
   replaysOnErrorSampleRate: 1.0,
 });
 
@@ -135,6 +136,8 @@ const App: React.FC = () => {
     LogRocket.identify(`${userInfo.username}`, {
       name: `${userInfo.username}`,
     });
+
+    Sentry.setUser({ username: `${userInfo.username}` });
   }
 
   return (
