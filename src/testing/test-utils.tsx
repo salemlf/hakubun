@@ -29,8 +29,6 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "../theme/variables.css";
 import "../theme/globals.scss";
-import RootContainer from "../components/RootContainer";
-import ErrorOccurred from "../pages/ErrorOccurred";
 
 setupIonicReact();
 
@@ -93,16 +91,8 @@ const renderWithRouter = (children: any, routes: RouteObject[] = []) => {
     ? { element: children, path: "/" }
     : children;
 
-  const wrappedRoutes = [
-    {
-      errorElement: <ErrorOccurred />,
-      element: <RootContainer />,
-      children: [{ ...options }, ...routes],
-    },
-  ];
-
   // memory router used so we can manually control history
-  const router = createMemoryRouter(wrappedRoutes, {
+  const router = createMemoryRouter([{ ...options }, ...routes], {
     initialEntries: [options.path],
     initialIndex: 1,
   });
