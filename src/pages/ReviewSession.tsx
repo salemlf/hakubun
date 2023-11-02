@@ -131,7 +131,7 @@ const Description = () => {
 };
 
 // TODO: redirect to home if user somehow ends up on this screen without data passed
-export const ReviewSession = () => {
+function ReviewSession() {
   const navigate = useNavigate();
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
   const resetAssignmentQueue = useAssignmentQueueStore(
@@ -321,4 +321,6 @@ export const ReviewSession = () => {
       <KeyboardShortcuts />
     </>
   );
-};
+}
+
+export default ReviewSession;

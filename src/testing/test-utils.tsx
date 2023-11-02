@@ -1,10 +1,14 @@
-import { ReactElement } from "react";
+import { isValidElement, ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { IonApp, setupIonicReact } from "@ionic/react";
-import { BrowserRouter } from "react-router-dom";
-import { rest } from "msw";
+import {
+  createMemoryRouter,
+  RouteObject,
+  RouterProvider,
+} from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -25,6 +29,8 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "../theme/variables.css";
 import "../theme/globals.scss";
+import RootContainer from "../components/RootContainer";
+import ErrorOccurred from "../pages/ErrorOccurred";
 
 setupIonicReact();
 
@@ -41,7 +47,6 @@ type TestAppProps = {
   children: React.ReactNode;
 };
 
-//   TODO: add set up for stores
 const TestingApp = ({ children }: TestAppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -57,36 +62,64 @@ const customRender = (
   options?: Omit<RenderOptions, "wrapper">
 ) => render(ui, { wrapper: TestingApp, ...options });
 
-const TestingAppWithBrowserRouter = ({ children }: TestAppProps) => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ToastPrimitive.Provider>
-        <IonApp>
-          <BrowserRouter>{children}</BrowserRouter>
-        </IonApp>
-      </ToastPrimitive.Provider>
-    </QueryClientProvider>
-  );
-};
+// !added
+// ? example usage:
+// 1️⃣ Render a page component under "/" by default
+// renderWithRouter(<ReviewSession />);
 
-const renderWithRouter = (ui: ReactElement, { route = "/" } = {}) => {
-  window.history.pushState({}, "Test page", route);
+// 2️⃣ Render a page component under a custom path
+// renderWithRouter({
+//   element: <ReviewSession />,
+//   path: "/reviews/session",
+// });
+
+// 3️⃣ Render a page component under "/" and set additional routes.
+// Useful for testing route navigation
+// renderWithRouter(<ReviewSession />, [
+//   {
+//     path: "/",
+//     element: <Home/>,
+//   },
+//   {
+//     path: "/reviews/settings",
+//     element: <ReviewSettings/>,
+//   },
+// ]);
+
+// TODO: change from using "any" type
+// cred to Miroslav Nikolov, see article: https://webup.org/blog/how-to-avoid-mocking-in-react-router-v6-tests/
+const renderWithRouter = (children: any, routes: RouteObject[] = []) => {
+  const options = isValidElement(children)
+    ? { element: children, path: "/" }
+    : children;
+
+  const wrappedRoutes = [
+    {
+      errorElement: <ErrorOccurred />,
+      element: <RootContainer />,
+      children: [{ ...options }, ...routes],
+    },
+  ];
+
+  // memory router used so we can manually control history
+  const router = createMemoryRouter(wrappedRoutes, {
+    initialEntries: [options.path],
+    initialIndex: 1,
+  });
 
   return {
-    ...render(ui, { wrapper: TestingAppWithBrowserRouter }),
+    user: userEvent.setup(),
+    ...render(
+      <QueryClientProvider client={queryClient}>
+        <ToastPrimitive.Provider>
+          <IonApp>
+            <RouterProvider router={router} />
+          </IonApp>
+        </ToastPrimitive.Provider>
+      </QueryClientProvider>
+    ),
   };
 };
-
-export const handlers = [
-  rest.get("*/react-query", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        name: "mocked-react-query",
-      })
-    );
-  }),
-];
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -108,6 +141,7 @@ export const renderWithClient = (ui: React.ReactElement) => {
     <QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>
   );
   return {
+    user: userEvent.setup(),
     ...result,
     rerender: (rerenderUi: React.ReactElement) =>
       rerender(

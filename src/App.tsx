@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import * as LogRocket from "logrocket";
 import * as Sentry from "@sentry/react";
 import {
@@ -14,22 +15,8 @@ import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
-import { api, baseUrlRegex, pagingApi } from "./api/ApiConfig";
-import ProtectedRoute from "./navigation/ProtectedRoute";
-import TokenInput from "./pages/TokenInput";
-import { ReviewSettings } from "./pages/ReviewSettings";
-import { ReviewSession } from "./pages/ReviewSession";
-import ErrorOccurred from "./pages/ErrorOccurred";
-import ReviewSummary from "./pages/ReviewSummary";
-import LessonSettings from "./pages/LessonSettings";
-import LessonSession from "./pages/LessonSession";
-import { Search } from "./pages/Search";
-import { Subjects } from "./pages/Subjects";
-import LessonQuiz from "./pages/LessonQuiz";
-import { SubjectDetails } from "./pages/SubjectDetails";
-import Home from "./pages/Home";
-import LessonSummary from "./pages/LessonSummary";
-import Settings from "./pages/Settings";
+import { getRoutes } from "./navigation/routes";
+import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { worker } from "./testing/mocks/worker";
 
 /* Core CSS required for Ionic components to work properly */
@@ -51,8 +38,6 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/globals.scss";
-import RootContainer from "./components/RootContainer";
-import React from "react";
 
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development") {
@@ -70,7 +55,7 @@ Sentry.init({
   integrations: [
     new Sentry.BrowserTracing({
       routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-        React.useEffect,
+        useEffect,
         useLocation,
         useNavigationType,
         createRoutesFromChildren,
@@ -119,17 +104,7 @@ const App: React.FC = () => {
   });
 
   // setting the auth token headers for all api requests
-  (function () {
-    if (authToken) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
-      pagingApi.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${authToken}`;
-    } else {
-      api.defaults.headers.common["Authorization"] = null;
-      pagingApi.defaults.headers.common["Authorization"] = null;
-    }
-  })();
+  setAxiosHeaders(authToken);
 
   // setting current user if that info is available
   if (userInfo) {
@@ -160,149 +135,9 @@ type BrowserRouterProps = {
 const getBrowserRouter = ({
   isAuthenticated,
   isAuthLoading,
-}: BrowserRouterProps) =>
-  sentryCreateBrowserRouter([
-    {
-      errorElement: <ErrorOccurred />,
-      element: <RootContainer />,
-      children: [
-        { path: "/authenticate", element: <TokenInput /> },
-        {
-          index: true,
-          path: "/",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <Home />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/settings",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <Settings />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/reviews/session",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <ReviewSession />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/reviews/settings",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <ReviewSettings />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/lessons/settings",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <LessonSettings />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/reviews/summary",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <ReviewSummary />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/lessons/session",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <LessonSession />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/lessons/quiz",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <LessonQuiz />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/lessons/summary",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <LessonSummary />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/subjects",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <Subjects />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/subjects/:id",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <SubjectDetails />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/search",
-          element: (
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              authLoading={isAuthLoading}
-            >
-              <Search />
-            </ProtectedRoute>
-          ),
-        },
-        { path: "*", element: <p>Oh no, 404!</p> },
-      ],
-    },
-  ]);
+}: BrowserRouterProps) => {
+  let routes = getRoutes({ isAuthLoading, isAuthenticated });
+  return sentryCreateBrowserRouter(routes);
+};
 
 export default App;

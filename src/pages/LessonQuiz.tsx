@@ -70,7 +70,7 @@ function LessonQuiz() {
         })
         .catch((err) => {
           // *testing
-          console.log("🚀 ~ file: ReviewSession.tsx:96 ~ promises ~ err:", err);
+          console.log("🚀 ~ file: LessonQuiz.tsx:72 ~ promises ~ err:", err);
           // *testing
         });
     });

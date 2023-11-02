@@ -33,3 +33,13 @@ api.interceptors.response.use(undefined, (error) => {
 pagingApi.interceptors.response.use(undefined, (error) => {
   return errorHandler(error);
 });
+
+export const setAxiosHeaders = (authToken: string | null) => {
+  if (authToken) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
+    pagingApi.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
+  } else {
+    api.defaults.headers.common["Authorization"] = null;
+    pagingApi.defaults.headers.common["Authorization"] = null;
+  }
+};
