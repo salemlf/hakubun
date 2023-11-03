@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
-import { IonList, IonSearchbar } from "@ionic/react";
+import { useState, useEffect, ChangeEvent } from "react";
+import { IonList } from "@ionic/react";
 import Fuse from "fuse.js";
 import { AnimatePresence, motion } from "framer-motion";
+import { useDebounce } from "usehooks-ts";
 import { flattenSearchResults } from "../services/MiscService";
 import { useAllSubjects } from "../hooks/useAllSubjects";
+import { useStickyState } from "../hooks/useStickyState";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
+import Button from "../components/Button";
 import SearchIcon from "../images/search.svg";
-import ClearIcon from "../images/clear.svg";
+import ClearIcon from "../images/clear.svg?react";
 import ThinkingLogo from "../images/logo-thinking.svg";
 import QuestionLogo from "../images/logo-question.svg";
 import LogoExclamation from "../images/logo-exclamation.svg";
@@ -15,20 +18,60 @@ import {
   ContentWithTabBar,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
+import SvgIcon from "../components/SvgIcon";
 
-const SearchBar = styled(IonSearchbar)`
-  --background: var(--offwhite-color);
-  --color: var(--darkest-purple);
-  --placeholder-color: var(--light-greyish-purple);
-  --icon-color: var(--darkest-purple);
-  --clear-button-color: var(--dark-greyish-purple);
+const Content = styled(ContentWithTabBar)`
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+`;
+
+const ClearButton = styled(Button)`
+  border-radius: 10px;
+  margin-right: 0.5em;
+  padding: 6px;
+
+  &:focus-visible {
+    outline: 2px solid var(--darkest-purple);
+  }
+`;
+
+const Form = styled.form`
+  display: flex;
+  &:focus-within {
+    outline: 2px solid white;
+    outline-offset: 3px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+  }
+  background-color: var(--offwhite-color);
+  border-radius: 8px;
+  align-items: center;
+`;
+
+const SearchBar = styled.input`
+  color: var(--darkest-purple);
+  &:focus {
+    outline: none;
+  }
+  width: 100%;
+  border-radius: 8px;
+  padding: 10px;
+  padding-left: 3.125em;
+  background: var(--offwhite-color) url(${SearchIcon}) no-repeat;
+  background-size: 2em;
+  background-position: left 0.5em center;
+  border: none;
 `;
 
 const List = styled(IonList)`
   --background: none;
   background: none;
-  margin: 0 8px;
-  padding: 8px 5px;
+  margin: 0;
+  padding: 8px 0;
 `;
 
 const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
@@ -45,10 +88,16 @@ const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
   }
 `;
 
-// TODO: improve animate presence delay/changes
+const crabigatorVariants = {
+  initial: { opacity: 0 },
+  show: { opacity: 1 },
+  hide: { opacity: 0 },
+};
+
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useStickyState("", "search-page-query");
+  const debouncedQuery = useDebounce<string>(query, 1800);
 
   const options = {
     threshold: 0.1,
@@ -71,11 +120,11 @@ export const Search = () => {
         allSubjectsData as unknown as readonly unknown[],
         options
       );
-      const results = fuse.search(query);
+      const results = fuse.search(debouncedQuery);
       let flattenedSearch = flattenSearchResults(results);
       setResults(flattenedSearch);
     }
-  }, [allSubjectsData, query]);
+  }, [allSubjectsData, debouncedQuery]);
 
   useEffect(() => {
     if (allSubjectsData && hasNextPage) {
@@ -83,31 +132,28 @@ export const Search = () => {
     }
   }, [allSubjectsData]);
 
-  const handleInput = (ev: Event) => {
-    let enteredQuery = "";
-    const target = ev.target as HTMLIonSearchbarElement;
-    if (target) enteredQuery = target.value!.toLowerCase();
-
-    setQuery(enteredQuery);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value.toLowerCase().trim());
   };
 
   return (
     <>
-      <ContentWithTabBar>
-        <SearchBar
-          debounce={1800}
-          searchIcon={SearchIcon}
-          clearIcon={ClearIcon}
-          onIonInput={(ev) => handleInput(ev)}
-        ></SearchBar>
+      <Content>
+        <Form>
+          <SearchBar type="search" value={query} onChange={handleChange} />
+          <ClearButton onPress={() => setQuery("")}>
+            <SvgIcon icon={<ClearIcon />} width="1.75em" height="1.75em" />
+          </ClearButton>
+        </Form>
         <AnimatePresence>
-          {query === "" && !allSubjectsLoading && (
+          {debouncedQuery === "" && !allSubjectsLoading && (
             <LogoSearchOutcomeContainer
               as={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              initial="initial"
+              animate="show"
+              exit="hide"
+              variants={crabigatorVariants}
+              transition={{ duration: 0.5 }}
             >
               <h2>Try Searching for Something!</h2>
               <img src={QuestionLogo} />
@@ -115,13 +161,14 @@ export const Search = () => {
           )}
         </AnimatePresence>
         {!allSubjectsLoading ? (
-          results.length === 0 && query !== "" ? (
+          results.length === 0 && debouncedQuery !== "" ? (
             <LogoSearchOutcomeContainer
               as={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              initial="initial"
+              animate="show"
+              exit="hide"
+              variants={crabigatorVariants}
+              transition={{ duration: 0.5 }}
             >
               <h2>No Results Found!</h2>
               <img src={LogoExclamation} />
@@ -140,16 +187,17 @@ export const Search = () => {
         ) : (
           <LogoSearchOutcomeContainer
             as={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            initial="initial"
+            animate="show"
+            exit="hide"
+            variants={crabigatorVariants}
+            transition={{ duration: 0.5 }}
           >
             <h2>Loading...</h2>
             <img src={ThinkingLogo} />
           </LogoSearchOutcomeContainer>
         )}
-      </ContentWithTabBar>
+      </Content>
     </>
   );
 };
