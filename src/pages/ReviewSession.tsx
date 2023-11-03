@@ -131,7 +131,7 @@ const Description = () => {
 };
 
 // TODO: redirect to home if user somehow ends up on this screen without data passed
-export const ReviewSession = () => {
+function ReviewSession() {
   const navigate = useNavigate();
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
   const resetAssignmentQueue = useAssignmentQueueStore(
@@ -292,8 +292,8 @@ export const ReviewSession = () => {
           )
         }
       </ReactRouterPrompt>
-      {assignmentQueue.length !== 0 && <QueueHeader />}
-      <Content>
+      <QueueHeader />
+      <Content data-testid="review-session-content">
         <>
           {assignmentQueue.length !== 0 && (
             <AssignmentQueueCards
@@ -321,4 +321,6 @@ export const ReviewSession = () => {
       <KeyboardShortcuts />
     </>
   );
-};
+}
+
+export default ReviewSession;

@@ -1,7 +1,7 @@
+import { useState } from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { RequireAtLeastOne } from "../../types/Global";
 import styled from "styled-components";
-import React from "react";
 
 const Overlay = styled(AlertDialogPrimitive.Overlay)`
   background-color: rgba(0, 0, 0, 0.447);
@@ -10,7 +10,6 @@ const Overlay = styled(AlertDialogPrimitive.Overlay)`
 `;
 
 const Content = styled(AlertDialogPrimitive.Content)`
-  /* background-color: var(--ion-color-secondary); */
   background-color: var(--light-greyish-purple);
   color: white;
   border-radius: 12px;
@@ -79,6 +78,11 @@ const MiscButton = styled(DialogButton)`
   background-color: var(--ion-color-primary);
 `;
 
+const PortalContainer = styled.div`
+  position: fixed;
+  z-index: 5000;
+`;
+
 type UncontrolledDialogProps = {
   defaultOpen: boolean;
 };
@@ -124,39 +128,55 @@ function AlertDialog({
   showAddtlAction = false,
   onAddtlActionClick,
 }: Props) {
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+
+  // let portalRoot =
+  //   global.document && global.document.getElementById("portal-root");
+
+  // if (!portalRoot) {
+  //   portalRoot = global.document.createElement("div");
+  //   portalRoot.setAttribute("id", "portal-root");
+  //   global.document.body.appendChild(portalRoot);
+  // }
+
   return (
-    <AlertDialogPrimitive.Root
-      {...controlledSettings}
-      {...uncontrolledSettings}
-    >
-      {!programmaticTrigger && (
-        <AlertDialogPrimitive.Trigger>Open</AlertDialogPrimitive.Trigger>
-      )}
-      <AlertDialogPrimitive.Portal>
-        <Overlay />
-        <Content>
-          <Title>{title}</Title>
-          {description && <Description>{description}</Description>}
-          <ButtonContainer>
-            <AlertDialogPrimitive.Cancel asChild>
-              <CancelButton onClick={onCancelClick}>{cancelText}</CancelButton>
-            </AlertDialogPrimitive.Cancel>
-            <AlertDialogPrimitive.Action asChild>
-              <ConfirmButton onClick={onConfirmClick}>
-                {confirmText}
-              </ConfirmButton>
-            </AlertDialogPrimitive.Action>
-            {showAddtlAction && (
+    <>
+      <AlertDialogPrimitive.Root
+        {...controlledSettings}
+        {...uncontrolledSettings}
+      >
+        {!programmaticTrigger && (
+          <AlertDialogPrimitive.Trigger>Open</AlertDialogPrimitive.Trigger>
+        )}
+        <AlertDialogPrimitive.Portal container={container}>
+          <Overlay />
+          <Content>
+            <Title>{title}</Title>
+            {description && <Description>{description}</Description>}
+            <ButtonContainer>
+              <AlertDialogPrimitive.Cancel asChild>
+                <CancelButton onClick={onCancelClick}>
+                  {cancelText}
+                </CancelButton>
+              </AlertDialogPrimitive.Cancel>
               <AlertDialogPrimitive.Action asChild>
-                <MiscButton onClick={onAddtlActionClick}>
-                  {addtlActionText}
-                </MiscButton>
+                <ConfirmButton onClick={onConfirmClick}>
+                  {confirmText}
+                </ConfirmButton>
               </AlertDialogPrimitive.Action>
-            )}
-          </ButtonContainer>
-        </Content>
-      </AlertDialogPrimitive.Portal>
-    </AlertDialogPrimitive.Root>
+              {showAddtlAction && (
+                <AlertDialogPrimitive.Action asChild>
+                  <MiscButton onClick={onAddtlActionClick}>
+                    {addtlActionText}
+                  </MiscButton>
+                </AlertDialogPrimitive.Action>
+              )}
+            </ButtonContainer>
+          </Content>
+        </AlertDialogPrimitive.Portal>
+      </AlertDialogPrimitive.Root>
+      <PortalContainer id="portal-root" ref={setContainer} />
+    </>
   );
 }
 

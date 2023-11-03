@@ -172,12 +172,6 @@ export const useAssignmentQueue = () => {
     userAnswer: string,
     setUserAnswer: (value: string) => void
   ) => {
-    // *testing
-    console.log(
-      "🚀 ~ file: ReviewSession.tsx:137 ~ ReviewSession ~ userAnswer:",
-      userAnswer
-    );
-    // *testing
     let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
 
     let moveToNextItem = isSubmittingAnswer;

@@ -48,5 +48,10 @@ test("Reviewed assignments displayed", () => {
 });
 
 const renderComponent = () => {
-  return renderWithRouter(<ReviewSummary />);
+  return renderWithRouter({
+    routeObj: {
+      element: <ReviewSummary />,
+      path: "/reviews/summary",
+    },
+  });
 };

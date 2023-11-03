@@ -35,16 +35,16 @@ test("Learned lessons displayed", () => {
 
   imageQueueItems.forEach(async (altTxt) => {
     expect(
-      screen.getByRole("img", {
+      await screen.findByRole("img", {
         name: `${altTxt}`,
       })
     ).toBeDefined();
   });
-  txtQueueItems.forEach((char) => {
-    expect(screen.getByText(`${char}`)).toBeDefined();
+  txtQueueItems.forEach(async (char) => {
+    expect(await screen.findByText(`${char}`)).toBeDefined();
   });
 });
 
 const renderComponent = () => {
-  return renderWithRouter(<LessonSummary />);
+  return renderWithRouter({ component: <LessonSummary /> });
 };
