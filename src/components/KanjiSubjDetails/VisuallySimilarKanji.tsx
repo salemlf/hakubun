@@ -51,7 +51,7 @@ function VisuallySimilarKanji({ kanji }: Props) {
       <SubjectButtonList
         btnSize="lg"
         subjList={similarKanjiSubjData}
-        assignmentList={similarKanjiAssignmentsData}
+        assignmentList={similarKanjiAssignmentsData ?? []}
       />
     </SubjDetailSection>
   );

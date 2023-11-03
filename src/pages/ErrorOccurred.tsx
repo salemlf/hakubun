@@ -1,10 +1,10 @@
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 import FloatingHomeButton from "../components/FloatingHomeButton";
+import Emoji from "../components/Emoji";
+import LogoExclamation from "../images/logo-exclamation.svg";
 import { Header } from "../styles/BaseStyledComponents";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
-import LogoExclamation from "../images/logo-exclamation.svg";
 import styled from "styled-components";
-import Emoji from "../components/Emoji";
 
 const Content = styled(ContentWithTabBar)`
   display: flex;
