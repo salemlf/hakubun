@@ -31,7 +31,7 @@ function RootContainer() {
   const { sessionInProgress: isSessionInProgress } =
     useAssignmentQueueStoreFacade();
 
-  const pgsToShowTabBar = ["/", "/search", "/subjects"];
+  const pgsToShowTabBar = ["/", "/search", "/subjects", "/settings"];
   const subjectDetailsPgRegex = /\/subjects\/\d+/;
 
   const shouldShow =
