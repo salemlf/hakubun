@@ -116,7 +116,7 @@ export const useAssignmentQueue = () => {
       wrongMoveToNext();
       setUserAnswer("");
     } else {
-      showPopoverMsg({ message: "SRRY, WRONG :(", messageType: "incorrect" });
+      showPopoverMsg({ message: "INCORRECT", messageType: "incorrect" });
       updatedReviewItem.is_correct_answer = false;
       updatedReviewItem.is_reviewed = false;
 
@@ -141,7 +141,7 @@ export const useAssignmentQueue = () => {
     );
 
     let updatedReviewItem = currReviewItem;
-    showPopoverMsg({ message: "CORRECT!", messageType: "correct" });
+    showPopoverMsg({ message: "CORRECT", messageType: "correct" });
 
     if (isReviewItemComplete) {
       updatedReviewItem = calculateSRSLevel(assignmentQueue, updatedReviewItem);
