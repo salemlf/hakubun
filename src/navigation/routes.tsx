@@ -9,6 +9,7 @@ import ReviewSession from "../pages/ReviewSession";
 import ReviewSummary from "../pages/ReviewSummary";
 import TokenInput from "../pages/TokenInput";
 import Settings from "../pages/Settings";
+import NotFound from "../pages/NotFound";
 import { ReviewSettings } from "../pages/ReviewSettings";
 import { SubjectDetails } from "../pages/SubjectDetails";
 import { Subjects } from "../pages/Subjects";
@@ -174,6 +175,6 @@ const getChildRoutes = ({
         </ProtectedRoute>
       ),
     },
-    { path: "*", element: <p>Oh no, 404!</p> },
+    { path: "*", element: <NotFound /> },
   ];
 };
