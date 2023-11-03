@@ -120,7 +120,7 @@ export const Search = () => {
         allSubjectsData as unknown as readonly unknown[],
         options
       );
-      const results = fuse.search(debouncedQuery.toLowerCase());
+      const results = fuse.search(debouncedQuery);
       let flattenedSearch = flattenSearchResults(results);
       setResults(flattenedSearch);
     }
@@ -133,7 +133,7 @@ export const Search = () => {
   }, [allSubjectsData]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setQuery(event.target.value.toLowerCase().trim());
   };
 
   return (
