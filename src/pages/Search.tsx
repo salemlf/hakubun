@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useDebounce } from "usehooks-ts";
 import { flattenSearchResults } from "../services/MiscService";
 import { useAllSubjects } from "../hooks/useAllSubjects";
+import { useStickyState } from "../hooks/useStickyState";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
 import Button from "../components/Button";
 import SearchIcon from "../images/search.svg";
@@ -26,19 +27,25 @@ const Content = styled(ContentWithTabBar)`
 `;
 
 const ClearButton = styled(Button)`
-  border-radius: 20px;
+  border-radius: 10px;
   margin-right: 0.5em;
-  padding: 8px;
+  padding: 6px;
+
+  &:focus-visible {
+    outline: 2px solid var(--darkest-purple);
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   &:focus-within {
     outline: 2px solid white;
+    outline-offset: 3px;
   }
 
   &:focus-visible {
     outline: 2px solid white;
+    outline-offset: 3px;
   }
   background-color: var(--offwhite-color);
   border-radius: 8px;
@@ -81,10 +88,15 @@ const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
   }
 `;
 
-// TODO: improve animate presence delay/changes
+const crabigatorVariants = {
+  initial: { opacity: 0 },
+  show: { opacity: 1 },
+  hide: { opacity: 0 },
+};
+
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
-  const [query, setQuery] = useState<string>("");
+  const [query, setQuery] = useStickyState<string>("", "search-page-query");
   const debouncedQuery = useDebounce<string>(query, 1800);
 
   const options = {
@@ -129,18 +141,19 @@ export const Search = () => {
       <Content>
         <Form>
           <SearchBar type="search" value={query} onChange={handleChange} />
-          <ClearButton>
+          <ClearButton onPress={() => setQuery("")}>
             <SvgIcon icon={<ClearIcon />} width="1.75em" height="1.75em" />
           </ClearButton>
         </Form>
         <AnimatePresence>
-          {query === "" && !allSubjectsLoading && (
+          {debouncedQuery === "" && !allSubjectsLoading && (
             <LogoSearchOutcomeContainer
               as={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              initial="initial"
+              animate="show"
+              exit="hide"
+              variants={crabigatorVariants}
+              transition={{ duration: 0.5 }}
             >
               <h2>Try Searching for Something!</h2>
               <img src={QuestionLogo} />
@@ -148,13 +161,14 @@ export const Search = () => {
           )}
         </AnimatePresence>
         {!allSubjectsLoading ? (
-          results.length === 0 && query !== "" ? (
+          results.length === 0 && debouncedQuery !== "" ? (
             <LogoSearchOutcomeContainer
               as={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              initial="initial"
+              animate="show"
+              exit="hide"
+              variants={crabigatorVariants}
+              transition={{ duration: 0.5 }}
             >
               <h2>No Results Found!</h2>
               <img src={LogoExclamation} />
@@ -173,10 +187,11 @@ export const Search = () => {
         ) : (
           <LogoSearchOutcomeContainer
             as={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            initial="initial"
+            animate="show"
+            exit="hide"
+            variants={crabigatorVariants}
+            transition={{ duration: 0.5 }}
           >
             <h2>Loading...</h2>
             <img src={ThinkingLogo} />
