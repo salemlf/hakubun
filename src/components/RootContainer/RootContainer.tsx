@@ -31,7 +31,7 @@ function RootContainer() {
   const { sessionInProgress: isSessionInProgress } =
     useAssignmentQueueStoreFacade();
 
-  const pgsToShowTabBar = ["/", "/search", "/subjects"];
+  const pgsToShowTabBar = ["/", "/search", "/subjects", "/settings"];
   const subjectDetailsPgRegex = /\/subjects\/\d+/;
 
   const shouldShow =
@@ -48,7 +48,7 @@ function RootContainer() {
           animate="in"
           exit="out"
           variants={containerVariants}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
         >
           <AnimatedOutlet />
         </PageContainer>

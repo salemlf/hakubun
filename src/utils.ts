@@ -1,4 +1,3 @@
-import { StoreApi, UseBoundStore } from "zustand";
 import { nanoid } from "nanoid";
 
 export const generateUUID = (): string => {

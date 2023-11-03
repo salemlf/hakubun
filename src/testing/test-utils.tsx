@@ -3,8 +3,13 @@ import { render, RenderOptions } from "@testing-library/react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { IonApp, setupIonicReact } from "@ionic/react";
-import { BrowserRouter } from "react-router-dom";
-import { rest } from "msw";
+import {
+  createMemoryRouter,
+  RouteObject,
+  RouterProvider,
+} from "react-router-dom";
+import userEvent from "@testing-library/user-event";
+import { Either } from "../types/Global";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -28,23 +33,29 @@ import "../theme/globals.scss";
 
 setupIonicReact();
 
-const queryClient = new QueryClient({
+const queryClientTestOptions = {
   defaultOptions: {
     queries: {
-      // retries off for testing
       retry: false,
     },
   },
-});
+  logger: {
+    log: console.log,
+    warn: console.warn,
+    error: () => {},
+  },
+};
+
+const createTestQueryClient = () => new QueryClient(queryClientTestOptions);
 
 type TestAppProps = {
   children: React.ReactNode;
 };
 
-//   TODO: add set up for stores
 const TestingApp = ({ children }: TestAppProps) => {
+  const testQueryClient = createTestQueryClient();
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={testQueryClient}>
       <ToastPrimitive.Provider>
         <IonApp>{children}</IonApp>
       </ToastPrimitive.Provider>
@@ -57,50 +68,52 @@ const customRender = (
   options?: Omit<RenderOptions, "wrapper">
 ) => render(ui, { wrapper: TestingApp, ...options });
 
-const TestingAppWithBrowserRouter = ({ children }: TestAppProps) => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ToastPrimitive.Provider>
-        <IonApp>
-          <BrowserRouter>{children}</BrowserRouter>
-        </IonApp>
-      </ToastPrimitive.Provider>
-    </QueryClientProvider>
-  );
-};
+interface RouteOrComponentBase {
+  routes?: RouteObject[];
+}
+interface RouteObj extends RouteOrComponentBase {
+  routeObj: RouteObject;
+}
+interface Component extends RouteOrComponentBase {
+  component: JSX.Element;
+  defaultPath?: string;
+}
 
-const renderWithRouter = (ui: ReactElement, { route = "/" } = {}) => {
-  window.history.pushState({}, "Test page", route);
+type RouteOrComponent = Either<RouteObj, Component>;
+
+// cred to Miroslav Nikolov for original version, see article: https://webup.org/blog/how-to-avoid-mocking-in-react-router-v6-tests/
+const renderWithRouter = ({
+  routeObj,
+  component,
+  defaultPath,
+  routes = [],
+}: RouteOrComponent) => {
+  const routeInfo = routeObj ?? { element: component, path: defaultPath };
+
+  const path = routeObj?.path ?? defaultPath ?? "/";
+
+  // memory router used so we can manually control history
+  const router = createMemoryRouter([{ ...routeInfo }, ...routes], {
+    initialEntries: [path],
+    initialIndex: 0,
+  });
+
+  const testQueryClient = createTestQueryClient();
 
   return {
-    ...render(ui, { wrapper: TestingAppWithBrowserRouter }),
+    router,
+    user: userEvent.setup(),
+    ...render(
+      <QueryClientProvider client={testQueryClient}>
+        <ToastPrimitive.Provider>
+          <IonApp>
+            <RouterProvider router={router} />
+          </IonApp>
+        </ToastPrimitive.Provider>
+      </QueryClientProvider>
+    ),
   };
 };
-
-export const handlers = [
-  rest.get("*/react-query", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        name: "mocked-react-query",
-      })
-    );
-  }),
-];
-
-const createTestQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-    logger: {
-      log: console.log,
-      warn: console.warn,
-      error: () => {},
-    },
-  });
 
 export const renderWithClient = (ui: React.ReactElement) => {
   const testQueryClient = createTestQueryClient();

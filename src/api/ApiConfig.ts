@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const baseUrl = "https://api.wanikani.com/v2/";
+export const baseUrlRegex = new RegExp(baseUrl, "i");
 
 export const api = axios.create({
   baseURL: baseUrl,
@@ -32,3 +33,13 @@ api.interceptors.response.use(undefined, (error) => {
 pagingApi.interceptors.response.use(undefined, (error) => {
   return errorHandler(error);
 });
+
+export const setAxiosHeaders = (authToken: string | null) => {
+  if (authToken) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
+    pagingApi.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
+  } else {
+    api.defaults.headers.common["Authorization"] = null;
+    pagingApi.defaults.headers.common["Authorization"] = null;
+  }
+};

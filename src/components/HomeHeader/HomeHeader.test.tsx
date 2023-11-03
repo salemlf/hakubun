@@ -25,6 +25,7 @@ test("HomeHeader renders", () => {
 
 test("App name is rendered to screen", async () => {
   renderComponent();
+  screen.debug();
 
   expect(await screen.findByText(/^Hakubun$/)).toBeInTheDocument();
 });
@@ -41,10 +42,10 @@ test("User level is rendered to screen", async () => {
 
   renderComponent();
   let userLvl = mockUserLvl5.data.level;
-  let levelTxt = await waitFor(() => screen.getByTestId("level-num"));
+  let levelTxt = await screen.findByTestId("level-num");
   expect(levelTxt).toHaveTextContent(`Level ${userLvl}`);
 });
 
 const renderComponent = () => {
-  return renderWithRouter(<HomeHeader />);
+  return renderWithRouter({ component: <HomeHeader />, defaultPath: "/" });
 };

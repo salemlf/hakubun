@@ -1,11 +1,11 @@
-// TODO: change so not relying on IonIcon
-import { IonHeader, IonToolbar, IonButtons, IonIcon } from "@ionic/react";
-import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
-import HomeIconColor from "../../images/home-color.svg";
-import styled from "styled-components";
+import { IonHeader, IonToolbar, IonButtons } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
-import Button from "../Button/Button";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import Button from "../Button/Button";
+import SvgIcon from "../SvgIcon";
+import HomeIconColor from "../../images/home-color.svg?react";
+import styled from "styled-components";
 
 const SessionHeader = styled(IonHeader)`
   box-shadow: none;
@@ -18,6 +18,7 @@ const SessionHeader = styled(IonHeader)`
   }
 `;
 
+// TODO: change so not using IonToolbar
 const Toolbar = styled(IonToolbar)`
   padding: 5px 0;
   --ion-safe-area-top: 5px;
@@ -38,11 +39,6 @@ const HomeBtn = styled(Button)`
   border-radius: 10px;
   margin-left: 10px;
   padding: 0 6px;
-`;
-
-const HomeIconStyled = styled(IonIcon)`
-  width: 3em;
-  height: 3em;
 `;
 
 const calculateNumItemsInQueue = (queue: AssignmentQueueItem[]) => {
@@ -80,7 +76,7 @@ function QueueHeader() {
             onPress={() => navigate("/", { replace: true })}
             aria-label="Home page"
           >
-            <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
+            <SvgIcon icon={<HomeIconColor />} width="3em" height="3em" />
           </HomeBtn>
         </IonButtons>
         {numUniqueItemsInQueue !== undefined && (

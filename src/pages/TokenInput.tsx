@@ -223,7 +223,12 @@ const TokenInput = () => {
                 <HelpSpan helpPopoverContents={HelpPopoverContents}>
                   Wanikani API Token
                 </HelpSpan>
-                <Input type="text" name="api-token" data-private />
+                <Input
+                  type="text"
+                  name="api-token"
+                  data-private
+                  data-sentry-mask
+                />
               </TokenInputLabel>
               {hasError && (
                 <ErrorTxt>
