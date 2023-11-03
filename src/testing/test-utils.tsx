@@ -1,4 +1,4 @@
-import { isValidElement, ReactElement } from "react";
+import { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -9,6 +9,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
+import { Either } from "../types/Global";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -32,22 +33,29 @@ import "../theme/globals.scss";
 
 setupIonicReact();
 
-const queryClient = new QueryClient({
+const queryClientTestOptions = {
   defaultOptions: {
     queries: {
-      // retries off for testing
       retry: false,
     },
   },
-});
+  logger: {
+    log: console.log,
+    warn: console.warn,
+    error: () => {},
+  },
+};
+
+const createTestQueryClient = () => new QueryClient(queryClientTestOptions);
 
 type TestAppProps = {
   children: React.ReactNode;
 };
 
 const TestingApp = ({ children }: TestAppProps) => {
+  const testQueryClient = createTestQueryClient();
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={testQueryClient}>
       <ToastPrimitive.Provider>
         <IonApp>{children}</IonApp>
       </ToastPrimitive.Provider>
@@ -60,47 +68,43 @@ const customRender = (
   options?: Omit<RenderOptions, "wrapper">
 ) => render(ui, { wrapper: TestingApp, ...options });
 
-// !added
-// ? example usage:
-// 1️⃣ Render a page component under "/" by default
-// renderWithRouter(<ReviewSession />);
+interface RouteOrComponentBase {
+  routes?: RouteObject[];
+}
+interface RouteObj extends RouteOrComponentBase {
+  routeObj: RouteObject;
+}
+interface Component extends RouteOrComponentBase {
+  component: JSX.Element;
+  defaultPath?: string;
+}
 
-// 2️⃣ Render a page component under a custom path
-// renderWithRouter({
-//   element: <ReviewSession />,
-//   path: "/reviews/session",
-// });
+type RouteOrComponent = Either<RouteObj, Component>;
 
-// 3️⃣ Render a page component under "/" and set additional routes.
-// Useful for testing route navigation
-// renderWithRouter(<ReviewSession />, [
-//   {
-//     path: "/",
-//     element: <Home/>,
-//   },
-//   {
-//     path: "/reviews/settings",
-//     element: <ReviewSettings/>,
-//   },
-// ]);
+// cred to Miroslav Nikolov for original version, see article: https://webup.org/blog/how-to-avoid-mocking-in-react-router-v6-tests/
+const renderWithRouter = ({
+  routeObj,
+  component,
+  defaultPath,
+  routes = [],
+}: RouteOrComponent) => {
+  const routeInfo = routeObj ?? { element: component, path: defaultPath };
 
-// TODO: change from using "any" type
-// cred to Miroslav Nikolov, see article: https://webup.org/blog/how-to-avoid-mocking-in-react-router-v6-tests/
-const renderWithRouter = (children: any, routes: RouteObject[] = []) => {
-  const options = isValidElement(children)
-    ? { element: children, path: "/" }
-    : children;
+  const path = routeObj?.path ?? defaultPath ?? "/";
 
   // memory router used so we can manually control history
-  const router = createMemoryRouter([{ ...options }, ...routes], {
-    initialEntries: [options.path],
-    initialIndex: 1,
+  const router = createMemoryRouter([{ ...routeInfo }, ...routes], {
+    initialEntries: [path],
+    initialIndex: 0,
   });
 
+  const testQueryClient = createTestQueryClient();
+
   return {
+    router,
     user: userEvent.setup(),
     ...render(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={testQueryClient}>
         <ToastPrimitive.Provider>
           <IonApp>
             <RouterProvider router={router} />
@@ -111,27 +115,12 @@ const renderWithRouter = (children: any, routes: RouteObject[] = []) => {
   };
 };
 
-const createTestQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-    logger: {
-      log: console.log,
-      warn: console.warn,
-      error: () => {},
-    },
-  });
-
 export const renderWithClient = (ui: React.ReactElement) => {
   const testQueryClient = createTestQueryClient();
   const { rerender, ...result } = render(
     <QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>
   );
   return {
-    user: userEvent.setup(),
     ...result,
     rerender: (rerenderUi: React.ReactElement) =>
       rerender(
