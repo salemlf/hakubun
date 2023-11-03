@@ -18,6 +18,7 @@ const SessionHeader = styled(IonHeader)`
   }
 `;
 
+// TODO: change so not using IonToolbar
 const Toolbar = styled(IonToolbar)`
   padding: 5px 0;
   --ion-safe-area-top: 5px;

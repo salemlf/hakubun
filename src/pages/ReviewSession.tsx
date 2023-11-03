@@ -292,8 +292,8 @@ function ReviewSession() {
           )
         }
       </ReactRouterPrompt>
-      {assignmentQueue.length !== 0 && <QueueHeader />}
-      <Content>
+      <QueueHeader />
+      <Content data-testid="review-session-content">
         <>
           {assignmentQueue.length !== 0 && (
             <AssignmentQueueCards

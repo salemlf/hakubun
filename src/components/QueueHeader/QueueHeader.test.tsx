@@ -7,5 +7,5 @@ test("QueueHeader renders", () => {
 });
 
 const renderComponent = () => {
-  return renderWithRouter(<QueueHeader />);
+  return renderWithRouter({ component: <QueueHeader /> });
 };

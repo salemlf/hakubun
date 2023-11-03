@@ -19,5 +19,7 @@ test("AssignmentSettings renders", () => {
 });
 
 const renderComponent = (settingProps: AssignmentSettingsProps) => {
-  return renderWithRouter(<AssignmentSettings {...settingProps} />);
+  return renderWithRouter({
+    component: <AssignmentSettings {...settingProps} />,
+  });
 };
