@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useCallback, useMemo } from "react";
 import { IonList } from "@ionic/react";
 import Fuse from "fuse.js";
 import { AnimatePresence, motion } from "framer-motion";
@@ -88,12 +88,43 @@ const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
   }
 `;
 
+// TODO: improve performance of this
+export const useFuse = (
+  data: any[],
+  options: Fuse.IFuseOptions<unknown> | undefined
+) => {
+  const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce<string>(query, 20);
+
+  const { ...fuseOptions } = options;
+
+  // const index = useMemo(() => Fuse.createIndex(
+  //   options?.keys,
+  //   data
+  // ),[data, options?.keys]);
+  const fuse = useMemo(() => new Fuse(data, fuseOptions), [data, fuseOptions]);
+  const hits = useMemo(() => {
+    let results = fuse.search(query);
+    return flattenSearchResults(results);
+  }, [data.length, debouncedQuery]);
+
+  const onSearch = useCallback((input: string) => setQuery(input), [setQuery]);
+
+  return {
+    hits,
+    onSearch,
+    query,
+    setQuery,
+  };
+};
+
 const crabigatorVariants = {
   initial: { opacity: 0 },
   show: { opacity: 1 },
   hide: { opacity: 0 },
 };
 
+// TODO: change to use something faster than fuse.js
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useStickyState("", "search-page-query");
@@ -114,17 +145,23 @@ export const Search = () => {
     isFetchingNextPage,
   } = useAllSubjects();
 
+  let [subjData, setSubjData] = useState<any[]>([]);
+  const { hits, onSearch } = useFuse(subjData, options);
+
   useEffect(() => {
     if (allSubjectsData) {
-      const fuse = new Fuse(
-        allSubjectsData as unknown as readonly unknown[],
-        options
-      );
-      const results = fuse.search(debouncedQuery.toLowerCase());
-      let flattenedSearch = flattenSearchResults(results);
-      setResults(flattenedSearch);
+      setSubjData(allSubjectsData as unknown as any[]);
+      onSearch(debouncedQuery);
     }
   }, [allSubjectsData, debouncedQuery]);
+
+  useEffect(() => {
+    if (hits) {
+      // let flattenedSearch = flattenSearchResults(hits);
+      // setResults(flattenedSearch);
+      setResults(hits);
+    }
+  }, [hits]);
 
   useEffect(() => {
     if (allSubjectsData && hasNextPage) {
@@ -133,7 +170,7 @@ export const Search = () => {
   }, [allSubjectsData]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setQuery(event.target.value.toLowerCase().trim());
   };
 
   return (
