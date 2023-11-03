@@ -62,7 +62,10 @@ Sentry.init({
         matchRoutes
       ),
     }),
-    new Sentry.Replay(),
+    new Sentry.Replay({
+      maskAllText: false,
+      blockAllMedia: false,
+    }),
   ],
   // Performance Monitoring
   tracesSampleRate: 1.0, // Capture 100% of the transactions
