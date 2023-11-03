@@ -7,5 +7,7 @@ test("Search renders", () => {
 });
 
 const renderComponent = () => {
-  return renderWithRouter(<Search />);
+  return renderWithRouter({
+    routeObj: { element: <Search />, path: "/search" },
+  });
 };
