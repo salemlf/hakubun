@@ -81,7 +81,7 @@
     "iOS >=14"
   ],
   "devDependencies": {
-    "@capacitor/assets": "^2.0.4",
+    "@capacitor/assets": "^3.0.1",
     "@capacitor/cli": "^5.0.0",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
