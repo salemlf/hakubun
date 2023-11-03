@@ -96,7 +96,7 @@ const crabigatorVariants = {
 
 export const Search = () => {
   let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
-  const [query, setQuery] = useStickyState<string>("", "search-page-query");
+  const [query, setQuery] = useStickyState("", "search-page-query");
   const debouncedQuery = useDebounce<string>(query, 1800);
 
   const options = {
