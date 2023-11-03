@@ -67,7 +67,7 @@ function RadicalCombination({ kanji, displayQuestionTxt = false }: Props) {
         <SubjectButtonList
           btnSize="lg"
           subjList={radicalsUsedSubjData}
-          assignmentList={radicalsUsedAssignmentsData}
+          assignmentList={radicalsUsedAssignmentsData ?? []}
         />
       </SubjBtnListWrapper>
     </SubjDetailSection>

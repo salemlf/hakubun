@@ -336,12 +336,6 @@ export const isUserMeaningAnswerCorrect = (
     reviewItem: reviewItem,
     acceptedAnswersOnly: true,
   });
-  // *testing
-  console.log(
-    "🚀 ~ file: AssignmentQueueService.tsx:319 ~ answersWithSynonyms:",
-    answersWithSynonyms
-  );
-  // *testing
 
   // TODO: update this based on user settings once those are implemented, allow strict meanings (0.0 threshold, and prob just apply to vocab)
   // meanings allow some typos/mistakes

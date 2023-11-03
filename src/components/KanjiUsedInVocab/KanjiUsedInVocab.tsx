@@ -75,7 +75,7 @@ function KanjiUsedInVocab({
       <SubjectButtonList
         btnSize="lg"
         subjList={kanjiUsedSubjects}
-        assignmentList={kanjiUsedAssignmentsData}
+        assignmentList={kanjiUsedAssignmentsData ?? []}
       />
       {displayQuestionTxt && (
         <>
