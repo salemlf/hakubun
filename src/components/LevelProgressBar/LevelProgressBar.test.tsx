@@ -1,12 +1,12 @@
 import { rest } from "msw";
 import { renderWithClient } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
+import { mockKanjiAssignmentsForLvl1 } from "../../testing/mocks/data/assignments.mock";
+import { mockKanjiSubjectsForLvl1 } from "../../testing/mocks/data/subjects.mock";
 import {
   kanjiAssignmentsByLvlEndpoint,
   kanjiSubjectsByLvlEndpoint,
-} from "../../testing/mocks/handlers";
-import { mockKanjiAssignmentsForLvl1 } from "../../testing/mocks/data/assignments.mock";
-import { mockKanjiSubjectsForLvl1 } from "../../testing/mocks/data/subjects.mock";
+} from "../../testing/endpoints";
 import LevelProgressBar from ".";
 
 server.use(
