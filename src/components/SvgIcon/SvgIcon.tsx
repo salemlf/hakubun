@@ -21,6 +21,7 @@ interface IProps {
   height?: string;
 }
 
+// TODO: figure out how to use custom color for svg
 function SvgIcon({ icon, width = "1em", height = "1em" }: IProps) {
   return (
     <SvgWrapper svgwidth={width} svgheight={height}>
