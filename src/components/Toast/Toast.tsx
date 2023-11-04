@@ -25,11 +25,9 @@ const Viewport = styled(ToastPrimitive.Viewport)<ViewportProps>`
   flex-direction: column;
   padding: 25px;
   gap: 10px;
-  width: 380px;
   max-width: 100vw;
   margin: 0;
   list-style: none;
-  transform: translate(-50%, 0);
   outline: none;
 `;
 
