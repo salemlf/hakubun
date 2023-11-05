@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { TabData } from "../../types/MiscTypes";
-import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import { ReviewType } from "../../types/AssignmentQueueTypes";
 import { Subject, Vocabulary } from "../../types/Subject";
 import ContextSentences from "../ContextSentences";
 import KanjiUsedInVocab from "../KanjiUsedInVocab";
@@ -16,7 +17,6 @@ import {
 } from "../../styles/SubjectDetailsStyled";
 import { FullWidthColumn } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
-import { useState } from "react";
 
 const ReadingHeading = styled(SubjDetailSubHeading)`
   margin-bottom: 0;
@@ -30,24 +30,22 @@ const PartsOfSpeechContainer = styled(FullWidthColumn)`
   margin-bottom: 15px;
 `;
 
-const getTabsForVocab = (vocabQueueItem: AssignmentQueueItem) => {
-  let isKanaVocab = vocabQueueItem.object === "kana_vocabulary";
+const getTabsForVocab = (vocab: Subject) => {
+  let isKanaVocab = vocab.object === "kana_vocabulary";
+
   const meaningTab: TabData[] = [
     {
       id: "meaning",
       label: "Meaning",
       tabContents: (
         <SubjDetailTabContainer>
-          <SubjectMeanings
-            subject={vocabQueueItem as Subject}
-            showPrimaryMeaning={true}
-          />
+          <SubjectMeanings subject={vocab} showPrimaryMeaning={true} />
           <PartsOfSpeechContainer>
-            <PartsOfSpeech vocab={vocabQueueItem as Vocabulary} />
+            <PartsOfSpeech vocab={vocab as Vocabulary} />
           </PartsOfSpeechContainer>
-          <VocabMeaningExplanation vocab={vocabQueueItem as Vocabulary} />
-          {isKanaVocab && vocabQueueItem.context_sentences && (
-            <ContextSentences sentences={vocabQueueItem.context_sentences} />
+          <VocabMeaningExplanation vocab={vocab as Vocabulary} />
+          {isKanaVocab && vocab.context_sentences && (
+            <ContextSentences sentences={vocab.context_sentences} />
           )}
         </SubjDetailTabContainer>
       ),
@@ -60,9 +58,9 @@ const getTabsForVocab = (vocabQueueItem: AssignmentQueueItem) => {
     tabContents: (
       <SubjDetailTabContainer>
         <KanjiUsedInVocab
-          kanjiIDs={vocabQueueItem.component_subject_ids!}
+          kanjiIDs={vocab.component_subject_ids!}
           displayQuestionTxt={true}
-          vocabSlug={vocabQueueItem.slug}
+          vocabSlug={vocab.slug}
         />
       </SubjDetailTabContainer>
     ),
@@ -75,14 +73,11 @@ const getTabsForVocab = (vocabQueueItem: AssignmentQueueItem) => {
       <SubjDetailTabContainer>
         <VocabReadingSection>
           <ReadingHeading>Vocab Reading</ReadingHeading>
-          <VocabReadings
-            vocab={vocabQueueItem as Vocabulary}
-            hideReadingTxt={true}
-          />
+          <VocabReadings vocab={vocab as Vocabulary} hideReadingTxt={true} />
         </VocabReadingSection>
-        <VocabReadingExplanation vocab={vocabQueueItem as Vocabulary} />
-        {vocabQueueItem.context_sentences && (
-          <ContextSentences sentences={vocabQueueItem.context_sentences} />
+        <VocabReadingExplanation vocab={vocab as Vocabulary} />
+        {vocab.context_sentences && (
+          <ContextSentences sentences={vocab.context_sentences} />
         )}
       </SubjDetailTabContainer>
     ),
@@ -96,14 +91,15 @@ const getTabsForVocab = (vocabQueueItem: AssignmentQueueItem) => {
 };
 
 type Props = {
-  vocab: AssignmentQueueItem;
+  vocab: Subject;
+  reviewType: ReviewType;
   scrollToDefault: boolean;
 };
 
-function VocabDetailTabs({ vocab, scrollToDefault }: Props) {
+function VocabDetailTabs({ vocab, reviewType, scrollToDefault }: Props) {
   let tabData = getTabsForVocab(vocab);
   const defaultTabKey = scrollToDefault
-    ? (vocab.review_type as string)
+    ? (reviewType as string)
     : tabData[0].id;
   const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
 
@@ -112,7 +108,7 @@ function VocabDetailTabs({ vocab, scrollToDefault }: Props) {
       selectedTabKey={selectedTabKey}
       setSelectedTabKey={setSelectedTabKey}
       tabs={tabData}
-      defaultValue={vocab.review_type as string}
+      defaultValue={reviewType as string}
       scrollToDefault={scrollToDefault}
     />
   );

@@ -1,8 +1,11 @@
 import { AnimatePresence } from "framer-motion";
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import {
+  convertQueueItemsToSubjects,
+  getSubjectColor,
+} from "../../services/SubjectAndAssignmentService";
 import useLessonPaginatorStoreFacade from "../../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
-import { Subject, SubjectType } from "../../types/Subject";
+import { SubjectType } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
 import RadicalDetailTabs from "../RadicalDetailTabs";
 import KanjiDetailTabs from "../KanjiDetailTabs";
@@ -32,11 +35,12 @@ type CardProps = {
 
 // TODO: persist selected tab so doesn't reset when leaving page and coming back
 function LessonCard({ lesson }: CardProps) {
+  let itemAsSubj = convertQueueItemsToSubjects([lesson])[0];
   return (
     <>
-      <LessonSessionHeader subjType={lesson.object}>
+      <LessonSessionHeader subjType={lesson.subject_type}>
         <SubjectChars
-          subject={lesson as Subject}
+          subject={itemAsSubj}
           fontSize="4rem"
           withBgColor={true}
           alignText="center"
@@ -44,14 +48,22 @@ function LessonCard({ lesson }: CardProps) {
       </LessonSessionHeader>
       <LessonContent>
         {lesson.object == "radical" && (
-          <RadicalDetailTabs radical={lesson} scrollToDefault={false} />
+          <RadicalDetailTabs radical={itemAsSubj} scrollToDefault={false} />
         )}
         {lesson.object == "kanji" && (
-          <KanjiDetailTabs kanji={lesson} scrollToDefault={false} />
+          <KanjiDetailTabs
+            kanji={itemAsSubj}
+            reviewType={lesson.review_type}
+            scrollToDefault={false}
+          />
         )}
         {(lesson.object == "vocabulary" ||
           lesson.object == "kana_vocabulary") && (
-          <VocabDetailTabs vocab={lesson} scrollToDefault={false} />
+          <VocabDetailTabs
+            vocab={itemAsSubj}
+            reviewType={lesson.review_type}
+            scrollToDefault={false}
+          />
         )}
       </LessonContent>
     </>

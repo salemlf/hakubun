@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { useWindowSize } from "usehooks-ts";
-import { useQueueStore } from "../../stores/useQueueStore/useQueueStore";
-import { Subject } from "../../types/Subject";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import { convertQueueItemsToSubjects } from "../../services/SubjectAndAssignmentService";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import BottomSheetHeader from "./BottomSheetHeader";
 import RadicalDetailTabs from "../RadicalDetailTabs/RadicalDetailTabs";
@@ -11,7 +11,6 @@ import VocabDetailTabs from "../VocabDetailTabs/VocabDetailTabs";
 import BottomSheetRoot, { BottomSheetContent } from "../BottomSheet";
 import { Section } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
-import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 
 const SectionWithPadding = styled(Section)`
   padding: 12px;
@@ -24,12 +23,13 @@ type Props = {
 };
 
 // TODO: rename so matches AssignmentQueue naming convention
-// TODO: modify how BottomSheet component is displayed, rn it's isOpen prop will always be true lol
 function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   const location = useLocation();
   const { isBottomSheetVisible: showBottomSheet } = useQueueStoreFacade();
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const { height } = useWindowSize();
+
+  let itemAsSubj = convertQueueItemsToSubjects([currentReviewItem])[0];
 
   // TODO: also reopen to previous breakpoint on return?
   useEffect(() => {
@@ -52,24 +52,26 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
       <>
         <BottomSheetRoot>
           <BottomSheetContent title="Subject Info" height={height}>
-            <BottomSheetHeader subject={currentReviewItem as Subject} />
+            <BottomSheetHeader subject={itemAsSubj} />
             <SectionWithPadding>
               {currentReviewItem.object == "radical" && (
                 <RadicalDetailTabs
-                  radical={currentReviewItem}
+                  radical={itemAsSubj}
                   scrollToDefault={true}
                 />
               )}
               {currentReviewItem.object == "kanji" && (
                 <KanjiDetailTabs
-                  kanji={currentReviewItem}
+                  kanji={itemAsSubj}
+                  reviewType={currentReviewItem.review_type}
                   scrollToDefault={true}
                 />
               )}
               {(currentReviewItem.object == "vocabulary" ||
                 currentReviewItem.object == "kana_vocabulary") && (
                 <VocabDetailTabs
-                  vocab={currentReviewItem}
+                  vocab={itemAsSubj}
+                  reviewType={currentReviewItem.review_type}
                   scrollToDefault={true}
                 />
               )}

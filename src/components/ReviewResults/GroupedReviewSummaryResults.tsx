@@ -1,5 +1,9 @@
 import { groupDataByProperty } from "../../utils";
-import { getSrsStageNameByNum } from "../../services/SubjectAndAssignmentService";
+import {
+  convertQueueItemsToAssignments,
+  convertQueueItemsToSubjects,
+  getSrsStageNameByNum,
+} from "../../services/SubjectAndAssignmentService";
 import { Subject } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import SubjectButtonList from "../SubjectButtonList";
@@ -61,24 +65,6 @@ const LevelGroup = ({ level, items }: LevelGroupProps) => {
     "ending_srs_stage"
   );
 
-  const convertToSubjects = (items: AssignmentQueueItem[]): Subject[] => {
-    return items.map((item) => {
-      return {
-        ...item,
-        id: item.subject_id,
-      };
-    });
-  };
-
-  const convertToAssignments = (items: AssignmentQueueItem[]): Assignment[] => {
-    return items.map((item) => {
-      return {
-        ...item,
-        id: item.assignment_id,
-      };
-    });
-  };
-
   return (
     <>
       {Object.entries(groupedBySRS).map(([key, value]) => (
@@ -89,10 +75,12 @@ const LevelGroup = ({ level, items }: LevelGroupProps) => {
           </LvlAndSrsStage>
           <HorizontalRule />
           <SubjectButtonList
-            subjList={convertToSubjects(value) as Subject[]}
+            subjList={convertQueueItemsToSubjects(value) as Subject[]}
             btnSize="sm"
             justify="flex-start"
-            assignmentList={convertToAssignments(value) as Assignment[]}
+            assignmentList={
+              convertQueueItemsToAssignments(value) as Assignment[]
+            }
             allowVocab={true}
             showDetails={false}
           />
