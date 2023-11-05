@@ -1,6 +1,5 @@
 import { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
-import * as ToastPrimitive from "@radix-ui/react-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { IonApp, setupIonicReact } from "@ionic/react";
 import {
@@ -30,6 +29,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "../theme/variables.css";
 import "../theme/globals.scss";
+import { ToastDisplayProvider } from "../components/Toast/displayToast";
 
 setupIonicReact();
 
@@ -56,9 +56,8 @@ const TestingApp = ({ children }: TestAppProps) => {
   const testQueryClient = createTestQueryClient();
   return (
     <QueryClientProvider client={testQueryClient}>
-      <ToastPrimitive.Provider>
-        <IonApp>{children}</IonApp>
-      </ToastPrimitive.Provider>
+      <ToastDisplayProvider />
+      <IonApp>{children}</IonApp>
     </QueryClientProvider>
   );
 };
@@ -105,11 +104,10 @@ const renderWithRouter = ({
     user: userEvent.setup(),
     ...render(
       <QueryClientProvider client={testQueryClient}>
-        <ToastPrimitive.Provider>
-          <IonApp>
-            <RouterProvider router={router} />
-          </IonApp>
-        </ToastPrimitive.Provider>
+        <ToastDisplayProvider />
+        <IonApp>
+          <RouterProvider router={router} />
+        </IonApp>
       </QueryClientProvider>
     ),
   };

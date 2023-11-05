@@ -11,10 +11,10 @@ import {
 } from "react-router-dom";
 import { IonApp, setupIonicReact } from "@ionic/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
+import { ToastDisplayProvider } from "./components/Toast/displayToast";
 import { routes } from "./navigation/routes";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { worker } from "./testing/mocks/worker";
@@ -116,11 +116,10 @@ const App: React.FC = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastPrimitive.Provider>
-        <IonApp>
-          <RouterProvider router={browserRouter} />
-        </IonApp>
-      </ToastPrimitive.Provider>
+      <ToastDisplayProvider />
+      <IonApp>
+        <RouterProvider router={browserRouter} />
+      </IonApp>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
