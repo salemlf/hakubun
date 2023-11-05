@@ -21,6 +21,13 @@ window.matchMedia =
     };
   };
 
+const localStorageMock = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  clear: vi.fn(),
+};
+global.localStorage = localStorageMock as unknown as Storage;
+
 vi.mock("zustand"); // to make it work like Jest (auto-mocking)
 
 // extends Vitest's expect method with methods from react-testing-library

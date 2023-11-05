@@ -36,10 +36,6 @@ export const useUserLogin = () => {
       let userData = await getUser();
       let userInfo: User = userData.data;
 
-      // *testing
-      console.log("🚀 ~ file: useAuth.tsx:23 ~ login ~ userInfo:", userInfo);
-      // *testing
-
       setUserInfo(userInfo);
 
       LogRocket.identify(`${userInfo.username}`, {

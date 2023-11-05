@@ -15,7 +15,7 @@ import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
-import { getRoutes } from "./navigation/routes";
+import { routes } from "./navigation/routes";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { worker } from "./testing/mocks/worker";
 
@@ -97,14 +97,10 @@ const queryClient = new QueryClient({
 });
 
 const App: React.FC = () => {
-  const { isAuthenticated, isAuthLoading, authToken } =
-    useAuthTokenStoreFacade();
+  const { authToken } = useAuthTokenStoreFacade();
   const { userInfo } = useUserInfoStoreFacade();
 
-  const browserRouter = getBrowserRouter({
-    isAuthenticated,
-    isAuthLoading,
-  });
+  const browserRouter = getBrowserRouter();
 
   // setting the auth token headers for all api requests
   setAxiosHeaders(authToken);
@@ -130,16 +126,8 @@ const App: React.FC = () => {
   );
 };
 
-type BrowserRouterProps = {
-  isAuthenticated: boolean;
-  isAuthLoading: boolean;
-};
-
-const getBrowserRouter = ({
-  isAuthenticated,
-  isAuthLoading,
-}: BrowserRouterProps) => {
-  let routes = getRoutes({ isAuthLoading, isAuthenticated });
+const getBrowserRouter = () => {
+  // let browserRoutes = routes;
   return sentryCreateBrowserRouter(routes);
 };
 
