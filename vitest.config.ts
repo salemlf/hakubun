@@ -9,5 +9,8 @@ export default mergeConfig(
       environment: "jsdom",
       setupFiles: ["./src/testing/setup.ts"],
     },
+    define: process.env.VITEST
+      ? { "process.env": {} }
+      : { global: "window", "process.env": {} },
   })
 );
