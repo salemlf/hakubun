@@ -152,7 +152,8 @@ const TokenInput = () => {
   const { login } = useUserLogin();
   const [hasError, setHasError] = useState(false);
   const [tokenPageLoading, setTokenPageLoading] = useState(false);
-  const { isAuthLoading, authToken } = useAuthTokenStoreFacade();
+  const { isAuthLoading, authToken, isAuthenticated } =
+    useAuthTokenStoreFacade();
 
   // logs user in if auth info already in storage
   useEffect(() => {
@@ -163,7 +164,7 @@ const TokenInput = () => {
 
   const { userInfo } = useUserInfoStoreFacade();
   useEffect(() => {
-    if (userInfo !== undefined) {
+    if (userInfo !== undefined && isAuthenticated) {
       navigate("/", { replace: true });
     }
   }, [userInfo]);
