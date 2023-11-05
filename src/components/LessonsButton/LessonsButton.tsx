@@ -1,15 +1,14 @@
-import { useState } from "react";
 import { useNavigate } from "react-router";
-import { setBtnBackground } from "../../services/ImageSrcService";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
-import Toast from "../Toast";
+import { setBtnBackground } from "../../services/ImageSrcService";
+import { displayToast } from "../Toast/Toast.service";
+import { useLessons } from "../../hooks/useLessons";
 import {
   BaseReviewLessonButton,
   BaseReviewLessonButtonBadge,
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components";
-import { useLessons } from "../../hooks/useLessons";
 
 const LessonsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-lesson);
@@ -26,9 +25,6 @@ const LessonButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`
 
 function LessonsButton() {
   const navigate = useNavigate();
-  const [displayToast, setDisplayToast] = useState<boolean>(false);
-  const [toastTitle, setToastTitle] = useState<string>();
-  const [toastContent, setToastContent] = useState<string>();
   const { userInfo } = useUserInfoStoreFacade();
 
   const {
@@ -44,19 +40,24 @@ function LessonsButton() {
   const onLessonBtnClick = () => {
     let paidSubscription = userInfo && userInfo.subscription.type !== "free";
     if (lessonsData === undefined || lessonsData.length === 0) {
-      setToastTitle("No lessons available!");
-      setToastContent(
-        "Looks like you don't have any lessons right now, work on reviews if you have some available :)"
-      );
-      setDisplayToast(true);
+      displayToast({
+        title: "No lessons available!",
+        content:
+          "Looks like you don't have any lessons right now, work on reviews if you have some available :)",
+        toastType: "error",
+        timeout: 10000,
+      });
     } else if (
       userInfo &&
       !paidSubscription &&
       userInfo.level > userInfo.subscription.max_level_granted
     ) {
-      setToastTitle("No more free lessons, sorry :(");
-      setToastContent("Looks like you've used up all your free lessons!");
-      setDisplayToast(true);
+      displayToast({
+        title: "No more free lessons, sorry :(",
+        content: "Looks like you've used up all your free lessons!",
+        toastType: "error",
+        timeout: 10000,
+      });
     } else {
       navigate("/lessons/settings");
     }
@@ -79,13 +80,6 @@ function LessonsButton() {
           {lessonsData ? lessonsData.length : 0}
         </BaseReviewLessonButtonBadge>
       </LessonsButtonStyled>
-      <Toast
-        open={displayToast}
-        setOpen={setDisplayToast}
-        title={toastTitle}
-        content={toastContent}
-        toastType="error"
-      ></Toast>
     </>
   );
 }
