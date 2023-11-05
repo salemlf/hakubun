@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import {
   checkIfAssignmentTypeInQueue,
   createAssignmentQueueItems,
@@ -8,10 +12,7 @@ import {
   getSubjectTypeDisplayText,
 } from "../../services/SubjectAndAssignmentService";
 import { capitalizeWord } from "../../services/MiscService";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
-import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
-import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
-import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
+import { displayToast } from "../Toast/Toast.service";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import {
@@ -28,7 +29,6 @@ import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
 import LoadingDots from "../LoadingDots";
-import Toast from "../Toast";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
 import { sortAssignmentsWithOption } from "../SortOrderOption/SortOrderOption.service";
@@ -113,7 +113,6 @@ function AssignmentSettings({
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState<
     SubjectType[]
   >(availableAssignmentTypes);
-  const [displayToast, setDisplayToast] = useState<boolean>(false);
 
   let tabBgColor =
     settingsType === "review"
@@ -163,7 +162,12 @@ function AssignmentSettings({
       selectedAdvancedSubjIDs.length === 0 &&
       selectedAssignmentTypes.length === 0;
     if (noAssignmentsSelected) {
-      setDisplayToast(true);
+      displayToast({
+        title: `No ${capitalizeWord(settingsType)}s Selected`,
+        content: `Select some ${settingsType}s using the settings above`,
+        toastType: "error",
+        timeout: 10000,
+      });
       return;
     }
 
@@ -259,13 +263,6 @@ function AssignmentSettings({
             defaultValue="basic"
             scrollToDefault={false}
           />
-          <Toast
-            open={displayToast}
-            setOpen={setDisplayToast}
-            title={`No ${capitalizeWord(settingsType)}s Selected`}
-            content={`Select some ${settingsType}s using the settings above`}
-            toastType="error"
-          ></Toast>
           <StartSessionButton
             onStartBtnClick={onStartSessionBtnClick}
             buttonType={settingsType}

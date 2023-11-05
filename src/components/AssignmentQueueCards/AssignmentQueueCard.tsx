@@ -9,15 +9,14 @@ import {
 import { toHiragana } from "wanakana";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import { isUserAnswerValid } from "../../services/AssignmentQueueService";
+import { closeAllToasts, displayToast } from "../Toast/Toast.service";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { SubjectType } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
-import { ToastType } from "../Toast/types";
 import AssignmentCharAndType from "./AssignmentCharAndType";
 import AssignmentAnswerInput from "./AssignmentAnswerInput";
 import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
 import Emoji from "../Emoji";
-import Toast from "../Toast";
 import RetryIcon from "../../images/retry.svg";
 import NextIcon from "../../images/next-item.svg";
 import {
@@ -112,19 +111,6 @@ export const AssignmentQueueCard = ({
     !isSubmittingAnswer || savedUserAnswer === null ? "" : savedUserAnswer;
   const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
 
-  type ToastInfo = {
-    toastType: ToastType;
-    title: string;
-    content: string;
-  };
-  const initialToastValue: ToastInfo = {
-    toastType: "info",
-    title: "",
-    content: "",
-  };
-  const [toastInfo, setToastInfo] = useState<ToastInfo>(initialToastValue);
-  const [displayToast, setDisplayToast] = useState<boolean>(false);
-
   useKeyDown(() => attemptToAdvance(), ["F12"]);
   useKeyDown(() => retryTriggered(), ["F6"]);
 
@@ -147,7 +133,6 @@ export const AssignmentQueueCard = ({
   // TODO: sometimes on retry drag motion value somehow becomes NaN (maybe somehow gets cancelled?) and...
   // TODO: ...freezes up the dragging. Tough bug to fix, may be a library issue
   const retryTriggered = () => {
-    setDisplayToast(false);
     let strippedUserAnswer = userAnswer.trim();
 
     if (isSubmittingAnswer) {
@@ -160,30 +145,30 @@ export const AssignmentQueueCard = ({
           ? "Input is empty, you can't retry this item!"
           : "You haven't submitted your answer, you can't retry this item!";
 
-      setToastInfo({
+      displayToast({
         toastType: "warning",
         title: "Can't Retry!",
         content: cantRetryMsg,
+        timeout: 10000,
       });
-      setDisplayToast(true);
       controls.start("center");
     }
   };
 
   const attemptToAdvance = () => {
-    setDisplayToast(false);
+    closeAllToasts();
     let strippedUserAnswer = userAnswer.trim();
     currentReviewItem.review_type === "reading" &&
       setUserAnswer(toHiragana(strippedUserAnswer));
 
     let isValidInfo = isUserAnswerValid(currentReviewItem, strippedUserAnswer);
     if (isValidInfo.isValid === false) {
-      setToastInfo({
+      displayToast({
         toastType: "warning",
         title: "Invalid Answer",
         content: isValidInfo.message,
+        timeout: 10000,
       });
-      setDisplayToast(true);
       setShakeInputTrigger((shakeInputTrigger) => shakeInputTrigger + 1);
     } else {
       setSavedUserAnswer(strippedUserAnswer);
@@ -284,15 +269,6 @@ export const AssignmentQueueCard = ({
               Swipe me <Emoji symbol="🙂" label="Smiling face" />
             </SwipeMeHint>
           </AssignmentCardStyled>
-          <Toast
-            toastType={toastInfo.toastType}
-            open={displayToast}
-            setOpen={setDisplayToast}
-            title={toastInfo.title}
-            content={toastInfo.content}
-            distanceFromBottom="inherit"
-            distanceFromTop="0"
-          ></Toast>
           <ReviewItemBottomSheet currentReviewItem={currentReviewItem} />
         </>
       )}

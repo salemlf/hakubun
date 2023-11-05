@@ -45,6 +45,8 @@ test("ReviewsButton redirects to review settings on click", async () => {
   ).toBeInTheDocument();
 });
 
+// TODO: check that displays a toast on click if no reviews available
+
 const renderComponent = (
   level: number,
   withReviewSettings: boolean = false

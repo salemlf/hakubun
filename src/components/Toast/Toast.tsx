@@ -1,35 +1,16 @@
-import React from "react";
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ToastProps } from "@radix-ui/react-toast";
-import { AnimatePresence, motion } from "framer-motion";
-import { ToastType } from "./types";
+import { motion } from "framer-motion";
+import { ActionProps, ToastType } from "./types";
 import CloseIcon from "../../images/close.svg";
 import ErrorIcon from "../../images/error.svg";
 import InfoIcon from "../../images/info.svg";
 import SuccessIcon from "../../images/success.svg";
 import WarningIcon from "../../images/warning.svg";
+import LoadingIcon from "../../images/loading.svg";
 import styled from "styled-components";
-
-type ViewportProps = {
-  distancefrombottom: string;
-  distancefromtop: string;
-};
-
-const Viewport = styled(ToastPrimitive.Viewport)<ViewportProps>`
-  bottom: ${({ distancefrombottom }) => distancefrombottom};
-  top: ${({ distancefromtop }) => distancefromtop};
-  left: 50%;
-  display: flex;
-  flex-direction: column;
-  padding: 25px;
-  gap: 10px;
-  max-width: 100vw;
-  margin: 0;
-  list-style: none;
-  outline: none;
-`;
 
 type RootProps = {
   bgcolor: string;
@@ -115,97 +96,81 @@ const toastTypeStylesMap: { [index: string]: ToastStyles } = {
     textColor: "white",
     icon: ErrorIcon,
   },
+  loading: {
+    bgColor: "var(--darkest-purple)",
+    textColor: "white",
+    icon: LoadingIcon,
+  },
 };
 
-interface ActionProps {
-  altText: string;
-  children: React.ReactNode;
-}
-
-interface Props extends ToastProps {
+interface CustomToastProps extends ToastProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   action?: ActionProps;
-  showClose?: boolean;
-  distanceFromBottom?: string;
-  distanceFromTop?: string;
-  duration?: number;
+  timeout: number;
   toastType: ToastType;
+  allowClose?: boolean;
 }
 
-// TODO: change animation so on swipe it slides out and toasts stack
-const Toast = ({
+// TODO: change animation so on swipe it slides out
+export const Toast = ({
   open,
   setOpen,
   title,
   content,
+  toastType,
   action,
-  distanceFromTop = "inherit",
-  distanceFromBottom = "85px",
-  duration = 10000,
-  showClose = true,
-  ...props
-}: Props) => {
-  let toastStyles = toastTypeStylesMap[props.toastType];
+  timeout,
+  allowClose = true,
+}: CustomToastProps) => {
+  let toastStyles = toastTypeStylesMap[toastType];
   let toastIcon = toastStyles.icon;
-  // TODO: set icon based on toast type
 
   return (
-    <>
-      <AnimatePresence>
-        {open && (
-          <Root
-            duration={duration}
-            bgcolor={toastStyles.bgColor}
-            textcolor={toastStyles.textColor}
-            {...props}
-            open={open}
-            onOpenChange={setOpen}
-            forceMount={true}
-            asChild
-          >
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{
-                x: "0%",
-                transition: {
-                  type: "spring",
-                  bounce: 0.5,
-                  duration: 1,
-                },
-              }}
-              exit={{ opacity: 0 }}
-            >
-              <>
-                <HeaderContainer>
-                  {title && (
-                    <TitleContainer>
-                      <TitleIcon src={toastIcon} />
-                      <Title>{title}</Title>
-                    </TitleContainer>
-                  )}
-                  {showClose && (
-                    <CloseButton aria-label="Close">
-                      <Close src={CloseIcon} />
-                    </CloseButton>
-                  )}
-                </HeaderContainer>
-                <Description>{content}</Description>
-                {action && action.children && (
-                  <ToastPrimitive.Action asChild altText={action.altText}>
-                    {action.children}
-                  </ToastPrimitive.Action>
-                )}
-              </>
-            </motion.div>
-          </Root>
-        )}
-      </AnimatePresence>
-      <Viewport
-        distancefrombottom={distanceFromBottom}
-        distancefromtop={distanceFromTop}
-      />
-    </>
+    <Root
+      duration={timeout}
+      bgcolor={toastStyles.bgColor}
+      textcolor={toastStyles.textColor}
+      open={open}
+      onOpenChange={setOpen}
+      forceMount={true}
+      asChild
+    >
+      <motion.div
+        initial={{ x: "100%" }}
+        animate={{
+          x: "0%",
+          transition: {
+            type: "spring",
+            bounce: 0.5,
+            duration: 1,
+          },
+        }}
+        exit={{ opacity: 0 }}
+      >
+        <>
+          <HeaderContainer>
+            {title && (
+              <TitleContainer>
+                <TitleIcon src={toastIcon} />
+                <Title>{title}</Title>
+              </TitleContainer>
+            )}
+            {allowClose && (
+              <CloseButton aria-label="Close">
+                <Close src={CloseIcon} />
+              </CloseButton>
+            )}
+          </HeaderContainer>
+          <Description>{content}</Description>
+          {action && action.children && (
+            <ToastPrimitive.Action asChild altText={action.altText}>
+              {action.children}
+            </ToastPrimitive.Action>
+          )}
+        </>
+      </motion.div>
+    </Root>
   );
 };
 

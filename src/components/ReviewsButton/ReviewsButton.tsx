@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setBtnBackground } from "../../services/ImageSrcService";
+import { displayToast } from "../Toast/Toast.service";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
-import Toast from "../Toast/Toast";
 import {
   BaseReviewLessonButton,
   BaseReviewLessonButtonBadge,
@@ -29,7 +28,6 @@ type Props = {
 
 function ReviewsButton({ level }: Props) {
   const navigate = useNavigate();
-  const [displayToast, setDisplayToast] = useState<boolean>(false);
 
   const {
     isLoading: availForReviewLoading,
@@ -39,7 +37,13 @@ function ReviewsButton({ level }: Props) {
 
   const onReviewBtnClick = () => {
     if (availForReviewData === undefined || availForReviewData.length === 0) {
-      setDisplayToast(true);
+      displayToast({
+        title: "No reviews available!",
+        content:
+          "Looks like you don't have any reviews right now, come back later!",
+        toastType: "error",
+        timeout: 10000,
+      });
     } else {
       navigate("/reviews/settings");
     }
@@ -67,13 +71,6 @@ function ReviewsButton({ level }: Props) {
           {availForReviewData ? availForReviewData.length : 0}
         </BaseReviewLessonButtonBadge>
       </ReviewsButtonStyled>
-      <Toast
-        toastType="error"
-        open={displayToast}
-        setOpen={setDisplayToast}
-        title="No reviews available!"
-        content="Looks like you don't have any reviews right now, come back later!"
-      ></Toast>
     </>
   );
 }
