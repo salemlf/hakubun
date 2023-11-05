@@ -5,6 +5,8 @@ import { App as CapacitorApp } from "@capacitor/app";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import LoadingDots from "../components/LoadingDots";
 import { FixedCenterContainer } from "../styles/BaseStyledComponents";
+import { useUserLogin } from "../hooks/useUserLogin";
+import { setAxiosHeaders } from "../api/ApiConfig";
 
 type Props = {
   redirectPath?: string;
@@ -16,7 +18,15 @@ const ProtectedRoute = ({
   children,
 }: Props) => {
   const navigate = useNavigate();
-  const { isAuthenticated, isAuthLoading } = useAuthTokenStoreFacade();
+  const { isAuthenticated, isAuthLoading, authToken } =
+    useAuthTokenStoreFacade();
+
+  useEffect(() => {
+    // *testing
+    console.log("setAxiosHeaders called");
+    // *testing
+    setAxiosHeaders(authToken);
+  }, []);
 
   // TODO: prevent this behavior if on a page that uses bottomsheet
   useEffect(() => {
