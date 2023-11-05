@@ -5,3 +5,7 @@ export const displayToast = (...args: Parameters<ToastStore["notify"]>) =>
 
 export const closeToast = (...args: Parameters<ToastStore["closeToast"]>) =>
   useToastStore.getState().closeToast(...args);
+
+export const closeAllToasts = (
+  ...args: Parameters<ToastStore["closeAllToasts"]>
+) => useToastStore.getState().closeAllToasts(...args);

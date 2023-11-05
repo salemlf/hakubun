@@ -11,16 +11,26 @@ export interface ToastItem extends ToastProps {
   allowClose?: boolean;
 }
 
-export interface ToastStore {
+type ToastStoreState = {
   notifications: ToastItem[];
+};
+
+type ToastStoreActions = {
   notify: (
     data: Merge<Except<ToastItem, "id">, { timeout?: number | null }>
   ) => string;
   closeToast: (id: string) => void;
-}
+  closeAllToasts: () => void;
+};
+
+export type ToastStore = ToastStoreState & ToastStoreActions;
+
+const initialState: ToastStoreState = {
+  notifications: [],
+};
 
 export const useToastStore = create<ToastStore>((set) => ({
-  notifications: [],
+  ...initialState,
   notify: (data) => {
     const id = nanoid();
 
@@ -57,4 +67,8 @@ export const useToastStore = create<ToastStore>((set) => ({
         ],
       };
     }),
+
+  closeAllToasts: () => {
+    set(initialState);
+  },
 }));
