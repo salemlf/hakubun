@@ -2,6 +2,8 @@ import { baseUrl } from "./../api/ApiConfig";
 
 export const assignmentsAvailForReviewEndpoint = `${baseUrl}assignments?immediately_available_for_review`;
 
+export const assignmentsAvailForLessonsEndpoint = `${baseUrl}assignments?immediately_available_for_lessons=true`;
+
 // TODO: use this endpoint in KanjiForLevelCard test
 export const kanjiAssignmentsByLvlEndpoint = new RegExp(
   `${baseUrl}assignments\?levels=[0-9][0-9]?&subject_types=kanji`,
