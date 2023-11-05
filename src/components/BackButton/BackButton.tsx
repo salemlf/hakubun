@@ -17,9 +17,13 @@ const BackButtonStyled = styled(Button)`
 
 type Props = {
   backgroundColor?: string;
+  color?: string;
 };
 
-function BackButton({ backgroundColor = "var(--offwhite-color)" }: Props) {
+function BackButton({
+  backgroundColor = "var(--darkest-purple)",
+  color = "var(--white)",
+}: Props) {
   const navigate = useNavigate();
 
   return (
@@ -28,8 +32,12 @@ function BackButton({ backgroundColor = "var(--offwhite-color)" }: Props) {
       backgroundColor={backgroundColor}
       onPress={() => navigate(-1)}
     >
-      <SvgIcon icon={<BackArrowIcon />} width="1.5em" height="1.5em" />
-      {/* <BackIcon src={BackArrowIcon} /> */}
+      <SvgIcon
+        icon={<BackArrowIcon />}
+        width="1.5em"
+        height="1.5em"
+        iconColor={color}
+      />
     </BackButtonStyled>
   );
 }
