@@ -33,6 +33,7 @@ const initialState: AuthTokenState = {
   isAuthLoading: false,
 };
 
+// TODO: change this into slices, so only setAuthToken is in secure storage and rest is normie storage
 export const useAuthTokenStore = create<AuthTokenState & AuthTokenActions>()(
   persist(
     (set, get) => ({
