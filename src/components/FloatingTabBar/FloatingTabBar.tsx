@@ -1,12 +1,10 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { motion } from "framer-motion";
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
-import HomeIcon from "../../images/home.svg";
-import SubjectsIcon from "../../images/subjects.svg";
-import SearchIcon from "../../images/search.svg";
 import { NavLink, useLocation } from "react-router-dom";
-import React from "react";
+import { motion } from "framer-motion";
+import SvgIcon from "../SvgIcon";
+import HomeIcon from "../../images/home.svg?react";
+import SubjectsIcon from "../../images/subjects.svg?react";
+import SearchIcon from "../../images/search.svg?react";
 import styled from "styled-components";
 
 // TODO: change to this once no longer using IonPage
@@ -52,11 +50,6 @@ const TabButton = styled(NavigationMenu.Link)`
 
   & > * {
     flex: 0 0 100%;
-  }
-
-  ion-icon {
-    width: 1.5em;
-    height: 1.5em;
   }
 
   &:focus-visible {
@@ -109,19 +102,34 @@ function FloatingTabBar() {
       <TabList>
         <NavigationMenu.Item>
           <PageLink pathName="/subjects" pageName="Subjects">
-            <IonIcon src={SubjectsIcon} />
+            <SvgIcon
+              icon={<SubjectsIcon />}
+              width="1.5em"
+              height="1.5em"
+              iconColor="white"
+            />
             <TabLabel>Subjects</TabLabel>
           </PageLink>
         </NavigationMenu.Item>
         <NavigationMenu.Item>
           <PageLink pathName="/" pageName="Home">
-            <IonIcon src={HomeIcon} />
+            <SvgIcon
+              icon={<HomeIcon />}
+              width="1.5em"
+              height="1.5em"
+              iconColor="white"
+            />
             <TabLabel>Home</TabLabel>
           </PageLink>
         </NavigationMenu.Item>
         <NavigationMenu.Item>
           <PageLink pathName="/search" pageName="Search">
-            <IonIcon src={SearchIcon} />
+            <SvgIcon
+              icon={<SearchIcon />}
+              width="1.5em"
+              height="1.5em"
+              iconColor="white"
+            />
             <TabLabel>Search</TabLabel>
           </PageLink>
         </NavigationMenu.Item>
