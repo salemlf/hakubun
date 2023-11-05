@@ -351,3 +351,25 @@ export const getSrsStageNameByNum = (srsStageNum: number) => {
   }
   return undefined;
 };
+
+export const convertQueueItemsToSubjects = (
+  items: AssignmentQueueItem[]
+): Subject[] => {
+  return items.map((item) => {
+    return {
+      ...item,
+      id: item.subject_id,
+    };
+  });
+};
+
+export const convertQueueItemsToAssignments = (
+  items: AssignmentQueueItem[]
+): Assignment[] => {
+  return items.map((item) => {
+    return {
+      ...item,
+      id: item.assignment_id,
+    };
+  });
+};

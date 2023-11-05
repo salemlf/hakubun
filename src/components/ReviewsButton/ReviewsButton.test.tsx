@@ -1,51 +1,60 @@
 import { renderHook, screen, waitFor } from "@testing-library/react";
-import { createWrapper, renderWithRouter } from "../../testing/test-utils";
-import { mockAssignmentsAvailForReview } from "../../testing/mocks/data/assignments.mock";
-import { server } from "../../testing/mocks/server";
-import ReviewsButton from ".";
 import { rest } from "msw";
-import { assignmentsAvailForReviewEndpoint } from "../../testing/mocks/handlers";
+import { createWrapper, renderWithRouter } from "../../testing/test-utils";
+import { mockAssignmentsAvailForReviewResponse } from "../../testing/mocks/data/assignments.mock";
+import { server } from "../../testing/mocks/server";
+import { assignmentsAvailForReviewEndpoint } from "../../testing/endpoints";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
+import { ReviewSettings } from "../../pages/ReviewSettings";
+import ReviewsButton from ".";
 
-server.use(
-  rest.get(assignmentsAvailForReviewEndpoint, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockAssignmentsAvailForReview));
-  })
-);
 const mockLevel = 1;
 
 test("ReviewsButton renders", () => {
   const { baseElement } = renderComponent(mockLevel);
   expect(baseElement).toBeDefined();
-  //   TODO: mock useAssignmentsAvailForReview
 });
 
-// TODO: fix, result.current.isSuccess is false
-test.todo("ReviewsButton redirects to review settings on click", async () => {
-  const { user } = renderComponent(mockLevel);
+test("ReviewsButton redirects to review settings on click", async () => {
+  server.use(
+    rest.get(assignmentsAvailForReviewEndpoint, (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json(mockAssignmentsAvailForReviewResponse)
+      );
+    })
+  );
+  const { user } = renderComponent(mockLevel, true);
 
   const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
     wrapper: createWrapper(),
   });
 
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
-  //   *testing
-  console.log(
-    "🚀 ~ file: ReviewsButton.test.tsx:32 ~ const{result}=renderHook ~ result:",
-    result
-  );
-  //   *testing
 
   await user.click(
     screen.getByRole("button", {
       name: /reviews/i,
     })
   );
+
+  expect(
+    screen.getByRole("heading", {
+      name: /review settings/i,
+    })
+  ).toBeInTheDocument();
 });
 
-const renderComponent = (level: number) => {
+const renderComponent = (
+  level: number,
+  withReviewSettings: boolean = false
+) => {
+  let routes = withReviewSettings
+    ? [{ element: <ReviewSettings />, path: "/reviews/settings" }]
+    : [];
   return renderWithRouter({
     component: <ReviewsButton level={level} />,
     defaultPath: "/",
+    routes,
   });
 };

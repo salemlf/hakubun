@@ -2,7 +2,10 @@ import { useState } from "react";
 import { IonIcon, IonSkeletonText } from "@ionic/react";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
-import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import {
+  AssignmentQueueItem,
+  ReviewType,
+} from "../../types/AssignmentQueueTypes";
 import { Radical, Subject } from "../../types/Subject";
 import RadicalNameMnemonic from "../RadicalNameMnemonic";
 import SubjectMeanings from "../SubjectMeanings";
@@ -17,7 +20,7 @@ import {
 import { FoundInHeadingContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
-  radical: AssignmentQueueItem;
+  radical: Subject;
   scrollToDefault: boolean;
 };
 

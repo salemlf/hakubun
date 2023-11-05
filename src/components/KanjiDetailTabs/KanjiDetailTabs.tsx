@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Kanji, Subject } from "../../types/Subject";
 import { IonSkeletonText } from "@ionic/react";
-import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import { ReviewType } from "../../types/AssignmentQueueTypes";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic";
 import RadicalCombination from "../RadicalCombination";
@@ -28,14 +28,13 @@ const FoundInHeadingContainer = styled(SvgIconHeadingContainer)`
 `;
 
 type Props = {
-  kanji: AssignmentQueueItem;
+  kanji: Subject;
+  reviewType: ReviewType;
   scrollToDefault: boolean;
 };
 
-function KanjiDetailTabs({ kanji, scrollToDefault }: Props) {
-  const defaultTabKey = scrollToDefault
-    ? (kanji.review_type as string)
-    : "radicals";
+function KanjiDetailTabs({ kanji, reviewType, scrollToDefault }: Props) {
+  const defaultTabKey = scrollToDefault ? (reviewType as string) : "radicals";
 
   const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
   let findVocab =
@@ -83,10 +82,7 @@ function KanjiDetailTabs({ kanji, scrollToDefault }: Props) {
           label: "Meaning",
           tabContents: (
             <SubjDetailTabContainer>
-              <SubjectMeanings
-                subject={kanji as Subject}
-                showPrimaryMeaning={true}
-              />
+              <SubjectMeanings subject={kanji} showPrimaryMeaning={true} />
               <KanjiMeaningMnemonic kanji={kanji as Kanji} />
             </SubjDetailTabContainer>
           ),
@@ -152,7 +148,7 @@ function KanjiDetailTabs({ kanji, scrollToDefault }: Props) {
           ),
         },
       ]}
-      defaultValue={kanji.review_type as string}
+      defaultValue={reviewType as string}
       scrollToDefault={scrollToDefault}
     />
   );

@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
 import Button from "../Button";
-import BackArrowIcon from "../../images/back-arrow.svg";
+import SvgIcon from "../SvgIcon";
+import BackArrowIcon from "../../images/back-arrow.svg?react";
 import styled from "styled-components";
 
 const BackButtonStyled = styled(Button)`
@@ -16,16 +15,15 @@ const BackButtonStyled = styled(Button)`
   left: 15px;
 `;
 
-const BackIcon = styled(IonIcon)`
-  width: 1.5em;
-  height: 1.5em;
-`;
-
 type Props = {
   backgroundColor?: string;
+  color?: string;
 };
 
-function BackButton({ backgroundColor = "var(--darkest-purple)" }: Props) {
+function BackButton({
+  backgroundColor = "var(--darkest-purple)",
+  color = "var(--white)",
+}: Props) {
   const navigate = useNavigate();
 
   return (
@@ -34,7 +32,12 @@ function BackButton({ backgroundColor = "var(--darkest-purple)" }: Props) {
       backgroundColor={backgroundColor}
       onPress={() => navigate(-1)}
     >
-      <BackIcon src={BackArrowIcon} />
+      <SvgIcon
+        icon={<BackArrowIcon />}
+        width="1.5em"
+        height="1.5em"
+        iconColor={color}
+      />
     </BackButtonStyled>
   );
 }
