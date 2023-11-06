@@ -14,10 +14,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
-import { ToastDisplayProvider } from "./components/Toast/displayToast";
-import { routes } from "./navigation/routes";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
-import { worker } from "./testing/mocks/worker";
+import { routes } from "./navigation/routes";
+import { ToastDisplayProvider } from "./components/Toast/displayToast";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -40,7 +39,7 @@ import "./theme/variables.css";
 import "./theme/globals.scss";
 
 // TODO: improve this so not manually changing release version every time
-if (import.meta.env.MODE !== "development") {
+if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
   LogRocket.init("cleqvf/hakubun", {
     release: "0.2.6-alpha",
     shouldCaptureIP: false,
@@ -76,12 +75,6 @@ Sentry.init({
 
 const sentryCreateBrowserRouter =
   Sentry.wrapCreateBrowserRouter(createBrowserRouter);
-
-// for msw (used for testing)
-if (import.meta.env.MODE === "development") {
-  // bypassing warnings in console since clog it up and aren't very useful imo
-  worker.start({ onUnhandledRequest: "bypass" });
-}
 
 // TODO: change so not using setupIonicReact and IonApp
 setupIonicReact();

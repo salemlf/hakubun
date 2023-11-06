@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserLogin } from "../hooks/useUserLogin";
@@ -12,12 +10,13 @@ import HelpSpan from "../components/HelpSpan";
 import FallingText from "../components/FallingText";
 import Emoji from "../components/Emoji";
 import Accordion from "../components/Accordion";
+import SvgIcon from "../components/SvgIcon";
 import WavesBgImg from "../images/layered-waves-bg.svg";
+import LogoIcon from "../images/logo.svg?react";
 import {
   FixedCenterContainer,
   MainContent,
 } from "../styles/BaseStyledComponents";
-import LogoIcon from "../images/logo.svg";
 import styled from "styled-components";
 
 const Content = styled(MainContent)`
@@ -74,11 +73,6 @@ const HeadingAndLogoContainer = styled.div`
 const LogoContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-`;
-
-const Logo = styled(IonIcon)`
-  width: 60%;
-  height: 25vh;
 `;
 
 const ButtonRow = styled.div`
@@ -218,7 +212,7 @@ const TokenInput = () => {
         <Content>
           <HeadingAndLogoContainer>
             <LogoContainer>
-              <Logo src={LogoIcon} />
+              <SvgIcon icon={<LogoIcon />} width="100%" height="25vh" />
             </LogoContainer>
             <FallingText text="Hakubun" delay={0.5} duration={0.25} />
           </HeadingAndLogoContainer>
