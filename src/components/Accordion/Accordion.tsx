@@ -1,11 +1,10 @@
 import React, { forwardRef, useState } from "react";
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { AnimatePresence, motion } from "framer-motion";
 import { AccordionItemData } from "../../types/MiscTypes";
-import PlusIcon from "../../images/plus.svg";
-import MinusIcon from "../../images/minus.svg";
+import SvgIcon from "../SvgIcon";
+import PlusIcon from "../../images/plus.svg?react";
+import MinusIcon from "../../images/minus.svg?react";
 import styled from "styled-components";
 
 const Root = styled(AccordionPrimitive.Root)`
@@ -71,11 +70,6 @@ const TriggerHeader = styled(AccordionPrimitive.Header)`
   color: white;
 `;
 
-const ShowOrHideIcon = styled(IonIcon)`
-  width: 1.5em;
-  height: 1.5em;
-`;
-
 type TriggerProps = {
   isOpen: boolean;
   children: React.ReactNode;
@@ -100,7 +94,11 @@ export const AccordionTrigger = forwardRef<TriggerRef, TriggerProps>(
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
           >
-            <ShowOrHideIcon src={isOpen ? MinusIcon : PlusIcon} />
+            <SvgIcon
+              icon={isOpen ? <MinusIcon /> : <PlusIcon />}
+              width="1.5em"
+              height="1.5em"
+            />
           </motion.div>
         </AnimatePresence>
       </Trigger>

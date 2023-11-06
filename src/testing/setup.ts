@@ -10,23 +10,20 @@ import { server } from "./mocks/server";
 // TODO: ...❯ Timeout._onTimeout node_modules/@ionic/core/components/ion-app.js:19:50
 setupIonicReact();
 
-// Mock matchmedia
-window.matchMedia =
-  window.matchMedia ||
-  function () {
-    return {
-      matches: false,
-      addListener: function () {},
-      removeListener: function () {},
-    };
+vi.mock("react-secure-storage", () => {
+  return {
+    default: { setItem: vi.fn() },
+    secureLocalStorage: vi.fn(),
   };
+});
 
-const localStorageMock = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  clear: vi.fn(),
-};
-global.localStorage = localStorageMock as unknown as Storage;
+const mockIntersectionObserver = vi.fn();
+mockIntersectionObserver.mockReturnValue({
+  observe: () => null,
+  unobserve: () => null,
+  disconnect: () => null,
+});
+window.IntersectionObserver = mockIntersectionObserver;
 
 vi.mock("zustand"); // to make it work like Jest (auto-mocking)
 
