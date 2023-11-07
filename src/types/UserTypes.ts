@@ -1,13 +1,4 @@
-export interface User {
-  id: string;
-  username: string;
-  level: number;
-  profile_url: string;
-  started_at: Date;
-  current_vacation_started_at: Date | null;
-  subscription: Subscription;
-  preferences: Preferences;
-}
+import { ApiResponse } from "./MiscTypes";
 
 export type Subscription = {
   active: boolean;
@@ -35,3 +26,18 @@ export type LessonsPresentationOrder =
   | "ascending_level_then_shuffled";
 
 export type ReviewsPresentationOrder = "shuffled" | "lower_levels_first";
+
+export interface User {
+  id: string;
+  username: string;
+  level: number;
+  profile_url: string;
+  started_at: Date;
+  current_vacation_started_at: Date | null;
+  subscription: Subscription;
+  preferences: Preferences;
+}
+
+export interface UserResponse extends ApiResponse {
+  data: User;
+}

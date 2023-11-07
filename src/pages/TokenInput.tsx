@@ -148,6 +148,7 @@ const TokenInput = () => {
   const [tokenPageLoading, setTokenPageLoading] = useState(false);
   const { isAuthLoading, authToken, isAuthenticated } =
     useAuthTokenStoreFacade();
+  const { userInfo } = useUserInfoStoreFacade();
 
   // logs user in if auth info already in storage
   useEffect(() => {
@@ -156,7 +157,6 @@ const TokenInput = () => {
     }
   }, []);
 
-  const { userInfo } = useUserInfoStoreFacade();
   useEffect(() => {
     if (userInfo !== undefined && isAuthenticated) {
       navigate("/", { replace: true });
@@ -221,11 +221,12 @@ const TokenInput = () => {
           </p>
           <form onSubmit={handleSubmit}>
             <InputContainer>
-              <TokenInputLabel>
+              <TokenInputLabel htmlFor="api-token-input">
                 <HelpSpan helpPopoverContents={HelpPopoverContents}>
                   Wanikani API Token
                 </HelpSpan>
                 <Input
+                  id="api-token-input"
                   type="text"
                   name="api-token"
                   data-private

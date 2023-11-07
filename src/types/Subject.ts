@@ -35,9 +35,11 @@ interface SubjectAttrs {
 }
 
 export interface PreFlattenedSubject extends ApiResponse {
+  id: number;
   data: SubjectAttrs;
 }
 export interface Subject extends ApiResponse, SubjectAttrs {
+  id: number;
   object: SubjectType;
 }
 
