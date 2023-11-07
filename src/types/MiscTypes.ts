@@ -2,7 +2,6 @@ import { Assignment } from "./Assignment";
 import { SubjectType } from "./Subject";
 
 export interface ApiResponse {
-  id: number;
   object: string;
   url: string;
   data_updated_at: Date | null;

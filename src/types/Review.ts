@@ -31,6 +31,7 @@ interface ReviewAttrs {
 }
 
 export interface PreflattenedReview extends ApiResponse {
+  id: number;
   data: ReviewAttrs;
 }
 
@@ -51,6 +52,7 @@ interface ReviewStatisticAttrs {
 }
 
 export interface ReviewStatistic extends ApiResponse {
+  id: number;
   data: ReviewStatisticAttrs;
 }
 
@@ -61,6 +63,7 @@ interface ResourcesUpdated {
 }
 
 export interface ReviewUpdateResponse extends ApiResponse {
+  id: number;
   data: ReviewAttrs;
   resources_updated: ResourcesUpdated;
 }
