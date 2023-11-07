@@ -1,6 +1,5 @@
 import { rest } from "msw";
-import { screen, waitFor } from "@testing-library/react";
-import { baseUrl } from "../../api/ApiConfig";
+import { screen } from "@testing-library/react";
 import {
   renderHook,
   act,
@@ -8,13 +7,14 @@ import {
   createWrapper,
 } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
-import { mockUserLvl5 } from "../../testing/mocks/data/user.mock";
+import { mockUserResponseLvl5 } from "../../testing/mocks/data/user.mock";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
+import { userEndpoint } from "../../testing/endpoints";
 import HomeHeader from ".";
 
 server.use(
-  rest.get(`${baseUrl}user`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockUserLvl5));
+  rest.get(userEndpoint, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(mockUserResponseLvl5));
   })
 );
 
@@ -36,12 +36,12 @@ test("User level is rendered to screen", async () => {
     wrapper: createWrapper(),
   });
 
-  let userData = mockUserLvl5.data;
+  let userData = mockUserResponseLvl5.data;
 
   act(() => result.current.setUserInfo(userData));
 
   renderComponent();
-  let userLvl = mockUserLvl5.data.level;
+  let userLvl = mockUserResponseLvl5.data.level;
   let levelTxt = await screen.findByTestId("level-num");
   expect(levelTxt).toHaveTextContent(`Level ${userLvl}`);
 });
