@@ -6,11 +6,11 @@ import LessonUserSettings from "../components/LessonUserSettings";
 import ReviewUserSettings from "../components/ReviewUserSettings/ReviewUserSettings";
 import Button from "../components/Button";
 import PageHeader from "../components/PageHeader";
-import { ContentWithTabBarNoPadding } from "../styles/BaseStyledComponents";
+import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-const ContainerWithBottomMargin = styled(ContentWithTabBarNoPadding)`
-  margin-bottom: 6rem;
+const Content = styled(MainContent)`
+  margin-bottom: 20px;
 `;
 
 const ButtonRow = styled.div`
@@ -54,7 +54,7 @@ function Settings() {
   return (
     <>
       <PageHeader title="User Settings" />
-      <ContainerWithBottomMargin>
+      <Content>
         {username && <Username>{username}</Username>}
         <GeneralUserSettings />
         <LessonUserSettings />
@@ -77,7 +77,7 @@ function Settings() {
             Other icons from <a href="https://icons8.com/">Icons8</a>
           </p>
         </CreditsContainer>
-      </ContainerWithBottomMargin>
+      </Content>
     </>
   );
 }
