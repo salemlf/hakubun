@@ -41,13 +41,13 @@ import "./theme/globals.scss";
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
   LogRocket.init("cleqvf/hakubun", {
-    release: "0.2.6-alpha",
+    release: "0.2.7-alpha",
     shouldCaptureIP: false,
   });
 }
 
 Sentry.init({
-  release: "0.2.6-alpha",
+  release: "0.2.7-alpha",
   dsn: import.meta.env.VITE_SENTRY_DSN,
   tracePropagationTargets: [baseUrlRegex],
   environment: import.meta.env.MODE,
