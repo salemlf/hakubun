@@ -140,8 +140,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-tab-bar-background-focused: var(--ion-color-primary-shade);
 
   /* main theme colors */
-  --background-color: var(--offwhite-color);
-  --foreground-color: var(--pale-lavender);
+  --background-color: var(--pale-lavender);
+  --foreground-color: var(--offwhite-color);
   --text-color: black;
   --focus-color: black;
   /* main theme colors */
