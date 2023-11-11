@@ -96,6 +96,7 @@ export const BaseReviewLessonButton = styled(Button)`
   background-position: top center;
   background-size: cover;
   background-repeat: no-repeat;
+  border: 2px solid black;
 
   p {
     position: absolute;
