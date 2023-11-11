@@ -55,7 +55,12 @@ function RadicalForLvlCard({ level }: Props) {
   }
 
   return (
-    <Card title="Radicals" margin="12px 0">
+    <Card
+      title="Radicals"
+      margin="12px 0"
+      headerBgColor="var(--wanikani-radical)"
+      headerTextColor="white"
+    >
       <SubjForLvlGrid>
         {(subjectCurrLvlData as Subject[]).map((radical: Subject) => {
           return (

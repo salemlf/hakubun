@@ -69,7 +69,12 @@ function KanjiForLvlCard({ level }: Props) {
 
   // TODO: sort so locked kanji are last
   return (
-    <Card title="Kanji" margin="12px 0">
+    <Card
+      title="Kanji"
+      margin="12px 0"
+      headerBgColor="var(--wanikani-kanji)"
+      headerTextColor="white"
+    >
       <SubjForLvlGrid>
         {(subjectsData as Subject[]).map((kanjiItem: any) => {
           return (
