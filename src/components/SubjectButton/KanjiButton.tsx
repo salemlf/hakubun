@@ -12,8 +12,10 @@ import {
 } from "../../services/SubjectAndAssignmentService";
 import { ButtonSize } from "../../types/MiscTypes";
 import { getSubjectBtnSize } from "../../services/MiscService";
+import { forwardRef } from "react";
 
-// TODO: change to use size sm, md, lg?
+type ButtonRef = HTMLButtonElement;
+
 type Props = {
   subject: Subject;
   btnSize: ButtonSize;
@@ -22,46 +24,44 @@ type Props = {
   onBtnClick: (e: any) => void;
 };
 
-// TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
-function KanjiButton({
-  subject,
-  btnSize,
-  locked,
-  showDetails,
-  onBtnClick,
-}: Props) {
-  const charFontSize = showDetails
-    ? getSubjectBtnSize(btnSize).fontSize
-    : getSubjectBtnSize(btnSize).fontSizeNoDetails;
+export const KanjiButton = forwardRef<ButtonRef, Props>(
+  (
+    { subject, showDetails, btnSize, locked, onBtnClick, ...props },
+    forwardedRef
+  ) => {
+    const charFontSize = showDetails
+      ? getSubjectBtnSize(btnSize).fontSize
+      : getSubjectBtnSize(btnSize).fontSizeNoDetails;
 
-  const containerSize = getSubjectBtnSize(btnSize).containerSize;
-  const detailFontSize = getSubjectBtnSize(btnSize).detailFontSize;
+    const containerSize = getSubjectBtnSize(btnSize).containerSize;
+    const detailFontSize = getSubjectBtnSize(btnSize).detailFontSize;
 
-  return (
-    <BtnWithTxt
-      containersize={containerSize}
-      subjcharsize={charFontSize}
-      title="Kanji Subject"
-      onClick={onBtnClick}
-      subjType="kanji"
-      lockedStyle={locked}
-    >
-      <SubjInfoCol>
-        <SubjectChars subject={subject} fontSize={charFontSize} />
-        {showDetails && (
-          <div>
-            <JapaneseDetailsTxt detailfontsize={detailFontSize}>
-              {/* kanji always have readings, so using ! for subject.readings */}
-              {getPrimaryReading(subject.readings!)}
-            </JapaneseDetailsTxt>
-            <SubjBtnDetailsTxt detailfontsize={detailFontSize}>
-              {getSubjectDisplayName(subject)}
-            </SubjBtnDetailsTxt>
-          </div>
-        )}
-      </SubjInfoCol>
-    </BtnWithTxt>
-  );
-}
-
-export default KanjiButton;
+    return (
+      <BtnWithTxt
+        containersize={containerSize}
+        subjcharsize={charFontSize}
+        title="Kanji Subject"
+        onClick={onBtnClick}
+        subjType="kanji"
+        lockedStyle={locked}
+        ref={forwardedRef}
+        {...props}
+      >
+        <SubjInfoCol>
+          <SubjectChars subject={subject} fontSize={charFontSize} />
+          {showDetails && (
+            <div>
+              <JapaneseDetailsTxt detailfontsize={detailFontSize}>
+                {/* kanji always have readings, so using ! for subject.readings */}
+                {getPrimaryReading(subject.readings!)}
+              </JapaneseDetailsTxt>
+              <SubjBtnDetailsTxt detailfontsize={detailFontSize}>
+                {getSubjectDisplayName(subject)}
+              </SubjBtnDetailsTxt>
+            </div>
+          )}
+        </SubjInfoCol>
+      </BtnWithTxt>
+    );
+  }
+);
