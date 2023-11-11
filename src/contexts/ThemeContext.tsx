@@ -4,13 +4,15 @@ import { useDarkMode } from "usehooks-ts";
 const THEME_COLORS = {
   light: {
     background: "var(--offwhite-color)",
-    primary: "var(--pale-lavender)",
+    foreground: "var(--pale-lavender)",
     text: "black",
+    focus: "black",
   },
   dark: {
     background: "var(--dark-greyish-purple)",
-    primary: "var(--light-greyish-purple)",
+    foreground: "var(--light-greyish-purple)",
     text: "white",
+    focus: "white",
   },
 };
 
@@ -47,7 +49,7 @@ const ThemeProvider = ({ children }: ProviderProps) => {
     updateCSSVariables();
   };
 
-  // TODO: use background-color, primary-color and text-color in CSS
+  // TODO: map colors from THEME_COLORS object instead of individually
   const updateCSSVariables = () => {
     const root = window.document.documentElement;
 
@@ -56,12 +58,16 @@ const ThemeProvider = ({ children }: ProviderProps) => {
       isDarkMode ? THEME_COLORS.dark.background : THEME_COLORS.light.background
     );
     root.style.setProperty(
-      "--primary-color",
-      isDarkMode ? THEME_COLORS.dark.primary : THEME_COLORS.light.primary
+      "--foreground-color",
+      isDarkMode ? THEME_COLORS.dark.foreground : THEME_COLORS.light.foreground
     );
     root.style.setProperty(
       "--text-color",
       isDarkMode ? THEME_COLORS.dark.text : THEME_COLORS.light.text
+    );
+    root.style.setProperty(
+      "--focus-color",
+      isDarkMode ? THEME_COLORS.dark.focus : THEME_COLORS.light.focus
     );
   };
 
