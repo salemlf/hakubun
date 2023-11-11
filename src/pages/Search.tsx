@@ -24,6 +24,9 @@ const Content = styled(ContentWithTabBar)`
   display: flex;
   flex-direction: column;
   padding: 12px;
+  /* !added */
+  height: 100vh;
+  /* !added */
 `;
 
 const ClearButton = styled(Button)`

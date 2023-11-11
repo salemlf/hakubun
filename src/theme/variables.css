@@ -139,6 +139,13 @@ http://ionicframework.com/docs/theming/ */
   --ion-tab-bar-background: var(--ion-color-secondary);
   --ion-tab-bar-background-focused: var(--ion-color-primary-shade);
 
+  /* main theme colors */
+  --background-color: var(--offwhite-color);
+  --foreground-color: var(--pale-lavender);
+  --text-color: black;
+  --focus-color: black;
+  /* main theme colors */
+
   --ion-default-font: "Poppins", sans-serif;
   --japanese-font-family: "Zen Kaku Gothic New", sans-serif;
   --japanese-with-english-fallback-font-family: "Zen Kaku Gothic New", "Poppins",
@@ -179,6 +186,13 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-step-950: #f5f4f5;
 
     --color: #ffffff;
+
+    /* main theme colors */
+    --background-color: var(--dark-greyish-purple);
+    --foreground-color: var(--light-greyish-purple);
+    --text-color: white;
+    --focus-color: white;
+    /* main theme colors */
   }
 
   body {
