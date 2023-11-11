@@ -1,7 +1,14 @@
-import React, { createContext, useContext } from "react";
+import { createContext, useContext } from "react";
 import { useDarkMode } from "usehooks-ts";
 
-const THEME_COLORS = {
+type ThemeColors = {
+  background: string;
+  foreground: string;
+  text: string;
+  focus: string;
+};
+
+const THEME_COLORS: { [index: string]: ThemeColors } = {
   light: {
     background: "var(--offwhite-color)",
     foreground: "var(--pale-lavender)",
@@ -16,6 +23,7 @@ const THEME_COLORS = {
   },
 };
 
+// this doesn't actually set the default theme, it just sets the default value to make TypeScript happy
 const INITIAL_DARK_MODE = true;
 
 type ThemeContextType = {
@@ -52,23 +60,12 @@ const ThemeProvider = ({ children }: ProviderProps) => {
   // TODO: map colors from THEME_COLORS object instead of individually
   const updateCSSVariables = () => {
     const root = window.document.documentElement;
+    let themeColors = isDarkMode ? THEME_COLORS.dark : THEME_COLORS.light;
 
-    root.style.setProperty(
-      "--background-color",
-      isDarkMode ? THEME_COLORS.dark.background : THEME_COLORS.light.background
-    );
-    root.style.setProperty(
-      "--foreground-color",
-      isDarkMode ? THEME_COLORS.dark.foreground : THEME_COLORS.light.foreground
-    );
-    root.style.setProperty(
-      "--text-color",
-      isDarkMode ? THEME_COLORS.dark.text : THEME_COLORS.light.text
-    );
-    root.style.setProperty(
-      "--focus-color",
-      isDarkMode ? THEME_COLORS.dark.focus : THEME_COLORS.light.focus
-    );
+    root.style.setProperty("--background-color", themeColors.background);
+    root.style.setProperty("--foreground-color", themeColors.foreground);
+    root.style.setProperty("--text-color", themeColors.text);
+    root.style.setProperty("--focus-color", themeColors.focus);
   };
 
   const value = { isDarkMode, setIsDarkMode };
