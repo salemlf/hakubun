@@ -10,7 +10,7 @@ type ThemeColors = {
 
 const THEME_COLORS: { [index: string]: ThemeColors } = {
   light: {
-    background: "var(--pale-lavender)",
+    background: "var(--light-mauve)",
     foreground: "var(--offwhite-color)",
     text: "black",
     focus: "black",
