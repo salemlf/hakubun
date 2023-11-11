@@ -1,9 +1,10 @@
-import React from "react";
+import { forwardRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { PopoverContentProps } from "@radix-ui/react-popover";
 import styled from "styled-components";
 
-const Content = styled(PopoverPrimitive.Content)`
+const Content = styled(motion.div)`
   border-radius: 10px;
   padding: 20px;
   width: 260px;
@@ -15,63 +16,6 @@ const Content = styled(PopoverPrimitive.Content)`
   a {
     color: var(--ion-color-primary-lightest);
   }
-
-  &[data-state="open"][data-side="top"] {
-    animation-name: slideDownAndFade;
-  }
-  &[data-state="open"][data-side="right"] {
-    animation-name: slideLeftAndFade;
-  }
-  &[data-state="open"][data-side="bottom"] {
-    animation-name: slideUpAndFade;
-  }
-  &[data-state="open"][data-side="left"] {
-    animation-name: slideRightAndFade;
-  }
-
-  @keyframes slideUpAndFade {
-    from {
-      opacity: 0;
-      transform: translateY(2px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slideRightAndFade {
-    from {
-      opacity: 0;
-      transform: translateX(-2px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slideDownAndFade {
-    from {
-      opacity: 0;
-      transform: translateY(-2px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slideLeftAndFade {
-    from {
-      opacity: 0;
-      transform: translateX(2px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
 `;
 
 const Arrow = styled(PopoverPrimitive.Arrow)`
@@ -80,25 +24,41 @@ const Arrow = styled(PopoverPrimitive.Arrow)`
 
 export const PopoverRoot = PopoverPrimitive.Root;
 
-export const PopoverTrigger = styled(PopoverPrimitive.Trigger)`
-  all: unset;
-
-  &:focus-visible {
-    outline: 2px solid white;
-  }
-`;
+export const PopoverTrigger = PopoverPrimitive.Trigger;
 
 type PopoverRef = HTMLDivElement;
 
-// TODO: improve styles
-const PopoverContent = React.forwardRef<PopoverRef, PopoverContentProps>(
-  ({ children, ...props }, forwardedRef) => (
-    <PopoverPrimitive.Portal>
-      <Content sideOffset={5} {...props} ref={forwardedRef} side="top">
-        {children}
-        <Arrow />
-      </Content>
-    </PopoverPrimitive.Portal>
-  )
+type PopoverProps = PopoverContentProps & {
+  isOpen: boolean;
+};
+
+// TODO: pass in custom bg color
+const PopoverContent = forwardRef<PopoverRef, PopoverProps>(
+  ({ isOpen, children, ...props }, forwardedRef) => {
+    return (
+      <AnimatePresence>
+        {isOpen && (
+          <PopoverPrimitive.Portal forceMount>
+            <PopoverPrimitive.Content
+              asChild
+              ref={forwardedRef}
+              sideOffset={5}
+              {...props}
+              side="top"
+            >
+              <Content
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+              >
+                {children}
+                <Arrow />
+              </Content>
+            </PopoverPrimitive.Content>
+          </PopoverPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    );
+  }
 );
 export default PopoverContent;
