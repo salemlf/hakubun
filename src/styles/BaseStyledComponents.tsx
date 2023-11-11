@@ -7,6 +7,10 @@ export type CustomBgColor = {
   bgcolor: string;
 };
 
+export type CustomTextColor = {
+  txtcolor: string;
+};
+
 export type CustomFontSize = {
   sizeoffont: string;
 };

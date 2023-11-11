@@ -88,6 +88,7 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
           <Card
             title={`Radicals - ${radicals.length}`}
             headerBgColor="var(--wanikani-radical)"
+            headerTextColor="white"
           >
             <SubjectCardContainer>
               <SubjectButtonList
@@ -100,6 +101,7 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
           <Card
             title={`Kanji - ${kanji.length}`}
             headerBgColor="var(--wanikani-kanji)"
+            headerTextColor="white"
           >
             <SubjectCardContainer>
               <SubjectButtonList
@@ -112,6 +114,7 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
           <Card
             title={`Vocabulary - ${vocabulary.length}`}
             headerBgColor="var(--wanikani-vocab)"
+            headerTextColor="white"
             margin="16px 16px 60px 16px"
           >
             <SubjectCardContainer>
