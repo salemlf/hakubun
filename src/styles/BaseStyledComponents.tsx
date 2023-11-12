@@ -294,3 +294,9 @@ export const SubjForLvlGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(3.125rem, 1fr));
   gap: 5px;
 `;
+
+export const LoadingButtonRow = styled.div`
+  margin-bottom: 10px;
+  display: flex;
+  width: 100%;
+`;
