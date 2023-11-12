@@ -1,10 +1,4 @@
-import {
-  IonIcon,
-  IonSkeletonText,
-  useIonAlert,
-  useIonToast,
-} from "@ionic/react";
-import { addOutline } from "ionicons/icons";
+import { IonSkeletonText, useIonAlert, useIonToast } from "@ionic/react";
 import { Subject } from "../../types/Subject";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
@@ -14,6 +8,13 @@ import styled from "styled-components";
 const AddButton = styled(Chip)`
   background-color: var(--ion-color-secondary);
   font-size: 0.9rem;
+  border: 2px solid black;
+`;
+
+const PlusSign = styled.span`
+  font-size: 1.5rem;
+  display: inline-block;
+  padding-left: 5px;
 `;
 
 type Props = {
@@ -102,7 +103,7 @@ function AddAltUserMeaningButton({ subject }: Props) {
             }}
           >
             Add
-            <IonIcon icon={addOutline}></IonIcon>
+            <PlusSign>+</PlusSign>
           </AddButton>
         </>
       ) : (

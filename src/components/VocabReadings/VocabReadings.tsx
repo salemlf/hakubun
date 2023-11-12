@@ -25,6 +25,7 @@ const Btn = styled(Button)`
   padding: 4px;
   border-radius: 8px;
   width: 100%;
+  border: 2px solid black;
 `;
 
 const AudioBtnContainer = styled(motion.div)`

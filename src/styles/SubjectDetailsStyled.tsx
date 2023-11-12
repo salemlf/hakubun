@@ -15,8 +15,7 @@ export const Col = ({ className, children }: RowColProps) => (
 );
 
 export const SubjInfoContainer = styled.div`
-  --ion-background-color: var(--light-greyish-purple);
-  background-color: var(--light-greyish-purple);
+  background-color: var(--foreground-color);
   border-radius: 25px;
   margin: 10px;
 

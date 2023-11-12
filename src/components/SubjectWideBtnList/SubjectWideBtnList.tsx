@@ -102,6 +102,7 @@ const SubjectItemContainer = styled.button<ItemContainerProps>`
   padding: 8px 8px;
   margin-bottom: 2px;
   border-radius: 10px;
+  border: 2px solid black;
 
   &:focus-visible {
     outline: 2px solid white;
@@ -143,15 +144,11 @@ export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
   );
 };
 
-const SubjCol = styled.div`
-  display: flex;
-  flex-basis: 100%;
-  display: flex;
-  padding: 0;
-`;
-
-const SubjRow = styled.div`
+const ListContainer = styled.div`
   margin-left: -3px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 `;
 
 type ListProps = {
@@ -160,15 +157,13 @@ type ListProps = {
 
 function SubjectWideBtnList({ subjList }: ListProps) {
   return (
-    <SubjRow>
+    <ListContainer>
       {(subjList as Subject[]).map((subject: any) => {
         return (
-          <SubjCol key={`col_${subject.id}`}>
-            <SubjectWideButton subject={subject} />
-          </SubjCol>
+          <SubjectWideButton subject={subject} key={`wide_btn_${subject.id}`} />
         );
       })}
-    </SubjRow>
+    </ListContainer>
   );
 }
 

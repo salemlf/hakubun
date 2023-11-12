@@ -54,7 +54,7 @@ export const SubjCol = styled.div`
 `;
 
 export const NoteHintContainer = styled.div`
-  background-color: var(--light-grey);
+  background-color: var(--secondary-foreground-color);
   border-radius: 15px;
   padding: 15px 12px 8px;
   margin: 10px 0;

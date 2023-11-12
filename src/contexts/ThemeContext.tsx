@@ -4,6 +4,7 @@ import { useDarkMode } from "usehooks-ts";
 type ThemeColors = {
   background: string;
   foreground: string;
+  secondaryForeground: string;
   text: string;
   focus: string;
 };
@@ -12,12 +13,14 @@ const THEME_COLORS: { [index: string]: ThemeColors } = {
   light: {
     background: "var(--light-mauve)",
     foreground: "var(--offwhite-color)",
+    secondaryForeground: "var(--pale-grey)",
     text: "black",
     focus: "black",
   },
   dark: {
     background: "var(--dark-greyish-purple)",
     foreground: "var(--light-greyish-purple)",
+    secondaryForeground: "var(--light-grey)",
     text: "white",
     focus: "white",
   },
@@ -63,6 +66,11 @@ const ThemeProvider = ({ children }: ProviderProps) => {
 
     root.style.setProperty("--background-color", themeColors.background);
     root.style.setProperty("--foreground-color", themeColors.foreground);
+    root.style.setProperty(
+      "--secondary-foreground-color",
+      themeColors.foreground
+    );
+    // --secondary-foreground-color
     root.style.setProperty("--text-color", themeColors.text);
     root.style.setProperty("--focus-color", themeColors.focus);
   };
