@@ -130,15 +130,6 @@ function AlertDialog({
 }: Props) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
-  // let portalRoot =
-  //   global.document && global.document.getElementById("portal-root");
-
-  // if (!portalRoot) {
-  //   portalRoot = global.document.createElement("div");
-  //   portalRoot.setAttribute("id", "portal-root");
-  //   global.document.body.appendChild(portalRoot);
-  // }
-
   return (
     <>
       <AlertDialogPrimitive.Root
@@ -175,7 +166,7 @@ function AlertDialog({
           </Content>
         </AlertDialogPrimitive.Portal>
       </AlertDialogPrimitive.Root>
-      <PortalContainer id="portal-root" ref={setContainer} />
+      <PortalContainer id="alert-dialog-portal-root" ref={setContainer} />
     </>
   );
 }
