@@ -41,10 +41,7 @@ const AddButton = styled(Modal.Trigger)`
   }
 `;
 
-const MeaningForm = styled.form`
-  /* display: flex;
-  flex-wrap: wrap; */
-`;
+const MeaningForm = styled.form``;
 
 const Fieldset = styled.fieldset`
   all: unset;
@@ -64,6 +61,7 @@ const MeaningInput = styled.input`
   width: 100%;
   display: inline-flex;
   color: black;
+  background-color: white;
   flex: 1;
 `;
 
@@ -104,7 +102,7 @@ function AddAltUserMeaningButton({ subject }: Props) {
     if (meaningInputStr === "") {
       setIsModalOpen(false);
       displayToast({
-        toastType: "info",
+        toastType: "warning",
         title: "No Meaning Entered",
         content: "Input was empty, no alternative meaning was added",
         timeout: 10000,
