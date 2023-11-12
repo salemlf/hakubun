@@ -34,21 +34,6 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
     error: subjectCurrLvlErr,
   } = useSubjectsByLevel(level);
 
-  // *testing
-  console.log(
-    "🚀 ~ file: SubjectsOnLvlTab.tsx:38 ~ SubjectsOnLvlTab ~ isSelected:",
-    isSelected
-  );
-  console.log(
-    "🚀 ~ file: SubjectsOnLvlTab.tsx:38 ~ SubjectsOnLvlTab ~ subjectCurrLvlData:",
-    subjectCurrLvlData
-  );
-  console.log(
-    "🚀 ~ file: SubjectsOnLvlTab.tsx:38 ~ SubjectsOnLvlTab ~ subjectCurrLvlLoading:",
-    subjectCurrLvlLoading
-  );
-  // *testing
-
   useEffect(() => {
     if (!subjectCurrLvlLoading && subjectCurrLvlData) {
       // removing any radicals without amalgamation_subject_ids, (AKA not actually used in kanji)
