@@ -3389,7 +3389,7 @@ export const mockKanjiSubjectsForLvl1 = {
   total: 18,
 };
 
-export const mockKanjiLvl1: Subject = {
+export const mockKanjiSubjLvl1__440: Subject = {
   id: 440,
   object: "kanji",
   url: "https://api.wanikani.com/v2/subjects/440",

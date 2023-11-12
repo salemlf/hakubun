@@ -1,10 +1,10 @@
 import { renderWithClient } from "../../testing/test-utils";
-import { mockKanjiLvl1 } from "../../testing/mocks/data/subjects.mock";
+import { mockKanjiSubjLvl1__440 } from "../../testing/mocks/data/subjects.mock";
 import { Subject } from "../../types/Subject";
 import AddAltUserMeaningButton from "./AddAltUserMeaningButton";
 
 test("AddAltUserMeaningButton renders", () => {
-  const { baseElement } = renderComponent(mockKanjiLvl1);
+  const { baseElement } = renderComponent(mockKanjiSubjLvl1__440);
   expect(baseElement).toBeDefined();
 });
 
