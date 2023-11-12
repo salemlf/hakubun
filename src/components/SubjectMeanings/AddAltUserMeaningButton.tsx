@@ -77,8 +77,6 @@ type Props = {
   subject: Subject;
 };
 
-// TODO: automatically focus on input when modal opens
-// TODO: modify to use custom dialog and custom toast
 function AddAltUserMeaningButton({ subject }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
