@@ -148,6 +148,7 @@ const SrsStageButton = styled.button<ButtonProps>`
   padding: 0;
   color: white;
   border-radius: 6px;
+  border: 2px solid black;
   background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
   &:focus-visible {
     outline: 2px solid white;
