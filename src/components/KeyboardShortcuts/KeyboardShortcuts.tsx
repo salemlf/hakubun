@@ -10,7 +10,7 @@ const KeyBoardShortcuts = styled.div`
 
 const Shortcut = styled.p`
   margin: 0;
-  color: white;
+  color: var(--text-color);
 `;
 
 function KeyboardShortcuts() {

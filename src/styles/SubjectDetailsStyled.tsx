@@ -49,11 +49,13 @@ export const SubjDetailSubHeading = styled.h3`
 export const SubjDetailTxt = styled.p`
   font-size: 1rem;
   margin: 5px 0;
+  color: var(--text-color);
 `;
 
 export const SubjDetailSection = styled.div`
   margin-bottom: 20px;
   width: 100%;
+  color: var(--text-color);
 `;
 
 export const ReadingsStyle = styled.div`
@@ -86,7 +88,7 @@ export const ReadingContainer = styled.div`
 export const SubjDetailTabContainer = styled.div`
   margin: 0;
   margin-top: 16px;
-  background-color: var(--light-greyish-purple);
+  background-color: var(--foreground-color);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

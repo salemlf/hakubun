@@ -38,6 +38,7 @@ const SwipeMeHint = styled.p`
   left: 50%;
   transform: translate(-50%, -50%);
   bottom: 0;
+  color: white;
 `;
 
 const queueCardVariants = {
