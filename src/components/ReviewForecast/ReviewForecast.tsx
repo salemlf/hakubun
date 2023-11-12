@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { IonCol } from "@ionic/react";
 import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
@@ -8,13 +7,14 @@ import SwipeableTabs from "../SwipeableTabs";
 import LoadingDots from "../LoadingDots";
 import { LoadingContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
+import Card from "../Card";
 
 const Container = styled.section`
   width: 100%;
   border-radius: 0.5rem;
   margin: auto;
   padding: 10px;
-  background-color: var(--light-greyish-purple);
+  background-color: var(--foreground-color);
 `;
 
 const Heading = styled.h2`
@@ -112,14 +112,18 @@ function ReviewForecast() {
   }, [availForReviewLoading]);
 
   return (
-    <IonCol>
+    <>
       {isLoading ? (
         <LoadingContainer>
           <LoadingDots size="md" />
         </LoadingContainer>
       ) : (
-        <Container>
-          <Heading>Review Forecast</Heading>
+        <Card
+          margin="12px 0"
+          headerBgColor="var(--ion-color-primary)"
+          title="Review Forecast"
+          headerTextColor="black"
+        >
           <SwipeableTabs
             tabBgColor="var(--ion-color-primary)"
             roundedContainer={true}
@@ -142,9 +146,9 @@ function ReviewForecast() {
             })}
             defaultValue={"0"}
           />
-        </Container>
+        </Card>
       )}
-    </IonCol>
+    </>
   );
 }
 

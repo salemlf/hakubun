@@ -14,6 +14,7 @@ const ChartContainer = styled.section`
   gap: 10px;
   grid-auto-flow: row;
   padding: 10px;
+  color: var(--text-color);
 `;
 
 const BasicGrid = styled.div`
@@ -68,6 +69,8 @@ const ReviewsBar = styled.li<NumReviewsBarProps>`
   grid-column-start: 1;
   grid-column-end: ${({ gridcolspan }) => `span ${gridcolspan}`};
   border-radius: 0 12px 12px 0;
+  border: 1px solid black;
+  border-left: none;
   height: 1rem;
 `;
 
