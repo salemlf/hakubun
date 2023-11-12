@@ -1,9 +1,9 @@
 import { forwardRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { AnimatePresence, motion } from "framer-motion";
 import SvgIcon from "../SvgIcon/SvgIcon";
 import CloseIcon from "../../images/close.svg?react";
 import styled from "styled-components";
-import { AnimatePresence, motion } from "framer-motion";
 
 type Props = {
   children: React.ReactNode;
