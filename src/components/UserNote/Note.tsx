@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { IonIcon, useIonAlert } from "@ionic/react";
+import { IonIcon } from "@ionic/react";
+import { capitalizeWord } from "../../services/MiscService";
+import { displayToast } from "../Toast/Toast.service";
 import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
-
+import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
+import { Subject } from "../../types/Subject";
+import AlertModal from "../AlertModal";
 import NoteIcon from "../../images/note.svg";
 import PencilIcon from "../../images/pencil.svg";
 import TrashIcon from "../../images/trash.svg";
@@ -11,9 +15,6 @@ import {
   NoteHintHeading,
   IconHeadingContainer,
 } from "../../styles/BaseStyledComponents";
-import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
-import { Subject } from "../../types/Subject";
-import { capitalizeWord } from "../../services/MiscService";
 import {
   EditableNote,
   NoteContents,
@@ -62,18 +63,19 @@ const generateNoteHeadingsAngMsg = (
     return {
       noteHeadingTxt: "Note",
       alertHeadingTxt: "Delete Note",
-      alertHeadingMsg: "Delete radical name note?",
+      alertHeadingMsg:
+        "Are you sure you want to delete your radical name note?",
     };
   } else {
     return {
       noteHeadingTxt: `${noteTypeCapitalized} Note`,
-      alertHeadingTxt: `Delete ${noteTypeCapitalized}`,
-      alertHeadingMsg: `Delete ${noteType} note?`,
+      alertHeadingTxt: `Delete ${noteTypeCapitalized} Note`,
+      alertHeadingMsg: `Are you sure you want to delete your ${noteType} note?`,
     };
   }
 };
 
-// TODO: make a generic version of this component so can be used for user reading note also
+// TODO: scroll input into view on editing start
 function Note({
   subject,
   studyMaterial,
@@ -83,6 +85,8 @@ function Note({
   noteType,
   isRadical,
 }: Props) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const {
     addMeaningNote,
     removeMeaningNote,
@@ -100,7 +104,6 @@ function Note({
       textareaRef.current.selectionStart = textareaRef.current.value.length;
     }
   }, [isEditable]);
-  const [presentAlert] = useIonAlert();
 
   let noteHeadingsAndMsg = generateNoteHeadingsAngMsg(isRadical, noteType);
 
@@ -117,6 +120,7 @@ function Note({
   };
 
   const completeEditing = ({ saveEdit, remove }: CompleteEditParams) => {
+    setIsModalOpen(false);
     if (saveEdit) {
       if (noteType === "meaning") {
         console.log("MEANING!");
@@ -141,80 +145,98 @@ function Note({
       setEditingInProgress(false);
       setIsEditable(false);
     }
+    if (saveEdit && remove) {
+      let noteTxt = isRadical ? "radical name" : noteType;
+      displayToast({
+        toastType: "success",
+        title: `Deleted User Note`,
+        content: `Successfully deleted your ${noteTxt} note`,
+        timeout: 10000,
+      });
+    }
+  };
+
+  const onCancelDelete = () => {
+    setIsModalOpen(false);
+    let noteTxt = isRadical ? "radical name" : noteType;
+    displayToast({
+      toastType: "warning",
+      title: `Cancelled Note Deletion`,
+      content: `Cancelled deleting your ${noteTxt} note`,
+      timeout: 10000,
+    });
   };
 
   return (
-    <NoteContainer>
-      <IconHeadingContainer>
-        <NoteIconStyled src={NoteIcon} />
-        <NoteHintHeading>{noteHeadingsAndMsg.noteHeadingTxt}</NoteHintHeading>
-      </IconHeadingContainer>
-      {isEditable ? (
-        <EditableNote
-          onChange={handleTextAreaUpdate}
-          ref={textareaRef}
-          rows={1}
-          value={textValue}
-          disabled={isEditable ? undefined : true}
-        />
-      ) : (
-        <NoteContents>{textValue}</NoteContents>
-      )}
-      <ButtonContainer>
+    <>
+      <NoteContainer>
+        <IconHeadingContainer>
+          <NoteIconStyled src={NoteIcon} />
+          <NoteHintHeading>{noteHeadingsAndMsg.noteHeadingTxt}</NoteHintHeading>
+        </IconHeadingContainer>
         {isEditable ? (
-          <>
-            <CancelButton
-              aria-label="Cancel note"
-              onPress={() =>
-                completeEditing({ saveEdit: false, remove: false })
-              }
-            >
-              <IonIcon src={CancelIcon} />
-            </CancelButton>
-            <SaveButton
-              aria-label="Save note"
-              onPress={() => completeEditing({ saveEdit: true, remove: false })}
-            >
-              <IonIcon src={SaveIcon} />
-            </SaveButton>
-          </>
+          <EditableNote
+            onChange={handleTextAreaUpdate}
+            ref={textareaRef}
+            rows={1}
+            value={textValue}
+            disabled={isEditable ? undefined : true}
+          />
         ) : (
-          <>
-            <TrashButton
-              aria-label="Delete note"
-              onPress={() =>
-                presentAlert({
-                  header: noteHeadingsAndMsg.alertHeadingTxt,
-                  message: noteHeadingsAndMsg.alertHeadingMsg,
-                  cssClass: "custom-alert",
-                  buttons: [
-                    {
-                      text: "Cancel",
-                      role: "cancel",
-                    },
-                    {
-                      text: "Delete",
-                      role: "destructive",
-                      handler: () => {
-                        completeEditing({ saveEdit: true, remove: true });
-                      },
-                    },
-                  ],
-                })
-              }
-            >
-              <IonIcon src={TrashIcon} />
-            </TrashButton>
-            <PencilButton
-              onPress={() => setIsEditable(true)}
-              aria-label="Edit note"
-            >
-              <IonIcon src={PencilIcon} />
-            </PencilButton>
-          </>
+          <NoteContents>{textValue}</NoteContents>
         )}
-      </ButtonContainer>
-    </NoteContainer>
+        <ButtonContainer>
+          {isEditable ? (
+            <>
+              <CancelButton
+                aria-label="Cancel note"
+                onPress={() =>
+                  completeEditing({ saveEdit: false, remove: false })
+                }
+              >
+                <IonIcon src={CancelIcon} />
+              </CancelButton>
+              <SaveButton
+                aria-label="Save note"
+                onPress={() =>
+                  completeEditing({ saveEdit: true, remove: false })
+                }
+              >
+                <IonIcon src={SaveIcon} />
+              </SaveButton>
+            </>
+          ) : (
+            <>
+              <TrashButton
+                aria-label="Delete note"
+                onPress={() => setIsModalOpen(true)}
+              >
+                <IonIcon src={TrashIcon} />
+              </TrashButton>
+              <PencilButton
+                onPress={() => setIsEditable(true)}
+                aria-label="Edit note"
+              >
+                <IonIcon src={PencilIcon} />
+              </PencilButton>
+            </>
+          )}
+        </ButtonContainer>
+      </NoteContainer>
+      <AlertModal open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <AlertModal.Content
+          isOpen={isModalOpen}
+          title={noteHeadingsAndMsg.alertHeadingTxt}
+          description={noteHeadingsAndMsg.alertHeadingMsg}
+          confirmText="Delete"
+          cancelText="Cancel"
+          onConfirmClick={() =>
+            completeEditing({ saveEdit: true, remove: true })
+          }
+          onCancelClick={onCancelDelete}
+        />
+      </AlertModal>
+    </>
   );
 }
 
