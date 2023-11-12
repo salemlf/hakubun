@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTimeFromNow } from "../../services/MiscService";
+import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { Subject, SubjectType } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 import PopoverContent, { PopoverTrigger, PopoverRoot } from "../Popover";
@@ -19,17 +20,13 @@ const PopoverContainerStyled = styled.button<PopoverProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 50px 0;
+  padding: 30px 20px;
+  min-width: 200px;
   flex-direction: column;
-  --inner-border-width: 0;
 
   background-color: ${({ subjType }) =>
     subjType === "radical" ? `var(--wanikani-blue)` : `var(--wanikani-pink)`};
-  --background: ${({ subjType }) =>
-    subjType === "radical" ? `var(--wanikani-blue)` : `var(--wanikani-pink)`};
-
   color: var(--text-color);
-  --color: var(--text-color);
 `;
 
 const SubjectTimeTill = styled.p`
@@ -39,7 +36,11 @@ const SubjectTimeTill = styled.p`
 
 const TxtContainer = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  gap: 30px;
 `;
 
 const TimeTillReviewContainer = styled.div`
@@ -63,6 +64,8 @@ export const PopoverSubjButton = ({
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
+  let popoverBgColor = getSubjectColor(subject.object);
+
   const onPopoverClick = (e: any) => {
     setIsOpen(false);
     navigate(`/subjects/${subject.id}`);
@@ -80,7 +83,7 @@ export const PopoverSubjButton = ({
   return (
     <PopoverRoot open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent isOpen={isOpen}>
+      <PopoverContent isOpen={isOpen} contentBgColor={popoverBgColor}>
         <PopoverContainerStyled
           subjType={subject.object}
           onClick={onPopoverClick}
@@ -88,7 +91,6 @@ export const PopoverSubjButton = ({
           <TxtContainer>
             <SubjectChars subject={subject} fontSize="4rem" />
             <TimeTillReviewContainer>
-              {/* <AlarmClock src={AlarmClockIcon} /> */}
               <SvgIcon icon={<AlarmClockIcon />} width="1.5em" height="1.5em" />
               <SubjectTimeTill>{timeTill}</SubjectTimeTill>
             </TimeTillReviewContainer>
