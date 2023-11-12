@@ -49,6 +49,7 @@ const CloseButton = styled(ToastPrimitive.Close)`
   padding: 0;
   border-radius: 50%;
   background-color: transparent;
+  margin-left: 3px;
 `;
 
 const Close = styled(IonIcon)`
