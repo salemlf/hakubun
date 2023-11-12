@@ -5,8 +5,11 @@ type ThemeColors = {
   background: string;
   foreground: string;
   secondaryForeground: string;
+  contrast: string;
   boxShadow: string;
   text: string;
+  contrastText: string;
+  linkText: string;
   focus: string;
 };
 
@@ -15,16 +18,22 @@ const THEME_COLORS: { [index: string]: ThemeColors } = {
     background: "var(--light-mauve)",
     foreground: "var(--offwhite-color)",
     secondaryForeground: "var(--pale-grey)",
+    contrast: "var(--light-grey)",
     boxShadow: "var(--pale-grey)",
     text: "black",
+    contrastText: "white",
+    linkText: "var(--ion-color-secondary-dark)",
     focus: "black",
   },
   dark: {
     background: "var(--dark-greyish-purple)",
     foreground: "var(--light-greyish-purple)",
     secondaryForeground: "var(--light-grey)",
+    contrast: "var(--offwhite-color)",
     boxShadow: "var(--darkest-purple)",
     text: "white",
+    contrastText: "black",
+    linkText: "var(--ion-color-primary)",
     focus: "white",
   },
 };
@@ -73,8 +82,11 @@ const ThemeProvider = ({ children }: ProviderProps) => {
       "--secondary-foreground-color",
       themeColors.secondaryForeground
     );
+    root.style.setProperty("--contrast-color", themeColors.contrast);
     root.style.setProperty("--box-shadow-color", themeColors.boxShadow);
     root.style.setProperty("--text-color", themeColors.text);
+    root.style.setProperty("--contrast-text-color", themeColors.contrastText);
+    root.style.setProperty("--link-text-color", themeColors.linkText);
     root.style.setProperty("--focus-color", themeColors.focus);
   };
 

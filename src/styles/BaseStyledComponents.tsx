@@ -177,6 +177,7 @@ export const FloatingButton = styled(Button)`
   display: flex;
   align-items: center;
   gap: 10px;
+  border: 1px solid black;
 `;
 
 type FloatingButtonContainerProps = {

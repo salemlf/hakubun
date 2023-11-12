@@ -17,8 +17,7 @@ const Root = styled(SwitchPrimitive.Root)<RootProps>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  box-shadow: 0 2px 10px var(--dark-greyish-purple);
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  border: 1px solid black;
 
   &[data-state="checked"] {
     background-color: var(--ion-color-tertiary);
@@ -32,12 +31,12 @@ type ToggleProps = {
 };
 
 const Toggle = styled(motion.span)<ToggleProps>`
-  display: block;
+  display: inline-block;
   width: ${({ togglewidth }) => `${togglewidth}`};
   height: ${({ toggleheight }) => `${toggleheight}`};
   background-color: white;
   border-radius: 9999px;
-  box-shadow: 0 2px 2px var(--dark-greyish-purple);
+  border: 1px solid black;
 `;
 
 type Props = {

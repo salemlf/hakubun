@@ -27,7 +27,7 @@ type AssignmentTypeLegendProps = {
 
 const AssignmentTypeLegend = styled.legend<AssignmentTypeLegendProps>`
   font-size: ${({ headingfontsize }) => headingfontsize};
-  color: white;
+  color: var(--text-color);
   padding-top: 0;
   margin-bottom: 8px;
 `;
@@ -49,6 +49,7 @@ const AssignmentTypeItem = styled(ToggleGroup.Item)<AssignTypeOptionProps>`
   padding: 10px 15px;
   border-radius: 10px;
   font-size: 0.8rem;
+  color: white;
 
   &:focus-visible {
     outline: 2px solid white;

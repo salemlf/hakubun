@@ -69,6 +69,10 @@ input::selection {
   // }
 }
 
+a {
+  color: var(--link-text-color);
+}
+
 ion-toast {
   z-index: 2000 !important;
 }

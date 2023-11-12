@@ -69,7 +69,6 @@ http://ionicframework.com/docs/theming/ */
   --dark-greyish-purple-overlay: rgba(48, 34, 58, 92%);
   --darkest-purple: #1b0f24;
 
-  --pale-lavender: #c9ade4;
   --light-mauve: #c9ade4;
   --pale-grey: #cebfd9;
 
@@ -143,7 +142,10 @@ http://ionicframework.com/docs/theming/ */
   --foreground-color: var(--offwhite-color);
   --secondary-foreground-color: var(--pale-grey);
   --box-shadow-color: var(--pale-grey);
+  --contrast-color: var(--light-grey);
   --text-color: black;
+  --contrast-text-color: white;
+  --link-text-color: var(--ion-color-secondary-dark);
   --focus-color: black;
   /* main theme colors */
 
@@ -189,8 +191,11 @@ http://ionicframework.com/docs/theming/ */
     --background-color: var(--dark-greyish-purple);
     --foreground-color: var(--light-greyish-purple);
     --secondary-foreground-color: var(--light-grey);
+    --contrast-color: var(--offwhite-color);
     --box-shadow-color: var(--darkest-purple);
     --text-color: white;
+    --link-text-color: var(--ion-color-primary);
+    --contrast-text-color: black;
     --focus-color: white;
     /* main theme colors */
   }
