@@ -5,12 +5,12 @@ import { PopoverContentProps } from "@radix-ui/react-popover";
 import styled from "styled-components";
 
 type ContentAndArrowProps = {
-  contentBgColor: string;
+  contentbgcolor: string;
 };
 
 const Content = styled(motion.div)<ContentAndArrowProps>`
   border-radius: 10px;
-  background-color: ${({ contentBgColor }) => contentBgColor};
+  background-color: ${({ contentbgcolor }) => contentbgcolor};
   color: white;
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
@@ -21,7 +21,7 @@ const Content = styled(motion.div)<ContentAndArrowProps>`
 `;
 
 const Arrow = styled(PopoverPrimitive.Arrow)<ContentAndArrowProps>`
-  fill: ${({ contentBgColor }) => contentBgColor};
+  fill: ${({ contentbgcolor }) => contentbgcolor};
 `;
 
 export const PopoverRoot = PopoverPrimitive.Root;
@@ -52,13 +52,13 @@ const PopoverContent = forwardRef<PopoverRef, PopoverProps>(
               side="top"
             >
               <Content
-                contentBgColor={contentBgColor}
+                contentbgcolor={contentBgColor}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0 }}
               >
                 {children}
-                <Arrow contentBgColor={contentBgColor} />
+                <Arrow contentbgcolor={contentBgColor} />
               </Content>
             </PopoverPrimitive.Content>
           </PopoverPrimitive.Portal>
