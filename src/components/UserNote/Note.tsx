@@ -123,12 +123,10 @@ function Note({
     setIsModalOpen(false);
     if (saveEdit) {
       if (noteType === "meaning") {
-        console.log("MEANING!");
         remove
           ? removeMeaningNote(subject, studyMaterial)
           : addMeaningNote(subject, studyMaterial, textValue);
       } else {
-        console.log("READING!");
         remove
           ? removeReadingNote(subject, studyMaterial)
           : addReadingNote(subject, studyMaterial, textValue);
