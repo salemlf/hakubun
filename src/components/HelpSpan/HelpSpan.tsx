@@ -22,6 +22,7 @@ const QuestionMark = styled.span`
 
 const ClickableHelp = styled.button`
   all: unset;
+  color: var(--text-color);
   &:focus-visible {
     outline: 2px solid white;
   }

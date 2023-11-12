@@ -83,7 +83,11 @@ export const PopoverSubjButton = ({
   return (
     <PopoverRoot open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent isOpen={isOpen} contentBgColor={popoverBgColor}>
+      <PopoverContent
+        isOpen={isOpen}
+        contentBgColor={popoverBgColor}
+        showBorder={true}
+      >
         <PopoverContainerStyled
           subjType={subject.object}
           onClick={onPopoverClick}
