@@ -50,7 +50,7 @@ const TimeTillReviewContainer = styled.div`
   align-items: center;
 `;
 
-type PopoverSubjButtonProps = {
+export type PopoverSubjButtonProps = {
   children: React.ReactNode;
   subject: Subject;
   assignment: Assignment | undefined;
