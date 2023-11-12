@@ -18,7 +18,7 @@ import {
 import { PreFlattenedAssignment } from "../types/Assignment";
 import AssignmentQueueCards from "../components/AssignmentQueueCards";
 import QueueHeader from "../components/QueueHeader";
-import AlertDialog from "../components/AlertDialog";
+import AlertModal from "../components/AlertModal";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
 import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
@@ -118,14 +118,16 @@ function LessonQuiz() {
           onCancel: () => void;
         }) =>
           isActive && (
-            <AlertDialog
-              uncontrolledSettings={{ defaultOpen: isActive }}
-              title="End Lesson Quiz?"
-              confirmText="End Quiz"
-              cancelText="Cancel"
-              onConfirmClick={onConfirm}
-              onCancelClick={onCancel}
-            />
+            <AlertModal open={isActive}>
+              <AlertModal.Content
+                isOpen={isActive}
+                title="End Lesson Quiz?"
+                confirmText="End Quiz"
+                cancelText="Cancel"
+                onConfirmClick={onConfirm}
+                onCancelClick={onCancel}
+              />
+            </AlertModal>
           )
         }
       </ReactRouterPrompt>
