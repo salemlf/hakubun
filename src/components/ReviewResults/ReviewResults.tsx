@@ -19,8 +19,9 @@ function ReviewResults({ groupedReviewItems }: ReviewResultsProps) {
     <>
       <ReviewCard
         title={`${numCorrect} Answered Correctly`}
-        headerBgColor="var(--ion-color-success-dark)"
+        headerBgColor="var(--ion-color-tertiary)"
         headerFontSize="1.25rem"
+        headerTextColor="black"
       >
         <GroupedReviewSummaryResults queueItems={groupedReviewItems.correct} />
       </ReviewCard>
@@ -28,6 +29,7 @@ function ReviewResults({ groupedReviewItems }: ReviewResultsProps) {
         title={`${numWrong} Answered Incorrectly`}
         headerBgColor="var(--ion-color-danger)"
         headerFontSize="1.25rem"
+        headerTextColor="white"
       >
         <GroupedReviewSummaryResults
           queueItems={groupedReviewItems.incorrect}
