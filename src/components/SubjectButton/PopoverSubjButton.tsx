@@ -48,6 +48,7 @@ const TimeTillReviewContainer = styled.div`
   justify-content: center;
   gap: 10px;
   align-items: center;
+  color: white;
 `;
 
 export type PopoverSubjButtonProps = {

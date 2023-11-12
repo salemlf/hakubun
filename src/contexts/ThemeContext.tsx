@@ -57,7 +57,6 @@ const ThemeProvider = ({ children }: ProviderProps) => {
     updateCSSVariables();
   };
 
-  // TODO: map colors from THEME_COLORS object instead of individually
   const updateCSSVariables = () => {
     const root = window.document.documentElement;
     let themeColors = isDarkMode ? THEME_COLORS.dark : THEME_COLORS.light;
