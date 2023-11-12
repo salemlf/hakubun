@@ -27,9 +27,9 @@ export function ToastDisplayProvider() {
       <AnimatePresence>
         {notifications.map((toast) => (
           <Toast
-            open={true}
+            open={toast.open ?? true}
             setOpen={(open) => {
-              if (open === false && toast.allowClose !== true) {
+              if (open === false && toast.allowClose === true) {
                 closeToast(toast.id);
               }
             }}

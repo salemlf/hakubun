@@ -1,11 +1,13 @@
-import { Fragment } from "react";
-import { IonIcon, IonSkeletonText, useIonAlert } from "@ionic/react";
+import { Fragment, useState } from "react";
+import { IonIcon, IonSkeletonText } from "@ionic/react";
+import { closeCircle } from "ionicons/icons";
+import { displayToast } from "../Toast/Toast.service";
+import { generateUUID } from "../../utils";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
-import { generateUUID } from "../../utils";
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse } from "../../types/MiscTypes";
-import { closeCircle } from "ionicons/icons";
+import AlertModal from "../AlertModal";
 import { Chip } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -30,31 +32,52 @@ const Chips = ({
   userMeaningsWithUUIDs,
 }: ChipProps) => {
   const { deleteUserAltSubjectMeaning } = useStudyMaterialsChange();
-  const [presentAlert] = useIonAlert();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMeaning, setSelectedMeaning] = useState<
+    MeaningWithUUID | undefined
+  >();
 
-  const deleteMeaningAlert = (meaningWithUUID: MeaningWithUUID) => {
-    presentAlert({
-      header: "Delete Meaning",
-      message: `Delete user meaning ${meaningWithUUID.meaning}?`,
-      cssClass: "custom-alert",
-      buttons: [
-        {
-          text: "Cancel",
-          role: "cancel",
-        },
-        {
-          text: "Delete",
-          role: "destructive",
-          handler: () => {
-            let meaningToDelete = meaningWithUUID.meaning;
-            deleteUserAltSubjectMeaning(
-              subject,
-              studyMaterialsResponse,
-              meaningToDelete
-            );
-          },
-        },
-      ],
+  const onUserMeaningChipPress = (meaningWithUUID: MeaningWithUUID) => {
+    setSelectedMeaning(meaningWithUUID);
+    setIsModalOpen(true);
+  };
+
+  const deleteMeaning = (meaningWithUUID: MeaningWithUUID | undefined) => {
+    setIsModalOpen(false);
+    if (meaningWithUUID === undefined) {
+      displayToast({
+        toastType: "error",
+        title: `Error Deleting User Meaning`,
+        content: `Huh, it looks like the user meaning "${selectedMeaning?.meaning}" doesn't exist? Strange...`,
+        timeout: 10000,
+      });
+      return;
+    }
+    let meaningToDelete = meaningWithUUID.meaning;
+    deleteUserAltSubjectMeaning(
+      subject,
+      studyMaterialsResponse,
+      meaningToDelete
+    );
+
+    displayToast({
+      toastType: "success",
+      title: `Deleted User Meaning`,
+      content: `Successfully deleted user meaning "${selectedMeaning?.meaning}"`,
+      timeout: 10000,
+    });
+
+    setSelectedMeaning(undefined);
+  };
+
+  const onCancelDelete = () => {
+    setIsModalOpen(false);
+    setSelectedMeaning(undefined);
+    displayToast({
+      toastType: "warning",
+      title: `Cancelled Deletion`,
+      content: `Cancelled deleting user meaning "${selectedMeaning?.meaning}"`,
+      timeout: 10000,
     });
   };
 
@@ -65,7 +88,7 @@ const Chips = ({
           <Fragment key={meaningWithUUID.uuid}>
             <UserMeaningChip
               onPress={(e: any) => {
-                deleteMeaningAlert(meaningWithUUID);
+                onUserMeaningChipPress(meaningWithUUID);
               }}
             >
               {meaningWithUUID.meaning}
@@ -74,6 +97,17 @@ const Chips = ({
           </Fragment>
         );
       })}
+      <AlertModal open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <AlertModal.Content
+          isOpen={isModalOpen}
+          title="Delete Meaning"
+          confirmText="Delete"
+          description={`Delete user meaning "${selectedMeaning?.meaning}"?`}
+          cancelText="Cancel"
+          onConfirmClick={() => deleteMeaning(selectedMeaning)}
+          onCancelClick={onCancelDelete}
+        />
+      </AlertModal>
     </>
   );
 };

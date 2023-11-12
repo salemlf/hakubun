@@ -38,6 +38,10 @@ h6 {
   }
 }
 
+a {
+  color: var(--link-text-color);
+}
+
 p::selection {
   background-color: var(--ion-color-primary);
   color: black;
@@ -46,31 +50,6 @@ p::selection {
 input::selection {
   background-color: var(--ion-color-primary);
   color: black;
-}
-
-.custom-alert .alert-wrapper {
-  border-radius: 10px;
-  .alert-button {
-    border-radius: 16px;
-    &:focus-visible {
-      outline: 2px solid white;
-      --outline: 2px solid white;
-    }
-  }
-
-  // @media (prefers-color-scheme: dark) {
-  .alert-message {
-    color: white;
-  }
-  .alert-button {
-    color: white;
-    background-color: var(--light-greyish-purple);
-  }
-  // }
-}
-
-a {
-  color: var(--link-text-color);
 }
 
 ion-toast {

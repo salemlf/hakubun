@@ -20,7 +20,7 @@ import {
 import { PreFlattenedAssignment } from "../types/Assignment";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
-import AlertDialog from "../components/AlertDialog";
+import AlertModal from "../components/AlertModal";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
 import FinishFlagIcon from "../images/finish-flag.svg";
 import { MainContent } from "../styles/BaseStyledComponents";
@@ -275,20 +275,22 @@ function ReviewSession() {
           onCancel: () => void;
         }) =>
           isActive && (
-            <AlertDialog
-              uncontrolledSettings={{ defaultOpen: isActive }}
-              title="End Review Session?"
-              confirmText="End Session"
-              description={<Description />}
-              cancelText="Cancel"
-              onConfirmClick={onConfirm}
-              onCancelClick={onCancel}
-              showAddtlAction={true}
-              addtlActionText="Wrap Up"
-              onAddtlActionClick={() => {
-                wrapUpReviewSession(onCancel);
-              }}
-            />
+            <AlertModal open={isActive}>
+              <AlertModal.Content
+                isOpen={isActive}
+                title="End Review Session?"
+                confirmText="End Session"
+                description={<Description />}
+                cancelText="Cancel"
+                onConfirmClick={onConfirm}
+                onCancelClick={onCancel}
+                showAddtlAction={true}
+                addtlActionText="Wrap Up"
+                onAddtlActionClick={() => {
+                  wrapUpReviewSession(onCancel);
+                }}
+              />
+            </AlertModal>
           )
         }
       </ReactRouterPrompt>

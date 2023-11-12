@@ -165,9 +165,9 @@ const TokenInput = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    const fd = new FormData(event.target);
+    const formData = new FormData(event.target);
 
-    const apiToken = fd.get("api-token");
+    const apiToken = formData.get("api-token");
     if (apiToken === "") {
       // TODO: show a toast
       console.log("Hey, you need to enter a token!");
