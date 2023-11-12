@@ -32,7 +32,7 @@ const ContentPrimitive = styled(DialogPrimitive.Content)`
   box-shadow: 2px 1px 10px rgba(0, 0, 0, 0.2);
   color: white;
   width: 90vw;
-  max-width: 600px;
+  max-width: 400px;
   max-height: 85vh;
   overflow-y: auto;
   background-color: var(--light-greyish-purple);
@@ -41,6 +41,7 @@ const ContentPrimitive = styled(DialogPrimitive.Content)`
 
 const ClosePrimitive = styled(DialogPrimitive.Close)`
   background-color: transparent;
+  border-radius: 50%;
 `;
 
 const Content = styled(motion.div)``;
@@ -49,6 +50,16 @@ const TitleBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 10px;
+`;
+
+const Title = styled(DialogPrimitive.Title)`
+  margin: 10px 0;
+  font-size: 1.5rem;
+`;
+
+const Description = styled(DialogPrimitive.Description)`
+  margin: 10px 0 16px 0;
 `;
 
 const PortalContainer = styled.div`
@@ -58,18 +69,20 @@ const PortalContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 `;
 
 type ContentRef = HTMLDivElement;
 
 type ContentProps = {
   title: string;
+  description?: string;
   children: React.ReactNode;
   isOpen: boolean;
 };
 
 export const ModalContent = forwardRef<ContentRef, ContentProps>(
-  ({ children, title, isOpen, ...props }, forwardedRef) => {
+  ({ children, title, description, isOpen, ...props }, forwardedRef) => {
     const [container, setContainer] = useState<HTMLDivElement | null>(null);
     return (
       <>
@@ -89,15 +102,12 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                   exit={{ scale: 0 }}
                 >
                   <TitleBar>
-                    <DialogPrimitive.Title>{title}</DialogPrimitive.Title>
+                    <Title>{title}</Title>
                     <ClosePrimitive aria-label="Close">
-                      <SvgIcon
-                        icon={<CloseIcon />}
-                        width="1.75em"
-                        height="1.75em"
-                      />
+                      <SvgIcon icon={<CloseIcon />} width="2em" height="2em" />
                     </ClosePrimitive>
                   </TitleBar>
+                  {description && <Description>{description}</Description>}
                   {children}
                 </Content>
               </ContentPrimitive>
