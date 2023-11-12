@@ -62,6 +62,7 @@ type ProviderProps = {
   children?: React.ReactNode;
 };
 
+// TODO: make sure user choice is pritoritized first, then device default
 const ThemeProvider = ({ children }: ProviderProps) => {
   // uses default theme user has set for device, persists in local storage
   const { isDarkMode, enable, disable } = useDarkMode();
