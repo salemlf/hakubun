@@ -3,11 +3,11 @@ import { useRadicalSubjectsForLvl } from "../../hooks/useRadicalSubjectsForLvl";
 import { useRadicalAssignmentsForLvl } from "../../hooks/useRadicalAssignmentsForLvl";
 import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
-import BasicCard from "../BasicCard";
 import SubjectButton from "../SubjectButton";
 import SrsStageProgressBar from "../SrsStageProgressBar/SrsStageProgressBar";
 import Card from "../Card";
 import {
+  LoadingButtonRow,
   SubjForLvlGrid,
   SubjectButtonAndProgress,
 } from "../../styles/BaseStyledComponents";
@@ -37,20 +37,31 @@ function RadicalForLvlCard({ level }: Props) {
 
   if (radicalCardLoading) {
     return (
-      <BasicCard isLoading={true}>
-        <SubjForLvlGrid>
+      <Card
+        margin="12px 0"
+        headerBgColor="var(--wanikani-radical)"
+        title="Radicals"
+        headerTextColor="white"
+      >
+        <LoadingButtonRow>
           <IonSkeletonText
             animated={true}
             style={{ height: "50px" }}
           ></IonSkeletonText>
-        </SubjForLvlGrid>
-        <SubjForLvlGrid>
+        </LoadingButtonRow>
+        <LoadingButtonRow>
           <IonSkeletonText
             animated={true}
             style={{ height: "50px" }}
           ></IonSkeletonText>
-        </SubjForLvlGrid>
-      </BasicCard>
+        </LoadingButtonRow>
+        <LoadingButtonRow>
+          <IonSkeletonText
+            animated={true}
+            style={{ height: "50px" }}
+          ></IonSkeletonText>
+        </LoadingButtonRow>
+      </Card>
     );
   }
 
