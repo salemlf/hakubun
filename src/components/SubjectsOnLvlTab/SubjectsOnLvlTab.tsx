@@ -10,6 +10,7 @@ import styled from "styled-components";
 
 const SubjectCardContainer = styled.div`
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
   justify-content: center;
