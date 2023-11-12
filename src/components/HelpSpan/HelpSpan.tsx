@@ -27,6 +27,11 @@ const ClickableHelp = styled.button`
   }
 `;
 
+const HelpContentWrapper = styled.div`
+  padding: 20px;
+  max-width: 260px;
+`;
+
 type Props = {
   children: React.ReactNode;
   helpPopoverContents: React.ReactNode;
@@ -43,7 +48,9 @@ function HelpSpan({ children, helpPopoverContents }: Props) {
             <QuestionMark>?</QuestionMark>
           </ClickableHelp>
         </PopoverTrigger>
-        <PopoverContent isOpen={isOpen}>{helpPopoverContents}</PopoverContent>
+        <PopoverContent isOpen={isOpen}>
+          <HelpContentWrapper>{helpPopoverContents}</HelpContentWrapper>
+        </PopoverContent>
       </PopoverRoot>
     </ContainerSpan>
   );
