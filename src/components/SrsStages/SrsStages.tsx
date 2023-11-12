@@ -165,6 +165,7 @@ const SubjTypeContainer = styled(motion.div)`
   grid-template-columns: 1fr;
   grid-template-rows: repeat(1fr, 4);
   overflow: hidden;
+  border-top: 2px solid black;
 `;
 
 type SubjTypeRowProps = {
