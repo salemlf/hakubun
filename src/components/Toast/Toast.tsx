@@ -59,7 +59,7 @@ const Close = styled(IonIcon)`
 const TitleContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 15px;
 `;
 
 const HeaderContainer = styled.div`
