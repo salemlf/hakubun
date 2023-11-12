@@ -22,7 +22,6 @@ type Props = {
   showDetails: boolean;
 };
 
-// TODO: switch to CSS text-transform: capitalize instead of capitalizeWord
 // TODO: add more space b/t character and meaning
 export const RadicalButton = forwardRef<ButtonRef, Props>(
   ({ subject, showDetails, btnSize, onBtnClick, ...props }, forwardedRef) => {

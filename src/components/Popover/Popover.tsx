@@ -4,11 +4,13 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { PopoverContentProps } from "@radix-ui/react-popover";
 import styled from "styled-components";
 
-const Content = styled(motion.div)`
+type ContentAndArrowProps = {
+  contentBgColor: string;
+};
+
+const Content = styled(motion.div)<ContentAndArrowProps>`
   border-radius: 10px;
-  padding: 20px;
-  width: 260px;
-  background-color: var(--darkest-purple);
+  background-color: ${({ contentBgColor }) => contentBgColor};
   color: white;
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
@@ -18,8 +20,8 @@ const Content = styled(motion.div)`
   }
 `;
 
-const Arrow = styled(PopoverPrimitive.Arrow)`
-  fill: var(--darkest-purple);
+const Arrow = styled(PopoverPrimitive.Arrow)<ContentAndArrowProps>`
+  fill: ${({ contentBgColor }) => contentBgColor};
 `;
 
 export const PopoverRoot = PopoverPrimitive.Root;
@@ -30,11 +32,14 @@ type PopoverRef = HTMLDivElement;
 
 type PopoverProps = PopoverContentProps & {
   isOpen: boolean;
+  contentBgColor?: string;
 };
 
-// TODO: pass in custom bg color
 const PopoverContent = forwardRef<PopoverRef, PopoverProps>(
-  ({ isOpen, children, ...props }, forwardedRef) => {
+  (
+    { isOpen, children, contentBgColor = "var(--darkest-purple)", ...props },
+    forwardedRef
+  ) => {
     return (
       <AnimatePresence>
         {isOpen && (
@@ -47,12 +52,13 @@ const PopoverContent = forwardRef<PopoverRef, PopoverProps>(
               side="top"
             >
               <Content
+                contentBgColor={contentBgColor}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0 }}
               >
                 {children}
-                <Arrow />
+                <Arrow contentBgColor={contentBgColor} />
               </Content>
             </PopoverPrimitive.Content>
           </PopoverPrimitive.Portal>
