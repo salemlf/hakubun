@@ -1,3 +1,4 @@
+import { Assignment } from "../../../types/Assignment";
 import { AssignmentCollection } from "../../../types/Collection";
 import { SubjectType } from "../../../types/Subject";
 
@@ -1070,4 +1071,22 @@ export const mockAssignmentsBySrsStageResponse: AssignmentCollection = {
   total_count: 0,
   data_updated_at: null,
   data: [],
+};
+
+export const mockKanjiAssignmentLvl1_440: Assignment = {
+  id: 366986606,
+  object: "assignment",
+  url: "https://api.wanikani.com/v2/assignments/366986606",
+  data_updated_at: new Date("2023-11-04T23:08:54.950385Z"),
+  created_at: new Date("2023-10-27T23:16:41.766046Z"),
+  subject_id: 440,
+  subject_type: "kanji" as SubjectType,
+  srs_stage: 5,
+  unlocked_at: new Date("2023-10-27T23:16:41.761788Z"),
+  started_at: new Date("2023-10-27T23:19:21.604215Z"),
+  passed_at: new Date("2023-11-04T23:08:54.935777Z"),
+  burned_at: null,
+  available_at: new Date("2023-11-11T22:00:00.000000Z"),
+  resurrected_at: null,
+  hidden: false,
 };
