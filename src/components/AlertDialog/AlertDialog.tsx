@@ -10,8 +10,8 @@ const Overlay = styled(AlertDialogPrimitive.Overlay)`
 `;
 
 const Content = styled(AlertDialogPrimitive.Content)`
-  background-color: var(--light-greyish-purple);
-  color: white;
+  background-color: var(--foreground-color);
+  color: var(--text-color);
   border-radius: 12px;
   box-shadow: 0 2px 15px #1b0f24;
   position: fixed;
@@ -58,6 +58,7 @@ const DialogButton = styled.button`
   font-size: 0.9rem;
   line-height: 1;
   font-weight: 500;
+  border: 1px solid black;
 
   &:focus-visible {
     outline: 2px solid white;
@@ -67,6 +68,7 @@ const DialogButton = styled.button`
 
 const ConfirmButton = styled(DialogButton)`
   background-color: var(--ion-color-danger);
+  color: white;
 `;
 
 const CancelButton = styled(DialogButton)`
@@ -76,6 +78,7 @@ const CancelButton = styled(DialogButton)`
 
 const MiscButton = styled(DialogButton)`
   background-color: var(--ion-color-primary);
+  color: white;
 `;
 
 const PortalContainer = styled.div`
@@ -129,15 +132,6 @@ function AlertDialog({
   onAddtlActionClick,
 }: Props) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-
-  // let portalRoot =
-  //   global.document && global.document.getElementById("portal-root");
-
-  // if (!portalRoot) {
-  //   portalRoot = global.document.createElement("div");
-  //   portalRoot.setAttribute("id", "portal-root");
-  //   global.document.body.appendChild(portalRoot);
-  // }
 
   return (
     <>
