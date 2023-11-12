@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
+import { useState } from "react";
 import PopoverContent, { PopoverRoot, PopoverTrigger } from "../Popover";
+import styled from "styled-components";
 
 const ContainerSpan = styled.span`
   display: inline-block;
@@ -8,6 +8,7 @@ const ContainerSpan = styled.span`
   padding-right: 3px;
   text-decoration: underline;
   text-decoration-style: dashed;
+  text-underline-offset: 4px;
 `;
 
 const QuestionMark = styled.span`
@@ -19,20 +20,37 @@ const QuestionMark = styled.span`
   background-color: transparent;
 `;
 
+const ClickableHelp = styled.button`
+  all: unset;
+  &:focus-visible {
+    outline: 2px solid white;
+  }
+`;
+
+const HelpContentWrapper = styled.div`
+  padding: 20px;
+  max-width: 260px;
+`;
+
 type Props = {
   children: React.ReactNode;
   helpPopoverContents: React.ReactNode;
 };
 
 function HelpSpan({ children, helpPopoverContents }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <ContainerSpan>
-      <PopoverRoot>
-        <PopoverTrigger>
-          {children}
-          <QuestionMark>?</QuestionMark>
+      <PopoverRoot open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <ClickableHelp>
+            {children}
+            <QuestionMark>?</QuestionMark>
+          </ClickableHelp>
         </PopoverTrigger>
-        <PopoverContent>{helpPopoverContents}</PopoverContent>
+        <PopoverContent isOpen={isOpen}>
+          <HelpContentWrapper>{helpPopoverContents}</HelpContentWrapper>
+        </PopoverContent>
       </PopoverRoot>
     </ContainerSpan>
   );
