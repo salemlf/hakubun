@@ -47,7 +47,7 @@ export const useToastStore = create<ToastStore>((set) => ({
               : data.toastType === "loading"
               ? Infinity
               : 5000,
-          allowClose: data.allowClose ?? data.toastType === "loading",
+          allowClose: data.allowClose ?? data.toastType !== "loading",
         },
         ...state.notifications,
       ],
