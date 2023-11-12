@@ -142,6 +142,7 @@ http://ionicframework.com/docs/theming/ */
   --background-color: var(--light-mauve);
   --foreground-color: var(--offwhite-color);
   --secondary-foreground-color: var(--pale-grey);
+  --box-shadow-color: var(--pale-grey);
   --text-color: black;
   --focus-color: black;
   /* main theme colors */
@@ -188,6 +189,7 @@ http://ionicframework.com/docs/theming/ */
     --background-color: var(--dark-greyish-purple);
     --foreground-color: var(--light-greyish-purple);
     --secondary-foreground-color: var(--light-grey);
+    --box-shadow-color: var(--darkest-purple);
     --text-color: white;
     --focus-color: white;
     /* main theme colors */

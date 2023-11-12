@@ -22,7 +22,11 @@ function ReviewUserSettings() {
   } = useUserSettingsStoreFacade();
 
   return (
-    <SettingCategory title="Reviews" headerBgColor="var(--wanikani-review)">
+    <SettingCategory
+      title="Reviews"
+      headerBgColor="var(--wanikani-review)"
+      headerTextColor="white"
+    >
       <SettingRow>
         <BatchSizeOption
           batchSize={reviewBatchSize}

@@ -23,7 +23,11 @@ function GeneralUserSettings() {
   };
 
   return (
-    <SettingCategory title="General" headerBgColor="var(--ion-color-primary)">
+    <SettingCategory
+      title="General"
+      headerBgColor="var(--ion-color-secondary)"
+      headerTextColor="white"
+    >
       <SettingRow>
         <Label labelText="Audio Voice" idOfControl="audio-voice-selector" />
         <Selector

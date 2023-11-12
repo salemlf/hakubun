@@ -85,15 +85,11 @@ const Trigger = styled(SelectPrimitive.Trigger)`
   gap: 8px;
   background-color: white;
   color: var(--darkest-purple);
-  box-shadow: 0 2px 10px #1b0f24;
+  box-shadow: 0 2px 10px var(--box-shadow-color);
   text-transform: capitalize;
 
   /* max width so doesn't take up a crazy amount, will use ellipsis if overflow */
   max-width: 55vw;
-
-  &:hover {
-    background-color: rgb(231, 218, 240);
-  }
 
   &:focus-visible {
     outline: 2px solid white;

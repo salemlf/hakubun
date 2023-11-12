@@ -5,6 +5,7 @@ type ThemeColors = {
   background: string;
   foreground: string;
   secondaryForeground: string;
+  boxShadow: string;
   text: string;
   focus: string;
 };
@@ -14,6 +15,7 @@ const THEME_COLORS: { [index: string]: ThemeColors } = {
     background: "var(--light-mauve)",
     foreground: "var(--offwhite-color)",
     secondaryForeground: "var(--pale-grey)",
+    boxShadow: "var(--pale-grey)",
     text: "black",
     focus: "black",
   },
@@ -21,6 +23,7 @@ const THEME_COLORS: { [index: string]: ThemeColors } = {
     background: "var(--dark-greyish-purple)",
     foreground: "var(--light-greyish-purple)",
     secondaryForeground: "var(--light-grey)",
+    boxShadow: "var(--darkest-purple)",
     text: "white",
     focus: "white",
   },
@@ -68,9 +71,9 @@ const ThemeProvider = ({ children }: ProviderProps) => {
     root.style.setProperty("--foreground-color", themeColors.foreground);
     root.style.setProperty(
       "--secondary-foreground-color",
-      themeColors.foreground
+      themeColors.secondaryForeground
     );
-    // --secondary-foreground-color
+    root.style.setProperty("--box-shadow-color", themeColors.boxShadow);
     root.style.setProperty("--text-color", themeColors.text);
     root.style.setProperty("--focus-color", themeColors.focus);
   };

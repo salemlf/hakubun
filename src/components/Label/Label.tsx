@@ -23,7 +23,7 @@ function Label({
   idOfControl,
   labelText,
   labelfontSize = "1.2rem",
-  color = "white",
+  color = "var(--text-color)",
 }: LabelProps) {
   return (
     <LabelStyled
