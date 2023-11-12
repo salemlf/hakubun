@@ -1,4 +1,4 @@
-import { IonAlert, IonGrid, IonRow } from "@ionic/react";
+import { IonGrid, IonRow } from "@ionic/react";
 import { motion } from "framer-motion";
 import Button from "../components/Button/Button";
 import styled from "styled-components";
@@ -88,15 +88,6 @@ export const SvgIconHeadingContainer = styled.div`
 
 export const FoundInHeadingContainer = styled(IconHeadingContainer)`
   margin-bottom: 10px;
-`;
-
-// TODO: modify so can see textbox before click (has an outline)
-export const Alert = styled(IonAlert)`
-  /* @media (prefers-color-scheme: dark) { */
-  .alert-message {
-    color: white;
-    /* } */
-  }
 `;
 
 export const Chip = styled(Button)`

@@ -1,10 +1,10 @@
 import { rest } from "msw";
-import { screen } from "@testing-library/react";
 import {
   renderHook,
   act,
   renderWithRouter,
   createWrapper,
+  screen,
 } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { mockUserResponseLvl5 } from "../../testing/mocks/data/user.mock";
