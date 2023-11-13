@@ -12,6 +12,7 @@ export interface UserSettingsState {
   lessonSortOrderOption: AssignmentSortOption;
   reviewSortOrderOption: AssignmentSortOption;
   reviewBackToBackOption: BackToBackChoice;
+  prefersDarkModeTheme: boolean;
 }
 
 export interface UserSettingsActions {
@@ -21,6 +22,7 @@ export interface UserSettingsActions {
   setLessonSortOrderOption: (sortOption: AssignmentSortOption) => void;
   setReviewSortOrderOption: (sortOption: AssignmentSortOption) => void;
   setReviewBackToBackOption: (backToBackChoice: BackToBackChoice) => void;
+  setPrefersDarkModeTheme: (isDarkMode: boolean) => void;
 }
 
 const initialState: UserSettingsState = {
@@ -37,6 +39,9 @@ const initialState: UserSettingsState = {
   lessonSortOrderOption: getSortOrderOptionById("level_asc"),
   reviewSortOrderOption: getSortOrderOptionById("shuffled"),
   reviewBackToBackOption: "disabled",
+  prefersDarkModeTheme:
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches,
 };
 
 export const useUserSettingsStore = create<
@@ -55,6 +60,8 @@ export const useUserSettingsStore = create<
         set({ reviewSortOrderOption: sortOption }),
       setReviewBackToBackOption: (backToBackChoice: BackToBackChoice) =>
         set({ reviewBackToBackOption: backToBackChoice }),
+      setPrefersDarkModeTheme: (prefersDarkMode: boolean) =>
+        set({ prefersDarkModeTheme: prefersDarkMode }),
     }),
     {
       name: "user-settings-storage",
