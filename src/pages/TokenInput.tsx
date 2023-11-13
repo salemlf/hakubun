@@ -49,6 +49,7 @@ const SubmitButton = styled(Button)`
   border-radius: 12px;
   font-size: 1rem;
   margin-top: 10px;
+  border: 1px solid black;
 `;
 
 const InputContainer = styled.div`
