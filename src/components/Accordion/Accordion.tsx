@@ -67,7 +67,7 @@ const TriggerHeader = styled(AccordionPrimitive.Header)`
   display: flex;
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: var(--text-color);
 `;
 
 type TriggerProps = {
@@ -109,11 +109,11 @@ export const AccordionTrigger = forwardRef<TriggerRef, TriggerProps>(
 const Content = styled(AccordionPrimitive.Content)`
   overflow: hidden;
   font-size: 1rem;
-  color: white;
-  background-color: var(--light-grey);
+  color: var(--text-color);
+  background-color: var(--secondary-foreground-color);
 
   a {
-    color: var(--ion-color-primary-lightest);
+    color: var(--link-text-color);
   }
 `;
 
@@ -177,7 +177,7 @@ const Item = styled(AccordionPrimitive.Item)`
   flex-direction: column;
   border-radius: 0.5rem;
   width: 100%;
-  background-color: var(--light-grey);
+  background-color: var(--secondary-foreground-color);
 `;
 
 type ItemProps = {

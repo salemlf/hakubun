@@ -84,7 +84,7 @@ function HomeHeader() {
 
   // TODO: show loading skeleton
   return (
-    <HeaderWrapper bgcolor="var(--light-greyish-purple)">
+    <HeaderWrapper bgcolor="var(--foreground-color)">
       <FirstRow>
         <UserInfoContainer>
           <SvgIcon icon={<LogoIcon />} width="2em" height="2em" />

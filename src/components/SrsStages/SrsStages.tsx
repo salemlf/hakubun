@@ -148,6 +148,7 @@ const SrsStageButton = styled.button<ButtonProps>`
   padding: 0;
   color: white;
   border-radius: 6px;
+  border: 2px solid black;
   background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
   &:focus-visible {
     outline: 2px solid white;
@@ -164,6 +165,7 @@ const SubjTypeContainer = styled(motion.div)`
   grid-template-columns: 1fr;
   grid-template-rows: repeat(1fr, 4);
   overflow: hidden;
+  border-top: 2px solid black;
 `;
 
 type SubjTypeRowProps = {

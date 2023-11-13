@@ -19,7 +19,7 @@ function LessonUserSettings() {
   } = useUserSettingsStoreFacade();
 
   return (
-    <SettingCategory title="Lessons" headerBgColor="var(--wanikani-lesson)">
+    <SettingCategory title="Lessons" headerBgColor="var(--wanikani-lesson)" headerTextColor="white">
       <SettingRow>
         <BatchSizeOption
           batchSize={lessonBatchSize}

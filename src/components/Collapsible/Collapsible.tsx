@@ -12,7 +12,7 @@ type TitleProps = {
 
 const Title = styled.h3<TitleProps>`
   font-size: ${({ titlefontsize }) => titlefontsize};
-  color: black;
+  color: var(--contrast-text-color);
   margin: 0;
 `;
 
@@ -28,7 +28,7 @@ const TriggerButton = styled(CollapsiblePrimitive.Trigger)`
   align-items: center;
   padding: 10px;
   border-radius: 8px;
-  background-color: var(--offwhite-color);
+  background-color: var(--contrast-color);
 
   &:focus-visible {
     outline: 2px solid white;
@@ -42,13 +42,13 @@ const IconContainer = styled(motion.div)`
 
 const Root = styled(CollapsiblePrimitive.Root)`
   width: 100%;
-  background-color: var(--light-grey);
-  border-radius: 8px 8px;
+  background-color: var(--secondary-foreground-color);
+  border-radius: 10px;
 `;
 
 const Content = styled(CollapsiblePrimitive.Content)`
   overflow: hidden;
-  background-color: var(--light-grey);
+  background-color: var(--secondary-foreground-color);
   padding: 10px 5px;
   border-radius: 0 0 8px 8px;
 `;

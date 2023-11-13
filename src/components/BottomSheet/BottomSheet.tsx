@@ -19,7 +19,7 @@ const Content = styled(RadixDialog.Content)`
 `;
 
 const SheetHeader = styled.header`
-  background-color: var(--light-greyish-purple);
+  background-color: var(--foreground-color);
   padding: 5px 0 10px;
   color: white;
   text-align: center;
@@ -32,8 +32,9 @@ const SheetHeadingTxt = styled(RadixDialog.Title)`
 
 const SheetOpenCloseButton = styled(Button)`
   width: 75px;
-  height: 10px;
+  height: 12px;
   border-radius: 1rem;
+  border: 1px solid black;
 
   &:focus-visible {
     outline: 2px solid white;

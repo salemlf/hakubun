@@ -81,12 +81,14 @@ type WrapperProps = {
 };
 
 const PagesWrapper = styled.div`
+  background-color: var(--background-color);
   position: relative;
   height: 100%;
   width: 100%;
 `;
 
 const PageContainer = styled(motion.div)<WrapperProps>`
+  background-color: var(--background-color);
   position: absolute;
   top: 0;
   left: 0;

@@ -1,14 +1,11 @@
 import { useState } from "react";
-import { IonIcon, IonSkeletonText } from "@ionic/react";
+import { IonSkeletonText } from "@ionic/react";
 import { capitalizeWord } from "../../services/MiscService";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse, UserNoteType } from "../../types/MiscTypes";
 import Note from "./Note";
-
 import { Chip } from "../../styles/BaseStyledComponents";
-import { addOutline } from "ionicons/icons";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
 const AddButtonContainer = styled.div`
@@ -21,6 +18,13 @@ const AddButtonContainer = styled.div`
 const AddButton = styled(Chip)`
   background-color: var(--ion-color-secondary);
   font-size: 0.9rem;
+  border: 2px solid black;
+`;
+
+const PlusSign = styled.span`
+  font-size: 1.5rem;
+  display: inline-block;
+  padding-left: 5px;
 `;
 
 type NoteKey = "meaning_note" | "reading_note";
@@ -85,7 +89,7 @@ function UserNote({ subject, noteType, isRadical = false }: Props) {
                 }}
               >
                 {addButtonTxt}
-                <IonIcon icon={addOutline}></IonIcon>
+                <PlusSign>+</PlusSign>
               </AddButton>
             </AddButtonContainer>
           )}

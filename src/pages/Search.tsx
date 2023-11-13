@@ -24,12 +24,16 @@ const Content = styled(ContentWithTabBar)`
   display: flex;
   flex-direction: column;
   padding: 12px;
+  /* !added */
+  height: 100vh;
+  /* !added */
 `;
 
 const ClearButton = styled(Button)`
   border-radius: 10px;
   margin-right: 0.5em;
   padding: 6px;
+  border: 1px solid black;
 
   &:focus-visible {
     outline: 2px solid var(--darkest-purple);

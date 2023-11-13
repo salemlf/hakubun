@@ -10,6 +10,7 @@ import styled from "styled-components";
 
 const SubjectCardContainer = styled.div`
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
   justify-content: center;
@@ -32,21 +33,6 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
     data: subjectCurrLvlData,
     error: subjectCurrLvlErr,
   } = useSubjectsByLevel(level);
-
-  // *testing
-  console.log(
-    "🚀 ~ file: SubjectsOnLvlTab.tsx:38 ~ SubjectsOnLvlTab ~ isSelected:",
-    isSelected
-  );
-  console.log(
-    "🚀 ~ file: SubjectsOnLvlTab.tsx:38 ~ SubjectsOnLvlTab ~ subjectCurrLvlData:",
-    subjectCurrLvlData
-  );
-  console.log(
-    "🚀 ~ file: SubjectsOnLvlTab.tsx:38 ~ SubjectsOnLvlTab ~ subjectCurrLvlLoading:",
-    subjectCurrLvlLoading
-  );
-  // *testing
 
   useEffect(() => {
     if (!subjectCurrLvlLoading && subjectCurrLvlData) {
@@ -88,6 +74,7 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
           <Card
             title={`Radicals - ${radicals.length}`}
             headerBgColor="var(--wanikani-radical)"
+            headerTextColor="white"
           >
             <SubjectCardContainer>
               <SubjectButtonList
@@ -100,6 +87,7 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
           <Card
             title={`Kanji - ${kanji.length}`}
             headerBgColor="var(--wanikani-kanji)"
+            headerTextColor="white"
           >
             <SubjectCardContainer>
               <SubjectButtonList
@@ -112,6 +100,7 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
           <Card
             title={`Vocabulary - ${vocabulary.length}`}
             headerBgColor="var(--wanikani-vocab)"
+            headerTextColor="white"
             margin="16px 16px 60px 16px"
           >
             <SubjectCardContainer>

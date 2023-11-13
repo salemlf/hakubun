@@ -89,6 +89,7 @@ export const AssignmentTypeHeadingSvgContainer = styled.div`
 const AssignmentTypeHeading = styled.h5`
   font-size: 1rem;
   margin: 4px 0 4px;
+  color: white;
 `;
 
 type Props = {

@@ -10,10 +10,11 @@ import VocabReadings from "../VocabReadings/VocabReadings";
 import { SubjSummaryRow } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
-const SummaryContainer = styled(IonRow)`
+const SummaryContainer = styled.div`
   display: flex;
+  flex-direction: column;
 
-  background-color: var(--dark-greyish-purple);
+  background-color: var(--background-color);
   position: relative;
 
   padding-inline-start: var(--ion-padding, 16px);

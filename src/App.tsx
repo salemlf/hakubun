@@ -16,6 +16,7 @@ import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStor
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { routes } from "./navigation/routes";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import { ToastDisplayProvider } from "./components/Toast/displayToast";
 
 /* Core CSS required for Ionic components to work properly */
@@ -110,9 +111,11 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ToastDisplayProvider />
-      <IonApp>
-        <RouterProvider router={browserRouter} />
-      </IonApp>
+      <ThemeProvider>
+        <IonApp>
+          <RouterProvider router={browserRouter} />
+        </IonApp>
+      </ThemeProvider>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );

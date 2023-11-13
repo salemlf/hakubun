@@ -4,24 +4,36 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { PopoverContentProps } from "@radix-ui/react-popover";
 import styled from "styled-components";
 
+const ARROW_WIDTH = 20;
+const ARROW_HEIGHT = 10;
+
 type ContentAndArrowProps = {
-  contentBgColor: string;
+  contentbgcolor: string;
+  $showborder: boolean;
 };
 
 const Content = styled(motion.div)<ContentAndArrowProps>`
-  border-radius: 10px;
-  background-color: ${({ contentBgColor }) => contentBgColor};
-  color: white;
+  border-radius: 12px;
+  background-color: ${({ contentbgcolor }) => contentbgcolor};
+  color: var(--text-color);
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
   a {
-    color: var(--ion-color-primary-lightest);
+    color: var(--link-text-color);
   }
+  border: ${({ $showborder }) => $showborder && "2px solid black"};
 `;
 
 const Arrow = styled(PopoverPrimitive.Arrow)<ContentAndArrowProps>`
-  fill: ${({ contentBgColor }) => contentBgColor};
+  fill: ${({ contentbgcolor }) => contentbgcolor};
+
+  polygon {
+    stroke: ${({ $showborder, contentbgcolor }) =>
+      $showborder ? "black" : contentbgcolor};
+    stroke-dasharray: ${({ $showborder }) => $showborder && "0 28 16"};
+    stroke-width: ${({ $showborder }) => $showborder && "2px"};
+  }
 `;
 
 export const PopoverRoot = PopoverPrimitive.Root;
@@ -33,11 +45,18 @@ type PopoverRef = HTMLDivElement;
 type PopoverProps = PopoverContentProps & {
   isOpen: boolean;
   contentBgColor?: string;
+  showBorder?: boolean;
 };
 
 const PopoverContent = forwardRef<PopoverRef, PopoverProps>(
   (
-    { isOpen, children, contentBgColor = "var(--darkest-purple)", ...props },
+    {
+      isOpen,
+      children,
+      contentBgColor = "var(--secondary-foreground-color)",
+      showBorder = false,
+      ...props
+    },
     forwardedRef
   ) => {
     return (
@@ -52,13 +71,19 @@ const PopoverContent = forwardRef<PopoverRef, PopoverProps>(
               side="top"
             >
               <Content
-                contentBgColor={contentBgColor}
+                contentbgcolor={contentBgColor}
+                $showborder={showBorder}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0 }}
               >
                 {children}
-                <Arrow contentBgColor={contentBgColor} />
+                <Arrow
+                  contentbgcolor={contentBgColor}
+                  $showborder={showBorder}
+                  width={ARROW_WIDTH}
+                  height={ARROW_HEIGHT}
+                />
               </Content>
             </PopoverPrimitive.Content>
           </PopoverPrimitive.Portal>

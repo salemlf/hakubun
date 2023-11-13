@@ -10,7 +10,7 @@ import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Content = styled(MainContent)`
-  margin-bottom: 20px;
+  padding-bottom: 20px;
 `;
 
 const ButtonRow = styled.div`
@@ -53,7 +53,7 @@ function Settings() {
 
   return (
     <>
-      <PageHeader title="User Settings" />
+      <PageHeader title="User Settings" bgColor="var(--foreground-color)" />
       <Content>
         {username && <Username>{username}</Username>}
         <GeneralUserSettings />

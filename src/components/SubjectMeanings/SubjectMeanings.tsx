@@ -40,6 +40,7 @@ const AltMeaningText = styled(SubjDetailTxt)`
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
+  color: var(--text-color);
 `;
 
 type PrimaryMeaningProps = {

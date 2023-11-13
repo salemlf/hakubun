@@ -17,6 +17,7 @@ const PageContainer = styled(motion.div)`
   min-height: 100%;
   position: relative;
   background-size: cover;
+  background-color: var(--background-color);
 `;
 
 const AnimatedOutlet: React.FC = () => {

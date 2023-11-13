@@ -7,6 +7,10 @@ export type CustomBgColor = {
   bgcolor: string;
 };
 
+export type CustomTextColor = {
+  txtcolor: string;
+};
+
 export type CustomFontSize = {
   sizeoffont: string;
 };
@@ -50,7 +54,7 @@ export const SubjCol = styled.div`
 `;
 
 export const NoteHintContainer = styled.div`
-  background-color: var(--light-grey);
+  background-color: var(--secondary-foreground-color);
   border-radius: 15px;
   padding: 15px 12px 8px;
   margin: 10px 0;
@@ -136,16 +140,6 @@ export const BottomSheetContent = styled(IonRow)`
   padding-bottom: var(--ion-padding, 16px);
 `;
 
-export const ContentWithTabBar = styled.main`
-  overflow-y: auto;
-  padding: 5px 5px 85px 5px;
-`;
-
-export const ContentWithTabBarNoPadding = styled.main`
-  overflow-y: auto;
-  padding: 0;
-`;
-
 type ButtonContainerProps = {
   isPressed: boolean;
   backgroundcolor: string;
@@ -174,6 +168,7 @@ export const FloatingButton = styled(Button)`
   display: flex;
   align-items: center;
   gap: 10px;
+  border: 1px solid black;
 `;
 
 type FloatingButtonContainerProps = {
@@ -201,9 +196,22 @@ export const FullWidthColumn = styled.div`
 `;
 
 export const MainContent = styled.main`
+  background-color: var(--background-color);
   overflow-y: auto;
   /* don't want to show scrollbar when swiping */
   overflow-x: hidden;
+`;
+
+export const ContentWithTabBar = styled.main`
+  background-color: var(--background-color);
+  overflow-y: auto;
+  padding: 5px 5px 85px 5px;
+`;
+
+export const ContentWithTabBarNoPadding = styled.main`
+  background-color: var(--background-color);
+  overflow-y: auto;
+  padding: 0;
 `;
 
 export const Section = styled.section<OptionalBgColor>`
@@ -277,4 +285,10 @@ export const SubjForLvlGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(3.125rem, 1fr));
   gap: 5px;
+`;
+
+export const LoadingButtonRow = styled.div`
+  margin-bottom: 10px;
+  display: flex;
+  width: 100%;
 `;

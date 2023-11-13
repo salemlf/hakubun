@@ -59,6 +59,7 @@ const SubjectItem = styled(motion.button)<ItemContainerProps>`
   border-radius: 10px;
   gap: 10px;
   flex-basis: 100%;
+  border: 2px solid black;
 
   &:focus-visible {
     outline: 2px solid white;
@@ -121,6 +122,7 @@ const SelectDeselectAllButton = styled(Button)`
   font-size: 0.9rem;
   padding: 5px;
   border-radius: 8px;
+  border: 1px solid black;
 `;
 
 const SelectDeselectIcon = styled(IonIcon)`

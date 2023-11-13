@@ -4,12 +4,9 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 
 :root {
+  --ion-background-color: var(--background-color);
+  --ion-text-color: var(--text-color);
   /* start - temp dark colors below until light mode is implemented - start */
-  --ion-background-color: #30223a;
-  --ion-background-color-rgb: 48, 34, 58;
-
-  --ion-text-color: #ffffff;
-  --ion-text-color-rgb: 255, 255, 255;
 
   --ion-color-step-50: #3a2d44;
   --ion-color-step-100: #45384e;
@@ -31,7 +28,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-step-900: #eae9eb;
   --ion-color-step-950: #f5f4f5;
 
-  --color: #ffffff;
+  --color: var(--text-color);
 
   --ion-border-color: var(--light-greyish-purple);
   --ion-item-background: var(--light-greyish-purple);
@@ -51,6 +48,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-secondary: #6930c3;
   --ion-color-secondary-rgb: 105, 48, 195;
   --ion-color-secondary-dark: #4d248f;
+  --ion-color-secondary-darkest: #421f7a;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
   --ion-color-secondary-shade: #5c2aac;
@@ -71,6 +69,9 @@ http://ionicframework.com/docs/theming/ */
   --dark-greyish-purple: #30223a;
   --dark-greyish-purple-overlay: rgba(48, 34, 58, 92%);
   --darkest-purple: #1b0f24;
+
+  --light-mauve: #c9ade4;
+  --pale-grey: #cebfd9;
 
   --wanikani-purple: #aa00ff;
   --wanikani-pink: #ff00aa;
@@ -137,6 +138,18 @@ http://ionicframework.com/docs/theming/ */
   --ion-tab-bar-background: var(--ion-color-secondary);
   --ion-tab-bar-background-focused: var(--ion-color-primary-shade);
 
+  /* main theme colors */
+  --background-color: var(--light-mauve);
+  --foreground-color: var(--offwhite-color);
+  --secondary-foreground-color: var(--pale-grey);
+  --box-shadow-color: var(--pale-grey);
+  --contrast-color: var(--light-grey);
+  --text-color: black;
+  --contrast-text-color: white;
+  --link-text-color: var(--ion-color-secondary-darkest);
+  --focus-color: black;
+  /* main theme colors */
+
   --ion-default-font: "Poppins", sans-serif;
   --japanese-font-family: "Zen Kaku Gothic New", sans-serif;
   --japanese-with-english-fallback-font-family: "Zen Kaku Gothic New", "Poppins",
@@ -150,11 +163,8 @@ http://ionicframework.com/docs/theming/ */
    */
 
   :root {
-    --ion-background-color: #30223a;
-    --ion-background-color-rgb: 48, 34, 58;
-
-    --ion-text-color: #ffffff;
-    --ion-text-color-rgb: 255, 255, 255;
+    --ion-background-color: var(--background-color);
+    --ion-text-color: var(--text-color);
 
     --ion-color-step-50: #3a2d44;
     --ion-color-step-100: #45384e;
@@ -176,11 +186,23 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-step-900: #eae9eb;
     --ion-color-step-950: #f5f4f5;
 
-    --color: #ffffff;
+    --color: var(--text-color);
+
+    /* main theme colors */
+    --background-color: var(--dark-greyish-purple);
+    --foreground-color: var(--light-greyish-purple);
+    --secondary-foreground-color: var(--light-grey);
+    --contrast-color: var(--offwhite-color);
+    --box-shadow-color: var(--darkest-purple);
+    --text-color: white;
+    --link-text-color: var(--ion-color-primary-tint);
+    --contrast-text-color: black;
+    --focus-color: white;
+    /* main theme colors */
   }
 
   body {
-    --ion-background-color: #30223a;
+    --ion-background-color: var(--background-color);
     --ion-color-primary: #c86bfa;
     --ion-color-primary-rgb: 200, 107, 250;
     --ion-color-primary-contrast: #000000;
@@ -244,8 +266,8 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-light-shade: #1e2023;
     --ion-color-light-tint: #383a3e;
 
-    --ion-text-color: #ffffff;
-    --color: #ffffff;
+    --color: var(--text-color);
+    --ion-text-color: var(--text-color);
   }
 
   /*
@@ -254,12 +276,10 @@ http://ionicframework.com/docs/theming/ */
    */
 
   .ios body {
-    --ion-background-color: #30223a;
-    --ion-background-color-rgb: 27, 15, 36;
+    --ion-background-color: var(--background-color);
 
-    --ion-text-color: #ffffff;
-    --color: #ffffff;
-    --ion-text-color-rgb: 255, 255, 255;
+    --ion-text-color: var(--text-color);
+    --color: var(--text-color);
 
     /* TODO: update color steps */
     --ion-color-step-50: #261b2f;
@@ -300,12 +320,10 @@ http://ionicframework.com/docs/theming/ */
    */
 
   .md body {
-    --ion-background-color: #30223a;
-    --ion-background-color-rgb: 27, 15, 36;
+    --ion-background-color: var(--background-color);
 
-    --ion-text-color: #ffffff;
-    --color: #ffffff;
-    --ion-text-color-rgb: 255, 255, 255;
+    --ion-text-color: var(--text-color);
+    --color: var(--text-color);
 
     --ion-color-step-50: #261b2f;
     --ion-color-step-100: #32273a;
@@ -406,19 +424,19 @@ body.dark {
   --ion-color-light-shade: #1e2023;
   --ion-color-light-tint: #383a3e;
 
-  --ion-text-color: #ffffff;
-  --color: #ffffff;
+  --ion-text-color: var(--text-color);
+  --color: var(--text-color);
 }
 
 ion-tab-bar {
-  --color: white;
+  --color: var(--text-color);
   --color-selected: white;
   --background: var(--ion-color-secondary);
 }
 
 ion-tab-button {
   --ripple-color: var(--ion-color-medium);
-  --color: white;
+  --color: var(--text-color);
   --color-selected: white;
 }
 

@@ -9,6 +9,8 @@ import {
 } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import { Either } from "../types/Global";
+import { ThemeProvider } from "../contexts/ThemeContext";
+import { ToastDisplayProvider } from "../components/Toast/displayToast";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -29,7 +31,6 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "../theme/variables.css";
 import "../theme/globals.scss";
-import { ToastDisplayProvider } from "../components/Toast/displayToast";
 
 setupIonicReact();
 
@@ -57,7 +58,9 @@ const TestingApp = ({ children }: TestAppProps) => {
   return (
     <QueryClientProvider client={testQueryClient}>
       <ToastDisplayProvider />
-      <IonApp>{children}</IonApp>
+      <ThemeProvider>
+        <IonApp>{children}</IonApp>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
@@ -105,9 +108,11 @@ const renderWithRouter = ({
     ...render(
       <QueryClientProvider client={testQueryClient}>
         <ToastDisplayProvider />
-        <IonApp>
-          <RouterProvider router={router} />
-        </IonApp>
+        <ThemeProvider>
+          <IonApp>
+            <RouterProvider router={router} />
+          </IonApp>
+        </ThemeProvider>
       </QueryClientProvider>
     ),
   };
@@ -118,6 +123,7 @@ export const renderWithClient = (ui: React.ReactElement) => {
   const { rerender, ...result } = render(
     <QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>
   );
+
   return {
     ...result,
     rerender: (rerenderUi: React.ReactElement) =>

@@ -48,6 +48,7 @@ const TimeTillReviewContainer = styled.div`
   justify-content: center;
   gap: 10px;
   align-items: center;
+  color: white;
 `;
 
 export type PopoverSubjButtonProps = {
@@ -83,7 +84,11 @@ export const PopoverSubjButton = ({
   return (
     <PopoverRoot open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent isOpen={isOpen} contentBgColor={popoverBgColor}>
+      <PopoverContent
+        isOpen={isOpen}
+        contentBgColor={popoverBgColor}
+        showBorder={true}
+      >
         <PopoverContainerStyled
           subjType={subject.object}
           onClick={onPopoverClick}

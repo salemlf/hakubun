@@ -23,6 +23,7 @@ const LessonSummaryHeader = styled.header`
 const LessonSummaryHeadingTxt = styled.h1`
   font-size: 1.75rem;
   margin: 20px 0;
+  color: white;
 `;
 
 const SubjectCard = styled(Card)`
@@ -84,6 +85,7 @@ function LessonSummary() {
               ((lessonsBySubjType.radical as Subject[]) ?? []).length
             } Radicals Learned`}
             headerBgColor="var(--wanikani-radical)"
+            headerTextColor="white"
           >
             <SubjCharacterList
               subjList={(lessonsBySubjType.radical as Subject[]) ?? []}
@@ -95,6 +97,7 @@ function LessonSummary() {
               ((lessonsBySubjType.kanji as Subject[]) ?? []).length
             } Kanji Learned`}
             headerBgColor="var(--wanikani-kanji)"
+            headerTextColor="white"
           >
             <SubjCharacterList
               subjList={(lessonsBySubjType.kanji as Subject[]) ?? []}
@@ -111,6 +114,7 @@ function LessonSummary() {
               ).length
             } Vocabulary Learned`}
             headerBgColor="var(--wanikani-vocab)"
+            headerTextColor="white"
           >
             <SubjCharacterList
               subjList={

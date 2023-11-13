@@ -25,6 +25,7 @@ const Btn = styled(Button)`
   padding: 4px;
   border-radius: 8px;
   width: 100%;
+  border: 1px solid black;
 `;
 
 const AudioBtnContainer = styled(motion.div)`
@@ -90,6 +91,7 @@ const VocabReadingsContainer = styled(ReadingsStyle)`
 const ReadingTxt = styled.p`
   margin: 5px 0;
   font-size: 1rem;
+  color: var(--text-color);
 `;
 
 const EnglishComma = styled.span`

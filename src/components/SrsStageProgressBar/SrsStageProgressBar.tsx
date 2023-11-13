@@ -1,9 +1,8 @@
-import { IonRow, IonSkeletonText } from "@ionic/react";
+import { IonSkeletonText } from "@ionic/react";
 import { Assignment } from "../../types/Assignment";
-// import styled from "styled-components/macro";
 import styled from "styled-components";
 
-const ProgressWrapper = styled(IonRow)`
+const ProgressWrapper = styled.div`
   margin-top: 5px;
   justify-content: center;
 `;
@@ -11,11 +10,12 @@ const ProgressWrapper = styled(IonRow)`
 const BarStepContainer = styled.div`
   width: 100%;
   max-width: 3rem;
-  height: 0.4rem;
+  height: 0.5rem;
   display: flex;
   justify-content: center;
   margin: 0;
   border-radius: 20px;
+  border: 2px solid black;
 
   & :first-child {
     border-radius: 20px 0px 0px 20px;
@@ -26,7 +26,7 @@ const BarStepContainer = styled.div`
   }
 
   & :not(:last-child) {
-    border-right: 2px solid var(--light-greyish-purple);
+    border-right: 2px solid black;
   }
 `;
 

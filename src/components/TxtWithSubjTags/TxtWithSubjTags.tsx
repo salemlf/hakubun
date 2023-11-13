@@ -41,6 +41,7 @@ type TaggedTxtProps = {
 
 const TaggedTxt = styled.p<TaggedTxtProps>`
   font-size: ${({ txtsize }) => txtsize};
+  color: var(--text-color);
   line-height: 2;
   margin: 5px 0;
   user-select: text;

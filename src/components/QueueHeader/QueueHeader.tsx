@@ -1,28 +1,23 @@
-import { IonHeader, IonToolbar, IonButtons } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import Button from "../Button/Button";
 import SvgIcon from "../SvgIcon";
 import HomeIconColor from "../../images/home-color.svg?react";
+import { Header } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-const SessionHeader = styled(IonHeader)`
-  box-shadow: none;
-
-  button::part(native) {
-    padding-inline-start: 0;
-    padding-inline-end: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
+const SessionHeader = styled(Header)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 5px;
 `;
 
-// TODO: change so not using IonToolbar
-const Toolbar = styled(IonToolbar)`
-  padding: 5px 0;
-  --ion-safe-area-top: 5px;
-  padding-top: var(--ion-safe-area-top, 5px);
+const HomeButtonAndNumReviewsLeftContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const NumReviewsLeftContainer = styled.div`
@@ -39,6 +34,7 @@ const HomeBtn = styled(Button)`
   border-radius: 10px;
   margin-left: 10px;
   padding: 0 6px;
+  border: 1px solid black;
 `;
 
 const calculateNumItemsInQueue = (queue: AssignmentQueueItem[]) => {
@@ -69,22 +65,20 @@ function QueueHeader() {
     : undefined;
 
   return (
-    <SessionHeader>
-      <Toolbar>
-        <IonButtons slot="start">
-          <HomeBtn
-            onPress={() => navigate("/", { replace: true })}
-            aria-label="Home page"
-          >
-            <SvgIcon icon={<HomeIconColor />} width="3em" height="3em" />
-          </HomeBtn>
-        </IonButtons>
+    <SessionHeader bgcolor="var(--foreground-color)">
+      <HomeButtonAndNumReviewsLeftContainer>
+        <HomeBtn
+          onPress={() => navigate("/", { replace: true })}
+          aria-label="Home page"
+        >
+          <SvgIcon icon={<HomeIconColor />} width="3em" height="3em" />
+        </HomeBtn>
         {numUniqueItemsInQueue !== undefined && (
           <NumReviewsLeftContainer>
             <NumReviewsLeftText>{numUniqueItemsInQueue}</NumReviewsLeftText>
           </NumReviewsLeftContainer>
         )}
-      </Toolbar>
+      </HomeButtonAndNumReviewsLeftContainer>
     </SessionHeader>
   );
 }

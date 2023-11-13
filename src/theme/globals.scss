@@ -9,9 +9,6 @@ body {
   --japanese-font-family: "Zen Kaku Gothic New", sans-serif;
   --japanese-with-english-fallback-font-family: "Zen Kaku Gothic New", "Poppins",
     sans-serif;
-  // @media (prefers-color-scheme: dark) {
-  color: white;
-  // }
 
   ion-app {
     overflow: -moz-hidden-unscrollable !important;
@@ -22,6 +19,7 @@ body {
   font-family: "Poppins", sans-serif;
   // to avoid absolute positioning issues based on viewport
   position: relative;
+  color: var(--text-color);
 }
 
 h1,
@@ -32,10 +30,16 @@ h5,
 h6 {
   font-family: "Montserrat", sans-serif;
 
+  color: var(--text-color);
+
   &::selection {
     background-color: var(--ion-color-primary);
     color: black;
   }
+}
+
+a {
+  color: var(--link-text-color);
 }
 
 p::selection {

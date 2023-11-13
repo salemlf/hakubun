@@ -15,6 +15,7 @@ import styled from "styled-components";
 
 const WarningMsg = styled.p`
   margin: 16px;
+  color: var(--text-color);
 `;
 
 // TODO: make sure to attempt to resubmit reviews that had errors

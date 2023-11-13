@@ -1,4 +1,4 @@
-import { IonCol, IonRow, IonSkeletonText } from "@ionic/react";
+import { IonSkeletonText } from "@ionic/react";
 import {
   findAssignmentWithSubjID,
   isAssignmentLocked,
@@ -7,10 +7,10 @@ import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
 import { Subject } from "../../types/Subject";
 import SubjectButton from "../SubjectButton";
-import BasicCard from "../BasicCard";
 import SrsStageProgressBar from "../SrsStageProgressBar/SrsStageProgressBar";
 import Card from "../Card";
 import {
+  LoadingButtonRow,
   SubjForLvlGrid,
   SubjectButtonAndProgress,
 } from "../../styles/BaseStyledComponents";
@@ -38,38 +38,47 @@ function KanjiForLvlCard({ level }: Props) {
   //   TODO: create component for loading subject card?
   if (kanjiLoading) {
     return (
-      <BasicCard title="" isLoading={true}>
-        <SubjForLvlGrid>
+      <Card
+        title="Kanji"
+        margin="12px 0"
+        headerBgColor="var(--wanikani-kanji)"
+        headerTextColor="white"
+      >
+        <LoadingButtonRow>
           <IonSkeletonText
             animated={true}
             style={{ height: "50px" }}
           ></IonSkeletonText>
-        </SubjForLvlGrid>
-        <SubjForLvlGrid>
+        </LoadingButtonRow>
+        <LoadingButtonRow>
           <IonSkeletonText
             animated={true}
             style={{ height: "50px" }}
           ></IonSkeletonText>
-        </SubjForLvlGrid>
-        <SubjForLvlGrid>
+        </LoadingButtonRow>
+        <LoadingButtonRow>
           <IonSkeletonText
             animated={true}
             style={{ height: "50px" }}
           ></IonSkeletonText>
-        </SubjForLvlGrid>
-        <SubjForLvlGrid>
+        </LoadingButtonRow>
+        <LoadingButtonRow>
           <IonSkeletonText
             animated={true}
             style={{ height: "50px" }}
           ></IonSkeletonText>
-        </SubjForLvlGrid>
-      </BasicCard>
+        </LoadingButtonRow>
+      </Card>
     );
   }
 
-  // TODO: sort so locked kanji are last
   return (
-    <Card title="Kanji" margin="12px 0">
+    <Card
+      title="Kanji"
+      margin="12px 0"
+      headerBgColor="var(--wanikani-kanji)"
+      headerTextColor="white"
+    >
       <SubjForLvlGrid>
         {(subjectsData as Subject[]).map((kanjiItem: any) => {
           return (

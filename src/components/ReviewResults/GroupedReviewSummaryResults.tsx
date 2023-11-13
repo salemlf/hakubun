@@ -36,7 +36,7 @@ const HorizontalRule = styled.hr`
   height: 2px;
   margin: 1px 0 8px 0;
   width: 100%;
-  background-color: white;
+  background-color: var(--text-color);
 `;
 
 const LvlGroup = styled.p`

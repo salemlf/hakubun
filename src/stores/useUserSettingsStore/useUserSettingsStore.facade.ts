@@ -14,12 +14,14 @@ const useUserSettingsStoreFacade = () => {
     lessonSortOrderOption,
     reviewSortOrderOption,
     reviewBackToBackOption,
+    prefersDarkModeTheme,
     setPronunciationVoice,
     setLessonBatchSize,
     setReviewBatchSize,
     setLessonSortOrderOption,
     setReviewSortOrderOption,
     setReviewBackToBackOption,
+    setPrefersDarkModeTheme,
   } = useUserSettingsStore(
     useShallow((state: UserSettingsState & UserSettingsActions) => ({
       pronunciationVoice: state.pronunciationVoice,
@@ -28,12 +30,14 @@ const useUserSettingsStoreFacade = () => {
       lessonSortOrderOption: state.lessonSortOrderOption,
       reviewSortOrderOption: state.reviewSortOrderOption,
       reviewBackToBackOption: state.reviewBackToBackOption,
+      prefersDarkModeTheme: state.prefersDarkModeTheme,
       setPronunciationVoice: state.setPronunciationVoice,
       setLessonBatchSize: state.setLessonBatchSize,
       setReviewBatchSize: state.setReviewBatchSize,
       setLessonSortOrderOption: state.setLessonSortOrderOption,
       setReviewSortOrderOption: state.setReviewSortOrderOption,
       setReviewBackToBackOption: state.setReviewBackToBackOption,
+      setPrefersDarkModeTheme: state.setPrefersDarkModeTheme,
     }))
   );
 
@@ -44,12 +48,14 @@ const useUserSettingsStoreFacade = () => {
     lessonSortOrderOption,
     reviewSortOrderOption,
     reviewBackToBackOption,
+    prefersDarkModeTheme,
     setPronunciationVoice,
     setLessonBatchSize,
     setReviewBatchSize,
     setLessonSortOrderOption,
     setReviewSortOrderOption,
     setReviewBackToBackOption,
+    setPrefersDarkModeTheme,
   };
 };
 

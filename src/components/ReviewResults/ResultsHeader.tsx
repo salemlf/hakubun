@@ -10,11 +10,13 @@ const ReviewSummaryHeader = styled.header`
 const ReviewSummaryHeadingTxt = styled.h1`
   font-size: 1.5rem;
   margin: 15px 0;
+  color: white;
 `;
 
 const Percentage = styled.h2`
   font-size: 1.75rem;
   margin-top: 10px;
+  color: white;
 `;
 
 const AnsweredCorrectly = styled.p`
