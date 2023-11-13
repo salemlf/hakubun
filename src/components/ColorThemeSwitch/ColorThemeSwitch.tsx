@@ -1,16 +1,9 @@
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 import { motion } from "framer-motion";
-import { getSwitchSize } from "../Switch/Switch.service";
-import { SwitchSize } from "../Switch/Switch.types";
 import SvgIcon from "../SvgIcon";
 import SunIcon from "../../images/sun.svg?react";
 import MoonIcon from "../../images/moon.svg?react";
 import styled from "styled-components";
-
-type RootProps = {
-  rootwidth: string;
-  rootheight: string;
-};
 
 const ThemeIconWrapper = styled.div`
   position: absolute;
@@ -24,7 +17,7 @@ const SunIconWrapper = styled(ThemeIconWrapper)`
   right: 5px;
 `;
 
-const Root = styled(SwitchPrimitive.Root)<RootProps>`
+const Root = styled(SwitchPrimitive.Root)`
   position: relative;
   width: 80px;
   height: 37px;
@@ -65,12 +58,7 @@ const Root = styled(SwitchPrimitive.Root)<RootProps>`
   }
 `;
 
-type ToggleProps = {
-  togglewidth: string;
-  toggleheight: string;
-};
-
-const Toggle = styled(motion.span)<ToggleProps>`
+const Toggle = styled(motion.span)`
   display: inline-block;
   width: 33px;
   height: 33px;
@@ -82,26 +70,12 @@ const Toggle = styled(motion.span)<ToggleProps>`
 type Props = {
   isSwitchedOn: boolean;
   setIsSwitchedOn: (isSwitchedOn: boolean) => void;
-  size: SwitchSize;
   labelId: string;
 };
 
-function ColorThemeSwitch({
-  isSwitchedOn,
-  setIsSwitchedOn,
-  size,
-  labelId,
-}: Props) {
-  let switchSize = getSwitchSize(size);
-
+function ColorThemeSwitch({ isSwitchedOn, setIsSwitchedOn, labelId }: Props) {
   return (
-    <Root
-      checked={isSwitchedOn}
-      onCheckedChange={setIsSwitchedOn}
-      id={labelId}
-      rootwidth={switchSize.rootSize.width}
-      rootheight={switchSize.rootSize.height}
-    >
+    <Root checked={isSwitchedOn} onCheckedChange={setIsSwitchedOn} id={labelId}>
       {isSwitchedOn ? (
         <MoonIconWrapper>
           <SvgIcon icon={<MoonIcon />} width="1.75em" height="1.75em" />
@@ -113,8 +87,6 @@ function ColorThemeSwitch({
       )}
       <SwitchPrimitive.Thumb asChild>
         <Toggle
-          togglewidth={switchSize.toggleSize.width}
-          toggleheight={switchSize.toggleSize.height}
           layout
           transition={{
             type: "spring",

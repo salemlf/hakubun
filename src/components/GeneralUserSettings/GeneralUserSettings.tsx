@@ -1,9 +1,11 @@
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import { useTheme } from "../../contexts/ThemeContext";
 import { AUDIO_VOICES } from "../../constants";
 import { PronunciationVoice } from "../../types/UserSettingsTypes";
 import Label from "../Label";
 import Card from "../Card";
 import Selector, { SelectItem } from "../Selector";
+import ColorThemeSwitch from "../ColorThemeSwitch";
 import { SettingRow } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -13,13 +15,19 @@ const SettingCategory = styled(Card)`
 
 // TODO: add disclaimer about kyoto accent not always being available for vocab
 function GeneralUserSettings() {
-  const { pronunciationVoice, setPronunciationVoice } =
+  const { pronunciationVoice, setPronunciationVoice, setPrefersDarkModeTheme } =
     useUserSettingsStoreFacade();
+  const { isDarkMode, setIsDarkMode } = useTheme();
   const voiceID = pronunciationVoice.id;
 
   const updateSelectedVoice = (newVoiceID: string) => {
     let newVoice = AUDIO_VOICES.find((voice) => voice.id === newVoiceID)!;
     setPronunciationVoice(newVoice);
+  };
+
+  const setIsDarkModeOn = (isDarkMode: boolean) => {
+    setPrefersDarkModeTheme(isDarkMode);
+    setIsDarkMode(isDarkMode);
   };
 
   return (
@@ -46,6 +54,14 @@ function GeneralUserSettings() {
             );
           })}
         </Selector>
+      </SettingRow>
+      <SettingRow>
+        <Label labelText="Color Theme" idOfControl="color-theme-switch" />
+        <ColorThemeSwitch
+          isSwitchedOn={isDarkMode}
+          setIsSwitchedOn={setIsDarkModeOn}
+          labelId="color-theme-switch"
+        />
       </SettingRow>
     </SettingCategory>
   );
