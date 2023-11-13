@@ -11,7 +11,8 @@ import FallingText from "../components/FallingText";
 import Emoji from "../components/Emoji";
 import Accordion from "../components/Accordion";
 import SvgIcon from "../components/SvgIcon";
-import WavesBgImg from "../images/layered-waves-bg.svg";
+import WavesBgImgDark from "../images/layered-waves-bg.svg";
+import WavesBgImgLight from "../images/layered-waves-bg-light.svg";
 import LogoIcon from "../images/logo.svg?react";
 import {
   FixedCenterContainer,
@@ -22,9 +23,12 @@ import styled from "styled-components";
 const Content = styled(MainContent)`
   height: 100%;
   padding: 20px 15px;
-  background-color: var(--dark-greyish-purple);
-  background-image: url(${WavesBgImg});
+  background-color: var(--background-color);
+  background-image: url(${WavesBgImgLight});
   background-size: cover;
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${WavesBgImgDark});
+  }
 `;
 
 const TokenInputLabel = styled.label`
@@ -48,7 +52,7 @@ const SubmitButton = styled(Button)`
 `;
 
 const InputContainer = styled.div`
-  background-color: var(--light-greyish-purple);
+  background-color: var(--foreground-color);
   padding: 16px 12px;
   border-radius: 10px;
 `;
