@@ -13,11 +13,14 @@ const ContainerSpan = styled.span`
 
 const QuestionMark = styled.span`
   display: inline-block;
-  font-size: 1em;
+  font-size: 1.125em;
   font-weight: 700;
   color: var(--ion-color-tertiary);
   transform: translate(10%, -30%);
   background-color: transparent;
+  /* creates text outline */
+  text-shadow: 1px 1px 0 black, -1px 1px 0 black, -1px -1px 0 black,
+    1px -1px 0 black;
 `;
 
 const ClickableHelp = styled.button`
@@ -49,7 +52,7 @@ function HelpSpan({ children, helpPopoverContents }: Props) {
             <QuestionMark>?</QuestionMark>
           </ClickableHelp>
         </PopoverTrigger>
-        <PopoverContent isOpen={isOpen}>
+        <PopoverContent isOpen={isOpen} showBorder={true}>
           <HelpContentWrapper>{helpPopoverContents}</HelpContentWrapper>
         </PopoverContent>
       </PopoverRoot>
