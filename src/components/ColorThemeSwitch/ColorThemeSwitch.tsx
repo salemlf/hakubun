@@ -17,18 +17,17 @@ const ThemeIconWrapper = styled.div`
 `;
 
 const MoonIconWrapper = styled(ThemeIconWrapper)`
-  left: 3px;
+  left: 5px;
 `;
 
 const SunIconWrapper = styled(ThemeIconWrapper)`
-  right: 3px;
+  right: 5px;
 `;
 
 const Root = styled(SwitchPrimitive.Root)<RootProps>`
   position: relative;
   width: 80px;
   height: 37px;
-  /* background-color: var(--ion-color-danger); */
   background-image: linear-gradient(
     45deg,
     hsl(320deg 100% 50%) 0%,
@@ -49,7 +48,6 @@ const Root = styled(SwitchPrimitive.Root)<RootProps>`
   border: 1px solid black;
 
   &[data-state="checked"] {
-    /* background-color: var(--ion-color-secondary); */
     background-image: linear-gradient(
       45deg,
       hsl(263deg 59% 30%) 0%,
