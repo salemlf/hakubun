@@ -15,12 +15,12 @@ type ContentAndArrowProps = {
 const Content = styled(motion.div)<ContentAndArrowProps>`
   border-radius: 12px;
   background-color: ${({ contentbgcolor }) => contentbgcolor};
-  color: white;
+  color: var(--text-color);
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
   a {
-    color: var(--ion-color-primary-lightest);
+    color: var(--link-text-color);
   }
   border: ${({ $showborder }) => $showborder && "2px solid black"};
 `;
@@ -53,7 +53,7 @@ const PopoverContent = forwardRef<PopoverRef, PopoverProps>(
     {
       isOpen,
       children,
-      contentBgColor = "var(--darkest-purple)",
+      contentBgColor = "var(--secondary-foreground-color)",
       showBorder = false,
       ...props
     },
