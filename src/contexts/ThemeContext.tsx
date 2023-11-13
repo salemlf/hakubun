@@ -1,5 +1,6 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { useDarkMode } from "usehooks-ts";
+import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
 
 type ThemeColors = {
   background: string;
@@ -62,12 +63,15 @@ type ProviderProps = {
   children?: React.ReactNode;
 };
 
-// TODO: make sure user choice is pritoritized first, then device default
 const ThemeProvider = ({ children }: ProviderProps) => {
   // uses default theme user has set for device, persists in local storage
   const { isDarkMode, enable, disable } = useDarkMode();
+  const { prefersDarkModeTheme } = useUserSettingsStoreFacade();
 
-  // TODO: call updateCSSVariables() when isDarkMode changes
+  useEffect(() => {
+    setIsDarkMode(prefersDarkModeTheme);
+  }, [prefersDarkModeTheme]);
+
   const setIsDarkMode = (isDarkModeOn: boolean) => {
     isDarkModeOn ? enable() : disable();
     updateCSSVariables();
