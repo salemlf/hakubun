@@ -22,7 +22,7 @@ const THEME_COLORS: { [index: string]: ThemeColors } = {
     boxShadow: "var(--pale-grey)",
     text: "black",
     contrastText: "white",
-    linkText: "var(--ion-color-secondary-dark)",
+    linkText: "var(--ion-color-secondary-darkest)",
     focus: "black",
   },
   dark: {
@@ -33,7 +33,7 @@ const THEME_COLORS: { [index: string]: ThemeColors } = {
     boxShadow: "var(--darkest-purple)",
     text: "white",
     contrastText: "black",
-    linkText: "var(--ion-color-primary)",
+    linkText: "var(--ion-color-primary-tint)",
     focus: "white",
   },
 };
