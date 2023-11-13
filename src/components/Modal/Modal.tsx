@@ -30,12 +30,12 @@ const ContentPrimitive = styled(DialogPrimitive.Content)`
   padding: 16px;
   border-radius: 12px;
   box-shadow: 2px 1px 10px rgba(0, 0, 0, 0.2);
-  color: white;
+  color: var(--text-color);
   width: 90vw;
   max-width: 400px;
   max-height: 85vh;
   overflow-y: auto;
-  background-color: var(--light-greyish-purple);
+  background-color: var(--foreground-color);
   z-index: 5000;
 `;
 

@@ -27,21 +27,23 @@ const ContentPrimitive = styled(AlertDialogPrimitive.Content)`
   position: relative;
   padding: 16px;
   border-radius: 12px;
-  box-shadow: 2px 1px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 1px 10px var(--box-shadow-color);
   color: white;
   width: 90vw;
   max-width: 400px;
   max-height: 85vh;
   overflow-y: auto;
-  background-color: var(--light-greyish-purple);
+  background-color: var(--foreground-color);
   z-index: 5000;
 `;
 
 const Content = styled(motion.div)``;
+
 const Description = styled(AlertDialogPrimitive.Description)`
   margin-bottom: 20px;
   font-size: 1rem;
   line-height: 1.5;
+  color: var(--text-color);
 `;
 
 const ButtonContainer = styled.div`
@@ -61,6 +63,7 @@ const DialogButton = styled.button`
   font-size: 0.9rem;
   line-height: 1;
   font-weight: 500;
+  border: 1px solid black;
 
   &:focus-visible {
     outline: 2px solid white;
@@ -70,6 +73,7 @@ const DialogButton = styled.button`
 
 const ConfirmButton = styled(DialogButton)`
   background-color: var(--ion-color-danger);
+  color: white;
 `;
 
 const CancelButton = styled(DialogButton)`
@@ -79,6 +83,7 @@ const CancelButton = styled(DialogButton)`
 
 const MiscButton = styled(DialogButton)`
   background-color: var(--ion-color-primary);
+  color: white;
 `;
 
 const PortalContainer = styled.div`
