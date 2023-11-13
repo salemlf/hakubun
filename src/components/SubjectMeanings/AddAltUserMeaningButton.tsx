@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { IonIcon, IonSkeletonText } from "@ionic/react";
-import { addOutline } from "ionicons/icons";
+import { IonSkeletonText } from "@ionic/react";
 import { Subject } from "../../types/Subject";
 import { displayToast } from "../Toast/Toast.service";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
@@ -9,6 +8,12 @@ import Modal from "../Modal";
 import Label from "../Label";
 import Button from "../Button";
 import styled from "styled-components";
+
+const PlusSign = styled.span`
+  font-size: 1.5rem;
+  display: inline-block;
+  padding-left: 5px;
+`;
 
 const AddButton = styled(Modal.Trigger)`
   display: flex;
@@ -114,7 +119,7 @@ function AddAltUserMeaningButton({ subject }: Props) {
         <>
           <Modal onOpenChange={setIsModalOpen} open={isModalOpen}>
             <AddButton aria-label="Add alternative meaning">
-              Add <IonIcon icon={addOutline}></IonIcon>
+              Add <PlusSign>+</PlusSign>
             </AddButton>
             <Modal.Content
               title="Add Meaning"

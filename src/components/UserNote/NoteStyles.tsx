@@ -64,20 +64,30 @@ export const CancelButton = styled(EditingButton)`
 export const EditableNote = styled.textarea`
   resize: none;
   width: 100%;
-  background-color: var(--light-grey);
+  background-color: var(--secondary-foreground-color);
   line-height: 1;
   padding: 3px 2px;
   margin: 0;
   display: block;
   border: none;
+
+  &::selection {
+    background-color: var(--ion-color-primary);
+    color: black;
+  }
 `;
 
 export const NoteContents = styled.div`
   width: 100%;
-  background-color: var(--light-grey);
+  background-color: var(--secondary-foreground-color);
   line-height: 1.5;
   padding: 3px 2px;
   margin: 0;
   display: block;
   border: none;
+
+  &::selection {
+    background-color: var(--ion-color-primary);
+    color: black;
+  }
 `;

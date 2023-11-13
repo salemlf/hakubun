@@ -90,7 +90,6 @@ function UserNote({ subject, noteType, isRadical = false }: Props) {
               >
                 {addButtonTxt}
                 <PlusSign>+</PlusSign>
-                {/* <IonIcon icon={addOutline}></IonIcon> */}
               </AddButton>
             </AddButtonContainer>
           )}
