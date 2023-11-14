@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
+import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import { useUserLogin } from "../hooks/useUserLogin";
 import { AccordionItemData } from "../types/MiscTypes";
 import LoadingDots from "../components/LoadingDots";
@@ -11,8 +12,8 @@ import FallingText from "../components/FallingText";
 import Emoji from "../components/Emoji";
 import Accordion from "../components/Accordion";
 import SvgIcon from "../components/SvgIcon";
-import WavesBgImgDark from "../images/layered-waves-bg.svg";
 import WavesBgImgLight from "../images/layered-waves-bg-light.svg";
+import WavesBgImgDark from "../images/layered-waves-bg-dark.svg";
 import LogoIcon from "../images/logo.svg?react";
 import {
   FixedCenterContainer,
@@ -20,15 +21,19 @@ import {
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-const Content = styled(MainContent)`
+type ContentProps = {
+  $bgimg: string;
+};
+
+const Content = styled(MainContent)<ContentProps>`
   height: 100%;
   padding: 20px 15px;
   background-color: var(--background-color);
-  background-image: url(${WavesBgImgLight});
+  background-image: ${({ $bgimg }) => `url("${$bgimg}")`};
   background-size: cover;
-  @media (prefers-color-scheme: dark) {
-    background-image: url(${WavesBgImgDark});
-  }
+
+  background-repeat: no-repeat;
+  background-position: bottom;
 `;
 
 const TokenInputLabel = styled.label`
@@ -154,11 +159,27 @@ const TokenInput = () => {
   const { isAuthLoading, authToken, isAuthenticated } =
     useAuthTokenStoreFacade();
   const { userInfo } = useUserInfoStoreFacade();
+  const [bgImg, setBgImg] = useState<string>(WavesBgImgLight);
+  const { prefersDarkModeTheme } = useUserSettingsStoreFacade();
+
+  useEffect(() => {
+    if (prefersDarkModeTheme) {
+      setBgImg(WavesBgImgDark);
+    } else {
+      setBgImg(WavesBgImgLight);
+    }
+  }, [prefersDarkModeTheme]);
 
   // logs user in if auth info already in storage
   useEffect(() => {
     if (authToken) {
       setAuth(authToken);
+    }
+
+    if (prefersDarkModeTheme) {
+      setBgImg(WavesBgImgDark);
+    } else {
+      setBgImg(WavesBgImgLight);
     }
   }, []);
 
@@ -214,7 +235,7 @@ const TokenInput = () => {
   return (
     <>
       {!isAuthLoading && !tokenPageLoading ? (
-        <Content>
+        <Content $bgimg={bgImg}>
           <HeadingAndLogoContainer>
             <LogoContainer>
               <SvgIcon icon={<LogoIcon />} width="100%" height="25vh" />
