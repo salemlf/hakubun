@@ -3,21 +3,25 @@ import { renderWithClient } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { mockKanjiAssignmentsForLvl1 } from "../../testing/mocks/data/assignments.mock";
 import { mockKanjiSubjectsForLvl1 } from "../../testing/mocks/data/subjects.mock";
-import {
-  kanjiAssignmentsByLvlEndpoint,
-  kanjiSubjectsByLvlEndpoint,
-} from "../../testing/endpoints";
+import { assignmentsEndpoint, subjectsEndpoint } from "../../testing/endpoints";
 import LevelProgressBar from ".";
 
 server.use(
-  rest.get(kanjiAssignmentsByLvlEndpoint, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockKanjiAssignmentsForLvl1));
-  })
-);
-
-server.use(
-  rest.get(kanjiSubjectsByLvlEndpoint, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockKanjiSubjectsForLvl1));
+  rest.get(assignmentsEndpoint, (req, res, ctx) => {
+    const url = new URL(req.url);
+    const levels = url.searchParams.get("levels");
+    const subjTypes = url.searchParams.get("subject_types");
+    if (levels != undefined && subjTypes == "kanji") {
+      return res(ctx.status(200), ctx.json(mockKanjiAssignmentsForLvl1));
+    }
+  }),
+  rest.get(subjectsEndpoint, (req, res, ctx) => {
+    const url = new URL(req.url);
+    const levels = url.searchParams.get("levels");
+    const subjTypes = url.searchParams.get("types");
+    if (levels != undefined && subjTypes == "kanji") {
+      return res(ctx.status(200), ctx.json(mockKanjiSubjectsForLvl1));
+    }
   })
 );
 

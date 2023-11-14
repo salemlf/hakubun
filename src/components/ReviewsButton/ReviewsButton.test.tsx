@@ -3,7 +3,10 @@ import { rest } from "msw";
 import { createWrapper, renderWithRouter } from "../../testing/test-utils";
 import { mockAssignmentsAvailForReviewResponse } from "../../testing/mocks/data/assignments.mock";
 import { server } from "../../testing/mocks/server";
-import { assignmentsAvailForReviewEndpoint } from "../../testing/endpoints";
+import {
+  assignmentsAvailForReviewEndpoint,
+  assignmentsEndpoint,
+} from "../../testing/endpoints";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
 import { ReviewSettings } from "../../pages/ReviewSettings";
 import ReviewsButton from ".";
@@ -17,11 +20,26 @@ test("ReviewsButton renders", () => {
 
 test("ReviewsButton redirects to review settings on click", async () => {
   server.use(
-    rest.get(assignmentsAvailForReviewEndpoint, (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json(mockAssignmentsAvailForReviewResponse)
+    rest.get(assignmentsEndpoint, (req, res, ctx) => {
+      const url = new URL(req.url);
+      console.log(
+        "🚀 ~ file: ReviewsButton.test.tsx:25 ~ rest.get ~ url:",
+        url
       );
+      const availForReview = url.searchParams.get(
+        "immediately_available_for_review"
+      );
+      if (availForReview) {
+        return res(
+          ctx.status(200),
+          ctx.json(mockAssignmentsAvailForReviewResponse)
+        );
+      }
+
+      // return res(
+      //   ctx.status(200),
+      //   ctx.json(mockAssignmentsAvailForReviewResponse)
+      // );
     })
   );
   const { user } = renderComponent(mockLevel, true);
