@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { setBtnBackground } from "../../services/ImageSrcService";
 import { displayToast } from "../Toast/Toast.service";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
+import ErrorMessage from "../ErrorMessage";
 import {
   BaseReviewLessonButton,
   BaseReviewLessonButtonBadge,
+  BaseReviewLessonButtonContainer,
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components";
@@ -20,6 +22,13 @@ const ReviewsButtonStyled = styled(BaseReviewLessonButton)`
 const ReviewsButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`
   --background: var(--wanikani-blue-rgba);
   --background-rgb: var(--wanikani-blue-rgb);
+  background-color: var(--wanikani-blue-rgb);
+  border: 2px solid black;
+`;
+
+const ReviewButtonErrContainer = styled(BaseReviewLessonButtonContainer)`
+  background-color: var(--wanikani-blue);
+  border: 2px solid black;
 `;
 
 type Props = {
@@ -49,7 +58,15 @@ function ReviewsButton({ level }: Props) {
     }
   };
 
-  if (availForReviewLoading || availForReviewErr) {
+  if (availForReviewErr && !availForReviewData) {
+    return (
+      <ReviewButtonErrContainer disabled={true}>
+        <ErrorMessage />
+      </ReviewButtonErrContainer>
+    );
+  }
+
+  if (availForReviewLoading) {
     return <ReviewsButtonSkeleton animated={true}></ReviewsButtonSkeleton>;
   }
 

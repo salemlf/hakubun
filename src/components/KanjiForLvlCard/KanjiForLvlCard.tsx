@@ -9,6 +9,7 @@ import { Subject } from "../../types/Subject";
 import SubjectButton from "../SubjectButton";
 import SrsStageProgressBar from "../SrsStageProgressBar/SrsStageProgressBar";
 import Card from "../Card";
+import ErrorMessage from "../ErrorMessage";
 import {
   LoadingButtonRow,
   SubjForLvlGrid,
@@ -34,6 +35,23 @@ function KanjiForLvlCard({ level }: Props) {
 
   let kanjiLoading =
     subjectsLoading || subjectsErr || assignmentsLoading || assignmentsErr;
+
+  let errGettingData = subjectsErr || assignmentsErr;
+
+  const hasAllData = subjectsData && assignmentsData;
+
+  if (errGettingData && !hasAllData) {
+    return (
+      <Card
+        title="Kanji"
+        margin="12px 0"
+        headerBgColor="var(--wanikani-kanji)"
+        headerTextColor="white"
+      >
+        <ErrorMessage />
+      </Card>
+    );
+  }
 
   //   TODO: create component for loading subject card?
   if (kanjiLoading) {
