@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import * as LogRocket from "logrocket";
 import * as Sentry from "@sentry/react";
+import { HttpClient } from "@sentry/integrations";
 import {
   createBrowserRouter,
   createRoutesFromChildren,
@@ -47,13 +48,13 @@ import "./theme/globals.scss";
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
   LogRocket.init("cleqvf/hakubun", {
-    release: "0.2.9-alpha",
+    release: "0.3.0-alpha",
     shouldCaptureIP: false,
   });
 }
 
 Sentry.init({
-  release: "0.2.9-alpha",
+  release: "0.3.0-alpha",
   dsn: import.meta.env.VITE_SENTRY_DSN,
   tracePropagationTargets: [baseUrlRegex],
   environment: import.meta.env.MODE,
@@ -71,6 +72,7 @@ Sentry.init({
       maskAllText: false,
       blockAllMedia: false,
     }),
+    new HttpClient({}),
   ],
   // Performance Monitoring
   tracesSampleRate: 1.0, // Capture 100% of the transactions
