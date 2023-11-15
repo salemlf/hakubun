@@ -30,7 +30,7 @@ export const WaniKaniAPI = {
   getAssignmentsAvailForReview: async function (currLevel: number) {
     if (currLevel === 0) return { data: [], total: 0 };
 
-    let url = `${baseUrl}assignments?immediately_available_for_review`;
+    let url = `${baseUrl}assignments?immediately_available_for_review=true`;
 
     let reviews = await PagingAPI.iterateOverPages(url, []);
     let reviewsCombined = PagingAPI.combinePages(reviews);
@@ -39,7 +39,7 @@ export const WaniKaniAPI = {
   },
 
   getLessons: async function () {
-    let url = `${baseUrl}assignments?immediately_available_for_lessons`;
+    let url = `${baseUrl}assignments?immediately_available_for_lessons=true`;
 
     let lessons = await PagingAPI.iterateOverPages(url, []);
     let lessonsCombined = PagingAPI.combinePages(lessons);
