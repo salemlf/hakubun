@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import * as LogRocket from "logrocket";
 import * as Sentry from "@sentry/react";
+import { HttpClient } from "@sentry/integrations";
 import {
   createBrowserRouter,
   createRoutesFromChildren,
@@ -66,6 +67,7 @@ Sentry.init({
       maskAllText: false,
       blockAllMedia: false,
     }),
+    new HttpClient({}),
   ],
   // Performance Monitoring
   tracesSampleRate: 1.0, // Capture 100% of the transactions
