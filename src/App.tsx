@@ -10,10 +10,16 @@ import {
   useNavigationType,
 } from "react-router-dom";
 import { IonApp, setupIonicReact } from "@ionic/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
+import { displayToast } from "./components/Toast/Toast.service";
+import { worker } from "./testing/worker";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { routes } from "./navigation/routes";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -88,7 +94,27 @@ const queryClient = new QueryClient({
       cacheTime: 15 * (60 * 1000),
     },
   },
+  queryCache: new QueryCache({
+    onError: (error, query) => {
+      // showing errors on background refetches
+      if (query.state.data !== undefined) {
+        displayToast({
+          toastType: "error",
+          title: "API Error",
+          content: `Oh no! Something went wrong when calling the API: ${JSON.stringify(
+            error
+          )}`,
+          duration: 10000,
+        });
+      }
+    },
+  }),
 });
+
+// for mock service worker
+if (import.meta.env.MODE === "development") {
+  worker.start();
+}
 
 const App: React.FC = () => {
   const { authToken } = useAuthTokenStoreFacade();
@@ -116,13 +142,12 @@ const App: React.FC = () => {
           <RouterProvider router={browserRouter} />
         </IonApp>
       </ThemeProvider>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };
 
 const getBrowserRouter = () => {
-  // let browserRoutes = routes;
   return sentryCreateBrowserRouter(routes);
 };
 
