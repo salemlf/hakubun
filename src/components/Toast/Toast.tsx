@@ -26,6 +26,8 @@ const Root = styled(ToastPrimitive.Root)<RootProps>`
   padding: 15px;
   column-gap: 15px;
   align-items: center;
+  max-height: 300px;
+  overflow-y: auto;
 `;
 
 const Title = styled(ToastPrimitive.Title)`

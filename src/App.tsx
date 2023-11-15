@@ -19,7 +19,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
 import { displayToast } from "./components/Toast/Toast.service";
-import { worker } from "./testing/worker";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { routes } from "./navigation/routes";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -113,6 +112,7 @@ const queryClient = new QueryClient({
 
 // for mock service worker
 if (import.meta.env.MODE === "development") {
+  const { worker } = await import("./testing/worker");
   worker.start();
 }
 
