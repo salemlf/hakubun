@@ -1,4 +1,4 @@
-import { rest } from "msw";
+import { HttpResponse, http } from "msw";
 import {
   renderHook,
   act,
@@ -13,8 +13,8 @@ import { userEndpoint } from "../../testing/endpoints";
 import HomeHeader from ".";
 
 server.use(
-  rest.get(userEndpoint, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockUserResponseLvl5));
+  http.get(userEndpoint, () => {
+    return HttpResponse.json(mockUserResponseLvl5);
   })
 );
 
@@ -25,7 +25,6 @@ test("HomeHeader renders", () => {
 
 test("App name is rendered to screen", async () => {
   renderComponent();
-  screen.debug();
 
   expect(await screen.findByText(/^Hakubun$/)).toBeInTheDocument();
 });

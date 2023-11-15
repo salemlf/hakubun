@@ -16,7 +16,6 @@ test("ThemeContext uses default dark mode value", () => {
   const defaultDarkMode = `${result.current.isDarkMode}`;
 
   render(<MockThemeConsumer />);
-  screen.debug();
 
   expect(screen.getByText(/^Is dark mode:/)).toHaveTextContent(
     `Is dark mode: ${defaultDarkMode}`

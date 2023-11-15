@@ -1,5 +1,5 @@
 import { renderHook, screen, waitFor } from "@testing-library/react";
-import { rest } from "msw";
+import { HttpResponse, http } from "msw";
 import { createWrapper, renderWithRouter } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { assignmentsAvailForLessonsEndpoint } from "../../testing/endpoints";
@@ -15,11 +15,8 @@ test("LessonsButton renders", () => {
 
 test("LessonsButton redirects to lesson settings on click", async () => {
   server.use(
-    rest.get(assignmentsAvailForLessonsEndpoint, (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json(mockAssignmentsAvailLessonsResponse)
-      );
+    http.get(assignmentsAvailForLessonsEndpoint, () => {
+      return HttpResponse.json(mockAssignmentsAvailLessonsResponse);
     })
   );
   const { user } = renderComponent(true);

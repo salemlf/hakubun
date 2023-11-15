@@ -1,4 +1,4 @@
-import { rest } from "msw";
+import { HttpResponse, http } from "msw";
 import { renderWithClient } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { mockKanjiAssignmentsForLvl1 } from "../../testing/mocks/data/assignments.mock";
@@ -7,20 +7,20 @@ import { assignmentsEndpoint, subjectsEndpoint } from "../../testing/endpoints";
 import LevelProgressBar from ".";
 
 server.use(
-  rest.get(assignmentsEndpoint, (req, res, ctx) => {
-    const url = new URL(req.url);
+  http.get(assignmentsEndpoint, ({ request }) => {
+    const url = new URL(request.url);
     const levels = url.searchParams.get("levels");
     const subjTypes = url.searchParams.get("subject_types");
     if (levels != undefined && subjTypes == "kanji") {
-      return res(ctx.status(200), ctx.json(mockKanjiAssignmentsForLvl1));
+      return HttpResponse.json(mockKanjiAssignmentsForLvl1);
     }
   }),
-  rest.get(subjectsEndpoint, (req, res, ctx) => {
-    const url = new URL(req.url);
+  http.get(subjectsEndpoint, ({ request }) => {
+    const url = new URL(request.url);
     const levels = url.searchParams.get("levels");
     const subjTypes = url.searchParams.get("types");
     if (levels != undefined && subjTypes == "kanji") {
-      return res(ctx.status(200), ctx.json(mockKanjiSubjectsForLvl1));
+      return HttpResponse.json(mockKanjiSubjectsForLvl1);
     }
   })
 );
