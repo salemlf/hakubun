@@ -112,12 +112,6 @@ const queryClient = new QueryClient({
   }),
 });
 
-// for mock service worker
-if (import.meta.env.MODE === "development") {
-  const { worker } = await import("./testing/worker");
-  worker.start();
-}
-
 const App: React.FC = () => {
   const { authToken } = useAuthTokenStoreFacade();
   const { userInfo } = useUserInfoStoreFacade();
