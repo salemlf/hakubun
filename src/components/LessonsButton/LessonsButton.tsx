@@ -47,7 +47,7 @@ function LessonsButton() {
 
   if (lessonsErr && !lessonsData) {
     return (
-      <LessonButtonErrContainer disabled={true}>
+      <LessonButtonErrContainer disabled={true} data-testid="lesson-btn-err">
         <ErrorMessage />
       </LessonButtonErrContainer>
     );
