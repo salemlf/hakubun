@@ -60,7 +60,7 @@ function ReviewsButton({ level }: Props) {
 
   if (availForReviewErr && !availForReviewData) {
     return (
-      <ReviewButtonErrContainer disabled={true}>
+      <ReviewButtonErrContainer disabled={true} data-testid="review-btn-err">
         <ErrorMessage />
       </ReviewButtonErrContainer>
     );

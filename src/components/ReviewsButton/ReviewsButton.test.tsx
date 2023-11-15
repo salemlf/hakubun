@@ -10,25 +10,25 @@ import ReviewsButton from ".";
 
 const mockLevel = 1;
 
-server.use(
-  http.get(assignmentsEndpoint, ({ request }) => {
-    const url = new URL(request.url);
-    let availForReview = url.searchParams.get(
-      "immediately_available_for_review"
-    );
-    if (availForReview == "true") {
-      return HttpResponse.json(mockAssignmentsAvailForReviewResponse);
-    }
-    return passthrough();
-  })
-);
-
 test("ReviewsButton renders", () => {
   const { baseElement } = renderComponent(mockLevel);
   expect(baseElement).toBeDefined();
 });
 
-test("ReviewsButton redirects to review settings on click", async () => {
+test("Redirects to review settings on click", async () => {
+  server.use(
+    http.get(assignmentsEndpoint, ({ request }) => {
+      const url = new URL(request.url);
+      let availForReview = url.searchParams.get(
+        "immediately_available_for_review"
+      );
+      if (availForReview == "true") {
+        return HttpResponse.json(mockAssignmentsAvailForReviewResponse);
+      }
+      return passthrough();
+    })
+  );
+
   const { user } = renderComponent(mockLevel, true);
 
   const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
@@ -48,6 +48,32 @@ test("ReviewsButton redirects to review settings on click", async () => {
       name: /review settings/i,
     })
   ).toBeInTheDocument();
+});
+
+test("Shows error text on API error and no cached data", async () => {
+  server.use(
+    http.get(assignmentsEndpoint, ({ request }) => {
+      const url = new URL(request.url);
+      let availForReviews = url.searchParams.get(
+        "immediately_available_for_review"
+      );
+      if (availForReviews == "true") {
+        return HttpResponse.error();
+      }
+      return passthrough();
+    })
+  );
+
+  renderComponent(mockLevel, true);
+  const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
+    wrapper: createWrapper(),
+  });
+
+  await waitFor(() => expect(result.current.isError).toBe(true));
+  await waitFor(() => expect(result.current.data).toBe(undefined));
+
+  let errButton = await screen.findByTestId("review-btn-err");
+  expect(errButton).toHaveTextContent("Error loading data");
 });
 
 // TODO: check that displays a toast on click if no reviews available
