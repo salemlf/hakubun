@@ -17,7 +17,7 @@ interface Props {
   level: number | undefined;
 }
 
-function RadicalForLvlCard({ level }: Props) {
+function RadicalsForLvlCard({ level }: Props) {
   const {
     isLoading: subjectCurrLvlLoading,
     data: subjectCurrLvlData,
@@ -43,6 +43,7 @@ function RadicalForLvlCard({ level }: Props) {
         margin="12px 0"
         headerBgColor="var(--wanikani-radical)"
         headerTextColor="white"
+        data-testid="radicals-for-lvl-err"
       >
         <ErrorMessage />
       </Card>
@@ -116,4 +117,4 @@ function RadicalForLvlCard({ level }: Props) {
   );
 }
 
-export default RadicalForLvlCard;
+export default RadicalsForLvlCard;

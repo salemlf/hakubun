@@ -33,8 +33,7 @@ function KanjiForLvlCard({ level }: Props) {
     error: assignmentsErr,
   } = useKanjiAssignmentsForLvl(level);
 
-  let kanjiLoading =
-    subjectsLoading || subjectsErr || assignmentsLoading || assignmentsErr;
+  let kanjiLoading = subjectsLoading || assignmentsLoading;
 
   let errGettingData = subjectsErr || assignmentsErr;
 
@@ -47,6 +46,7 @@ function KanjiForLvlCard({ level }: Props) {
         margin="12px 0"
         headerBgColor="var(--wanikani-kanji)"
         headerTextColor="white"
+        data-testid="kanji-for-lvl-err"
       >
         <ErrorMessage />
       </Card>
