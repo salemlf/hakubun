@@ -96,7 +96,7 @@ function SrsStages() {
 
   if (errOccurred && !hasAllData) {
     return (
-      <SrsButtonContainer>
+      <SrsButtonContainer data-testid="srs-stages-err">
         {stageNames.map((stageName) => (
           <SrsStageButton
             srsStage={stageName}
