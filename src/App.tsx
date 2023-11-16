@@ -147,7 +147,7 @@ const App: React.FC = () => {
           <RouterProvider router={browserRouter} />
         </IonApp>
       </ThemeProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 };
