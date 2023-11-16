@@ -45,44 +45,50 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
+// for mock service worker
+async function enableMocking() {
+  if (import.meta.env.MODE === "development") {
+    const { worker } = await import("./testing/worker");
+    worker.start();
+  }
+}
+
+enableMocking();
+
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
   LogRocket.init("cleqvf/hakubun", {
     release: "0.3.0-alpha",
     shouldCaptureIP: false,
   });
+  Sentry.init({
+    release: "0.3.0-alpha",
+    dsn: import.meta.env.VITE_SENTRY_DSN,
+    tracePropagationTargets: [baseUrlRegex],
+    environment: import.meta.env.MODE,
+    integrations: [
+      new Sentry.BrowserTracing({
+        routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+          useEffect,
+          useLocation,
+          useNavigationType,
+          createRoutesFromChildren,
+          matchRoutes
+        ),
+      }),
+      new Sentry.Replay({
+        maskAllText: false,
+        blockAllMedia: false,
+      }),
+      new HttpClient({}),
+    ],
+    // Performance Monitoring
+    tracesSampleRate: 1.0, // Capture 100% of the transactions
+    // Session Replay
+    replaysSessionSampleRate: 0.5,
+    replaysOnErrorSampleRate: 1.0,
+  });
 }
-
-Sentry.init({
-  release: "0.3.0-alpha",
-  dsn: import.meta.env.VITE_SENTRY_DSN,
-  tracePropagationTargets: [baseUrlRegex],
-  environment: import.meta.env.MODE,
-  integrations: [
-    new Sentry.BrowserTracing({
-      routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-        useEffect,
-        useLocation,
-        useNavigationType,
-        createRoutesFromChildren,
-        matchRoutes
-      ),
-    }),
-    new Sentry.Replay({
-      maskAllText: false,
-      blockAllMedia: false,
-    }),
-    new HttpClient({}),
-  ],
-  // Performance Monitoring
-  tracesSampleRate: 1.0, // Capture 100% of the transactions
-  // Session Replay
-  replaysSessionSampleRate: 0.5,
-  replaysOnErrorSampleRate: 1.0,
-});
-
-const sentryCreateBrowserRouter =
-  Sentry.wrapCreateBrowserRouter(createBrowserRouter);
 
 // TODO: change so not using setupIonicReact and IonApp
 setupIonicReact();
@@ -105,12 +111,15 @@ const queryClient = new QueryClient({
           content: `Oh no! Something went wrong when calling the API: ${JSON.stringify(
             error
           )}`,
-          duration: 10000,
+          timeout: 10000,
         });
       }
     },
   }),
 });
+
+const sentryCreateBrowserRouter =
+  Sentry.wrapCreateBrowserRouter(createBrowserRouter);
 
 const App: React.FC = () => {
   const { authToken } = useAuthTokenStoreFacade();
