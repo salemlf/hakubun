@@ -1,15 +1,14 @@
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { ToastProps } from "@radix-ui/react-toast";
 import { motion } from "framer-motion";
 import { ActionProps, ToastType } from "./types";
-import CloseIcon from "../../images/close.svg";
-import ErrorIcon from "../../images/error.svg";
-import InfoIcon from "../../images/info.svg";
-import SuccessIcon from "../../images/success.svg";
-import WarningIcon from "../../images/warning.svg";
-import LoadingIcon from "../../images/loading.svg";
+import SvgIcon from "../SvgIcon";
+import CloseIcon from "../../images/close.svg?react";
+import ErrorIcon from "../../images/error.svg?react";
+import InfoIcon from "../../images/info.svg?react";
+import SuccessIcon from "../../images/success.svg?react";
+import WarningIcon from "../../images/warning.svg?react";
+import LoadingIcon from "../../images/loading.svg?react";
 import styled from "styled-components";
 
 type RootProps = {
@@ -35,11 +34,6 @@ const Title = styled(ToastPrimitive.Title)`
   font-size: 1.25rem;
 `;
 
-const TitleIcon = styled(IonIcon)`
-  width: 2.25em;
-  height: 2.25em;
-`;
-
 const Description = styled(ToastPrimitive.Description)`
   margin: 0;
   font-size: 1rem;
@@ -52,11 +46,6 @@ const CloseButton = styled(ToastPrimitive.Close)`
   border-radius: 50%;
   background-color: transparent;
   margin-left: 3px;
-`;
-
-const Close = styled(IonIcon)`
-  width: 2.25em;
-  height: 2.25em;
 `;
 
 const TitleContainer = styled.div`
@@ -75,7 +64,12 @@ const HeaderContainer = styled.div`
 type ToastStyles = {
   bgColor: string;
   textColor: string;
-  icon: string;
+  // icon: string;
+  icon: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement> & {
+      title?: string | undefined;
+    }
+  >;
 };
 
 const toastTypeStylesMap: { [index: string]: ToastStyles } = {
@@ -127,7 +121,7 @@ export const Toast = ({
   allowClose = true,
 }: CustomToastProps) => {
   let toastStyles = toastTypeStylesMap[toastType];
-  let toastIcon = toastStyles.icon;
+  let ToastIcon = toastStyles.icon;
 
   return (
     <Root
@@ -138,6 +132,7 @@ export const Toast = ({
       onOpenChange={setOpen}
       forceMount={true}
       asChild
+      data-testid={`${toastType}-toast`}
     >
       <motion.div
         initial={{ x: "100%" }}
@@ -155,13 +150,13 @@ export const Toast = ({
           <HeaderContainer>
             {title && (
               <TitleContainer>
-                <TitleIcon src={toastIcon} />
+                <SvgIcon icon={<ToastIcon />} width="2.25em" height="2.25em" />
                 <Title>{title}</Title>
               </TitleContainer>
             )}
             {allowClose && (
               <CloseButton aria-label="Close">
-                <Close src={CloseIcon} />
+                <SvgIcon icon={<CloseIcon />} width="2.25em" height="2.25em" />
               </CloseButton>
             )}
           </HeaderContainer>
