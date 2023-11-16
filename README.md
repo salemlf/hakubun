@@ -40,7 +40,7 @@ This means the following information may be stored:
 
 - Username
 - Errors encountered
-- User actions in app (for example: how often user a page)
+- User actions in app (for example: how often user visits a page)
 
 The following information is **NOT** stored and I will never be able to access to it:
 
