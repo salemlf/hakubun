@@ -1,7 +1,10 @@
 import { renderHook, screen, waitFor } from "@testing-library/react";
 import { HttpResponse, http, passthrough } from "msw";
 import { createWrapper, renderWithRouter } from "../../testing/test-utils";
-import { mockAssignmentsAvailForReviewResponse } from "../../testing/mocks/data/assignments.mock";
+import {
+  mockAssignmentsAvailReviewsResponse,
+  mockAssignmentsNoAvailReviewsResponse,
+} from "../../testing/mocks/data/assignments.mock";
 import { server } from "../../testing/mocks/server";
 import { assignmentsEndpoint } from "../../testing/endpoints";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
@@ -23,7 +26,7 @@ test("Redirects to review settings on click", async () => {
         "immediately_available_for_review"
       );
       if (availForReview == "true") {
-        return HttpResponse.json(mockAssignmentsAvailForReviewResponse);
+        return HttpResponse.json(mockAssignmentsAvailReviewsResponse);
       }
       return passthrough();
     })
@@ -76,7 +79,42 @@ test("Shows error text on API error and no cached data", async () => {
   expect(errButton).toHaveTextContent("Error loading data");
 });
 
-// TODO: check that displays a toast on click if no reviews available
+test("Displays toast on click if no reviews available", async () => {
+  server.use(
+    http.get(assignmentsEndpoint, ({ request }) => {
+      const url = new URL(request.url);
+      let availReviews = url.searchParams.get(
+        "immediately_available_for_review"
+      );
+      if (availReviews == "true") {
+        return HttpResponse.json(mockAssignmentsNoAvailReviewsResponse);
+      }
+      return passthrough();
+    })
+  );
+
+  const { user } = renderComponent(mockLevel);
+  const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
+    wrapper: createWrapper(),
+  });
+
+  await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+  await user.click(
+    screen.getByRole("button", {
+      name: /reviews/i,
+    })
+  );
+
+  let errToast = await screen.findByTestId("error-toast");
+  expect(errToast).toBeInTheDocument();
+});
+
+// TODO: add test
+test.todo(
+  "Displays error toast if API error and no cached data",
+  async () => {}
+);
 
 const renderComponent = (
   level: number,

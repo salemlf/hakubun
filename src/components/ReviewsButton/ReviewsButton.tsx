@@ -35,6 +35,7 @@ type Props = {
   level: number;
 };
 
+// TODO: remove passing in level, unnecessary
 function ReviewsButton({ level }: Props) {
   const navigate = useNavigate();
 
