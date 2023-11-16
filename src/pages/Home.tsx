@@ -6,7 +6,7 @@ import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
 import HomeHeader from "../components/HomeHeader";
 import LessonsButton from "../components/LessonsButton/LessonsButton";
 import ReviewsButton from "../components/ReviewsButton/ReviewsButton";
-import RadicalForLvlCard from "../components/RadicalForLvlCard/RadicalForLvlCard";
+import RadicalsForLvlCard from "../components/RadicalsForLvlCard/RadicalsForLvlCard";
 import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
 import SrsStages from "../components/SrsStages/SrsStages";
 import ReviewForecast from "../components/ReviewForecast";
@@ -70,7 +70,7 @@ const Home = () => {
               <ReviewsButton level={level}></ReviewsButton>
             </LessonAndReviewButtonsContainer>
             <LevelProgressBar level={level} />
-            <RadicalForLvlCard level={level}></RadicalForLvlCard>
+            <RadicalsForLvlCard level={level}></RadicalsForLvlCard>
             <KanjiForLvlCard level={level}></KanjiForLvlCard>
             <SrsStages></SrsStages>
             <ReviewForecast />
