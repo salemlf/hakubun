@@ -51,8 +51,10 @@ test("Shows error text on API error and no cached data", async () => {
       wrapper: createWrapper(),
     }
   );
-  await waitFor(() => expect(subjectsResult.current.isError).toBe(true));
-  await waitFor(() => expect(subjectsResult.current.data).toBe(undefined));
+  await waitFor(() => {
+    expect(subjectsResult.current.isError).toBe(true);
+    expect(subjectsResult.current.data).toBe(undefined);
+  });
 
   const { result: assignmentsResult } = renderHook(
     () => useRadicalAssignmentsForLvl(mockLevel),
@@ -60,8 +62,10 @@ test("Shows error text on API error and no cached data", async () => {
       wrapper: createWrapper(),
     }
   );
-  await waitFor(() => expect(assignmentsResult.current.isError).toBe(true));
-  await waitFor(() => expect(assignmentsResult.current.data).toBe(undefined));
+  await waitFor(() => {
+    expect(assignmentsResult.current.isError).toBe(true);
+    expect(assignmentsResult.current.data).toBe(undefined);
+  });
 
   let errCard = await screen.findByTestId("radicals-for-lvl-err");
   expect(errCard).toHaveTextContent("Error loading data");

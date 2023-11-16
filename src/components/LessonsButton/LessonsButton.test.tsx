@@ -66,7 +66,7 @@ test("LessonsButton redirects to lesson settings on click", async () => {
   ).toBeInTheDocument();
 });
 
-test.skip("Shows error text on API error and no cached data", async () => {
+test("Shows error text on API error and no cached data", async () => {
   server.use(
     http.get(assignmentsEndpoint, ({ request }) => {
       const url = new URL(request.url);
@@ -83,14 +83,16 @@ test.skip("Shows error text on API error and no cached data", async () => {
     wrapper: createWrapper(),
   });
 
-  await waitFor(() => expect(result.current.isError).toBe(true));
-  await waitFor(() => expect(result.current.data).toBe(undefined));
+  await waitFor(() => {
+    expect(result.current.isError).toBe(true);
+    expect(result.current.data).toBe(undefined);
+  });
 
   let errButton = await screen.findByTestId("lesson-btn-err");
   expect(errButton).toHaveTextContent("Error loading data");
 });
 
-test.skip("Displays toast on click if no lessons available", async () => {
+test("Displays toast on click if no lessons available", async () => {
   server.use(
     http.get(assignmentsEndpoint, ({ request }) => {
       const url = new URL(request.url);

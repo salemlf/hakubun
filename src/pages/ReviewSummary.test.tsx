@@ -3,7 +3,6 @@ import {
   act,
   renderWithRouter,
   screen,
-  waitFor,
 } from "../testing/test-utils";
 import { mockAssignmentQueueItems } from "../testing/mocks/data/assignmentQueueItems.mock";
 import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
@@ -18,14 +17,10 @@ test("ReviewSummary renders", () => {
 
 test("Reviewed assignments displayed", async () => {
   const { result } = renderHook(() => useAssignmentSubmitStoreFacade());
-  await waitFor(() =>
-    expect(result.current.submittedAssignmentQueueItems).toEqual([])
-  );
+  expect(result.current.submittedAssignmentQueueItems).toEqual([]);
   act(() => result.current.updateSubmittedQueueItems(mockAssignmentQueueItems));
-  await waitFor(() =>
-    expect(result.current.submittedAssignmentQueueItems).toEqual(
-      mockAssignmentQueueItems
-    )
+  expect(result.current.submittedAssignmentQueueItems).toEqual(
+    mockAssignmentQueueItems
   );
 
   const txtQueueItems: string[] = [];

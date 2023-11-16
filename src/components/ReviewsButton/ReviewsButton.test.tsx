@@ -71,9 +71,10 @@ test("Shows error text on API error and no cached data", async () => {
   const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
     wrapper: createWrapper(),
   });
-
-  await waitFor(() => expect(result.current.isError).toBe(true));
-  await waitFor(() => expect(result.current.data).toBe(undefined));
+  await waitFor(() => {
+    expect(result.current.isError).toBe(true);
+    expect(result.current.data).toBe(undefined);
+  });
 
   let errButton = await screen.findByTestId("review-btn-err");
   expect(errButton).toHaveTextContent("Error loading data");
