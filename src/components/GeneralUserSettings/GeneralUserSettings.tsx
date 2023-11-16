@@ -7,11 +7,6 @@ import Card from "../Card";
 import Selector, { SelectItem } from "../Selector";
 import ColorThemeSwitch from "../ColorThemeSwitch";
 import { SettingRow } from "../../styles/BaseStyledComponents";
-import styled from "styled-components";
-
-const SettingCategory = styled(Card)`
-  display: flex;
-`;
 
 // TODO: add disclaimer about kyoto accent not always being available for vocab
 function GeneralUserSettings() {
@@ -31,7 +26,7 @@ function GeneralUserSettings() {
   };
 
   return (
-    <SettingCategory
+    <Card
       title="General"
       headerBgColor="var(--ion-color-secondary)"
       headerTextColor="white"
@@ -63,7 +58,7 @@ function GeneralUserSettings() {
           labelId="color-theme-switch"
         />
       </SettingRow>
-    </SettingCategory>
+    </Card>
   );
 }
 

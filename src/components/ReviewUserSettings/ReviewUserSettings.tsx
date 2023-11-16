@@ -3,13 +3,8 @@ import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
 import SortOrderOption from "../SortOrderOption";
-import { SettingRow } from "../../styles/BaseStyledComponents";
-import styled from "styled-components";
 import BackToBackOption from "../BackToBackOption";
-
-const SettingCategory = styled(Card)`
-  display: flex;
-`;
+import { SettingRow } from "../../styles/BaseStyledComponents";
 
 function ReviewUserSettings() {
   const {
@@ -22,7 +17,7 @@ function ReviewUserSettings() {
   } = useUserSettingsStoreFacade();
 
   return (
-    <SettingCategory
+    <Card
       title="Reviews"
       headerBgColor="var(--wanikani-review)"
       headerTextColor="white"
@@ -50,7 +45,7 @@ function ReviewUserSettings() {
           labelId="user-default-review-back-to-back-selector"
         />
       </SettingRow>
-    </SettingCategory>
+    </Card>
   );
 }
 
