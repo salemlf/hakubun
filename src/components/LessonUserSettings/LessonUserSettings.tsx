@@ -4,11 +4,6 @@ import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
 import SortOrderOption from "../SortOrderOption";
 import { SettingRow } from "../../styles/BaseStyledComponents";
-import styled from "styled-components";
-
-const SettingCategory = styled(Card)`
-  display: flex;
-`;
 
 function LessonUserSettings() {
   const {
@@ -19,7 +14,11 @@ function LessonUserSettings() {
   } = useUserSettingsStoreFacade();
 
   return (
-    <SettingCategory title="Lessons" headerBgColor="var(--wanikani-lesson)" headerTextColor="white">
+    <Card
+      title="Lessons"
+      headerBgColor="var(--wanikani-lesson)"
+      headerTextColor="white"
+    >
       <SettingRow>
         <BatchSizeOption
           batchSize={lessonBatchSize}
@@ -35,7 +34,7 @@ function LessonUserSettings() {
           labelId="user-default-lesson-sort-order-selector"
         />
       </SettingRow>
-    </SettingCategory>
+    </Card>
   );
 }
 
