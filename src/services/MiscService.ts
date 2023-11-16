@@ -5,7 +5,7 @@ import {
   StudyMaterial,
   StudyMaterialPostDataWithID,
 } from "../types/MiscTypes";
-import { Collection } from "../types/Collection";
+import { AssignmentCollection, SubjectCollection } from "../types/Collection";
 import {
   PopoverMessageType,
   PopoverStyles,
@@ -103,10 +103,16 @@ export const flattenData = (data: any, nested: boolean = true) => {
   return flattened;
 };
 
-export const flattenCollectionOfOne = (data: Collection) => {
+export const flattenCollectionOfOne = (
+  data: AssignmentCollection | SubjectCollection
+) => {
   let flattenedCollection = Object.assign({}, data, data.data);
   let innerDataItem = flattenedCollection.data[0];
-  let flattenedInnerData = Object.assign({}, innerDataItem, innerDataItem.data);
+  let flattenedInnerData: any = Object.assign(
+    {},
+    innerDataItem,
+    innerDataItem.data
+  );
 
   delete flattenedInnerData.data;
   return flattenedInnerData;
