@@ -1,19 +1,16 @@
-import { rest } from "msw";
+import { HttpResponse, http, passthrough } from "msw";
 
 const sentryEndpointRegex = /https:\/\/.*sentry\.io\/api\/.*/;
 
 export const handlers = [
   // allowing sentry endpoint
-  rest.post(sentryEndpointRegex, (req, res, ctx) => {
-    return req.passthrough();
+  http.post(sentryEndpointRegex, () => {
+    return passthrough();
   }),
   // test msw is functioning
-  rest.get(/.*\/msw-test/, (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        name: "msw-test",
-      })
-    );
+  http.get(/.*\/msw-test/, () => {
+    return HttpResponse.json({
+      name: "msw-test",
+    });
   }),
 ];
