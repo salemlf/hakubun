@@ -5,6 +5,7 @@ import {
   act,
   renderWithRouter,
   screen,
+  waitFor,
 } from "../testing/test-utils";
 import LessonSummary from "./LessonSummary";
 
@@ -13,12 +14,16 @@ test("LessonSummary renders", () => {
   expect(baseElement).toBeDefined();
 });
 
-test("Learned lessons displayed", () => {
+test("Learned lessons displayed", async () => {
   const { result } = renderHook(() => useAssignmentSubmitStoreFacade());
-  expect(result.current.submittedAssignmentQueueItems).toEqual([]);
+  await waitFor(() =>
+    expect(result.current.submittedAssignmentQueueItems).toEqual([])
+  );
   act(() => result.current.updateSubmittedQueueItems(mockAssignmentQueueItems));
-  expect(result.current.submittedAssignmentQueueItems).toEqual(
-    mockAssignmentQueueItems
+  await waitFor(() =>
+    expect(result.current.submittedAssignmentQueueItems).toEqual(
+      mockAssignmentQueueItems
+    )
   );
 
   const txtQueueItems: string[] = [];

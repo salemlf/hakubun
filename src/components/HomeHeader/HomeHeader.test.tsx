@@ -5,6 +5,7 @@ import {
   renderWithRouter,
   createWrapper,
   screen,
+  waitFor,
 } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { mockUserResponseLvl5 } from "../../testing/mocks/data/user.mock";
@@ -34,10 +35,12 @@ test("User level is rendered to screen", async () => {
   const { result } = renderHook(() => useUserInfoStoreFacade(), {
     wrapper: createWrapper(),
   });
+  await waitFor(() => expect(result.current.userInfo).toBe(undefined));
 
   let userData = mockUserResponseLvl5.data;
 
   act(() => result.current.setUserInfo(userData));
+  await waitFor(() => expect(result.current.userInfo).toBe(userData));
 
   renderComponent();
   let userLvl = mockUserResponseLvl5.data.level;
