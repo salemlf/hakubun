@@ -6,6 +6,7 @@ import { Assignment } from "../../types/Assignment";
 import SubjectButton from "../SubjectButton";
 import SrsStageProgressBar from "../SrsStageProgressBar/SrsStageProgressBar";
 import Card from "../Card";
+import ErrorMessage from "../ErrorMessage";
 import {
   LoadingButtonRow,
   SubjForLvlGrid,
@@ -16,7 +17,7 @@ interface Props {
   level: number | undefined;
 }
 
-function RadicalForLvlCard({ level }: Props) {
+function RadicalsForLvlCard({ level }: Props) {
   const {
     isLoading: subjectCurrLvlLoading,
     data: subjectCurrLvlData,
@@ -29,18 +30,32 @@ function RadicalForLvlCard({ level }: Props) {
     error: assignmentCurrLvlErr,
   } = useRadicalAssignmentsForLvl(level);
 
-  let radicalCardLoading =
-    subjectCurrLvlLoading ||
-    subjectCurrLvlErr ||
-    assignmentCurrLvlLoading ||
-    assignmentCurrLvlErr;
+  let radicalCardLoading = subjectCurrLvlLoading || assignmentCurrLvlLoading;
+
+  let errGettingData = subjectCurrLvlErr || assignmentCurrLvlErr;
+
+  const hasAllData = subjectCurrLvlData && assignmentCurrLvlData;
+
+  if (errGettingData && !hasAllData) {
+    return (
+      <Card
+        title="Radicals"
+        margin="12px 0"
+        headerBgColor="var(--wanikani-radical)"
+        headerTextColor="white"
+        data-testid="radicals-for-lvl-err"
+      >
+        <ErrorMessage />
+      </Card>
+    );
+  }
 
   if (radicalCardLoading) {
     return (
       <Card
+        title="Radicals"
         margin="12px 0"
         headerBgColor="var(--wanikani-radical)"
-        title="Radicals"
         headerTextColor="white"
       >
         <LoadingButtonRow>
@@ -102,4 +117,4 @@ function RadicalForLvlCard({ level }: Props) {
   );
 }
 
-export default RadicalForLvlCard;
+export default RadicalsForLvlCard;

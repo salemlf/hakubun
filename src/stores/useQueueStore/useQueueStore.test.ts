@@ -2,7 +2,7 @@ import { act, renderHook } from "../../testing/test-utils";
 import useQueueStoreFacade from "./useQueueStore.facade";
 
 describe("useQueueStore", () => {
-  test("Initial values are as expected", () => {
+  test("Initial values are as expected", async () => {
     const { result } = renderHook(() => useQueueStoreFacade());
     expect(result.current.isSubmittingAnswer).toEqual(false);
     expect(result.current.isBottomSheetVisible).toEqual(false);

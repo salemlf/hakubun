@@ -2,6 +2,7 @@ import { Assignment } from "../../../types/Assignment";
 import { AssignmentCollection } from "../../../types/Collection";
 import { SubjectType } from "../../../types/Subject";
 
+// collections
 // TODO: add vocab and kana vocab mock items
 export const mockAssignmentsAvailForReview = [
   {
@@ -363,7 +364,7 @@ export const mockAssignmentsAvailForReview = [
   },
 ];
 
-export const mockAssignmentsAvailForReviewResponse: AssignmentCollection = {
+export const mockAssignmentsAvailReviewsResponse: AssignmentCollection = {
   object: "collection",
   url: "https://api.wanikani.com/v2/assignments?immediately_available_for_review=true",
   pages: {
@@ -775,6 +776,18 @@ export const mockAssignmentsAvailForReviewResponse: AssignmentCollection = {
     },
   ],
 };
+export const mockAssignmentsNoAvailReviewsResponse: AssignmentCollection = {
+  object: "collection",
+  url: "https://api.wanikani.com/v2/assignments?immediately_available_for_review=true",
+  pages: {
+    per_page: 500,
+    next_url: null,
+    previous_url: null,
+  },
+  total_count: 0,
+  data_updated_at: new Date("2023-11-03T19:26:12.721786Z"),
+  data: [],
+};
 
 export const mockAssignmentsAvailLessonsResponse: AssignmentCollection = {
   object: "collection",
@@ -980,6 +993,19 @@ export const mockAssignmentsAvailLessonsResponse: AssignmentCollection = {
   ],
 };
 
+export const mockAssignmentsNoAvailLessonsResponse: AssignmentCollection = {
+  object: "collection",
+  url: "https://api.wanikani.com/v2/assignments?immediately_available_for_lessons=true",
+  pages: {
+    per_page: 500,
+    next_url: null,
+    previous_url: null,
+  },
+  total_count: 0,
+  data_updated_at: new Date("2023-11-05T19:26:12.721786Z"),
+  data: [],
+};
+
 // TODO: add some assignments that have been completed
 export const mockKanjiAssignmentsForLvl1 = [
   {
@@ -1073,6 +1099,7 @@ export const mockAssignmentsBySrsStageResponse: AssignmentCollection = {
   data: [],
 };
 
+// single assignments
 export const mockKanjiAssignmentLvl1_440: Assignment = {
   id: 366986606,
   object: "assignment",

@@ -1,21 +1,13 @@
 import { baseUrl } from "./../api/ApiConfig";
 
 export const userEndpoint = `${baseUrl}user`;
-export const assignmentsAvailForReviewEndpoint = `${baseUrl}assignments?immediately_available_for_review`;
-export const assignmentsAvailForLessonsEndpoint = `${baseUrl}assignments?immediately_available_for_lessons=true`;
+export const assignmentsEndpoint = `${baseUrl}assignments`;
+export const subjectsEndpoint = `${baseUrl}subjects`;
 
-// TODO: use this endpoint in KanjiForLevelCard test
-export const kanjiAssignmentsByLvlEndpoint = new RegExp(
-  `${baseUrl}assignments\?levels=[0-9][0-9]?&subject_types=kanji`,
-  "i"
-);
+export const AVAIL_REVIEWS = "immediately_available_for_review";
+export const AVAIL_LESSONS = "immediately_available_for_lessons";
 
-export const kanjiSubjectsByLvlEndpoint = new RegExp(
-  `${baseUrl}assignments\?levels=[0-9][0-9]?&subject_types=kanji`,
-  "i"
-);
-
-export const subjsBySubjIDsEndpoint = new RegExp(
-  `${baseUrl}subjects\?ids=[0-9]+(,[0-9]+)*`,
-  "i"
-);
+export const SUBJECT_SUBJ_TYPES = "types";
+export const ASSIGNMENT_SUBJ_TYPES = "subject_types";
+export const LEVELS_PARAM = "levels";
+export const SRS_STAGES = "srs_stages";

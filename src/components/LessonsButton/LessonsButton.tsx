@@ -3,9 +3,11 @@ import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoSto
 import { setBtnBackground } from "../../services/ImageSrcService";
 import { displayToast } from "../Toast/Toast.service";
 import { useLessons } from "../../hooks/useLessons";
+import ErrorMessage from "../ErrorMessage";
 import {
   BaseReviewLessonButton,
   BaseReviewLessonButtonBadge,
+  BaseReviewLessonButtonContainer,
   BaseReviewLessonButtonSkeleton,
 } from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components";
@@ -21,6 +23,12 @@ const LessonsButtonStyled = styled(BaseReviewLessonButton)`
 const LessonButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`
   --background: var(--wani-kani-pink-rgba);
   --background-rgb: var(--wani-kani-pink-rgb);
+  border: 2px solid black;
+`;
+
+const LessonButtonErrContainer = styled(BaseReviewLessonButtonContainer)`
+  background-color: var(--wanikani-pink);
+  border: 2px solid black;
 `;
 
 function LessonsButton() {
@@ -33,8 +41,16 @@ function LessonsButton() {
     error: lessonsErr,
   } = useLessons();
 
-  if (lessonsLoading || lessonsErr) {
+  if (lessonsLoading) {
     return <LessonButtonSkeleton animated={true}></LessonButtonSkeleton>;
+  }
+
+  if (lessonsErr && !lessonsData) {
+    return (
+      <LessonButtonErrContainer disabled={true} data-testid="lesson-btn-err">
+        <ErrorMessage />
+      </LessonButtonErrContainer>
+    );
   }
 
   const onLessonBtnClick = () => {

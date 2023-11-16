@@ -1,7 +1,6 @@
 import { renderWithRouter, screen } from "../../testing/test-utils";
 import FloatingHomeButton from ".";
 import Home from "../../pages/Home";
-(".");
 
 test("FloatingHomeButton renders", () => {
   const { baseElement } = renderComponent();
@@ -9,6 +8,8 @@ test("FloatingHomeButton renders", () => {
 });
 
 test("FloatingHomeButton redirects to home on click", async () => {
+  // mocking the home page data since will redirect there
+
   const { user } = renderComponent(true);
 
   await user.click(

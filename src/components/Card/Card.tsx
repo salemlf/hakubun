@@ -57,12 +57,14 @@ function Card({
   cardBgColor = "var(--foreground-color)",
   cardTextColor = "var(--text-color)",
   margin = "16px",
+  ...props
 }: Props) {
   return (
     <CardContainer
       cardbgcolor={cardBgColor}
       margin={margin}
       txtcolor={cardTextColor}
+      {...props}
     >
       {title && (
         <CardHeader

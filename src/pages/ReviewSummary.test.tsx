@@ -4,18 +4,18 @@ import {
   renderWithRouter,
   screen,
 } from "../testing/test-utils";
-import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { mockAssignmentQueueItems } from "../testing/mocks/data/assignmentQueueItems.mock";
-import ReviewSummary from "./ReviewSummary";
+import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
 import { Subject } from "../types/Subject";
+import ReviewSummary from "./ReviewSummary";
 
 test("ReviewSummary renders", () => {
   const { baseElement } = renderComponent();
   expect(baseElement).toBeDefined();
 });
 
-test("Reviewed assignments displayed", () => {
+test("Reviewed assignments displayed", async () => {
   const { result } = renderHook(() => useAssignmentSubmitStoreFacade());
   expect(result.current.submittedAssignmentQueueItems).toEqual([]);
   act(() => result.current.updateSubmittedQueueItems(mockAssignmentQueueItems));

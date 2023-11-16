@@ -1,4 +1,4 @@
-import { rest } from "msw";
+import { HttpResponse, http } from "msw";
 import {
   renderWithRouter,
   screen,
@@ -24,8 +24,8 @@ test("TokenInput renders", () => {
 
 test("Redirects to home page after entering token (logging in)", async () => {
   server.use(
-    rest.get(userEndpoint, (req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(mockUserResponseLvl1));
+    http.get(userEndpoint, () => {
+      return HttpResponse.json(mockUserResponseLvl1);
     })
   );
   const { user } = renderComponent(true);

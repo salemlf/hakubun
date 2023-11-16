@@ -120,6 +120,18 @@ export const BaseReviewLessonButtonSkeleton = styled(IonSkeletonText)`
   border-radius: 8px;
 `;
 
+export const BaseReviewLessonButtonContainer = styled.button`
+  min-height: 100px;
+  height: 100%;
+  border-radius: 8px;
+
+  &:disabled,
+  &[disabled] {
+    opacity: 1;
+    color: white;
+  }
+`;
+
 export const BaseReviewLessonButtonBadge = styled(IonBadge)`
   position: absolute;
   right: 10px;

@@ -13,7 +13,7 @@ test("LessonSummary renders", () => {
   expect(baseElement).toBeDefined();
 });
 
-test("Learned lessons displayed", () => {
+test("Learned lessons displayed", async () => {
   const { result } = renderHook(() => useAssignmentSubmitStoreFacade());
   expect(result.current.submittedAssignmentQueueItems).toEqual([]);
   act(() => result.current.updateSubmittedQueueItems(mockAssignmentQueueItems));

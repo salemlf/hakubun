@@ -1,9 +1,12 @@
 import { renderHook, screen, waitFor } from "@testing-library/react";
-import { rest } from "msw";
+import { HttpResponse, http, passthrough } from "msw";
 import { createWrapper, renderWithRouter } from "../../testing/test-utils";
-import { mockAssignmentsAvailForReviewResponse } from "../../testing/mocks/data/assignments.mock";
+import {
+  mockAssignmentsAvailReviewsResponse,
+  mockAssignmentsNoAvailReviewsResponse,
+} from "../../testing/mocks/data/assignments.mock";
 import { server } from "../../testing/mocks/server";
-import { assignmentsAvailForReviewEndpoint } from "../../testing/endpoints";
+import { assignmentsEndpoint } from "../../testing/endpoints";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
 import { ReviewSettings } from "../../pages/ReviewSettings";
 import ReviewsButton from ".";
@@ -15,15 +18,20 @@ test("ReviewsButton renders", () => {
   expect(baseElement).toBeDefined();
 });
 
-test("ReviewsButton redirects to review settings on click", async () => {
+test("Redirects to review settings on click", async () => {
   server.use(
-    rest.get(assignmentsAvailForReviewEndpoint, (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json(mockAssignmentsAvailForReviewResponse)
+    http.get(assignmentsEndpoint, ({ request }) => {
+      const url = new URL(request.url);
+      let availForReview = url.searchParams.get(
+        "immediately_available_for_review"
       );
+      if (availForReview == "true") {
+        return HttpResponse.json(mockAssignmentsAvailReviewsResponse);
+      }
+      return passthrough();
     })
   );
+
   const { user } = renderComponent(mockLevel, true);
 
   const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
@@ -45,7 +53,69 @@ test("ReviewsButton redirects to review settings on click", async () => {
   ).toBeInTheDocument();
 });
 
-// TODO: check that displays a toast on click if no reviews available
+test("Shows error text on API error and no cached data", async () => {
+  server.use(
+    http.get(assignmentsEndpoint, ({ request }) => {
+      const url = new URL(request.url);
+      let availForReviews = url.searchParams.get(
+        "immediately_available_for_review"
+      );
+      if (availForReviews == "true") {
+        return HttpResponse.error();
+      }
+      return passthrough();
+    })
+  );
+
+  renderComponent(mockLevel, true);
+  const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
+    wrapper: createWrapper(),
+  });
+  await waitFor(() => {
+    expect(result.current.isError).toBe(true);
+    expect(result.current.data).toBe(undefined);
+  });
+
+  let errButton = await screen.findByTestId("review-btn-err");
+  expect(errButton).toHaveTextContent("Error loading data");
+});
+
+test("Displays toast on click if no reviews available", async () => {
+  server.use(
+    http.get(assignmentsEndpoint, ({ request }) => {
+      const url = new URL(request.url);
+      let availReviews = url.searchParams.get(
+        "immediately_available_for_review"
+      );
+      if (availReviews == "true") {
+        return HttpResponse.json(mockAssignmentsNoAvailReviewsResponse);
+      }
+      return passthrough();
+    })
+  );
+
+  const { user } = renderComponent(mockLevel);
+  const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
+    wrapper: createWrapper(),
+  });
+
+  await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+  await user.click(
+    screen.getByRole("button", {
+      name: /reviews/i,
+    })
+  );
+
+  let errToast = await screen.findByTestId("error-toast");
+  expect(errToast).toBeInTheDocument();
+});
+
+// TODO: add test
+test.todo(
+  "Displays error toast if API error and no cached data",
+  async () => {}
+);
 
 const renderComponent = (
   level: number,

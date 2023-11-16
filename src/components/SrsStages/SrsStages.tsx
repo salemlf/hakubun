@@ -7,10 +7,11 @@ import {
 } from "../../services/SubjectAndAssignmentService";
 import { countAssignmentTypesInSrsStage } from "./SrsStages.service";
 import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
-import { AssignmentTypeGroupCount, SrsStageName } from "./SrsStages.types";
+import { AssignmentTypeGroupCount } from "./SrsStages.types";
 import { Assignment } from "../../types/Assignment";
 import { SubjectType } from "../../types/Subject";
 import SrsStagesLoadingSkeleton from "./SrsStagesLoadingSkeleton";
+import ErrorMessage from "../ErrorMessage";
 import styled from "styled-components";
 
 const SrsButtonContainer = styled.div`
@@ -66,6 +67,50 @@ function SrsStages() {
     return (
       <SrsButtonContainer>
         <SrsStagesLoadingSkeleton></SrsStagesLoadingSkeleton>
+      </SrsButtonContainer>
+    );
+  }
+
+  const hasAllData =
+    apprenticeStageData &&
+    guruStageData &&
+    masterStageData &&
+    enlightenedStageData &&
+    burnedStageData;
+
+  const errOccurred =
+    apprenticeStageErr ||
+    guruStageDataErr ||
+    masterStageErr ||
+    enlightenedStageErr ||
+    burnedStageErr;
+
+  const stageNames: SrsLevelName[] = [
+    "apprentice",
+    "guru",
+    "master",
+    "enlightened",
+    "burned",
+  ];
+  const labelSuffix = "SRS stage";
+
+  if (errOccurred && !hasAllData) {
+    return (
+      <SrsButtonContainer data-testid="srs-stages-err">
+        {stageNames.map((stageName) => (
+          <SrsStageButton
+            srsStage={stageName}
+            aria-label={`${stageName} ${labelSuffix}`}
+            fullWidth={stageName === "burned"}
+            style={{
+              alignItems: "center",
+              padding: "5px",
+            }}
+          >
+            <StageName>{stageName}</StageName>
+            <ErrorMessage />
+          </SrsStageButton>
+        ))}
       </SrsButtonContainer>
     );
   }
@@ -229,7 +274,7 @@ const buttonVariants = {
 
 type SRSStageButtonProps = {
   stageData: Assignment[];
-  stageName: SrsStageName;
+  stageName: SrsLevelName;
   ariaLabel: string;
   showStageDetails: boolean;
   setShowDetails: (shouldShow: boolean) => void;
