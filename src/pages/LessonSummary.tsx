@@ -26,10 +26,6 @@ const LessonSummaryHeadingTxt = styled.h1`
   color: white;
 `;
 
-const SubjectCard = styled(Card)`
-  display: flex;
-`;
-
 const Grid = styled(FullWidthGridDiv)`
   margin-top: 10px;
 `;
@@ -80,7 +76,7 @@ function LessonSummary() {
       </LessonSummaryHeader>
       <ContentWithTabBar>
         <Grid>
-          <SubjectCard
+          <Card
             title={`${
               ((lessonsBySubjType.radical as Subject[]) ?? []).length
             } Radicals Learned`}
@@ -91,8 +87,8 @@ function LessonSummary() {
               subjList={(lessonsBySubjType.radical as Subject[]) ?? []}
               justify="flex-start"
             />
-          </SubjectCard>
-          <SubjectCard
+          </Card>
+          <Card
             title={`${
               ((lessonsBySubjType.kanji as Subject[]) ?? []).length
             } Kanji Learned`}
@@ -103,8 +99,8 @@ function LessonSummary() {
               subjList={(lessonsBySubjType.kanji as Subject[]) ?? []}
               justify="flex-start"
             />
-          </SubjectCard>
-          <SubjectCard
+          </Card>
+          <Card
             title={`${
               (
                 [
@@ -125,7 +121,7 @@ function LessonSummary() {
               }
               justify="flex-start"
             />
-          </SubjectCard>
+          </Card>
           {submittedAssignmentsWithErrs.length > 0 && (
             <WarningMsg>
               Oh no, looks like we weren't able to start all your lessons for
