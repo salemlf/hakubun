@@ -60,6 +60,12 @@ if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
   LogRocket.init("cleqvf/hakubun", {
     release: "0.3.0-alpha",
     shouldCaptureIP: false,
+    network: {
+      requestSanitizer: (request) => {
+        request.headers["Authorization"] = "";
+        return request;
+      },
+    },
   });
   Sentry.init({
     release: "0.3.0-alpha",
