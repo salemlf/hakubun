@@ -1,7 +1,10 @@
 import * as ToastPrimitive from "@radix-ui/react-toast";
-import { ToastProps } from "@radix-ui/react-toast";
 import { motion } from "framer-motion";
-import { ActionProps, ToastType } from "./types";
+import {
+  ActionProps,
+  ToastPropsWithCustomContent,
+  ToastType,
+} from "./Toast.types";
 import SvgIcon from "../SvgIcon";
 import CloseIcon from "../../images/close.svg?react";
 import ErrorIcon from "../../images/error.svg?react";
@@ -100,7 +103,7 @@ const toastTypeStylesMap: { [index: string]: ToastStyles } = {
   },
 };
 
-interface CustomToastProps extends ToastProps {
+interface CustomToastProps extends ToastPropsWithCustomContent {
   open: boolean;
   setOpen: (open: boolean) => void;
   action?: ActionProps;

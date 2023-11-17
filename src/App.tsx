@@ -19,11 +19,11 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
-import { displayToast } from "./components/Toast/Toast.service";
+import { onQueryError } from "./services/ApiQueryService";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { routes } from "./navigation/routes";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { ToastDisplayProvider } from "./components/Toast/displayToast";
+import { ToastDisplayProvider } from "./components/Toast/ToastDisplayProvider";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -103,17 +103,7 @@ const queryClient = new QueryClient({
   },
   queryCache: new QueryCache({
     onError: (error, query) => {
-      // showing errors on background refetches
-      if (query.state.data !== undefined) {
-        displayToast({
-          toastType: "error",
-          title: "API Error",
-          content: `Oh no! Something went wrong when calling the API: ${JSON.stringify(
-            error
-          )}`,
-          timeout: 10000,
-        });
-      }
+      onQueryError(error, query);
     },
   }),
 });

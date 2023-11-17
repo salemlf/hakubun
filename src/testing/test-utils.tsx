@@ -10,7 +10,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import { Either } from "../types/Global";
 import { ThemeProvider } from "../contexts/ThemeContext";
-import { ToastDisplayProvider } from "../components/Toast/displayToast";
+import { ToastDisplayProvider } from "../components/Toast/ToastDisplayProvider";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";

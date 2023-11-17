@@ -127,6 +127,18 @@ test.todo(
   async () => {}
 );
 
+// TODO: add test
+test.todo("Displays error toast if 401 error", async () => {
+  // http.get(assignmentsEndpoint, ({ request }) => {
+  //   const url = new URL(request.url);
+  //   let availForLessons = url.searchParams.get(AVAIL_LESSONS);
+  //   if (availForLessons == "true") {
+  //     return HttpResponse.json(perms401Err, unauthorized401);
+  //   }
+  //   return passthrough();
+  // }),
+});
+
 const renderComponent = (withLessonSettings: boolean = false) => {
   let routes = withLessonSettings
     ? [{ element: <LessonSettings />, path: "/lessons/settings" }]
