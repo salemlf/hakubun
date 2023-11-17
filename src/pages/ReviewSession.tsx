@@ -62,6 +62,7 @@ const FlagAndTxtContainer = styled(motion.div)`
 const WrappingUpTxt = styled.h4`
   width: 100%;
   font-size: 1.5rem;
+  color: white;
 `;
 
 const animationDuration = 1.5;
