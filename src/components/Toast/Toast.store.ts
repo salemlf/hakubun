@@ -1,10 +1,9 @@
 import { nanoid } from "nanoid";
 import { Except, Merge } from "type-fest";
 import { create } from "zustand";
-import { ToastProps } from "@radix-ui/react-toast";
-import { ToastType } from "./types";
+import { ToastPropsWithCustomContent, ToastType } from "./Toast.types";
 
-export interface ToastItem extends ToastProps {
+export interface ToastItem extends ToastPropsWithCustomContent {
   id: string;
   toastType: ToastType;
   timeout: number;
