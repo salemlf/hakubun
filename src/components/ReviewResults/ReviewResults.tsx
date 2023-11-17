@@ -1,11 +1,6 @@
-import styled from "styled-components";
 import { GroupedReviewItems } from "../../types/AssignmentQueueTypes";
 import GroupedReviewSummaryResults from "./GroupedReviewSummaryResults";
 import Card from "../Card";
-
-const ReviewCard = styled(Card)`
-  display: flex;
-`;
 
 export type ReviewResultsProps = {
   groupedReviewItems: GroupedReviewItems;
@@ -17,15 +12,15 @@ function ReviewResults({ groupedReviewItems }: ReviewResultsProps) {
 
   return (
     <>
-      <ReviewCard
+      <Card
         title={`${numCorrect} Answered Correctly`}
         headerBgColor="var(--ion-color-tertiary)"
         headerFontSize="1.25rem"
         headerTextColor="black"
       >
         <GroupedReviewSummaryResults queueItems={groupedReviewItems.correct} />
-      </ReviewCard>
-      <ReviewCard
+      </Card>
+      <Card
         title={`${numWrong} Answered Incorrectly`}
         headerBgColor="var(--ion-color-danger)"
         headerFontSize="1.25rem"
@@ -34,7 +29,7 @@ function ReviewResults({ groupedReviewItems }: ReviewResultsProps) {
         <GroupedReviewSummaryResults
           queueItems={groupedReviewItems.incorrect}
         />
-      </ReviewCard>
+      </Card>
     </>
   );
 }
