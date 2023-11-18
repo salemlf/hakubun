@@ -1,18 +1,4 @@
-import { IonCol, IonRow } from "@ionic/react";
 import styled from "styled-components";
-
-type RowColProps = {
-  className?: string;
-  children: React.ReactNode;
-};
-
-export const Row = ({ className, children }: RowColProps) => (
-  <IonRow className={className}>{children}</IonRow>
-);
-
-export const Col = ({ className, children }: RowColProps) => (
-  <IonCol className={className}>{children}</IonCol>
-);
 
 export const SubjInfoContainer = styled.div`
   background-color: var(--foreground-color);
