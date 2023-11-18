@@ -25,6 +25,7 @@ const StyledRow = styled.div`
   padding-top: var(--ion-padding, 5px);
   padding-bottom: var(--ion-padding, 5px);
   margin-left: 10px;
+  flex-wrap: wrap;
 `;
 
 type Props = {
