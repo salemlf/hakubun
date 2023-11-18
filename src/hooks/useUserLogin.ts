@@ -43,8 +43,6 @@ export const useUserLogin = () => {
       });
 
       setIsAuthenticated(true);
-      queryClient.clear();
-      queryClient.invalidateQueries();
       setIsAuthLoading(false);
       return true;
     } catch (error) {
@@ -66,7 +64,7 @@ export const useUserLogin = () => {
     delete pagingApi.defaults.headers.common["Authorization"];
     setIsAuthenticated(false);
     setIsAuthLoading(false);
-    queryClient.invalidateQueries();
+    queryClient.removeQueries();
   };
 
   return { login, logout };
