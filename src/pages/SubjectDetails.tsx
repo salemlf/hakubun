@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { IonGrid, IonSkeletonText } from "@ionic/react";
+import { IonSkeletonText } from "@ionic/react";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { useSubjectByID } from "../hooks/useSubjectByID";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
@@ -8,14 +8,13 @@ import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDeta
 import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
 import VocabSubjDetails from "../components/VocabSubjDetails/VocabSubjDetails";
 import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
+import ErrorMessage from "../components/ErrorMessage";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-const FullWidthGrid = styled(IonGrid)`
-  margin-left: 0;
-  margin-right: 0;
-  padding-left: 0;
-  padding-right: 0;
+const FullWidthGrid = styled.section`
+  padding: 5px 0;
+  margin: 0;
 `;
 
 // TODO: sometimes has isSessionInProgress as true when it should be false, investigate
@@ -32,42 +31,48 @@ export const SubjectDetails = () => {
 
   const {
     isLoading: subjectLoading,
-    data: subject,
+    data: subjectData,
     error: subjectErr,
   } = useSubjectByID(parsedID);
 
   // TODO: display loading skeleton for each component until all content on page is loaded
+  if (subjectLoading) {
+    return (
+      <ContentWithTabBar>
+        <IonSkeletonText
+          animated={true}
+          style={{ height: "75vh" }}
+        ></IonSkeletonText>
+      </ContentWithTabBar>
+    );
+  }
+
+  if (subjectErr && !subjectData) {
+    <ContentWithTabBar>
+      <ErrorMessage />
+    </ContentWithTabBar>;
+  }
+
   return (
     <>
-      {subjectLoading ? (
-        <ContentWithTabBar>
-          <IonSkeletonText
-            animated={true}
-            style={{ height: "75vh" }}
-          ></IonSkeletonText>
-        </ContentWithTabBar>
-      ) : (
+      {subjectData && (
         <>
-          {subject && (
-            <>
-              <SubjectHeader subject={subject} />
-              <ContentWithTabBar>
-                <FullWidthGrid>
-                  <SubjectSummary subject={subject}></SubjectSummary>
-                  {subject.object == "radical" && (
-                    <RadicalSubjDetails radical={subject as Radical} />
-                  )}
-                  {subject.object == "kanji" && (
-                    <KanjiSubjDetails kanji={subject as Kanji} />
-                  )}
-                  {(subject.object == "vocabulary" ||
-                    subject.object == "kana_vocabulary") && (
-                    <VocabSubjDetails vocab={subject as GeneralVocabulary} />
-                  )}
-                </FullWidthGrid>
-              </ContentWithTabBar>
-            </>
-          )}
+          <SubjectHeader subject={subjectData} />
+          <ContentWithTabBar>
+            <FullWidthGrid>
+              <SubjectSummary subject={subjectData}></SubjectSummary>
+              {subjectData.object == "radical" && (
+                <RadicalSubjDetails radical={subjectData as Radical} />
+              )}
+              {subjectData.object == "kanji" && (
+                <KanjiSubjDetails kanji={subjectData as Kanji} />
+              )}
+              {(subjectData.object == "vocabulary" ||
+                subjectData.object == "kana_vocabulary") && (
+                <VocabSubjDetails vocab={subjectData as GeneralVocabulary} />
+              )}
+            </FullWidthGrid>
+          </ContentWithTabBar>
         </>
       )}
     </>
