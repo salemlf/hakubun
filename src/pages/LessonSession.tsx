@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 // TODO: instead add a module declaration file for react-router-prompt
 // @ts-ignore: Could not find a declaration file for module
@@ -13,8 +11,9 @@ import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import LessonCards from "../components/LessonCards";
 import Button from "../components/Button";
 import AlertModal from "../components/AlertModal";
-import HomeIconColor from "../images/home-color.svg";
+import HomeIconColor from "../images/home-color.svg?react";
 import styled from "styled-components";
+import SvgIcon from "../components/SvgIcon";
 
 // TODO: extract into HomeButton component
 const HomeBtn = styled(Button)`
@@ -26,14 +25,8 @@ const HomeBtn = styled(Button)`
   z-index: 10;
 `;
 
-const HomeIconStyled = styled(IonIcon)`
-  width: 3em;
-  height: 3em;
-`;
-
 function LessonSession() {
   const navigate = useNavigate();
-  // const lessonQueue = useAssignmentQueueStore((state) => state.assignmentQueue);
   const [uniqueLessonQueue, setUniqueLessonQueue] = useState<
     AssignmentQueueItem[]
   >([]);
@@ -99,8 +92,11 @@ function LessonSession() {
               )
             }
           </ReactRouterPrompt>
-          <HomeBtn onPress={() => navigate("/", { replace: true })}>
-            <HomeIconStyled icon={HomeIconColor}></HomeIconStyled>
+          <HomeBtn
+            aria-label="Home page"
+            onPress={() => navigate("/", { replace: true })}
+          >
+            <SvgIcon icon={<HomeIconColor />} width="3em" height="3em" />
           </HomeBtn>
           <LessonCards
             lessons={uniqueLessonQueue}

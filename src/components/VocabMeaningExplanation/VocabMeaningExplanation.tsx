@@ -1,9 +1,9 @@
-import { IonIcon } from "@ionic/react";
 import { Vocabulary, Subject } from "../../types/Subject";
 import Hint from "../Hint";
 import TxtWithSubjTags from "../TxtWithSubjTags/TxtWithSubjTags";
 import UserNote from "../UserNote";
-import MeaningIcon from "../../images/meaning.svg";
+import SvgIcon from "../SvgIcon";
+import MeaningIcon from "../../images/meaning.svg?react";
 import { IconHeadingContainer } from "../../styles/BaseStyledComponents";
 import {
   SubjDetailSection,
@@ -18,7 +18,7 @@ function VocabMeaningExplanation({ vocab }: Props) {
   return (
     <SubjDetailSection>
       <IconHeadingContainer>
-        <IonIcon src={MeaningIcon} />
+        <SvgIcon icon={<MeaningIcon />} width="1.5em" height="1.5em" />
         <SubjDetailSubHeading>Meaning Explanation</SubjDetailSubHeading>
       </IconHeadingContainer>
       <TxtWithSubjTags textWithTags={vocab.meaning_mnemonic} />

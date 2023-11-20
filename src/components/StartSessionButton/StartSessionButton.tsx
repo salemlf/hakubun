@@ -1,18 +1,13 @@
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
-import ReviewsIcon from "../../images/reviews.svg";
-import LessonsIcon from "../../images/lessons.svg";
-import LessonQuizIcon from "../../images/quiz.svg";
+import { ReactElement } from "react";
+import SvgIcon from "../SvgIcon";
 import {
   FloatingButton,
   FloatingButtonContainer,
 } from "../../styles/BaseStyledComponents";
+import ReviewsIcon from "../../images/reviews.svg?react";
+import LessonsIcon from "../../images/lessons.svg?react";
+import LessonQuizIcon from "../../images/quiz.svg?react";
 import styled from "styled-components";
-
-const StartIcon = styled(IonIcon)`
-  width: 1.75em;
-  height: 1.75em;
-`;
 
 const StartTxt = styled.p`
   margin: 0;
@@ -22,6 +17,14 @@ const StartTxt = styled.p`
 type Props = {
   onStartBtnClick: () => void;
   buttonType: "lesson" | "review" | "quiz";
+};
+
+type SessionIcon = ReactElement;
+
+const sessionIcons: { [index: string]: SessionIcon } = {
+  lesson: <LessonsIcon />,
+  review: <ReviewsIcon />,
+  quiz: <LessonQuizIcon />,
 };
 
 // TODO: add aria label based on type of start button
@@ -44,9 +47,11 @@ function StartSessionButton({ onStartBtnClick, buttonType }: Props) {
         color="black"
         onPress={onStartBtnClick}
       >
-        {buttonType === "review" && <StartIcon src={ReviewsIcon} />}
-        {buttonType === "lesson" && <StartIcon src={LessonsIcon} />}
-        {buttonType === "quiz" && <StartIcon src={LessonQuizIcon} />}
+        <SvgIcon
+          icon={sessionIcons[buttonType]}
+          width="1.75em"
+          height="1.75em"
+        />
         <StartTxt>Start {displayTxt}</StartTxt>
       </FloatingButton>
     </FloatingButtonContainer>
