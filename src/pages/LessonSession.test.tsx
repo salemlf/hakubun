@@ -89,6 +89,40 @@ describe("End session dialog", () => {
       })
     ).toBeVisible();
   });
+
+  test("Stays in lesson session when cancel is clicked", async () => {
+    mockQueueStore();
+    mockAssignmentQueueStore();
+    mockPaginatorStore();
+
+    const { user } = renderComponent(true);
+
+    // check that we're in the lesson session
+    expect(
+      await screen.findByTestId("lesson-session-content")
+    ).toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole("button", {
+        name: /home page/i,
+      })
+    );
+
+    await screen.findByRole("alertdialog", {
+      name: /end lesson session\?/i,
+    });
+
+    await user.click(
+      screen.getByRole("button", {
+        name: /cancel/i,
+      })
+    );
+
+    // check that we're still in the lesson session
+    expect(
+      await screen.findByTestId("lesson-session-content")
+    ).toBeInTheDocument();
+  });
 });
 
 const renderComponent = (withHomeRoute: boolean) => {
