@@ -12,14 +12,16 @@ vi.mock("react-secure-storage", () => {
   };
 });
 
+// mocking window properties
+const scrollToMock = vi.fn();
+window.HTMLElement.prototype.scrollTo = scrollToMock;
+
 const mockIntersectionObserver = vi.fn();
 mockIntersectionObserver.mockReturnValue({
   observe: () => null,
   unobserve: () => null,
   disconnect: () => null,
 });
-
-// mocking window properties
 window.IntersectionObserver = mockIntersectionObserver;
 
 Object.defineProperty(window, "matchMedia", {
