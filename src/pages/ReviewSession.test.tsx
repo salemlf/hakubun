@@ -48,6 +48,36 @@ describe("End session dialog", () => {
       })
     ).toBeVisible();
   });
+
+  test("Stays in review session when cancel is clicked", async () => {
+    const { user } = renderComponent(true);
+
+    // check that we're in the review session
+    expect(
+      await screen.findByTestId("review-session-content")
+    ).toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole("button", {
+        name: /home page/i,
+      })
+    );
+
+    await screen.findByRole("alertdialog", {
+      name: /end review session\?/i,
+    });
+
+    await user.click(
+      screen.getByRole("button", {
+        name: /cancel/i,
+      })
+    );
+
+    // check that we're still in the review session
+    expect(
+      await screen.findByTestId("review-session-content")
+    ).toBeInTheDocument();
+  });
 });
 
 const renderComponent = (withHomeRoute: boolean) => {
