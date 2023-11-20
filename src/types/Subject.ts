@@ -57,6 +57,9 @@ export interface SubjectCharacterImage {
 
 export interface SubjectMetadata {
   inline_styles?: boolean;
+  color?: string;
+  dimensions?: string;
+  style_name?: string;
 }
 
 export interface SubjectMeaning {
