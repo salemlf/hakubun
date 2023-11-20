@@ -11,7 +11,7 @@ describe("End session dialog", () => {
   test("Displays dialog on home button click", async () => {
     const { user } = renderComponent(true);
 
-    user.click(
+    await user.click(
       screen.getByRole("button", {
         name: /home page/i,
       })
