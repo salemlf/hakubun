@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ReactRouterPrompt from "react-router-prompt";
 import { motion, useAnimation } from "framer-motion";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import {
   blockUserLeavingPage,
   createReviewPostData,
@@ -135,18 +135,13 @@ const Description = () => {
 function ReviewSession() {
   const navigate = useNavigate();
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
-  const resetAssignmentQueue = useAssignmentQueueStore(
-    (state) => state.resetAll
-  );
-  const assignmentQueue = useAssignmentQueueStore(
-    (state) => state.assignmentQueue
-  );
-  const currQueueIndex = useAssignmentQueueStore(
-    (state) => state.currQueueIndex
-  );
-  const updateAssignmentQueueData = useAssignmentQueueStore(
-    (state) => state.updateAssignmentQueueData
-  );
+  const {
+    resetAll: resetAssignmentQueue,
+    assignmentQueue,
+    currQueueIndex,
+    updateAssignmentQueueData,
+  } = useAssignmentQueueStoreFacade();
+
   const updateSubmitted = useSubmittedQueueUpdate();
 
   const { mutateAsync: createReviewsAsync } = useCreateReview();

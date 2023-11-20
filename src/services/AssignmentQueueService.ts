@@ -518,6 +518,7 @@ export const blockUserLeavingPage = ({
   if (
     subjDetailsRegex.test(nextLocation.pathname) ||
     nextLocation.pathname === "/reviews/summary" ||
+    nextLocation.pathname === "/lessons/quiz" ||
     nextLocation.pathname === "/lessons/summary"
   ) {
     return false;

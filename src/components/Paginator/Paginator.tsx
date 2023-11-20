@@ -1,12 +1,12 @@
 import { useRef } from "react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
 // TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
 import { getPageIndex } from "../../services/MiscService";
 import Button from "../Button";
 import Counter from "../Counter";
-import NextArrowIcon from "../../images/next-arrow-color.svg";
-import PrevArrowIcon from "../../images/back-arrow-color.svg";
+import SvgIcon from "../SvgIcon";
+import NextArrowIcon from "../../images/next-arrow-color.svg?react";
+import PrevArrowIcon from "../../images/back-arrow-color.svg?react";
 import styled from "styled-components";
 
 type CurrPageUpdateProps = [page: number, direction: number];
@@ -77,7 +77,7 @@ const variants = {
 };
 
 type WrapperProps = {
-  hasbottompadding: boolean;
+  $hasbottompadding: boolean;
 };
 
 const PagesWrapper = styled.div`
@@ -95,7 +95,8 @@ const PageContainer = styled(motion.div)<WrapperProps>`
   bottom: 0;
   right: 0;
   overflow-y: auto;
-  padding-bottom: ${({ hasbottompadding }) => (hasbottompadding ? "60px" : 0)};
+  padding-bottom: ${({ $hasbottompadding }) =>
+    $hasbottompadding ? "60px" : 0};
 `;
 
 type PagesProps = {
@@ -143,7 +144,7 @@ function Pages({
     <PagesWrapper>
       <AnimatePresence initial={false} custom={direction}>
         <PageContainer
-          hasbottompadding={hasTabBar}
+          $hasbottompadding={hasTabBar}
           key={currentPage}
           data-page={currentPage}
           variants={variants}
@@ -188,11 +189,6 @@ const NextPageButton = styled(Button)`
   z-index: 12;
 `;
 
-const Arrow = styled(IonIcon)`
-  width: 3.5em;
-  height: 3.5em;
-`;
-
 type PageIndicatorProps = {
   pageIndices: number[];
   currentPage: number;
@@ -223,7 +219,7 @@ function PageIndicator({
             )
           }
         >
-          <Arrow src={PrevArrowIcon} />
+          <SvgIcon icon={<PrevArrowIcon />} width="3.5em" height="3.5em" />
         </PrevPageButton>
       )}
       {hasNext && (
@@ -236,7 +232,7 @@ function PageIndicator({
             )
           }
         >
-          <Arrow src={NextArrowIcon} />
+          <SvgIcon icon={<NextArrowIcon />} width="3.5em" height="3.5em" />
         </NextPageButton>
       )}
     </>

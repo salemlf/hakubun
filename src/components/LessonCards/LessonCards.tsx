@@ -46,7 +46,7 @@ function LessonCard({ lesson }: CardProps) {
           alignText="center"
         />
       </LessonSessionHeader>
-      <LessonContent>
+      <LessonContent data-testid="lesson-session-content">
         {lesson.object == "radical" && (
           <RadicalDetailTabs radical={itemAsSubj} scrollToDefault={false} />
         )}

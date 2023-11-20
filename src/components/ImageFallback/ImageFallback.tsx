@@ -12,7 +12,7 @@ const ImgWithAltText = styled.img`
   white-space: nowrap;
 `;
 
-function ImageFallback({ images, altText }: Props) {
+function ImageFallback({ images, altText, ...props }: Props) {
   const [currImg, setCurrImg] = useState<string>();
   let defaultImagesAvail = images ? images : [];
   const [imagesAvail, setImagesAvail] = useState<string[]>(defaultImagesAvail);
@@ -42,6 +42,7 @@ function ImageFallback({ images, altText }: Props) {
           src={`${currImg}`}
           onError={useImageFallback}
           alt={altText}
+          {...props}
         />
       )}
     </>

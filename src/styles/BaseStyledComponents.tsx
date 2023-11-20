@@ -79,6 +79,10 @@ export const IconHeadingContainer = styled.div`
     height: 1.5em;
     margin-right: 5px;
   }
+
+  i {
+    margin-right: 5px;
+  }
 `;
 
 // TODO: replace IconHeadingContainer with this

@@ -94,6 +94,7 @@ function SubjectChars({
           fontSize={fontSize}
         >
           <ImageFallback
+            data-testid="subj-char"
             images={subject.availableImages}
             altText={subject.meaning_mnemonic}
           ></ImageFallback>
@@ -106,7 +107,7 @@ function SubjectChars({
           subjType={subjType}
           fontSize={fontSize}
         >
-          <p>{subject.characters}</p>
+          <p data-testid="subj-char">{subject.characters}</p>
         </DivWithTxt>
       )}
     </>

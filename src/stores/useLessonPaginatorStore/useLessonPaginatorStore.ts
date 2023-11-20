@@ -6,7 +6,7 @@ export interface LessonPaginatorState {
   currentLessonDir: number;
 }
 
-type LessonPageAndDir = [currentPage: number, direction: number];
+type LessonPageAndDir = [currentLessonPage: number, currentLessonDir: number];
 
 export interface LessonPaginatorActions {
   setCurrentLessonPageAndDir: (lessonPageAndDir: LessonPageAndDir) => void;
