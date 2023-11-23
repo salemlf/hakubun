@@ -1,5 +1,7 @@
 import { IonGrid, IonRow } from "@ionic/react";
 import { motion } from "framer-motion";
+import { getSubjectColor } from "../services/SubjectAndAssignmentService";
+import { SubjectType } from "../types/Subject";
 import Button from "../components/Button/Button";
 import styled from "styled-components";
 
@@ -295,4 +297,26 @@ export const LoadingButtonRow = styled.div`
   margin-bottom: 10px;
   display: flex;
   width: 100%;
+`;
+
+type ItemContainerProps = {
+  subjtype: SubjectType;
+};
+
+export const SubjectItemContainer = styled.button<ItemContainerProps>`
+  background-color: ${({ subjtype }) => getSubjectColor(subjtype)};
+  width: 100%;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 8px;
+  margin-bottom: 2px;
+  border-radius: 10px;
+  border: 2px solid black;
+
+  &:focus-visible {
+    outline: 2px solid white;
+    --outline: 2px solid white;
+  }
 `;

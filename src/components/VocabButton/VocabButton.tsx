@@ -1,37 +1,9 @@
 import { useNavigate } from "react-router";
-import {
-  KanaVocabulary,
-  Subject,
-  SubjectType,
-  Vocabulary,
-} from "../../types/Subject";
-import styled from "styled-components";
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
-import { Characters, ReadingAndMeaning } from "../SubjectWideBtnList";
 import { getSubjectBtnSize } from "../../services/MiscService";
+import { KanaVocabulary, Subject, Vocabulary } from "../../types/Subject";
 import { ButtonSize } from "../../types/MiscTypes";
-
-type ItemContainerProps = {
-  subjtype: SubjectType;
-};
-
-const SubjectItemContainer = styled.button<ItemContainerProps>`
-  background-color: ${({ subjtype }) => getSubjectColor(subjtype)};
-  width: 100%;
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  padding: 8px 8px;
-  margin-bottom: 2px;
-  border-radius: 10px;
-
-  &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
-  }
-`;
+import { Characters, ReadingAndMeaning } from "../SubjectWideBtnList";
+import { SubjectItemContainer } from "../../styles/BaseStyledComponents";
 
 type Props = {
   subject: Subject;
