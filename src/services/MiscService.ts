@@ -76,7 +76,7 @@ function ensure<T>(
 }
 
 export const getSrsLvlBySrsName = (key: SrsLevelName) => {
-  return srsLevels[key as keyof {}];
+  return srsLevels[key as keyof object];
 };
 
 export const getSrsNameBySrsLvl = (srsNum: number) => {
@@ -168,7 +168,7 @@ const popoverStyles: { [index: string]: PopoverStyles } = {
 };
 
 export const getPopoverStyles = (messageType: PopoverMessageType) => {
-  return popoverStyles[messageType as keyof {}];
+  return popoverStyles[messageType as keyof object];
 };
 
 export const getAudioUrlByGender = (
@@ -367,7 +367,7 @@ const btnSizeInfo: { [index: string]: BtnSizeStyles } = {
 };
 
 export const getSubjectBtnSize = (size: ButtonSize) => {
-  return btnSizeInfo[size as keyof {}];
+  return btnSizeInfo[size as keyof object];
 };
 
 export const getPageIndex = (

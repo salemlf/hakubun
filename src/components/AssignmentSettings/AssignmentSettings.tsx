@@ -16,7 +16,7 @@ import { displayToast } from "../Toast/Toast.service";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import {
-  ALL_ASSIGNMENT_TYPES,
+  ALL_SUBJECT_TYPES,
   MAX_ASSIGNMENTS_BEFORE_SUBMIT,
 } from "../../constants";
 import { Assignment } from "../../types/Assignment";
@@ -94,7 +94,7 @@ function AssignmentSettings({
     string[]
   >([]);
 
-  const availableAssignmentTypes = ALL_ASSIGNMENT_TYPES.filter(
+  const availableAssignmentTypes = ALL_SUBJECT_TYPES.filter(
     (assignmentType) => {
       return checkIfAssignmentTypeInQueue(assignmentData, assignmentType);
     }

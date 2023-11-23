@@ -6,7 +6,7 @@ export type SubjectType =
   | "vocabulary"
   | "kana_vocabulary";
 
-interface SubjectAttrs {
+export interface SubjectAttrs {
   object: SubjectType;
   amalgamation_subject_ids?: number[];
   auxiliary_meanings: SubjectAuxiliaryMeaning[];
@@ -48,7 +48,6 @@ export interface SubjectAuxiliaryMeaning {
   type: string;
 }
 
-// TODO: add content_type to SubjectCharacterImage
 export interface SubjectCharacterImage {
   url: string;
   metadata: SubjectMetadata;

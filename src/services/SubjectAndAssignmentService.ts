@@ -119,7 +119,7 @@ export const checkIfAssignmentTypeInQueue = (
   );
 };
 
-const assignmentTypeText: { [index: string]: {} } = {
+const assignmentTypeText: { [index: string]: object } = {
   radical: { singular: "Radical", plural: "Radicals" },
   kanji: { singular: "Kanji", plural: "Kanji" },
   vocabulary: { singular: "Vocabulary", plural: "Vocabulary" },
@@ -130,10 +130,10 @@ export const getSubjectTypeDisplayText = (
   assignmentType: SubjectType,
   plural: boolean
 ) => {
-  let assignmentTypeObj = assignmentTypeText[assignmentType as keyof {}];
+  let assignmentTypeObj = assignmentTypeText[assignmentType as keyof object];
   let displayText = plural
-    ? assignmentTypeObj["plural" as keyof {}]
-    : assignmentTypeObj["singular" as keyof {}];
+    ? assignmentTypeObj["plural" as keyof object]
+    : assignmentTypeObj["singular" as keyof object];
   return displayText;
 };
 
@@ -152,11 +152,11 @@ const tagColors: { [index: string]: string } = {
 const subjAndTagColors = { ...subjColors, ...tagColors };
 
 export const getSubjectColor = (subjType: SubjectType) => {
-  return subjColors[subjType as keyof {}];
+  return subjColors[subjType as keyof object];
 };
 
 export const getTagColor = (tagType: TagType) => {
-  return subjAndTagColors[tagType as keyof {}];
+  return subjAndTagColors[tagType as keyof object];
 };
 
 const srsLevelColors: { [index: string]: string } = {
@@ -170,7 +170,7 @@ const srsLevelColors: { [index: string]: string } = {
 };
 
 export const getSrsLevelColor = (srsLevel: SrsLevelName) => {
-  return srsLevelColors[srsLevel as keyof {}];
+  return srsLevelColors[srsLevel as keyof object];
 };
 
 export const getSubjIDsFromAssignments = (assignments: Assignment[]) => {

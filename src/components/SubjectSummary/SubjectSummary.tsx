@@ -162,6 +162,12 @@ function SubjectSummary({ subject }: Props) {
     data: assignment,
     error: assignmentErr,
   } = useAssignmentBySubjID([subject.id]);
+  // *testing
+  console.log(
+    "🚀 ~ file: SubjectSummary.tsx:165 ~ SubjectSummary ~ assignment:",
+    assignment
+  );
+  // *testing
 
   if (assignmentLoading || assignmentErr) {
     return (
