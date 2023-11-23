@@ -11,6 +11,16 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["react-refresh", "testing-library"],
   rules: {
+    "@typescript-eslint/no-explicit-any": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "prefer-const": [
+      "warn",
+      {
+        destructuring: "any",
+        ignoreReadBeforeAssign: true,
+      },
+    ],
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

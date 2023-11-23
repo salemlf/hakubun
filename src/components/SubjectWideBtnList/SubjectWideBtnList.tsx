@@ -3,17 +3,16 @@ import { setSubjectAvailImgs } from "../../services/ImageSrcService";
 import {
   getSubjectDisplayName,
   getPrimaryReading,
-  getSubjectColor,
 } from "../../services/SubjectAndAssignmentService";
 import {
   Radical,
   Kanji,
   Vocabulary,
-  SubjectType,
   Subject,
   KanaVocabulary,
 } from "../../types/Subject";
 import SubjectChars from "../SubjectChars";
+import { SubjectItemContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 export const Characters = styled(SubjectChars)`
@@ -75,7 +74,7 @@ export const ReadingAndMeaning = ({
   subject,
   align = "right",
 }: ReadingMeaningProps) => {
-  let hasReadings = subject.readings && subject.readings.length !== 0;
+  const hasReadings = subject.readings && subject.readings.length !== 0;
   return (
     <ReadingAndMeaningContainer align={align}>
       {hasReadings && (
@@ -88,28 +87,6 @@ export const ReadingAndMeaning = ({
   );
 };
 
-type ItemContainerProps = {
-  subjtype: SubjectType;
-};
-
-const SubjectItemContainer = styled.button<ItemContainerProps>`
-  background-color: ${({ subjtype }) => getSubjectColor(subjtype)};
-  width: 100%;
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 8px;
-  margin-bottom: 2px;
-  border-radius: 10px;
-  border: 2px solid black;
-
-  &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
-  }
-`;
-
 type Props = {
   subject: Subject;
   findImages?: boolean;
@@ -118,7 +95,7 @@ type Props = {
 export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
   const navigate = useNavigate();
   if (subject.object === "radical" && findImages) {
-    let updatedSubj = setSubjectAvailImgs(subject);
+    const updatedSubj = setSubjectAvailImgs(subject);
     subject = updatedSubj;
   }
 

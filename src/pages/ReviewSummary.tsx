@@ -39,8 +39,8 @@ function ReviewSummary() {
   }, []);
 
   // combine queue items so reading and meaning aren't separate anymore
-  let completedReviews = getCompletedAssignmentQueueData(allSubmitted);
-  let groupedReviewItems = getReviewsGroupedByResult(completedReviews);
+  const completedReviews = getCompletedAssignmentQueueData(allSubmitted);
+  const groupedReviewItems = getReviewsGroupedByResult(completedReviews);
 
   return (
     <>
