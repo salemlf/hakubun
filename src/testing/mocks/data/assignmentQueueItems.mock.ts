@@ -3231,3 +3231,133 @@ export const mockAssignmentQueueLessons: AssignmentQueueItem[] = [
     isSubmitted: false,
   },
 ];
+
+// export const mockCompletedKanaVocabQueueItem_9178_: AssignmentQueueItem = {
+//   id: 9178,
+//   object: "kana_vocabulary",
+//   url: "https://api.wanikani.com/v2/subjects/9178",
+//   data_updated_at: new Date("2023-09-18T23:39:19.819315Z"),
+//   created_at: new Date("2023-03-14T14:26:53.746650Z"),
+//   level: 2,
+//   slug: "ホテル",
+//   hidden_at: null,
+//   document_url:
+//     "https://www.wanikani.com/vocabulary/%E3%83%9B%E3%83%86%E3%83%AB",
+//   characters: "ホテル",
+//   meanings: [
+//     {
+//       meaning: "Hotel",
+//       primary: true,
+//       accepted_answer: true,
+//     },
+//   ],
+//   auxiliary_meanings: [
+//     {
+//       type: "whitelist",
+//       meaning: "Hotels",
+//     },
+//   ],
+//   parts_of_speech: ["noun"],
+//   meaning_mnemonic:
+//     '<ja>ホテル</ja> comes from the English word <vocabulary>hotel</vocabulary> and the meaning is exactly the same!\r\n\r\nThe only thing to watch out for is that the "l" on the end becomes <ja>ル</ja>, because that\'s the closest sound in Japanese.',
+//   context_sentences: [
+//     {
+//       en: "Did you book a hotel already?",
+//       ja: "ホテル、もうとった？",
+//     },
+//     {
+//       en: "I'm just about to check out of the hotel.",
+//       ja: "今、ホテルをチェックアウトするところ。",
+//     },
+//     {
+//       en: "Which hotel will you stay at?",
+//       ja: "どこのホテルにステイするの？",
+//     },
+//   ],
+//   pronunciation_audios: [
+//     {
+//       url: "https://files.wanikani.com/j8ku18qty0resah7m89xthbarsa2",
+//       metadata: {
+//         gender: "male",
+//         source_id: 44812,
+//         pronunciation: "ホテル",
+//         voice_actor_id: 2,
+//         voice_actor_name: "Kenichi",
+//         voice_description: "Tokyo accent",
+//       },
+//       content_type: "audio/webm",
+//     },
+//     {
+//       url: "https://files.wanikani.com/d7pkum2c5xqo7gd9hk0mm8s4y722",
+//       metadata: {
+//         gender: "male",
+//         source_id: 44812,
+//         pronunciation: "ホテル",
+//         voice_actor_id: 2,
+//         voice_actor_name: "Kenichi",
+//         voice_description: "Tokyo accent",
+//       },
+//       content_type: "audio/mpeg",
+//     },
+//     {
+//       url: "https://files.wanikani.com/wn46pyfzifgub5qev49nbbh4o9vh",
+//       metadata: {
+//         gender: "male",
+//         source_id: 44812,
+//         pronunciation: "ホテル",
+//         voice_actor_id: 2,
+//         voice_actor_name: "Kenichi",
+//         voice_description: "Tokyo accent",
+//       },
+//       content_type: "audio/ogg",
+//     },
+//     {
+//       url: "https://files.wanikani.com/dmeu8t4o0k3ygp6kevbmwkk94eba",
+//       metadata: {
+//         gender: "female",
+//         source_id: 44744,
+//         pronunciation: "ホテル",
+//         voice_actor_id: 1,
+//         voice_actor_name: "Kyoko",
+//         voice_description: "Tokyo accent",
+//       },
+//       content_type: "audio/webm",
+//     },
+//     {
+//       url: "https://files.wanikani.com/wurgakr5r5cy5z3jxbc0oupbaq64",
+//       metadata: {
+//         gender: "female",
+//         source_id: 44744,
+//         pronunciation: "ホテル",
+//         voice_actor_id: 1,
+//         voice_actor_name: "Kyoko",
+//         voice_description: "Tokyo accent",
+//       },
+//       content_type: "audio/ogg",
+//     },
+//     {
+//       url: "https://files.wanikani.com/1t8uzf655athl6qfaba3lhvrjc1w",
+//       metadata: {
+//         gender: "female",
+//         source_id: 44744,
+//         pronunciation: "ホテル",
+//         voice_actor_id: 1,
+//         voice_actor_name: "Kyoko",
+//         voice_description: "Tokyo accent",
+//       },
+//       content_type: "audio/mpeg",
+//     },
+//   ],
+//   lesson_position: 78,
+//   spaced_repetition_system_id: 2,
+//   useImage: false,
+//   itemID: "meaning4",
+//     meaning_synonyms: [],
+//     review_type: "meaning" as ReviewType,
+//     is_correct_answer: null,
+//     starting_srs_stage: 4,
+//     ending_srs_stage: null,
+//     incorrect_meaning_answers: 0,
+//     incorrect_reading_answers: 0,
+//     isSubmitted: false,
+// };

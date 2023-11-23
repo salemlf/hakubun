@@ -1117,3 +1117,21 @@ export const mockKanjiAssignmentLvl1_440: Assignment = {
   resurrected_at: null,
   hidden: false,
 };
+
+export const mockKanaVocabAssignment_9178: Assignment = {
+  id: 340171511,
+  object: "assignment",
+  url: "https://api.wanikani.com/v2/assignments/340171511",
+  data_updated_at: new Date("2023-09-26T00:01:30.533007Z"),
+  created_at: new Date("2023-05-24T15:09:55.761150Z"),
+  subject_id: 9178,
+  subject_type: "kana_vocabulary",
+  srs_stage: 8,
+  unlocked_at: new Date("2023-05-24T15:09:55.757898Z"),
+  started_at: new Date("2023-05-25T14:06:37.689379Z"),
+  passed_at: new Date("2023-07-03T20:06:18.753635Z"),
+  burned_at: null,
+  available_at: new Date("2024-01-23T23:00:00.000000Z"),
+  resurrected_at: null,
+  hidden: false,
+};
