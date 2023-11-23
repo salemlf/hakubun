@@ -112,6 +112,6 @@ export const setBtnBackground = ({ btnType, numItems }: ButtonImgProps) => {
     imageClassNum == Infinity
       ? `${btnType}BgImg${maxedOut}`
       : `${btnType}BgImg${imageClassNum}`;
-  let bgSrc = btnImgSrcs[btnType].bgImages[bgVarName as keyof {}];
+  let bgSrc = btnImgSrcs[btnType].bgImages[bgVarName as keyof object];
   return bgSrc;
 };

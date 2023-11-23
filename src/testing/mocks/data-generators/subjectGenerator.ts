@@ -22,22 +22,25 @@ import {
 // TODO: improve generation of meaning/reading mnemonics and hints so includes tags for subjects
 export const generateSubject = (
   subjType: SubjectType,
-  hasChars: boolean = true
+  imagesOnly: boolean = false
 ): Subject => {
+  if (imagesOnly && subjType !== "radical") {
+    throw new Error("Only radicals can have images exclusively");
+  }
+
   const hasAmalgamationSubjectIds =
     subjType === "radical" || subjType === "kanji";
   const hasReadings = subjType === "kanji" || subjType === "vocabulary";
-  const hasCharImages = subjType === "radical";
+  const hasCharImages = subjType === "radical" && imagesOnly;
   const hasComponents = subjType === "kanji" || subjType === "vocabulary";
   const hasVisuallySimilar = subjType === "kanji";
+  const isGeneralVocabType =
+    subjType === "vocabulary" || subjType === "kana_vocabulary";
 
   const charImages = hasCharImages ? generateSubjCharImages() : undefined;
 
   const jaChars = fakerJA.word.words({ count: { min: 1, max: 8 } });
   const subjReadings = hasReadings ? generateSubjReadings() : undefined;
-
-  const isGeneralVocabType =
-    subjType === "vocabulary" || subjType === "kana_vocabulary";
 
   const readingsForMockAudio = getReadingsForMockAudio(
     subjType,
@@ -53,7 +56,7 @@ export const generateSubject = (
       : undefined,
     auxiliary_meanings: generateAuxiliaryMeanings(),
     url: faker.internet.url(),
-    characters: hasChars ? jaChars : null,
+    characters: !imagesOnly ? jaChars : null,
     character_images: charImages,
     created_at: faker.date.past(),
     document_url: faker.internet.url(),
@@ -94,10 +97,9 @@ export const generateSubject = (
 };
 
 export const generatePreFlattenedSubject = (
-  subjType: SubjectType,
-  hasChars: boolean = true
+  subjType: SubjectType
 ): PreFlattenedSubject => {
-  const subject: Subject = generateSubject(subjType, hasChars);
+  const subject: Subject = generateSubject(subjType);
 
   const subjectAttrs: SubjectAttrs = subject as SubjectAttrs;
   delete subject.useImage;
@@ -113,6 +115,32 @@ export const generatePreFlattenedSubject = (
   };
 
   return mockPreFlattenedSubject;
+};
+
+export const generatePreFlattenedSubjArray = (
+  numSubjects: number,
+  subjType: SubjectType
+): PreFlattenedSubject[] => {
+  const mockPreFlattenedSubjs: PreFlattenedSubject[] = Array.from(
+    { length: numSubjects },
+    () => {
+      return generatePreFlattenedSubject(subjType);
+    }
+  );
+
+  return mockPreFlattenedSubjs;
+};
+
+export const generateSubjArray = (
+  numSubjects: number,
+  subjType: SubjectType,
+  imagesOnly: boolean = false
+): Subject[] => {
+  const mockSubjs: Subject[] = Array.from({ length: numSubjects }, () => {
+    return generateSubject(subjType, imagesOnly);
+  });
+
+  return mockSubjs;
 };
 
 const generateAuxiliaryMeanings = (): SubjectAuxiliaryMeaning[] => {
