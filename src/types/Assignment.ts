@@ -1,7 +1,7 @@
 import { ApiResponse } from "./MiscTypes";
 import { SubjectType } from "./Subject";
 
-interface AssignmentAttrs {
+export interface AssignmentAttrs {
   created_at: Date;
   unlocked_at: Date | null;
   started_at: Date | null;

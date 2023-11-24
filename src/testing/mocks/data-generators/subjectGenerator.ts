@@ -18,12 +18,19 @@ import {
   SubjectType,
 } from "../../../types/Subject";
 
+type GenerateSubjParams = {
+  subjType: SubjectType;
+  imagesOnly?: boolean;
+  level?: number;
+};
+
 // TODO: account for hidden subjects
 // TODO: improve generation of meaning/reading mnemonics and hints so includes tags for subjects
-export const generateSubject = (
-  subjType: SubjectType,
-  imagesOnly: boolean = false
-): Subject => {
+export const generateSubject = ({
+  subjType,
+  imagesOnly = false,
+  level,
+}: GenerateSubjParams): Subject => {
   if (imagesOnly && subjType !== "radical") {
     throw new Error("Only radicals can have images exclusively");
   }
@@ -62,7 +69,7 @@ export const generateSubject = (
     document_url: faker.internet.url(),
     hidden_at: null,
     lesson_position: faker.number.int(),
-    level: getRandomLevel(),
+    level: level ?? getRandomLevel(),
     meanings: generateSubjectMeanings(),
     readings: subjReadings,
     meaning_mnemonic: faker.lorem.paragraph({ min: 1, max: 3 }),
@@ -96,10 +103,17 @@ export const generateSubject = (
   return mockSubject;
 };
 
-export const generatePreFlattenedSubject = (
-  subjType: SubjectType
-): PreFlattenedSubject => {
-  const subject: Subject = generateSubject(subjType);
+type GeneratePreFlattenedSubjParams = {
+  subjType: SubjectType;
+  imagesOnly?: boolean;
+  level?: number;
+};
+
+export const generatePreFlattenedSubject = ({
+  subjType,
+  level,
+}: GeneratePreFlattenedSubjParams): PreFlattenedSubject => {
+  const subject: Subject = generateSubject({ subjType, level });
 
   const subjectAttrs: SubjectAttrs = subject as SubjectAttrs;
   delete subject.useImage;
@@ -119,12 +133,13 @@ export const generatePreFlattenedSubject = (
 
 export const generatePreFlattenedSubjArray = (
   numSubjects: number,
-  subjType: SubjectType
+  subjType: SubjectType,
+  level?: number
 ): PreFlattenedSubject[] => {
   const mockPreFlattenedSubjs: PreFlattenedSubject[] = Array.from(
     { length: numSubjects },
     () => {
-      return generatePreFlattenedSubject(subjType);
+      return generatePreFlattenedSubject({ subjType, level });
     }
   );
 
@@ -134,10 +149,11 @@ export const generatePreFlattenedSubjArray = (
 export const generateSubjArray = (
   numSubjects: number,
   subjType: SubjectType,
-  imagesOnly: boolean = false
+  imagesOnly: boolean = false,
+  level?: number
 ): Subject[] => {
   const mockSubjs: Subject[] = Array.from({ length: numSubjects }, () => {
-    return generateSubject(subjType, imagesOnly);
+    return generateSubject({ subjType, imagesOnly, level });
   });
 
   return mockSubjs;
