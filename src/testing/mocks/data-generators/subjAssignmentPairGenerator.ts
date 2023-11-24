@@ -1,18 +1,44 @@
-import { Assignment } from "../../../types/Assignment";
-import { Subject, SubjectType } from "../../../types/Subject";
-import { generateAssignment } from "./assignmentGenerator";
-import { generateSubjArray, generateSubject } from "./subjectGenerator";
+import { Assignment, PreFlattenedAssignment } from "../../../types/Assignment";
+import {
+  PreFlattenedSubject,
+  Subject,
+  SubjectType,
+} from "../../../types/Subject";
+import {
+  generateAssignment,
+  generatePreFlattenedAssignment,
+} from "./assignmentGenerator";
+import {
+  generatePreFlattenedSubject,
+  generatePreflattenedSubjArray,
+  generateSubjArray,
+  generateSubject,
+} from "./subjectGenerator";
 
 export type SubjAssignmentPair = {
   subject: Subject;
   assignment: Assignment;
 };
 
+export type PreflattenedSubjAssignmentPair = {
+  preflattenedSubject: PreFlattenedSubject;
+  preflattenedAssignment: PreFlattenedAssignment;
+};
+
+export type SubjAssignmentPairArr = {
+  subjects: Subject[];
+  assignments: Assignment[];
+};
+
+export type PreflattenedSubjAssignmentPairArr = {
+  preflattenedSubjects: PreFlattenedSubject[];
+  preflattenedAssignments: PreFlattenedAssignment[];
+};
+
 type SubjAssignmentPairGeneratorParams = {
   subjType: SubjectType;
   imagesOnly?: boolean;
   level?: number;
-  assignmentStarted?: boolean;
   assignmentBurned?: boolean;
   assignmentResurrected?: boolean;
 };
@@ -21,13 +47,11 @@ export const generateSubjAssignmentPair = ({
   subjType,
   imagesOnly = false,
   level,
-  assignmentStarted = true,
   assignmentBurned = false,
   assignmentResurrected = false,
 }: SubjAssignmentPairGeneratorParams): SubjAssignmentPair => {
   const subject: Subject = generateSubject({ subjType, imagesOnly, level });
   const assignment: Assignment = generateAssignment({
-    isStarted: assignmentStarted,
     isBurned: assignmentBurned,
     isResurrected: assignmentResurrected,
     correspondingSubject: { subjID: subject.id, subjType: subject.object },
@@ -35,9 +59,24 @@ export const generateSubjAssignmentPair = ({
   return { subject, assignment };
 };
 
-export type SubjAssignmentPairArr = {
-  subjects: Subject[];
-  assignments: Assignment[];
+export type PreflattenedSubjAssignmentPairGeneratorParams = Omit<
+  SubjAssignmentPairGeneratorParams,
+  "imagesOnly"
+>;
+
+export const generatePreflattenedSubjAssignmentPair = ({
+  subjType,
+  level,
+  assignmentBurned = false,
+  assignmentResurrected = false,
+}: PreflattenedSubjAssignmentPairGeneratorParams): PreflattenedSubjAssignmentPair => {
+  const preflattenedSubject = generatePreFlattenedSubject({ subjType, level });
+
+  const preflattenedAssignment = generatePreFlattenedAssignment({
+    isBurned: assignmentBurned,
+    isResurrected: assignmentResurrected,
+  });
+  return { preflattenedSubject, preflattenedAssignment };
 };
 
 type SubjAssignmentPairArrGeneratorParams = {
@@ -55,14 +94,17 @@ export const generateSubjAssignmentPairArray = ({
   numPairs,
   imagesOnly = false,
   level,
-  assignmentsStarted = true,
   assignmentsBurned = false,
   assignmentsResurrected = false,
 }: SubjAssignmentPairArrGeneratorParams): SubjAssignmentPairArr => {
-  const subjArr = generateSubjArray(numPairs, subjTypes, imagesOnly, level);
+  const subjArr = generateSubjArray({
+    numSubjects: numPairs,
+    subjTypes,
+    imagesOnly,
+    level,
+  });
   const assignArr = subjArr.map((subj) =>
     generateAssignment({
-      isStarted: assignmentsStarted,
       isBurned: assignmentsBurned,
       isResurrected: assignmentsResurrected,
       correspondingSubject: { subjID: subj.id, subjType: subj.object },
@@ -70,6 +112,38 @@ export const generateSubjAssignmentPairArray = ({
   );
 
   return { subjects: subjArr, assignments: assignArr };
+};
+
+export type PreflattenedSubjAssignmentPairArrGeneratorParams = Omit<
+  SubjAssignmentPairArrGeneratorParams,
+  "imagesOnly"
+>;
+
+export const generatePreflattenedSubjAssignmentPairArray = ({
+  subjTypes,
+  numPairs,
+  level,
+  assignmentsBurned = false,
+  assignmentsResurrected = false,
+}: PreflattenedSubjAssignmentPairArrGeneratorParams): PreflattenedSubjAssignmentPairArr => {
+  const preflattenedSubjects = generatePreflattenedSubjArray({
+    numSubjects: numPairs,
+    subjTypes,
+    level,
+  });
+
+  const preflattenedAssignments = preflattenedSubjects.map((subj) =>
+    generatePreFlattenedAssignment({
+      isBurned: assignmentsBurned,
+      isResurrected: assignmentsResurrected,
+      correspondingSubject: {
+        subjID: subj.id,
+        subjType: subj.object as SubjectType,
+      },
+    })
+  );
+
+  return { preflattenedSubjects, preflattenedAssignments };
 };
 
 type VarietySubjAssignmentPairArrGeneratorParams = {
@@ -87,18 +161,21 @@ export const generateVarietySubjAssignmentPairArray = ({
   numEachSubjType,
   imagesOnly = false,
   level,
-  assignmentsStarted = true,
   assignmentsBurned = false,
   assignmentsResurrected = false,
 }: VarietySubjAssignmentPairArrGeneratorParams): SubjAssignmentPairArr => {
   const subjArr = subjTypesToCreate
     .map((subjType) =>
-      generateSubjArray(numEachSubjType, subjType, imagesOnly, level)
+      generateSubjArray({
+        numSubjects: numEachSubjType,
+        subjTypes: subjType,
+        imagesOnly,
+        level,
+      })
     )
     .flat();
   const assignArr = subjArr.map((subj) =>
     generateAssignment({
-      isStarted: assignmentsStarted,
       isBurned: assignmentsBurned,
       isResurrected: assignmentsResurrected,
       correspondingSubject: { subjID: subj.id, subjType: subj.object },

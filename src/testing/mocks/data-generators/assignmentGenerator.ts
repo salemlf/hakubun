@@ -13,17 +13,16 @@ type CorrespondingSubject = {
 };
 
 type AssignmentGeneratorParams = {
-  isStarted?: boolean;
   isBurned?: boolean;
   isResurrected?: boolean;
+  isLesson?: boolean;
   correspondingSubject?: CorrespondingSubject;
 };
 
-// TODO: use isStarted and change date attributes based on that
 export const generateAssignment = ({
-  isStarted = true,
   isBurned = false,
   isResurrected = false,
+  isLesson = false,
   correspondingSubject,
 }: AssignmentGeneratorParams): Assignment => {
   // TODO: change so dates are all possible, rn could have nonsensenical combos
@@ -32,12 +31,12 @@ export const generateAssignment = ({
     object: "assignment",
     created_at: faker.date.past(),
     unlocked_at: faker.date.past(),
-    started_at: isStarted ? faker.date.past() : null,
-    passed_at: isStarted ? faker.date.past() : null,
+    started_at: !isLesson ? faker.date.past() : null,
+    passed_at: !isLesson ? faker.date.past() : null,
     burned_at: isBurned ? faker.date.past() : null,
     resurrected_at: isResurrected ? faker.date.past() : null,
-    available_at: faker.date.recent(),
-    hidden: faker.datatype.boolean(),
+    available_at: !isLesson ? faker.date.recent() : null,
+    hidden: faker.datatype.boolean({ probability: 0.9 }),
     srs_stage: faker.helpers.rangeToNumber({
       min: VALID_SRS_STAGES[0],
       max: VALID_SRS_STAGES[VALID_SRS_STAGES.length - 1],
@@ -54,22 +53,22 @@ export const generateAssignment = ({
 };
 
 type PreFlattenedAssignmentGeneratorParams = {
-  isStarted?: boolean;
   isBurned?: boolean;
   isResurrected?: boolean;
+  isLesson?: boolean;
   correspondingSubject?: CorrespondingSubject;
 };
 
 export const generatePreFlattenedAssignment = ({
-  isStarted = true,
   isBurned = false,
   isResurrected = false,
+  isLesson = false,
   correspondingSubject,
 }: PreFlattenedAssignmentGeneratorParams): PreFlattenedAssignment => {
   const assignment: Assignment = generateAssignment({
-    isStarted,
     isBurned,
     isResurrected,
+    isLesson,
     correspondingSubject,
   });
   const assignmentAttrs: AssignmentAttrs = assignment as AssignmentAttrs;
@@ -85,19 +84,27 @@ export const generatePreFlattenedAssignment = ({
   return mockPreFlattenedAssignment;
 };
 
-export const generateAssignmentArray = (
-  numAssignments: number,
-  haveBeenStarted: boolean = true,
-  haveBeenBurned: boolean = false,
-  haveBeenResurrected: boolean = false
-): Assignment[] => {
+type AssignmentArrayGeneratorParams = {
+  numAssignments: number;
+  haveBeenStarted?: boolean;
+  haveBeenBurned?: boolean;
+  haveBeenResurrected?: boolean;
+  areLessons?: boolean;
+};
+
+export const generateAssignmentArray = ({
+  numAssignments,
+  haveBeenBurned = false,
+  haveBeenResurrected = false,
+  areLessons = false,
+}: AssignmentArrayGeneratorParams): Assignment[] => {
   const mockAssignments: Assignment[] = Array.from(
     { length: numAssignments },
     () => {
       return generateAssignment({
-        isStarted: haveBeenStarted,
         isBurned: haveBeenBurned,
         isResurrected: haveBeenResurrected,
+        isLesson: areLessons,
       });
     }
   );
@@ -105,19 +112,27 @@ export const generateAssignmentArray = (
   return mockAssignments;
 };
 
-export const generatePreflattenedAssignmentArray = (
-  numAssignments: number,
-  haveBeenStarted: boolean = true,
-  haveBeenBurned: boolean = false,
-  haveBeenResurrected: boolean = false
-): PreFlattenedAssignment[] => {
+type PreFlattenedAssignmentArrayGeneratorParams = {
+  numAssignments: number;
+  haveBeenStarted?: boolean;
+  haveBeenBurned?: boolean;
+  haveBeenResurrected?: boolean;
+  areLessons?: boolean;
+};
+
+export const generatePreflattenedAssignmentArray = ({
+  numAssignments,
+  haveBeenBurned = false,
+  haveBeenResurrected = false,
+  areLessons = false,
+}: PreFlattenedAssignmentArrayGeneratorParams): PreFlattenedAssignment[] => {
   const mockPreFlattenedAssignments: PreFlattenedAssignment[] = Array.from(
     { length: numAssignments },
     () => {
       return generatePreFlattenedAssignment({
-        isStarted: haveBeenStarted,
         isBurned: haveBeenBurned,
         isResurrected: haveBeenResurrected,
+        isLesson: areLessons,
       });
     }
   );

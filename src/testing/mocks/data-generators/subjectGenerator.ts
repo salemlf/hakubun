@@ -131,29 +131,42 @@ export const generatePreFlattenedSubject = ({
   return mockPreFlattenedSubject;
 };
 
-export const generatePreFlattenedSubjArray = (
-  numSubjects: number,
-  subjType: SubjectType,
-  level?: number
-): PreFlattenedSubject[] => {
+type PreFlattenedSubjArrGeneratorParams = {
+  numSubjects: number;
+  subjTypes: SubjectType;
+  level?: number;
+};
+
+export const generatePreflattenedSubjArray = ({
+  numSubjects,
+  subjTypes,
+  level,
+}: PreFlattenedSubjArrGeneratorParams): PreFlattenedSubject[] => {
   const mockPreFlattenedSubjs: PreFlattenedSubject[] = Array.from(
     { length: numSubjects },
     () => {
-      return generatePreFlattenedSubject({ subjType, level });
+      return generatePreFlattenedSubject({ subjType: subjTypes, level });
     }
   );
 
   return mockPreFlattenedSubjs;
 };
 
-export const generateSubjArray = (
-  numSubjects: number,
-  subjType: SubjectType,
-  imagesOnly: boolean = false,
-  level?: number
-): Subject[] => {
+type SubjArrGeneratorParams = {
+  numSubjects: number;
+  subjTypes: SubjectType;
+  imagesOnly?: boolean;
+  level?: number;
+};
+
+export const generateSubjArray = ({
+  numSubjects,
+  subjTypes,
+  imagesOnly = false,
+  level,
+}: SubjArrGeneratorParams): Subject[] => {
   const mockSubjs: Subject[] = Array.from({ length: numSubjects }, () => {
-    return generateSubject({ subjType, imagesOnly, level });
+    return generateSubject({ subjType: subjTypes, imagesOnly, level });
   });
 
   return mockSubjs;

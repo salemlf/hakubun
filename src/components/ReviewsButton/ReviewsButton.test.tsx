@@ -1,17 +1,30 @@
 import { renderHook, screen, waitFor } from "@testing-library/react";
 import { HttpResponse, http, passthrough } from "msw";
 import { createWrapper, renderWithRouter } from "../../testing/test-utils";
-import {
-  mockAssignmentsAvailReviewsResponse,
-  mockAssignmentsNoAvailReviewsResponse,
-} from "../../testing/mocks/data/assignments.mock";
 import { server } from "../../testing/mocks/server";
-import { assignmentsEndpoint } from "../../testing/endpoints";
+import { AVAIL_REVIEWS, assignmentsEndpoint } from "../../testing/endpoints";
+import { generateAssignmentCollection } from "../../testing/mocks/data-generators/collectionGenerator";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
+import { AssignmentCollection } from "../../types/Collection";
 import { ReviewSettings } from "../../pages/ReviewSettings";
 import ReviewsButton from ".";
 
 const mockLevel = 1;
+const mockAssignmentCollection = generateAssignmentCollection(10);
+const mockEmptyAssignmentCollection = generateAssignmentCollection(0);
+
+const mockAvailReviewsResponse = (mockCollection: AssignmentCollection) => {
+  server.use(
+    http.get(assignmentsEndpoint, ({ request }) => {
+      const url = new URL(request.url);
+      const availForReview = url.searchParams.get(AVAIL_REVIEWS);
+      if (availForReview == "true") {
+        return HttpResponse.json(mockCollection);
+      }
+      return passthrough();
+    })
+  );
+};
 
 test("ReviewsButton renders", () => {
   const { baseElement } = renderComponent(mockLevel);
@@ -19,18 +32,7 @@ test("ReviewsButton renders", () => {
 });
 
 test("Redirects to review settings on click", async () => {
-  server.use(
-    http.get(assignmentsEndpoint, ({ request }) => {
-      const url = new URL(request.url);
-      let availForReview = url.searchParams.get(
-        "immediately_available_for_review"
-      );
-      if (availForReview == "true") {
-        return HttpResponse.json(mockAssignmentsAvailReviewsResponse);
-      }
-      return passthrough();
-    })
-  );
+  mockAvailReviewsResponse(mockAssignmentCollection);
 
   const { user } = renderComponent(mockLevel, true);
 
@@ -57,9 +59,7 @@ test("Shows error text on API error and no cached data", async () => {
   server.use(
     http.get(assignmentsEndpoint, ({ request }) => {
       const url = new URL(request.url);
-      let availForReviews = url.searchParams.get(
-        "immediately_available_for_review"
-      );
+      const availForReviews = url.searchParams.get(AVAIL_REVIEWS);
       if (availForReviews == "true") {
         return HttpResponse.error();
       }
@@ -73,26 +73,18 @@ test("Shows error text on API error and no cached data", async () => {
   });
   await waitFor(() => {
     expect(result.current.isError).toBe(true);
+  });
+
+  await waitFor(() => {
     expect(result.current.data).toBe(undefined);
   });
 
-  let errButton = await screen.findByTestId("review-btn-err");
+  const errButton = await screen.findByTestId("review-btn-err");
   expect(errButton).toHaveTextContent("Error loading data");
 });
 
 test("Displays toast on click if no reviews available", async () => {
-  server.use(
-    http.get(assignmentsEndpoint, ({ request }) => {
-      const url = new URL(request.url);
-      let availReviews = url.searchParams.get(
-        "immediately_available_for_review"
-      );
-      if (availReviews == "true") {
-        return HttpResponse.json(mockAssignmentsNoAvailReviewsResponse);
-      }
-      return passthrough();
-    })
-  );
+  mockAvailReviewsResponse(mockEmptyAssignmentCollection);
 
   const { user } = renderComponent(mockLevel);
   const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
@@ -107,7 +99,7 @@ test("Displays toast on click if no reviews available", async () => {
     })
   );
 
-  let errToast = await screen.findByTestId("error-toast");
+  const errToast = await screen.findByTestId("error-toast");
   expect(errToast).toBeInTheDocument();
 });
 
@@ -121,7 +113,7 @@ const renderComponent = (
   level: number,
   withReviewSettings: boolean = false
 ) => {
-  let routes = withReviewSettings
+  const routes = withReviewSettings
     ? [{ element: <ReviewSettings />, path: "/reviews/settings" }]
     : [];
   return renderWithRouter({

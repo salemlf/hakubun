@@ -1,10 +1,12 @@
 import { renderWithClient } from "../../testing/test-utils";
-import { mockKanjiSubjLvl1__440 } from "../../testing/mocks/data/subjects.mock";
+import { generateSubject } from "../../testing/mocks/data-generators/subjectGenerator";
 import { Subject } from "../../types/Subject";
 import SubjectMeanings from "./SubjectMeanings";
 
+const mockKanjiLvl1Subj = generateSubject({ subjType: "kanji", level: 1 });
+
 test("SubjectMeanings renders", () => {
-  const { baseElement } = renderComponent(mockKanjiSubjLvl1__440, true);
+  const { baseElement } = renderComponent(mockKanjiLvl1Subj, true);
   expect(baseElement).toBeDefined();
 });
 
