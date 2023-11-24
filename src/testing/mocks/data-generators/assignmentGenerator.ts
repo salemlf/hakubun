@@ -7,7 +7,7 @@ import {
 } from "../../../types/Assignment";
 import { SubjectType } from "../../../types/Subject";
 
-type CorrespondingSubject = {
+export type CorrespondingSubject = {
   subjID: number;
   subjType: SubjectType;
 };
@@ -112,6 +112,55 @@ export const generateAssignmentArray = ({
   return mockAssignments;
 };
 
+type AssignmentArrayFromSubjGeneratorParams = Omit<
+  AssignmentArrayGeneratorParams,
+  "numAssignments"
+> & {
+  correspondingSubjects: CorrespondingSubject[];
+};
+
+export const generateAssignmentArrayFromSubjs = ({
+  correspondingSubjects,
+  haveBeenBurned = false,
+  haveBeenResurrected = false,
+  areLessons = false,
+}: AssignmentArrayFromSubjGeneratorParams) => {
+  const assignmentsFromSubjs = correspondingSubjects.map((subj) =>
+    generateAssignment({
+      isBurned: haveBeenBurned,
+      isResurrected: haveBeenResurrected,
+      correspondingSubject: {
+        subjID: subj.subjID,
+        subjType: subj.subjType as SubjectType,
+      },
+      isLesson: areLessons,
+    })
+  );
+
+  return assignmentsFromSubjs;
+};
+
+export const generatePreflattenedAssignmentArrayFromSubjs = ({
+  correspondingSubjects,
+  haveBeenBurned = false,
+  haveBeenResurrected = false,
+  areLessons = false,
+}: AssignmentArrayFromSubjGeneratorParams) => {
+  const assignmentsFromSubjs = correspondingSubjects.map((subj) =>
+    generatePreFlattenedAssignment({
+      isBurned: haveBeenBurned,
+      isResurrected: haveBeenResurrected,
+      correspondingSubject: {
+        subjID: subj.subjID,
+        subjType: subj.subjType as SubjectType,
+      },
+      isLesson: areLessons,
+    })
+  );
+
+  return assignmentsFromSubjs;
+};
+
 type PreFlattenedAssignmentArrayGeneratorParams = {
   numAssignments: number;
   haveBeenStarted?: boolean;
@@ -138,4 +187,14 @@ export const generatePreflattenedAssignmentArray = ({
   );
 
   return mockPreFlattenedAssignments;
+};
+
+export const createCorrespondingSubject = (
+  subjID: number,
+  subjType: SubjectType
+): CorrespondingSubject => {
+  return {
+    subjID,
+    subjType,
+  };
 };

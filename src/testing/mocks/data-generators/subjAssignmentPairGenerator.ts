@@ -119,6 +119,7 @@ export type PreflattenedSubjAssignmentPairArrGeneratorParams = Omit<
   "imagesOnly"
 >;
 
+// TODO: add areLessons option
 export const generatePreflattenedSubjAssignmentPairArray = ({
   subjTypes,
   numPairs,
