@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { StudyMaterial, StudyMaterialPutBody } from "../types/MiscTypes";
+import { StudyMaterial, StudyMaterialPutBody } from "../types/StudyMaterial";
 
 type Props = {
   studyMaterialID: number;

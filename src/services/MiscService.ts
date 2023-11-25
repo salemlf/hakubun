@@ -1,10 +1,5 @@
 import { convertToHiragana } from "./AssignmentQueueService";
-import {
-  ButtonSize,
-  SrsLevelName,
-  StudyMaterial,
-  StudyMaterialPostDataWithID,
-} from "../types/MiscTypes";
+import { ButtonSize, SrsLevelName } from "../types/MiscTypes";
 import { AssignmentCollection, SubjectCollection } from "../types/Collection";
 import {
   PopoverMessageType,
@@ -12,6 +7,10 @@ import {
 } from "../types/AssignmentQueueTypes";
 import { PronunciationVoice } from "../types/UserSettingsTypes";
 import { PronunciationAudio, Subject } from "../types/Subject";
+import {
+  StudyMaterialPostDataWithID,
+  StudyMaterial,
+} from "../types/StudyMaterial";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   if (timeTill > 0) {

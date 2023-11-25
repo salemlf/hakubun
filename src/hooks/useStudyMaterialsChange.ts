@@ -5,13 +5,14 @@ import {
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import { useCreateStudyMaterials } from "./useCreateStudyMaterials";
 import { useUpdateStudyMaterials } from "./useUpdateStudyMaterials";
+import { Subject } from "../types/Subject";
 import {
   StudyMaterial,
   StudyMaterialDataResponse,
   StudyMaterialPostData,
-  StudyMaterialsChangeActionType,
-} from "../types/MiscTypes";
-import { Subject } from "../types/Subject";
+} from "../types/StudyMaterial";
+
+type StudyMaterialsChangeActionType = "add" | "remove";
 
 type StudyMaterialsChangeMethod = "create" | "update";
 

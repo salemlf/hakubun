@@ -2,18 +2,18 @@ import { api, baseUrl } from "./ApiConfig";
 import { PagingAPI } from "./PagingApi";
 import { AxiosResponse } from "axios";
 
-import {
-  SrsLevelName,
-  StudyMaterialPostData,
-  StudyMaterialPutBody,
-} from "../types/MiscTypes";
+import { SrsLevelName } from "../types/MiscTypes";
 
 import { getSrsLvlBySrsName } from "../services/MiscService";
 import { ReviewPostItem } from "../types/Review";
+import {
+  StudyMaterialPostData,
+  StudyMaterialPutBody,
+} from "../types/StudyMaterial";
 
 // TODO: make paging "automatic" where no need to add special case for it
 export const WaniKaniAPI = {
-  pages: Array(),
+  pages: [],
   subjects: [],
 
   getUser: async function () {
