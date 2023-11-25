@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { getRandomIntInRange } from "../../../utils";
 import { ALL_SUBJECT_TYPES } from "../../../constants";
 import { CorrespondingSubject } from "./assignmentGenerator";
 import {
@@ -194,8 +193,7 @@ export const generateStudyMaterialArrFromSubjs = ({
 
 const generateMeaningSynonyms = (synonyms?: string[]): string[] => {
   if (synonyms) return synonyms;
-
-  const numSynonyms = getRandomIntInRange(1, 5);
+  const numSynonyms = faker.number.int({ min: 1, max: 5 });
   const generatedSynonyms = Array.from({ length: numSynonyms }, () =>
     faker.word.words({ count: { min: 1, max: 4 } })
   );

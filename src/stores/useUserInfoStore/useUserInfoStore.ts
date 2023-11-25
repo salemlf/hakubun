@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { User } from "../../types/UserTypes";
+import { User } from "../../types/User";
 
 export interface UserInfoState {
   userInfo: User | undefined;

@@ -1,6 +1,11 @@
 import { faker, fakerJA } from "@faker-js/faker";
-import { getRandomIntArr, getRandomIntInRange } from "../../../utils";
-import { MAX_LEVEL, MIN_LEVEL, PARTS_OF_SPEECH } from "../../../constants";
+import { getRandomIntArr } from "../../../utils";
+import { PARTS_OF_SPEECH } from "../../../constants";
+import {
+  getRandomAccent,
+  getRandomLevel,
+  getRandomVoiceActorID,
+} from "./generatorUtils";
 import { setSubjectAvailImgs } from "../../../services/ImageSrcService";
 import {
   AudioMetadata,
@@ -175,7 +180,7 @@ export const generateSubjArray = ({
 const generateAuxiliaryMeanings = (): SubjectAuxiliaryMeaning[] => {
   // using "whitelist" and "blacklist" is icky, but they're the values in the API unfortunately
   const auxilaryMeaningType = ["whitelist", "blacklist"];
-  const numAuxMeanings = getRandomIntInRange(0, 5);
+  const numAuxMeanings = faker.number.int({ min: 0, max: 5 });
 
   const mockAuxiliaryMeanings: SubjectAuxiliaryMeaning[] = Array.from(
     { length: numAuxMeanings },
@@ -191,7 +196,7 @@ const generateAuxiliaryMeanings = (): SubjectAuxiliaryMeaning[] => {
 };
 
 const generateSubjCharImages = (): SubjectCharacterImage[] => {
-  const numSubjCharImgs = getRandomIntInRange(0, 5);
+  const numSubjCharImgs = faker.number.int({ min: 0, max: 5 });
 
   const mockSubjCharImages: SubjectCharacterImage[] = Array.from(
     { length: numSubjCharImgs },
@@ -216,12 +221,8 @@ const generateSubjMetadata = (): SubjectMetadata => {
   };
 };
 
-const getRandomLevel = (): number => {
-  return getRandomIntInRange(MIN_LEVEL, MAX_LEVEL);
-};
-
 const generateSubjectMeanings = (): SubjectMeaning[] => {
-  const numSubjMeanings = getRandomIntInRange(1, 8);
+  const numSubjMeanings = faker.number.int({ min: 1, max: 8 });
 
   const mockSubjMeanings: SubjectMeaning[] = Array.from(
     { length: numSubjMeanings },
@@ -236,13 +237,19 @@ const generateSubjectMeanings = (): SubjectMeaning[] => {
 
   // making sure at least one meaning is set as primary
   if (!mockSubjMeanings.some((meaning) => meaning.primary)) {
-    const randomIndex = getRandomIntInRange(0, mockSubjMeanings.length - 1);
+    const randomIndex = faker.number.int({
+      min: 0,
+      max: mockSubjMeanings.length - 1,
+    });
     mockSubjMeanings[randomIndex].primary = true;
   }
 
   // making sure there's at least one accepted meaning
   if (!mockSubjMeanings.some((meaning) => meaning.accepted_answer)) {
-    const randomIndex = getRandomIntInRange(0, mockSubjMeanings.length - 1);
+    const randomIndex = faker.number.int({
+      min: 0,
+      max: mockSubjMeanings.length - 1,
+    });
     mockSubjMeanings[randomIndex].accepted_answer = true;
   }
 
@@ -253,7 +260,7 @@ const generateSubjectMeanings = (): SubjectMeaning[] => {
 };
 
 const generateSubjReadings = (): SubjectReading[] => {
-  const numReadings = getRandomIntInRange(1, 5);
+  const numReadings = faker.number.int({ min: 1, max: 5 });
   const mockSubjReadings: SubjectReading[] = Array.from(
     { length: numReadings },
     () => {
@@ -279,7 +286,10 @@ const generateSubjReadings = (): SubjectReading[] => {
   ) {
     const readingTypesToAdd: ReadingType[] = ["onyomi", "kunyomi"];
     const onyomiOrKunyomi = faker.helpers.arrayElement(readingTypesToAdd);
-    const randomIndex = getRandomIntInRange(0, meaningsArrToUpdate.length - 1);
+    const randomIndex = faker.number.int({
+      min: 0,
+      max: meaningsArrToUpdate.length - 1,
+    });
     meaningsArrToUpdate[randomIndex].type = onyomiOrKunyomi;
   }
 
@@ -301,12 +311,18 @@ const ensureMinPrimaryAndAcceptedMeanings = (
 ) => {
   const arrToUpdate = [...readingsOrMeaningsArr];
   if (!arrToUpdate.some((meaning) => meaning.primary)) {
-    const randomIndex = getRandomIntInRange(0, arrToUpdate.length - 1);
+    const randomIndex = faker.number.int({
+      min: 0,
+      max: arrToUpdate.length - 1,
+    });
     arrToUpdate[randomIndex].primary = true;
   }
 
   if (!arrToUpdate.some((meaning) => meaning.accepted_answer)) {
-    const randomIndex = getRandomIntInRange(0, arrToUpdate.length - 1);
+    const randomIndex = faker.number.int({
+      min: 0,
+      max: arrToUpdate.length - 1,
+    });
     arrToUpdate[randomIndex].accepted_answer = true;
   }
 
@@ -324,7 +340,10 @@ const generateVisuallySimilarSubjectIds = (): number[] => {
 const generateMeaningHint = (subjType: SubjectType): string | null => {
   // I don't think radicals ever have meaning hints, but generating them on rare occasions just in case
   if (subjType === "radical") {
-    const hasMeaningHintProbability = getRandomIntInRange(0, 10);
+    const hasMeaningHintProbability = faker.number.int({
+      min: 0,
+      max: 10,
+    });
     if (hasMeaningHintProbability > 8) {
       return faker.lorem.paragraph({ min: 1, max: 3 });
     }
@@ -357,7 +376,10 @@ const generatePronunciationAudios = (
 ): PronunciationAudio[] => {
   const mockPronunciations: PronunciationAudio[] = [];
   readings.forEach((reading) => {
-    const numPronunciations = getRandomIntInRange(2, 5);
+    const numPronunciations = faker.number.int({
+      min: 2,
+      max: 5,
+    });
 
     const pronunciationsForReading: PronunciationAudio[] = Array.from(
       { length: numPronunciations },
@@ -377,16 +399,15 @@ const generatePronunciationAudios = (
 
 // TODO: specify allow specifying accent and gender for function
 const generateAudioMetadata = (pronunciation: string): AudioMetadata => {
-  const accents = ["Kyoto", "Tokyo"];
-  const audioAccent = faker.helpers.arrayElement(accents);
+  const audioAccent = getRandomAccent();
 
   const mockAudioMetadata: AudioMetadata = {
     // gotta use this binary shit cuz it's what the API returns lol
     gender: faker.person.sex(),
     source_id: faker.number.int(),
-    voice_actor_id: faker.number.int(),
+    voice_actor_id: getRandomVoiceActorID(),
     pronunciation,
-    voice_actor_name: faker.person.firstName(),
+    voice_actor_name: fakerJA.person.firstName(),
     voice_description: `${audioAccent} accent`,
   };
 
@@ -398,7 +419,10 @@ const generatePartsOfSpeech = (): string[] => {
 };
 
 const generateContextSentences = (): ContextSentence[] => {
-  const numSentences = getRandomIntInRange(1, 4);
+  const numSentences = faker.number.int({
+    min: 1,
+    max: 4,
+  });
 
   const mockContextSentences: ContextSentence[] = Array.from(
     { length: numSentences },

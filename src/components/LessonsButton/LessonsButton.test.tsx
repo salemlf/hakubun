@@ -9,14 +9,15 @@ import {
 } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { AVAIL_LESSONS, assignmentsEndpoint } from "../../testing/endpoints";
-import { mockUserLvl1 } from "../../testing/mocks/data/user.mock";
 import { generateAssignmentCollection } from "../../testing/mocks/data-generators/collectionGenerator";
+import { generateUser } from "../../testing/mocks/data-generators/userGenerator";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useLessons } from "../../hooks/useLessons";
 import LessonSettings from "../../pages/LessonSettings";
 import { AssignmentCollection } from "../../types/Collection";
 import LessonsButton from ".";
 
+const mockUserLvl1 = generateUser({ level: 1 });
 const mockLessonCollection = generateAssignmentCollection(10, true);
 const mockEmptyLessonCollection = generateAssignmentCollection(0, true);
 

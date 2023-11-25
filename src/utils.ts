@@ -43,20 +43,16 @@ export const getNumObjsWithDistinctPropValue = function (
   }, 0);
 };
 
-export const getRandomIntInRange = (min: number, max: number) => {
-  const trueMin = Math.ceil(min);
-  const trueMax = Math.floor(max);
-
-  return Math.floor(Math.random() * (trueMax - trueMin + 1)) + trueMin;
-};
-
 export const getRandomIntArr = (
   minLength: number,
   maxLength: number,
   minVal: number,
   maxVal: number
 ): number[] => {
-  const randomLength = getRandomIntInRange(minLength, maxLength);
+  const randomLength = faker.number.int({
+    min: minLength,
+    max: maxLength,
+  });
 
   return Array.from({ length: randomLength }, () =>
     faker.number.int({

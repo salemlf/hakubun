@@ -8,14 +8,17 @@ import {
 import { server } from "../testing/mocks/server";
 import { userEndpoint } from "../testing/endpoints";
 import {
-  mockUserLvl1,
-  mockUserResponseLvl1,
-} from "../testing/mocks/data/user.mock";
+  generateUser,
+  generateUserResponse,
+} from "../testing/mocks/data-generators/userGenerator";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import * as useUserLogin from "../hooks/useUserLogin";
 import Home from "./Home";
 import TokenInput from "./TokenInput";
+
+const mockUserLvl1 = generateUser({ level: 1 });
+const mockLvl1UserResponse = generateUserResponse({ level: 1 });
 
 test("TokenInput renders", () => {
   const { baseElement } = renderComponent();
@@ -25,13 +28,13 @@ test("TokenInput renders", () => {
 test("Redirects to home page after entering token (logging in)", async () => {
   server.use(
     http.get(userEndpoint, () => {
-      return HttpResponse.json(mockUserResponseLvl1);
+      return HttpResponse.json(mockLvl1UserResponse);
     })
   );
   const { user } = renderComponent(true);
   const fakeTokenValue = "my_fake_token";
 
-  let tokenInput = screen.getByRole("textbox", {
+  const tokenInput = screen.getByRole("textbox", {
     name: /wanikani api token \?/i,
   });
   await user.type(tokenInput, fakeTokenValue);

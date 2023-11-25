@@ -162,6 +162,8 @@ function SubjectSummary({ subject }: Props) {
     data: assignment,
     error: assignmentErr,
   } = useAssignmentBySubjID([subject.id]);
+
+  // TODO: remove this once done testing
   // *testing
   console.log(
     "🚀 ~ file: SubjectSummary.tsx:165 ~ SubjectSummary ~ assignment:",
