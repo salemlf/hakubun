@@ -4,6 +4,7 @@ import { server } from "../../testing/mocks/server";
 import AssignmentSettings from ".";
 import { AssignmentSettingsProps } from ".";
 import {
+  generateStudyMaterialCollectionFromSubjs,
   generateSubjectCollection,
   getIDsFromSubjOrAssignmentCollection,
 } from "../../testing/mocks/data-generators/collectionGenerator";
@@ -12,8 +13,14 @@ import {
   createCorrespondingSubject,
   generateAssignmentArrayFromSubjs,
 } from "../../testing/mocks/data-generators/assignmentGenerator";
-import { subjectsEndpoint } from "../../testing/endpoints";
-import { SubjectCollection } from "../../types/Collection";
+import {
+  studyMaterialsEndpoint,
+  subjectsEndpoint,
+} from "../../testing/endpoints";
+import {
+  StudyMaterialCollection,
+  SubjectCollection,
+} from "../../types/Collection";
 
 // TODO: change so creates a variety of subjects, not just one type
 const subjType = "vocabulary";
@@ -26,6 +33,10 @@ const correspondingSubjInfo: CorrespondingSubject[] = subjIDs.map((id) =>
 const assignmentsFromSubjCollection = generateAssignmentArrayFromSubjs({
   correspondingSubjects: correspondingSubjInfo,
 });
+const studyMaterialCollectionForSubjs =
+  generateStudyMaterialCollectionFromSubjs({
+    correspondingSubjects: correspondingSubjInfo,
+  });
 
 // TODO: also mock study materials response
 const mockSubjectsByIDsResponse = (subjCollection: SubjectCollection) => {
@@ -41,8 +52,24 @@ const mockSubjectsByIDsResponse = (subjCollection: SubjectCollection) => {
   );
 };
 
+const mockStudyMaterialsResponse = (
+  studyMaterialCollection: StudyMaterialCollection
+) => {
+  server.use(
+    http.get(studyMaterialsEndpoint, ({ request }) => {
+      const url = new URL(request.url);
+      const subjIDs = url.searchParams.get("subject_ids");
+      if (subjIDs) {
+        return HttpResponse.json(studyMaterialCollection);
+      }
+      return passthrough();
+    })
+  );
+};
+
 test("AssignmentSettings renders", () => {
   mockSubjectsByIDsResponse(mockSubjCollection);
+  mockStudyMaterialsResponse(studyMaterialCollectionForSubjs);
   const mockSettings: AssignmentSettingsProps = {
     assignmentData: assignmentsFromSubjCollection,
     settingsType: "review",
@@ -59,6 +86,9 @@ test("AssignmentSettings renders", () => {
 
 const renderComponent = (settingProps: AssignmentSettingsProps) => {
   return renderWithRouter({
-    component: <AssignmentSettings {...settingProps} />,
+    routeObj: {
+      path: "/lessons/session",
+      element: <AssignmentSettings {...settingProps} />,
+    },
   });
 };

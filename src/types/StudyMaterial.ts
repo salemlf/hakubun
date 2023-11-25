@@ -1,5 +1,7 @@
+import { ApiResponse } from "./MiscTypes";
 import { SubjectType } from "./Subject";
 
+// technically study material also has id, object, url, and data_updated_at attrs, but we don't really use them
 export interface StudyMaterial {
   created_at: Date;
   hidden: boolean;
@@ -9,12 +11,16 @@ export interface StudyMaterial {
   subject_id: number;
   subject_type: SubjectType;
 }
-
 export interface StudyMaterialDataResponse extends StudyMaterial {
   url: string;
   data_updated_at: Date;
   id: number;
   object: string;
+}
+
+export interface PreflattenedStudyMaterial extends ApiResponse {
+  id: number;
+  data: StudyMaterial;
 }
 
 export interface StudyMaterialPutData {

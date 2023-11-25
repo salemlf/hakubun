@@ -1,4 +1,8 @@
-import { assignmentsEndpoint, subjectsEndpoint } from "../../endpoints";
+import {
+  assignmentsEndpoint,
+  studyMaterialsEndpoint,
+  subjectsEndpoint,
+} from "../../endpoints";
 import {
   CorrespondingSubject,
   generatePreflattenedAssignmentArray,
@@ -6,11 +10,16 @@ import {
 } from "./assignmentGenerator";
 import {
   AssignmentCollection,
+  StudyMaterialCollection,
   SubjectCollection,
 } from "../../../types/Collection";
 import { faker } from "@faker-js/faker";
 import { generatePreflattenedSubjArray } from "./subjectGenerator";
 import { SubjectType } from "../../../types/Subject";
+import {
+  generatePreflattenedStudyMaterialsArr,
+  generatePreflattenedStudyMaterialsArrFromSubjs,
+} from "./studyMaterialGenerator";
 
 export const generateAssignmentCollection = (
   collectionLength: number,
@@ -103,4 +112,54 @@ export const getIDsFromSubjOrAssignmentCollection = (
 ): number[] => {
   const collectionData = collection.data;
   return collectionData.map((item) => item.id);
+};
+
+export const generateStudyMaterialCollection = (
+  collectionLength: number
+): StudyMaterialCollection => {
+  const mockPreflattenedStudyMaterials = generatePreflattenedStudyMaterialsArr({
+    numStudyMaterials: collectionLength,
+  });
+  const mockAssignmentCollection: StudyMaterialCollection = {
+    object: "collection",
+    url: studyMaterialsEndpoint,
+    data_updated_at: faker.date.past(),
+    data: mockPreflattenedStudyMaterials,
+    pages: {
+      per_page: 1000,
+      next_url: null,
+      previous_url: null,
+    },
+    total_count: collectionLength,
+  };
+
+  return mockAssignmentCollection;
+};
+
+type StudyMaterialsFromSubjsCollectionGeneratorParams = {
+  correspondingSubjects: CorrespondingSubject[];
+};
+
+export const generateStudyMaterialCollectionFromSubjs = ({
+  correspondingSubjects,
+}: StudyMaterialsFromSubjsCollectionGeneratorParams): StudyMaterialCollection => {
+  const mockPreflattenedStudyMaterials =
+    generatePreflattenedStudyMaterialsArrFromSubjs({
+      correspondingSubjects,
+    });
+
+  const mockAssignmentCollection: StudyMaterialCollection = {
+    object: "collection",
+    url: studyMaterialsEndpoint,
+    data_updated_at: faker.date.past(),
+    data: mockPreflattenedStudyMaterials,
+    pages: {
+      per_page: 1000,
+      next_url: null,
+      previous_url: null,
+    },
+    total_count: mockPreflattenedStudyMaterials.length,
+  };
+
+  return mockAssignmentCollection;
 };

@@ -1,4 +1,5 @@
 import { PreFlattenedAssignment } from "./Assignment";
+import { PreflattenedStudyMaterial } from "./StudyMaterial";
 import { PreFlattenedSubject } from "./Subject";
 
 type PagesObj = {
@@ -22,4 +23,8 @@ export interface AssignmentCollection extends Collection {
 
 export interface SubjectCollection extends Collection {
   data: PreFlattenedSubject[];
+}
+
+export interface StudyMaterialCollection extends Collection {
+  data: PreflattenedStudyMaterial[];
 }
