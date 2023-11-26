@@ -1,6 +1,6 @@
 import { faker, fakerJA } from "@faker-js/faker";
 import { getRandomIntArr } from "../../../utils";
-import { PARTS_OF_SPEECH } from "../../../constants";
+import { ALL_SUBJECT_TYPES, PARTS_OF_SPEECH } from "../../../constants";
 import {
   getRandomAccent,
   getRandomLevel,
@@ -24,7 +24,7 @@ import {
 } from "../../../types/Subject";
 
 type GenerateSubjParams = {
-  subjType: SubjectType;
+  subjType?: SubjectType;
   imagesOnly?: boolean;
   level?: number;
 };
@@ -36,18 +36,22 @@ export const generateSubject = ({
   imagesOnly = false,
   level,
 }: GenerateSubjParams): Subject => {
-  if (imagesOnly && subjType !== "radical") {
+  const selectedSubjType =
+    subjType ?? faker.helpers.arrayElement(ALL_SUBJECT_TYPES);
+  if (imagesOnly && selectedSubjType !== "radical") {
     throw new Error("Only radicals can have images exclusively");
   }
 
   const hasAmalgamationSubjectIds =
-    subjType === "radical" || subjType === "kanji";
-  const hasReadings = subjType === "kanji" || subjType === "vocabulary";
-  const hasCharImages = subjType === "radical" && imagesOnly;
-  const hasComponents = subjType === "kanji" || subjType === "vocabulary";
-  const hasVisuallySimilar = subjType === "kanji";
+    selectedSubjType === "radical" || selectedSubjType === "kanji";
+  const hasReadings =
+    selectedSubjType === "kanji" || selectedSubjType === "vocabulary";
+  const hasCharImages = selectedSubjType === "radical" && imagesOnly;
+  const hasComponents =
+    selectedSubjType === "kanji" || selectedSubjType === "vocabulary";
+  const hasVisuallySimilar = selectedSubjType === "kanji";
   const isGeneralVocabType =
-    subjType === "vocabulary" || subjType === "kana_vocabulary";
+    selectedSubjType === "vocabulary" || selectedSubjType === "kana_vocabulary";
 
   const charImages = hasCharImages ? generateSubjCharImages() : undefined;
 
@@ -55,14 +59,14 @@ export const generateSubject = ({
   const subjReadings = hasReadings ? generateSubjReadings() : undefined;
 
   const readingsForMockAudio = getReadingsForMockAudio(
-    subjType,
+    selectedSubjType,
     jaChars,
     subjReadings
   );
 
   const mockSubject: Subject = {
     id: faker.number.int(),
-    object: subjType,
+    object: selectedSubjType,
     amalgamation_subject_ids: hasAmalgamationSubjectIds
       ? getRandomIntArr(1, 5, 1, 100000)
       : undefined,
@@ -87,7 +91,7 @@ export const generateSubject = ({
       ? generateVisuallySimilarSubjectIds()
       : undefined,
     reading_hint: hasReadings ? faker.lorem.sentence({ min: 1, max: 3 }) : null,
-    meaning_hint: generateMeaningHint(subjType),
+    meaning_hint: generateMeaningHint(selectedSubjType),
     reading_mnemonic: hasReadings
       ? faker.lorem.paragraph({ min: 1, max: 3 })
       : undefined,
@@ -101,7 +105,7 @@ export const generateSubject = ({
     data_updated_at: faker.date.past(),
   };
 
-  if (subjType === "radical") {
+  if (selectedSubjType === "radical") {
     return setSubjectAvailImgs(mockSubject);
   }
 
@@ -109,7 +113,7 @@ export const generateSubject = ({
 };
 
 type GeneratePreFlattenedSubjParams = {
-  subjType: SubjectType;
+  subjType?: SubjectType;
   imagesOnly?: boolean;
   level?: number;
 };
@@ -138,7 +142,7 @@ export const generatePreFlattenedSubject = ({
 
 type PreFlattenedSubjArrGeneratorParams = {
   numSubjects: number;
-  subjTypes: SubjectType;
+  subjTypes?: SubjectType;
   level?: number;
 };
 
@@ -159,7 +163,7 @@ export const generatePreflattenedSubjArray = ({
 
 type SubjArrGeneratorParams = {
   numSubjects: number;
-  subjTypes: SubjectType;
+  subjTypes?: SubjectType;
   imagesOnly?: boolean;
   level?: number;
 };

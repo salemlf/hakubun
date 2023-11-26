@@ -2,14 +2,15 @@ import { useState } from "react";
 import { IonIcon } from "@ionic/react";
 import { ContextSentence } from "../../types/Subject";
 import Button from "../Button/Button";
+import SvgIcon from "../SvgIcon";
 import { IconHeadingContainer } from "../../styles/BaseStyledComponents";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
 } from "../../styles/SubjectDetailsStyled";
-import ContextIcon from "../../images/context.svg";
-import OpenEyeIcon from "../../images/open-eye.svg";
-import CrossedOutEyeIcon from "../../images/crossed-out-eye.svg";
+import ContextIcon from "../../images/context.svg?react";
+import OpenEyeIcon from "../../images/open-eye.svg?react";
+import CrossedOutEyeIcon from "../../images/crossed-out-eye.svg?react";
 import styled from "styled-components";
 
 const SentenceGroup = styled.div`
@@ -70,7 +71,7 @@ type Props = {
 
 function ContextSentences({ sentences }: Props) {
   const initialBlurState = Array(sentences.length).fill(true);
-  const [blurStates, setBlurStates] = useState(initialBlurState);
+  const [blurStates, setBlurStates] = useState<boolean[]>(initialBlurState);
 
   const toggleTranslationBlur = (index: number) => {
     const newBlurStates = [...blurStates];
@@ -81,7 +82,7 @@ function ContextSentences({ sentences }: Props) {
   return (
     <SubjDetailSection>
       <IconHeadingContainer>
-        <IonIcon src={ContextIcon} />
+        <SvgIcon icon={<ContextIcon />} width="1.5em" height="1.5em" />
         <SubjDetailSubHeading>Context Sentences</SubjDetailSubHeading>
       </IconHeadingContainer>
       <div>
@@ -100,8 +101,16 @@ function ContextSentences({ sentences }: Props) {
                     onPress={() => toggleTranslationBlur(index)}
                     aria-label={`Show/Hide English Translation for Context Sentence ${index}`}
                   >
-                    <EyeIcon
-                      src={blurStates[index] ? OpenEyeIcon : CrossedOutEyeIcon}
+                    <SvgIcon
+                      icon={
+                        blurStates[index] ? (
+                          <OpenEyeIcon />
+                        ) : (
+                          <CrossedOutEyeIcon />
+                        )
+                      }
+                      width="1.5em"
+                      height="1.5em"
                     />
                   </EyeBallButton>
                 </EnglishSentenceContainer>

@@ -4,11 +4,16 @@ import {
   renderWithRouter,
   screen,
 } from "../testing/test-utils";
-import { mockAssignmentQueueItems } from "../testing/mocks/data/assignmentQueueItems.mock";
+import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
 import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { getSubjectDisplayName } from "../services/SubjectAndAssignmentService";
 import { Subject } from "../types/Subject";
 import ReviewSummary from "./ReviewSummary";
+
+const mockAssignmentQueueItems = generateRandomQueueItems({
+  numItems: 10,
+  queueProgressState: "completed",
+});
 
 test("ReviewSummary renders", () => {
   const { baseElement } = renderComponent();

@@ -26,7 +26,7 @@ const reviewColors: { [index: string]: string } = {
 };
 
 export const getReviewTypeColor = (reviewType: ReviewType) => {
-  return reviewColors[reviewType as keyof {}];
+  return reviewColors[reviewType as keyof object];
 };
 
 export const checkIfReviewIsComplete = (
