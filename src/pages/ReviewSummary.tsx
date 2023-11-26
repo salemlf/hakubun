@@ -41,23 +41,14 @@ function ReviewSummary() {
   // combine queue items so reading and meaning aren't separate anymore
   const completedReviews = getCompletedAssignmentQueueData(allSubmitted);
   const groupedReviewItems = getReviewsGroupedByResult(completedReviews);
-  // *testing
-  console.log(
-    "🚀 ~ file: ReviewSummary.tsx:43 ~ ReviewSummary ~ completedReviews:",
-    completedReviews
-  );
-  console.log(
-    "🚀 ~ file: ReviewSummary.tsx:44 ~ ReviewSummary ~ groupedReviewItems:",
-    groupedReviewItems
-  );
-  // *testing
+
+  const totalNumSubmitted =
+    groupedReviewItems.correct.length + groupedReviewItems.incorrect.length;
+  const totalCorrect = groupedReviewItems.correct.length;
 
   return (
     <>
-      <ResultsHeader
-        numCorrect={groupedReviewItems.correct.length}
-        numReviews={allSubmitted.length}
-      />
+      <ResultsHeader numCorrect={totalCorrect} numReviews={totalNumSubmitted} />
       <ContentWithTabBar>
         <FullWidthGridDiv>
           <ReviewResults groupedReviewItems={groupedReviewItems} />

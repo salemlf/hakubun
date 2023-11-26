@@ -123,10 +123,29 @@ test("Displays toast on click if no lessons available", async () => {
 });
 
 // TODO: add test
-test.todo(
-  "Displays error toast if API error and no cached data",
-  async () => {}
-);
+test.todo("Displays error toast if API error and no cached data", async () => {
+  // await setUpUserInfo();
+  // http.get(assignmentsEndpoint, ({ request }) => {
+  //   const url = new URL(request.url);
+  //   const availForLessons = url.searchParams.get(AVAIL_LESSONS);
+  //   if (availForLessons == "true") {
+  //     return HttpResponse.json(perms401Err, unauthorized401);
+  //   }
+  //   return passthrough();
+  // });
+  // const { user } = renderComponent(true);
+  // const { result } = renderHook(() => useLessons(), {
+  //   wrapper: createWrapper(),
+  // });
+  // await waitFor(() => expect(result.current.isError).toBe(true));
+  // await user.click(
+  //   screen.getByRole("button", {
+  //     name: /lessons/i,
+  //   })
+  // );
+  // const errToast = await screen.findByTestId("error-toast");
+  // expect(errToast).toBeInTheDocument();
+});
 
 // TODO: add test
 test.todo("Displays error toast if 401 error", async () => {
@@ -145,8 +164,10 @@ const renderComponent = (withLessonSettings: boolean = false) => {
     ? [{ element: <LessonSettings />, path: "/lessons/settings" }]
     : [];
   return renderWithRouter({
-    component: <LessonsButton />,
-    defaultPath: "/",
+    routeObj: {
+      element: <LessonsButton />,
+      path: "/",
+    },
     routes,
   });
 };
