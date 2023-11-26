@@ -73,7 +73,7 @@ const btnSizeInfo: { [index: string]: DotSizeStyles } = {
 };
 
 const getLoadingDotSize = (size: LoadingDotSize) => {
-  return btnSizeInfo[size as keyof {}];
+  return btnSizeInfo[size as keyof object];
 };
 
 type Props = {

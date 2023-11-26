@@ -131,7 +131,7 @@ export const mergeQueueItems = (
     ) {
       merged[key] = (B[key] || 0) + (A[key] || 0);
     } else {
-      merged[key] = B[key as keyof {}] || A[key as keyof {}];
+      merged[key] = B[key as keyof object] || A[key as keyof object];
     }
   });
   return merged;
@@ -168,8 +168,8 @@ export const getCorrectReviewItemsByType = (
 
   return combinedReviewItems.filter((reviewItem) => {
     return (
-      reviewItem[subjMeaningFilter as keyof {}] !== undefined &&
-      reviewItem[incorrectFilter as keyof {}] === 0
+      reviewItem[subjMeaningFilter as keyof object] !== undefined &&
+      reviewItem[incorrectFilter as keyof object] === 0
     );
   });
 };
