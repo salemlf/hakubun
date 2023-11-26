@@ -1,5 +1,3 @@
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
 import { motion } from "framer-motion";
 import { useAudio } from "../../hooks/useAudio";
 import { getAudioForReading } from "../../services/MiscService";
@@ -11,8 +9,9 @@ import {
   PronunciationAudio,
 } from "../../types/Subject";
 import Button from "../Button/Button";
-import SoundIcon from "../../images/sound.svg";
-import SoundOffIcon from "../../images/sound-off.svg";
+import SvgIcon from "../SvgIcon";
+import SoundIcon from "../../images/sound.svg?react";
+import SoundOffIcon from "../../images/sound-off.svg?react";
 import {
   ReadingContainer,
   SubjDetailSubHeading,
@@ -32,11 +31,6 @@ const AudioBtnContainer = styled(motion.div)`
   margin: 0;
   margin-left: 5px;
   padding: 0;
-`;
-
-const AudioIcon = styled(IonIcon)`
-  width: 1em;
-  height: 1em;
 `;
 
 const AudioBtnVariants = {
@@ -68,7 +62,11 @@ const AudioBtn = ({ url, reading }: AudioProps) => {
         backgroundColor="var(--ion-color-tertiary)"
         color="black"
       >
-        <AudioIcon icon={playing ? SoundIcon : SoundOffIcon} />
+        <SvgIcon
+          icon={playing ? <SoundIcon /> : <SoundOffIcon />}
+          width="1em"
+          height="1em"
+        />
       </Btn>
     </AudioBtnContainer>
   );
