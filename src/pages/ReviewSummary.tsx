@@ -42,12 +42,13 @@ function ReviewSummary() {
   const completedReviews = getCompletedAssignmentQueueData(allSubmitted);
   const groupedReviewItems = getReviewsGroupedByResult(completedReviews);
 
+  const totalNumSubmitted =
+    groupedReviewItems.correct.length + groupedReviewItems.incorrect.length;
+  const totalCorrect = groupedReviewItems.correct.length;
+
   return (
     <>
-      <ResultsHeader
-        numCorrect={groupedReviewItems.correct.length}
-        numReviews={allSubmitted.length}
-      />
+      <ResultsHeader numCorrect={totalCorrect} numReviews={totalNumSubmitted} />
       <ContentWithTabBar>
         <FullWidthGridDiv>
           <ReviewResults groupedReviewItems={groupedReviewItems} />

@@ -19,7 +19,7 @@ const badgeSizeInfo: { [index: string]: BadgeSizeStyles } = {
 type BadgeSize = "sm" | "md";
 
 export const getBadgeSize = (size: BadgeSize) => {
-  return badgeSizeInfo[size as keyof {}];
+  return badgeSizeInfo[size as keyof object];
 };
 
 type BadgeContainerProps = {

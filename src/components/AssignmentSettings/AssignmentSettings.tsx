@@ -16,14 +16,15 @@ import { displayToast } from "../Toast/Toast.service";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import {
-  ALL_ASSIGNMENT_TYPES,
+  ALL_SUBJECT_TYPES,
   MAX_ASSIGNMENTS_BEFORE_SUBMIT,
 } from "../../constants";
 import { Assignment } from "../../types/Assignment";
-import { AssignmentBatch, StudyMaterial } from "../../types/MiscTypes";
+import { AssignmentBatch } from "../../types/MiscTypes";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { Subject, SubjectType } from "../../types/Subject";
+import { StudyMaterial } from "../../types/StudyMaterial";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
@@ -94,7 +95,7 @@ function AssignmentSettings({
     string[]
   >([]);
 
-  const availableAssignmentTypes = ALL_ASSIGNMENT_TYPES.filter(
+  const availableAssignmentTypes = ALL_SUBJECT_TYPES.filter(
     (assignmentType) => {
       return checkIfAssignmentTypeInQueue(assignmentData, assignmentType);
     }

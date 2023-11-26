@@ -9,15 +9,30 @@ import {
 } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { AVAIL_LESSONS, assignmentsEndpoint } from "../../testing/endpoints";
-import {
-  mockAssignmentsAvailLessonsResponse,
-  mockAssignmentsNoAvailLessonsResponse,
-} from "../../testing/mocks/data/assignments.mock";
-import { mockUserLvl1 } from "../../testing/mocks/data/user.mock";
+import { generateAssignmentCollection } from "../../testing/mocks/data-generators/collectionGenerator";
+import { generateUser } from "../../testing/mocks/data-generators/userGenerator";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useLessons } from "../../hooks/useLessons";
 import LessonSettings from "../../pages/LessonSettings";
+import { AssignmentCollection } from "../../types/Collection";
 import LessonsButton from ".";
+
+const mockUserLvl1 = generateUser({ level: 1 });
+const mockLessonCollection = generateAssignmentCollection(10, true);
+const mockEmptyLessonCollection = generateAssignmentCollection(0, true);
+
+const mockAvailLessonsResponse = (mockCollection: AssignmentCollection) => {
+  server.use(
+    http.get(assignmentsEndpoint, ({ request }) => {
+      const url = new URL(request.url);
+      const availForReview = url.searchParams.get(AVAIL_LESSONS);
+      if (availForReview == "true") {
+        return HttpResponse.json(mockCollection);
+      }
+      return passthrough();
+    })
+  );
+};
 
 test("LessonsButton renders", () => {
   const { baseElement } = renderComponent();
@@ -36,15 +51,7 @@ const setUpUserInfo = async () => {
 test("LessonsButton redirects to lesson settings on click", async () => {
   await setUpUserInfo();
 
-  server.use(
-    http.get(assignmentsEndpoint, ({ request }) => {
-      const url = new URL(request.url);
-      let availForLessons = url.searchParams.get(AVAIL_LESSONS);
-      if (availForLessons == "true") {
-        return HttpResponse.json(mockAssignmentsAvailLessonsResponse);
-      }
-    })
-  );
+  mockAvailLessonsResponse(mockLessonCollection);
 
   const { user } = renderComponent(true);
   const { result } = renderHook(() => useLessons(), {
@@ -70,7 +77,7 @@ test("Shows error text on API error and no cached data", async () => {
   server.use(
     http.get(assignmentsEndpoint, ({ request }) => {
       const url = new URL(request.url);
-      let availForLessons = url.searchParams.get(AVAIL_LESSONS);
+      const availForLessons = url.searchParams.get(AVAIL_LESSONS);
       if (availForLessons == "true") {
         return HttpResponse.error();
       }
@@ -85,24 +92,18 @@ test("Shows error text on API error and no cached data", async () => {
 
   await waitFor(() => {
     expect(result.current.isError).toBe(true);
+  });
+
+  await waitFor(() => {
     expect(result.current.data).toBe(undefined);
   });
 
-  let errButton = await screen.findByTestId("lesson-btn-err");
+  const errButton = await screen.findByTestId("lesson-btn-err");
   expect(errButton).toHaveTextContent("Error loading data");
 });
 
 test("Displays toast on click if no lessons available", async () => {
-  server.use(
-    http.get(assignmentsEndpoint, ({ request }) => {
-      const url = new URL(request.url);
-      let availForLessons = url.searchParams.get(AVAIL_LESSONS);
-      if (availForLessons == "true") {
-        return HttpResponse.json(mockAssignmentsNoAvailLessonsResponse);
-      }
-      return passthrough();
-    })
-  );
+  mockAvailLessonsResponse(mockEmptyLessonCollection);
 
   const { user } = renderComponent();
   const { result } = renderHook(() => useLessons(), {
@@ -117,15 +118,34 @@ test("Displays toast on click if no lessons available", async () => {
     })
   );
 
-  let errToast = await screen.findByTestId("error-toast");
+  const errToast = await screen.findByTestId("error-toast");
   expect(errToast).toBeInTheDocument();
 });
 
 // TODO: add test
-test.todo(
-  "Displays error toast if API error and no cached data",
-  async () => {}
-);
+test.todo("Displays error toast if API error and no cached data", async () => {
+  // await setUpUserInfo();
+  // http.get(assignmentsEndpoint, ({ request }) => {
+  //   const url = new URL(request.url);
+  //   const availForLessons = url.searchParams.get(AVAIL_LESSONS);
+  //   if (availForLessons == "true") {
+  //     return HttpResponse.json(perms401Err, unauthorized401);
+  //   }
+  //   return passthrough();
+  // });
+  // const { user } = renderComponent(true);
+  // const { result } = renderHook(() => useLessons(), {
+  //   wrapper: createWrapper(),
+  // });
+  // await waitFor(() => expect(result.current.isError).toBe(true));
+  // await user.click(
+  //   screen.getByRole("button", {
+  //     name: /lessons/i,
+  //   })
+  // );
+  // const errToast = await screen.findByTestId("error-toast");
+  // expect(errToast).toBeInTheDocument();
+});
 
 // TODO: add test
 test.todo("Displays error toast if 401 error", async () => {
@@ -140,12 +160,14 @@ test.todo("Displays error toast if 401 error", async () => {
 });
 
 const renderComponent = (withLessonSettings: boolean = false) => {
-  let routes = withLessonSettings
+  const routes = withLessonSettings
     ? [{ element: <LessonSettings />, path: "/lessons/settings" }]
     : [];
   return renderWithRouter({
-    component: <LessonsButton />,
-    defaultPath: "/",
+    routeObj: {
+      element: <LessonsButton />,
+      path: "/",
+    },
     routes,
   });
 };

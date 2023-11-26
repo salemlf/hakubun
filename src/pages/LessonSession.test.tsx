@@ -1,15 +1,21 @@
-import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
-import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
-import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
-import { mockAssignmentQueueLessons } from "../testing/mocks/data/assignmentQueueItems.mock";
 import {
   renderWithRouter,
   screen,
   renderHook,
   act,
 } from "../testing/test-utils";
+import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
+import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
+import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import Home from "./Home";
 import LessonSession from "./LessonSession";
+
+const mockAssignmentQueueLessons = generateRandomQueueItems({
+  numItems: 10,
+  areLessons: true,
+  queueProgressState: "not_started",
+});
 
 test("LessonSession renders", () => {
   const { baseElement } = renderComponent(false);

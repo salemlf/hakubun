@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { nanoid } from "nanoid";
 
 export const generateUUID = (): string => {
@@ -33,11 +34,30 @@ export const getNumObjsWithDistinctPropValue = function (
   const distinctValues: Record<string, number> = {};
 
   return data.reduce((count, obj) => {
-    const value = obj[prop as keyof {}];
+    const value = obj[prop as keyof object];
     if (!distinctValues[value]) {
       distinctValues[value] = 1;
       return count + 1;
     }
     return count;
   }, 0);
+};
+
+export const getRandomIntArr = (
+  minLength: number,
+  maxLength: number,
+  minVal: number,
+  maxVal: number
+): number[] => {
+  const randomLength = faker.number.int({
+    min: minLength,
+    max: maxLength,
+  });
+
+  return Array.from({ length: randomLength }, () =>
+    faker.number.int({
+      min: minVal,
+      max: maxVal,
+    })
+  );
 };

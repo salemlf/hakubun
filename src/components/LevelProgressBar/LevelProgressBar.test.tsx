@@ -1,8 +1,6 @@
 import { HttpResponse, http } from "msw";
 import { renderWithClient } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
-import { mockKanjiAssignmentsForLvl1 } from "../../testing/mocks/data/assignments.mock";
-import { mockKanjiSubjectsForLvl1 } from "../../testing/mocks/data/subjects.mock";
 import {
   ASSIGNMENT_SUBJ_TYPES,
   LEVELS_PARAM,
@@ -10,7 +8,15 @@ import {
   assignmentsEndpoint,
   subjectsEndpoint,
 } from "../../testing/endpoints";
+import { generatePreflattenedSubjAssignmentPairArray } from "../../testing/mocks/data-generators/subjAssignmentPairGenerator";
 import LevelProgressBar from ".";
+
+const kanjiSubjAssignmentsPairArrLvl1 =
+  generatePreflattenedSubjAssignmentPairArray({
+    numPairs: 10,
+    subjTypes: "kanji",
+    level: 1,
+  });
 
 server.use(
   http.get(assignmentsEndpoint, ({ request }) => {
@@ -18,7 +24,9 @@ server.use(
     const levels = url.searchParams.get(LEVELS_PARAM);
     const subjTypes = url.searchParams.get(ASSIGNMENT_SUBJ_TYPES);
     if (levels != undefined && subjTypes == "kanji") {
-      return HttpResponse.json(mockKanjiAssignmentsForLvl1);
+      return HttpResponse.json(
+        kanjiSubjAssignmentsPairArrLvl1.preflattenedAssignments
+      );
     }
   }),
   http.get(subjectsEndpoint, ({ request }) => {
@@ -26,7 +34,9 @@ server.use(
     const levels = url.searchParams.get(LEVELS_PARAM);
     const subjTypes = url.searchParams.get(SUBJECT_SUBJ_TYPES);
     if (levels != undefined && subjTypes == "kanji") {
-      return HttpResponse.json(mockKanjiSubjectsForLvl1);
+      return HttpResponse.json(
+        kanjiSubjAssignmentsPairArrLvl1.preflattenedSubjects
+      );
     }
   })
 );

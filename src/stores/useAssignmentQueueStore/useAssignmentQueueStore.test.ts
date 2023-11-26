@@ -1,6 +1,11 @@
-import { mockAssignmentQueueItems } from "../../testing/mocks/data/assignmentQueueItems.mock";
+import { generateRandomQueueItems } from "../../testing/mocks/data-generators/assignmentQueueGenerator";
 import { act, renderHook } from "../../testing/test-utils";
 import { useAssignmentQueueStore } from "./useAssignmentQueueStore";
+
+const mockAssignmentQueueItems = generateRandomQueueItems({
+  numItems: 20,
+  queueProgressState: "not_started",
+});
 
 describe("useAssignmentQueueStore", () => {
   test("Initial values are as expected", () => {

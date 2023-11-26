@@ -1,6 +1,11 @@
-import { mockAssignmentQueueItems } from "../../testing/mocks/data/assignmentQueueItems.mock";
 import { act, renderHook } from "../../testing/test-utils";
+import { generateRandomQueueItems } from "../../testing/mocks/data-generators/assignmentQueueGenerator";
 import useAssignmentSubmitStoreFacade from "./useAssignmentSubmitStore.facade";
+
+const mockAssignmentQueueItems = generateRandomQueueItems({
+  numItems: 20,
+  queueProgressState: "completed",
+});
 
 describe("useAssignmentSubmitStore", () => {
   test("Initial values are as expected", () => {
@@ -15,7 +20,7 @@ describe("useAssignmentSubmitStore", () => {
     act(() => result.current.resetAll());
     expect(result.current.submittedAssignmentQueueItems).toEqual([]);
 
-    let halfMockArrLength = mockAssignmentQueueItems.length / 2;
+    const halfMockArrLength = mockAssignmentQueueItems.length / 2;
     const firstHalf = mockAssignmentQueueItems.slice(0, halfMockArrLength);
     const secondHalf = mockAssignmentQueueItems.slice(halfMockArrLength + 1);
     // combining arrs instead of using mockAssignmentQueueItems directly in case length of mock items is ever 1

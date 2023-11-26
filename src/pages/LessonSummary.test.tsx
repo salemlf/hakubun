@@ -1,5 +1,5 @@
 import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
-import { mockAssignmentQueueItems } from "../testing/mocks/data/assignmentQueueItems.mock";
+import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
 import {
   renderHook,
   act,
@@ -7,6 +7,12 @@ import {
   screen,
 } from "../testing/test-utils";
 import LessonSummary from "./LessonSummary";
+
+const mockAssignmentQueueItems = generateRandomQueueItems({
+  numItems: 10,
+  areLessons: true,
+  queueProgressState: "not_started",
+});
 
 test("LessonSummary renders", () => {
   const { baseElement } = renderComponent();
@@ -46,5 +52,10 @@ test("Learned lessons displayed", async () => {
 });
 
 const renderComponent = () => {
-  return renderWithRouter({ component: <LessonSummary /> });
+  return renderWithRouter({
+    routeObj: {
+      path: "/lessons/summary",
+      element: <LessonSummary />,
+    },
+  });
 };

@@ -8,10 +8,12 @@ import {
   waitFor,
 } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
-import { mockUserResponseLvl5 } from "../../testing/mocks/data/user.mock";
+import { generateUserResponse } from "../../testing/mocks/data-generators/userGenerator";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import { userEndpoint } from "../../testing/endpoints";
 import HomeHeader from ".";
+
+const mockUserResponseLvl5 = generateUserResponse({ level: 5 });
 
 server.use(
   http.get(userEndpoint, () => {
