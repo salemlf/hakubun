@@ -2,6 +2,7 @@ import { useShallow } from "zustand/react/shallow";
 import {
   AssignmentSubmitActions,
   AssignmentSubmitState,
+  initialState,
   useAssignmentSubmitStore,
 } from "./useAssignmentSubmitStore";
 
@@ -15,7 +16,7 @@ const useAssignmentSubmitStoreFacade = () => {
     updateSubmittedQueueItems,
     setShouldBatchSubmit,
     resetAll,
-  } = useAssignmentSubmitStore(
+  }: AssignmentSubmitState & AssignmentSubmitActions = useAssignmentSubmitStore(
     useShallow((state: AssignmentSubmitState & AssignmentSubmitActions) => ({
       shouldBatchSubmit: state.shouldBatchSubmit,
       submittedAssignmentQueueItems: state.submittedAssignmentQueueItems,
@@ -35,6 +36,8 @@ const useAssignmentSubmitStoreFacade = () => {
     updateSubmittedQueueItems,
     setShouldBatchSubmit,
     resetAll,
+    // exporting to check that state is reset properly
+    initialState,
   };
 };
 

@@ -10,8 +10,12 @@ const mockAssignmentQueueItems = generateRandomQueueItems({
 describe("useAssignmentSubmitStore", () => {
   test("Initial values are as expected", () => {
     const { result } = renderHook(() => useAssignmentSubmitStoreFacade());
-    expect(result.current.submittedAssignmentsWithErrs).toEqual([]);
-    expect(result.current.shouldBatchSubmit).toEqual(false);
+    expect(result.current.submittedAssignmentsWithErrs).toEqual(
+      result.current.initialState.submittedAssignmentsWithErrs
+    );
+    expect(result.current.shouldBatchSubmit).toEqual(
+      result.current.initialState.shouldBatchSubmit
+    );
   });
 
   test("Submitted queue items added", () => {

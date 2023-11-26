@@ -1,5 +1,10 @@
 import { useShallow } from "zustand/react/shallow";
-import { QueueState, QueueActions, useQueueStore } from "./useQueueStore";
+import {
+  QueueState,
+  QueueActions,
+  useQueueStore,
+  initialState,
+} from "./useQueueStore";
 
 // using facade pattern, cleaner to use in components and easier to replace zustand in future if necessary
 const useQueueStoreFacade = () => {
@@ -19,7 +24,7 @@ const useQueueStoreFacade = () => {
     wrongShowResult,
     submitChoice,
     resetAll,
-  } = useQueueStore(
+  }: QueueState & QueueActions = useQueueStore(
     useShallow((state: QueueState & QueueActions) => ({
       isSubmittingAnswer: state.isSubmittingAnswer,
       isBottomSheetVisible: state.isBottomSheetVisible,
@@ -55,6 +60,8 @@ const useQueueStoreFacade = () => {
     wrongShowResult,
     submitChoice,
     resetAll,
+    // exporting to check that state is reset properly
+    initialState,
   };
 };
 

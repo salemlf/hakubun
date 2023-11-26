@@ -1,6 +1,6 @@
 import { generateRandomQueueItems } from "../../testing/mocks/data-generators/assignmentQueueGenerator";
 import { act, renderHook } from "../../testing/test-utils";
-import { useAssignmentQueueStore } from "./useAssignmentQueueStore";
+import useAssignmentQueueStoreFacade from "./useAssignmentQueueStore.facade";
 
 const mockAssignmentQueueItems = generateRandomQueueItems({
   numItems: 20,
@@ -9,14 +9,20 @@ const mockAssignmentQueueItems = generateRandomQueueItems({
 
 describe("useAssignmentQueueStore", () => {
   test("Initial values are as expected", () => {
-    const { result } = renderHook(() => useAssignmentQueueStore());
-    expect(result.current.currQueueIndex).toEqual(0);
-    expect(result.current.sessionInProgress).toEqual(false);
-    expect(result.current.sessionType).toEqual("review");
+    const { result } = renderHook(() => useAssignmentQueueStoreFacade());
+    expect(result.current.currQueueIndex).toEqual(
+      result.current.initialState.currQueueIndex
+    );
+    expect(result.current.sessionInProgress).toEqual(
+      result.current.initialState.sessionInProgress
+    );
+    expect(result.current.sessionType).toEqual(
+      result.current.initialState.sessionType
+    );
   });
 
   test("currQueueIndex increments", () => {
-    const { result } = renderHook(() => useAssignmentQueueStore());
+    const { result } = renderHook(() => useAssignmentQueueStoreFacade());
     expect(result.current.currQueueIndex).toEqual(0);
     act(() => result.current.incrementCurrQueueIndex());
     expect(result.current.currQueueIndex).toEqual(1);
@@ -25,7 +31,7 @@ describe("useAssignmentQueueStore", () => {
   });
 
   test("currQueueIndex resets", () => {
-    const { result } = renderHook(() => useAssignmentQueueStore());
+    const { result } = renderHook(() => useAssignmentQueueStoreFacade());
     expect(result.current.currQueueIndex).toEqual(0);
     act(() => result.current.incrementCurrQueueIndex());
     expect(result.current.currQueueIndex).toEqual(1);
@@ -34,7 +40,7 @@ describe("useAssignmentQueueStore", () => {
   });
 
   test("Submitted states for queue items update", () => {
-    const { result } = renderHook(() => useAssignmentQueueStore());
+    const { result } = renderHook(() => useAssignmentQueueStoreFacade());
 
     // adding some mock assignments to the queue
     act(() =>

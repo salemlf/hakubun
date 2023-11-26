@@ -3,6 +3,7 @@ import {
   AssignmentQueueState,
   AssignmentQueueActions,
   useAssignmentQueueStore,
+  initialState,
 } from "./useAssignmentQueueStore";
 
 // using facade pattern, cleaner to use in components and easier to replace zustand in future if necessary
@@ -21,7 +22,7 @@ const useAssignmentQueueStoreFacade = () => {
     addToAssignmentQueue,
     removeOldQueueItem,
     resetAll,
-  } = useAssignmentQueueStore(
+  }: AssignmentQueueState & AssignmentQueueActions = useAssignmentQueueStore(
     useShallow((state: AssignmentQueueState & AssignmentQueueActions) => ({
       assignmentQueue: state.assignmentQueue,
       currQueueIndex: state.currQueueIndex,
@@ -53,6 +54,8 @@ const useAssignmentQueueStoreFacade = () => {
     addToAssignmentQueue,
     removeOldQueueItem,
     resetAll,
+    // exporting to check that state is reset properly
+    initialState,
   };
 };
 

@@ -30,7 +30,7 @@ export interface AssignmentQueueActions {
   removeOldQueueItem: () => void;
   resetAll: () => void;
 }
-const initialState: AssignmentQueueState = {
+export const initialState: AssignmentQueueState = {
   currQueueIndex: 0,
   assignmentQueue: [],
   sessionInProgress: false,

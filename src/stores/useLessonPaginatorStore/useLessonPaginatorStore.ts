@@ -13,7 +13,7 @@ export interface LessonPaginatorActions {
   reset: () => void;
 }
 
-const initialState: LessonPaginatorState = {
+export const initialState: LessonPaginatorState = {
   currentLessonPage: 0,
   currentLessonDir: 0,
 };

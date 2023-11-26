@@ -3,6 +3,7 @@ import {
   UserSettingsState,
   UserSettingsActions,
   useUserSettingsStore,
+  initialState,
 } from "./useUserSettingsStore";
 
 // using facade pattern, cleaner to use in components and easier to replace zustand in future if necessary
@@ -22,7 +23,7 @@ const useUserSettingsStoreFacade = () => {
     setReviewSortOrderOption,
     setReviewBackToBackOption,
     setPrefersDarkModeTheme,
-  } = useUserSettingsStore(
+  }: UserSettingsState & UserSettingsActions = useUserSettingsStore(
     useShallow((state: UserSettingsState & UserSettingsActions) => ({
       pronunciationVoice: state.pronunciationVoice,
       lessonBatchSize: state.lessonBatchSize,
@@ -56,6 +57,8 @@ const useUserSettingsStoreFacade = () => {
     setReviewSortOrderOption,
     setReviewBackToBackOption,
     setPrefersDarkModeTheme,
+    // exporting to check that state is reset properly
+    initialState,
   };
 };
 

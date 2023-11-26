@@ -3,6 +3,7 @@ import {
   AuthTokenState,
   AuthTokenActions,
   useAuthTokenStore,
+  initialState,
 } from "./useAuthTokenStore";
 
 // using facade pattern, cleaner to use in components and easier to replace zustand in future if necessary
@@ -15,7 +16,7 @@ const useAuthTokenStoreFacade = () => {
     setIsAuthLoading,
     setIsAuthenticated,
     reset,
-  } = useAuthTokenStore(
+  }: AuthTokenState & AuthTokenActions = useAuthTokenStore(
     useShallow((state: AuthTokenState & AuthTokenActions) => ({
       authToken: state.authToken,
       isAuthenticated: state.isAuthenticated,
@@ -35,6 +36,8 @@ const useAuthTokenStoreFacade = () => {
     setIsAuthLoading,
     setIsAuthenticated,
     reset,
+    // exporting to check that state is reset properly
+    initialState,
   };
 };
 
