@@ -41,6 +41,8 @@ type SubjAssignmentPairGeneratorParams = {
   level?: number;
   assignmentBurned?: boolean;
   assignmentResurrected?: boolean;
+  hasAllowedAuxMeanings?: boolean;
+  hasForbiddenAuxMeanings?: boolean;
 };
 
 export const generateSubjAssignmentPair = ({
@@ -49,8 +51,16 @@ export const generateSubjAssignmentPair = ({
   level,
   assignmentBurned = false,
   assignmentResurrected = false,
+  hasAllowedAuxMeanings,
+  hasForbiddenAuxMeanings,
 }: SubjAssignmentPairGeneratorParams): SubjAssignmentPair => {
-  const subject: Subject = generateSubject({ subjType, imagesOnly, level });
+  const subject: Subject = generateSubject({
+    subjType,
+    imagesOnly,
+    level,
+    hasAllowedAuxMeanings,
+    hasForbiddenAuxMeanings,
+  });
   const assignment: Assignment = generateAssignment({
     isBurned: assignmentBurned,
     isResurrected: assignmentResurrected,
@@ -69,8 +79,15 @@ export const generatePreflattenedSubjAssignmentPair = ({
   level,
   assignmentBurned = false,
   assignmentResurrected = false,
+  hasAllowedAuxMeanings,
+  hasForbiddenAuxMeanings,
 }: PreflattenedSubjAssignmentPairGeneratorParams): PreflattenedSubjAssignmentPair => {
-  const preflattenedSubject = generatePreFlattenedSubject({ subjType, level });
+  const preflattenedSubject = generatePreFlattenedSubject({
+    subjType,
+    level,
+    hasAllowedAuxMeanings,
+    hasForbiddenAuxMeanings,
+  });
 
   const preflattenedAssignment = generatePreFlattenedAssignment({
     isBurned: assignmentBurned,
@@ -87,6 +104,8 @@ type SubjAssignmentPairArrGeneratorParams = {
   assignmentsStarted?: boolean;
   assignmentsBurned?: boolean;
   assignmentsResurrected?: boolean;
+  hasAllowedAuxMeanings?: boolean;
+  hasForbiddenAuxMeanings?: boolean;
 };
 
 export const generateSubjAssignmentPairArray = ({
@@ -96,12 +115,16 @@ export const generateSubjAssignmentPairArray = ({
   level,
   assignmentsBurned = false,
   assignmentsResurrected = false,
+  hasAllowedAuxMeanings,
+  hasForbiddenAuxMeanings,
 }: SubjAssignmentPairArrGeneratorParams): SubjAssignmentPairArr => {
   const subjArr = generateSubjArray({
     numSubjects: numPairs,
     subjTypes,
     imagesOnly,
     level,
+    hasAllowedAuxMeanings,
+    hasForbiddenAuxMeanings,
   });
   const assignArr = subjArr.map((subj) =>
     generateAssignment({
@@ -126,11 +149,15 @@ export const generatePreflattenedSubjAssignmentPairArray = ({
   level,
   assignmentsBurned = false,
   assignmentsResurrected = false,
+  hasAllowedAuxMeanings,
+  hasForbiddenAuxMeanings,
 }: PreflattenedSubjAssignmentPairArrGeneratorParams): PreflattenedSubjAssignmentPairArr => {
   const preflattenedSubjects = generatePreflattenedSubjArray({
     numSubjects: numPairs,
     subjTypes,
     level,
+    hasAllowedAuxMeanings,
+    hasForbiddenAuxMeanings,
   });
 
   const preflattenedAssignments = preflattenedSubjects.map((subj) =>
