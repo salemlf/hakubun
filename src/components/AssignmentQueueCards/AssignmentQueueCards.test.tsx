@@ -139,6 +139,10 @@ test.todo("Correct answer is marked as correct", () => {
   const { user } = renderComponent(callbackParams, componentProps.currPath);
 });
 
+test.todo(
+  "Warning toast is displayed when user enters a forbidden meaning answer"
+);
+
 const renderComponent = (
   props: CardProps,
   currPath: "/reviews/session" | "/lessons/quiz"
