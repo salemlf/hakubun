@@ -272,14 +272,10 @@ export const getAnswersForMeaningReviews = ({
   acceptedAnswersOnly,
 }: AnswersForReviewsParams) => {
   const answers = reviewItem["meanings"];
-  const auxilaryMeanings = reviewItem["auxiliary_meanings"];
-  const acceptedAuxilaryMeanings = auxilaryMeanings
-    .filter((auxilaryMeaning) => auxilaryMeaning.type === "whitelist")
-    .map((auxilaryMeaning) => auxilaryMeaning.meaning);
-
-  // *testing
-  console.log("auxilaryMeanings: ", auxilaryMeanings);
-  // *testing
+  const auxiliaryMeanings = reviewItem["auxiliary_meanings"];
+  const acceptedAuxiliaryMeanings = auxiliaryMeanings
+    .filter((auxiliaryMeaning) => auxiliaryMeaning.type === "whitelist")
+    .map((auxiliaryMeaning) => auxiliaryMeaning.meaning);
 
   // don't think this is really possible tbh
   if (answers === undefined) {
@@ -288,7 +284,7 @@ export const getAnswersForMeaningReviews = ({
 
   const answersToConvert = [
     ...reviewItem["meaning_synonyms"],
-    ...acceptedAuxilaryMeanings,
+    ...acceptedAuxiliaryMeanings,
   ];
 
   const acceptableUserAnswers =
@@ -347,8 +343,8 @@ export const isUserMeaningAnswerCorrect = (
   userAnswer: string
 ) => {
   const forbiddenAnswers = reviewItem["auxiliary_meanings"]
-    .filter((auxilaryMeaning) => auxilaryMeaning.type === "blacklist")
-    .map((auxilaryMeaning) => auxilaryMeaning.meaning);
+    .filter((auxiliaryMeaning) => auxiliaryMeaning.type === "blacklist")
+    .map((auxiliaryMeaning) => auxiliaryMeaning.meaning);
   if (forbiddenAnswers.includes(userAnswer)) {
     displayToast({
       toastType: "warning",

@@ -3,13 +3,13 @@ import { SubjectMeaning } from "../types/Subject";
 import { getAnswersForMeaningReviews } from "./AssignmentQueueService";
 
 describe("getAnswersForMeaningReviews", () => {
-  test("Accepted auxilary meanings are returned within accepted meanings", () => {
+  test("Accepted auxiliary meanings are returned within accepted meanings", () => {
     const queueItem = generateRandomQueueItems({
       numItems: 1,
       queueProgressState: "in_progress",
     })[0];
 
-    const acceptedAuxilaryMeanings = queueItem.auxiliary_meanings.filter(
+    const acceptedAuxiliaryMeanings = queueItem.auxiliary_meanings.filter(
       (auxMeaning) => auxMeaning.type === "whitelist"
     );
     const answers = getAnswersForMeaningReviews({
@@ -17,23 +17,23 @@ describe("getAnswersForMeaningReviews", () => {
       acceptedAnswersOnly: true,
     });
 
-    const answersContainAllAcceptedAuxMeanings = acceptedAuxilaryMeanings.every(
-      (auxMeaning) =>
+    const answersContainAllAcceptedAuxMeanings =
+      acceptedAuxiliaryMeanings.every((auxMeaning) =>
         answers.some(
           (subjMeaning: SubjectMeaning) =>
             subjMeaning.meaning === auxMeaning.meaning
         )
-    );
+      );
 
     expect(answersContainAllAcceptedAuxMeanings).toBe(true);
   });
-  test("Forbidden auxilary meanings are NOT returned within accepted meanings", () => {
+  test("Forbidden auxiliary meanings are NOT returned within accepted meanings", () => {
     const queueItem = generateRandomQueueItems({
       numItems: 1,
       queueProgressState: "in_progress",
     })[0];
 
-    const forbiddenAuxilaryMeanings = queueItem.auxiliary_meanings.filter(
+    const forbiddenAuxiliaryMeanings = queueItem.auxiliary_meanings.filter(
       (auxMeaning) => auxMeaning.type === "blacklist"
     );
     const answers = getAnswersForMeaningReviews({
@@ -42,7 +42,7 @@ describe("getAnswersForMeaningReviews", () => {
     });
 
     const answersContainAllAcceptedAuxMeanings =
-      forbiddenAuxilaryMeanings.every((auxMeaning) =>
+      forbiddenAuxiliaryMeanings.every((auxMeaning) =>
         answers.every(
           (subjMeaning: SubjectMeaning) =>
             subjMeaning.meaning !== auxMeaning.meaning
