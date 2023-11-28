@@ -22,7 +22,7 @@ export interface QueueActions {
   resetAll: () => void;
 }
 
-const initialState: QueueState = {
+export const initialState: QueueState = {
   isSubmittingAnswer: false,
   isBottomSheetVisible: false,
   popoverInfo: { message: "", messageType: "invalid" },

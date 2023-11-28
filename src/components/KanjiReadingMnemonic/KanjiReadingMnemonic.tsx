@@ -1,9 +1,9 @@
-import { IonIcon } from "@ionic/react";
 import { Kanji, Subject } from "../../types/Subject";
 import Hint from "../Hint";
 import TxtWithSubjTags from "../TxtWithSubjTags/TxtWithSubjTags";
 import UserNote from "../UserNote";
-import ReadingIcon from "../../images/reading.svg";
+import SvgIcon from "../SvgIcon";
+import ReadingIcon from "../../images/reading.svg?react";
 import { IconHeadingContainer } from "../../styles/BaseStyledComponents";
 import {
   SubjDetailSection,
@@ -18,7 +18,7 @@ function KanjiReadingMnemonic({ kanji }: Props) {
   return (
     <SubjDetailSection>
       <IconHeadingContainer>
-        <IonIcon src={ReadingIcon} />
+        <SvgIcon icon={<ReadingIcon />} width="1.5em" height="1.5em" />
         <SubjDetailSubHeading>Reading Mnemonic</SubjDetailSubHeading>
       </IconHeadingContainer>
       <TxtWithSubjTags textWithTags={kanji.reading_mnemonic!} />

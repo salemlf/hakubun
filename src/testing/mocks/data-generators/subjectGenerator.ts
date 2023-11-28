@@ -27,6 +27,8 @@ type GenerateSubjParams = {
   subjType?: SubjectType;
   imagesOnly?: boolean;
   level?: number;
+  hasAllowedAuxMeanings?: boolean;
+  hasForbiddenAuxMeanings?: boolean;
 };
 
 // TODO: account for hidden subjects
@@ -34,6 +36,8 @@ type GenerateSubjParams = {
 export const generateSubject = ({
   subjType,
   imagesOnly = false,
+  hasAllowedAuxMeanings = true,
+  hasForbiddenAuxMeanings = true,
   level,
 }: GenerateSubjParams): Subject => {
   const selectedSubjType =
@@ -70,7 +74,10 @@ export const generateSubject = ({
     amalgamation_subject_ids: hasAmalgamationSubjectIds
       ? getRandomIntArr(1, 5, 1, 100000)
       : undefined,
-    auxiliary_meanings: generateAuxiliaryMeanings(),
+    auxiliary_meanings: generateAuxiliaryMeanings(
+      hasAllowedAuxMeanings,
+      hasForbiddenAuxMeanings
+    ),
     url: faker.internet.url(),
     characters: !imagesOnly ? jaChars : null,
     character_images: charImages,
@@ -116,13 +123,22 @@ type GeneratePreFlattenedSubjParams = {
   subjType?: SubjectType;
   imagesOnly?: boolean;
   level?: number;
+  hasAllowedAuxMeanings?: boolean;
+  hasForbiddenAuxMeanings?: boolean;
 };
 
 export const generatePreFlattenedSubject = ({
   subjType,
   level,
+  hasAllowedAuxMeanings,
+  hasForbiddenAuxMeanings,
 }: GeneratePreFlattenedSubjParams): PreFlattenedSubject => {
-  const subject: Subject = generateSubject({ subjType, level });
+  const subject: Subject = generateSubject({
+    subjType,
+    level,
+    hasAllowedAuxMeanings,
+    hasForbiddenAuxMeanings,
+  });
 
   const subjectAttrs: SubjectAttrs = subject as SubjectAttrs;
   delete subject.useImage;
@@ -144,17 +160,26 @@ type PreFlattenedSubjArrGeneratorParams = {
   numSubjects: number;
   subjTypes?: SubjectType;
   level?: number;
+  hasAllowedAuxMeanings?: boolean;
+  hasForbiddenAuxMeanings?: boolean;
 };
 
 export const generatePreflattenedSubjArray = ({
   numSubjects,
   subjTypes,
   level,
+  hasAllowedAuxMeanings,
+  hasForbiddenAuxMeanings,
 }: PreFlattenedSubjArrGeneratorParams): PreFlattenedSubject[] => {
   const mockPreFlattenedSubjs: PreFlattenedSubject[] = Array.from(
     { length: numSubjects },
     () => {
-      return generatePreFlattenedSubject({ subjType: subjTypes, level });
+      return generatePreFlattenedSubject({
+        subjType: subjTypes,
+        level,
+        hasAllowedAuxMeanings,
+        hasForbiddenAuxMeanings,
+      });
     }
   );
 
@@ -166,6 +191,8 @@ type SubjArrGeneratorParams = {
   subjTypes?: SubjectType;
   imagesOnly?: boolean;
   level?: number;
+  hasAllowedAuxMeanings?: boolean;
+  hasForbiddenAuxMeanings?: boolean;
 };
 
 export const generateSubjArray = ({
@@ -173,28 +200,57 @@ export const generateSubjArray = ({
   subjTypes,
   imagesOnly = false,
   level,
+  hasAllowedAuxMeanings,
+  hasForbiddenAuxMeanings,
 }: SubjArrGeneratorParams): Subject[] => {
   const mockSubjs: Subject[] = Array.from({ length: numSubjects }, () => {
-    return generateSubject({ subjType: subjTypes, imagesOnly, level });
+    return generateSubject({
+      subjType: subjTypes,
+      imagesOnly,
+      level,
+      hasAllowedAuxMeanings,
+      hasForbiddenAuxMeanings,
+    });
   });
 
   return mockSubjs;
 };
 
-const generateAuxiliaryMeanings = (): SubjectAuxiliaryMeaning[] => {
+// TODO: maybe make sure mockAllowedMeanings and mockForbiddenMeanings don't overlap in meanings?...
+// TODO: ...very unlikely to happen though
+const generateAuxiliaryMeanings = (
+  hasAllowed: boolean,
+  hasForbidden: boolean
+): SubjectAuxiliaryMeaning[] => {
   // using "whitelist" and "blacklist" is icky, but they're the values in the API unfortunately
-  const auxilaryMeaningType = ["whitelist", "blacklist"];
-  const numAuxMeanings = faker.number.int({ min: 0, max: 5 });
+  const numAuxMeaningsPerType = faker.number.int({ min: 1, max: 5 });
+  const numAllowedAux = hasAllowed ? numAuxMeaningsPerType : 0;
+  const numForbiddenAux = hasForbidden ? numAuxMeaningsPerType : 0;
 
-  const mockAuxiliaryMeanings: SubjectAuxiliaryMeaning[] = Array.from(
-    { length: numAuxMeanings },
+  const mockAllowedMeanings: SubjectAuxiliaryMeaning[] = Array.from(
+    { length: numAllowedAux },
     () => {
       return {
-        meaning: faker.helpers.arrayElement(auxilaryMeaningType),
-        type: faker.word.words(1),
+        meaning: faker.word.words({ count: { min: 1, max: 4 } }),
+        type: "whitelist",
       };
     }
   );
+
+  const mockForbiddenMeanings: SubjectAuxiliaryMeaning[] = Array.from(
+    { length: numForbiddenAux },
+    () => {
+      return {
+        meaning: faker.word.words({ count: { min: 1, max: 4 } }),
+        type: "blacklist",
+      };
+    }
+  );
+
+  const mockAuxiliaryMeanings = [
+    ...mockAllowedMeanings,
+    ...mockForbiddenMeanings,
+  ];
 
   return mockAuxiliaryMeanings;
 };

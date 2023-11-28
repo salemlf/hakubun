@@ -25,7 +25,7 @@ export interface UserSettingsActions {
   setPrefersDarkModeTheme: (isDarkMode: boolean) => void;
 }
 
-const initialState: UserSettingsState = {
+export const initialState: UserSettingsState = {
   pronunciationVoice: {
     id: "female_tokyo",
     details: {

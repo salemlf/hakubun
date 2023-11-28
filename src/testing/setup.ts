@@ -1,6 +1,5 @@
 import { setupIonicReact } from "@ionic/react";
 import { expect, afterEach, vi } from "vitest";
-import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { server } from "./mocks/server";
@@ -38,6 +37,8 @@ Object.defineProperty(window, "matchMedia", {
   })),
 });
 
+HTMLMediaElement.prototype.pause = vi.fn();
+
 vi.mock("zustand");
 
 // extends Vitest's expect method with methods from react-testing-library
@@ -53,7 +54,6 @@ beforeAll(() => server.listen());
 // clean up after each test case
 afterEach(() => {
   server.resetHandlers();
-  cleanup();
 });
 
 // clean up after the tests are finished.

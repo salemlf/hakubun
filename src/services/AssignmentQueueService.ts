@@ -11,6 +11,7 @@ import {
 import Fuse from "fuse.js";
 import { getNumObjsWithDistinctPropValue } from "../utils";
 import { INVALID_ANSWER_CHARS } from "../constants";
+import { displayToast } from "../components/Toast/Toast.service";
 import {
   GroupedReviewItems,
   ReviewAnswerValidResult,
@@ -270,15 +271,24 @@ export const getAnswersForMeaningReviews = ({
   reviewItem,
   acceptedAnswersOnly,
 }: AnswersForReviewsParams) => {
-  let answers = reviewItem["meanings"];
+  const answers = reviewItem["meanings"];
+  const auxiliaryMeanings = reviewItem["auxiliary_meanings"];
+  const acceptedAuxiliaryMeanings = auxiliaryMeanings
+    .filter((auxiliaryMeaning) => auxiliaryMeaning.type === "whitelist")
+    .map((auxiliaryMeaning) => auxiliaryMeaning.meaning);
 
+  // don't think this is really possible tbh
   if (answers === undefined) {
     return [];
   }
 
-  let acceptableUserAnswers = convertUserMeaningsToAcceptableAnswers(
-    reviewItem["meaning_synonyms"]
-  );
+  const answersToConvert = [
+    ...reviewItem["meaning_synonyms"],
+    ...acceptedAuxiliaryMeanings,
+  ];
+
+  const acceptableUserAnswers =
+    convertUserMeaningsToAcceptableAnswers(answersToConvert);
 
   return acceptedAnswersOnly
     ? [
@@ -332,20 +342,34 @@ export const isUserMeaningAnswerCorrect = (
   reviewItem: AssignmentQueueItem,
   userAnswer: string
 ) => {
-  let answersWithSynonyms = getAnswersForMeaningReviews({
+  const forbiddenAnswers = reviewItem["auxiliary_meanings"]
+    .filter((auxiliaryMeaning) => auxiliaryMeaning.type === "blacklist")
+    .map((auxiliaryMeaning) => auxiliaryMeaning.meaning);
+  if (forbiddenAnswers.includes(userAnswer)) {
+    displayToast({
+      toastType: "warning",
+      title: "Forbidden Answer",
+      content:
+        "You entered a meaning answer that's forbidden by the WaniKani API!",
+      timeout: 10000,
+    });
+    return false;
+  }
+
+  const answersWithSynonyms = getAnswersForMeaningReviews({
     reviewItem: reviewItem,
     acceptedAnswersOnly: true,
   });
 
   // TODO: update this based on user settings once those are implemented, allow strict meanings (0.0 threshold, and prob just apply to vocab)
   // meanings allow some typos/mistakes
-  let options = {
+  const options = {
     keys: ["meaning", "synonyms"],
     threshold: 0.2,
     distance: 20,
   };
-  let fuse = new Fuse(answersWithSynonyms, options);
-  let meaningsMatched = fuse.search(userAnswer);
+  const fuse = new Fuse(answersWithSynonyms, options);
+  const meaningsMatched = fuse.search(userAnswer);
   return meaningsMatched.length !== 0;
 };
 

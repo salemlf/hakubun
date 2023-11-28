@@ -13,7 +13,7 @@ export interface ForeCastTotalsActions {
   resetAll: () => void;
 }
 
-const initialState: ForeCastTotalsState = {
+export const initialState: ForeCastTotalsState = {
   runningTotalAvailableReviews: [],
 };
 

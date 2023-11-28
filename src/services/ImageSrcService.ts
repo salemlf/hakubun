@@ -22,7 +22,7 @@ const sortCharacterImages = (
   imgA: SubjectCharacterImage,
   imgB: SubjectCharacterImage
 ) => {
-  let pngFileType = "image/png";
+  const pngFileType = "image/png";
 
   if (imgA.content_type === pngFileType && imgB.content_type !== pngFileType) {
     return 1;
@@ -34,10 +34,13 @@ const sortCharacterImages = (
 };
 
 export const setSubjectAvailImgs = (subject: Subject) => {
-  let updatedSubj = subject;
+  const updatedSubj = subject;
   if (updatedSubj.characters === null || updatedSubj.characters === "") {
-    let imagesSorted = updatedSubj.character_images?.sort(sortCharacterImages);
-    let imageUrls = imagesSorted?.map((image: any) => image.url);
+    const imagesSorted =
+      updatedSubj.character_images?.sort(sortCharacterImages);
+    const imageUrls = imagesSorted?.map(
+      (image: SubjectCharacterImage) => image.url
+    );
 
     updatedSubj.availableImages = imageUrls;
     updatedSubj.useImage = true;
@@ -80,38 +83,18 @@ type ButtonImgProps = {
   numItems: number;
 };
 
-export const setButtonImgSrc = ({ btnType, numItems }: ButtonImgProps) => {
-  let imgNums = btnImgSrcs[btnType].imgNums;
-  console.log(
-    "🚀 ~ file: ImageSrcService.tsx:104 ~ setButtonImgSrc ~ imgNums:",
-    imgNums
-  );
-  let maxedOut = imgNums.at(-1);
-
-  let imageClassNum = Math.min(
-    ...imgNums.filter((num: number) => num >= numItems)
-  );
-
-  let bgVarName =
-    imageClassNum == Infinity
-      ? `${btnType}BgImg${maxedOut}`
-      : `${btnType}BgImg${imageClassNum}`;
-
-  return bgVarName;
-};
-
 export const setBtnBackground = ({ btnType, numItems }: ButtonImgProps) => {
-  let imgNums = btnImgSrcs[btnType].imgNums;
-  let maxedOut = imgNums.at(-1);
+  const imgNums = btnImgSrcs[btnType].imgNums;
+  const maxedOut = imgNums[imgNums.length - 1];
 
-  let imageClassNum = Math.min(
+  const imageClassNum = Math.min(
     ...imgNums.filter((num: number) => num >= numItems)
   );
 
-  let bgVarName =
+  const bgVarName =
     imageClassNum == Infinity
       ? `${btnType}BgImg${maxedOut}`
       : `${btnType}BgImg${imageClassNum}`;
-  let bgSrc = btnImgSrcs[btnType].bgImages[bgVarName as keyof object];
+  const bgSrc = btnImgSrcs[btnType].bgImages[bgVarName as keyof object];
   return bgSrc;
 };

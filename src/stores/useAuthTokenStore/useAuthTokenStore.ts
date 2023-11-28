@@ -27,7 +27,7 @@ const storage: StateStorage = {
   },
 };
 
-const initialState: AuthTokenState = {
+export const initialState: AuthTokenState = {
   authToken: null,
   isAuthenticated: false,
   isAuthLoading: false,

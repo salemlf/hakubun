@@ -59,10 +59,10 @@ type RandomQueueItemsGeneratorParams = Omit<
 
 export const generateRandomQueueItems = ({
   numItems,
+  queueProgressState,
   areLessons,
   level,
   backToBackChoice,
-  queueProgressState,
   allCorrect,
 }: RandomQueueItemsGeneratorParams): AssignmentQueueItem[] => {
   const mockSubjects = generateSubjArray({ numSubjects: numItems, level });

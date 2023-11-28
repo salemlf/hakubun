@@ -4,14 +4,22 @@ import useQueueStoreFacade from "./useQueueStore.facade";
 describe("useQueueStore", () => {
   test("Initial values are as expected", async () => {
     const { result } = renderHook(() => useQueueStoreFacade());
-    expect(result.current.isSubmittingAnswer).toEqual(false);
-    expect(result.current.isBottomSheetVisible).toEqual(false);
-    expect(result.current.popoverInfo).toEqual({
-      message: "",
-      messageType: "invalid",
-    });
-    expect(result.current.displayPopoverMsg).toEqual(false);
-    expect(result.current.savedUserAnswer).toEqual(null);
+
+    expect(result.current.isSubmittingAnswer).toEqual(
+      result.current.initialState.isSubmittingAnswer
+    );
+    expect(result.current.isBottomSheetVisible).toEqual(
+      result.current.initialState.isBottomSheetVisible
+    );
+    expect(result.current.popoverInfo).toEqual(
+      result.current.initialState.popoverInfo
+    );
+    expect(result.current.displayPopoverMsg).toEqual(
+      result.current.initialState.displayPopoverMsg
+    );
+    expect(result.current.savedUserAnswer).toEqual(
+      result.current.initialState.savedUserAnswer
+    );
   });
 
   test("isSubmittingAnswer updates", () => {

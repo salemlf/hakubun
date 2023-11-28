@@ -3,6 +3,7 @@ import {
   LessonPaginatorState,
   LessonPaginatorActions,
   useLessonPaginatorStore,
+  initialState,
 } from "./useLessonPaginatorStore";
 
 // using facade pattern, cleaner to use in components and easier to replace zustand in future if necessary
@@ -12,7 +13,7 @@ const useLessonPaginatorStoreFacade = () => {
     currentLessonDir,
     setCurrentLessonPageAndDir,
     reset,
-  } = useLessonPaginatorStore(
+  }: LessonPaginatorState & LessonPaginatorActions = useLessonPaginatorStore(
     useShallow((state: LessonPaginatorState & LessonPaginatorActions) => ({
       currentLessonPage: state.currentLessonPage,
       currentLessonDir: state.currentLessonDir,
@@ -26,6 +27,8 @@ const useLessonPaginatorStoreFacade = () => {
     currentLessonDir,
     setCurrentLessonPageAndDir,
     reset,
+    // exporting to check that state is reset properly
+    initialState,
   };
 };
 

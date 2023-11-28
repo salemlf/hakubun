@@ -14,6 +14,7 @@ import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUse
 import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 
+// TODO: refactor this, kinda a mess
 export const useAssignmentQueue = () => {
   const {
     showPopoverMsg,

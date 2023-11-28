@@ -11,7 +11,7 @@ export interface UserInfoActions {
   reset: () => void;
 }
 
-const initialState: UserInfoState = {
+export const initialState: UserInfoState = {
   userInfo: undefined,
 };
 

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { IonIcon } from "@ionic/react";
 import {
   useMotionValue,
   useTransform,
@@ -17,8 +16,9 @@ import AssignmentCharAndType from "./AssignmentCharAndType";
 import AssignmentAnswerInput from "./AssignmentAnswerInput";
 import ReviewItemBottomSheet from "../ReviewItemBottomSheet";
 import Emoji from "../Emoji";
-import RetryIcon from "../../images/retry.svg";
-import NextIcon from "../../images/next-item.svg";
+import SvgIcon from "../SvgIcon";
+import RetryIcon from "../../images/retry.svg?react";
+import NextIcon from "../../images/next-item.svg?react";
 import {
   NextCardOverlay,
   RetryCardOverlay,
@@ -249,7 +249,7 @@ export const AssignmentQueueCard = ({
             >
               <SwipeIconAndText>
                 <Retry>
-                  <IonIcon icon={RetryIcon}></IonIcon>
+                  <SvgIcon icon={<RetryIcon />} width="85px" height="85px" />
                 </Retry>
                 <RetryTxt>Retry</RetryTxt>
               </SwipeIconAndText>
@@ -261,7 +261,7 @@ export const AssignmentQueueCard = ({
             >
               <SwipeIconAndText>
                 <Next>
-                  <IonIcon icon={NextIcon}></IonIcon>
+                  <SvgIcon icon={<NextIcon />} width="85px" height="85px" />
                 </Next>
                 <NextTxt>Next</NextTxt>
               </SwipeIconAndText>

@@ -16,7 +16,8 @@ export interface AssignmentSubmitActions {
   setShouldBatchSubmit: (shouldBatchSubmit: boolean) => void;
   resetAll: () => void;
 }
-const initialState: AssignmentSubmitState = {
+
+export const initialState: AssignmentSubmitState = {
   submittedAssignmentsWithErrs: [],
   submittedAssignmentQueueItems: [],
   shouldBatchSubmit: false,
