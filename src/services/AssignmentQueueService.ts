@@ -11,6 +11,7 @@ import {
 import Fuse from "fuse.js";
 import { getNumObjsWithDistinctPropValue } from "../utils";
 import { INVALID_ANSWER_CHARS } from "../constants";
+import { displayToast } from "../components/Toast/Toast.service";
 import {
   GroupedReviewItems,
   ReviewAnswerValidResult,
@@ -349,7 +350,13 @@ export const isUserMeaningAnswerCorrect = (
     .filter((auxilaryMeaning) => auxilaryMeaning.type === "blacklist")
     .map((auxilaryMeaning) => auxilaryMeaning.meaning);
   if (forbiddenAnswers.includes(userAnswer)) {
-    // TODO: display a toast letting user know they entered a forbidden answer
+    displayToast({
+      toastType: "warning",
+      title: "Forbidden Answer",
+      content:
+        "You entered a meaning answer that's forbidden by the WaniKani API!",
+      timeout: 10000,
+    });
     return false;
   }
 
