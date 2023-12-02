@@ -22,8 +22,15 @@ body {
   color: var(--text-color);
 
   // to account for ios device notches
+  // older versions of ios
+  margin-top: constant(safe-area-inset-top);
+  margin-bottom: constant(safe-area-inset-bottom);
+  margin-left: constant(safe-area-inset-left);
+  margin-right: constant(safe-area-inset-right);
+
+  // newer versions of ios
   margin-top: env(safe-area-inset-top);
-  margin-bottom: calc(4px + env(safe-area-inset-bottom));
+  margin-bottom: env(safe-area-inset-bottom);
   margin-left: env(safe-area-inset-left);
   margin-right: env(safe-area-inset-right);
 }
