@@ -20,6 +20,12 @@ body {
   // to avoid absolute positioning issues based on viewport
   position: relative;
   color: var(--text-color);
+
+  // to account for ios device notches
+  margin-top: env(safe-area-inset-top);
+  margin-bottom: calc(4px + env(safe-area-inset-bottom));
+  margin-left: env(safe-area-inset-left);
+  margin-right: env(safe-area-inset-right);
 }
 
 h1,
