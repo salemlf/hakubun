@@ -16,6 +16,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { SafeArea } from "capacitor-plugin-safe-area";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { routes } from "./navigation/routes";
@@ -138,6 +139,29 @@ const App: React.FC = () => {
 
     Sentry.setUser({ username: `${userInfo.username}` });
   }
+
+  useEffect(() => {
+    SafeArea.getSafeAreaInsets().then(({ insets }) => {
+      console.log(insets);
+    });
+
+    SafeArea.getStatusBarHeight().then(({ statusBarHeight }) => {
+      console.log(statusBarHeight, "statusbarHeight");
+    });
+
+    SafeArea.addListener("safeAreaChanged", (data) => {
+      const { insets } = data;
+      for (const [key, value] of Object.entries(insets)) {
+        document.documentElement.style.setProperty(
+          `--safe-area-${key}`,
+          `${value}px`
+        );
+      }
+    });
+    return () => {
+      SafeArea.removeAllListeners();
+    };
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
