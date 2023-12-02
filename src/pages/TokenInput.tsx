@@ -237,7 +237,7 @@ const TokenInput = () => {
         <Content $bgimg={bgImg}>
           <HeadingAndLogoContainer>
             <LogoContainer>
-              <SvgIcon icon={<LogoIcon />} width="100%" height="25vh" />
+              <SvgIcon icon={<LogoIcon />} width="45vw" height="25vh" />
             </LogoContainer>
             <FallingText text="Hakubun" delay={0.5} duration={0.25} />
           </HeadingAndLogoContainer>
