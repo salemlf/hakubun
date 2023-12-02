@@ -32,6 +32,7 @@
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
     "axios": "^1.6.0",
+    "capacitor-plugin-safe-area": "^2.0.6",
     "framer-motion": "^10.12.21",
     "fuse.js": "^6.6.2",
     "ionicons": "^7.0.0",
