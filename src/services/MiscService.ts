@@ -179,15 +179,21 @@ export const getAudioUrlByGender = (
 };
 
 // TODO: add tests for this
-export const getAudioForReading = (
+export const getAudiosForReading = (
   audioItems: PronunciationAudio[],
   userAnswer: string,
   voice: PronunciationVoice,
   primaryReadingFallback?: string
-) => {
+): PronunciationAudio[] => {
   const nonOggAudioItems = audioItems.filter(
     (audioItem) => audioItem.content_type !== "audio/ogg"
   );
+  // *testing
+  console.log(
+    "🚀 ~ file: MiscService.ts:191 ~ nonOggAudioItems:",
+    nonOggAudioItems
+  );
+  // *testing
 
   const hiraganaFallback =
     primaryReadingFallback && convertToHiragana(primaryReadingFallback);
@@ -195,7 +201,7 @@ export const getAudioForReading = (
   const audioByReading = findAudioByPronunciation(userAnswer, nonOggAudioItems);
 
   if (audioByReading.length > 0) {
-    return findVoiceInPronunciationAudio(voice, audioByReading).url;
+    return findVoiceInPronunciationAudios(voice, audioByReading);
   }
 
   if (primaryReadingFallback) {
@@ -205,7 +211,7 @@ export const getAudioForReading = (
     );
 
     if (foundWithPrimary.length > 0) {
-      return findVoiceInPronunciationAudio(voice, foundWithPrimary).url;
+      return findVoiceInPronunciationAudios(voice, foundWithPrimary);
     }
 
     if (hiraganaFallback) {
@@ -215,13 +221,13 @@ export const getAudioForReading = (
       );
 
       if (audioFilesFound.length > 0) {
-        return findVoiceInPronunciationAudio(voice, audioFilesFound).url;
+        return findVoiceInPronunciationAudios(voice, audioFilesFound);
       }
     }
   }
 
-  // rn just returning empty string as last fallback, don't think this should ever happen?
-  return "";
+  // rn just returning empty array as last fallback, don't think this should ever happen?
+  return [];
 };
 
 export const findAudioByPronunciation = (
@@ -234,22 +240,22 @@ export const findAudioByPronunciation = (
   );
 };
 
-export const findVoiceInPronunciationAudio = (
+export const findVoiceInPronunciationAudios = (
   voice: PronunciationVoice,
   audioItems: PronunciationAudio[]
-) => {
-  const exactMatch = audioItems.find(
+): PronunciationAudio[] => {
+  const exactMatches = audioItems.filter(
     (audioOption: PronunciationAudio) =>
       audioOption.metadata.gender === voice.details.gender &&
       audioOption.metadata.voice_description ===
         `${voice.details.accent} accent`
   );
 
-  if (exactMatch) {
-    return exactMatch;
+  if (exactMatches) {
+    return exactMatches;
   }
 
-  let sameGenderAudioBackup = audioItems.find(
+  let sameGenderAudioBackup = audioItems.filter(
     (audioOption: PronunciationAudio) =>
       audioOption.metadata.gender === voice.details.gender
   );
@@ -258,7 +264,7 @@ export const findVoiceInPronunciationAudio = (
     return sameGenderAudioBackup;
   }
 
-  let backupMatch = audioItems[0];
+  let backupMatch = audioItems;
   return backupMatch;
 };
 

@@ -557,6 +557,7 @@ export const convertToHiragana = (japanese: string) => {
   return japanese;
 };
 
+// TODO: check that this works for ios/safari
 export const playAudioForAssignmentQueueItem = (url: string) => {
   let audio = new Audio(url!);
   audio.play();

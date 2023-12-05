@@ -6,7 +6,7 @@ import {
 } from "../../services/AssignmentQueueService";
 import {
   capitalizeWord,
-  getAudioForReading,
+  getAudiosForReading,
   getSrsNameBySrsLvl,
 } from "../../services/MiscService";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
@@ -77,12 +77,13 @@ export const useAssignmentQueue = () => {
       let primaryReading =
         primaryReadingMap[assignmentQueueItem.object as string];
 
-      let userAnswerReadingOrPrimaryFallback = getAudioForReading(
+      // TODO: mehhh workaround where just choosing first item in array, change
+      let userAnswerReadingOrPrimaryFallback = getAudiosForReading(
         assignmentQueueItem.pronunciation_audios!,
         userAnswer,
         pronunciationVoice,
         primaryReading
-      );
+      )[0].url;
 
       playAudioForAssignmentQueueItem(userAnswerReadingOrPrimaryFallback);
     }
