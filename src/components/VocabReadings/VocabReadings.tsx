@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useAudio } from "../../hooks/useAudio";
-import { getAudioForReading } from "../../services/MiscService";
+import { getAudiosForReading } from "../../services/MiscService";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import {
@@ -44,26 +44,51 @@ const AudioBtnVariants = {
 
 type AudioProps = {
   reading: string;
-  url: string;
+  audioItems: PronunciationAudio[];
 };
 
-const AudioBtn = ({ url, reading }: AudioProps) => {
-  const [playing, toggle] = useAudio(url);
+const AudioBtn = ({ audioItems, reading }: AudioProps) => {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    const currAudioRef = audioRef.current;
+    currAudioRef?.addEventListener("ended", () => setIsPlaying(false));
+    return () => {
+      currAudioRef?.removeEventListener("ended", () => setIsPlaying(false));
+    };
+  }, []);
+
+  const playAudio = () => {
+    setIsPlaying(true);
+    audioRef.current?.play();
+  };
 
   return (
     <AudioBtnContainer
       variants={AudioBtnVariants}
       initial="initial"
-      animate={playing ? "animate" : "initial"}
+      animate={isPlaying ? "animate" : "initial"}
     >
       <Btn
         aria-label={`Pronunciation audio for ${reading} reading`}
-        onPress={toggle}
+        onPress={playAudio}
         backgroundColor="var(--ion-color-tertiary)"
         color="black"
       >
+        <audio ref={audioRef} preload="auto">
+          {audioItems.map((audioItem: PronunciationAudio, index: number) => {
+            return (
+              <source
+                key={`audio_${index}`}
+                src={audioItem.url}
+                type={audioItem.content_type}
+              ></source>
+            );
+          })}
+        </audio>
         <SvgIcon
-          icon={playing ? <SoundIcon /> : <SoundOffIcon />}
+          icon={isPlaying ? <SoundIcon /> : <SoundOffIcon />}
           width="1em"
           height="1em"
         />
@@ -125,7 +150,12 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
                     ) ? (
                       <AudioBtn
                         reading={vocabReading.reading}
-                        url={getAudioForReading(
+                        // url={getAudioForReading(
+                        //   vocab.pronunciation_audios,
+                        //   vocabReading.reading,
+                        //   pronunciationVoice
+                        // )}
+                        audioItems={getAudiosForReading(
                           vocab.pronunciation_audios,
                           vocabReading.reading,
                           pronunciationVoice
