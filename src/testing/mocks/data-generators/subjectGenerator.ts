@@ -1,12 +1,13 @@
 import { faker, fakerJA } from "@faker-js/faker";
 import { getRandomIntArr } from "../../../utils";
-import { ALL_SUBJECT_TYPES, PARTS_OF_SPEECH } from "../../../constants";
 import {
-  getRandomAccent,
-  getRandomLevel,
-  getRandomVoiceActorID,
-} from "./generatorUtils";
+  ALL_SUBJECT_TYPES,
+  AUDIO_VOICES,
+  PARTS_OF_SPEECH,
+} from "../../../constants";
+import { getRandomLevel, getRandomVoiceActorID } from "./generatorUtils";
 import { setSubjectAvailImgs } from "../../../services/ImageSrcService";
+import { capitalizeWord } from "../../../services/MiscService";
 import {
   AudioMetadata,
   ContextSentence,
@@ -22,6 +23,7 @@ import {
   SubjectReading,
   SubjectType,
 } from "../../../types/Subject";
+import { PronunciationVoice } from "../../../types/UserSettingsTypes";
 
 type GenerateSubjParams = {
   subjType?: SubjectType;
@@ -29,7 +31,10 @@ type GenerateSubjParams = {
   level?: number;
   hasAllowedAuxMeanings?: boolean;
   hasForbiddenAuxMeanings?: boolean;
+  includeOggAudio?: boolean;
 };
+
+const AUDIO_CONTENT_TYPES = ["audio/mpeg", "audio/ogg", "audio/webm"];
 
 // TODO: account for hidden subjects
 // TODO: improve generation of meaning/reading mnemonics and hints so includes tags for subjects
@@ -38,6 +43,7 @@ export const generateSubject = ({
   imagesOnly = false,
   hasAllowedAuxMeanings = true,
   hasForbiddenAuxMeanings = true,
+  includeOggAudio = false,
   level,
 }: GenerateSubjParams): Subject => {
   const selectedSubjType =
@@ -103,7 +109,7 @@ export const generateSubject = ({
       ? faker.lorem.paragraph({ min: 1, max: 3 })
       : undefined,
     pronunciation_audios: isGeneralVocabType
-      ? generatePronunciationAudios(readingsForMockAudio)
+      ? generatePronunciationAudios(readingsForMockAudio, includeOggAudio)
       : undefined,
     parts_of_speech: isGeneralVocabType ? generatePartsOfSpeech() : undefined,
     context_sentences: isGeneralVocabType
@@ -319,7 +325,7 @@ const generateSubjectMeanings = (): SubjectMeaning[] => {
   return mockSubjMeaningsWithMinPrimaryAndAccepted;
 };
 
-const generateSubjReadings = (): SubjectReading[] => {
+export const generateSubjReadings = (): SubjectReading[] => {
   const numReadings = faker.number.int({ min: 1, max: 5 });
   const mockSubjReadings: SubjectReading[] = Array.from(
     { length: numReadings },
@@ -413,7 +419,7 @@ const generateMeaningHint = (subjType: SubjectType): string | null => {
   return faker.lorem.paragraph({ min: 1, max: 3 });
 };
 
-const getReadingsForMockAudio = (
+export const getReadingsForMockAudio = (
   subjType: SubjectType,
   characters: string | null,
   readings?: SubjectReading[]
@@ -431,9 +437,14 @@ const getReadingsForMockAudio = (
 };
 
 // TODO: make sure pronunciationsForReading for each reading is unique
-const generatePronunciationAudios = (
-  readings: string[]
+export const generatePronunciationAudios = (
+  readings: string[],
+  includeOggAudio: boolean
 ): PronunciationAudio[] => {
+  const audioTypesWithoutOgg = AUDIO_CONTENT_TYPES.filter(
+    (audioType) => audioType !== "audio/ogg"
+  );
+
   const mockPronunciations: PronunciationAudio[] = [];
   readings.forEach((reading) => {
     const numPronunciations = faker.number.int({
@@ -446,32 +457,94 @@ const generatePronunciationAudios = (
       () => {
         return {
           url: faker.internet.url(),
-          content_type: faker.image.dataUri(),
+          content_type: generateAudioContentType(),
           metadata: generateAudioMetadata(reading),
         };
       }
     );
+    if (
+      includeOggAudio &&
+      !pronunciationsForReading.some(
+        (pronunciation) => pronunciation.content_type === "audio/ogg"
+      )
+    ) {
+      const randomIndex = faker.number.int({
+        min: 0,
+        max: pronunciationsForReading.length - 1,
+      });
+      pronunciationsForReading[randomIndex].content_type = "audio/ogg";
+    }
+
+    // ensures non-ogg audio exists for readings
+    if (
+      pronunciationsForReading.every(
+        (pronunciation) => pronunciation.content_type === "audio/ogg"
+      )
+    ) {
+      const randomIndex = faker.number.int({
+        min: 0,
+        max: pronunciationsForReading.length - 1,
+      });
+      const randomAudioType = faker.helpers.arrayElement(audioTypesWithoutOgg);
+      pronunciationsForReading[randomIndex].content_type = randomAudioType;
+    }
+
     mockPronunciations.push(...pronunciationsForReading);
   });
 
   return mockPronunciations;
 };
 
-// TODO: specify allow specifying accent and gender for function
+const generateAudioContentType = (): string => {
+  return faker.helpers.arrayElement(AUDIO_CONTENT_TYPES);
+};
+
 const generateAudioMetadata = (pronunciation: string): AudioMetadata => {
-  const audioAccent = getRandomAccent();
+  const selectedVoice = faker.helpers.arrayElement(AUDIO_VOICES);
 
   const mockAudioMetadata: AudioMetadata = {
-    // gotta use this binary shit cuz it's what the API returns lol
-    gender: faker.person.sex(),
+    gender: selectedVoice.details.gender,
     source_id: faker.number.int(),
     voice_actor_id: getRandomVoiceActorID(),
     pronunciation,
     voice_actor_name: fakerJA.person.firstName(),
-    voice_description: `${audioAccent} accent`,
+    voice_description: `${selectedVoice.details.accent} accent`,
   };
 
   return mockAudioMetadata;
+};
+
+export const generateVoiceFromAudioMetadata = (
+  metadata: AudioMetadata
+): PronunciationVoice => {
+  // gotta use this binary shit cuz it's what the API returns lol
+  const genderMetadata = metadata.gender as "male" | "female";
+
+  const accentMetadata = metadata.voice_description.split(" ")[0] as
+    | "Kyoto"
+    | "Tokyo";
+
+  const foundVoice = AUDIO_VOICES.find(
+    (voice) =>
+      voice.details.gender === genderMetadata &&
+      voice.details.accent === accentMetadata
+  );
+
+  if (foundVoice) {
+    return foundVoice;
+  }
+
+  // this case should prob never occur
+  const mockVoice: PronunciationVoice = {
+    id: metadata.voice_actor_id.toString(),
+    details: {
+      gender: genderMetadata,
+      accent: accentMetadata,
+    },
+    displayName: `${capitalizeWord(genderMetadata)}, ${accentMetadata} accent`,
+  };
+
+  return mockVoice;
 };
 
 const generatePartsOfSpeech = (): string[] => {
