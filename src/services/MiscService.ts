@@ -178,16 +178,21 @@ export const getAudioUrlByGender = (
   return audio?.url;
 };
 
+// TODO: add tests for this
 export const getAudioForReading = (
   audioItems: PronunciationAudio[],
   userAnswer: string,
   voice: PronunciationVoice,
   primaryReadingFallback?: string
 ) => {
+  const nonOggAudioItems = audioItems.filter(
+    (audioItem) => audioItem.content_type !== "audio/ogg"
+  );
+
   const hiraganaFallback =
     primaryReadingFallback && convertToHiragana(primaryReadingFallback);
 
-  const audioByReading = findAudioByPronunciation(userAnswer, audioItems);
+  const audioByReading = findAudioByPronunciation(userAnswer, nonOggAudioItems);
 
   if (audioByReading.length > 0) {
     return findVoiceInPronunciationAudio(voice, audioByReading).url;
@@ -196,7 +201,7 @@ export const getAudioForReading = (
   if (primaryReadingFallback) {
     const foundWithPrimary = findAudioByPronunciation(
       primaryReadingFallback,
-      audioItems
+      nonOggAudioItems
     );
 
     if (foundWithPrimary.length > 0) {
@@ -206,7 +211,7 @@ export const getAudioForReading = (
     if (hiraganaFallback) {
       const audioFilesFound = findAudioByPronunciation(
         hiraganaFallback,
-        audioItems
+        nonOggAudioItems
       );
 
       if (audioFilesFound.length > 0) {
@@ -233,15 +238,15 @@ export const findVoiceInPronunciationAudio = (
   voice: PronunciationVoice,
   audioItems: PronunciationAudio[]
 ) => {
-  let foundExactMatch = audioItems.find(
+  const exactMatch = audioItems.find(
     (audioOption: PronunciationAudio) =>
       audioOption.metadata.gender === voice.details.gender &&
       audioOption.metadata.voice_description ===
         `${voice.details.accent} accent`
   );
 
-  if (foundExactMatch) {
-    return foundExactMatch;
+  if (exactMatch) {
+    return exactMatch;
   }
 
   let sameGenderAudioBackup = audioItems.find(
