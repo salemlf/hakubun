@@ -2,17 +2,14 @@ import {
   calculateSRSLevel,
   checkIfReviewIsComplete,
   isUserAnswerCorrect,
-  playAudioForAssignmentQueueItem,
 } from "../../services/AssignmentQueueService";
-import {
-  capitalizeWord,
-  getAudiosForReading,
-  getSrsNameBySrsLvl,
-} from "../../services/MiscService";
+import { capitalizeWord, getSrsNameBySrsLvl } from "../../services/MiscService";
+import { getReadingAudio } from "../../services/AudioService";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import { SubjectReading } from "../../types/Subject";
 
 // TODO: refactor this, kinda a mess
 export const useAssignmentQueue = () => {
@@ -37,13 +34,13 @@ export const useAssignmentQueue = () => {
   const { pronunciationVoice } = useUserSettingsStoreFacade();
 
   const displaySRSStatus = (reviewItem: AssignmentQueueItem) => {
-    let endingSRS = reviewItem.ending_srs_stage!;
+    const endingSRS = reviewItem.ending_srs_stage!;
 
-    let hasIncreased = endingSRS > reviewItem.srs_stage;
-    let endingSRSName = capitalizeWord(getSrsNameBySrsLvl(endingSRS));
+    const hasIncreased = endingSRS > reviewItem.srs_stage;
+    const endingSRSName = capitalizeWord(getSrsNameBySrsLvl(endingSRS));
 
     // TODO: change to use more specific types that display up or down arrows based on correct/incorrect
-    let popoverToDisplay = hasIncreased
+    const popoverToDisplay = hasIncreased
       ? ({
           message: `Increasing to ${endingSRSName}...`,
           messageType: "correct",
@@ -56,36 +53,31 @@ export const useAssignmentQueue = () => {
     showPopoverMsg(popoverToDisplay);
   };
 
-  // TODO: clean up this logic
   const playAudioIfReadingAndAvailable = (
     assignmentQueueItem: AssignmentQueueItem,
     userAnswer: string
   ) => {
-    if (
-      (assignmentQueueItem.review_type === "reading" &&
-        assignmentQueueItem.object === "vocabulary") ||
-      (assignmentQueueItem.object === "kana_vocabulary" &&
-        assignmentQueueItem.pronunciation_audios !== undefined)
-    ) {
+    if (assignmentQueueItem.readingAudios) {
       const primaryReadingMap: { [index: string]: string | undefined } = {
         vocabulary: assignmentQueueItem.readings?.find(
-          (reading: any) => reading.primary === true
+          (reading: SubjectReading) => reading.primary === true
         )?.reading,
         kana_vocabulary: assignmentQueueItem.characters || undefined,
       };
 
-      let primaryReading =
+      const primaryReading =
         primaryReadingMap[assignmentQueueItem.object as string];
 
-      // TODO: mehhh workaround where just choosing first item in array, change
-      let userAnswerReadingOrPrimaryFallback = getAudiosForReading(
-        assignmentQueueItem.pronunciation_audios!,
+      const userAnswerReadingOrPrimaryFallback = getReadingAudio(
+        assignmentQueueItem.readingAudios,
         userAnswer,
         pronunciationVoice,
         primaryReading
-      )[0].url;
+      )[0];
 
-      playAudioForAssignmentQueueItem(userAnswerReadingOrPrimaryFallback);
+      if (userAnswerReadingOrPrimaryFallback) {
+        userAnswerReadingOrPrimaryFallback.audioFile.play();
+      }
     }
   };
 

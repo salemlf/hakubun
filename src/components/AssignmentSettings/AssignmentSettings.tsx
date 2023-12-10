@@ -13,6 +13,7 @@ import {
 } from "../../services/SubjectAndAssignmentService";
 import { capitalizeWord } from "../../services/MiscService";
 import { displayToast } from "../Toast/Toast.service";
+import { getReadingAudioFiles } from "../../services/AudioService";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import {
@@ -195,11 +196,18 @@ function AssignmentSettings({
       backToBackChoice
     );
 
+    const assignmentQueueWithReadingAudio = assignmentQueue.map((item) => {
+      return {
+        ...item,
+        readingAudios: getReadingAudioFiles(item, true),
+      };
+    });
+
     if (sessionData.assignmentBatch.length > MAX_ASSIGNMENTS_BEFORE_SUBMIT) {
       setShouldBatchSubmit(true);
     }
 
-    setAssignmentQueueData(assignmentQueue, settingsType);
+    setAssignmentQueueData(assignmentQueueWithReadingAudio, settingsType);
 
     if (settingsType === "review") {
       navigate("/reviews/session", { replace: true });
