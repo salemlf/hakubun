@@ -223,6 +223,7 @@ const TokenInput = () => {
     <HelpContentParagraph>
       You can find this on your{" "}
       <a
+        rel="noopener"
         href="https://www.wanikani.com/settings/personal_access_tokens"
         target="_blank"
       >
@@ -238,7 +239,7 @@ const TokenInput = () => {
         <Content $bgimg={bgImg}>
           <HeadingAndLogoContainer>
             <LogoContainer>
-              <SvgIcon icon={<LogoIcon />} width="100%" height="25vh" />
+              <SvgIcon icon={<LogoIcon />} width="45vw" height="25vh" />
             </LogoContainer>
             <FallingText text="Hakubun" delay={0.5} duration={0.25} />
           </HeadingAndLogoContainer>

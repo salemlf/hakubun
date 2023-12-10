@@ -7,7 +7,6 @@ import SubjectsIcon from "../../images/subjects.svg?react";
 import SearchIcon from "../../images/search.svg?react";
 import styled from "styled-components";
 
-// TODO: change to this once no longer using IonPage
 const TabBarContainer = styled(motion(NavigationMenu.Root))`
   width: 80%;
   min-width: 200px;
@@ -17,6 +16,8 @@ const TabBarContainer = styled(motion(NavigationMenu.Root))`
   left: 0;
   right: 0;
   bottom: 16px;
+  margin-bottom: calc(2.25 * constant(safe-area-inset-bottom));
+  margin-bottom: calc(2.25 * env(safe-area-inset-bottom));
   z-index: 12;
 `;
 

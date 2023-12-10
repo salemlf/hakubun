@@ -1,13 +1,18 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useAudio } from "../../hooks/useAudio";
-import { getAudioForReading } from "../../services/MiscService";
+import {
+  getReadingAudio,
+  getReadingAudioFiles,
+} from "../../services/AudioService";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import {
   Vocabulary,
   SubjectReading,
   PronunciationAudio,
+  Subject,
 } from "../../types/Subject";
+import { ReadingAudio } from "../../types/AssignmentQueueTypes";
 import Button from "../Button/Button";
 import SvgIcon from "../SvgIcon";
 import SoundIcon from "../../images/sound.svg?react";
@@ -44,26 +49,39 @@ const AudioBtnVariants = {
 
 type AudioProps = {
   reading: string;
-  url: string;
+  audioForReading: ReadingAudio;
 };
 
-const AudioBtn = ({ url, reading }: AudioProps) => {
-  const [playing, toggle] = useAudio(url);
+const AudioBtn = ({ audioForReading, reading }: AudioProps) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    const audioFile = audioForReading.audioFile;
+
+    audioFile.on("end", function () {
+      setIsPlaying(false);
+    });
+  }, []);
+
+  const playAudio = () => {
+    setIsPlaying(true);
+    audioForReading.audioFile.play();
+  };
 
   return (
     <AudioBtnContainer
       variants={AudioBtnVariants}
       initial="initial"
-      animate={playing ? "animate" : "initial"}
+      animate={isPlaying ? "animate" : "initial"}
     >
       <Btn
         aria-label={`Pronunciation audio for ${reading} reading`}
-        onPress={toggle}
+        onPress={playAudio}
         backgroundColor="var(--ion-color-tertiary)"
         color="black"
       >
         <SvgIcon
-          icon={playing ? <SoundIcon /> : <SoundOffIcon />}
+          icon={isPlaying ? <SoundIcon /> : <SoundOffIcon />}
           width="1em"
           height="1em"
         />
@@ -103,9 +121,11 @@ type VocabReadingProps = {
 
 // TODO: map reading to the pronunciation audio
 function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
-  let hasReadings = vocab.readings && vocab.readings.length !== 0;
-  let readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
+  const hasReadings = vocab.readings && vocab.readings.length !== 0;
+  const readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
   const { pronunciationVoice } = useUserSettingsStoreFacade();
+
+  const readingAudioItems = getReadingAudioFiles(vocab as Subject, false);
 
   return hasReadings ? (
     <ReadingContainer>
@@ -118,6 +138,7 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
                   <VocabReadingContainer key={`reading_${index}`}>
                     <ReadingTxt>{vocabReading.reading}</ReadingTxt>
                     {hasReadings &&
+                    readingAudioItems &&
                     vocab.pronunciation_audios.some(
                       (audioOption: PronunciationAudio) =>
                         audioOption.metadata.pronunciation ===
@@ -125,11 +146,13 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
                     ) ? (
                       <AudioBtn
                         reading={vocabReading.reading}
-                        url={getAudioForReading(
-                          vocab.pronunciation_audios,
-                          vocabReading.reading,
-                          pronunciationVoice
-                        )}
+                        audioForReading={
+                          getReadingAudio(
+                            readingAudioItems,
+                            vocabReading.reading,
+                            pronunciationVoice
+                          )[0]
+                        }
                       />
                     ) : (
                       index !== readings!.length - 1 && (

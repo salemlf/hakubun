@@ -7,6 +7,7 @@ import {
 } from "./assignmentGenerator";
 import { generateStudyMaterialArrFromSubjs } from "./studyMaterialGenerator";
 import { createAssignmentQueueItems } from "../../../services/SubjectAndAssignmentService";
+import { getReadingAudioFiles } from "../../../services/AudioService";
 import { BackToBackChoice } from "../../../components/BackToBackOption/BackToBackOption.types";
 import { Assignment } from "../../../types/Assignment";
 import { AssignmentQueueItem } from "../../../types/AssignmentQueueTypes";
@@ -39,8 +40,15 @@ export const generateQueueItems = ({
     backToBackChoice
   );
 
+  const queueItemsWithReadingAudio = queueItems.map((item) => {
+    return {
+      ...item,
+      readingAudios: getReadingAudioFiles(item, true),
+    };
+  });
+
   const updatedQueue = setQueueItemsProgressState(
-    queueItems,
+    queueItemsWithReadingAudio,
     queueProgressState,
     allCorrect
   );

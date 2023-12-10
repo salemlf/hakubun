@@ -557,11 +557,6 @@ export const convertToHiragana = (japanese: string) => {
   return japanese;
 };
 
-export const playAudioForAssignmentQueueItem = (url: string) => {
-  let audio = new Audio(url!);
-  audio.play();
-};
-
 export const sortQueueItemsByMeaningAndReading = (
   queueItems: AssignmentQueueItem[],
   meaningFirst: boolean
