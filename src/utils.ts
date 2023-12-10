@@ -17,9 +17,9 @@ export const generateXNumUUIDs = (numToGenerate: number) => {
   return uuidsArr;
 };
 
-export const groupDataByProperty = function (dataToGroup: any[], key: string) {
+export const groupDataByProperty = (dataToGroup: any[], key: string) => {
   return dataToGroup.reduce(function (objWithGroups, item) {
-    let group = item[key];
+    const group = item[key];
     objWithGroups[group] = objWithGroups[group] || [];
     objWithGroups[group].push(item);
 

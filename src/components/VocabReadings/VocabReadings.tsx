@@ -1,13 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { getAudiosForReading } from "../../services/MiscService";
+import {
+  getReadingAudio,
+  getReadingAudioFiles,
+} from "../../services/AudioService";
 import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import {
   Vocabulary,
   SubjectReading,
   PronunciationAudio,
+  Subject,
 } from "../../types/Subject";
+import { ReadingAudio } from "../../types/AssignmentQueueTypes";
 import Button from "../Button/Button";
 import SvgIcon from "../SvgIcon";
 import SoundIcon from "../../images/sound.svg?react";
@@ -44,24 +49,23 @@ const AudioBtnVariants = {
 
 type AudioProps = {
   reading: string;
-  audioItems: PronunciationAudio[];
+  audioForReading: ReadingAudio;
 };
 
-const AudioBtn = ({ audioItems, reading }: AudioProps) => {
-  const audioRef = useRef<HTMLAudioElement>(null);
+const AudioBtn = ({ audioForReading, reading }: AudioProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    const currAudioRef = audioRef.current;
-    currAudioRef?.addEventListener("ended", () => setIsPlaying(false));
-    return () => {
-      currAudioRef?.removeEventListener("ended", () => setIsPlaying(false));
-    };
+    const audioFile = audioForReading.audioFile;
+
+    audioFile.on("end", function () {
+      setIsPlaying(false);
+    });
   }, []);
 
   const playAudio = () => {
     setIsPlaying(true);
-    audioRef.current?.play();
+    audioForReading.audioFile.play();
   };
 
   return (
@@ -76,17 +80,6 @@ const AudioBtn = ({ audioItems, reading }: AudioProps) => {
         backgroundColor="var(--ion-color-tertiary)"
         color="black"
       >
-        <audio ref={audioRef} preload="auto">
-          {audioItems.map((audioItem: PronunciationAudio, index: number) => {
-            return (
-              <source
-                key={`audio_${index}`}
-                src={audioItem.url}
-                type={audioItem.content_type}
-              ></source>
-            );
-          })}
-        </audio>
         <SvgIcon
           icon={isPlaying ? <SoundIcon /> : <SoundOffIcon />}
           width="1em"
@@ -128,9 +121,11 @@ type VocabReadingProps = {
 
 // TODO: map reading to the pronunciation audio
 function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
-  let hasReadings = vocab.readings && vocab.readings.length !== 0;
-  let readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
+  const hasReadings = vocab.readings && vocab.readings.length !== 0;
+  const readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
   const { pronunciationVoice } = useUserSettingsStoreFacade();
+
+  const readingAudioItems = getReadingAudioFiles(vocab as Subject, false);
 
   return hasReadings ? (
     <ReadingContainer>
@@ -143,6 +138,7 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
                   <VocabReadingContainer key={`reading_${index}`}>
                     <ReadingTxt>{vocabReading.reading}</ReadingTxt>
                     {hasReadings &&
+                    readingAudioItems &&
                     vocab.pronunciation_audios.some(
                       (audioOption: PronunciationAudio) =>
                         audioOption.metadata.pronunciation ===
@@ -150,16 +146,13 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
                     ) ? (
                       <AudioBtn
                         reading={vocabReading.reading}
-                        // url={getAudioForReading(
-                        //   vocab.pronunciation_audios,
-                        //   vocabReading.reading,
-                        //   pronunciationVoice
-                        // )}
-                        audioItems={getAudiosForReading(
-                          vocab.pronunciation_audios,
-                          vocabReading.reading,
-                          pronunciationVoice
-                        )}
+                        audioForReading={
+                          getReadingAudio(
+                            readingAudioItems,
+                            vocabReading.reading,
+                            pronunciationVoice
+                          )[0]
+                        }
                       />
                     ) : (
                       index !== readings!.length - 1 && (
