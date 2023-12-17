@@ -211,10 +211,6 @@ export const createReadingAudioFiles = (
   );
 };
 
-// convertQueueItemsToSubjects
-// export const addAudioFiles = (
-//   assignmentQueueItem: AssignmentQueueItem
-// ): ReadingAudio[] | undefined => {
 export const getReadingAudioFiles = (
   subjOrQueueItem: AssignmentQueueItem | Subject,
   isQueueItem: boolean
