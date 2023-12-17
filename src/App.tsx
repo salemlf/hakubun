@@ -50,7 +50,12 @@ import "./theme/globals.scss";
 async function enableMocking() {
   if (import.meta.env.MODE === "development") {
     const { worker } = await import("./testing/worker");
-    worker.start();
+    worker.start(
+      // hiding unhandled requests from the console, clutters it up
+      {
+        onUnhandledRequest: "bypass",
+      }
+    );
   }
 }
 
@@ -148,6 +153,10 @@ const App: React.FC = () => {
     SafeArea.addListener("safeAreaChanged", (data) => {
       const { insets } = data;
       for (const [key, value] of Object.entries(insets)) {
+        console.log(
+          "🚀 ~ file: App.tsx:156 ~ SafeArea.addListener ~ key:",
+          key
+        );
         document.documentElement.style.setProperty(
           `--safe-area-${key}`,
           `${value}px`
