@@ -3,6 +3,7 @@ import type { ForwardedRef } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { PanInfo, motion, useAnimation } from "framer-motion";
 import { FocusScope } from "react-aria";
+import { getSafeArea } from "../../utils";
 import Button from "../Button/Button";
 import GhostParent from "../GhostParent";
 import styled from "styled-components";
@@ -10,12 +11,14 @@ import styled from "styled-components";
 const Content = styled(RadixDialog.Content)`
   width: 100%;
   border-radius: 12px 12px 0 0;
-  height: 100%;
+  /* height: 100%; */
+  height: 100svh;
   background-color: var(--light-greyish-purple);
   overflow-y: clip;
   pointer-events: auto;
   position: absolute;
   background-color: var(--dark-greyish-purple);
+  z-index: 3;
 `;
 
 const SheetHeader = styled.header`
@@ -82,16 +85,19 @@ const sheetHeightMargin = 100;
 
 // TODO: fix bug where can't tab back once tabbed to open/close button (workaround rn is to open sheet and then tab back)
 function BottomSheetContentCore(
-  { title, height, children, className, ...props }: BottomSheetContentCoreProps,
+  { title, height, children, ...props }: BottomSheetContentCoreProps,
   forwardedRef: ForwardedRef<HTMLDivElement>
 ) {
   const [headerHeight, setHeaderHeight] = useState(0);
   // TODO: change to not use "any" type
   const headerRef = useRef<any>(null);
   const sheetContainerRef = useRef<HTMLDivElement>(null);
-  const dragHeight = height - headerHeight - sheetHeightMargin;
   const controls = useAnimation();
   const [isFullyOpen, setIsFullyOpen] = useState(false);
+  const insetInfo = getSafeArea();
+  // const dragHeight = height - headerHeight - sheetHeightMargin;
+  const dragHeight =
+    height - headerHeight - sheetHeightMargin - insetInfo.bottom;
 
   useEffect(() => {
     if (headerRef.current) {
@@ -127,8 +133,8 @@ function BottomSheetContentCore(
     event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
   ) => {
-    let offsetTriggersChange = Math.abs(info.offset.y) > 300;
-    let velocityTriggersChange = Math.abs(info.velocity.y) > 400;
+    const offsetTriggersChange = Math.abs(info.offset.y) > 300;
+    const velocityTriggersChange = Math.abs(info.velocity.y) > 400;
     console.log(
       "🚀 ~ file: BottomSheet.tsx:130 ~ info.velocity.y:",
       info.velocity.y
@@ -187,6 +193,7 @@ function BottomSheetContentCore(
             height: height - sheetHeightMargin,
             // overflowY: "hidden",
             zIndex: 5,
+            marginBottom: `${insetInfo.bottom}px`,
           }}
         >
           {isFullyOpen ? (
@@ -206,7 +213,6 @@ function BottomSheetContentCore(
                 <SheetOpenCloseButton onPress={onSheetBtnPress} />
                 <SheetHeadingTxt>{title}</SheetHeadingTxt>
               </SheetHeader>
-              {/* @ts-ignore using inert shows an annoying TypeScript error */}
               <GhostParent inert="true">{children}</GhostParent>
             </>
           )}

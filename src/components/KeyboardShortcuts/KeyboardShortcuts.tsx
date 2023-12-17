@@ -1,11 +1,18 @@
 import styled from "styled-components";
+import { getSafeArea } from "../../utils";
 
-const KeyBoardShortcuts = styled.div`
+type ShortcutProps = {
+  $bottom: number;
+};
+
+const KeyBoardShortcuts = styled.div<ShortcutProps>`
   position: absolute;
   width: 100%;
+  padding: ${({ $bottom }) => `${$bottom + 10}px`};
   bottom: 10px;
   display: flex;
   justify-content: space-around;
+  z-index: 1;
 `;
 
 const Shortcut = styled.p`
@@ -14,8 +21,10 @@ const Shortcut = styled.p`
 `;
 
 function KeyboardShortcuts() {
+  const insetInfo = getSafeArea();
+
   return (
-    <KeyBoardShortcuts>
+    <KeyBoardShortcuts $bottom={insetInfo.bottom}>
       <Shortcut>F6: Retry</Shortcut>
       <Shortcut>F12: Next</Shortcut>
     </KeyBoardShortcuts>

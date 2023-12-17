@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { IonSkeletonText, IonIcon } from "@ionic/react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
+import { getSafeArea } from "../../utils";
 import {
   filterSubjectsByLevel,
   filterSubjectsByType,
@@ -32,12 +33,17 @@ import { AbsoluteCenterContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 
-const SubjectList = styled(ToggleGroup.Root)`
+type SubjListProps = {
+  $btmPadding: number;
+};
+
+const SubjectList = styled(ToggleGroup.Root)<SubjListProps>`
   display: flex;
   border-radius: 4px;
-  padding: 15px 10px 6rem;
+  padding: ${({ $btmPadding }) =>
+    `15px 10px calc(${$btmPadding * 1.5}px + 2em) 10px`};
   flex-wrap: wrap;
-  max-height: 65vh;
+  max-height: 65svh;
   overflow-y: scroll;
   align-items: center;
   justify-content: center;
@@ -181,8 +187,9 @@ function AssignmentSelector({
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
   const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
   const { userInfo } = useUserInfoStoreFacade();
+  const insetInfo = getSafeArea();
 
-  let assignmentSubjIDs = assignmentData.map(
+  const assignmentSubjIDs = assignmentData.map(
     (assignmentItem: any) => assignmentItem.subject_id
   );
 
@@ -191,16 +198,16 @@ function AssignmentSelector({
 
   useEffect(() => {
     if (subjectsData) {
-      let sortedAssignments = sortBySubjectTypeAndLevel(subjectsData);
+      const sortedAssignments = sortBySubjectTypeAndLevel(subjectsData);
 
-      let subjectsFiltered = assignmentTypeFilter
+      const subjectsFiltered = assignmentTypeFilter
         ? filterSubjectsByType(
             sortedAssignments,
             Array.from(assignmentTypeFilter)
           )
         : sortedAssignments;
 
-      let subjectsFilteredByLevel =
+      const subjectsFilteredByLevel =
         filterByCurrentLevel && userInfo && userInfo.level
           ? filterSubjectsByLevel(subjectsFiltered, userInfo.level)
           : subjectsFiltered;
@@ -230,7 +237,10 @@ function AssignmentSelector({
                 Hmm, looks like we can't find any {settingsType}s using those
                 filters...
               </LogoContainerHeading>
-              <img src={LogoExclamation} />
+              <img
+                src={LogoExclamation}
+                alt="Crabigator with suprised and disappointed expression"
+              />
             </LogoContainer>
           </NoAssignmentsContainer>
         ) : (
@@ -295,6 +305,7 @@ function AssignmentSelector({
               </AnimatePresence>
             </SelectedInfoContainer>
             <SubjectList
+              $btmPadding={insetInfo.bottom}
               type="multiple"
               value={selectedAdvancedSubjIDs}
               onValueChange={setSelectedAdvancedSubjIDs}
