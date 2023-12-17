@@ -74,7 +74,8 @@
     "coverage": "vitest --environment=jsdom run --coverage",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "iphone-sim": "npm run build && npx cap sync && npx cap run ios --target=C1A3A795-A90A-4E7F-884C-C0132D2A11DC"
   },
   "browserslist": [
     "Chrome >=79",
