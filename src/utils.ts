@@ -61,3 +61,19 @@ export const getRandomIntArr = (
     })
   );
 };
+
+// cred to Voyager project (https://github.com/aeharding/voyager/) for this function, necessary since var values not immediately available
+export function getSafeArea() {
+  const style = getComputedStyle(document.documentElement);
+
+  function parseValue(val: string): number {
+    return +val.slice(0, -2);
+  }
+
+  return {
+    top: parseValue(style.getPropertyValue("--sat")),
+    bottom: parseValue(style.getPropertyValue("--sab")),
+    left: parseValue(style.getPropertyValue("--sal")),
+    right: parseValue(style.getPropertyValue("--sar")),
+  };
+}
