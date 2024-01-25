@@ -117,7 +117,7 @@ const accordionItems: AccordionItemData[] = [
       <div>
         <p>
           Hakubun is meant to be used with{" "}
-          <a href="https://www.wanikani.com/" target="_blank">
+          <a href="https://www.wanikani.com/" target="_blank" rel="noopener">
             Wanikani
           </a>
           , a Japanese language learning tool. To use this app, you'll need to
@@ -133,6 +133,7 @@ const accordionItems: AccordionItemData[] = [
           <li>
             Navigate to your{" "}
             <a
+              rel="noopener"
               href="https://www.wanikani.com/settings/personal_access_tokens"
               target="_blank"
             >
@@ -206,9 +207,6 @@ const TokenInput = () => {
   const setAuth = async (token: string) => {
     setTokenPageLoading(true);
     let success = await login(token);
-    // *testing
-    console.log("🚀 ~ file: TokenInput.tsx:170 ~ setAuth ~ success:", success);
-    // *testing
 
     if (success) {
       console.log("Successfully logged in!");
@@ -223,6 +221,7 @@ const TokenInput = () => {
     <HelpContentParagraph>
       You can find this on your{" "}
       <a
+        rel="noopener"
         href="https://www.wanikani.com/settings/personal_access_tokens"
         target="_blank"
       >
