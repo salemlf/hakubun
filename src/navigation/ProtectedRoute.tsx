@@ -5,8 +5,9 @@ import { App as CapacitorApp } from "@capacitor/app";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import LoadingDots from "../components/LoadingDots";
 import { FixedCenterContainer } from "../styles/BaseStyledComponents";
-import { useUserLogin } from "../hooks/useUserLogin";
 import { setAxiosHeaders } from "../api/ApiConfig";
+import { useAuthTokenStore } from "../stores/useAuthTokenStore/useAuthTokenStore";
+import { PersistentStore, useHydration } from "../hooks/useHydration";
 
 type Props = {
   redirectPath?: string;
@@ -20,11 +21,9 @@ const ProtectedRoute = ({
   const navigate = useNavigate();
   const { isAuthenticated, isAuthLoading, authToken } =
     useAuthTokenStoreFacade();
+  const isHydrated = useHydration(useAuthTokenStore as PersistentStore);
 
   useEffect(() => {
-    // *testing
-    console.log("setAxiosHeaders called");
-    // *testing
     setAxiosHeaders(authToken);
   }, []);
 
@@ -44,7 +43,7 @@ const ProtectedRoute = ({
     };
   }, [history]);
 
-  if (isAuthLoading) {
+  if (isAuthLoading || !isHydrated) {
     return (
       <FixedCenterContainer>
         <LoadingDots />
