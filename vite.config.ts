@@ -9,6 +9,7 @@ import svgr from "vite-plugin-svgr";
 export default defineConfig({
   build: {
     sourcemap: true,
+    target: "esnext",
   },
   plugins: [
     react({
