@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
-import secureLocalStorage from "react-secure-storage";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { storage } from "../Storage";
 
 export interface AuthTokenState {
   authToken: string | null;
@@ -15,28 +15,15 @@ export interface AuthTokenActions {
   reset: () => void;
 }
 
-const storage: StateStorage = {
-  getItem: (name: string): any | null => {
-    return secureLocalStorage.getItem(name);
-  },
-  setItem: (name: string, value: string): void => {
-    secureLocalStorage.setItem(name, value);
-  },
-  removeItem: (name: string): void => {
-    secureLocalStorage.removeItem(name);
-  },
-};
-
 export const initialState: AuthTokenState = {
   authToken: null,
   isAuthenticated: false,
   isAuthLoading: false,
 };
 
-// TODO: change this into slices, so only setAuthToken is in secure storage and rest is normie storage
 export const useAuthTokenStore = create<AuthTokenState & AuthTokenActions>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       ...initialState,
       setAuthToken: (token: string | null) => set({ authToken: token }),
       setIsAuthLoading: (loading: boolean) => set({ isAuthLoading: loading }),
