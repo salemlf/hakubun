@@ -44,23 +44,8 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_FILE_PATH: keystore.jks
           OUTPUT_PATH: hakubun.aab
-      - name: Upload Android AAB artifact
+      - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: hakubun-aab-release
-          path: android/app/build/outputs/bundle/release/app-release-signed.aab
-      # - name: Build Android Bundle
-      #   uses: sparkfabrik/android-build-action@v1.5.0
-      #   with:
-      #     project-path: android
-      #     gradle-task: bundleRelease
-      #     package-name: io.hakubun.app
-      #     build-type: bundle
-      #     keystore-content: ${{ secrets.KEYSTORE }}
-      #     keystore-password: ${{ secrets.SIGNING_STORE_PASSWORD }}
-      #     keystore-alias: ${{ secrets.SIGNING_KEY_ALIAS }}
-      # - name: Upload Android AAB Artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: hakubun-aab
-      #     path: android/app/build/outputs/
+          name: hakubun-aab
+          path: android/app/build/outputs/
