@@ -27,6 +27,10 @@ jobs:
       - name: Build Android Bundle
         uses: salemlf/fastlane-build-app@v0.0.2-beta
         with:
+          fastlane-version: "2.219.0"
+          node-version: "20.11.0"
+          bundler-version: "2.5.5"
+          ruby-version: "3.3.0"
           project-path: android
           gradle-task: bundleRelease
           package-name: io.hakubun.app
