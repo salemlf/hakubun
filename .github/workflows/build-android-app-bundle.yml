@@ -4,7 +4,7 @@ env:
   VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 jobs:
-  build:
+  build-app-bundle:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,10 +25,9 @@ jobs:
       - name: Sync with capacitor
         run: npx cap sync
       - name: Build Android Bundle
-        uses: salemlf/fastlane-build-app@v0.0.3-beta
+        uses: salemlf/fastlane-build-app@v0.0.4-beta
         with:
           node-version: "20.11.0"
-          bundler-version: "2.5.5"
           ruby-version: "3.3.0"
           project-path: android
           gradle-task: bundleRelease
