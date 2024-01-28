@@ -75,3 +75,19 @@ Please [email me](mailto:salemlfenn@gmail.com) if you have any questions or conc
 ### Subject Details
 
 <img src="./resources/app-screenshots/subject-details/vocab-and-user-meaning.jpg" width="300" alt="subject details page for vocabulary with user-added meaning" /> <img src="./resources/app-screenshots/subject-details/vocab-context-sentences.jpg" width="300" alt="subject details page for vocabulary, showing context sentences with translations that can be hidden and shown" /> <img src="./resources/app-screenshots/subject-details/kanji-entering-user-note.jpg" width="300" alt="subject details page for kanji with user entering their own meaning note" /> <img src="./resources/app-screenshots/subject-details/kanji-reading-user-note.jpg" width="300" alt="subject details page for kanji with saved meaning note by user, displaying reading section below" />
+
+## Building the App
+
+### Running Fastlane
+
+To run android lanes:
+
+```bash
+fastlane android <LANE>
+```
+
+To run iOS lanes:
+
+```bash
+fastlane ios <LANE>
+```
