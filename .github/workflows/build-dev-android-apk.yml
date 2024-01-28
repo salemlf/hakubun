@@ -18,20 +18,18 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 20.x
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Create build
         run: npm run build
       - name: Sync with capacitor
         run: npx cap sync
-      - name: Build Android App
-        uses: sparkfabrik/android-build-action@v1.5.0
-        with:
-          project-path: android
-          output-path: hakubun.apk
+      - name: Build Android APK (gradle)
+        working-directory: android
+        run: ./gradlew assembleDebug
       - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v3
         with:
           name: hakubun-apk
-          path: hakubun.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
