@@ -25,7 +25,7 @@ jobs:
       - name: Sync with capacitor
         run: npx cap sync
       - name: Build Android Bundle
-        uses: salemlf/fastlane-build-app@v0.0.5-beta
+        uses: salemlf/fastlane-build-app@v0.0.6-beta
         with:
           node-version: "20.11.0"
           ruby-version: "3.3.0"
