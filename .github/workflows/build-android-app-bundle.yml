@@ -19,13 +19,13 @@ jobs:
         with:
           node-version: 20.x
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Create build
         run: npm run build
       - name: Sync with capacitor
         run: npx cap sync
       - name: Build Android Bundle
-        uses: salemlf/fastlane-build-app@v0.0.8-beta
+        uses: salemlf/fastlane-build-app@v0.0.9-beta
         with:
           node-version: "20.11.0"
           ruby-version: "3.3.0"
