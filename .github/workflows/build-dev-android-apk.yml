@@ -25,9 +25,14 @@ jobs:
         run: npm run build
       - name: Sync with capacitor
         run: npx cap sync
-      - name: Build Android APK (gradle)
-        working-directory: android
-        run: ./gradlew assembleDebug
+      # - name: Build Android APK (gradle)
+      #   working-directory: android
+      #   run: ./gradlew assembleDebug
+      - name: Build Android App
+        uses: salemlf/fastlane-build-app@v0.0.6-beta
+        with:
+          project-path: android
+          output-path: hakubun.apk
       - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v3
         with:
