@@ -24,18 +24,23 @@ jobs:
         run: npm run build
       - name: Sync with capacitor
         run: npx cap sync
-      - name: Build Android Bundle
-        uses: salemlf/fastlane-build-app@v0.1.0-beta
+      - name: Set up ruby env
+        uses: ruby/setup-ruby@v1
         with:
-          node-version: "20.11.0"
-          ruby-version: "3.3.0"
-          project-path: android
-          gradle-task: bundleRelease
-          package-name: io.hakubun.app
-          build-type: bundle
-          keystore-content: ${{ secrets.KEYSTORE }}
-          keystore-password: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          keystore-alias: ${{ secrets.SIGNING_KEY_ALIAS }}
+          ruby-version: 3.3.0
+          bundler-cache: true
+      - name: Decode signing certificate into a file
+        env:
+          KEYSTORE_CONTENT: ${{ secrets.KEYSTORE }}
+        run: |
+          echo $KEYSTORE_CONTENT | base64 --decode > keystore.jks
+      - name: Build Android Bundle
+        run: bundle exec fastlane android buildBundle
+        env:
+          KEYSTORE_FILE_PATH: keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          KEYSTORE_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_FILE_PATH: keystore.jks
       - name: Upload Android AAB Artifact
         uses: actions/upload-artifact@v3
         with:
