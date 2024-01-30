@@ -44,9 +44,8 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_FILE_PATH: keystore.jks
           OUTPUT_PATH: hakubun.aab
-      - name: Upload Android AAB artifact
+      - name: Upload Android AAB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: hakubun-aab
-          # path: hakubun.aab
-          path: android/app/build/outputs/
+          path: android/app/build/outputs/apk/release/app-release.aab

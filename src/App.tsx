@@ -44,6 +44,9 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/globals.scss";
+import HydrationWrapper from "./components/HydrationWrapper";
+import { useUserSettingsStore } from "./stores/useUserSettingsStore/useUserSettingsStore";
+import { PersistentStore } from "./hooks/useHydration";
 
 // for mock service worker
 async function enableMocking() {
@@ -138,11 +141,13 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ToastDisplayProvider />
-      <ThemeProvider>
-        <IonApp>
-          <RouterProvider router={browserRouter} />
-        </IonApp>
-      </ThemeProvider>
+      <HydrationWrapper store={useUserSettingsStore as PersistentStore}>
+        <ThemeProvider>
+          <IonApp>
+            <RouterProvider router={browserRouter} />
+          </IonApp>
+        </ThemeProvider>
+      </HydrationWrapper>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );

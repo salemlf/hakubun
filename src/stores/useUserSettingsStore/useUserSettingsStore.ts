@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { getSortOrderOptionById } from "../../components/SortOrderOption/SortOrderOption.service";
+import { storage } from "../Storage";
 import { PronunciationVoice } from "../../types/UserSettingsTypes";
+import { getSortOrderOptionById } from "../../components/SortOrderOption/SortOrderOption.service";
 import { AssignmentSortOption } from "../../components/SortOrderOption/SortOrderOption.types";
 import { BackToBackChoice } from "../../components/BackToBackOption/BackToBackOption.types";
 
@@ -65,7 +66,7 @@ export const useUserSettingsStore = create<
     }),
     {
       name: "user-settings-storage",
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => storage),
     }
   )
 );

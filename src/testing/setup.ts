@@ -4,13 +4,6 @@ import "@testing-library/jest-dom";
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { server } from "./mocks/server";
 
-vi.mock("react-secure-storage", () => {
-  return {
-    default: { setItem: vi.fn() },
-    secureLocalStorage: vi.fn(),
-  };
-});
-
 // mocking window properties
 const scrollToMock = vi.fn();
 window.HTMLElement.prototype.scrollTo = scrollToMock;

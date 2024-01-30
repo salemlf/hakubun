@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { IonSkeletonText } from "@ionic/react";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
+import { useAuthTokenStore } from "../stores/useAuthTokenStore/useAuthTokenStore";
 import { useUserInfo } from "../hooks/useUserInfo";
+import { PersistentStore } from "../hooks/useHydration";
 import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
 import HomeHeader from "../components/HomeHeader";
 import LessonsButton from "../components/LessonsButton/LessonsButton";
@@ -11,6 +13,7 @@ import KanjiForLvlCard from "../components/KanjiForLvlCard/KanjiForLvlCard";
 import SrsStages from "../components/SrsStages/SrsStages";
 import ReviewForecast from "../components/ReviewForecast";
 import LoadingDots from "../components/LoadingDots";
+import HydrationWrapper from "../components/HydrationWrapper";
 import { FixedCenterContainer } from "../styles/BaseStyledComponents";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
@@ -60,7 +63,7 @@ const Home = () => {
   }, [userInfoLoading]);
 
   return (
-    <>
+    <HydrationWrapper store={useAuthTokenStore as PersistentStore}>
       <HomeHeader></HomeHeader>
       <HomePageContainer>
         {!homeLoading ? (
@@ -84,7 +87,7 @@ const Home = () => {
           </FixedCenterContainer>
         )}
       </HomePageContainer>
-    </>
+    </HydrationWrapper>
   );
 };
 

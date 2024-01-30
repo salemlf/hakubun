@@ -8,6 +8,7 @@ import { useAllSubjects } from "../hooks/useAllSubjects";
 import { useStickyState } from "../hooks/useStickyState";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
 import Button from "../components/Button";
+import SvgIcon from "../components/SvgIcon";
 import SearchIcon from "../images/search.svg";
 import ClearIcon from "../images/clear.svg?react";
 import ThinkingLogo from "../images/logo-thinking.svg";
@@ -18,7 +19,6 @@ import {
   ContentWithTabBar,
 } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
-import SvgIcon from "../components/SvgIcon";
 
 const Content = styled(ContentWithTabBar)`
   display: flex;
@@ -71,6 +71,7 @@ const SearchBar = styled.input`
   border: none;
 `;
 
+// TODO: change from IonList
 const List = styled(IonList)`
   --background: none;
   background: none;
@@ -160,7 +161,7 @@ export const Search = () => {
               transition={{ duration: 0.5 }}
             >
               <h2>Try Searching for Something!</h2>
-              <img src={QuestionLogo} />
+              <img src={QuestionLogo} alt="Confused Crabigator" />
             </LogoSearchOutcomeContainer>
           )}
         </AnimatePresence>
@@ -175,7 +176,7 @@ export const Search = () => {
               transition={{ duration: 0.5 }}
             >
               <h2>No Results Found!</h2>
-              <img src={LogoExclamation} />
+              <img src={LogoExclamation} alt="Surprised Crabigator" />
             </LogoSearchOutcomeContainer>
           ) : (
             <List>
@@ -198,7 +199,7 @@ export const Search = () => {
             transition={{ duration: 0.5 }}
           >
             <h2>Loading...</h2>
-            <img src={ThinkingLogo} />
+            <img src={ThinkingLogo} alt="Crabigator thinking" />
           </LogoSearchOutcomeContainer>
         )}
       </Content>
