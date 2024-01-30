@@ -4,38 +4,48 @@ env:
   VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-app-bundle:
+    runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: "zulu"
           java-version: "17"
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20.x
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Create build
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
         run: npm run build
-      - name: Sync with capacitor
+      - name: Sync with Capacitor
         run: npx cap sync
-      - name: Build Android Bundle
-        uses: sparkfabrik/android-build-action@v1.5.0
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
         with:
-          project-path: android
-          gradle-task: bundleRelease
-          package-name: io.hakubun.app
-          build-type: bundle
-          keystore-content: ${{ secrets.KEYSTORE }}
-          keystore-password: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          keystore-alias: ${{ secrets.SIGNING_KEY_ALIAS }}
-      - name: Upload Android AAB Artifact
-        uses: actions/upload-artifact@v3
+          ruby-version: 3.3.0
+          bundler-cache: true
+      - name: Decode keystore and place in file
+        env:
+          KEYSTORE_CONTENT: ${{ secrets.KEYSTORE }}
+        run: |
+          echo $KEYSTORE_CONTENT | base64 --decode > keystore.jks
+      - name: Build Android bundle
+        run: bundle exec fastlane android buildBundle
+        env:
+          KEYSTORE_FILE_PATH: keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          KEYSTORE_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_FILE_PATH: keystore.jks
+          OUTPUT_PATH: hakubun.aab
+      - name: Upload Android AAB artifact
+        uses: actions/upload-artifact@v4
         with:
           name: hakubun-aab
           # path: hakubun.aab
