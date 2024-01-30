@@ -23,16 +23,27 @@ jobs:
         run: npm ci
       - name: Create build
         run: npm run build
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
       - name: Sync with capacitor
         run: npx cap sync
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.0
+          bundler-cache: true
       # - name: Build Android APK (gradle)
       #   working-directory: android
       #   run: ./gradlew assembleDebug
-      - name: Build Android App
-        uses: salemlf/fastlane-build-app@v0.1.0-beta
-        with:
-          project-path: android
-          output-path: hakubun.apk
+      # - name: Build Android App
+      #   uses: salemlf/fastlane-build-app@v0.1.0-beta
+      #   with:
+      #     project-path: android
+      #     output-path: hakubun.apk
+      - name: Build Android APK
+        run: bundle exec fastlane android buildApk
+        env:
+          OUTPUT_PATH: hakubun.apk
       - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v3
         with:
