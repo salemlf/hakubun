@@ -24,26 +24,27 @@ jobs:
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
         run: npm run build
-      - name: Sync with capacitor
+      - name: Sync with Capacitor
         run: npx cap sync
-      - name: Set up ruby env
+      - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3.0
           bundler-cache: true
-      - name: Decode signing certificate into a file
+      - name: Decode keystore and place in file
         env:
           KEYSTORE_CONTENT: ${{ secrets.KEYSTORE }}
         run: |
           echo $KEYSTORE_CONTENT | base64 --decode > keystore.jks
-      - name: Build Android Bundle
+      - name: Build Android bundle
         run: bundle exec fastlane android buildBundle
         env:
           KEYSTORE_FILE_PATH: keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
           KEYSTORE_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_FILE_PATH: keystore.jks
-      - name: Upload Android AAB Artifact
+          OUTPUT_PATH: hakubun.aab
+      - name: Upload Android AAB artifact
         uses: actions/upload-artifact@v3
         with:
           name: hakubun-aab
