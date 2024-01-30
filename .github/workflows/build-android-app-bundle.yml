@@ -48,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: hakubun-aab
-          path: android/app/build/outputs/apk/release/app-release.aab
+          path: android/app/build/outputs/bundle/release/hakubun.aab
