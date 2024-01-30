@@ -26,23 +26,30 @@ end
 platform :android do
     android_dir = File.expand_path('../android')
 
+    lane :buildApk do
+        gradle(task: 'clean', project_dir: android_dir)
+        gradle(
+            task: "assemble", 
+            project_dir: android_dir,
+        )
+        APK_LOCATION = "#{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}"
+        sh("cp", "#{APK_LOCATION}", ENV["OUTPUT_PATH"])
+    end
+
     lane :buildBundle do
         gradle(task: 'clean', project_dir: android_dir)
         gradle(
             task: "bundleRelease", 
             project_dir: android_dir,
             properties: {
-                "android.injected.signing.store.file" => ENV["KEYSTORE_FILE_PATH"],
+                "android.injected.signing.store.file" => File.join(Dir.pwd, "..", ENV["KEYSTORE_FILE_PATH"]),
                 "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
                 "android.injected.signing.key.alias" => ENV["KEYSTORE_ALIAS"],
                 "android.injected.signing.key.password" => ENV["KEYSTORE_PASSWORD"],
             }
         )
-    end
 
-    # desc "Deploy a new version to the Google Play"
-    # lane :deploy do
-    #     gradle(task: "clean assembleRelease")
-    #     upload_to_play_store
-    # end
+        AAB_LOCATION = "#{lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
+        sh("cp", "#{AAB_LOCATION}", ENV["OUTPUT_PATH"])
+    end
 end
