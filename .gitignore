@@ -55,3 +55,6 @@ hakubun-release-key.keystore
 service-account-api.json
 # Sentry Config File
 .env.sentry-build-plugin
+
+# in case of accidentally adding keystore to folder
+keystore.jks
