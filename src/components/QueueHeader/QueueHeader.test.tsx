@@ -1,4 +1,5 @@
 import QueueHeader from ".";
+import Home from "../../pages/Home";
 import { renderWithRouter } from "../../testing/test-utils";
 
 test("QueueHeader renders", () => {
@@ -7,5 +8,10 @@ test("QueueHeader renders", () => {
 });
 
 const renderComponent = () => {
-  return renderWithRouter({ component: <QueueHeader /> });
+  const routes = [{ element: <Home />, path: "/" }];
+  return renderWithRouter({
+    component: <QueueHeader />,
+    defaultPath: "/reviews/summary",
+    routes,
+  });
 };

@@ -75,28 +75,34 @@ interface RouteOrComponentBase {
 }
 interface RouteObj extends RouteOrComponentBase {
   routeObj: RouteObject;
+  mockHome?: boolean;
+  defaultPath: string;
 }
-interface Component extends RouteOrComponentBase {
-  component: JSX.Element;
-  defaultPath?: string;
-}
-
-type RouteOrComponent = Either<RouteObj, Component>;
 
 // cred to Miroslav Nikolov for original version, see article: https://webup.org/blog/how-to-avoid-mocking-in-react-router-v6-tests/
 const renderWithRouter = ({
   routeObj,
-  component,
-  defaultPath,
   routes = [],
-}: RouteOrComponent) => {
-  const routeInfo = routeObj ?? { element: component, path: defaultPath };
-
-  const path = routeObj?.path ?? defaultPath ?? "/";
+  mockHome = false,
+  defaultPath,
+}: RouteObj) => {
+  routes = mockHome
+    ? [
+        {
+          element: (
+            <div>
+              <p>Home</p>
+            </div>
+          ),
+          path: "/",
+        },
+        ...routes,
+      ]
+    : routes;
 
   // memory router used so we can manually control history
-  const router = createMemoryRouter([{ ...routeInfo }, ...routes], {
-    initialEntries: [path],
+  const router = createMemoryRouter([{ ...routeObj }, ...routes], {
+    initialEntries: [defaultPath],
     initialIndex: 0,
   });
 
