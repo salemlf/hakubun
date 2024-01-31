@@ -82,7 +82,7 @@
     "iOS >=14"
   ],
   "devDependencies": {
-    "@capacitor/assets": "^3.0.1",
+    "@capacitor/assets": "^3.0.4",
     "@capacitor/cli": "^5.0.0",
     "@faker-js/faker": "^8.3.1",
     "@testing-library/jest-dom": "^6.1.4",
