@@ -42,7 +42,7 @@ server.use(
 );
 
 // TODO: add tests to check that the progress bar numbers are rendered correctly
-let currentLevel = 1;
+const currentLevel = 1;
 test("LevelProgressBar renders without crashing", () => {
   const { baseElement } = renderComponent(currentLevel);
   expect(baseElement).toBeDefined();
