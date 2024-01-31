@@ -90,5 +90,6 @@ const renderComponent = (settingProps: AssignmentSettingsProps) => {
       path: "/lessons/session",
       element: <AssignmentSettings {...settingProps} />,
     },
+    mockHome: true,
   });
 };

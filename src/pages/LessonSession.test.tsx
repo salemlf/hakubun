@@ -132,11 +132,14 @@ describe("End session dialog", () => {
 });
 
 const renderComponent = (withHomeRoute: boolean) => {
+  const lessonSessionPath = "/lessons/session";
+
   return renderWithRouter({
     routeObj: {
-      path: "/lessons/session",
+      path: lessonSessionPath,
       element: <LessonSession />,
     },
+    defaultPath: lessonSessionPath,
     routes: withHomeRoute
       ? [
           {

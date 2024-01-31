@@ -25,8 +25,8 @@ test("Shows error text on API error and no cached data", async () => {
   server.use(
     http.get(subjectsEndpoint, ({ request }) => {
       const url = new URL(request.url);
-      let levels = url.searchParams.get(LEVELS_PARAM);
-      let subjTypes = url.searchParams.get(SUBJECT_SUBJ_TYPES);
+      const levels = url.searchParams.get(LEVELS_PARAM);
+      const subjTypes = url.searchParams.get(SUBJECT_SUBJ_TYPES);
       if (levels === mockLevel.toString() && subjTypes === "kanji") {
         return HttpResponse.error();
       }
@@ -34,8 +34,8 @@ test("Shows error text on API error and no cached data", async () => {
     }),
     http.get(assignmentsEndpoint, ({ request }) => {
       const url = new URL(request.url);
-      let levels = url.searchParams.get(LEVELS_PARAM);
-      let subjTypes = url.searchParams.get(ASSIGNMENT_SUBJ_TYPES);
+      const levels = url.searchParams.get(LEVELS_PARAM);
+      const subjTypes = url.searchParams.get(ASSIGNMENT_SUBJ_TYPES);
       if (levels === mockLevel.toString() && subjTypes === "kanji") {
         return HttpResponse.error();
       }
@@ -51,8 +51,11 @@ test("Shows error text on API error and no cached data", async () => {
       wrapper: createWrapper(),
     }
   );
+
   await waitFor(() => {
     expect(subjectsResult.current.isError).toBe(true);
+  });
+  await waitFor(() => {
     expect(subjectsResult.current.data).toBe(undefined);
   });
 
@@ -62,12 +65,15 @@ test("Shows error text on API error and no cached data", async () => {
       wrapper: createWrapper(),
     }
   );
+
   await waitFor(() => {
     expect(assignmentsResult.current.isError).toBe(true);
+  });
+  await waitFor(() => {
     expect(assignmentsResult.current.data).toBe(undefined);
   });
 
-  let errCard = await screen.findByTestId("kanji-for-lvl-err");
+  const errCard = await screen.findByTestId("kanji-for-lvl-err");
   expect(errCard).toHaveTextContent("Error loading data");
 });
 
@@ -81,12 +87,14 @@ const renderComponent = (
   level: number,
   withSubjectDetails: boolean = false
 ) => {
-  let routes = withSubjectDetails
+  const routes = withSubjectDetails
     ? [{ element: <SubjectDetails />, path: "/subjects/:id" }]
     : [];
   return renderWithRouter({
-    component: <KanjiForLvlCard level={level} />,
-    defaultPath: "/",
+    routeObj: {
+      element: <KanjiForLvlCard level={level} />,
+      path: "/",
+    },
     routes,
   });
 };

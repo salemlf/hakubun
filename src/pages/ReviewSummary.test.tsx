@@ -53,10 +53,13 @@ test("Reviewed assignments displayed", async () => {
 });
 
 const renderComponent = () => {
+  const reviewSummaryPath = "/reviews/summary";
+
   return renderWithRouter({
     routeObj: {
       element: <ReviewSummary />,
-      path: "/reviews/summary",
+      path: reviewSummaryPath,
     },
+    defaultPath: reviewSummaryPath,
   });
 };

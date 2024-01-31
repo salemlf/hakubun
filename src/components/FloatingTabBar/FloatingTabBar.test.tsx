@@ -8,7 +8,9 @@ test("FloatingTabBar renders", () => {
 
 const renderComponent = () => {
   return renderWithRouter({
-    component: <FloatingTabBar />,
-    defaultPath: "/",
+    routeObj: {
+      element: <FloatingTabBar />,
+      path: "/",
+    },
   });
 };

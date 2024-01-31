@@ -9,7 +9,7 @@ const kanjiSubjAndAssignment = generateSubjAssignmentPair({
 });
 
 test("PopoverSubjButton renders", () => {
-  const MockButton = forwardRef(() => <button></button>);
+  const MockButton = forwardRef(() => <button title="Test Button"></button>);
 
   const componentProps: PopoverSubjButtonProps = {
     children: <MockButton />,
@@ -23,7 +23,6 @@ test("PopoverSubjButton renders", () => {
 
 const renderComponent = (props: PopoverSubjButtonProps) => {
   return renderWithRouter({
-    component: <PopoverSubjButton {...props} />,
-    defaultPath: "/",
+    routeObj: { element: <PopoverSubjButton {...props} />, path: "/" },
   });
 };
