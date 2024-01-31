@@ -1,5 +1,4 @@
 import QueueHeader from ".";
-import Home from "../../pages/Home";
 import { renderWithRouter } from "../../testing/test-utils";
 
 test("QueueHeader renders", () => {
@@ -7,11 +6,15 @@ test("QueueHeader renders", () => {
   expect(baseElement).toBeDefined();
 });
 
+// TODO: change to use mock home page
 const renderComponent = () => {
-  const routes = [{ element: <Home />, path: "/" }];
+  const queueHeaderPath = "/reviews/summary";
   return renderWithRouter({
-    component: <QueueHeader />,
-    defaultPath: "/reviews/summary",
-    routes,
+    routeObj: {
+      path: queueHeaderPath,
+      element: <QueueHeader />,
+    },
+    defaultPath: queueHeaderPath,
+    mockHome: true,
   });
 };

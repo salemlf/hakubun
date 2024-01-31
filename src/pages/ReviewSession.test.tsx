@@ -17,7 +17,7 @@ describe("End session dialog", () => {
       })
     );
 
-    let dialog = await screen.findByRole("alertdialog", {
+    const dialog = await screen.findByRole("alertdialog", {
       name: /end review session\?/i,
     });
     expect(dialog).toBeInTheDocument();
@@ -81,11 +81,13 @@ describe("End session dialog", () => {
 });
 
 const renderComponent = (withHomeRoute: boolean) => {
+  const reviewSessionPath = "/reviews/session";
   return renderWithRouter({
     routeObj: {
-      path: "/reviews/session",
+      path: reviewSessionPath,
       element: <ReviewSession />,
     },
+    defaultPath: reviewSessionPath,
     routes: withHomeRoute
       ? [
           {
