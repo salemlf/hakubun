@@ -70,13 +70,11 @@ const customRender = (
   options?: Omit<RenderOptions, "wrapper">
 ) => render(ui, { wrapper: TestingApp, ...options });
 
-interface RouteOrComponentBase {
-  routes?: RouteObject[];
-}
-interface RouteObj extends RouteOrComponentBase {
+interface RouteObj {
   routeObj: RouteObject;
   mockHome?: boolean;
   defaultPath?: string;
+  routes?: RouteObject[];
 }
 
 // cred to Miroslav Nikolov for original version, see article: https://webup.org/blog/how-to-avoid-mocking-in-react-router-v6-tests/
