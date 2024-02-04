@@ -26,24 +26,39 @@ jobs:
         run: npm run build
       - name: Sync with Capacitor
         run: npx cap sync
-      - name: Set up Ruby env
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.3.0
-          bundler-cache: true
-      - name: Decode keystore and place in file
-        env:
-          KEYSTORE_CONTENT: ${{ secrets.KEYSTORE }}
-        run: |
-          echo $KEYSTORE_CONTENT | base64 --decode > keystore.jks
+      # - name: Set up Ruby env
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: 3.3.0
+      #     bundler-cache: true
+      # - name: Decode keystore and place in file
+      #   env:
+      #     KEYSTORE_CONTENT: ${{ secrets.KEYSTORE }}
+      #   run: |
+      #     echo $KEYSTORE_CONTENT | base64 --decode > keystore.jks
+      # - name: Build Android bundle
+      #   run: bundle exec fastlane android buildBundle
+      #   env:
+      #     KEYSTORE_FILE_PATH: keystore.jks
+      #     KEYSTORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+      #     KEYSTORE_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+      #     SIGNING_KEY_FILE_PATH: keystore.jks
+      #     OUTPUT_PATH: hakubun.aab
       - name: Build Android bundle
-        run: bundle exec fastlane android buildBundle
-        env:
-          KEYSTORE_FILE_PATH: keystore.jks
-          KEYSTORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          KEYSTORE_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_FILE_PATH: keystore.jks
-          OUTPUT_PATH: hakubun.aab
+        uses: salemlf/fastlane-build-app@v0.1.1-beta
+        with:
+          package-name: io.hakubun.app
+          build-type: bundle
+          project-path: android
+          gradle-task: bundleRelease
+          ruby-version: "3.3.0"
+          node-version: "20.11.0"
+          fastlane-version: "2.219.0"
+          bundler-version: "2.5.5"
+          keystore-content: ${{ secrets.KEYSTORE }}
+          keystore-password: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          keystore-alias: ${{ secrets.SIGNING_KEY_ALIAS }}
+          output-path: hakubun-debug.aab
       - name: Upload Android AAB Artifact
         uses: actions/upload-artifact@v4
         with:

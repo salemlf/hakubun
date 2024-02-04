@@ -39,6 +39,7 @@ jobs:
       - name: Build Android APK
         uses: salemlf/fastlane-build-app@v0.1.1-beta
         with:
+          package-name: io.hakubun.app
           build-type: assemble
           ruby-version: "3.3.0"
           project-path: android
