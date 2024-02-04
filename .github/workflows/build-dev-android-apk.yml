@@ -27,17 +27,28 @@ jobs:
           NODE_OPTIONS: "--max_old_space_size=4096"
       - name: Sync with capacitor
         run: npx cap sync
-      - name: Set up Ruby env
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.3.0
-          bundler-cache: true
+      # - name: Set up Ruby env
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: 3.3.0
+      #     bundler-cache: true
+      # - name: Build Android APK
+      #   run: bundle exec fastlane android buildApk
+      #   env:
+      #     OUTPUT_PATH: hakubun.apk
       - name: Build Android APK
-        run: bundle exec fastlane android buildApk
-        env:
-          OUTPUT_PATH: hakubun.apk
+        uses: salemlf/fastlane-build-app@v0.1.1-beta
+        with:
+          build-type: assemble
+          ruby-version: "3.3.0"
+          project-path: android
+          gradle-task: assembleDebug
+          node-version: "20.11.0"
+          fastlane-version: "2.219.0"
+          bundler-version: "2.5.5"
+          output-path: hakubun-debug.apk
       - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: hakubun-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/
