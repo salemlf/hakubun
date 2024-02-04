@@ -1,4 +1,4 @@
-name: Build Dev Version of App
+name: Run Vite Tests
 on:
   push:
     branches: [main]
