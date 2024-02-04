@@ -32,7 +32,5 @@ export default defineConfig({
       authToken: process.env.SENTRY_AUTH_TOKEN,
     }),
   ],
-  define: {
-    "process.env": {},
-  },
+  define: process.env.VITEST ? {} : { global: "window" },
 });
