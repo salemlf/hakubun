@@ -80,6 +80,9 @@ describe("End session dialog", () => {
   });
 });
 
+// TODO: add a test that checks user can visit subject details pages w/o page being blocked
+// TODO: add another test that checks user can go to review summary w/o page being blocked
+
 const renderComponent = (withHomeRoute: boolean) => {
   const reviewSessionPath = "/reviews/session";
   return renderWithRouter({
