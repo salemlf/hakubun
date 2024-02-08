@@ -17,7 +17,7 @@ function AlertModal({ open, onOpenChange, children }: Props) {
   );
 }
 
-const OverlayPrimitive = styled(AlertDialogPrimitive.Overlay)`
+const OverlayPrimitive = styled(motion.div)`
   position: fixed;
   background-color: rgba(0, 0, 0, 0.447);
   inset: 0;
@@ -101,6 +101,7 @@ const Title = styled(AlertDialogPrimitive.Title)`
   font-size: 1.5rem;
 `;
 
+const DELAY = 0.3;
 type ContentRef = HTMLDivElement;
 
 type AlertModalContentProps = {
@@ -116,7 +117,6 @@ type AlertModalContentProps = {
   onAddtlActionClick?: (e: any) => void;
 };
 
-// TODO: add a delay when opening
 export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
   (
     {
@@ -135,12 +135,19 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
     forwardedRef
   ) => {
     const [container, setContainer] = useState<HTMLDivElement | null>(null);
+
     return (
       <>
         <AnimatePresence>
           {isOpen && (
             <AlertDialogPrimitive.Portal forceMount container={container}>
-              <OverlayPrimitive />
+              <AlertDialogPrimitive.Overlay asChild>
+                <OverlayPrimitive
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, transition: { delay: DELAY } }}
+                  exit={{ opacity: 0 }}
+                />
+              </AlertDialogPrimitive.Overlay>
               <ContentPrimitive
                 {...props}
                 ref={forwardedRef}
@@ -149,9 +156,8 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
               >
                 <Content
                   initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
+                  animate={{ scale: 1, transition: { delay: DELAY } }}
                   exit={{ scale: 0 }}
-                  transition={{ delay: 0.2 }}
                 >
                   <Title>{title}</Title>
                   {description && <Description>{description}</Description>}
