@@ -116,6 +116,7 @@ type AlertModalContentProps = {
   onAddtlActionClick?: (e: any) => void;
 };
 
+// TODO: add a delay when opening
 export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
   (
     {
@@ -150,6 +151,7 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
+                  transition={{ delay: 0.2 }}
                 >
                   <Title>{title}</Title>
                   {description && <Description>{description}</Description>}
