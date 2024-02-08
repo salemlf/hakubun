@@ -38,13 +38,6 @@ export type AccordionItemData = {
   content: React.ReactNode;
 };
 
-// used for navigation blocking with react-router-prompt
-export declare enum HistoryAction {
-  Pop = "POP",
-  Push = "PUSH",
-  Replace = "REPLACE",
-}
-
 export type ButtonSize = "sm" | "md" | "lg";
 
 export type LoadingDotSize = "sm" | "md" | "lg";
