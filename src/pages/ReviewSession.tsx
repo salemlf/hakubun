@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { BlockerFunction, useBlocker, useNavigate } from "react-router-dom";
+import { useBlocker, useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import {
-  blockUserLeavingPage,
   createReviewPostData,
   getCompletedAssignmentQueueData,
+  shouldBlock,
 } from "../services/AssignmentQueueService";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { useCreateReview } from "../hooks/useCreateReview";
@@ -139,9 +139,6 @@ function ReviewSession() {
     currQueueIndex,
     updateAssignmentQueueData,
   } = useAssignmentQueueStoreFacade();
-
-  const shouldBlock: BlockerFunction = ({ currentLocation, nextLocation }) =>
-    blockUserLeavingPage({ currentLocation, nextLocation });
 
   const blocker = useBlocker(shouldBlock);
   const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
