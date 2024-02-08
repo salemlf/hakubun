@@ -1,8 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-// TODO: instead add a module declaration file for react-router-prompt
-// @ts-ignore: Could not find a declaration file for module
-import ReactRouterPrompt from "react-router-prompt";
+import { BlockerFunction, useBlocker, useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
@@ -11,6 +8,7 @@ import {
   createReviewPostData,
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService";
+import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { useCreateReview } from "../hooks/useCreateReview";
 import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
 import {
@@ -142,6 +140,19 @@ function ReviewSession() {
     updateAssignmentQueueData,
   } = useAssignmentQueueStoreFacade();
 
+  const shouldBlock: BlockerFunction = ({ currentLocation, nextLocation }) =>
+    blockUserLeavingPage({ currentLocation, nextLocation });
+
+  const blocker = useBlocker(shouldBlock);
+  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+
+  useEffect(() => {
+    if (blocker.state === "blocked" && isBottomSheetOpen) {
+      blocker.reset();
+      setIsBottomSheetOpen(false);
+    }
+  }, [blocker.state, isBottomSheetOpen]);
+
   const updateSubmitted = useSubmittedQueueUpdate();
 
   const { mutateAsync: createReviewsAsync } = useCreateReview();
@@ -160,8 +171,8 @@ function ReviewSession() {
     resetAssignmentQueue();
   };
 
-  const wrapUpReviewSession = (cancelPageLeave: () => void) => {
-    let reviewedItems = assignmentQueue.filter((item) => {
+  const wrapUpReviewSession = () => {
+    const reviewedItems = assignmentQueue.filter((item) => {
       return (
         item.is_reviewed === true ||
         assignmentQueue.some((otherItem) => {
@@ -182,7 +193,6 @@ function ReviewSession() {
     });
 
     updateAssignmentQueueData(reviewedItems);
-    cancelPageLeave();
     playFinishFlagAnimation();
   };
 
@@ -200,21 +210,23 @@ function ReviewSession() {
 
   // TODO: add to submit store and just use data from that on summary pages
   const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
-    let reviewInfo = await submitReviewBatch(queueData);
+    const reviewInfo = await submitReviewBatch(queueData);
     updateSubmitted(reviewInfo);
     navigate("/reviews/summary", { replace: true });
   };
 
   const submitReviewBatch = (queueData: AssignmentQueueItem[]) => {
-    let reviewData = getCompletedAssignmentQueueData(queueData);
+    const reviewData = getCompletedAssignmentQueueData(queueData);
+    // *testing
     console.log(
       "🚀 ~ file: ReviewSession.tsx:224 ~ submitBatch ~ reviewData:",
       reviewData
     );
-    let reviewPostData = createReviewPostData(reviewData);
+    // *testing
+    const reviewPostData = createReviewPostData(reviewData);
 
     // TODO: change to actually catch errors
-    let promises = reviewPostData.map(function (reviewItem) {
+    const promises = reviewPostData.map(function (reviewItem) {
       return createReviewsAsync({
         reviewSessionData: reviewItem,
       })
@@ -232,8 +244,8 @@ function ReviewSession() {
       // *testing
       console.log(results);
       // *testing
-      let unableToUpdate: AssignmentQueueItem[] = [];
-      let reviewResponses: PreFlattenedAssignment[] = [];
+      const unableToUpdate: AssignmentQueueItem[] = [];
+      const reviewResponses: PreFlattenedAssignment[] = [];
 
       results.forEach((response, index) => {
         if (response === undefined) {
@@ -243,7 +255,7 @@ function ReviewSession() {
         }
       });
 
-      let reviewInfo: AssignmentSubmitInfo = {
+      const reviewInfo: AssignmentSubmitInfo = {
         assignmentData: reviewData,
         submitResponses: reviewResponses,
         errors: unableToUpdate,
@@ -255,41 +267,30 @@ function ReviewSession() {
 
   return (
     <>
-      <ReactRouterPrompt
-        when={blockUserLeavingPage}
-        beforeConfirm={() => {
-          endReviewSession();
-        }}
-      >
-        {({
-          isActive,
-          onConfirm,
-          onCancel,
-        }: {
-          isActive: boolean;
-          onConfirm: () => void;
-          onCancel: () => void;
-        }) =>
-          isActive && (
-            <AlertModal open={isActive}>
-              <AlertModal.Content
-                isOpen={isActive}
-                title="End Review Session?"
-                confirmText="End Session"
-                description={<Description />}
-                cancelText="Cancel"
-                onConfirmClick={onConfirm}
-                onCancelClick={onCancel}
-                showAddtlAction={true}
-                addtlActionText="Wrap Up"
-                onAddtlActionClick={() => {
-                  wrapUpReviewSession(onCancel);
-                }}
-              />
-            </AlertModal>
-          )
-        }
-      </ReactRouterPrompt>
+      {blocker.state === "blocked" && (
+        <AlertModal open={blocker.state === "blocked"}>
+          <AlertModal.Content
+            isOpen={blocker.state === "blocked"}
+            title="End Review Session?"
+            confirmText="End Session"
+            description={<Description />}
+            cancelText="Cancel"
+            onConfirmClick={() => {
+              endReviewSession();
+              blocker.proceed();
+            }}
+            onCancelClick={() => {
+              blocker.reset();
+            }}
+            showAddtlAction={true}
+            addtlActionText="Wrap Up"
+            onAddtlActionClick={() => {
+              wrapUpReviewSession();
+              blocker.reset();
+            }}
+          />
+        </AlertModal>
+      )}
       <QueueHeader />
       <Content data-testid="review-session-content">
         <>
@@ -310,7 +311,7 @@ function ReviewSession() {
               animate={flgImgAndTxtControls}
               initial="hideAbove"
             >
-              <img src={FinishFlagIcon} />
+              <img title="Checkered Flag" src={FinishFlagIcon} />
               <WrappingUpTxt>Wrapping Up!</WrappingUpTxt>
             </FlagAndTxtContainer>
           </WrapUpFlagContainer>

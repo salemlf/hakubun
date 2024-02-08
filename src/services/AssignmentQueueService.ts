@@ -531,14 +531,12 @@ export const createReviewPostData = (reviewedItems: AssignmentQueueItem[]) => {
 export const blockUserLeavingPage = ({
   currentLocation,
   nextLocation,
-  historyAction,
 }: {
-  currentLocation: Location;
-  nextLocation: Location;
-  historyAction: HistoryAction;
+  currentLocation: Location<any>;
+  nextLocation: Location<any>;
 }) => {
   // allowing user to view subjects pages during reviews and to review summary page
-  let subjDetailsRegex = new RegExp("/subjects/*");
+  const subjDetailsRegex = new RegExp("/subjects/*");
   if (
     subjDetailsRegex.test(nextLocation.pathname) ||
     nextLocation.pathname === "/reviews/summary" ||

@@ -5,7 +5,6 @@ import { App as CapacitorApp } from "@capacitor/app";
 import { setAxiosHeaders } from "../api/ApiConfig";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import { useAuthTokenStore } from "../stores/useAuthTokenStore/useAuthTokenStore";
-import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { PersistentStore, useHydration } from "../hooks/useHydration";
 import LoadingDots from "../components/LoadingDots";
 import { FixedCenterContainer } from "../styles/BaseStyledComponents";
@@ -23,7 +22,6 @@ const ProtectedRoute = ({
   const { isAuthenticated, isAuthLoading, authToken } =
     useAuthTokenStoreFacade();
   const isHydrated = useHydration(useAuthTokenStore as PersistentStore);
-  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
 
   useEffect(() => {
     setAxiosHeaders(authToken);
@@ -32,10 +30,6 @@ const ProtectedRoute = ({
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
       CapacitorApp.addListener("backButton", ({ canGoBack }) => {
-        if (isBottomSheetOpen) {
-          setIsBottomSheetOpen(false);
-          return;
-        }
         if (!canGoBack) {
           CapacitorApp.exitApp();
         } else {
