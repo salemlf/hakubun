@@ -31,12 +31,11 @@ test("Redirects to home page after entering token (logging in)", async () => {
       return HttpResponse.json(mockLvl1UserResponse);
     })
   );
+
   const { user } = renderComponent(true);
   const fakeTokenValue = "my_fake_token";
 
-  const tokenInput = screen.getByRole("textbox", {
-    name: /wanikani api token \?/i,
-  });
+  const tokenInput = screen.getByTestId("token-input");
   await user.type(tokenInput, fakeTokenValue);
   expect(tokenInput).toHaveValue(fakeTokenValue);
 

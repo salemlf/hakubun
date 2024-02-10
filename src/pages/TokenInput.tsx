@@ -310,7 +310,7 @@ const TokenInput = () => {
                 <TokenAndBtnContainer>
                   <Input
                     id="api-token-input"
-                    // type="text"
+                    data-testid="token-input"
                     type={isTokenShown ? "text" : "password"}
                     name="api-token"
                     data-private
