@@ -10,7 +10,7 @@ import { createAssignmentQueueItems } from "../../../services/SubjectAndAssignme
 import { BackToBackChoice } from "../../../components/BackToBackOption/BackToBackOption.types";
 import { Assignment } from "../../../types/Assignment";
 import { AssignmentQueueItem } from "../../../types/AssignmentQueueTypes";
-import { Subject } from "../../../types/Subject";
+import { Subject, SubjectType } from "../../../types/Subject";
 import { StudyMaterial } from "../../../types/StudyMaterial";
 
 export type QueueProgressState = "not_started" | "in_progress" | "completed";
@@ -52,12 +52,14 @@ type RandomQueueItemsGeneratorParams = Omit<
   QueueItemsGeneratorParams,
   "assignments" | "subjects" | "studyMaterials"
 > & {
+  subjectType?: SubjectType;
   numItems: number;
   areLessons?: boolean;
   level?: number;
 };
 
 export const generateRandomQueueItems = ({
+  subjectType,
   numItems,
   queueProgressState,
   areLessons,
@@ -65,7 +67,11 @@ export const generateRandomQueueItems = ({
   backToBackChoice,
   allCorrect,
 }: RandomQueueItemsGeneratorParams): AssignmentQueueItem[] => {
-  const mockSubjects = generateSubjArray({ numSubjects: numItems, level });
+  const mockSubjects = generateSubjArray({
+    numSubjects: numItems,
+    subjTypes: subjectType,
+    level,
+  });
   const correspondingSubjInfo: CorrespondingSubject[] = mockSubjects.map(
     (subj) => createCorrespondingSubject(subj.id, subj.object)
   );
