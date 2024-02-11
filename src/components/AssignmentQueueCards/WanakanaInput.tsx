@@ -37,6 +37,7 @@ function WanakanaInput({
     onChange: handleChange,
     autoCorrect: "off",
     autoCapitalize: "none",
+    "data-testid": "wanakana-input",
     ...props,
   });
 }
