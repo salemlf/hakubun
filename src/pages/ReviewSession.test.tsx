@@ -1,6 +1,25 @@
-import { renderWithRouter, screen } from "../testing/test-utils";
+import {
+  act,
+  renderHook,
+  renderWithRouter,
+  screen,
+} from "../testing/test-utils";
+import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
+import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import ReviewSession from "./ReviewSession";
 import Home from "./Home";
+import { SubjectDetails } from "./SubjectDetails";
+
+const mockReviewQueueStore = (queueItems: AssignmentQueueItem[]) => {
+  const { result: assignmentQueueResult } = renderHook(() =>
+    useAssignmentQueueStoreFacade()
+  );
+  expect(assignmentQueueResult.current.assignmentQueue).toEqual([]);
+  act(() =>
+    assignmentQueueResult.current.setAssignmentQueueData(queueItems, "review")
+  );
+};
 
 test("ReviewSession renders", () => {
   const { baseElement } = renderComponent(false);
@@ -80,10 +99,44 @@ describe("End session dialog", () => {
   });
 });
 
-// TODO: add a test that checks user can visit subject details pages w/o page being blocked
+test("Navigate to Subject Details page without being navigation blocked", async () => {
+  const kanjiReviewItems = generateRandomQueueItems({
+    subjectType: "kanji",
+    numItems: 1,
+    queueProgressState: "not_started",
+  });
+
+  mockReviewQueueStore(kanjiReviewItems);
+  const { router } = renderComponent(true, true);
+  await act(() => router.navigate("/subjects/10"));
+  expect(await screen.findByTestId("subject-details-page")).toBeInTheDocument();
+});
+
 // TODO: add another test that checks user can go to review summary w/o page being blocked
 
-const renderComponent = (withHomeRoute: boolean) => {
+const renderComponent = (
+  withHomeRoute: boolean,
+  withSubjDetails: boolean = false
+) => {
+  const routes = [
+    ...(withHomeRoute
+      ? [
+          {
+            path: "/",
+            element: <Home />,
+          },
+        ]
+      : []),
+    ...(withSubjDetails
+      ? [
+          {
+            path: "/subjects/:id",
+            element: <SubjectDetails />,
+          },
+        ]
+      : []),
+  ];
+
   const reviewSessionPath = "/reviews/session";
   return renderWithRouter({
     routeObj: {
@@ -91,13 +144,14 @@ const renderComponent = (withHomeRoute: boolean) => {
       element: <ReviewSession />,
     },
     defaultPath: reviewSessionPath,
-    routes: withHomeRoute
-      ? [
-          {
-            path: "/",
-            element: <Home />,
-          },
-        ]
-      : [],
+    // routes: withHomeRoute
+    //   ? [
+    //       {
+    //         path: "/",
+    //         element: <Home />,
+    //       },
+    //     ]
+    //   : [],
+    routes,
   });
 };
