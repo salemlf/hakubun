@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { getReviewedAssignmentQueueItems } from "../../services/AssignmentQueueService";
 import { MAX_ASSIGNMENTS_BEFORE_SUBMIT } from "../../constants";
@@ -12,6 +11,7 @@ import { AssignmentQueueCard } from "./AssignmentQueueCard";
 import LoadingDots from "../LoadingDots";
 import { AssignmentCardContainer } from "./AssignmentQueueCardsStyled";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 
 export type CardProps = {
   submitItems: (reviewData: AssignmentQueueItem[]) => void;
@@ -27,12 +27,7 @@ function AssignmentQueueCards({
   updateSubmitted,
 }: CardProps) {
   const { handleNextCard, handleRetryCard } = useAssignmentQueue();
-  const assignmentQueue = useAssignmentQueueStore(
-    (state) => state.assignmentQueue
-  );
-  const currQueueIndex = useAssignmentQueueStore(
-    (state) => state.currQueueIndex
-  );
+  const { assignmentQueue, currQueueIndex } = useAssignmentQueueStoreFacade();
   const { shouldBatchSubmit } = useAssignmentSubmitStoreFacade();
 
   useEffect(() => {
