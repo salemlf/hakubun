@@ -1,17 +1,17 @@
 import { useEffect } from "react";
-import { groupDataByProperty } from "../utils";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
-import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
-import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
-import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService";
-import { Subject } from "../types/Subject";
-import Card from "../components/Card/Card";
-import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
-import SubjCharacterList from "../components/SubjCharacterList";
+import { groupDataByProperty } from "../../utils";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
+import { getCompletedAssignmentQueueData } from "../../services/AssignmentQueueService";
+import { Subject } from "../../types/Subject";
+import Card from "../../components/Card/Card";
+import FloatingHomeButton from "../../components/FloatingHomeButton/FloatingHomeButton";
+import SubjCharacterList from "../../components/SubjCharacterList";
 import {
   ContentWithTabBar,
   FullWidthGridDiv,
-} from "../styles/BaseStyledComponents";
+} from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const LessonSummaryHeader = styled.header`

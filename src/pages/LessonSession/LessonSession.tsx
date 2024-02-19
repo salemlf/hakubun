@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useBlocker, useNavigate } from "react-router-dom";
-import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
-import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
-import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
-import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
-import { shouldBlock } from "../services/AssignmentQueueService";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
-import LessonCards from "../components/LessonCards";
-import Button from "../components/Button";
-import AlertModal from "../components/AlertModal";
-import SvgIcon from "../components/SvgIcon";
-import HomeIconColor from "../images/home-color.svg?react";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import useLessonPaginatorStoreFacade from "../../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import { useIsBottomSheetOpen } from "../../contexts/BottomSheetOpenContext";
+import { shouldBlock } from "../../services/AssignmentQueueService";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import LessonCards from "../../components/LessonCards";
+import Button from "../../components/Button";
+import AlertModal from "../../components/AlertModal";
+import SvgIcon from "../../components/SvgIcon";
+import HomeIconColor from "../../images/home-color.svg?react";
 import styled from "styled-components";
 
 // TODO: extract into HomeButton component

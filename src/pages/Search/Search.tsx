@@ -3,21 +3,21 @@ import { IonList } from "@ionic/react";
 import Fuse from "fuse.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDebounce } from "usehooks-ts";
-import { flattenSearchResults } from "../services/MiscService";
-import { useAllSubjects } from "../hooks/useAllSubjects";
-import { useStickyState } from "../hooks/useStickyState";
-import { SubjectWideButton } from "../components/SubjectWideBtnList";
-import Button from "../components/Button";
-import SvgIcon from "../components/SvgIcon";
-import SearchIcon from "../images/search.svg";
-import ClearIcon from "../images/clear.svg?react";
-import ThinkingLogo from "../images/logo-thinking.svg";
-import QuestionLogo from "../images/logo-question.svg";
-import LogoExclamation from "../images/logo-exclamation.svg";
+import { flattenSearchResults } from "../../services/MiscService";
+import { useAllSubjects } from "../../hooks/useAllSubjects";
+import { useStickyState } from "../../hooks/useStickyState";
+import { SubjectWideButton } from "../../components/SubjectWideBtnList";
+import Button from "../../components/Button";
+import SvgIcon from "../../components/SvgIcon";
+import SearchIcon from "../../images/search.svg";
+import ClearIcon from "../../images/clear.svg?react";
+import ThinkingLogo from "../../images/logo-thinking.svg";
+import QuestionLogo from "../../images/logo-question.svg";
+import LogoExclamation from "../../images/logo-exclamation.svg";
 import {
   AbsoluteCenterContainer,
   ContentWithTabBar,
-} from "../styles/BaseStyledComponents";
+} from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Content = styled(ContentWithTabBar)`

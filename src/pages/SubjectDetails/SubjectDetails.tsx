@@ -1,15 +1,15 @@
 import { useParams } from "react-router-dom";
 import { IonSkeletonText } from "@ionic/react";
-import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
-import { useSubjectByID } from "../hooks/useSubjectByID";
-import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
-import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
-import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";
-import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
-import VocabSubjDetails from "../components/VocabSubjDetails/VocabSubjDetails";
-import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
-import ErrorMessage from "../components/ErrorMessage";
-import { ContentWithTabBar } from "../styles/BaseStyledComponents";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import { useSubjectByID } from "../../hooks/useSubjectByID";
+import { GeneralVocabulary, Kanji, Radical } from "../../types/Subject";
+import SubjectSummary from "../../components/SubjectSummary/SubjectSummary";
+import RadicalSubjDetails from "../../components/RadicalSubjDetails/RadicalSubjDetails";
+import KanjiSubjDetails from "../../components/KanjiSubjDetails/KanjiSubjDetails";
+import VocabSubjDetails from "../../components/VocabSubjDetails/VocabSubjDetails";
+import SubjectHeader from "../../components/SubjectHeader/SubjectHeader";
+import ErrorMessage from "../../components/ErrorMessage";
+import { ContentWithTabBar } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const FullWidthGrid = styled.section`

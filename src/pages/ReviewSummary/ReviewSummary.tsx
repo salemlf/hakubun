@@ -1,16 +1,16 @@
 import { useEffect } from "react";
-import { getReviewsGroupedByResult } from "../services/AssignmentQueueService";
-import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService";
-import { useQueueStore } from "../stores/useQueueStore/useQueueStore";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
-import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
-import ReviewResults from "../components/ReviewResults";
-import ResultsHeader from "../components/ReviewResults/ResultsHeader";
-import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
+import { getReviewsGroupedByResult } from "../../services/AssignmentQueueService";
+import { getCompletedAssignmentQueueData } from "../../services/AssignmentQueueService";
+import { useQueueStore } from "../../stores/useQueueStore/useQueueStore";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
+import ReviewResults from "../../components/ReviewResults";
+import ResultsHeader from "../../components/ReviewResults/ResultsHeader";
+import FloatingHomeButton from "../../components/FloatingHomeButton/FloatingHomeButton";
 import {
   ContentWithTabBar,
   FullWidthGridDiv,
-} from "../styles/BaseStyledComponents";
+} from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const WarningMsg = styled.p`

@@ -3,13 +3,13 @@ import {
   renderHook,
   renderWithRouter,
   screen,
-} from "../testing/test-utils";
-import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
-import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
-import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
-import ReviewSession from "./ReviewSession";
-import Home from "./Home";
-import { SubjectDetails } from "./SubjectDetails";
+} from "../../testing/test-utils";
+import { generateRandomQueueItems } from "../../testing/mocks/data-generators/assignmentQueueGenerator";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
+import ReviewSession from "../ReviewSession/ReviewSession";
+import Home from "../Home/Home";
+import { SubjectDetails } from "../SubjectDetails/SubjectDetails";
 
 const mockReviewQueueStore = (queueItems: AssignmentQueueItem[]) => {
   const { result: assignmentQueueResult } = renderHook(() =>

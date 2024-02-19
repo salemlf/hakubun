@@ -1,27 +1,27 @@
 import { useEffect } from "react";
 import { useBlocker, useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
-import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
-import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import {
   createReviewPostData,
   getCompletedAssignmentQueueData,
   shouldBlock,
-} from "../services/AssignmentQueueService";
-import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
-import { useCreateReview } from "../hooks/useCreateReview";
-import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
+} from "../../services/AssignmentQueueService";
+import { useIsBottomSheetOpen } from "../../contexts/BottomSheetOpenContext";
+import { useCreateReview } from "../../hooks/useCreateReview";
+import { useSubmittedQueueUpdate } from "../../hooks/useSubmittedQueueUpdate";
 import {
   AssignmentQueueItem,
   AssignmentSubmitInfo,
-} from "../types/AssignmentQueueTypes";
-import { PreFlattenedAssignment } from "../types/Assignment";
-import QueueHeader from "../components/QueueHeader/QueueHeader";
-import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
-import AlertModal from "../components/AlertModal";
-import KeyboardShortcuts from "../components/KeyboardShortcuts";
-import FinishFlagIcon from "../images/finish-flag.svg";
-import { MainContent } from "../styles/BaseStyledComponents";
+} from "../../types/AssignmentQueueTypes";
+import { PreFlattenedAssignment } from "../../types/Assignment";
+import QueueHeader from "../../components/QueueHeader/QueueHeader";
+import AssignmentQueueCards from "../../components/AssignmentQueueCards/AssignmentQueueCards";
+import AlertModal from "../../components/AlertModal";
+import KeyboardShortcuts from "../../components/KeyboardShortcuts";
+import FinishFlagIcon from "../../images/finish-flag.svg";
+import { MainContent } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Content = styled(MainContent)`

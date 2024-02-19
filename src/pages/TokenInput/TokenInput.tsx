@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
-import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
-import { useUserLogin } from "../hooks/useUserLogin";
-import { AccordionItemData } from "../types/MiscTypes";
-import LoadingDots from "../components/LoadingDots";
-import Button from "../components/Button";
-import HelpSpan from "../components/HelpSpan";
-import FallingText from "../components/FallingText";
-import Emoji from "../components/Emoji";
-import Accordion from "../components/Accordion";
-import SvgIcon from "../components/SvgIcon";
-import WavesBgImgLight from "../images/layered-waves-bg-light.svg";
-import WavesBgImgDark from "../images/layered-waves-bg-dark.svg";
-import LogoIcon from "../images/logo.svg?react";
+import useAuthTokenStoreFacade from "../../stores/useAuthTokenStore/useAuthTokenStore.facade";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import { useUserLogin } from "../../hooks/useUserLogin";
+import { AccordionItemData } from "../../types/MiscTypes";
+import LoadingDots from "../../components/LoadingDots";
+import Button from "../../components/Button";
+import HelpSpan from "../../components/HelpSpan";
+import FallingText from "../../components/FallingText";
+import Emoji from "../../components/Emoji";
+import Accordion from "../../components/Accordion";
+import SvgIcon from "../../components/SvgIcon";
+import WavesBgImgLight from "../../images/layered-waves-bg-light.svg";
+import WavesBgImgDark from "../../images/layered-waves-bg-dark.svg";
+import LogoIcon from "../../images/logo.svg?react";
 import {
   FixedCenterContainer,
   MainContent,
-} from "../styles/BaseStyledComponents";
+} from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 type ContentProps = {

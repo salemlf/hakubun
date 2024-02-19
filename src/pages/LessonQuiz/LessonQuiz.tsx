@@ -1,24 +1,24 @@
 import { useEffect } from "react";
 import { useBlocker, useNavigate } from "react-router-dom";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import {
   getCompletedAssignmentQueueData,
   shouldBlock,
-} from "../services/AssignmentQueueService";
-import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
-import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
-import { useStartAssignment } from "../hooks/useStartAssignment";
-import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
+} from "../../services/AssignmentQueueService";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import { useIsBottomSheetOpen } from "../../contexts/BottomSheetOpenContext";
+import { useStartAssignment } from "../../hooks/useStartAssignment";
+import { useSubmittedQueueUpdate } from "../../hooks/useSubmittedQueueUpdate";
 import {
   AssignmentQueueItem,
   AssignmentSubmitInfo,
-} from "../types/AssignmentQueueTypes";
-import { PreFlattenedAssignment } from "../types/Assignment";
-import AssignmentQueueCards from "../components/AssignmentQueueCards";
-import QueueHeader from "../components/QueueHeader";
-import AlertModal from "../components/AlertModal";
-import KeyboardShortcuts from "../components/KeyboardShortcuts";
-import { MainContent } from "../styles/BaseStyledComponents";
+} from "../../types/AssignmentQueueTypes";
+import { PreFlattenedAssignment } from "../../types/Assignment";
+import AssignmentQueueCards from "../../components/AssignmentQueueCards";
+import QueueHeader from "../../components/QueueHeader";
+import AlertModal from "../../components/AlertModal";
+import KeyboardShortcuts from "../../components/KeyboardShortcuts";
+import { MainContent } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const MainContentWithMargin = styled(MainContent)`

@@ -1,14 +1,14 @@
 import { useEffect } from "react";
-import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
-import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
-import { useLessons } from "../hooks/useLessons";
-import AssignmentSettings from "../components/AssignmentSettings";
-import LoadingDots from "../components/LoadingDots";
-import PageHeader from "../components/PageHeader";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import useLessonPaginatorStoreFacade from "../../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
+import { useLessons } from "../../hooks/useLessons";
+import AssignmentSettings from "../../components/AssignmentSettings";
+import LoadingDots from "../../components/LoadingDots";
+import PageHeader from "../../components/PageHeader";
 import {
   FixedCenterContainer,
   MainContent,
-} from "../styles/BaseStyledComponents";
+} from "../../styles/BaseStyledComponents";
 
 function LessonSettings() {
   const {

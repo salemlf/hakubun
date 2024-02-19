@@ -1,9 +1,9 @@
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
-import FloatingHomeButton from "../components/FloatingHomeButton";
-import Emoji from "../components/Emoji";
-import LogoExclamation from "../images/logo-exclamation.svg";
-import { Header } from "../styles/BaseStyledComponents";
-import { ContentWithTabBar } from "../styles/BaseStyledComponents";
+import FloatingHomeButton from "../../components/FloatingHomeButton";
+import Emoji from "../../components/Emoji";
+import LogoExclamation from "../../images/logo-exclamation.svg";
+import { Header } from "../../styles/BaseStyledComponents";
+import { ContentWithTabBar } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Content = styled(ContentWithTabBar)`

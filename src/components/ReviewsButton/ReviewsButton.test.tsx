@@ -6,7 +6,7 @@ import { AVAIL_REVIEWS, assignmentsEndpoint } from "../../testing/endpoints";
 import { generateAssignmentCollection } from "../../testing/mocks/data-generators/collectionGenerator";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
 import { AssignmentCollection } from "../../types/Collection";
-import { ReviewSettings } from "../../pages/ReviewSettings";
+import { ReviewSettings } from "../../pages/ReviewSettings/ReviewSettings";
 import ReviewsButton from ".";
 
 const mockLevel = 1;

@@ -1,6 +1,6 @@
 import { renderWithRouter, screen } from "../../testing/test-utils";
 import FloatingHomeButton from ".";
-import Home from "../../pages/Home";
+import Home from "../../pages/Home/Home";
 
 test("FloatingHomeButton renders", () => {
   const { baseElement } = renderComponent();

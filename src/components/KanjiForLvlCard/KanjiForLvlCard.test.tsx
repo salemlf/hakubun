@@ -11,7 +11,7 @@ import {
 } from "../../testing/endpoints";
 import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
-import { SubjectDetails } from "../../pages/SubjectDetails";
+import { SubjectDetails } from "../../pages/SubjectDetails/SubjectDetails";
 import KanjiForLvlCard from ".";
 
 const mockLevel = 1;

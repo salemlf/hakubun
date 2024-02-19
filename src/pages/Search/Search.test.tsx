@@ -1,5 +1,5 @@
-import { renderWithRouter } from "../testing/test-utils";
-import { Search } from "./Search";
+import { renderWithRouter } from "../../testing/test-utils";
+import { Search } from "../Search/Search";
 
 test("Search renders", () => {
   const { baseElement } = renderComponent();

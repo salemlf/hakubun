@@ -13,7 +13,7 @@ import { generateAssignmentCollection } from "../../testing/mocks/data-generator
 import { generateUser } from "../../testing/mocks/data-generators/userGenerator";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useLessons } from "../../hooks/useLessons";
-import LessonSettings from "../../pages/LessonSettings";
+import LessonSettings from "../../pages/LessonSettings/LessonSettings";
 import { AssignmentCollection } from "../../types/Collection";
 import LessonsButton from ".";
 

@@ -4,18 +4,18 @@ import {
   screen,
   renderHook,
   act,
-} from "../testing/test-utils";
-import { server } from "../testing/mocks/server";
-import { userEndpoint } from "../testing/endpoints";
+} from "../../testing/test-utils";
+import { server } from "../../testing/mocks/server";
+import { userEndpoint } from "../../testing/endpoints";
 import {
   generateUser,
   generateUserResponse,
-} from "../testing/mocks/data-generators/userGenerator";
-import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
-import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import * as useUserLogin from "../hooks/useUserLogin";
-import Home from "./Home";
-import TokenInput from "./TokenInput";
+} from "../../testing/mocks/data-generators/userGenerator";
+import useAuthTokenStoreFacade from "../../stores/useAuthTokenStore/useAuthTokenStore.facade";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
+import * as useUserLogin from "../../hooks/useUserLogin";
+import Home from "../Home/Home";
+import TokenInput from "../TokenInput/TokenInput";
 
 const mockUserLvl1 = generateUser({ level: 1 });
 const mockLvl1UserResponse = generateUserResponse({ level: 1 });

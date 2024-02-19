@@ -3,12 +3,12 @@ import {
   screen,
   renderHook,
   act,
-} from "../testing/test-utils";
-import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
-import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
-import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
-import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
-import Home from "./Home";
+} from "../../testing/test-utils";
+import { generateRandomQueueItems } from "../../testing/mocks/data-generators/assignmentQueueGenerator";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import useLessonPaginatorStoreFacade from "../../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import Home from "../Home/Home";
 import LessonSession from "./LessonSession";
 
 const mockAssignmentQueueLessons = generateRandomQueueItems({

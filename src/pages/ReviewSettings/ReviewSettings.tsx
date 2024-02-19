@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
-import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
-import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
-import LoadingDots from "../components/LoadingDots";
-import PageHeader from "../components/PageHeader";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
+import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
+import AssignmentSettings from "../../components/AssignmentSettings/AssignmentSettings";
+import LoadingDots from "../../components/LoadingDots";
+import PageHeader from "../../components/PageHeader";
 import {
   FixedCenterContainer,
   MainContent,
-} from "../styles/BaseStyledComponents";
+} from "../../styles/BaseStyledComponents";
 
 export const ReviewSettings = () => {
   const { userInfo } = useUserInfoStoreFacade();

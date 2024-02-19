@@ -11,7 +11,7 @@ import {
 } from "../../testing/endpoints";
 import { useRadicalSubjectsForLvl } from "../../hooks/useRadicalSubjectsForLvl";
 import { useRadicalAssignmentsForLvl } from "../../hooks/useRadicalAssignmentsForLvl";
-import { SubjectDetails } from "../../pages/SubjectDetails";
+import { SubjectDetails } from "../../pages/SubjectDetails/SubjectDetails";
 import RadicalsForLvlCard from ".";
 
 const mockLevel = 1;

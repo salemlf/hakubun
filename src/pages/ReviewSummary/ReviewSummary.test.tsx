@@ -1,25 +1,26 @@
-import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
-import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
 import {
   renderHook,
   act,
   renderWithRouter,
   screen,
-} from "../testing/test-utils";
-import LessonSummary from "./LessonSummary";
+} from "../../testing/test-utils";
+import { generateRandomQueueItems } from "../../testing/mocks/data-generators/assignmentQueueGenerator";
+import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
+import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService";
+import { Subject } from "../../types/Subject";
+import ReviewSummary from "../ReviewSummary/ReviewSummary";
 
 const mockAssignmentQueueItems = generateRandomQueueItems({
   numItems: 10,
-  areLessons: true,
-  queueProgressState: "not_started",
+  queueProgressState: "completed",
 });
 
-test("LessonSummary renders", () => {
+test("ReviewSummary renders", () => {
   const { baseElement } = renderComponent();
   expect(baseElement).toBeDefined();
 });
 
-test("Learned lessons displayed", async () => {
+test("Reviewed assignments displayed", async () => {
   const { result } = renderHook(() => useAssignmentSubmitStoreFacade());
   expect(result.current.submittedAssignmentQueueItems).toEqual([]);
   act(() => result.current.updateSubmittedQueueItems(mockAssignmentQueueItems));
@@ -33,7 +34,7 @@ test("Learned lessons displayed", async () => {
     if (!queueItem.useImage) {
       queueItem.characters !== null && txtQueueItems.push(queueItem.characters);
     } else {
-      imageQueueItems.push(queueItem.meaning_mnemonic);
+      imageQueueItems.push(getSubjectDisplayName(queueItem as Subject));
     }
   });
 
@@ -41,24 +42,24 @@ test("Learned lessons displayed", async () => {
 
   imageQueueItems.forEach(async (altTxt) => {
     expect(
-      await screen.findByRole("img", {
-        name: `${altTxt}`,
+      screen.getByRole("img", {
+        name: `${altTxt} image`,
       })
     ).toBeDefined();
   });
-  txtQueueItems.forEach(async (char) => {
-    expect(await screen.findByText(`${char}`)).toBeDefined();
+  txtQueueItems.forEach((char) => {
+    expect(screen.getByText(`${char}`)).toBeDefined();
   });
 });
 
 const renderComponent = () => {
-  const lessonSummaryPath = "/lessons/summary";
+  const reviewSummaryPath = "/reviews/summary";
 
   return renderWithRouter({
     routeObj: {
-      path: lessonSummaryPath,
-      element: <LessonSummary />,
+      element: <ReviewSummary />,
+      path: reviewSummaryPath,
     },
-    defaultPath: lessonSummaryPath,
+    defaultPath: reviewSummaryPath,
   });
 };

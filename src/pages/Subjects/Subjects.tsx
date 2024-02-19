@@ -1,13 +1,16 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import { useStickyState } from "../hooks/useStickyState";
-import { LEVELS } from "../constants";
-import { getPageIndex } from "../services/MiscService";
-import SubjectsOnLvlTab from "../components/SubjectsOnLvlTab/SubjectsOnLvlTab";
-import LoadingDots from "../components/LoadingDots";
-import Paginator from "../components/Paginator";
-import { FixedCenterContainer, Header } from "../styles/BaseStyledComponents";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
+import { useStickyState } from "../../hooks/useStickyState";
+import { LEVELS } from "../../constants";
+import { getPageIndex } from "../../services/MiscService";
+import SubjectsOnLvlTab from "../../components/SubjectsOnLvlTab/SubjectsOnLvlTab";
+import LoadingDots from "../../components/LoadingDots";
+import Paginator from "../../components/Paginator";
+import {
+  FixedCenterContainer,
+  Header,
+} from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const SubjectsHeader = styled(Header)`
