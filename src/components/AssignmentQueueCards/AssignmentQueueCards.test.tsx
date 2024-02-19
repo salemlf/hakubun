@@ -152,5 +152,6 @@ const renderComponent = (
       path: currPath,
       element: <AssignmentQueueCards {...props} />,
     },
+    mockHome: true,
   });
 };

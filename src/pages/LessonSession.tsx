@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-// TODO: instead add a module declaration file for react-router-prompt
-// @ts-ignore: Could not find a declaration file for module
-import ReactRouterPrompt from "react-router-prompt";
+import { useBlocker, useNavigate } from "react-router-dom";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
-import { blockUserLeavingPage } from "../services/AssignmentQueueService";
+import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
+import { shouldBlock } from "../services/AssignmentQueueService";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import LessonCards from "../components/LessonCards";
 import Button from "../components/Button";
 import AlertModal from "../components/AlertModal";
+import SvgIcon from "../components/SvgIcon";
 import HomeIconColor from "../images/home-color.svg?react";
 import styled from "styled-components";
-import SvgIcon from "../components/SvgIcon";
 
 // TODO: extract into HomeButton component
 const HomeBtn = styled(Button)`
@@ -33,8 +31,17 @@ function LessonSession() {
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
   const { resetAll: resetAssignmentQueue, assignmentQueue: lessonQueue } =
     useAssignmentQueueStoreFacade();
-
   const { reset: resetLessonPaginator } = useLessonPaginatorStoreFacade();
+
+  const blocker = useBlocker(shouldBlock);
+  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+
+  useEffect(() => {
+    if (blocker.state === "blocked" && isBottomSheetOpen) {
+      blocker.reset();
+      setIsBottomSheetOpen(false);
+    }
+  }, [blocker.state, isBottomSheetOpen]);
 
   useEffect(() => {
     if (lessonQueue.length === 0) {
@@ -62,36 +69,22 @@ function LessonSession() {
     <>
       {uniqueLessonQueue.length !== 0 && (
         <>
-          <ReactRouterPrompt
-            when={blockUserLeavingPage}
-            beforeConfirm={() => {
-              endLessonSession();
-            }}
-          >
-            {({
-              isActive,
-              onConfirm,
-              onCancel,
-            }: {
-              isActive: boolean;
-              onConfirm: () => void;
-              onCancel: () => void;
-            }) =>
-              isActive && (
-                <AlertModal open={isActive}>
-                  <AlertModal.Content
-                    isOpen={isActive}
-                    title="End Lesson Session?"
-                    confirmText="End Session"
-                    description="Are you sure you want to leave? You'll lose all progress from this lesson session."
-                    cancelText="Cancel"
-                    onConfirmClick={onConfirm}
-                    onCancelClick={onCancel}
-                  />
-                </AlertModal>
-              )
-            }
-          </ReactRouterPrompt>
+          {blocker.state === "blocked" && (
+            <AlertModal open={blocker.state === "blocked"}>
+              <AlertModal.Content
+                isOpen={blocker.state === "blocked"}
+                title="End Lesson Session?"
+                confirmText="End Session"
+                description="Are you sure you want to leave? You'll lose all progress from this lesson session."
+                cancelText="Cancel"
+                onConfirmClick={() => {
+                  endLessonSession();
+                  blocker.proceed();
+                }}
+                onCancelClick={() => blocker.reset()}
+              />
+            </AlertModal>
+          )}
           <HomeBtn
             aria-label="Home page"
             onPress={() => navigate("/", { replace: true })}

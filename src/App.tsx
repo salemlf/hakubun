@@ -17,13 +17,17 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
-import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
-import { onQueryError } from "./services/ApiQueryService";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { routes } from "./navigation/routes";
+import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
+import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
+import { useUserSettingsStore } from "./stores/useUserSettingsStore/useUserSettingsStore";
+import { onQueryError } from "./services/ApiQueryService";
+import { BottomSheetOpenProvider } from "./contexts/BottomSheetOpenContext";
+import { PersistentStore } from "./hooks/useHydration";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { ToastDisplayProvider } from "./components/Toast/ToastDisplayProvider";
+import HydrationWrapper from "./components/HydrationWrapper";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -44,9 +48,6 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/globals.scss";
-import HydrationWrapper from "./components/HydrationWrapper";
-import { useUserSettingsStore } from "./stores/useUserSettingsStore/useUserSettingsStore";
-import { PersistentStore } from "./hooks/useHydration";
 
 // for mock service worker
 async function enableMocking() {
@@ -61,7 +62,7 @@ enableMocking();
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
   LogRocket.init("cleqvf/hakubun", {
-    release: "0.3.5-alpha",
+    release: "0.3.6-alpha",
     shouldCaptureIP: false,
     network: {
       requestSanitizer: (request) => {
@@ -71,7 +72,7 @@ if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
     },
   });
   Sentry.init({
-    release: "0.3.5-alpha",
+    release: "0.3.6-alpha",
     dsn: import.meta.env.VITE_SENTRY_DSN,
     tracePropagationTargets: [baseUrlRegex],
     environment: import.meta.env.MODE,
@@ -143,9 +144,11 @@ const App: React.FC = () => {
       <ToastDisplayProvider />
       <HydrationWrapper store={useUserSettingsStore as PersistentStore}>
         <ThemeProvider>
-          <IonApp>
-            <RouterProvider router={browserRouter} />
-          </IonApp>
+          <BottomSheetOpenProvider>
+            <IonApp>
+              <RouterProvider router={browserRouter} />
+            </IonApp>
+          </BottomSheetOpenProvider>
         </ThemeProvider>
       </HydrationWrapper>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}

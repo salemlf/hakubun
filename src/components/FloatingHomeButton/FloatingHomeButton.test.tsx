@@ -26,10 +26,15 @@ test("FloatingHomeButton redirects to home on click", async () => {
 });
 
 const renderComponent = (withHome: boolean = false) => {
-  let routes = withHome ? [{ element: <Home />, path: "/" }] : [];
+  const routes = withHome ? [{ element: <Home />, path: "/" }] : [];
+
+  const initialPath = "/reviews/summary";
   return renderWithRouter({
-    component: <FloatingHomeButton />,
-    defaultPath: "/reviews/summary",
+    routeObj: {
+      element: <FloatingHomeButton />,
+      path: initialPath,
+    },
+    defaultPath: initialPath,
     routes,
   });
 };

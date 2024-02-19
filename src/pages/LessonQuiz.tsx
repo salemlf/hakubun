@@ -1,14 +1,12 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-// TODO: instead add a module declaration file for react-router-prompt
-// @ts-ignore: Could not find a declaration file for module
-import ReactRouterPrompt from "react-router-prompt";
+import { useBlocker, useNavigate } from "react-router-dom";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import {
-  blockUserLeavingPage,
   getCompletedAssignmentQueueData,
+  shouldBlock,
 } from "../services/AssignmentQueueService";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
+import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { useStartAssignment } from "../hooks/useStartAssignment";
 import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
 import {
@@ -37,8 +35,17 @@ function LessonQuiz() {
     (state) => state.assignmentQueue
   );
   const updateSubmitted = useSubmittedQueueUpdate();
-
   const { mutateAsync: startAssignmentAsync } = useStartAssignment();
+
+  const blocker = useBlocker(shouldBlock);
+  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+
+  useEffect(() => {
+    if (blocker.state === "blocked" && isBottomSheetOpen) {
+      blocker.reset();
+      setIsBottomSheetOpen(false);
+    }
+  }, [blocker.state, isBottomSheetOpen]);
 
   useEffect(() => {
     if (assignmentQueue.length === 0) {
@@ -52,16 +59,16 @@ function LessonQuiz() {
   };
 
   const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
-    let submittedLessonInfo = await submitLessonBatch(queueData);
+    const submittedLessonInfo = await submitLessonBatch(queueData);
     updateSubmitted(submittedLessonInfo);
     navigate("/lessons/summary", { replace: true });
   };
 
   const submitLessonBatch = (queueData: AssignmentQueueItem[]) => {
-    let completedLessonData = getCompletedAssignmentQueueData(queueData);
+    const completedLessonData = getCompletedAssignmentQueueData(queueData);
 
-    // TODO: change to actually catch errors
-    let promises = completedLessonData.map(function (lessonItem) {
+    // TODO: retry starting assignments that failed?
+    const promises = completedLessonData.map(function (lessonItem) {
       return startAssignmentAsync({
         assignmentID: lessonItem.assignment_id,
       })
@@ -69,18 +76,12 @@ function LessonQuiz() {
           return results;
         })
         .catch((err) => {
-          // *testing
-          console.log("🚀 ~ file: LessonQuiz.tsx:72 ~ promises ~ err:", err);
-          // *testing
+          console.error(`An error occured when starting an assignment: ${err}`);
         });
     });
     return Promise.all(promises).then(function (results) {
-      // *testing
-      console.log("🚀 ~ file: LessonQuiz.tsx:82 ~ results:", results);
-      // *testing
-
-      let unableToUpdate: AssignmentQueueItem[] = [];
-      let lessonResponses: PreFlattenedAssignment[] = [];
+      const unableToUpdate: AssignmentQueueItem[] = [];
+      const lessonResponses: PreFlattenedAssignment[] = [];
 
       results.forEach((response, index) => {
         if (response === undefined) {
@@ -90,7 +91,7 @@ function LessonQuiz() {
         }
       });
 
-      let lessonInfo: AssignmentSubmitInfo = {
+      const lessonInfo: AssignmentSubmitInfo = {
         assignmentData: completedLessonData,
         submitResponses: lessonResponses,
         errors: unableToUpdate,
@@ -102,35 +103,21 @@ function LessonQuiz() {
 
   return (
     <>
-      <ReactRouterPrompt
-        when={blockUserLeavingPage}
-        beforeConfirm={() => {
-          endLessonQuiz();
-        }}
-      >
-        {({
-          isActive,
-          onConfirm,
-          onCancel,
-        }: {
-          isActive: boolean;
-          onConfirm: () => void;
-          onCancel: () => void;
-        }) =>
-          isActive && (
-            <AlertModal open={isActive}>
-              <AlertModal.Content
-                isOpen={isActive}
-                title="End Lesson Quiz?"
-                confirmText="End Quiz"
-                cancelText="Cancel"
-                onConfirmClick={onConfirm}
-                onCancelClick={onCancel}
-              />
-            </AlertModal>
-          )
-        }
-      </ReactRouterPrompt>
+      {blocker.state === "blocked" && (
+        <AlertModal open={blocker.state === "blocked"}>
+          <AlertModal.Content
+            isOpen={blocker.state === "blocked"}
+            title="End Lesson Quiz?"
+            confirmText="End Quiz"
+            cancelText="Cancel"
+            onConfirmClick={() => {
+              endLessonQuiz();
+              blocker.proceed();
+            }}
+            onCancelClick={() => blocker.reset()}
+          />
+        </AlertModal>
+      )}
       {assignmentQueue.length !== 0 && <QueueHeader />}
       <MainContentWithMargin>
         {assignmentQueue.length !== 0 && (

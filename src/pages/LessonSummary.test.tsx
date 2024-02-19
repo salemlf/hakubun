@@ -52,10 +52,13 @@ test("Learned lessons displayed", async () => {
 });
 
 const renderComponent = () => {
+  const lessonSummaryPath = "/lessons/summary";
+
   return renderWithRouter({
     routeObj: {
-      path: "/lessons/summary",
+      path: lessonSummaryPath,
       element: <LessonSummary />,
     },
+    defaultPath: lessonSummaryPath,
   });
 };

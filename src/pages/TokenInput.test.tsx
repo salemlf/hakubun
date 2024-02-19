@@ -79,11 +79,14 @@ test("Redirect to home page from token input page if user already authenticated"
 });
 
 const renderComponent = (withHomeRoute: boolean = false) => {
+  const tokenInputPath = "/authenticate";
+
   return renderWithRouter({
     routeObj: {
-      path: "/authenticate",
+      path: tokenInputPath,
       element: <TokenInput />,
     },
+    defaultPath: tokenInputPath,
     routes: withHomeRoute
       ? [
           {

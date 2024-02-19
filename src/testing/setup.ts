@@ -42,7 +42,11 @@ expect.extend(matchers);
 // TODO: ...❯ Timeout._onTimeout node_modules/@ionic/core/components/ion-app.js:19:50
 setupIonicReact();
 
-beforeAll(() => server.listen());
+/*
+onUnhandledRequest option hides the "captured a request without a matching request handler" warning,
+since those clog up the logs and makes it hard to find actual errors
+*/
+beforeAll(() => server.listen({ onUnhandledRequest: "bypass" }));
 
 // clean up after each test case
 afterEach(() => {

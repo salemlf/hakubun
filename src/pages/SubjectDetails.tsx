@@ -44,7 +44,7 @@ export const SubjectDetails = () => {
   // TODO: display loading skeleton for each component until all content on page is loaded
   if (subjectLoading) {
     return (
-      <ContentWithTabBar>
+      <ContentWithTabBar data-testid="subject-details-page">
         <IonSkeletonText
           animated={true}
           style={{ height: "75vh" }}
@@ -54,7 +54,7 @@ export const SubjectDetails = () => {
   }
 
   if (subjectErr && !subjectData) {
-    <ContentWithTabBar>
+    <ContentWithTabBar data-testid="subject-details-page">
       <ErrorMessage />
     </ContentWithTabBar>;
   }
@@ -64,7 +64,7 @@ export const SubjectDetails = () => {
       {subjectData && (
         <>
           <SubjectHeader subject={subjectData} />
-          <ContentWithTabBar>
+          <ContentWithTabBar data-testid="subject-details-page">
             <FullWidthGrid>
               <SubjectSummary subject={subjectData}></SubjectSummary>
               {subjectData.object == "radical" && (

@@ -56,7 +56,7 @@ function SrsStages() {
     error: burnedStageErr,
   } = useAssignmentsByStage("burned");
 
-  let stagesLoading =
+  const stagesLoading =
     apprenticeStageDataLoading ||
     guruStageDataLoading ||
     masterStageDataLoading ||
@@ -99,6 +99,7 @@ function SrsStages() {
       <SrsButtonContainer data-testid="srs-stages-err">
         {stageNames.map((stageName) => (
           <SrsStageButton
+            key={stageName}
             srsStage={stageName}
             aria-label={`${stageName} ${labelSuffix}`}
             fullWidth={stageName === "burned"}
