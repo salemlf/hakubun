@@ -70,33 +70,39 @@ const customRender = (
   options?: Omit<RenderOptions, "wrapper">
 ) => render(ui, { wrapper: TestingApp, ...options });
 
-interface RouteOrComponentBase {
+interface RouteObj {
+  routeObj: RouteObject;
+  mockHome?: boolean;
+  defaultPath?: string;
   routes?: RouteObject[];
 }
-interface RouteObj extends RouteOrComponentBase {
-  routeObj: RouteObject;
-}
-interface Component extends RouteOrComponentBase {
-  component: JSX.Element;
-  defaultPath?: string;
-}
-
-type RouteOrComponent = Either<RouteObj, Component>;
 
 // cred to Miroslav Nikolov for original version, see article: https://webup.org/blog/how-to-avoid-mocking-in-react-router-v6-tests/
 const renderWithRouter = ({
   routeObj,
-  component,
-  defaultPath,
   routes = [],
-}: RouteOrComponent) => {
-  const routeInfo = routeObj ?? { element: component, path: defaultPath };
+  mockHome = false,
+  defaultPath,
+}: RouteObj) => {
+  const intialEntry = defaultPath ?? "/";
 
-  const path = routeObj?.path ?? defaultPath ?? "/";
+  routes = mockHome
+    ? [
+        {
+          element: (
+            <div>
+              <p>Home</p>
+            </div>
+          ),
+          path: "/",
+        },
+        ...routes,
+      ]
+    : routes;
 
   // memory router used so we can manually control history
-  const router = createMemoryRouter([{ ...routeInfo }, ...routes], {
-    initialEntries: [path],
+  const router = createMemoryRouter([{ ...routeObj }, ...routes], {
+    initialEntries: [intialEntry],
     initialIndex: 0,
   });
 

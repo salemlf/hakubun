@@ -39,17 +39,19 @@ test("User level is rendered to screen", async () => {
   });
   await waitFor(() => expect(result.current.userInfo).toBe(undefined));
 
-  let userData = mockUserResponseLvl5.data;
+  const userData = mockUserResponseLvl5.data;
 
   act(() => result.current.setUserInfo(userData));
   await waitFor(() => expect(result.current.userInfo).toBe(userData));
 
   renderComponent();
-  let userLvl = mockUserResponseLvl5.data.level;
-  let levelTxt = await screen.findByTestId("level-num");
+  const userLvl = mockUserResponseLvl5.data.level;
+  const levelTxt = await screen.findByTestId("level-num");
   expect(levelTxt).toHaveTextContent(`Level ${userLvl}`);
 });
 
 const renderComponent = () => {
-  return renderWithRouter({ component: <HomeHeader />, defaultPath: "/" });
+  return renderWithRouter({
+    routeObj: { path: "/", element: <HomeHeader /> },
+  });
 };

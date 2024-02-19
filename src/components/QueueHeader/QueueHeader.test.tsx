@@ -6,6 +6,15 @@ test("QueueHeader renders", () => {
   expect(baseElement).toBeDefined();
 });
 
+// TODO: change to use mock home page
 const renderComponent = () => {
-  return renderWithRouter({ component: <QueueHeader /> });
+  const queueHeaderPath = "/reviews/summary";
+  return renderWithRouter({
+    routeObj: {
+      path: queueHeaderPath,
+      element: <QueueHeader />,
+    },
+    defaultPath: queueHeaderPath,
+    mockHome: true,
+  });
 };

@@ -117,8 +117,7 @@ const renderComponent = (
     ? [{ element: <ReviewSettings />, path: "/reviews/settings" }]
     : [];
   return renderWithRouter({
-    component: <ReviewsButton level={level} />,
-    defaultPath: "/",
+    routeObj: { element: <ReviewsButton level={level} />, path: "/" },
     routes,
   });
 };

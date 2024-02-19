@@ -3,6 +3,7 @@ import type { ForwardedRef } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { PanInfo, motion, useAnimation } from "framer-motion";
 import { FocusScope } from "react-aria";
+import { useIsBottomSheetOpen } from "../../contexts/BottomSheetOpenContext";
 import Button from "../Button/Button";
 import GhostParent from "../GhostParent";
 import styled from "styled-components";
@@ -82,7 +83,7 @@ const sheetHeightMargin = 100;
 
 // TODO: fix bug where can't tab back once tabbed to open/close button (workaround rn is to open sheet and then tab back)
 function BottomSheetContentCore(
-  { title, height, children, className, ...props }: BottomSheetContentCoreProps,
+  { title, height, children, ...props }: BottomSheetContentCoreProps,
   forwardedRef: ForwardedRef<HTMLDivElement>
 ) {
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -91,7 +92,7 @@ function BottomSheetContentCore(
   const sheetContainerRef = useRef<HTMLDivElement>(null);
   const dragHeight = height - headerHeight - sheetHeightMargin;
   const controls = useAnimation();
-  const [isFullyOpen, setIsFullyOpen] = useState(false);
+  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
 
   useEffect(() => {
     if (headerRef.current) {
@@ -101,16 +102,16 @@ function BottomSheetContentCore(
 
   const mostlyClose = () => {
     controls.start("mostlyClosed");
-    setIsFullyOpen(false);
+    setIsBottomSheetOpen(false);
   };
 
   const fullyOpen = () => {
     controls.start("fullyOpen");
-    setIsFullyOpen(true);
+    setIsBottomSheetOpen(true);
   };
 
-  const onSheetBtnPress = (e: any) => {
-    if (isFullyOpen) {
+  const onSheetBtnPress = () => {
+    if (isBottomSheetOpen) {
       mostlyClose();
     } else {
       fullyOpen();
@@ -118,7 +119,7 @@ function BottomSheetContentCore(
   };
 
   useEffect(() => {
-    if (!isFullyOpen) {
+    if (!isBottomSheetOpen) {
       mostlyClose();
     }
   }, [controls, headerHeight]);
@@ -127,8 +128,8 @@ function BottomSheetContentCore(
     event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
   ) => {
-    let offsetTriggersChange = Math.abs(info.offset.y) > 300;
-    let velocityTriggersChange = Math.abs(info.velocity.y) > 400;
+    const offsetTriggersChange = Math.abs(info.offset.y) > 300;
+    const velocityTriggersChange = Math.abs(info.velocity.y) > 400;
     console.log(
       "🚀 ~ file: BottomSheet.tsx:130 ~ info.velocity.y:",
       info.velocity.y
@@ -144,22 +145,22 @@ function BottomSheetContentCore(
     }
     // going back to previous position
     else {
-      isFullyOpen ? fullyOpen() : mostlyClose();
+      isBottomSheetOpen ? fullyOpen() : mostlyClose();
     }
   };
 
   return (
     <SheetContainer ref={sheetContainerRef}>
       <Content
-        onEscapeKeyDown={(event: any) => {
+        onEscapeKeyDown={(event: KeyboardEvent) => {
           event.preventDefault();
-          if (isFullyOpen) {
+          if (isBottomSheetOpen) {
             mostlyClose();
           }
         }}
-        onInteractOutside={(event: any) => {
+        onInteractOutside={(event: Event) => {
           event.preventDefault();
-          if (isFullyOpen) {
+          if (isBottomSheetOpen) {
             mostlyClose();
           }
         }}
@@ -189,10 +190,11 @@ function BottomSheetContentCore(
             zIndex: 5,
           }}
         >
-          {isFullyOpen ? (
+          {isBottomSheetOpen ? (
             <FocusScope contain autoFocus>
               <SheetHeader ref={headerRef}>
                 <SheetOpenCloseButton
+                  data-testid="bottom-sheet-btn"
                   onPress={onSheetBtnPress}
                   aria-label="Open or close the bottom sheet"
                 />
@@ -203,10 +205,12 @@ function BottomSheetContentCore(
           ) : (
             <>
               <SheetHeader ref={headerRef}>
-                <SheetOpenCloseButton onPress={onSheetBtnPress} />
+                <SheetOpenCloseButton
+                  data-testid="bottom-sheet-btn"
+                  onPress={onSheetBtnPress}
+                />
                 <SheetHeadingTxt>{title}</SheetHeadingTxt>
               </SheetHeader>
-              {/* @ts-ignore using inert shows an annoying TypeScript error */}
               <GhostParent inert="true">{children}</GhostParent>
             </>
           )}

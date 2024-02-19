@@ -19,6 +19,8 @@ const ensureSrsQueryErrState = async (srsStage: SrsLevelName) => {
 
   await waitFor(() => {
     expect(result.current.isError).toBe(true);
+  });
+  await waitFor(() => {
     expect(result.current.data).toBe(undefined);
   });
 };
@@ -27,8 +29,8 @@ test("Shows error text on API error and no cached data", async () => {
   server.use(
     http.get(assignmentsEndpoint, ({ request }) => {
       const url = new URL(request.url);
-      let stages = url.searchParams.get(SRS_STAGES);
-      let started = url.searchParams.get("started");
+      const stages = url.searchParams.get(SRS_STAGES);
+      const started = url.searchParams.get("started");
       if (stages && started == "true") {
         return HttpResponse.error();
       }
@@ -50,7 +52,7 @@ test("Shows error text on API error and no cached data", async () => {
     await ensureSrsQueryErrState(stage);
   });
 
-  let errButton = await screen.findByTestId("srs-stages-err");
+  const errButton = await screen.findByTestId("srs-stages-err");
   expect(errButton).toHaveTextContent("Error loading data");
 });
 

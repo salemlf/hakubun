@@ -9,6 +9,7 @@ import {
   toHiragana,
 } from "wanakana";
 import Fuse from "fuse.js";
+import { BlockerFunction } from "react-router-dom";
 import { getNumObjsWithDistinctPropValue } from "../utils";
 import { INVALID_ANSWER_CHARS } from "../constants";
 import { displayToast } from "../components/Toast/Toast.service";
@@ -19,7 +20,6 @@ import {
   ReviewType,
   ReviewedQueueItemInfo,
 } from "../types/AssignmentQueueTypes";
-import { HistoryAction } from "../types/MiscTypes";
 
 const reviewColors: { [index: string]: string } = {
   reading: `var(--ion-color-primary)`,
@@ -531,14 +531,12 @@ export const createReviewPostData = (reviewedItems: AssignmentQueueItem[]) => {
 export const blockUserLeavingPage = ({
   currentLocation,
   nextLocation,
-  historyAction,
 }: {
-  currentLocation: Location;
-  nextLocation: Location;
-  historyAction: HistoryAction;
+  currentLocation: Location<any>;
+  nextLocation: Location<any>;
 }) => {
   // allowing user to view subjects pages during reviews and to review summary page
-  let subjDetailsRegex = new RegExp("/subjects/*");
+  const subjDetailsRegex = new RegExp("/subjects/*");
   if (
     subjDetailsRegex.test(nextLocation.pathname) ||
     nextLocation.pathname === "/reviews/summary" ||
@@ -549,6 +547,11 @@ export const blockUserLeavingPage = ({
   }
   return true;
 };
+
+export const shouldBlock: BlockerFunction = ({
+  currentLocation,
+  nextLocation,
+}) => blockUserLeavingPage({ currentLocation, nextLocation });
 
 export const convertToHiragana = (japanese: string) => {
   if (isMixed(japanese) || isKatakana(japanese)) {

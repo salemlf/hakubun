@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
-import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
-import LoadingDots from "../components/LoadingDots";
-import { FixedCenterContainer } from "../styles/BaseStyledComponents";
 import { setAxiosHeaders } from "../api/ApiConfig";
+import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import { useAuthTokenStore } from "../stores/useAuthTokenStore/useAuthTokenStore";
 import { PersistentStore, useHydration } from "../hooks/useHydration";
+import LoadingDots from "../components/LoadingDots";
+import { FixedCenterContainer } from "../styles/BaseStyledComponents";
 
 type Props = {
   redirectPath?: string;
@@ -27,7 +27,6 @@ const ProtectedRoute = ({
     setAxiosHeaders(authToken);
   }, []);
 
-  // TODO: prevent this behavior if on a page that uses bottomsheet
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
       CapacitorApp.addListener("backButton", ({ canGoBack }) => {

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
 // cred to Nadia Makarevich, tutorial here: https://www.developerway.com/posts/implementing-advanced-use-previous-hook
-export const usePrevious = <TValue extends unknown>(value: TValue) => {
+export const usePrevious = <TValue>(value: TValue) => {
   const ref = useRef<{ value: TValue; prev: TValue | null }>({
     value: value,
     prev: null,
