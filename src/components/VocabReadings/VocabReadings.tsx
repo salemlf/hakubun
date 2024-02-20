@@ -102,9 +102,7 @@ type VocabReadingProps = {
 };
 
 // TODO: refactor this, mehhhh rn
-// TODO: map reading to the pronunciation audio
 function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
-  const isKanaVocab = vocab.object === "kana_vocabulary";
   const hasReadings = vocab.readings && vocab.readings.length !== 0;
   const readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
   const { pronunciationVoice } = useUserSettingsStoreFacade();
@@ -147,12 +145,8 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
     </ReadingContainer>
   ) : (
     <ReadingContainer>
-      <ReadingsStyle>
-        {isKanaVocab ? (
-          <SubjDetailSubHeading>Readings</SubjDetailSubHeading>
-        ) : (
-          <strong>Readings: </strong>
-        )}
+      <VocabReadingsContainer>
+        <SubjDetailSubHeading>Pronunciation</SubjDetailSubHeading>
         <VocabReadingContainer>
           <ReadingTxt>{vocab.characters}</ReadingTxt>
           {vocab.characters && (
@@ -166,7 +160,7 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
             />
           )}
         </VocabReadingContainer>
-      </ReadingsStyle>
+      </VocabReadingsContainer>
     </ReadingContainer>
   );
 }
