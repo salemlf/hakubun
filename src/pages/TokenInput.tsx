@@ -15,6 +15,8 @@ import SvgIcon from "../components/SvgIcon";
 import WavesBgImgLight from "../images/layered-waves-bg-light.svg";
 import WavesBgImgDark from "../images/layered-waves-bg-dark.svg";
 import LogoIcon from "../images/logo.svg?react";
+import OpenEyeIcon from "../images/open-eye.svg?react";
+import CrossedOutEyeIcon from "../images/crossed-out-eye.svg?react";
 import {
   FixedCenterContainer,
   MainContent,
@@ -43,10 +45,30 @@ const TokenInputLabel = styled.label`
 `;
 
 const Input = styled.input`
-  max-width: 400px;
   background-color: white;
   color: black;
-  margin: 10px 0;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  outline: none;
+  border-radius: 5px;
+  border: none;
+
+  &:autofill,
+  &:-internal-autofill-selected,
+  &:-internal-autofill-previewed,
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    background-color: white;
+    color: black;
+    box-shadow: 0 0 0 30px white inset;
+    -webkit-background-clip: text;
+    -webkit-box-shadow: 0 0 0 30px white inset;
+    -webkit-text-fill-color: black;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 `;
 
 const SubmitButton = styled(Button)`
@@ -101,6 +123,40 @@ const List = styled.ol`
   padding-inline-start: 30px;
   li:not(:last-child) {
     margin-bottom: 5px;
+  }
+`;
+
+const TokenAndBtnContainer = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  max-width: 500px;
+  padding: 5px;
+  background-color: white;
+
+  &:focus-within {
+    outline: 2px solid white;
+    outline-offset: 3px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+  }
+  color: black;
+  margin: 10px 0;
+  border-radius: 5px;
+`;
+
+const ShowHideButton = styled(Button)`
+  border-radius: 0.5rem;
+  padding: 5px;
+  color: black;
+  margin-left: 10px;
+
+  &:focus-visible {
+    outline: 2px solid black;
+    outline-offset: 1px;
   }
 `;
 
@@ -162,6 +218,7 @@ const TokenInput = () => {
   const { userInfo } = useUserInfoStoreFacade();
   const [bgImg, setBgImg] = useState<string>(WavesBgImgLight);
   const { prefersDarkModeTheme } = useUserSettingsStoreFacade();
+  const [isTokenShown, setIsTokenShown] = useState<boolean>(false);
 
   useEffect(() => {
     if (prefersDarkModeTheme) {
@@ -250,13 +307,27 @@ const TokenInput = () => {
                 <HelpSpan helpPopoverContents={HelpPopoverContents}>
                   Wanikani API Token
                 </HelpSpan>
-                <Input
-                  id="api-token-input"
-                  type="text"
-                  name="api-token"
-                  data-private
-                  data-sentry-mask
-                />
+                <TokenAndBtnContainer>
+                  <Input
+                    id="api-token-input"
+                    data-testid="token-input"
+                    type={isTokenShown ? "text" : "password"}
+                    name="api-token"
+                    data-private
+                    data-sentry-mask
+                  />
+                  <ShowHideButton
+                    onPress={() => setIsTokenShown(!isTokenShown)}
+                  >
+                    <SvgIcon
+                      icon={
+                        isTokenShown ? <CrossedOutEyeIcon /> : <OpenEyeIcon />
+                      }
+                      width="1.5em"
+                      height="1.5em"
+                    />
+                  </ShowHideButton>
+                </TokenAndBtnContainer>
               </TokenInputLabel>
               {hasError && (
                 <ErrorTxt>
