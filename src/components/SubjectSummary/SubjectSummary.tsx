@@ -127,14 +127,17 @@ const VocabSummary = ({ subject, assignment }: SubjSummaryProps) => {
         <SubjectMeanings subject={subject} showPrimaryMeaning={false} />
       </SubjSummaryRow>
       {isKanaVocab ? (
-        <SpaceBetweenRow>
-          <div>
+        <>
+          <PartsOfSpeechContainer>
             <PartsOfSpeech vocab={subject as Vocabulary} />
-          </div>
-          <StagesRow justify="flex-start">
-            <AssignmentSrs assignment={assignment} />
-          </StagesRow>
-        </SpaceBetweenRow>
+          </PartsOfSpeechContainer>
+          <VocabGrid>
+            <VocabReadings vocab={subject as Vocabulary} />
+            <SrsContainer>
+              <AssignmentSrs assignment={assignment} />
+            </SrsContainer>
+          </VocabGrid>
+        </>
       ) : (
         <>
           <PartsOfSpeechContainer>
