@@ -28,20 +28,6 @@ const SummaryContainer = styled.div`
   }
 `;
 
-const SpaceBetweenRow = styled(SubjSummaryRow)`
-  justify-content: space-between;
-  align-items: flex-end;
-`;
-
-type StagesRowProps = {
-  justify: string;
-};
-
-const StagesRow = styled(SubjSummaryRow)<StagesRowProps>`
-  gap: 10px;
-  justify-content: ${({ justify }) => justify};
-`;
-
 const ReadingAndSrsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -61,7 +47,6 @@ type SubjSummaryProps = {
   assignment: Assignment | undefined;
 };
 
-// TODO: put these in same row
 const RadicalSummary = ({ subject, assignment }: SubjSummaryProps) => {
   return (
     <>
