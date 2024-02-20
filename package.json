@@ -47,24 +47,11 @@
     "usehooks-ts": "^2.9.1",
     "wanakana": "^5.1.0",
     "web-vitals": "^0.2.4",
-    "workbox-background-sync": "^5.1.4",
-    "workbox-broadcast-update": "^5.1.4",
-    "workbox-cacheable-response": "^5.1.4",
-    "workbox-core": "^5.1.4",
-    "workbox-expiration": "^5.1.4",
-    "workbox-google-analytics": "^5.1.4",
-    "workbox-navigation-preload": "^5.1.4",
-    "workbox-precaching": "^5.1.4",
-    "workbox-range-requests": "^5.1.4",
-    "workbox-routing": "^5.1.4",
-    "workbox-strategies": "^5.1.4",
-    "workbox-streams": "^5.1.4",
     "zustand": "^4.4.1"
   },
   "scripts": {
     "start": "vite",
     "test": "vitest --environment=jsdom",
-    "test:ui": "vitest --environment=jsdom --ui",
     "coverage": "vitest --environment=jsdom run --coverage",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -92,7 +79,6 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
-    "@vitest/ui": "^0.34.6",
     "eslint": "^8.52.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
@@ -102,7 +88,7 @@
     "typescript": "^5.0.2",
     "vite": "^4.5.2",
     "vite-plugin-svgr": "^4.1.0",
-    "vitest": "^0.34.6"
+    "vitest": "^1.3.0"
   },
   "description": "A Japanese study app for Wanikani",
   "msw": {
