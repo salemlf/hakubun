@@ -16,7 +16,6 @@ import {
   ReadingContainer,
   SubjDetailSubHeading,
   ReadingsStyle,
-  JapaneseTxtInline,
 } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
@@ -84,6 +83,7 @@ const Row = styled.div`
 
 const VocabReadingsContainer = styled(ReadingsStyle)`
   flex-wrap: wrap;
+  flex-direction: column;
 `;
 
 const ReadingTxt = styled.p`
@@ -101,10 +101,10 @@ type VocabReadingProps = {
   hideReadingTxt?: boolean;
 };
 
-// TODO: map reading to the pronunciation audio
+// TODO: refactor this, mehhhh rn
 function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
-  let hasReadings = vocab.readings && vocab.readings.length !== 0;
-  let readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
+  const hasReadings = vocab.readings && vocab.readings.length !== 0;
+  const readings = hasReadings ? getVocabReadings(vocab.readings!) : undefined;
   const { pronunciationVoice } = useUserSettingsStoreFacade();
 
   return hasReadings ? (
@@ -145,12 +145,22 @@ function VocabReadings({ vocab, hideReadingTxt = false }: VocabReadingProps) {
     </ReadingContainer>
   ) : (
     <ReadingContainer>
-      <Row>
-        <ReadingsStyle>
-          <strong>Readings: </strong>
-          <JapaneseTxtInline>{vocab.characters}</JapaneseTxtInline>
-        </ReadingsStyle>
-      </Row>
+      <VocabReadingsContainer>
+        <SubjDetailSubHeading>Pronunciation</SubjDetailSubHeading>
+        <VocabReadingContainer>
+          <ReadingTxt>{vocab.characters}</ReadingTxt>
+          {vocab.characters && (
+            <AudioBtn
+              reading={vocab.characters}
+              url={getAudioForReading(
+                vocab.pronunciation_audios,
+                vocab.characters,
+                pronunciationVoice
+              )}
+            />
+          )}
+        </VocabReadingContainer>
+      </VocabReadingsContainer>
     </ReadingContainer>
   );
 }

@@ -31,7 +31,7 @@ const PartsOfSpeechContainer = styled(FullWidthColumn)`
 `;
 
 const getTabsForVocab = (vocab: Subject) => {
-  let isKanaVocab = vocab.object === "kana_vocabulary";
+  const isKanaVocab = vocab.object === "kana_vocabulary";
 
   const meaningTab: TabData[] = [
     {
@@ -43,6 +43,7 @@ const getTabsForVocab = (vocab: Subject) => {
           <PartsOfSpeechContainer>
             <PartsOfSpeech vocab={vocab as Vocabulary} />
           </PartsOfSpeechContainer>
+          <VocabReadings vocab={vocab as Vocabulary} />
           <VocabMeaningExplanation vocab={vocab as Vocabulary} />
           {isKanaVocab && vocab.context_sentences && (
             <ContextSentences sentences={vocab.context_sentences} />
@@ -52,7 +53,7 @@ const getTabsForVocab = (vocab: Subject) => {
     },
   ];
 
-  let breakdownTab: TabData = {
+  const breakdownTab: TabData = {
     id: "breakdown",
     label: "Breakdown",
     tabContents: (
@@ -66,7 +67,7 @@ const getTabsForVocab = (vocab: Subject) => {
     ),
   };
 
-  let readingTab: TabData = {
+  const readingTab: TabData = {
     id: "reading",
     label: "Reading",
     tabContents: (
@@ -97,7 +98,7 @@ type Props = {
 };
 
 function VocabDetailTabs({ vocab, reviewType, scrollToDefault }: Props) {
-  let tabData = getTabsForVocab(vocab);
+  const tabData = getTabsForVocab(vocab);
   const defaultTabKey = scrollToDefault
     ? (reviewType as string)
     : tabData[0].id;
