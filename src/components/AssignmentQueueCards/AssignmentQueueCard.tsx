@@ -7,7 +7,7 @@ import {
 } from "framer-motion";
 import { toHiragana } from "wanakana";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
-import { isUserAnswerValid } from "../../services/AssignmentQueueService";
+import { isUserAnswerValid } from "../../services/AssignmentQueueService/AssignmentQueueService";
 import { closeAllToasts, displayToast } from "../Toast/Toast.service";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { SubjectType } from "../../types/Subject";

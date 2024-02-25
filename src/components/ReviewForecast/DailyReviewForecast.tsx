@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { sortAssignmentsByAvailableDate } from "../../services/SubjectAndAssignmentService";
+import { sortAssignmentsByAvailableDate } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
 import { useAssignmentsAvailableInRange } from "../../hooks/useAssignmentsAvailableInRange";
 import { Assignment } from "../../types/Assignment";

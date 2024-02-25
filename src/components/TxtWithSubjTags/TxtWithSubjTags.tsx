@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import reactStringReplace from "react-string-replace";
-import { getTagColor } from "../../services/SubjectAndAssignmentService";
+import { getTagColor } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { generateXNumUUIDs } from "../../utils";
 import { TAG_REGEXES } from "./constants";
 import { TagType } from "../../types/MiscTypes";

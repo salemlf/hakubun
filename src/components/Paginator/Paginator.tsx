@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
 // TODO: change so not relying on IonIcon
-import { getPageIndex } from "../../services/MiscService";
+import { getPageIndex } from "../../services/MiscService/MiscService";
 import Button from "../Button";
 import Counter from "../Counter";
 import SvgIcon from "../SvgIcon";

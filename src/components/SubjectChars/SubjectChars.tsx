@@ -1,4 +1,4 @@
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { getSubjectColor } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { SubjectType, Subject } from "../../types/Subject";
 import ImageFallback from "../ImageFallback/ImageFallback";
 import styled from "styled-components";

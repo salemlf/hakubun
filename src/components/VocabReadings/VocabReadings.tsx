@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useAudio } from "../../hooks/useAudio";
-import { getAudioForReading } from "../../services/MiscService";
-import { getVocabReadings } from "../../services/SubjectAndAssignmentService";
+import { getAudioForReading } from "../../services/MiscService/MiscService";
+import { getVocabReadings } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import {
   Vocabulary,

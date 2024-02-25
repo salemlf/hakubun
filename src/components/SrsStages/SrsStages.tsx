@@ -4,7 +4,7 @@ import { SrsLevelName } from "../../types/MiscTypes";
 import {
   getSrsLevelColor,
   getSubjectColor,
-} from "../../services/SubjectAndAssignmentService";
+} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { countAssignmentTypesInSrsStage } from "./SrsStages.service";
 import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
 import { AssignmentTypeGroupCount } from "./SrsStages.types";

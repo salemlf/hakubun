@@ -10,8 +10,8 @@ import {
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
   getSubjectTypeDisplayText,
-} from "../../services/SubjectAndAssignmentService";
-import { capitalizeWord } from "../../services/MiscService";
+} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+import { capitalizeWord } from "../../services/MiscService/MiscService";
 import { displayToast } from "../Toast/Toast.service";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";

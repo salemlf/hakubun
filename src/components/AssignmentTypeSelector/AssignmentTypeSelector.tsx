@@ -2,7 +2,7 @@ import * as ToggleGroup from "@radix-ui/react-toggle-group";
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { getSubjectColor } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { getSettingHeadingFontSize } from "../AssignmentSettings/AssignmentSettings.service";
 import { AssignmentTypeName } from "./AssignmentTypeSelector.types";
 import { SettingHeadingFontSize } from "../AssignmentSettings/AssignmentSettings.types";

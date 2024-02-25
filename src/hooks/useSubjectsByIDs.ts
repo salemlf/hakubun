@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { setSubjectAvailImgs } from "../services/ImageSrcService";
-import { flattenData } from "../services/MiscService";
+import { setSubjectAvailImgs } from "../services/ImageSrcService/ImageSrcService";
+import { flattenData } from "../services/MiscService/MiscService";
 
 export const useSubjectsByIDs = (
   ids: number[],

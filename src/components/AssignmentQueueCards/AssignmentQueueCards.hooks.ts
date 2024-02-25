@@ -3,12 +3,12 @@ import {
   checkIfReviewIsComplete,
   isUserAnswerCorrect,
   playAudioForAssignmentQueueItem,
-} from "../../services/AssignmentQueueService";
+} from "../../services/AssignmentQueueService/AssignmentQueueService";
 import {
   capitalizeWord,
   getAudioForReading,
   getSrsNameBySrsLvl,
-} from "../../services/MiscService";
+} from "../../services/MiscService/MiscService";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";

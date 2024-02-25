@@ -1,7 +1,10 @@
 // TODO: change so not relying on IonIcon
 import { IonIcon } from "@ionic/react";
-import { getTimeFromNow, getSrsNameBySrsLvl } from "../../services/MiscService";
-import { getSrsLevelColor } from "../../services/SubjectAndAssignmentService";
+import {
+  getTimeFromNow,
+  getSrsNameBySrsLvl,
+} from "../../services/MiscService/MiscService";
+import { getSrsLevelColor } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { Assignment } from "../../types/Assignment";
 import { SrsLevelName } from "../../types/MiscTypes";
 import AlarmClockIcon from "../../images/alarm-clock.svg";

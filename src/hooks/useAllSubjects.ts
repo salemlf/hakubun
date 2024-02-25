@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenPagesOfData } from "../services/MiscService";
+import { flattenPagesOfData } from "../services/MiscService/MiscService";
 
 export const useAllSubjects = () => {
   return useInfiniteQuery(

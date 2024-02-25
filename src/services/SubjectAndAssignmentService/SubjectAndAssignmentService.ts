@@ -1,17 +1,20 @@
-import { findStudyMaterialWithSubjID } from "./MiscService";
+import { findStudyMaterialWithSubjID } from "../MiscService/MiscService";
 import {
   ReadingType,
   Subject,
   SubjectReading,
   SubjectType,
-} from "../types/Subject";
-import { Assignment, PreFlattenedAssignment } from "../types/Assignment";
-import { SrsLevelName, TagType } from "../types/MiscTypes";
-import { AssignmentQueueItem, ReviewType } from "../types/AssignmentQueueTypes";
-import { StudyMaterial } from "../types/StudyMaterial";
-import { SortOrder } from "../components/SortOrderOption/SortOrderOption.types";
-import { BackToBackChoice } from "../components/BackToBackOption/BackToBackOption.types";
-import { orderQueueItemsWithBackToBackOption } from "../components/BackToBackOption/BackToBackOption.service";
+} from "../../types/Subject";
+import { Assignment, PreFlattenedAssignment } from "../../types/Assignment";
+import { SrsLevelName, TagType } from "../../types/MiscTypes";
+import {
+  AssignmentQueueItem,
+  ReviewType,
+} from "../../types/AssignmentQueueTypes";
+import { StudyMaterial } from "../../types/StudyMaterial";
+import { SortOrder } from "../../components/SortOrderOption/SortOrderOption.types";
+import { BackToBackChoice } from "../../components/BackToBackOption/BackToBackOption.types";
+import { orderQueueItemsWithBackToBackOption } from "../../components/BackToBackOption/BackToBackOption.service";
 
 export const getAssignmentStatuses = (assignments: Assignment[]) => {
   return Object.values(assignments).reduce(

@@ -1,16 +1,19 @@
-import { convertToHiragana } from "./AssignmentQueueService";
-import { ButtonSize, SrsLevelName } from "../types/MiscTypes";
-import { AssignmentCollection, SubjectCollection } from "../types/Collection";
+import { convertToHiragana } from "../AssignmentQueueService/AssignmentQueueService";
+import { ButtonSize, SrsLevelName } from "../../types/MiscTypes";
+import {
+  AssignmentCollection,
+  SubjectCollection,
+} from "../../types/Collection";
 import {
   PopoverMessageType,
   PopoverStyles,
-} from "../types/AssignmentQueueTypes";
-import { PronunciationVoice } from "../types/UserSettingsTypes";
-import { PronunciationAudio, Subject } from "../types/Subject";
+} from "../../types/AssignmentQueueTypes";
+import { PronunciationVoice } from "../../types/UserSettingsTypes";
+import { PronunciationAudio, Subject } from "../../types/Subject";
 import {
   StudyMaterialPostDataWithID,
   StudyMaterial,
-} from "../types/StudyMaterial";
+} from "../../types/StudyMaterial";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   if (timeTill > 0) {
