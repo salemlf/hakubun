@@ -1,4 +1,5 @@
 import { findStudyMaterialWithSubjID } from "../MiscService/MiscService";
+import { getReadingAudioFiles } from "../AudioService/AudioService";
 import {
   ReadingType,
   Subject,
@@ -204,14 +205,14 @@ export const createAssignmentQueueItems = (
 ): AssignmentQueueItem[] => {
   const subjectsWithQueueProps = (subjects as AssignmentQueueItem[]).map(
     (subject, index) => {
-      let foundAssignment = findAssignmentWithSubjID(assignments, subject);
-      let foundStudyMaterial = findStudyMaterialWithSubjID(
+      const foundAssignment = findAssignmentWithSubjID(assignments, subject);
+      const foundStudyMaterial = findStudyMaterialWithSubjID(
         studyMaterials,
         subject
       );
 
       // this should always be true since we retrieved the subjects based on the assignments
-      let assignment = foundAssignment!;
+      const assignment = foundAssignment!;
 
       return {
         ...subject,
@@ -231,9 +232,11 @@ export const createAssignmentQueueItems = (
         incorrect_meaning_answers: 0,
         incorrect_reading_answers: 0,
         isSubmitted: false,
+        readingAudios: getReadingAudioFiles(subject),
       };
     }
   );
+
   // adds reading items to queue if the subject has readings (radicals and kana vocab don't)
   const itemsWithReadings = subjectsWithQueueProps.filter(
     (queueItem) => queueItem.readings !== undefined
@@ -248,7 +251,7 @@ export const createAssignmentQueueItems = (
     })),
   ];
 
-  let queueItemsWithBackToBackChoice = orderQueueItemsWithBackToBackOption(
+  const queueItemsWithBackToBackChoice = orderQueueItemsWithBackToBackOption(
     meaningAndReadingQueue,
     backToBackChoice
   );
