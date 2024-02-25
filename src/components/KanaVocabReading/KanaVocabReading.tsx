@@ -3,6 +3,7 @@ import {
   getReadingAudioFiles,
 } from "../../services/AudioService/AudioService";
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import AudioBtn from "../AudioBtn";
 import {
   ReadingContainer,
   ReadingTxt,
@@ -11,7 +12,6 @@ import {
   VocabReadingsContainer,
 } from "../../styles/SubjectDetailsStyled";
 import { KanaVocabulary, Subject } from "../../types/Subject";
-import AudioBtn from "../VocabReadings/AudioBtn";
 
 type KanaVocabReadingProps = {
   vocab: KanaVocabulary;
