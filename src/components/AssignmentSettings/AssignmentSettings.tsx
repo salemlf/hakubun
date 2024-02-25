@@ -54,7 +54,7 @@ function AssignmentSettings({
   const [backToBackChoice, setBackToBackChoice] = useState<BackToBackChoice>(
     backToBackOptionDefault
   );
-  let [sortOption, setSortOption] =
+  const [sortOption, setSortOption] =
     useState<AssignmentSortOption>(defaultSortOrder);
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
 
@@ -69,8 +69,8 @@ function AssignmentSettings({
   );
   const [isLoading, setIsLoading] = useState(true);
 
-  let subjIDs = getSubjIDsFromAssignments(assignmentData);
-  let queriesEnabled = subjIDs.length !== 0;
+  const subjIDs = getSubjIDsFromAssignments(assignmentData);
+  const queriesEnabled = subjIDs.length !== 0;
 
   const { data: subjectsData, isLoading: subjectsLoading } = useSubjectsByIDs(
     subjIDs,
@@ -115,19 +115,19 @@ function AssignmentSettings({
     SubjectType[]
   >(availableAssignmentTypes);
 
-  let tabBgColor =
+  const tabBgColor =
     settingsType === "review"
       ? "var(--wanikani-review)"
       : "var(--wanikani-lesson)";
-  let showMeaning = settingsType === "lesson";
+  const showMeaning = settingsType === "lesson";
 
   const submitWithBasicSettings = (): AssignmentBatch => {
-    let assignmentsFiltered = filterAssignmentsByType(
+    const assignmentsFiltered = filterAssignmentsByType(
       assignmentData,
       Array.from(selectedAssignmentTypes)
     );
 
-    let sorted = sortAssignmentsWithOption(
+    const sorted = sortAssignmentsWithOption(
       assignmentsFiltered,
       sortOption,
       subjectsData
@@ -137,7 +137,7 @@ function AssignmentSettings({
       batchSize === "All"
         ? sorted
         : sorted.slice(0, Number.parseInt(batchSize));
-    let subjIDs = getSubjIDsFromAssignments(assignmentBatch);
+    const subjIDs = getSubjIDsFromAssignments(assignmentBatch);
 
     return {
       assignmentBatch,
@@ -146,9 +146,9 @@ function AssignmentSettings({
   };
 
   const submitWithAdvancedSettings = (): AssignmentBatch => {
-    let subjIDs = selectedAdvancedSubjIDs.map((subjID) => parseInt(subjID));
+    const subjIDs = selectedAdvancedSubjIDs.map((subjID) => parseInt(subjID));
 
-    let assignmentBatch = assignmentData.filter((assignment: Assignment) => {
+    const assignmentBatch = assignmentData.filter((assignment: Assignment) => {
       return subjIDs.includes(assignment.subject_id);
     });
 
@@ -159,7 +159,7 @@ function AssignmentSettings({
   };
 
   const onStartSessionBtnClick = () => {
-    let noAssignmentsSelected =
+    const noAssignmentsSelected =
       selectedAdvancedSubjIDs.length === 0 &&
       selectedAssignmentTypes.length === 0;
     if (noAssignmentsSelected) {
@@ -172,7 +172,7 @@ function AssignmentSettings({
       return;
     }
 
-    let sessionData =
+    const sessionData =
       selectedAdvancedSubjIDs.length === 0
         ? submitWithBasicSettings()
         : submitWithAdvancedSettings();
@@ -184,18 +184,19 @@ function AssignmentSettings({
     setIsLoading(true);
 
     // getting data for assignment queue
-    let subjects = subjectsData.filter((subject: Subject) => {
+    const subjects = subjectsData.filter((subject: Subject) => {
       return sessionData.subjIDs.includes(subject.id);
     });
 
-    let assignmentQueue = createAssignmentQueueItems(
-      sessionData.assignmentBatch,
+    const batch = sessionData.assignmentBatch;
+    const assignmentQueue = createAssignmentQueueItems(
+      batch,
       subjects,
       studyMaterialsData as StudyMaterial[],
       backToBackChoice
     );
 
-    if (sessionData.assignmentBatch.length > MAX_ASSIGNMENTS_BEFORE_SUBMIT) {
+    if (batch.length > MAX_ASSIGNMENTS_BEFORE_SUBMIT) {
       setShouldBatchSubmit(true);
     }
 
