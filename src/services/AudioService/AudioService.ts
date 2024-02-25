@@ -220,25 +220,17 @@ export const createReadingAudioFiles = (
 };
 
 export const getReadingAudioFiles = (
-  subjOrQueueItem: AssignmentQueueItem | Subject,
-  isQueueItem: boolean
+  subject: Subject
 ): ReadingAudio[] | undefined => {
-  const item = isQueueItem
-    ? (subjOrQueueItem as AssignmentQueueItem)
-    : (subjOrQueueItem as Subject);
-  const validReviewType = isQueueItem
-    ? (item as AssignmentQueueItem).review_type === "reading"
-    : true;
-  if (
-    (validReviewType &&
-      subjOrQueueItem.object === "vocabulary" &&
-      subjOrQueueItem.pronunciation_audios) ||
-    (subjOrQueueItem.object === "kana_vocabulary" &&
-      subjOrQueueItem.pronunciation_audios !== undefined)
-  ) {
-    const isKanaVocab = subjOrQueueItem.object === "kana_vocabulary";
-    const pronunciationAudios = subjOrQueueItem.pronunciation_audios!;
-    const readings = subjOrQueueItem.readings;
+  const shouldAddAudio =
+    (subject.object === "vocabulary" && subject.pronunciation_audios) ||
+    (subject.object === "kana_vocabulary" &&
+      subject.pronunciation_audios !== undefined);
+
+  if (shouldAddAudio) {
+    const isKanaVocab = subject.object === "kana_vocabulary";
+    const pronunciationAudios = subject.pronunciation_audios!;
+    const readings = subject.readings;
 
     return createReadingAudioFiles(pronunciationAudios, isKanaVocab, readings);
   }
