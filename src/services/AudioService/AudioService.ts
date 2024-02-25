@@ -6,10 +6,7 @@ import {
   SubjectReading,
 } from "../../types/Subject";
 import { PronunciationVoice } from "../../types/UserSettingsTypes";
-import {
-  AssignmentQueueItem,
-  ReadingAudio,
-} from "../../types/AssignmentQueueTypes";
+import { ReadingAudio } from "../../types/AssignmentQueueTypes";
 
 type AudioByPronunciationAndActor = {
   [readingAndActor: string]: PronunciationAudio[];
@@ -32,30 +29,30 @@ export const getReadingAudio = (
   const hiraganaFallback =
     primaryReadingFallback && convertToHiragana(primaryReadingFallback);
 
-  const audioByReading = findAudioByPronunciationTemp(reading, audioItems);
+  const audioByReading = findAudioByPronunciation(reading, audioItems);
 
   if (audioByReading.length > 0) {
-    return findVoiceInPronunciationAudiosTemp(voice, audioByReading);
+    return findVoiceInPronunciationAudios(voice, audioByReading);
   }
 
   if (primaryReadingFallback) {
-    const foundWithPrimary = findAudioByPronunciationTemp(
+    const foundWithPrimary = findAudioByPronunciation(
       primaryReadingFallback,
       audioItems
     );
 
     if (foundWithPrimary.length > 0) {
-      return findVoiceInPronunciationAudiosTemp(voice, foundWithPrimary);
+      return findVoiceInPronunciationAudios(voice, foundWithPrimary);
     }
 
     if (hiraganaFallback) {
-      const audioFilesFound = findAudioByPronunciationTemp(
+      const audioFilesFound = findAudioByPronunciation(
         hiraganaFallback,
         audioItems
       );
 
       if (audioFilesFound.length > 0) {
-        return findVoiceInPronunciationAudiosTemp(voice, audioFilesFound);
+        return findVoiceInPronunciationAudios(voice, audioFilesFound);
       }
     }
   }
@@ -64,7 +61,7 @@ export const getReadingAudio = (
   return [];
 };
 
-export const findAudioByPronunciationTemp = (
+export const findAudioByPronunciation = (
   pronunciation: string,
   readingAudios: ReadingAudio[]
 ) => {
@@ -73,7 +70,7 @@ export const findAudioByPronunciationTemp = (
   );
 };
 
-export const findVoiceInPronunciationAudiosTemp = (
+export const findVoiceInPronunciationAudios = (
   voice: PronunciationVoice,
   audioItems: ReadingAudio[]
 ): ReadingAudio[] => {
@@ -99,52 +96,11 @@ export const findVoiceInPronunciationAudiosTemp = (
   return backupMatch;
 };
 
-export const findAudioByPronunciation = (
-  pronunciation: string,
-  audioItems: PronunciationAudio[]
-) => {
-  return audioItems.filter(
-    (audioOption: PronunciationAudio) =>
-      audioOption.metadata.pronunciation === pronunciation
-  );
-};
-
-export const findVoiceInPronunciationAudios = (
-  voice: PronunciationVoice,
-  audioItems: PronunciationAudio[]
-): PronunciationAudio[] => {
-  const exactMatches = audioItems.filter(
-    (audioOption: PronunciationAudio) =>
-      audioOption.metadata.gender === voice.details.gender &&
-      audioOption.metadata.voice_description ===
-        `${voice.details.accent} accent`
-  );
-
-  if (exactMatches) {
-    return exactMatches;
-  }
-
-  const sameGenderAudioBackup = audioItems.filter(
-    (audioOption: PronunciationAudio) =>
-      audioOption.metadata.gender === voice.details.gender
-  );
-
-  if (sameGenderAudioBackup) {
-    return sameGenderAudioBackup;
-  }
-
-  const backupMatch = audioItems;
-  return backupMatch;
-};
-
 export const createReadingAudioFiles = (
-  // assignmentQueueItem: AssignmentQueueItem,
   pronunciationAudios: PronunciationAudio[],
   isKanaVocab: boolean,
   readings?: SubjectReading[]
 ): ReadingAudio[] => {
-  // const pronunciationAudios = assignmentQueueItem.pronunciation_audios!;
-
   const nonOggAudioItems = pronunciationAudios.filter(
     (audioItem) => audioItem.content_type !== "audio/ogg"
   );
