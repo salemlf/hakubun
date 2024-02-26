@@ -78,6 +78,30 @@ Please [email me](mailto:salemlfenn@gmail.com) if you have any questions or conc
 
 ## Building the App
 
+### Hot Reload for iOS and Android
+
+If below doesn't work, check that network URL after displayed after running `npm run start-exposed` matches the URL in the _capacitor.config.ts_ file
+
+Start server in one terminal:
+
+```bash
+npm run start-exposed
+```
+
+Then run the script for the platform in another terminal:
+
+#### iOS
+
+```bash
+npm run ios-live-reload
+```
+
+#### Android
+
+```bash
+npm run android-live-reload
+```
+
 ### Running Fastlane
 
 To run android lanes:

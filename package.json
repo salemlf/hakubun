@@ -52,11 +52,14 @@
   },
   "scripts": {
     "start": "vite",
+    "start-exposed": "HOST=0.0.0.0 vite --host",
     "test": "vitest --environment=jsdom",
     "coverage": "vitest --environment=jsdom run --coverage",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "android-live-reload": "NODE_ENV=dev npx cap copy android && NODE_ENV=dev npx cap sync android && NODE_ENV=dev npx cap run android",
+    "ios-live-reload": "NODE_ENV=dev npx cap copy ios && NODE_ENV=dev npx cap sync ios && NODE_ENV=dev npx cap run ios"
   },
   "browserslist": [
     "Chrome >=79",
