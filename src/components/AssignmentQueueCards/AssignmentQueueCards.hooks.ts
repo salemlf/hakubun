@@ -130,7 +130,13 @@ export const useAssignmentQueue = () => {
     currReviewItem: AssignmentQueueItem,
     userAnswer: string
   ) => {
-    playAudioIfReadingAndAvailable(currReviewItem, userAnswer);
+    // only playing if kana vocab or vocab of reading type
+    if (
+      currReviewItem.object === "kana_vocabulary" ||
+      currReviewItem.review_type === "reading"
+    ) {
+      playAudioIfReadingAndAvailable(currReviewItem, userAnswer);
+    }
 
     const isReviewItemComplete = checkIfReviewIsComplete(
       currReviewItem,
