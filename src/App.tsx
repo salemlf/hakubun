@@ -53,7 +53,9 @@ import "./theme/globals.scss";
 async function enableMocking() {
   if (import.meta.env.MODE === "development") {
     const { worker } = await import("./testing/worker");
-    worker.start();
+    worker.start({
+      onUnhandledRequest: 'bypass',
+  });
   }
 }
 
