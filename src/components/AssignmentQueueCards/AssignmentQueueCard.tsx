@@ -129,6 +129,15 @@ export const AssignmentQueueCard = ({
       hideAndMoveCenter();
       fadeForward();
     }, 500);
+
+    currentReviewItem.readingAudios?.forEach((readingAudio) => {
+      readingAudio.audioFile.load();
+    });
+    return () => {
+      currentReviewItem.readingAudios?.forEach((readingAudio) => {
+        readingAudio.audioFile.unload();
+      });
+    }
   }, []);
 
   // TODO: sometimes on retry drag motion value somehow becomes NaN (maybe somehow gets cancelled?) and...
