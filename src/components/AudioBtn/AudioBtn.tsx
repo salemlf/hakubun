@@ -36,18 +36,30 @@ type AudioProps = {
 
 function AudioBtn({ audioForReading, reading }: AudioProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const audioFile = audioForReading.audioFile;
 
   useEffect(() => {
-    const audioFile = audioForReading.audioFile;
-
+    audioFile.load();
     audioFile.on("end", function () {
       setIsPlaying(false);
+    }, ), [];
+
+    audioFile.on("loaderror", function () {
+      console.error("Load error occurred for audio file")
     });
+
+    audioFile.on("playerror", function () {
+      console.error("Play error occurred for audio file")
+    });
+    return () => {
+      audioFile.unload();
+    }
   }, []);
 
   const playAudio = () => {
+
     setIsPlaying(true);
-    audioForReading.audioFile.play();
+    audioFile.play();
   };
 
   return (

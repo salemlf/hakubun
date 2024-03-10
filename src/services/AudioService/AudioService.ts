@@ -158,6 +158,7 @@ export const createReadingAudioFiles = (
       const audioFormats = pronunciationAudioArr.map(
         (audioItem) => audioItem.content_type.split("/")[1]
       );
+
       return {
         reading: sampleFromGroup.metadata.pronunciation,
         isPrimary: isPrimaryPronunciation,
@@ -166,7 +167,7 @@ export const createReadingAudioFiles = (
         audioFile: new Howl({
           src: [...audioSources],
           format: [...audioFormats],
-          preload: true,
+          preload: false,
           html5: true,
           volume: 1.0,
         }),
