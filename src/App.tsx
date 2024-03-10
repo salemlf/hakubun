@@ -59,6 +59,9 @@ async function enableMocking() {
   }
 }
 
+// increasing audio pool size since using lots of audio files
+Howler.html5PoolSize = 100;
+
 await enableMocking();
 
 // TODO: improve this so not manually changing release version every time
