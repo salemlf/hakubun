@@ -1,6 +1,6 @@
 import { Query, QueryKey } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
-import { displayToast } from "../components/Toast/Toast.service";
+import { displayToast } from "../../components/Toast/Toast.service";
 
 export const determine401Msg = (res: AxiosResponse) => {
   const endpointWithoutPerm =

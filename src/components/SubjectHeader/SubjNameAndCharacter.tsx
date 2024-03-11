@@ -1,4 +1,4 @@
-import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService";
+import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { Subject } from "../../types/Subject";
 import SubjectChars from "../SubjectChars/SubjectChars";
 import styled from "styled-components";

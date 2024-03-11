@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
-import { getReviewedAssignmentQueueItems } from "../../services/AssignmentQueueService";
+import { getReviewedAssignmentQueueItems } from "../../services/AssignmentQueueService/AssignmentQueueService";
 import { MAX_ASSIGNMENTS_BEFORE_SUBMIT } from "../../constants";
 import { useAssignmentQueue } from "./AssignmentQueueCards.hooks";
 import {

@@ -2,7 +2,7 @@ import { IonSkeletonText } from "@ionic/react";
 import {
   findAssignmentWithSubjID,
   isAssignmentLocked,
-} from "../../services/SubjectAndAssignmentService";
+} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
 import { Subject } from "../../types/Subject";

@@ -3,7 +3,7 @@ import {
   convertQueueItemsToAssignments,
   convertQueueItemsToSubjects,
   getSrsStageNameByNum,
-} from "../../services/SubjectAndAssignmentService";
+} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { Subject } from "../../types/Subject";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import SubjectButtonList from "../SubjectButtonList";

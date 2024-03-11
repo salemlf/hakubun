@@ -32,6 +32,7 @@
     "axios": "^1.6.0",
     "framer-motion": "^10.12.21",
     "fuse.js": "^6.6.2",
+    "howler": "^2.2.4",
     "ionicons": "^7.0.0",
     "logrocket": "^5.0.1",
     "nanoid": "^4.0.2",
@@ -51,11 +52,14 @@
   },
   "scripts": {
     "start": "vite",
+    "start-exposed": "HOST=0.0.0.0 vite --host",
     "test": "vitest --environment=jsdom",
     "coverage": "vitest --environment=jsdom run --coverage",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "android-live-reload": "NODE_ENV=dev npx cap copy android && NODE_ENV=dev npx cap sync android && NODE_ENV=dev npx cap run android",
+    "ios-live-reload": "NODE_ENV=dev npx cap copy ios && NODE_ENV=dev npx cap sync ios && NODE_ENV=dev npx cap run ios"
   },
   "browserslist": [
     "Chrome >=79",
@@ -72,6 +76,7 @@
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.5.1",
+    "@types/howler": "^2.2.11",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/styled-components": "^5.1.26",

@@ -7,10 +7,10 @@ import {
 } from "../../styles/SubjectButtonsStyled";
 
 import { Subject } from "../../types/Subject";
-import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService";
+import { getSubjectDisplayName } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import SubjectChars from "../SubjectChars/SubjectChars";
 import { ButtonSize } from "../../types/MiscTypes";
-import { getSubjectBtnSize } from "../../services/MiscService";
+import { getSubjectBtnSize } from "../../services/MiscService/MiscService";
 import { forwardRef } from "react";
 
 type ButtonRef = HTMLButtonElement;

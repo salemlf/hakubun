@@ -3,7 +3,7 @@ import { groupDataByProperty } from "../utils";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
-import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService";
+import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { Subject } from "../types/Subject";
 import Card from "../components/Card/Card";
 import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";

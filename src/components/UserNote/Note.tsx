@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { IonIcon } from "@ionic/react";
-import { capitalizeWord } from "../../services/MiscService";
+import { capitalizeWord } from "../../services/MiscService/MiscService";
 import { displayToast } from "../Toast/Toast.service";
 import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
 import { UserNoteType } from "../../types/MiscTypes";
