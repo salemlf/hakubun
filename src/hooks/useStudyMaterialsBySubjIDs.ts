@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenCollectionOfOne, flattenData } from "../services/MiscService";
+import {
+  flattenCollectionOfOne,
+  flattenData,
+} from "../services/MiscService/MiscService";
 import { StudyMaterial } from "../types/StudyMaterial";
 
 export const useStudyMaterialsBySubjIDs = (

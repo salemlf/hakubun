@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { getReviewsGroupedByResult } from "../services/AssignmentQueueService";
-import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService";
+import { getReviewsGroupedByResult } from "../services/AssignmentQueueService/AssignmentQueueService";
+import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { useQueueStore } from "../stores/useQueueStore/useQueueStore";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";

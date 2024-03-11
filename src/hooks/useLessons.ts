@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenData } from "../services/MiscService";
+import { flattenData } from "../services/MiscService/MiscService";
 
 // TODO: increase time to wait between data fetches
 export const useLessons = () => {

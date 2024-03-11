@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenData } from "../services/MiscService";
+import { flattenData } from "../services/MiscService/MiscService";
 
 export const useRadicalAssignmentsForLvl = (level: any) => {
   return useQuery({

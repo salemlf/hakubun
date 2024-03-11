@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { SrsLevelName } from "../types/MiscTypes";
-import { flattenData } from "../services/MiscService";
+import { flattenData } from "../services/MiscService/MiscService";
 
 export const useAssignmentsByStage = (stage: SrsLevelName) => {
   return useQuery({

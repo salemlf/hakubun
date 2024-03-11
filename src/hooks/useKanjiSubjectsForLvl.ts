@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenData } from "../services/MiscService";
+import { flattenData } from "../services/MiscService/MiscService";
 import { Kanji } from "../types/Subject";
 
 export const useKanjiSubjectsForLvl = (level: any) => {

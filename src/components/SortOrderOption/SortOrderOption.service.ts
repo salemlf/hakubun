@@ -6,8 +6,8 @@ import {
   sortAssignmentsByAvailableDate,
   sortAssignmentsByLevel,
   sortAssignmentsBySrsStage,
-} from "../../services/SubjectAndAssignmentService";
-import { shuffleArray } from "../../services/MiscService";
+} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+import { shuffleArray } from "../../services/MiscService/MiscService";
 
 export const getSortOrderOptionById = (id: string): AssignmentSortOption => {
   // we know it'll always exist because we're using the SORT_OPTIONS constant as a data source

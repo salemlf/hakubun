@@ -1,5 +1,5 @@
-import { sortQueueItemsByMeaningAndReading } from "../../services/AssignmentQueueService";
-import { shuffleArray } from "../../services/MiscService";
+import { sortQueueItemsByMeaningAndReading } from "../../services/AssignmentQueueService/AssignmentQueueService";
+import { shuffleArray } from "../../services/MiscService/MiscService";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { BackToBackChoice } from "./BackToBackOption.types";
 

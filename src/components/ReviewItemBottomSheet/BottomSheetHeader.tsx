@@ -1,6 +1,6 @@
 import { IonHeader } from "@ionic/react";
 import { Subject, SubjectType } from "../../types/Subject";
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { getSubjectColor } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import SubjectChars from "../SubjectChars/SubjectChars";
 import styled from "styled-components";
 

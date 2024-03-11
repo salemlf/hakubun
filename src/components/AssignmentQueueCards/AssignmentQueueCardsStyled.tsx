@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
+import { getSubjectColor } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { SubjectType } from "../../types/Subject";
 import styled from "styled-components";
 

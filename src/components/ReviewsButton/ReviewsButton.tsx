@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { setBtnBackground } from "../../services/ImageSrcService";
+import { setBtnBackground } from "../../services/ImageSrcService/ImageSrcService";
 import { displayToast } from "../Toast/Toast.service";
 import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
 import ErrorMessage from "../ErrorMessage";
