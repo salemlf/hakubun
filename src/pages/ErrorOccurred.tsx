@@ -85,7 +85,6 @@ function ErrorOccurred() {
     // error is type `ErrorResponse`
     errorMessage = `Response error: ${error.data?.message || error.statusText}`;
   } else if (error instanceof Error) {
-    console.log("🚀 ~ ErrorOccurred ~ error.message:", error.message);
     errorMessage = error.message;
     stackTrace = error.stack;
   } else if (typeof error === "string") {
