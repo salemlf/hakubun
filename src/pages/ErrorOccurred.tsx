@@ -1,7 +1,11 @@
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import { copyToClipboard } from "../utils";
 import FloatingHomeButton from "../components/FloatingHomeButton";
 import Emoji from "../components/Emoji";
+import Button from "../components/Button";
+import SvgIcon from "../components/SvgIcon";
 import LogoExclamation from "../images/logo-exclamation.svg";
+import CopyIcon from "../images/copy.svg?react";
 import { Header } from "../styles/BaseStyledComponents";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
@@ -9,7 +13,7 @@ import styled from "styled-components";
 const Content = styled(ContentWithTabBar)`
   display: flex;
   flex-wrap: wrap;
-  padding: 12px;
+  padding: 10px;
   height: 100%;
 `;
 
@@ -28,6 +32,22 @@ const DistressedCrabigatorContainer = styled.div`
 const ErrorDetails = styled.div`
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--secondary-foreground-color);
+  border-radius: 8px;
+
+  h4,
+  p {
+    margin: 0;
+    width: 100%;
+    white-space: pre-line;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
 `;
 
 const OhNoMessage = styled.p`
@@ -35,17 +55,39 @@ const OhNoMessage = styled.p`
   margin: 12px 0;
 `;
 
+const CopyContentBtn = styled(Button)`
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid black;
+  gap: 4px;
+  font-size: 0.875rem;
+`;
+
+const ErrAndCopyBtnContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
+`;
+
 function ErrorOccurred() {
-  let error = useRouteError();
+  const error = useRouteError();
   console.error(error);
 
   let errorMessage: string;
+
+  let stackTrace: string | undefined;
 
   if (isRouteErrorResponse(error)) {
     // error is type `ErrorResponse`
     errorMessage = `Response error: ${error.data?.message || error.statusText}`;
   } else if (error instanceof Error) {
+    console.log("🚀 ~ ErrorOccurred ~ error.message:", error.message);
     errorMessage = error.message;
+    stackTrace = error.stack;
   } else if (typeof error === "string") {
     errorMessage = error;
   } else {
@@ -67,10 +109,19 @@ function ErrorOccurred() {
       </Header>
       <Content>
         <ErrorDetails>
-          <p>{`${error}`}</p>
+          <ErrAndCopyBtnContainer>
+            <h4>{errorMessage}</h4>
+            <CopyContentBtn
+              onPress={() => copyToClipboard(`${errorMessage}\n${stackTrace}`)}
+            >
+              Copy Error{" "}
+              <SvgIcon icon={<CopyIcon />} width="1.5em" height="1.5em" />
+            </CopyContentBtn>
+          </ErrAndCopyBtnContainer>
+          {stackTrace && <p>{stackTrace}</p>}
         </ErrorDetails>
         <DistressedCrabigatorContainer>
-          <img src={LogoExclamation} />
+          <img src={LogoExclamation} alt="Unhappy crabigator looking upwards" />
         </DistressedCrabigatorContainer>
       </Content>
       <FloatingHomeButton />
