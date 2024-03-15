@@ -1,8 +1,8 @@
-import { useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 import { flattenData } from "../services/MiscService";
+import { Subject } from "../types/Subject";
 
 export const useSubjectsByIDs = (
   ids: number[],
@@ -13,30 +13,27 @@ export const useSubjectsByIDs = (
     queryKey: ["subjects-by-ids", ids],
     queryFn: () => WaniKaniAPI.getSubjectsBySubjIDs(ids),
     enabled: enabled && ids.length !== 0,
-    select: useCallback(
-      (data: any) => {
-        let flattened = flattenData(data);
+    select: (data: any) => {
+      const flattened = flattenData(data);
 
-        let subjsUpdated = flattened.reduce(function (
-          filtered: any,
-          subject: any
-        ) {
-          let updatedSubj = setSubjectAvailImgs(subject);
-          filtered.push(updatedSubj);
-          return filtered;
-        }, []);
+      const subjsUpdated = flattened.reduce(function (
+        filtered: Subject[],
+        subject: Subject
+      ) {
+        const updatedSubj = setSubjectAvailImgs(subject);
+        filtered.push(updatedSubj);
+        return filtered;
+      }, []);
 
-        if (sortByLvl) {
-          let sortedByLvl = subjsUpdated.sort(
-            (a: any, b: any) => a.level - b.level
-          );
-          return sortedByLvl;
-        }
+      if (sortByLvl) {
+        const sortedByLvl = subjsUpdated.sort(
+          (a: Subject, b: Subject) => a.level - b.level
+        );
+        return sortedByLvl;
+      }
 
-        return subjsUpdated;
-      },
-      [ids]
-    ),
+      return subjsUpdated;
+    },
     // stale time of an hour
     staleTime: 60 * (60 * 1000),
     // cache time of 1hr 15 minutes
