@@ -1,2 +1,2 @@
-export * from './TxtWithSubjTags';
-export { default } from './TxtWithSubjTags';
+export * from "./TxtWithSubjTags";
+export { default } from "./TxtWithSubjTags";

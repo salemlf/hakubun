@@ -1,2 +1,2 @@
-export * from './AssignmentTypeSelector';
-export { default } from './AssignmentTypeSelector';
+export * from "./AssignmentTypeSelector";
+export { default } from "./AssignmentTypeSelector";

@@ -1,2 +1,2 @@
-export * from './KeyboardShortcuts';
-export { default } from './KeyboardShortcuts';
+export * from "./KeyboardShortcuts";
+export { default } from "./KeyboardShortcuts";

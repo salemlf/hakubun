@@ -1,2 +1,2 @@
-export * from './Paginator';
-export { default } from './Paginator';
+export * from "./Paginator";
+export { default } from "./Paginator";

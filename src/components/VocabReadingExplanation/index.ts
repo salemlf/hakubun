@@ -1,2 +1,2 @@
-export * from './VocabReadingExplanation';
-export { default } from './VocabReadingExplanation';
+export * from "./VocabReadingExplanation";
+export { default } from "./VocabReadingExplanation";

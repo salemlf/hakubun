@@ -1,2 +1,2 @@
-export * from './SubjCharacterList';
-export { default } from './SubjCharacterList';
+export * from "./SubjCharacterList";
+export { default } from "./SubjCharacterList";

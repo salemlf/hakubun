@@ -1,2 +1,2 @@
-export * from './KanjiUsedInVocab';
-export { default } from './KanjiUsedInVocab';
+export * from "./KanjiUsedInVocab";
+export { default } from "./KanjiUsedInVocab";

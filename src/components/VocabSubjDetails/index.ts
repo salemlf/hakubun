@@ -1,2 +1,2 @@
-export * from './VocabSubjDetails';
-export { default } from './VocabSubjDetails';
+export * from "./VocabSubjDetails";
+export { default } from "./VocabSubjDetails";

@@ -19,8 +19,7 @@ export const useSubjectsByLevel = (level: any, enabled: boolean = true) => {
         const updatedSubj = setSubjectAvailImgs(subject);
         filtered.push(updatedSubj);
         return filtered;
-      },
-      []);
+      }, []);
 
       return subjectsUpdated;
     },

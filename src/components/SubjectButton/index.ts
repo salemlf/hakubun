@@ -1,2 +1,2 @@
-export * from './SubjectButton';
-export { default } from './SubjectButton';
+export * from "./SubjectButton";
+export { default } from "./SubjectButton";

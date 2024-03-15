@@ -1,2 +1,2 @@
-export * from './ReviewUserSettings';
-export { default } from './ReviewUserSettings';
+export * from "./ReviewUserSettings";
+export { default } from "./ReviewUserSettings";

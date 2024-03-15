@@ -23,7 +23,8 @@ const Root = styled(ToastPrimitive.Root)<RootProps>`
   background-color: ${({ bgcolor }) => bgcolor};
   color: ${({ textcolor }) => textcolor};
   border-radius: 6px;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+  box-shadow:
+    hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
     hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   padding: 15px;
   column-gap: 15px;

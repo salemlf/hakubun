@@ -1,2 +1,2 @@
-export * from './KanjiForLvlCard';
-export { default } from './KanjiForLvlCard';
+export * from "./KanjiForLvlCard";
+export { default } from "./KanjiForLvlCard";

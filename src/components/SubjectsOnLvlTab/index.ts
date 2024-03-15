@@ -1,2 +1,2 @@
-export * from './SubjectsOnLvlTab';
-export { default } from './SubjectsOnLvlTab';
+export * from "./SubjectsOnLvlTab";
+export { default } from "./SubjectsOnLvlTab";

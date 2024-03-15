@@ -1,2 +1,2 @@
-export * from './LvlBadge';
-export { default } from './LvlBadge';
+export * from "./LvlBadge";
+export { default } from "./LvlBadge";

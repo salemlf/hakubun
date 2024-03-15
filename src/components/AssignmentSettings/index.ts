@@ -1,2 +1,2 @@
-export * from './AssignmentSettings';
-export { default } from './AssignmentSettings';
+export * from "./AssignmentSettings";
+export { default } from "./AssignmentSettings";

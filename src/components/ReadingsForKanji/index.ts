@@ -1,2 +1,2 @@
-export * from './ReadingsForKanji';
-export { default } from './ReadingsForKanji';
+export * from "./ReadingsForKanji";
+export { default } from "./ReadingsForKanji";
