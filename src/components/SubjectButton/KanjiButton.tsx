@@ -9,9 +9,9 @@ import SubjectChars from "../SubjectChars/SubjectChars";
 import {
   getPrimaryReading,
   getSubjectDisplayName,
-} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+} from "../../services/SubjectAndAssignmentService";
 import { ButtonSize } from "../../types/MiscTypes";
-import { getSubjectBtnSize } from "../../services/MiscService/MiscService";
+import { getSubjectBtnSize } from "../../services/MiscService";
 import { forwardRef } from "react";
 
 type ButtonRef = HTMLButtonElement;

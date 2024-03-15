@@ -1,4 +1,4 @@
-import { getKanjiReadings } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+import { getKanjiReadings } from "../../services/SubjectAndAssignmentService";
 import { Kanji } from "../../types/Subject";
 import { ReadingsStyle } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";

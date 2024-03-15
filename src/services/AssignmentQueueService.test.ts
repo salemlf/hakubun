@@ -1,6 +1,6 @@
-import { generateRandomQueueItems } from "../../testing/mocks/data-generators/assignmentQueueGenerator";
-import { SubjectMeaning } from "../../types/Subject";
-import { getAnswersForMeaningReviews } from "../AssignmentQueueService/AssignmentQueueService";
+import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
+import { SubjectMeaning } from "../types/Subject";
+import { getAnswersForMeaningReviews } from "./AssignmentQueueService";
 
 describe("getAnswersForMeaningReviews", () => {
   test("Accepted auxiliary meanings are returned within accepted meanings", () => {

@@ -22,7 +22,7 @@ import { routes } from "./navigation/routes";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserSettingsStore } from "./stores/useUserSettingsStore/useUserSettingsStore";
-import { onQueryError } from "./services/ApiQueryService/ApiQueryService";
+import { onQueryError } from "./services/ApiQueryService";
 import { BottomSheetOpenProvider } from "./contexts/BottomSheetOpenContext";
 import { PersistentStore } from "./hooks/useHydration";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -55,16 +55,11 @@ const releaseVersion = "0.3.7-alpha";
 async function enableMocking() {
   if (import.meta.env.MODE === "development") {
     const { worker } = await import("./testing/worker");
-    worker.start({
-      onUnhandledRequest: 'bypass',
-  });
+    worker.start();
   }
 }
 
-// increasing audio pool size since using lots of audio files
-Howler.html5PoolSize = 100;
-
-await enableMocking();
+enableMocking();
 
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {

@@ -2,17 +2,17 @@ import {
   calculateSRSLevel,
   checkIfReviewIsComplete,
   isUserAnswerCorrect,
-} from "../../services/AssignmentQueueService/AssignmentQueueService";
+  playAudioForAssignmentQueueItem,
+} from "../../services/AssignmentQueueService";
 import {
   capitalizeWord,
+  getAudioForReading,
   getSrsNameBySrsLvl,
-} from "../../services/MiscService/MiscService";
-import { getReadingAudio } from "../../services/AudioService/AudioService";
+} from "../../services/MiscService";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
-import { SubjectReading } from "../../types/Subject";
 
 // TODO: refactor this, kinda a mess
 export const useAssignmentQueue = () => {
@@ -37,13 +37,13 @@ export const useAssignmentQueue = () => {
   const { pronunciationVoice } = useUserSettingsStoreFacade();
 
   const displaySRSStatus = (reviewItem: AssignmentQueueItem) => {
-    const endingSRS = reviewItem.ending_srs_stage!;
+    let endingSRS = reviewItem.ending_srs_stage!;
 
-    const hasIncreased = endingSRS > reviewItem.srs_stage;
-    const endingSRSName = capitalizeWord(getSrsNameBySrsLvl(endingSRS));
+    let hasIncreased = endingSRS > reviewItem.srs_stage;
+    let endingSRSName = capitalizeWord(getSrsNameBySrsLvl(endingSRS));
 
     // TODO: change to use more specific types that display up or down arrows based on correct/incorrect
-    const popoverToDisplay = hasIncreased
+    let popoverToDisplay = hasIncreased
       ? ({
           message: `Increasing to ${endingSRSName}...`,
           messageType: "correct",
@@ -56,31 +56,35 @@ export const useAssignmentQueue = () => {
     showPopoverMsg(popoverToDisplay);
   };
 
+  // TODO: clean up this logic
   const playAudioIfReadingAndAvailable = (
     assignmentQueueItem: AssignmentQueueItem,
     userAnswer: string
   ) => {
-    if (assignmentQueueItem.readingAudios) {
+    if (
+      (assignmentQueueItem.review_type === "reading" &&
+        assignmentQueueItem.object === "vocabulary") ||
+      (assignmentQueueItem.object === "kana_vocabulary" &&
+        assignmentQueueItem.pronunciation_audios !== undefined)
+    ) {
       const primaryReadingMap: { [index: string]: string | undefined } = {
         vocabulary: assignmentQueueItem.readings?.find(
-          (reading: SubjectReading) => reading.primary === true
+          (reading: any) => reading.primary === true
         )?.reading,
         kana_vocabulary: assignmentQueueItem.characters || undefined,
       };
 
-      const primaryReading =
+      let primaryReading =
         primaryReadingMap[assignmentQueueItem.object as string];
 
-      const userAnswerReadingOrPrimaryFallback = getReadingAudio(
-        assignmentQueueItem.readingAudios,
+      let userAnswerReadingOrPrimaryFallback = getAudioForReading(
+        assignmentQueueItem.pronunciation_audios!,
         userAnswer,
         pronunciationVoice,
         primaryReading
-      )[0];
+      );
 
-      if (userAnswerReadingOrPrimaryFallback) {
-        userAnswerReadingOrPrimaryFallback.audioFile.play();
-      }
+      playAudioForAssignmentQueueItem(userAnswerReadingOrPrimaryFallback);
     }
   };
 
@@ -96,7 +100,7 @@ export const useAssignmentQueue = () => {
       incrementCurrQueueIndex();
       setUserAnswer("");
     } else {
-      correctOnFirstSubmit(currReviewItem, userAnswer);
+      correctonFirstSubmit(currReviewItem, userAnswer);
     }
   };
 
@@ -105,7 +109,7 @@ export const useAssignmentQueue = () => {
     setUserAnswer: (value: string) => void,
     moveToNextItem: boolean
   ) => {
-    const updatedReviewItem = currReviewItem;
+    let updatedReviewItem = currReviewItem;
 
     if (moveToNextItem) {
       addToAssignmentQueue(updatedReviewItem);
@@ -126,19 +130,13 @@ export const useAssignmentQueue = () => {
     }
   };
 
-  const correctOnFirstSubmit = (
+  const correctonFirstSubmit = (
     currReviewItem: AssignmentQueueItem,
     userAnswer: string
   ) => {
-    // only playing if kana vocab or vocab of reading type
-    if (
-      currReviewItem.object === "kana_vocabulary" ||
-      currReviewItem.review_type === "reading"
-    ) {
-      playAudioIfReadingAndAvailable(currReviewItem, userAnswer);
-    }
+    playAudioIfReadingAndAvailable(currReviewItem, userAnswer);
 
-    const isReviewItemComplete = checkIfReviewIsComplete(
+    let isReviewItemComplete = checkIfReviewIsComplete(
       currReviewItem,
       assignmentQueue
     );
@@ -152,7 +150,7 @@ export const useAssignmentQueue = () => {
       displaySRSStatus(updatedReviewItem);
     }
 
-    const wasWrongFirstAttempt = updatedReviewItem.is_reviewed;
+    let wasWrongFirstAttempt = updatedReviewItem.is_reviewed;
     if (wasWrongFirstAttempt) {
       // keeping answer as incorrect and is_reviewed as true
       updatedReviewItem.is_reviewed = true;
@@ -175,9 +173,9 @@ export const useAssignmentQueue = () => {
     userAnswer: string,
     setUserAnswer: (value: string) => void
   ) => {
-    const isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
+    let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
 
-    const moveToNextItem = isSubmittingAnswer;
+    let moveToNextItem = isSubmittingAnswer;
     isCorrectAnswer
       ? handleCorrectAnswer(
           currReviewItem,
@@ -196,14 +194,14 @@ export const useAssignmentQueue = () => {
     setUserAnswer: (value: string) => void
   ) => {
     // if the current answer is correct, we don't wanna mess with the number of incorrect answers (could have been marked wrong previously)
-    const isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
+    let isCorrectAnswer = isUserAnswerCorrect(currReviewItem, userAnswer);
     if (isCorrectAnswer) {
       setUserAnswer("");
       retryReview();
       return;
     }
 
-    const updatedReviewItem = currReviewItem;
+    let updatedReviewItem = currReviewItem;
     updatedReviewItem.is_correct_answer = null;
     updatedReviewItem.is_reviewed = false;
 

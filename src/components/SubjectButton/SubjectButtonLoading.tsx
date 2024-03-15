@@ -1,5 +1,5 @@
 import { IonSkeletonText } from "@ionic/react";
-import { getSubjectBtnSize } from "../../services/MiscService/MiscService";
+import { getSubjectBtnSize } from "../../services/MiscService";
 import { ButtonSize } from "../../types/MiscTypes";
 import styled from "styled-components";
 

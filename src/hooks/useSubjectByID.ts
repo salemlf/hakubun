@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { setSubjectAvailImgs } from "../services/ImageSrcService/ImageSrcService";
+import { setSubjectAvailImgs } from "../services/ImageSrcService";
 
 export const useSubjectByID = (id: number) => {
   return useQuery({

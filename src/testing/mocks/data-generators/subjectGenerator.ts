@@ -6,7 +6,7 @@ import {
   getRandomLevel,
   getRandomVoiceActorID,
 } from "./generatorUtils";
-import { setSubjectAvailImgs } from "../../../services/ImageSrcService/ImageSrcService";
+import { setSubjectAvailImgs } from "../../../services/ImageSrcService";
 import {
   AudioMetadata,
   ContextSentence,

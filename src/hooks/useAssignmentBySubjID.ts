@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenCollectionOfOne } from "../services/MiscService/MiscService";
+import { flattenCollectionOfOne } from "../services/MiscService";
 import { Assignment } from "../types/Assignment";
 
 export const useAssignmentBySubjID = (ids: number[]) => {

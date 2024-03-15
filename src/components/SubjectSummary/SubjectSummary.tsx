@@ -1,18 +1,12 @@
 import { IonRow, IonSkeletonText } from "@ionic/react";
 import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
 import { Assignment } from "../../types/Assignment";
-import {
-  Subject,
-  Kanji,
-  Vocabulary,
-  KanaVocabulary,
-} from "../../types/Subject";
+import { Subject, Kanji, Vocabulary } from "../../types/Subject";
 import AssignmentSrs from "./AssignmentSrs";
 import PartsOfSpeech from "../PartsOfSpeech";
 import SubjectMeanings from "../SubjectMeanings/SubjectMeanings";
 import SubjDetailsKanjiReadings from "./SubjDetailsKanjiReadings";
 import VocabReadings from "../VocabReadings/VocabReadings";
-import KanaVocabReading from "../KanaVocabReading";
 import { SubjSummaryRow } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
@@ -111,7 +105,6 @@ const PartsOfSpeechContainer = styled.div`
 
 const VocabSummary = ({ subject, assignment }: SubjSummaryProps) => {
   const isKanaVocab = subject.object === "kana_vocabulary";
-  const hasReadings = subject.readings && subject.readings.length !== 0;
 
   return (
     <>
@@ -124,7 +117,7 @@ const VocabSummary = ({ subject, assignment }: SubjSummaryProps) => {
             <PartsOfSpeech vocab={subject as Vocabulary} />
           </PartsOfSpeechContainer>
           <VocabGrid>
-            <KanaVocabReading vocab={subject as KanaVocabulary} />
+            <VocabReadings vocab={subject as Vocabulary} />
             <SrsContainer>
               <AssignmentSrs assignment={assignment} />
             </SrsContainer>
@@ -136,12 +129,7 @@ const VocabSummary = ({ subject, assignment }: SubjSummaryProps) => {
             <PartsOfSpeech vocab={subject as Vocabulary} />
           </PartsOfSpeechContainer>
           <VocabGrid>
-            {hasReadings && (
-              <VocabReadings
-                vocab={subject as Vocabulary}
-                subjectReadings={subject.readings!}
-              />
-            )}
+            <VocabReadings vocab={subject as Vocabulary} />
             <SrsContainer>
               <AssignmentSrs assignment={assignment} />
             </SrsContainer>

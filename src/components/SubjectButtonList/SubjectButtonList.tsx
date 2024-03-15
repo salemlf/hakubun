@@ -1,7 +1,7 @@
 import {
   findAssignmentWithSubjID,
   isAssignmentLocked,
-} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+} from "../../services/SubjectAndAssignmentService";
 import { Assignment } from "../../types/Assignment";
 import { Subject } from "../../types/Subject";
 import { ButtonSize } from "../../types/MiscTypes";

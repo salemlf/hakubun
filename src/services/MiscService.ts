@@ -1,17 +1,16 @@
-import { ButtonSize, SrsLevelName } from "../../types/MiscTypes";
-import {
-  AssignmentCollection,
-  SubjectCollection,
-} from "../../types/Collection";
+import { convertToHiragana } from "./AssignmentQueueService";
+import { ButtonSize, SrsLevelName } from "../types/MiscTypes";
+import { AssignmentCollection, SubjectCollection } from "../types/Collection";
 import {
   PopoverMessageType,
   PopoverStyles,
-} from "../../types/AssignmentQueueTypes";
-import { Subject } from "../../types/Subject";
+} from "../types/AssignmentQueueTypes";
+import { PronunciationVoice } from "../types/UserSettingsTypes";
+import { PronunciationAudio, Subject } from "../types/Subject";
 import {
   StudyMaterialPostDataWithID,
   StudyMaterial,
-} from "../../types/StudyMaterial";
+} from "../types/StudyMaterial";
 
 const createTimeTillStr = (timeTill: number, timeFrame: string) => {
   if (timeTill > 0) {
@@ -169,6 +168,93 @@ const popoverStyles: { [index: string]: PopoverStyles } = {
 
 export const getPopoverStyles = (messageType: PopoverMessageType) => {
   return popoverStyles[messageType as keyof object];
+};
+
+export const getAudioUrlByGender = (
+  audioArray: PronunciationAudio[],
+  gender: string
+) => {
+  const audio = audioArray.find((audio) => audio.metadata.gender === gender);
+  return audio?.url;
+};
+
+export const getAudioForReading = (
+  audioItems: PronunciationAudio[],
+  userAnswer: string,
+  voice: PronunciationVoice,
+  primaryReadingFallback?: string
+) => {
+  const hiraganaFallback =
+    primaryReadingFallback && convertToHiragana(primaryReadingFallback);
+
+  const audioByReading = findAudioByPronunciation(userAnswer, audioItems);
+
+  if (audioByReading.length > 0) {
+    return findVoiceInPronunciationAudio(voice, audioByReading).url;
+  }
+
+  if (primaryReadingFallback) {
+    const foundWithPrimary = findAudioByPronunciation(
+      primaryReadingFallback,
+      audioItems
+    );
+
+    if (foundWithPrimary.length > 0) {
+      return findVoiceInPronunciationAudio(voice, foundWithPrimary).url;
+    }
+
+    if (hiraganaFallback) {
+      const audioFilesFound = findAudioByPronunciation(
+        hiraganaFallback,
+        audioItems
+      );
+
+      if (audioFilesFound.length > 0) {
+        return findVoiceInPronunciationAudio(voice, audioFilesFound).url;
+      }
+    }
+  }
+
+  // rn just returning empty string as last fallback, don't think this should ever happen?
+  return "";
+};
+
+export const findAudioByPronunciation = (
+  pronunciation: string,
+  audioItems: PronunciationAudio[]
+) => {
+  return audioItems.filter(
+    (audioOption: PronunciationAudio) =>
+      audioOption.metadata.pronunciation === pronunciation
+  );
+};
+
+export const findVoiceInPronunciationAudio = (
+  voice: PronunciationVoice,
+  audioItems: PronunciationAudio[]
+) => {
+  let foundExactMatch = audioItems.find(
+    (audioOption: PronunciationAudio) =>
+      audioOption.metadata.gender === voice.details.gender &&
+      audioOption.metadata.voice_description ===
+        `${voice.details.accent} accent`
+  );
+
+  if (foundExactMatch) {
+    return foundExactMatch;
+  }
+
+  let sameGenderAudioBackup = audioItems.find(
+    (audioOption: PronunciationAudio) =>
+      audioOption.metadata.gender === voice.details.gender
+  );
+
+  if (sameGenderAudioBackup) {
+    return sameGenderAudioBackup;
+  }
+
+  let backupMatch = audioItems[0];
+  return backupMatch;
 };
 
 export const constructStudyMaterialData = ({

@@ -2,7 +2,7 @@ import { SubjRow, SubjCol } from "../../styles/BaseStyledComponents";
 import { Subject, SubjectType } from "../../types/Subject";
 import { nanoid } from "nanoid";
 
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import SubjectChars from "../SubjectChars/SubjectChars";
 import styled from "styled-components";
 
