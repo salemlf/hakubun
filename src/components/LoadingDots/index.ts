@@ -1,2 +1,2 @@
-export * from './LoadingDots';
-export { default } from './LoadingDots';
+export * from "./LoadingDots";
+export { default } from "./LoadingDots";

@@ -1,2 +1,2 @@
-export * from './SubjectMeanings';
-export { default } from './SubjectMeanings';
+export * from "./SubjectMeanings";
+export { default } from "./SubjectMeanings";

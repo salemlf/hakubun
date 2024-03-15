@@ -1,2 +1,2 @@
-export * from './VocabButton';
-export { default } from './VocabButton';
+export * from "./VocabButton";
+export { default } from "./VocabButton";

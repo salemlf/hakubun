@@ -1,2 +1,2 @@
-export * from './RootContainer';
-export { default } from './RootContainer';
+export * from "./RootContainer";
+export { default } from "./RootContainer";

@@ -53,6 +53,7 @@ yarn-error.log*
 # android app signing junk
 hakubun-release-key.keystore
 service-account-api.json
+
 # Sentry Config File
 .env.sentry-build-plugin
 

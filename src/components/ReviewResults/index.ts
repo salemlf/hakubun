@@ -1,2 +1,2 @@
-export * from './ReviewResults';
-export { default } from './ReviewResults';
+export * from "./ReviewResults";
+export { default } from "./ReviewResults";

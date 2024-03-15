@@ -1,2 +1,2 @@
-export * from './ShiftBy';
-export { default } from './ShiftBy';
+export * from "./ShiftBy";
+export { default } from "./ShiftBy";

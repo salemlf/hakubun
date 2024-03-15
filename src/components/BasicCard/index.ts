@@ -1,2 +1,2 @@
-export * from './BasicCard';
-export { default } from './BasicCard';
+export * from "./BasicCard";
+export { default } from "./BasicCard";

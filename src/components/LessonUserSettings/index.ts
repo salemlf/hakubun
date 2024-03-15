@@ -1,2 +1,2 @@
-export * from './LessonUserSettings';
-export { default } from './LessonUserSettings';
+export * from "./LessonUserSettings";
+export { default } from "./LessonUserSettings";

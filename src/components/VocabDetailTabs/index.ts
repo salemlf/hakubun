@@ -1,2 +1,2 @@
-export * from './VocabDetailTabs';
-export { default } from './VocabDetailTabs';
+export * from "./VocabDetailTabs";
+export { default } from "./VocabDetailTabs";

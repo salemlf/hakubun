@@ -1,2 +1,2 @@
-export * from './ImageFallback';
-export { default } from './ImageFallback';
+export * from "./ImageFallback";
+export { default } from "./ImageFallback";

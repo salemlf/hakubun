@@ -1,2 +1,2 @@
-export * from './Selector';
-export { default } from './Selector';
+export * from "./Selector";
+export { default } from "./Selector";

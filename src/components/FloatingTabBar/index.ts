@@ -1,2 +1,2 @@
-export * from './FloatingTabBar';
-export { default } from './FloatingTabBar';
+export * from "./FloatingTabBar";
+export { default } from "./FloatingTabBar";

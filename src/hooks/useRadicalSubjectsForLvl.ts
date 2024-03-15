@@ -22,8 +22,7 @@ export const useRadicalSubjectsForLvl = (level: any) => {
           filtered.push(updatedSubj);
 
           return filtered;
-        },
-        []);
+        }, []);
 
         let noLoneRadicalsAllowed = radsUpdated.filter(
           (radical: Radical) => radical.amalgamation_subject_ids.length !== 0

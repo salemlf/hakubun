@@ -1,2 +1,2 @@
-export * from './SubjectWideBtnList';
-export { default } from './SubjectWideBtnList';
+export * from "./SubjectWideBtnList";
+export { default } from "./SubjectWideBtnList";

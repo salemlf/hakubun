@@ -1,2 +1,2 @@
-export * from './KanjiReadingMnemonic';
-export { default } from './KanjiReadingMnemonic';
+export * from "./KanjiReadingMnemonic";
+export { default } from "./KanjiReadingMnemonic";

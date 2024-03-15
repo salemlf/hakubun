@@ -1,2 +1,2 @@
-export * from './RadicalNameMnemonic';
-export { default } from './RadicalNameMnemonic';
+export * from "./RadicalNameMnemonic";
+export { default } from "./RadicalNameMnemonic";

@@ -1,2 +1,2 @@
-export * from './RadicalCombination';
-export { default } from './RadicalCombination';
+export * from "./RadicalCombination";
+export { default } from "./RadicalCombination";

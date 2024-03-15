@@ -1,2 +1,2 @@
-export * from './SrsStageProgressBar';
-export { default } from './SrsStageProgressBar';
+export * from "./SrsStageProgressBar";
+export { default } from "./SrsStageProgressBar";

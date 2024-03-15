@@ -19,7 +19,10 @@ const QuestionMark = styled.span`
   transform: translate(10%, -30%);
   background-color: transparent;
   /* creates text outline */
-  text-shadow: 1px 1px 0 black, -1px 1px 0 black, -1px -1px 0 black,
+  text-shadow:
+    1px 1px 0 black,
+    -1px 1px 0 black,
+    -1px -1px 0 black,
     1px -1px 0 black;
 `;
 

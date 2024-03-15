@@ -1,2 +1,2 @@
-export * from './LevelProgressBar';
-export { default } from './LevelProgressBar';
+export * from "./LevelProgressBar";
+export { default } from "./LevelProgressBar";

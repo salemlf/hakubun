@@ -1,2 +1,2 @@
-export * from './Hint';
-export { default } from './Hint';
+export * from "./Hint";
+export { default } from "./Hint";

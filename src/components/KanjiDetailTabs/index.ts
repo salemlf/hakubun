@@ -1,2 +1,2 @@
-export * from './KanjiDetailTabs';
-export { default } from './KanjiDetailTabs';
+export * from "./KanjiDetailTabs";
+export { default } from "./KanjiDetailTabs";

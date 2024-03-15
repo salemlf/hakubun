@@ -1,2 +1,2 @@
-export * from './RadicalDetailTabs';
-export { default } from './RadicalDetailTabs';
+export * from "./RadicalDetailTabs";
+export { default } from "./RadicalDetailTabs";

@@ -1,2 +1,2 @@
-export * from './BatchSizeOption';
-export { default } from './BatchSizeOption';
+export * from "./BatchSizeOption";
+export { default } from "./BatchSizeOption";

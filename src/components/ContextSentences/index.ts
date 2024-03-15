@@ -1,2 +1,2 @@
-export * from './ContextSentences';
-export { default } from './ContextSentences';
+export * from "./ContextSentences";
+export { default } from "./ContextSentences";

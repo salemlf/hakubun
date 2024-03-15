@@ -1,2 +1,2 @@
-export * from './ReviewForecast';
-export { default } from './ReviewForecast';
+export * from "./ReviewForecast";
+export { default } from "./ReviewForecast";

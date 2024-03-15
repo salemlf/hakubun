@@ -1,2 +1,2 @@
-export * from './FallingText';
-export { default } from './FallingText';
+export * from "./FallingText";
+export { default } from "./FallingText";

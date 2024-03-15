@@ -24,8 +24,7 @@ export const useSubjectsByIDs = (
           let updatedSubj = setSubjectAvailImgs(subject);
           filtered.push(updatedSubj);
           return filtered;
-        },
-        []);
+        }, []);
 
         if (sortByLvl) {
           let sortedByLvl = subjsUpdated.sort(
