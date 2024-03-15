@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { nanoid } from "nanoid";
+import { displayToast } from "./components/Toast/Toast.service";
 
 export const generateUUID = (): string => {
   return nanoid();
@@ -59,5 +60,27 @@ export const getRandomIntArr = (
       min: minVal,
       max: maxVal,
     })
+  );
+};
+
+export const copyToClipboard = (textToCopy: string) => {
+  navigator.clipboard.writeText(textToCopy).then(
+    () => {
+      displayToast({
+        toastType: "success",
+        title: "Copied to Clipboard",
+        content: "Content successfully copied to clipboard!",
+        timeout: 10000,
+      });
+    },
+    () => {
+      console.error("Failed to copy content to clipboard");
+      displayToast({
+        toastType: "error",
+        title: "Failed to Copy to Clipboard",
+        content: "An error occurred when copying the content to clipboard",
+        timeout: 10000,
+      });
+    }
   );
 };
