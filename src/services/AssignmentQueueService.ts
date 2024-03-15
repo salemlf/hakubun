@@ -10,16 +10,16 @@ import {
 } from "wanakana";
 import Fuse from "fuse.js";
 import { BlockerFunction } from "react-router-dom";
-import { getNumObjsWithDistinctPropValue } from "../../utils";
-import { INVALID_ANSWER_CHARS } from "../../constants";
-import { displayToast } from "../../components/Toast/Toast.service";
+import { getNumObjsWithDistinctPropValue } from "../utils";
+import { INVALID_ANSWER_CHARS } from "../constants";
+import { displayToast } from "../components/Toast/Toast.service";
 import {
   GroupedReviewItems,
   ReviewAnswerValidResult,
   AssignmentQueueItem,
   ReviewType,
   ReviewedQueueItemInfo,
-} from "../../types/AssignmentQueueTypes";
+} from "../types/AssignmentQueueTypes";
 
 const reviewColors: { [index: string]: string } = {
   reading: `var(--ion-color-primary)`,

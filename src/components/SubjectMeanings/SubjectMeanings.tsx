@@ -1,7 +1,7 @@
 import {
   getSubjectDisplayName,
   getAlternativeMeanings,
-} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+} from "../../services/SubjectAndAssignmentService";
 import { Subject, SubjectMeaning } from "../../types/Subject";
 import AddAltUserMeaningButton from "./AddAltUserMeaningButton";
 import UserMeaningChips from "./UserMeaningChips";

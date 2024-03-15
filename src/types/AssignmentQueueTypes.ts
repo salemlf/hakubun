@@ -17,7 +17,6 @@ export interface AssignmentQueueItem extends Subject, Assignment {
   starting_srs_stage: number;
   ending_srs_stage: number | null;
   isSubmitted: boolean;
-  readingAudios?: ReadingAudio[];
 }
 
 // TODO: remove, change to be SRS level popover type once using toast for this functionality
@@ -62,12 +61,4 @@ export type AssignmentSubmitInfo = {
 export type ReviewedQueueItemInfo = {
   totalUniqueItems: number;
   reviewedQueueItems: AssignmentQueueItem[];
-};
-
-export type ReadingAudio = {
-  isPrimary: boolean;
-  reading: string;
-  gender: string;
-  accent: string;
-  audioFile: Howl;
 };

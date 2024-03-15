@@ -84,19 +84,3 @@ export const SubjDetailTabContainer = styled.div`
   max-height: 75%;
   overflow-y: auto;
 `;
-
-export const VocabReadingContainer = styled.div`
-  display: flex;
-  align-items: baseline;
-`;
-
-export const VocabReadingsContainer = styled(ReadingsStyle)`
-  flex-wrap: wrap;
-  flex-direction: column;
-`;
-
-export const ReadingTxt = styled.p`
-  margin: 5px 0;
-  font-size: 1rem;
-  color: var(--text-color);
-`;

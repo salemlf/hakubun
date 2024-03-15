@@ -1,4 +1,4 @@
-import { getAssignmentIDs } from "../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+import { getAssignmentIDs } from "../services/SubjectAndAssignmentService";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { AssignmentSubmitInfo } from "../types/AssignmentQueueTypes";

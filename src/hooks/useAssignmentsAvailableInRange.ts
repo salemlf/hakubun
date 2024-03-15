@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenData } from "../services/MiscService/MiscService";
+import { flattenData } from "../services/MiscService";
 
 export const useAssignmentsAvailableInRange = (
   startDateIsoString: string,

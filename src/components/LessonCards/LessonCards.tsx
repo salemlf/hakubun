@@ -2,7 +2,7 @@ import { AnimatePresence } from "framer-motion";
 import {
   convertQueueItemsToSubjects,
   getSubjectColor,
-} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+} from "../../services/SubjectAndAssignmentService";
 import useLessonPaginatorStoreFacade from "../../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { SubjectType } from "../../types/Subject";

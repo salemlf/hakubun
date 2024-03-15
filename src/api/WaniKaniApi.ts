@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 
 import { SrsLevelName } from "../types/MiscTypes";
 
-import { getSrsLvlBySrsName } from "../services/MiscService/MiscService";
+import { getSrsLvlBySrsName } from "../services/MiscService";
 import { ReviewPostItem } from "../types/Review";
 import {
   StudyMaterialPostData,

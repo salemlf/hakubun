@@ -4,7 +4,7 @@ import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAs
 import {
   getCompletedAssignmentQueueData,
   shouldBlock,
-} from "../services/AssignmentQueueService/AssignmentQueueService";
+} from "../services/AssignmentQueueService";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { useStartAssignment } from "../hooks/useStartAssignment";

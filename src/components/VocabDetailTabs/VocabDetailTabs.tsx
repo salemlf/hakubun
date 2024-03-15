@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TabData } from "../../types/MiscTypes";
 import { ReviewType } from "../../types/AssignmentQueueTypes";
-import { KanaVocabulary, Subject, Vocabulary } from "../../types/Subject";
+import { Subject, Vocabulary } from "../../types/Subject";
 import ContextSentences from "../ContextSentences";
 import KanjiUsedInVocab from "../KanjiUsedInVocab";
 import PartsOfSpeech from "../PartsOfSpeech";
@@ -10,7 +10,6 @@ import VocabMeaningExplanation from "../VocabMeaningExplanation";
 import VocabReadings from "../VocabReadings";
 import VocabReadingExplanation from "../VocabReadingExplanation";
 import SwipeableTabs from "../SwipeableTabs";
-import KanaVocabReading from "../KanaVocabReading";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
@@ -33,7 +32,6 @@ const PartsOfSpeechContainer = styled(FullWidthColumn)`
 
 const getTabsForVocab = (vocab: Subject) => {
   const isKanaVocab = vocab.object === "kana_vocabulary";
-  const hasReadings = vocab.readings && vocab.readings.length !== 0;
 
   const meaningTab: TabData[] = [
     {
@@ -45,7 +43,7 @@ const getTabsForVocab = (vocab: Subject) => {
           <PartsOfSpeechContainer>
             <PartsOfSpeech vocab={vocab as Vocabulary} />
           </PartsOfSpeechContainer>
-          {isKanaVocab && <KanaVocabReading vocab={vocab as KanaVocabulary} />}
+          <VocabReadings vocab={vocab as Vocabulary} />
           <VocabMeaningExplanation vocab={vocab as Vocabulary} />
           {isKanaVocab && vocab.context_sentences && (
             <ContextSentences sentences={vocab.context_sentences} />
@@ -76,13 +74,7 @@ const getTabsForVocab = (vocab: Subject) => {
       <SubjDetailTabContainer>
         <VocabReadingSection>
           <ReadingHeading>Vocab Reading</ReadingHeading>
-          {hasReadings && (
-            <VocabReadings
-              vocab={vocab as Vocabulary}
-              subjectReadings={vocab.readings!}
-              hideReadingTxt={true}
-            />
-          )}
+          <VocabReadings vocab={vocab as Vocabulary} hideReadingTxt={true} />
         </VocabReadingSection>
         <VocabReadingExplanation vocab={vocab as Vocabulary} />
         {vocab.context_sentences && (

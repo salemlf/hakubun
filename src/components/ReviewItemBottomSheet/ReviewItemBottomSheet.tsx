@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { useWindowSize } from "usehooks-ts";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
-import { convertQueueItemsToSubjects } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+import { convertQueueItemsToSubjects } from "../../services/SubjectAndAssignmentService";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import BottomSheetHeader from "./BottomSheetHeader";
 import RadicalDetailTabs from "../RadicalDetailTabs/RadicalDetailTabs";

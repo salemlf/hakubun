@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getTimeFromNow } from "../../services/MiscService/MiscService";
-import { getSubjectColor } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+import { getTimeFromNow } from "../../services/MiscService";
+import { getSubjectColor } from "../../services/SubjectAndAssignmentService";
 import { Subject, SubjectType } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 import PopoverContent, { PopoverTrigger, PopoverRoot } from "../Popover";

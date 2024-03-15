@@ -7,7 +7,7 @@ import {
   createReviewPostData,
   getCompletedAssignmentQueueData,
   shouldBlock,
-} from "../services/AssignmentQueueService/AssignmentQueueService";
+} from "../services/AssignmentQueueService";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { useCreateReview } from "../hooks/useCreateReview";
 import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";

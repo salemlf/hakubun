@@ -1,6 +1,6 @@
 import { IonGrid, IonRow } from "@ionic/react";
 import { motion } from "framer-motion";
-import { getSubjectColor } from "../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+import { getSubjectColor } from "../services/SubjectAndAssignmentService";
 import { SubjectType } from "../types/Subject";
 import Button from "../components/Button/Button";
 import styled from "styled-components";

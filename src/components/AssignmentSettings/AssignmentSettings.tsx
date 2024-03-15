@@ -10,8 +10,8 @@ import {
   filterAssignmentsByType,
   getSubjIDsFromAssignments,
   getSubjectTypeDisplayText,
-} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
-import { capitalizeWord } from "../../services/MiscService/MiscService";
+} from "../../services/SubjectAndAssignmentService";
+import { capitalizeWord } from "../../services/MiscService";
 import { displayToast } from "../Toast/Toast.service";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
@@ -54,7 +54,7 @@ function AssignmentSettings({
   const [backToBackChoice, setBackToBackChoice] = useState<BackToBackChoice>(
     backToBackOptionDefault
   );
-  const [sortOption, setSortOption] =
+  let [sortOption, setSortOption] =
     useState<AssignmentSortOption>(defaultSortOrder);
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
 
@@ -69,8 +69,8 @@ function AssignmentSettings({
   );
   const [isLoading, setIsLoading] = useState(true);
 
-  const subjIDs = getSubjIDsFromAssignments(assignmentData);
-  const queriesEnabled = subjIDs.length !== 0;
+  let subjIDs = getSubjIDsFromAssignments(assignmentData);
+  let queriesEnabled = subjIDs.length !== 0;
 
   const { data: subjectsData, isLoading: subjectsLoading } = useSubjectsByIDs(
     subjIDs,
@@ -115,19 +115,19 @@ function AssignmentSettings({
     SubjectType[]
   >(availableAssignmentTypes);
 
-  const tabBgColor =
+  let tabBgColor =
     settingsType === "review"
       ? "var(--wanikani-review)"
       : "var(--wanikani-lesson)";
-  const showMeaning = settingsType === "lesson";
+  let showMeaning = settingsType === "lesson";
 
   const submitWithBasicSettings = (): AssignmentBatch => {
-    const assignmentsFiltered = filterAssignmentsByType(
+    let assignmentsFiltered = filterAssignmentsByType(
       assignmentData,
       Array.from(selectedAssignmentTypes)
     );
 
-    const sorted = sortAssignmentsWithOption(
+    let sorted = sortAssignmentsWithOption(
       assignmentsFiltered,
       sortOption,
       subjectsData
@@ -137,7 +137,7 @@ function AssignmentSettings({
       batchSize === "All"
         ? sorted
         : sorted.slice(0, Number.parseInt(batchSize));
-    const subjIDs = getSubjIDsFromAssignments(assignmentBatch);
+    let subjIDs = getSubjIDsFromAssignments(assignmentBatch);
 
     return {
       assignmentBatch,
@@ -146,9 +146,9 @@ function AssignmentSettings({
   };
 
   const submitWithAdvancedSettings = (): AssignmentBatch => {
-    const subjIDs = selectedAdvancedSubjIDs.map((subjID) => parseInt(subjID));
+    let subjIDs = selectedAdvancedSubjIDs.map((subjID) => parseInt(subjID));
 
-    const assignmentBatch = assignmentData.filter((assignment: Assignment) => {
+    let assignmentBatch = assignmentData.filter((assignment: Assignment) => {
       return subjIDs.includes(assignment.subject_id);
     });
 
@@ -159,7 +159,7 @@ function AssignmentSettings({
   };
 
   const onStartSessionBtnClick = () => {
-    const noAssignmentsSelected =
+    let noAssignmentsSelected =
       selectedAdvancedSubjIDs.length === 0 &&
       selectedAssignmentTypes.length === 0;
     if (noAssignmentsSelected) {
@@ -172,7 +172,7 @@ function AssignmentSettings({
       return;
     }
 
-    const sessionData =
+    let sessionData =
       selectedAdvancedSubjIDs.length === 0
         ? submitWithBasicSettings()
         : submitWithAdvancedSettings();
@@ -184,19 +184,18 @@ function AssignmentSettings({
     setIsLoading(true);
 
     // getting data for assignment queue
-    const subjects = subjectsData.filter((subject: Subject) => {
+    let subjects = subjectsData.filter((subject: Subject) => {
       return sessionData.subjIDs.includes(subject.id);
     });
 
-    const batch = sessionData.assignmentBatch;
-    const assignmentQueue = createAssignmentQueueItems(
-      batch,
+    let assignmentQueue = createAssignmentQueueItems(
+      sessionData.assignmentBatch,
       subjects,
       studyMaterialsData as StudyMaterial[],
       backToBackChoice
     );
 
-    if (batch.length > MAX_ASSIGNMENTS_BEFORE_SUBMIT) {
+    if (sessionData.assignmentBatch.length > MAX_ASSIGNMENTS_BEFORE_SUBMIT) {
       setShouldBatchSubmit(true);
     }
 

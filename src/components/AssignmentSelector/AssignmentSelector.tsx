@@ -8,7 +8,7 @@ import {
   filterSubjectsByType,
   getSubjectColor,
   sortBySubjectTypeAndLevel,
-} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+} from "../../services/SubjectAndAssignmentService";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Assignment } from "../../types/Assignment";
 import {
