@@ -58,10 +58,10 @@ export const WaniKaniAPI = {
   },
 
   getRadicalSubjectsByLevel: async function (level: number) {
-    let url = `${baseUrl}subjects?levels=${level}&types=radical`;
+    const url = `${baseUrl}subjects?levels=${level}&types=radical`;
 
-    let radicals = await PagingAPI.iterateOverPages(url, []);
-    let radicalsCombined = PagingAPI.combinePages(radicals);
+    const radicals = await PagingAPI.iterateOverPages(url, []);
+    const radicalsCombined = PagingAPI.combinePages(radicals);
 
     return radicalsCombined;
   },
@@ -188,8 +188,8 @@ export const WaniKaniAPI = {
     return response.data;
   },
 
-  getAllSubjects: async function (nextUrl: string | null = null) {
-    let url = nextUrl ? nextUrl : `${baseUrl}subjects`;
+  getAllSubjects: async function (nextUrl: string = "") {
+    const url = nextUrl !== "" ? nextUrl : `${baseUrl}subjects`;
 
     const response: AxiosResponse = await api.request({
       url: url,

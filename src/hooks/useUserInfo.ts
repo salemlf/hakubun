@@ -8,6 +8,6 @@ export const useUserInfo = () => {
     // stale time of 4 hours
     staleTime: 4 * 60 * (60 * 1000),
     // cache time of 5 hours
-    cacheTime: 5 * 60 * (60 * 1000),
+    gcTime: 5 * 60 * (60 * 1000),
   });
 };

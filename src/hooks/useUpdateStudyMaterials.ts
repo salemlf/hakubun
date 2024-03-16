@@ -14,7 +14,7 @@ export const useUpdateStudyMaterials = () => {
     mutationFn: ({ studyMaterialID, updatedStudyMaterials }: Props) =>
       updateStudyMaterials(studyMaterialID, updatedStudyMaterials),
 
-    onSuccess: (data, variables, context) => {
+    onSuccess: () => {
       // by returning instead of just calling, we keep query in a loading state while queries are invalidated
       return queryClient.invalidateQueries({
         queryKey: ["study-materials-by-subj-ids"],
