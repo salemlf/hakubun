@@ -16,14 +16,8 @@ export const useCreateReview = () => {
     mutationFn: ({ reviewSessionData }: Props) =>
       WaniKaniAPI.postReview(reviewSessionData),
     retry: 3,
-    onSettled: (data, error, variables, context) => {
+    onSettled: (data) => {
       resetForecastTotals();
-      // *testing
-      console.log(
-        "🚀 ~ file: useCreateReview.ts:15 ~ useCreateReview ~ data:",
-        data
-      );
-      // *testing
 
       // refreshing user data in case they leveled up
       queryClient.invalidateQueries({
