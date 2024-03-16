@@ -188,8 +188,8 @@ export const WaniKaniAPI = {
     return response.data;
   },
 
-  getAllSubjects: async function (nextUrl: string | null = null) {
-    let url = nextUrl ? nextUrl : `${baseUrl}subjects`;
+  getAllSubjects: async function (nextUrl: string = "") {
+    const url = nextUrl !== "" ? nextUrl : `${baseUrl}subjects`;
 
     const response: AxiosResponse = await api.request({
       url: url,
