@@ -58,10 +58,10 @@ export const WaniKaniAPI = {
   },
 
   getRadicalSubjectsByLevel: async function (level: number) {
-    let url = `${baseUrl}subjects?levels=${level}&types=radical`;
+    const url = `${baseUrl}subjects?levels=${level}&types=radical`;
 
-    let radicals = await PagingAPI.iterateOverPages(url, []);
-    let radicalsCombined = PagingAPI.combinePages(radicals);
+    const radicals = await PagingAPI.iterateOverPages(url, []);
+    const radicalsCombined = PagingAPI.combinePages(radicals);
 
     return radicalsCombined;
   },
