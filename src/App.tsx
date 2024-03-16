@@ -110,7 +110,7 @@ const queryClient = new QueryClient({
       // stale time of 10 minutes
       staleTime: 10 * (60 * 1000),
       // cache time of 15 minutes
-      cacheTime: 15 * (60 * 1000),
+      gcTime: 15 * (60 * 1000),
     },
   },
   queryCache: new QueryCache({
