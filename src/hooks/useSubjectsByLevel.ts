@@ -2,8 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 import { flattenData } from "../services/MiscService";
+import { Subject } from "../types/Subject";
 
-export const useSubjectsByLevel = (level: any, enabled: boolean = true) => {
+export const useSubjectsByLevel = (level: number, enabled: boolean = true) => {
   return useQuery({
     queryKey: ["subjects-by-lvl", level],
     queryFn: () => WaniKaniAPI.getSubjectsByLevel(level),
@@ -13,8 +14,8 @@ export const useSubjectsByLevel = (level: any, enabled: boolean = true) => {
       const flattened = flattenData(data);
 
       const subjectsUpdated = flattened.reduce(function (
-        filtered: any,
-        subject: any
+        filtered: Subject[],
+        subject: Subject
       ) {
         const updatedSubj = setSubjectAvailImgs(subject);
         filtered.push(updatedSubj);
