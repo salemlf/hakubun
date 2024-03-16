@@ -13,7 +13,7 @@ export const useStartAssignment = () => {
 
   return useMutation({
     mutationFn: ({ assignmentID }: Props) => startAssignment(assignmentID),
-    onSettled: (data, error, variables, context) => {
+    onSettled: () => {
       // refreshing user data in case they leveled up
       queryClient.invalidateQueries({
         queryKey: ["user-info"],

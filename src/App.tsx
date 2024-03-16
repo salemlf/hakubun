@@ -55,7 +55,9 @@ const releaseVersion = "0.3.8-alpha";
 async function enableMocking() {
   if (import.meta.env.MODE === "development") {
     const { worker } = await import("./testing/worker");
-    worker.start();
+    worker.start({
+      onUnhandledRequest: "bypass",
+    });
   }
 }
 
@@ -110,7 +112,7 @@ const queryClient = new QueryClient({
       // stale time of 10 minutes
       staleTime: 10 * (60 * 1000),
       // cache time of 15 minutes
-      cacheTime: 15 * (60 * 1000),
+      gcTime: 15 * (60 * 1000),
     },
   },
   queryCache: new QueryCache({

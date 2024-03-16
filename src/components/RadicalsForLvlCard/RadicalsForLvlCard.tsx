@@ -30,9 +30,8 @@ function RadicalsForLvlCard({ level }: Props) {
     error: assignmentCurrLvlErr,
   } = useRadicalAssignmentsForLvl(level);
 
-  let radicalCardLoading = subjectCurrLvlLoading || assignmentCurrLvlLoading;
-
-  let errGettingData = subjectCurrLvlErr || assignmentCurrLvlErr;
+  const radicalCardLoading = subjectCurrLvlLoading || assignmentCurrLvlLoading;
+  const errGettingData = subjectCurrLvlErr || assignmentCurrLvlErr;
 
   const hasAllData = subjectCurrLvlData && assignmentCurrLvlData;
 
@@ -50,7 +49,7 @@ function RadicalsForLvlCard({ level }: Props) {
     );
   }
 
-  if (radicalCardLoading) {
+  if (radicalCardLoading || !hasAllData) {
     return (
       <Card
         title="Radicals"
@@ -88,11 +87,11 @@ function RadicalsForLvlCard({ level }: Props) {
       headerTextColor="white"
     >
       <SubjForLvlGrid>
-        {(subjectCurrLvlData as Subject[]).map((radical: Subject) => {
+        {subjectCurrLvlData.map((radical) => {
           return (
             <SubjectButtonAndProgress key={`col_${radical.id}`}>
               <SubjectButton
-                subject={radical}
+                subject={radical as Subject}
                 assignment={assignmentCurrLvlData.find(
                   (assignment: Assignment) =>
                     assignment.subject_id === radical.id

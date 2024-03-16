@@ -1,13 +1,12 @@
 import { faker } from "@faker-js/faker";
+import { getRandomLevel, getRandomVoiceActor } from "./generatorUtils";
+import { userEndpoint } from "../../endpoints";
 import {
   LessonsPresentationOrder,
   ReviewsPresentationOrder,
   User,
   UserResponse,
 } from "../../../types/User";
-import { getRandomLevel, getRandomVoiceActor } from "./generatorUtils";
-import { U } from "vitest/dist/reporters-5f784f42.js";
-import { userEndpoint } from "../../endpoints";
 
 const LESSONS_PRESENTATION_ORDER_OPTIONS: LessonsPresentationOrder[] = [
   "ascending_level_then_subject",

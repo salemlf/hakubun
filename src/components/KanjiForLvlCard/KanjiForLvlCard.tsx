@@ -33,9 +33,9 @@ function KanjiForLvlCard({ level }: Props) {
     error: assignmentsErr,
   } = useKanjiAssignmentsForLvl(level);
 
-  let kanjiLoading = subjectsLoading || assignmentsLoading;
+  const kanjiLoading = subjectsLoading || assignmentsLoading;
 
-  let errGettingData = subjectsErr || assignmentsErr;
+  const errGettingData = subjectsErr || assignmentsErr;
 
   const hasAllData = subjectsData && assignmentsData;
 
@@ -54,7 +54,7 @@ function KanjiForLvlCard({ level }: Props) {
   }
 
   //   TODO: create component for loading subject card?
-  if (kanjiLoading) {
+  if (kanjiLoading || !hasAllData) {
     return (
       <Card
         title="Kanji"
@@ -98,28 +98,34 @@ function KanjiForLvlCard({ level }: Props) {
       headerTextColor="white"
     >
       <SubjForLvlGrid>
-        {(subjectsData as Subject[]).map((kanjiItem: any) => {
+        {subjectsData.map((kanjiItem) => {
           return (
             <SubjectButtonAndProgress key={`col_${kanjiItem.id}`}>
               {assignmentsData && (
                 <>
                   <SubjectButton
-                    subject={kanjiItem}
+                    subject={kanjiItem as Subject}
                     assignment={findAssignmentWithSubjID(
                       assignmentsData,
-                      kanjiItem
+                      kanjiItem as Subject
                     )}
                     btnSize="sm"
-                    locked={isAssignmentLocked(assignmentsData, kanjiItem)}
+                    locked={isAssignmentLocked(
+                      assignmentsData,
+                      kanjiItem as Subject
+                    )}
                     useLockedStyle={true}
                     showDetails={false}
                   />
                   <SrsStageProgressBar
                     assignment={findAssignmentWithSubjID(
                       assignmentsData,
-                      kanjiItem
+                      kanjiItem as Subject
                     )}
-                    locked={isAssignmentLocked(assignmentsData, kanjiItem)}
+                    locked={isAssignmentLocked(
+                      assignmentsData,
+                      kanjiItem as Subject
+                    )}
                   />
                 </>
               )}

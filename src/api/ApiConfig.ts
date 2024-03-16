@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const baseUrl = "https://api.wanikani.com/v2/";
-export const baseUrlRegex = new RegExp(baseUrl, "i");
+export const baseUrlRegex = /https:\/\/api\.wanikani\.com\/v2\//;
 
 export const api = axios.create({
   baseURL: baseUrl,

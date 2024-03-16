@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { setSubjectAvailImgs } from "../services/ImageSrcService";
 import { flattenData } from "../services/MiscService";
-import { Radical, Subject } from "../types/Subject";
+import { Radical } from "../types/Subject";
 
 export const useRadicalSubjectsForLvl = (level: any) => {
   return useQuery({
@@ -10,14 +10,14 @@ export const useRadicalSubjectsForLvl = (level: any) => {
     queryFn: () => WaniKaniAPI.getRadicalSubjectsByLevel(level),
     enabled: !!level,
     select: (data: any) => {
-      const flattened = flattenData(data);
+      const flattened: Radical[] = flattenData(data);
 
       const radsUpdated = flattened.reduce(function (
-        filtered: Subject[],
-        subject: Subject
+        filtered: Radical[],
+        subject: Radical
       ) {
         const updatedSubj = setSubjectAvailImgs(subject);
-        filtered.push(updatedSubj);
+        filtered.push(updatedSubj as Radical);
 
         return filtered;
       }, []);
@@ -30,7 +30,7 @@ export const useRadicalSubjectsForLvl = (level: any) => {
     // stale time of an hour
     staleTime: 60 * (60 * 1000),
     // cache time of 1hr 15 minutes
-    cacheTime: 75 * (60 * 1000),
+    gcTime: 75 * (60 * 1000),
     refetchOnWindowFocus: false,
   });
 };
