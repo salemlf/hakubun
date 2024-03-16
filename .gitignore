@@ -59,6 +59,3 @@ service-account-api.json
 
 # in case of accidentally adding keystore to folder
 keystore.jks
-
-# mock service worker generated file
-mockServiceWorker.js
