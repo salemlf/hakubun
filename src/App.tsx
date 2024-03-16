@@ -55,7 +55,9 @@ const releaseVersion = "0.3.8-alpha";
 async function enableMocking() {
   if (import.meta.env.MODE === "development") {
     const { worker } = await import("./testing/worker");
-    worker.start();
+    worker.start({
+      onUnhandledRequest: "bypass",
+    });
   }
 }
 
