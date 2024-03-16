@@ -53,6 +53,7 @@
     "test": "vitest --environment=jsdom",
     "coverage": "vitest --environment=jsdom run --coverage",
     "build": "vite build",
+    "format": "prettier . --write --config ./.prettierrc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -84,6 +85,7 @@
     "eslint-plugin-testing-library": "^6.1.0",
     "jsdom": "^22.1.0",
     "msw": "^2.2.4",
+    "prettier": "^3.2.5",
     "typescript": "^5.4.2",
     "vite": "^4.5.2",
     "vite-plugin-svgr": "^4.1.0",
