@@ -25,7 +25,7 @@ export const getReadingAudio = (
   reading: string,
   voice: PronunciationVoice,
   primaryReadingFallback?: string
-): ReadingAudio[] => {
+): ReadingAudio | null => {
   const hiraganaFallback =
     primaryReadingFallback && convertToHiragana(primaryReadingFallback);
 
@@ -57,8 +57,7 @@ export const getReadingAudio = (
     }
   }
 
-  // rn just returning empty array as last fallback, don't think this should ever happen?
-  return [];
+  return null;
 };
 
 export const findAudioByPronunciation = (
@@ -73,8 +72,8 @@ export const findAudioByPronunciation = (
 export const findVoiceInPronunciationAudios = (
   voice: PronunciationVoice,
   audioItems: ReadingAudio[]
-): ReadingAudio[] => {
-  const exactMatches = audioItems.filter(
+): ReadingAudio | null => {
+  const exactMatches = audioItems.find(
     (audioOption: ReadingAudio) =>
       audioOption.gender === voice.details.gender &&
       audioOption.accent === `${voice.details.accent} accent`
@@ -84,7 +83,7 @@ export const findVoiceInPronunciationAudios = (
     return exactMatches;
   }
 
-  const sameGenderAudioBackup = audioItems.filter(
+  const sameGenderAudioBackup = audioItems.find(
     (audioOption: ReadingAudio) => audioOption.gender === voice.details.gender
   );
 
@@ -92,8 +91,7 @@ export const findVoiceInPronunciationAudios = (
     return sameGenderAudioBackup;
   }
 
-  const backupMatch = audioItems;
-  return backupMatch;
+  return null;
 };
 
 export const createReadingAudioFiles = (
@@ -120,22 +118,10 @@ export const createReadingAudioFiles = (
       },
       {}
     );
-  // *testing
-  console.log(
-    "🚀 ~ file: AudioService.ts:171 ~ mergedByPronunciationAndActor ~ mergedByPronunciationAndActor:",
-    mergedByPronunciationAndActor
-  );
-  // *testing
 
   const groupedByPronunciationAndActor = Object.values(
     mergedByPronunciationAndActor
   );
-  // *testing
-  console.log(
-    "🚀 ~ file: AudioService.ts:169 ~ groupedByPronunciationAndActor:",
-    groupedByPronunciationAndActor
-  );
-  // *testing
 
   return groupedByPronunciationAndActor.map(
     (pronunciationAudioArr: PronunciationAudio[]) => {
