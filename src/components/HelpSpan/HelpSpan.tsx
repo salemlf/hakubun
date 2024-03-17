@@ -11,11 +11,15 @@ const ContainerSpan = styled.span`
   text-underline-offset: 4px;
 `;
 
-const QuestionMark = styled.span`
+type PunctuationProps = {
+  $color: string;
+};
+
+const Punctuation = styled.span<PunctuationProps>`
   display: inline-block;
   font-size: 1.125em;
   font-weight: 700;
-  color: var(--ion-color-tertiary);
+  color: ${({ $color }) => $color};
   transform: translate(10%, -30%);
   background-color: transparent;
   /* creates text outline */
@@ -24,6 +28,7 @@ const QuestionMark = styled.span`
     -1px 1px 0 black,
     -1px -1px 0 black,
     1px -1px 0 black;
+  margin-left: 2px;
 `;
 
 const ClickableHelp = styled.button`
@@ -35,16 +40,40 @@ const ClickableHelp = styled.button`
 `;
 
 const HelpContentWrapper = styled.div`
-  padding: 20px;
+  padding: 12px;
   max-width: 260px;
 `;
+
+type PunctuationType = "asterisk" | "question";
+type PunctuationContent = {
+  text: string;
+  color: string;
+};
+
+const punctuationMap: Record<PunctuationType, PunctuationContent> = {
+  asterisk: {
+    text: "*",
+    color: "var(--ion-color-primary-lightest)",
+  },
+  question: {
+    text: "?",
+    color: "var(--ion-color-tertiary)",
+  },
+};
 
 type Props = {
   children: React.ReactNode;
   helpPopoverContents: React.ReactNode;
+  punctuation?: PunctuationType;
 };
 
-function HelpSpan({ children, helpPopoverContents }: Props) {
+function HelpSpan({
+  children,
+  helpPopoverContents,
+  punctuation = "question",
+}: Props) {
+  const punctuationInfo = punctuationMap[punctuation];
+
   const [isOpen, setIsOpen] = useState(false);
   return (
     <ContainerSpan>
@@ -52,7 +81,9 @@ function HelpSpan({ children, helpPopoverContents }: Props) {
         <PopoverTrigger asChild>
           <ClickableHelp>
             {children}
-            <QuestionMark>?</QuestionMark>
+            <Punctuation $color={punctuationInfo.color}>
+              {punctuationInfo.text}
+            </Punctuation>
           </ClickableHelp>
         </PopoverTrigger>
         <PopoverContent isOpen={isOpen} showBorder={true}>
