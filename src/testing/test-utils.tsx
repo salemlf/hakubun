@@ -8,7 +8,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
-import { Either } from "../types/Global";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import { ToastDisplayProvider } from "../components/Toast/ToastDisplayProvider";
 
