@@ -1,7 +1,7 @@
 import {
   constructStudyMaterialData,
   updateValsInStudyMaterialData,
-} from "../services/MiscService";
+} from "../services/MiscService/MiscService";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import { useCreateStudyMaterials } from "./useCreateStudyMaterials";
 import { useUpdateStudyMaterials } from "./useUpdateStudyMaterials";

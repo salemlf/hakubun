@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { setSubjectAvailImgs } from "../../services/ImageSrcService";
+import { setSubjectAvailImgs } from "../../services/ImageSrcService/ImageSrcService";
 import {
   getSubjectDisplayName,
   getPrimaryReading,
-} from "../../services/SubjectAndAssignmentService";
+} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import {
   Radical,
   Kanji,

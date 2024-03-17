@@ -1,5 +1,6 @@
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { PrimitiveLabelProps } from "@radix-ui/react-label";
+import type { RequireExactlyOne } from "type-fest";
 import styled from "styled-components";
 
 type LabelStyledProps = {
@@ -14,20 +15,25 @@ const LabelStyled = styled(LabelPrimitive.Root)<LabelStyledProps>`
   font-weight: ${({ $isBold }) => $isBold && 600};
 `;
 
-type LabelProps = PrimitiveLabelProps & {
+type LabelContents = {
   idOfControl: string;
-  labelText: string;
   labelfontSize?: string;
   isBold?: boolean;
   color?: string;
+  children: React.ReactNode;
+  labelText: string;
 };
+
+type LabelProps = PrimitiveLabelProps &
+  RequireExactlyOne<LabelContents, "children" | "labelText">;
 
 function Label({
   idOfControl,
-  labelText,
   labelfontSize = "1.2rem",
   color = "var(--text-color)",
   isBold = false,
+  labelText,
+  children,
 }: LabelProps) {
   return (
     <LabelStyled
@@ -36,7 +42,7 @@ function Label({
       color={color}
       $isBold={isBold}
     >
-      {labelText}
+      {children || labelText}
     </LabelStyled>
   );
 }

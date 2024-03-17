@@ -4,7 +4,7 @@ import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
-import { shouldBlock } from "../services/AssignmentQueueService";
+import { shouldBlock } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import LessonCards from "../components/LessonCards";
 import Button from "../components/Button";

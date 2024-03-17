@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { IonSkeletonText } from "@ionic/react";
-import { getAssignmentStatuses } from "../../services/SubjectAndAssignmentService";
+import { getAssignmentStatuses } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
 import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
 import styled from "styled-components";

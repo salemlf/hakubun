@@ -1,21 +1,21 @@
 // Image sources for reviews button
-import reviewsBgImg0 from "../images/bg_reviews_0.png";
-import reviewsBgImg49 from "../images/bg_reviews_1-49.png";
-import reviewsBgImg99 from "../images/bg_reviews_100-249.png";
-import reviewsBgImg249 from "../images/bg_reviews_100-249.png";
-import reviewsBgImg499 from "../images/bg_reviews_250-499.png";
-import reviewsBgImg999 from "../images/bg_reviews_500-999.png";
-import reviewsBgImg1000 from "../images/bg_reviews_500-999.png";
+import reviewsBgImg0 from "../../images/bg_reviews_0.png";
+import reviewsBgImg49 from "../../images/bg_reviews_1-49.png";
+import reviewsBgImg99 from "../../images/bg_reviews_100-249.png";
+import reviewsBgImg249 from "../../images/bg_reviews_100-249.png";
+import reviewsBgImg499 from "../../images/bg_reviews_250-499.png";
+import reviewsBgImg999 from "../../images/bg_reviews_500-999.png";
+import reviewsBgImg1000 from "../../images/bg_reviews_500-999.png";
 
 // Image sources for lessons button
-import lessonsBgImg0 from "../images/bg_lessons_0.png";
-import lessonsBgImg24 from "../images/bg_lessons_1-24.png";
-import lessonsBgImg49 from "../images/bg_lessons_25-49.png";
-import lessonsBgImg99 from "../images/bg_lessons_50-99.png";
-import lessonsBgImg249 from "../images/bg_lessons_100-249.png";
-import lessonsBgImg499 from "../images/bg_lessons_250-499.png";
-import lessonsBgImg500 from "../images/bg_lessons_500+.png";
-import { Subject, SubjectCharacterImage } from "../types/Subject";
+import lessonsBgImg0 from "../../images/bg_lessons_0.png";
+import lessonsBgImg24 from "../../images/bg_lessons_1-24.png";
+import lessonsBgImg49 from "../../images/bg_lessons_25-49.png";
+import lessonsBgImg99 from "../../images/bg_lessons_50-99.png";
+import lessonsBgImg249 from "../../images/bg_lessons_100-249.png";
+import lessonsBgImg499 from "../../images/bg_lessons_250-499.png";
+import lessonsBgImg500 from "../../images/bg_lessons_500+.png";
+import { Subject, SubjectCharacterImage } from "../../types/Subject";
 
 // preferring png images, svg never seems to work so always uses fallback
 const sortCharacterImages = (

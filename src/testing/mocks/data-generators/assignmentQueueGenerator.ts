@@ -6,7 +6,7 @@ import {
   generateAssignmentArrayFromSubjs,
 } from "./assignmentGenerator";
 import { generateStudyMaterialArrFromSubjs } from "./studyMaterialGenerator";
-import { createAssignmentQueueItems } from "../../../services/SubjectAndAssignmentService";
+import { createAssignmentQueueItems } from "../../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { BackToBackChoice } from "../../../components/BackToBackOption/BackToBackOption.types";
 import { Assignment } from "../../../types/Assignment";
 import { AssignmentQueueItem } from "../../../types/AssignmentQueueTypes";

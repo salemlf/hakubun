@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { getSubjectBtnSize } from "../../services/MiscService";
+import { getSubjectBtnSize } from "../../services/MiscService/MiscService";
 import { KanaVocabulary, Subject, Vocabulary } from "../../types/Subject";
 import { ButtonSize } from "../../types/MiscTypes";
 import { Characters, ReadingAndMeaning } from "../SubjectWideBtnList";

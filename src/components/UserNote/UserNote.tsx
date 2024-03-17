@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IonSkeletonText } from "@ionic/react";
-import { capitalizeWord } from "../../services/MiscService";
+import { capitalizeWord } from "../../services/MiscService/MiscService";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
 import { Subject } from "../../types/Subject";
 import { UserNoteType } from "../../types/MiscTypes";

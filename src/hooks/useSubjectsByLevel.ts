@@ -1,7 +1,7 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { setSubjectAvailImgs } from "../services/ImageSrcService";
-import { flattenData } from "../services/MiscService";
+import { setSubjectAvailImgs } from "../services/ImageSrcService/ImageSrcService";
+import { flattenData } from "../services/MiscService/MiscService";
 import { Subject } from "../types/Subject";
 
 export const useSubjectsByLevel = (level: number, enabled: boolean = true) => {

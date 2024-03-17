@@ -2,9 +2,12 @@ import { IonCol, IonRow } from "@ionic/react";
 import {
   getSubjectColor,
   getSubjectTypeDisplayText,
-} from "../../services/SubjectAndAssignmentService";
-import { getReviewTypeColor } from "../../services/AssignmentQueueService";
-import { capitalizeWord, getPopoverStyles } from "../../services/MiscService";
+} from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+import { getReviewTypeColor } from "../../services/AssignmentQueueService/AssignmentQueueService";
+import {
+  capitalizeWord,
+  getPopoverStyles,
+} from "../../services/MiscService/MiscService";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import { SubjectType } from "../../types/Subject";
 import {
