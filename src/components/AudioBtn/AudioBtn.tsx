@@ -42,22 +42,22 @@ function AudioBtn({ audioForReading, reading }: AudioProps) {
     audioFile.load();
     audioFile.on("end", function () {
       setIsPlaying(false);
-    }, ), [];
+    }),
+      [];
 
     audioFile.on("loaderror", function () {
-      console.error("Load error occurred for audio file")
+      console.error("Load error occurred for audio file");
     });
 
     audioFile.on("playerror", function () {
-      console.error("Play error occurred for audio file")
+      console.error("Play error occurred for audio file");
     });
     return () => {
       audioFile.unload();
-    }
+    };
   }, []);
 
   const playAudio = () => {
-
     setIsPlaying(true);
     audioFile.play();
   };

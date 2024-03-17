@@ -3,6 +3,7 @@ import {
   getReadingAudioFiles,
 } from "../../services/AudioService/AudioService";
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import { KanaVocabulary, Subject } from "../../types/Subject";
 import AudioBtn from "../AudioBtn";
 import {
   ReadingContainer,
@@ -11,7 +12,6 @@ import {
   VocabReadingContainer,
   VocabReadingsContainer,
 } from "../../styles/SubjectDetailsStyled";
-import { KanaVocabulary, Subject } from "../../types/Subject";
 
 type KanaVocabReadingProps = {
   vocab: KanaVocabulary;
@@ -21,22 +21,21 @@ function KanaVocabReading({ vocab }: KanaVocabReadingProps) {
   const { pronunciationVoice } = useUserSettingsStoreFacade();
   const readingAudioItems = getReadingAudioFiles(vocab as Subject);
 
+  const audioForReading =
+    readingAudioItems && vocab.characters
+      ? getReadingAudio(readingAudioItems, vocab.characters, pronunciationVoice)
+      : null;
+
   return (
     <ReadingContainer>
       <VocabReadingsContainer>
         <SubjDetailSubHeading>Pronunciation</SubjDetailSubHeading>
         <VocabReadingContainer>
           <ReadingTxt>{vocab.characters}</ReadingTxt>
-          {readingAudioItems && vocab.characters && (
+          {vocab.characters && audioForReading && (
             <AudioBtn
               reading={vocab.characters}
-              audioForReading={
-                getReadingAudio(
-                  readingAudioItems,
-                  vocab.characters,
-                  pronunciationVoice
-                )[0]
-              }
+              audioForReading={audioForReading}
             />
           )}
         </VocabReadingContainer>

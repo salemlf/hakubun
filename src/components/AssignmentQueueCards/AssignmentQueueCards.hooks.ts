@@ -76,7 +76,7 @@ export const useAssignmentQueue = () => {
         userAnswer,
         pronunciationVoice,
         primaryReading
-      )[0];
+      );
 
       if (userAnswerReadingOrPrimaryFallback) {
         userAnswerReadingOrPrimaryFallback.audioFile.play();
