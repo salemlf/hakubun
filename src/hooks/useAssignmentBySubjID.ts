@@ -8,9 +8,9 @@ export const useAssignmentBySubjID = (ids: number[]) => {
     queryKey: ["assignment-by-subj-id", ids],
     queryFn: () => WaniKaniAPI.getAssignmentsBySubjIDs(ids),
     enabled: !!ids && !!ids.length,
-    select: (data: any) => {
+    select: (data) => {
       if (data.data.length) {
-        return flattenCollectionOfOne(data) as unknown as Assignment;
+        return flattenCollectionOfOne(data) as Assignment;
       }
       return undefined;
     },

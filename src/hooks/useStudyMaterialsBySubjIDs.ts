@@ -15,9 +15,9 @@ export const useStudyMaterialsBySubjIDs = (
     queryKey: ["study-materials-by-subj-ids", subjIDs],
     queryFn: () => WaniKaniAPI.getStudyMaterialsBySubjIDs(subjIDs),
     enabled: enabled && subjIDs.length !== 0,
-    select: (data: any) => {
+    select: (data) => {
       if (data.data.length === 1 && flattenCollection) {
-        return flattenCollectionOfOne(data) as unknown as StudyMaterial;
+        return flattenCollectionOfOne(data) as StudyMaterial;
       }
       return flattenData(data);
     },
