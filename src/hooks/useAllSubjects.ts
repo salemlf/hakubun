@@ -1,6 +1,21 @@
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenPagesOfData } from "../services/MiscService/MiscService";
+import { SubjectCollection } from "../types/Collection";
+import { PreFlattenedSubject } from "../types/Subject";
+
+type PagedSubjCollection = {
+  pageParams: string[];
+  pages: SubjectCollection[];
+};
+
+const flattenPagesOfData = (data: PagedSubjCollection) => {
+  const flattenedData = data.pages.map((elem: SubjectCollection) => {
+    return [...elem.data];
+  });
+
+  const flattenedPages = flattenedData.flat(1);
+  return flattenedPages;
+};
 
 export const useAllSubjects = () => {
   return useInfiniteQuery({
@@ -10,8 +25,8 @@ export const useAllSubjects = () => {
     getNextPageParam: (lastPage) => {
       return lastPage.data.length !== 0 ? lastPage.pages.next_url : null;
     },
-    select: (data: any) => {
-      const flattenedPages = flattenPagesOfData(data);
+    select: (data: PagedSubjCollection) => {
+      const flattenedPages: PreFlattenedSubject[] = flattenPagesOfData(data);
       return flattenedPages;
     },
     placeholderData: keepPreviousData,

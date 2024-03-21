@@ -91,6 +91,7 @@ export const capitalizeWord = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
 
+// TODO: add type for data, remove nested possibility
 export const flattenData = (data: any, nested: boolean = true) => {
   let iteratingLevel = nested ? data.data : data;
 
@@ -116,15 +117,6 @@ export const flattenCollectionOfOne = (
 
   delete flattenedInnerData.data;
   return flattenedInnerData;
-};
-
-export const flattenPagesOfData = (data: any) => {
-  let flattenedData = data.pages.map((elem: any) => {
-    return [...elem.data];
-  });
-
-  let flattenedPages = flattenedData.flat(1);
-  return flattenedPages;
 };
 
 export const flattenSearchResults = (data: any) => {
