@@ -17,7 +17,7 @@ export const useAllSubjects = () => {
     placeholderData: keepPreviousData,
     // stale time of 8 hours
     staleTime: 8 * 60 * (60 * 1000),
-    // cache time of 9 hours
+    // garbage collection time of 9 hours
     gcTime: 9 * 60 * (60 * 1000),
     refetchOnWindowFocus: false,
   });

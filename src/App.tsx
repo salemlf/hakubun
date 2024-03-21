@@ -114,7 +114,7 @@ const queryClient = new QueryClient({
     queries: {
       // stale time of 10 minutes
       staleTime: 10 * (60 * 1000),
-      // cache time of 15 minutes
+      // garbage collection time of 15 minutes
       gcTime: 15 * (60 * 1000),
     },
   },

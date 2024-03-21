@@ -29,7 +29,7 @@ export const useRadicalSubjectsForLvl = (level: any) => {
     },
     // stale time of an hour
     staleTime: 60 * (60 * 1000),
-    // cache time of 1hr 15 minutes
+    // garbage collection time of 1hr 15 minutes
     gcTime: 75 * (60 * 1000),
     refetchOnWindowFocus: false,
   });
