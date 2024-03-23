@@ -24,7 +24,7 @@ export const useCreateReview = () => {
         queryKey: ["user-info"],
       });
       queryClient.invalidateQueries({
-        queryKey: ["assignments-available-for-review"],
+        queryKey: ["available-reviews"],
       });
       queryClient.invalidateQueries({ queryKey: ["available-num-reviews"] });
       queryClient.invalidateQueries({

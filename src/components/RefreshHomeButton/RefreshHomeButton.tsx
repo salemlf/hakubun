@@ -30,7 +30,7 @@ function RefreshHomeButton() {
 
   const refresh = () => {
     queryClient.invalidateQueries({
-      queryKey: ["assignments-available-for-review"],
+      queryKey: ["available-reviews"],
     });
     queryClient.invalidateQueries({
       queryKey: ["assignments-available-in-range"],

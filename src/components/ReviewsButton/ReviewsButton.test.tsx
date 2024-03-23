@@ -4,12 +4,11 @@ import { createWrapper, renderWithRouter } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { AVAIL_REVIEWS, assignmentsEndpoint } from "../../testing/endpoints";
 import { generateAssignmentCollection } from "../../testing/mocks/data-generators/collectionGenerator";
-import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
+import { useReviews } from "../../hooks/useReviews";
 import { AssignmentCollection } from "../../types/Collection";
 import { ReviewSettings } from "../../pages/ReviewSettings";
 import ReviewsButton from ".";
 
-const mockLevel = 1;
 const mockAssignmentCollection = generateAssignmentCollection(10);
 const mockEmptyAssignmentCollection = generateAssignmentCollection(0);
 
@@ -27,16 +26,16 @@ const mockAvailReviewsResponse = (mockCollection: AssignmentCollection) => {
 };
 
 test("ReviewsButton renders", () => {
-  const { baseElement } = renderComponent(mockLevel);
+  const { baseElement } = renderComponent();
   expect(baseElement).toBeDefined();
 });
 
 test("Redirects to review settings on click", async () => {
   mockAvailReviewsResponse(mockAssignmentCollection);
 
-  const { user } = renderComponent(mockLevel, true);
+  const { user } = renderComponent(true);
 
-  const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
+  const { result } = renderHook(() => useReviews(), {
     wrapper: createWrapper(),
   });
 
@@ -67,8 +66,8 @@ test("Shows error text on API error and no cached data", async () => {
     })
   );
 
-  renderComponent(mockLevel, true);
-  const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
+  renderComponent(true);
+  const { result } = renderHook(() => useReviews(), {
     wrapper: createWrapper(),
   });
   await waitFor(() => {
@@ -86,8 +85,8 @@ test("Shows error text on API error and no cached data", async () => {
 test("Displays toast on click if no reviews available", async () => {
   mockAvailReviewsResponse(mockEmptyAssignmentCollection);
 
-  const { user } = renderComponent(mockLevel);
-  const { result } = renderHook(() => useAssignmentsAvailForReview(mockLevel), {
+  const { user } = renderComponent();
+  const { result } = renderHook(() => useReviews(), {
     wrapper: createWrapper(),
   });
 
@@ -109,15 +108,12 @@ test.todo(
   async () => {}
 );
 
-const renderComponent = (
-  level: number,
-  withReviewSettings: boolean = false
-) => {
+const renderComponent = (withReviewSettings: boolean = false) => {
   const routes = withReviewSettings
     ? [{ element: <ReviewSettings />, path: "/reviews/settings" }]
     : [];
   return renderWithRouter({
-    routeObj: { element: <ReviewsButton level={level} />, path: "/" },
+    routeObj: { element: <ReviewsButton />, path: "/" },
     routes,
   });
 };

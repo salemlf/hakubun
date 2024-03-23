@@ -23,7 +23,7 @@ export const useStartAssignment = () => {
         queryKey: ["assignments-by-subj-ids"],
       });
       queryClient.invalidateQueries({
-        queryKey: ["assignments-available-for-review"],
+        queryKey: ["available-reviews"],
       });
       queryClient.invalidateQueries({
         queryKey: ["assignments-available-in-range"],

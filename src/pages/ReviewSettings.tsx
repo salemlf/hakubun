@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import { useAssignmentsAvailForReview } from "../hooks/useAssignmentsAvailForReview";
+import { useReviews } from "../hooks/useReviews";
 import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
 import LoadingDots from "../components/LoadingDots";
 import PageHeader from "../components/PageHeader";
@@ -13,7 +13,6 @@ import {
 export const ReviewSettings = () => {
   const { userInfo } = useUserInfoStoreFacade();
   const [isEnabled, setIsEnabled] = useState(false);
-  let currUserLevel = userInfo?.level;
 
   useEffect(() => {
     if (userInfo && userInfo.level) {
@@ -27,7 +26,7 @@ export const ReviewSettings = () => {
     isLoading: availForReviewLoading,
     data: availForReviewData,
     error: availForReviewErr,
-  } = useAssignmentsAvailForReview(currUserLevel, isEnabled);
+  } = useReviews(isEnabled);
 
   const { reviewBatchSize, reviewSortOrderOption } =
     useUserSettingsStoreFacade();

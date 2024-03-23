@@ -70,7 +70,7 @@ const Home = () => {
           <>
             <LessonAndReviewButtonsContainer>
               <LessonsButton />
-              <ReviewsButton level={level}></ReviewsButton>
+              <ReviewsButton />
             </LessonAndReviewButtonsContainer>
             <LevelProgressBar level={level} />
             <RadicalsForLvlCard level={level}></RadicalsForLvlCard>

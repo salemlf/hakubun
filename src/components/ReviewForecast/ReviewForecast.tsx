@@ -1,26 +1,12 @@
 import { useEffect, useState } from "react";
 import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
-import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
+import { useReviews } from "../../hooks/useReviews";
 import DailyReviewForecast from "./DailyReviewForecast";
 import SwipeableTabs from "../SwipeableTabs";
 import LoadingDots from "../LoadingDots";
-import { LoadingContainer } from "../../styles/BaseStyledComponents";
-import styled from "styled-components";
 import Card from "../Card";
-
-const Container = styled.section`
-  width: 100%;
-  border-radius: 0.5rem;
-  margin: auto;
-  padding: 10px;
-  background-color: var(--foreground-color);
-`;
-
-const Heading = styled.h2`
-  font-size: 1.5rem;
-  margin-top: 5px;
-`;
+import { LoadingContainer } from "../../styles/BaseStyledComponents";
 
 const dayOfWeekNames = [
   "Sunday",
@@ -42,18 +28,18 @@ const createStartAndEndDatesForWeek = (date: Date): StartAndEndTimeInfo[] => {
   return Array(7)
     .fill(new Date(date))
     .map((el, index) => {
-      let currDay = new Date();
+      const currDay = new Date();
       currDay.setDate(el.getDate() + index);
 
-      let startTime = new Date(currDay);
+      const startTime = new Date(currDay);
       if (index !== 0) {
         startTime.setHours(0, 0, 0, 0);
       }
 
-      let endTime = new Date(currDay);
+      const endTime = new Date(currDay);
       endTime.setHours(23, 59, 59, 999);
 
-      let dayOfWeek = dayOfWeekNames[startTime.getDay()];
+      const dayOfWeek = dayOfWeekNames[startTime.getDay()];
 
       return {
         dayOfWeek,
@@ -73,7 +59,6 @@ function ReviewForecast() {
 
   const { userInfo } = useUserInfoStoreFacade();
   const [isEnabled, setIsEnabled] = useState(false);
-  let currUserLevel = userInfo?.level;
 
   useEffect(() => {
     if (userInfo && userInfo.level) {
@@ -92,7 +77,7 @@ function ReviewForecast() {
     isLoading: availForReviewLoading,
     data: availForReviewData,
     error: availForReviewErr,
-  } = useAssignmentsAvailForReview(currUserLevel, isEnabled);
+  } = useReviews(isEnabled);
 
   // TODO: this might have issues not conforming to invalidation times of availForReviewData, hmm
   useEffect(() => {
@@ -102,7 +87,7 @@ function ReviewForecast() {
         seedRunningTotalAvailableReviews(availForReviewData.length);
       }
 
-      let forecastTimes = createStartAndEndDatesForWeek(new Date());
+      const forecastTimes = createStartAndEndDatesForWeek(new Date());
       setStartAndEndTimes(forecastTimes);
 
       setIsLoading(false);

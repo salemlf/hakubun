@@ -4,9 +4,9 @@ import { flattenData } from "../services/MiscService/MiscService";
 import { Assignment } from "../types/Assignment";
 
 // TODO: add call to clear data for review forecast store?
-export const useAssignmentsAvailForReview = (isEnabled: boolean = true) => {
+export const useReviews = (isEnabled: boolean = true) => {
   return useQuery({
-    queryKey: ["assignments-available-for-review"],
+    queryKey: ["available-reviews"],
     queryFn: () => WaniKaniAPI.getAssignmentsAvailForReview(),
     select: (pagedData) => {
       const flattenedData: Assignment[] = flattenData(pagedData.data, false);
