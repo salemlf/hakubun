@@ -29,10 +29,11 @@ const LessonAndReviewButtonsContainer = styled.div`
   margin-bottom: 16px;
 `;
 
+// TODO: modify so LevelProgressBar, RadicalsForLvlCard, and KanjiForLvlCard show loading skeletons if level is undefined
 // TODO: save previous level value and show animation/congrats when level increases
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
-  const [level, setLevel] = useState<number>(0);
+  const [level, setLevel] = useState<number | undefined>();
   const { setUserInfo, userInfo } = useUserInfoStoreFacade();
 
   useEffect(() => {
@@ -72,9 +73,13 @@ const Home = () => {
               <LessonsButton />
               <ReviewsButton />
             </LessonAndReviewButtonsContainer>
-            <LevelProgressBar level={level} />
-            <RadicalsForLvlCard level={level}></RadicalsForLvlCard>
-            <KanjiForLvlCard level={level}></KanjiForLvlCard>
+            {level && (
+              <>
+                <LevelProgressBar level={level} />
+                <RadicalsForLvlCard level={level}></RadicalsForLvlCard>
+                <KanjiForLvlCard level={level}></KanjiForLvlCard>
+              </>
+            )}
             <SrsStages></SrsStages>
             <ReviewForecast />
           </>

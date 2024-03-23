@@ -14,7 +14,7 @@ import {
 } from "../../styles/BaseStyledComponents";
 
 interface Props {
-  level: number | undefined;
+  level: number;
 }
 
 function RadicalsForLvlCard({ level }: Props) {

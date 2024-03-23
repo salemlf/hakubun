@@ -4,12 +4,12 @@ import { setSubjectAvailImgs } from "../services/ImageSrcService/ImageSrcService
 import { flattenData } from "../services/MiscService/MiscService";
 import { Radical } from "../types/Subject";
 
-export const useRadicalSubjectsForLvl = (level: any) => {
+export const useRadicalSubjectsForLvl = (level: number) => {
   return useQuery({
     queryKey: ["radical-subjects-for-lvl", level],
     queryFn: () => WaniKaniAPI.getRadicalSubjectsByLevel(level),
     enabled: !!level,
-    select: (data: any) => {
+    select: (data) => {
       const flattened: Radical[] = flattenData(data);
 
       const radsUpdated = flattened.reduce(function (
