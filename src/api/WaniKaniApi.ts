@@ -115,7 +115,11 @@ export const WaniKaniAPI = {
     return response.data;
   },
 
-  getRadicalAssignmentsByLvl: async function (level: number) {
+  getRadicalAssignmentsByLvl: async function (level: number | undefined) {
+    if (level === undefined) {
+      return emptyPagedData;
+    }
+
     const url = `${baseUrl}assignments?levels=${level}&subject_types=radical`;
 
     const radicals = await PagingAPI.iterateOverPages(url, []);
