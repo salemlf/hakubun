@@ -27,9 +27,7 @@ export const WaniKaniAPI = {
     return response.data;
   },
 
-  getAssignmentsAvailForReview: async function (currLevel: number) {
-    if (currLevel === 0) return { data: [], total: 0 };
-
+  getAssignmentsAvailForReview: async function () {
     const url = `${baseUrl}assignments?immediately_available_for_review=true`;
 
     const reviews = await PagingAPI.iterateOverPages(url, []);
