@@ -64,7 +64,9 @@ export const generateSubjAssignmentPair = ({
   const assignment: Assignment = generateAssignment({
     isBurned: assignmentBurned,
     isResurrected: assignmentResurrected,
-    correspondingSubject: { subjID: subject.id, subjType: subject.object },
+    subjOrSubjType: {
+      correspondingSubject: { subjID: subject.id, subjType: subject.object },
+    },
   });
   return { subject, assignment };
 };
@@ -130,7 +132,9 @@ export const generateSubjAssignmentPairArray = ({
     generateAssignment({
       isBurned: assignmentsBurned,
       isResurrected: assignmentsResurrected,
-      correspondingSubject: { subjID: subj.id, subjType: subj.object },
+      subjOrSubjType: {
+        correspondingSubject: { subjID: subj.id, subjType: subj.object },
+      },
     })
   );
 
@@ -164,9 +168,11 @@ export const generatePreflattenedSubjAssignmentPairArray = ({
     generatePreFlattenedAssignment({
       isBurned: assignmentsBurned,
       isResurrected: assignmentsResurrected,
-      correspondingSubject: {
-        subjID: subj.id,
-        subjType: subj.object as SubjectType,
+      subjOrSubjType: {
+        correspondingSubject: {
+          subjID: subj.id,
+          subjType: subj.object as SubjectType,
+        },
       },
     })
   );
@@ -206,7 +212,9 @@ export const generateVarietySubjAssignmentPairArray = ({
     generateAssignment({
       isBurned: assignmentsBurned,
       isResurrected: assignmentsResurrected,
-      correspondingSubject: { subjID: subj.id, subjType: subj.object },
+      subjOrSubjType: {
+        correspondingSubject: { subjID: subj.id, subjType: subj.object },
+      },
     })
   );
 

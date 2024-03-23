@@ -23,11 +23,13 @@ import {
 
 export const generateAssignmentCollection = (
   collectionLength: number,
-  areLessons: boolean = false
+  areLessons: boolean = false,
+  subjType?: SubjectType
 ): AssignmentCollection => {
   const mockPreflattenedAssignments = generatePreflattenedAssignmentArray({
     numAssignments: collectionLength,
     areLessons,
+    subjType,
   });
   const mockAssignmentCollection: AssignmentCollection = {
     object: "collection",
