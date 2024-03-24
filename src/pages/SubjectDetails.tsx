@@ -34,12 +34,6 @@ export const SubjectDetails = () => {
     data: subjectData,
     error: subjectErr,
   } = useSubjectByID(parsedID);
-  // *testing
-  console.log(
-    "🚀 ~ file: SubjectDetails.tsx:37 ~ SubjectDetails ~ subjectData:",
-    subjectData
-  );
-  // *testing
 
   // TODO: display loading skeleton for each component until all content on page is loaded
   if (subjectLoading) {
