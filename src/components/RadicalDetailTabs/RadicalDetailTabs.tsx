@@ -43,7 +43,7 @@ function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
     hasAmalgamationSubjs
   );
 
-  let usedInKanjiLoading =
+  const usedInKanjiLoading =
     hasAmalgamationSubjs &&
     (usedInKanjiSubjLoading ||
       usedInKanjiSubjErr ||
@@ -77,7 +77,7 @@ function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
                     />
                     <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
                   </FoundInHeadingContainer>
-                  {hasAmalgamationSubjs ? (
+                  {hasAmalgamationSubjs && usedInKanjiAssignmentsData ? (
                     <SubjectButtonList
                       btnSize="lg"
                       subjList={usedInKanjiSubjData}

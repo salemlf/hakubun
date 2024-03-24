@@ -72,11 +72,13 @@ function KanjiUsedInVocab({
         <IonIcon src={PuzzleIcon} />
         <SubjDetailSubHeading>Kanji Used</SubjDetailSubHeading>
       </IconHeadingContainer>
-      <SubjectButtonList
-        btnSize="lg"
-        subjList={kanjiUsedSubjects}
-        assignmentList={kanjiUsedAssignmentsData ?? []}
-      />
+      {kanjiUsedAssignmentsData && (
+        <SubjectButtonList
+          btnSize="lg"
+          subjList={kanjiUsedSubjects}
+          assignmentList={kanjiUsedAssignmentsData}
+        />
+      )}
       {displayQuestionTxt && (
         <>
           <p>

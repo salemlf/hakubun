@@ -67,7 +67,7 @@ function RadicalSubjDetails({ radical }: Props) {
           <IonIcon src={MagnifyingGlassIcon} />
           <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
         </FoundInHeadingContainer>
-        {hasAmalgamationSubjs ? (
+        {hasAmalgamationSubjs && usedInKanjiAssignmentsData ? (
           <SubjectButtonList
             btnSize="lg"
             subjList={usedInKanjiSubjData}
