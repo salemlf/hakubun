@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import { useUserLogin } from "../hooks/useUserLogin";
+import { useUserLogin } from "../hooks/user/useUserLogin";
 import GeneralUserSettings from "../components/GeneralUserSettings";
 import LessonUserSettings from "../components/LessonUserSettings";
 import ReviewUserSettings from "../components/ReviewUserSettings/ReviewUserSettings";

@@ -1,9 +1,9 @@
 import * as LogRocket from "logrocket";
 import { useQueryClient } from "@tanstack/react-query";
-import { api, pagingApi } from "../api/ApiConfig";
-import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
-import { User } from "../types/User";
+import { api, pagingApi } from "../../api/ApiConfig";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
+import useAuthTokenStoreFacade from "../../stores/useAuthTokenStore/useAuthTokenStore.facade";
+import { User } from "../../types/User";
 
 export const useUserLogin = () => {
   const queryClient = useQueryClient();

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { IonSkeletonText } from "@ionic/react";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useAuthTokenStore } from "../stores/useAuthTokenStore/useAuthTokenStore";
-import { useUserInfo } from "../hooks/useUserInfo";
+import { useUserInfo } from "../hooks/user/useUserInfo";
 import { PersistentStore } from "../hooks/useHydration";
 import LevelProgressBar from "../components/LevelProgressBar/LevelProgressBar";
 import HomeHeader from "../components/HomeHeader";
