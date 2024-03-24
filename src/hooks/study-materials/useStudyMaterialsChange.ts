@@ -25,7 +25,7 @@ type ActionDictionary = {
 // TODO: use RequireAtLeastOne to make at least one of optional params required
 interface ActionParams {
   subject?: Subject;
-  studyMaterialData: StudyMaterialDataResponse;
+  studyMaterialData: StudyMaterialDataResponse | undefined;
   userMeaningToUpdate?: string;
   meaningNoteToUpdate?: string;
   readingNoteToUpdate?: string;
@@ -54,7 +54,7 @@ export const useStudyMaterialsChange = () => {
   );
 
   const getDataChangeMethod = (
-    studyMaterialData: StudyMaterialDataResponse
+    studyMaterialData: StudyMaterialDataResponse | undefined
   ): StudyMaterialsChangeMethod => {
     return studyMaterialData && !Array.isArray(studyMaterialData)
       ? "update"
@@ -104,6 +104,9 @@ export const useStudyMaterialsChange = () => {
       actionType,
     } = updateParams;
 
+    // no-op
+    if (studyMaterialData === undefined) return;
+
     const updatedStudyMaterialData = updateValsInStudyMaterialData({
       studyMaterial: studyMaterialData as StudyMaterial,
       ...(userMeaningToUpdate !== undefined && {
@@ -134,6 +137,7 @@ export const useStudyMaterialsChange = () => {
       });
   };
 
+  // TODO: type updatedItemData, returned from mutateAsync functions for useCreateStudyMaterials and useUpdateStudyMaterials
   const updateMeaningsInAssignmentQueue = (
     updatedItemData: any,
     isMeaningBeingUpdated: boolean
@@ -168,7 +172,7 @@ export const useStudyMaterialsChange = () => {
 
   const addUserAltSubjectMeaning = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse,
+    studyMaterialData: StudyMaterialDataResponse | undefined,
     userMeaningToUpdate: string
   ) => {
     const dataChangeMethod: StudyMaterialsChangeMethod =
@@ -176,7 +180,7 @@ export const useStudyMaterialsChange = () => {
 
     studyMaterialsActionDictionary[dataChangeMethod]({
       subject,
-      studyMaterialData,
+      studyMaterialData: studyMaterialData,
       userMeaningToUpdate,
       actionType: "add",
     });
@@ -184,7 +188,7 @@ export const useStudyMaterialsChange = () => {
 
   const addMeaningNote = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse,
+    studyMaterialData: StudyMaterialDataResponse | undefined,
     meaningNoteToUpdate: string
   ) => {
     const dataChangeMethod: StudyMaterialsChangeMethod =
@@ -200,8 +204,11 @@ export const useStudyMaterialsChange = () => {
 
   const removeMeaningNote = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse
+    studyMaterialData: StudyMaterialDataResponse | undefined
   ) => {
+    // no-op
+    if (!studyMaterialData) return;
+
     const dataChangeMethod: StudyMaterialsChangeMethod =
       getDataChangeMethod(studyMaterialData);
 
@@ -215,7 +222,7 @@ export const useStudyMaterialsChange = () => {
 
   const addReadingNote = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse,
+    studyMaterialData: StudyMaterialDataResponse | undefined,
     readingNoteToUpdate: string
   ) => {
     const dataChangeMethod: StudyMaterialsChangeMethod =
@@ -231,8 +238,11 @@ export const useStudyMaterialsChange = () => {
 
   const removeReadingNote = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse
+    studyMaterialData: StudyMaterialDataResponse | undefined
   ) => {
+    // no-op
+    if (!studyMaterialData) return;
+
     const dataChangeMethod: StudyMaterialsChangeMethod =
       getDataChangeMethod(studyMaterialData);
 
