@@ -230,7 +230,10 @@ function AssignmentSelector({
                 Hmm, looks like we can't find any {settingsType}s using those
                 filters...
               </LogoContainerHeading>
-              <img src={LogoExclamation} />
+              <img
+                src={LogoExclamation}
+                alt="Unhappy crabigator looking upwards"
+              />
             </LogoContainer>
           </NoAssignmentsContainer>
         ) : (

@@ -176,7 +176,10 @@ export const Search = () => {
               transition={{ duration: 0.5 }}
             >
               <h2>No Results Found!</h2>
-              <img src={LogoExclamation} alt="Surprised Crabigator" />
+              <img
+                src={LogoExclamation}
+                alt="Unhappy crabigator looking upwards"
+              />
             </LogoSearchOutcomeContainer>
           ) : (
             <List>

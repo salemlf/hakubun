@@ -54,7 +54,7 @@ function NotFound() {
           <p>Looks like we can't find that page!</p>
         </ErrorDetails>
         <DistressedCrabigatorContainer>
-          <img src={LogoExclamation} />
+          <img src={LogoExclamation} alt="Unhappy crabigator looking upwards" />
         </DistressedCrabigatorContainer>
       </Content>
       <FloatingHomeButton />
