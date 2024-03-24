@@ -1,6 +1,7 @@
 import { ButtonSize, SrsLevelName } from "../../types/MiscTypes";
 import {
   AssignmentCollection,
+  StudyMaterialCollection,
   SubjectCollection,
 } from "../../types/Collection";
 import {
@@ -105,7 +106,7 @@ export const flattenData = (data: any, nested: boolean = true) => {
 };
 
 export const flattenCollectionOfOne = (
-  data: AssignmentCollection | SubjectCollection
+  data: AssignmentCollection | SubjectCollection | StudyMaterialCollection
 ) => {
   let flattenedCollection = Object.assign({}, data, data.data);
   let innerDataItem = flattenedCollection.data[0];
