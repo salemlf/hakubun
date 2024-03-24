@@ -68,8 +68,8 @@ const generateNoteHeadingsAngMsg = (
 
 type Props = {
   subject: Subject;
-  studyMaterial: StudyMaterialDataResponse;
-  noteContent: string;
+  studyMaterial: StudyMaterialDataResponse | undefined;
+  noteContent: string | null;
   beganEditing: boolean;
   setEditingInProgress: (isEditing: boolean) => void;
   noteType: UserNoteType;
@@ -141,7 +141,7 @@ function Note({
         setIsEditable(false);
       }, 1000);
     } else {
-      setTextValue(noteContent);
+      setTextValue(noteContent ?? "");
       setEditingInProgress(false);
       setIsEditable(false);
     }

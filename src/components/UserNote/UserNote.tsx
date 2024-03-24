@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IonSkeletonText } from "@ionic/react";
 import { capitalizeWord } from "../../services/MiscService/MiscService";
-import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
+import { useStudyMaterialsBySubjID } from "../../hooks/study-materials/useStudyMaterialsBySubjID";
 import { Subject } from "../../types/Subject";
 import { UserNoteType } from "../../types/MiscTypes";
 import { StudyMaterialDataResponse } from "../../types/StudyMaterial";
@@ -31,11 +31,11 @@ const PlusSign = styled.span`
 type NoteKey = "meaning_note" | "reading_note";
 
 const userNoteNotEmpty = (
-  studyMaterialData: StudyMaterialDataResponse,
+  studyMaterialData: StudyMaterialDataResponse | undefined,
   noteKey: NoteKey
-) => {
+): boolean => {
   return (
-    studyMaterialData &&
+    studyMaterialData !== undefined &&
     !Array.isArray(studyMaterialData) &&
     studyMaterialData[noteKey] !== null &&
     studyMaterialData[noteKey] !== ""
@@ -53,14 +53,14 @@ function UserNote({ subject, noteType, isRadical = false }: Props) {
     isLoading: studyMaterialLoading,
     data: studyMaterialData,
     error: studyMaterialErr,
-  } = useStudyMaterialsBySubjIDs([subject.id]);
+  } = useStudyMaterialsBySubjID(subject.id);
 
   const [editingInProgress, setEditingInProgress] = useState(false);
 
-  let studyMaterialPropKey: NoteKey =
+  const studyMaterialPropKey: NoteKey =
     noteType === "meaning" ? "meaning_note" : "reading_note";
 
-  let addButtonTxt = !isRadical
+  const addButtonTxt = !isRadical
     ? `Add ${capitalizeWord(noteType)} Note`
     : `Add Note`;
 
@@ -74,7 +74,11 @@ function UserNote({ subject, noteType, isRadical = false }: Props) {
               noteType={noteType}
               subject={subject}
               studyMaterial={studyMaterialData}
-              noteContent={studyMaterialData[studyMaterialPropKey]}
+              noteContent={
+                studyMaterialData
+                  ? studyMaterialData[studyMaterialPropKey]
+                  : null
+              }
               beganEditing={editingInProgress}
               setEditingInProgress={(isEditing: boolean) =>
                 setEditingInProgress(isEditing)
@@ -85,7 +89,7 @@ function UserNote({ subject, noteType, isRadical = false }: Props) {
             <AddButtonContainer>
               <AddButton
                 aria-label={`Add ${noteType} note`}
-                onPress={(e: any) => {
+                onPress={() => {
                   setEditingInProgress(true);
                 }}
               >
