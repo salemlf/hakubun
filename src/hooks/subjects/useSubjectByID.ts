@@ -7,7 +7,6 @@ export const useSubjectByID = (id: number) => {
   return useQuery({
     queryKey: subjectKeys.bySubjID(id),
     queryFn: () => WaniKaniAPI.getSubjectByID(id),
-    enabled: !!id,
     select: (data: any) => {
       const flattened = Object.assign({}, data, data.data);
       delete flattened.data;

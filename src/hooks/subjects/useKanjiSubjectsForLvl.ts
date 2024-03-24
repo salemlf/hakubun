@@ -8,7 +8,6 @@ export const useKanjiSubjectsForLvl = (level: number) => {
   return useQuery({
     queryKey: subjectKeys.kanjiByLvl(level),
     queryFn: () => WaniKaniAPI.getKanjiSubjectsByLevel(level),
-    enabled: !!level,
     select: (data) => {
       const flattenedSubj: Kanji[] = flattenData(data);
       return flattenedSubj;
