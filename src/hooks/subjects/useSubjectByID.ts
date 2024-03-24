@@ -1,17 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../../api/WaniKaniApi";
 import { setSubjectAvailImgs } from "../../services/ImageSrcService/ImageSrcService";
+import { PreFlattenedSubject, Subject } from "../../types/Subject";
 import { subjectKeys } from "./subjectsKeyFactory";
 
 export const useSubjectByID = (id: number) => {
   return useQuery({
     queryKey: subjectKeys.bySubjID(id),
     queryFn: () => WaniKaniAPI.getSubjectByID(id),
-    select: (data: any) => {
+    select: (data: PreFlattenedSubject) => {
       const flattened = Object.assign({}, data, data.data);
-      delete flattened.data;
-
-      const subjWithImgInfo = setSubjectAvailImgs(flattened);
+      const subjWithImgInfo: Subject = setSubjectAvailImgs(flattened);
       return subjWithImgInfo;
     },
     // stale time of an hour
