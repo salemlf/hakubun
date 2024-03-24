@@ -9,8 +9,8 @@ export const useRadicalSubjectsForLvl = (level: number) => {
     queryKey: ["radical-subjects-for-lvl", level],
     queryFn: () => WaniKaniAPI.getRadicalSubjectsByLevel(level),
     enabled: !!level,
-    select: (data) => {
-      const flattened: Radical[] = flattenData(data);
+    select: (pagedData) => {
+      const flattened: Radical[] = flattenData(pagedData.data, false);
 
       const radsUpdated = flattened.reduce(function (
         filtered: Radical[],
