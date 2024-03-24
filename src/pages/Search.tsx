@@ -4,7 +4,7 @@ import Fuse from "fuse.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDebounce } from "usehooks-ts";
 import { flattenSearchResults } from "../services/MiscService/MiscService";
-import { useAllSubjects } from "../hooks/useAllSubjects";
+import { useAllSubjects } from "../hooks/subjects/useAllSubjects";
 import { useStickyState } from "../hooks/useStickyState";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
 import Button from "../components/Button";

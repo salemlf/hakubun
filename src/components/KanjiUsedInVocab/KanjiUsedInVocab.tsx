@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IonIcon, IonSkeletonText } from "@ionic/react";
 import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsBySubjIDs";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { Subject } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
 import PuzzleIcon from "../../images/puzzle.svg";

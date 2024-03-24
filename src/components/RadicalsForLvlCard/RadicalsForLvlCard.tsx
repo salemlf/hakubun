@@ -1,5 +1,5 @@
 import { IonSkeletonText } from "@ionic/react";
-import { useRadicalSubjectsForLvl } from "../../hooks/useRadicalSubjectsForLvl";
+import { useRadicalSubjectsForLvl } from "../../hooks/subjects/useRadicalSubjectsForLvl";
 import { useRadicalAssignmentsForLvl } from "../../hooks/assignments/useRadicalAssignmentsForLvl";
 import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";

@@ -13,7 +13,7 @@ import {
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { capitalizeWord } from "../../services/MiscService/MiscService";
 import { displayToast } from "../Toast/Toast.service";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/study-materials/useStudyMaterialsBySubjIDs";
 import {
   ALL_SUBJECT_TYPES,

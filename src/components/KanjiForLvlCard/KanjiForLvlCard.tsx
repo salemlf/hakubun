@@ -3,7 +3,7 @@ import {
   findAssignmentWithSubjID,
   isAssignmentLocked,
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
-import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
+import { useKanjiSubjectsForLvl } from "../../hooks/subjects/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../../hooks/assignments/useKanjiAssignmentsForLvl";
 import { Subject } from "../../types/Subject";
 import SubjectButton from "../SubjectButton";

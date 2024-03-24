@@ -1,5 +1,5 @@
 import { IonIcon, IonSkeletonText } from "@ionic/react";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsBySubjIDs";
 import { Kanji } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
@@ -27,7 +27,7 @@ function VisuallySimilarKanji({ kanji }: Props) {
     error: similarKanjiAssignmentsErr,
   } = useAssignmentsBySubjIDs(kanji.visually_similar_subject_ids);
 
-  let loading =
+  const loading =
     similarKanjiAssignmentsLoading ||
     similarKanjiAssignmentsErr ||
     similarKanjiSubjLoading ||

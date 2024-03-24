@@ -1,6 +1,6 @@
-import { createWrapper, renderHook, waitFor } from "../testing/test-utils";
-import { generateSubjectCollection } from "../testing/mocks/data-generators/collectionGenerator";
-import { mockRadicalSubjsForLvlResponse } from "../testing/mocks/api-responses/subject-responses";
+import { createWrapper, renderHook, waitFor } from "../../testing/test-utils";
+import { generateSubjectCollection } from "../../testing/mocks/data-generators/collectionGenerator";
+import { mockRadicalSubjsForLvlResponse } from "../../testing/mocks/api-responses/subject-responses";
 import { useRadicalSubjectsForLvl } from "./useRadicalSubjectsForLvl";
 
 test("useRadicalSubjectsForLvl gets successful response", async () => {

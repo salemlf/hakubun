@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IonSkeletonText } from "@ionic/react";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsBySubjIDs";
 import { Radical, Subject } from "../../types/Subject";
 import RadicalNameMnemonic from "../RadicalNameMnemonic";

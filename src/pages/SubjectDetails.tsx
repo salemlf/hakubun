@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { IonSkeletonText } from "@ionic/react";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
-import { useSubjectByID } from "../hooks/useSubjectByID";
+import { useSubjectByID } from "../hooks/subjects/useSubjectByID";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
 import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";

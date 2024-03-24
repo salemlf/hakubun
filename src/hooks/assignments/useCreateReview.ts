@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import useForecastTotalsStoreFacade from "../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
-import { ReviewPostItem } from "../types/Review";
-import { assignmentKeys } from "./assignments/assignmentsKeyFactory";
-import { userKeys } from "./user/userKeyFactory";
+import { WaniKaniAPI } from "../../api/WaniKaniApi";
+import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
+import { ReviewPostItem } from "../../types/Review";
+import { assignmentKeys } from "./assignmentsKeyFactory";
+import { userKeys } from "../user/userKeyFactory";
 
 type Props = {
   reviewSessionData: ReviewPostItem;

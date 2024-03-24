@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { setSubjectAvailImgs } from "../services/ImageSrcService/ImageSrcService";
+import { WaniKaniAPI } from "../../api/WaniKaniApi";
+import { setSubjectAvailImgs } from "../../services/ImageSrcService/ImageSrcService";
+import { subjectKeys } from "./subjectsKeyFactory";
 
 export const useSubjectByID = (id: number) => {
   return useQuery({
-    queryKey: ["subject-by-id", id],
+    queryKey: subjectKeys.bySubjID(id),
     queryFn: () => WaniKaniAPI.getSubjectByID(id),
     enabled: !!id,
     select: (data: any) => {

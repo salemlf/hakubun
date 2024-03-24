@@ -1,5 +1,5 @@
 import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { Kanji } from "../../types/Subject";
 import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic/KanjiMeaningMnemonic";
 import RadicalCombination from "../RadicalCombination/RadicalCombination";

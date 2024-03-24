@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSubjectsByLevel } from "../../hooks/useSubjectsByLevel";
+import { useSubjectsByLevel } from "../../hooks/subjects/useSubjectsByLevel";
 import { Subject } from "../../types/Subject";
 import Card from "../Card";
 import SubjectButtonList from "../SubjectButtonList";

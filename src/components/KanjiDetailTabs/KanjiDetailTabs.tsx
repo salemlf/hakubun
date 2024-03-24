@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Kanji, Subject } from "../../types/Subject";
 import { IonSkeletonText } from "@ionic/react";
 import { ReviewType } from "../../types/AssignmentQueueTypes";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic";
 import RadicalCombination from "../RadicalCombination";
 import SubjectMeanings from "../SubjectMeanings";

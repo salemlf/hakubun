@@ -1,7 +1,7 @@
 import { createWrapper, renderHook, waitFor } from "../../testing/test-utils";
 import { generateSubjectCollection } from "../../testing/mocks/data-generators/collectionGenerator";
 import { mockKanjiSubjsForLvlResponse } from "../../testing/mocks/api-responses/subject-responses";
-import { useKanjiSubjectsForLvl } from "../useKanjiSubjectsForLvl";
+import { useKanjiSubjectsForLvl } from "../subjects/useKanjiSubjectsForLvl";
 
 test("useKanjiSubjectsForLvl gets successful response", async () => {
   const mockLvl = 1;

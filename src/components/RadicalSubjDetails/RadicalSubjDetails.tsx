@@ -1,6 +1,6 @@
 import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
 import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsBySubjIDs";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { Radical } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
 import TxtWithSubjTags from "../TxtWithSubjTags/TxtWithSubjTags";
@@ -39,7 +39,7 @@ function RadicalSubjDetails({ radical }: Props) {
     hasAmalgamationSubjs
   );
 
-  let usedInKanjiLoading =
+  const usedInKanjiLoading =
     hasAmalgamationSubjs &&
     (usedInKanjiSubjLoading ||
       usedInKanjiSubjErr ||

@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { setSubjectAvailImgs } from "../services/ImageSrcService/ImageSrcService";
-import { flattenData } from "../services/MiscService/MiscService";
-import { Subject } from "../types/Subject";
+import { WaniKaniAPI } from "../../api/WaniKaniApi";
+import { setSubjectAvailImgs } from "../../services/ImageSrcService/ImageSrcService";
+import { flattenData } from "../../services/MiscService/MiscService";
+import { Subject } from "../../types/Subject";
+import { subjectKeys } from "./subjectsKeyFactory";
 
 export const useSubjectsByIDs = (
   ids: number[],
@@ -10,7 +11,7 @@ export const useSubjectsByIDs = (
   sortByLvl: boolean = false
 ) => {
   return useQuery({
-    queryKey: ["subjects-by-ids", ids],
+    queryKey: subjectKeys.multiplebySubjIDs(ids),
     queryFn: () => WaniKaniAPI.getSubjectsBySubjIDs(ids),
     enabled: enabled && ids.length !== 0,
     select: (data: any) => {

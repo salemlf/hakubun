@@ -9,7 +9,7 @@ import {
   getSubjectColor,
   sortBySubjectTypeAndLevel,
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { Assignment } from "../../types/Assignment";
 import {
   KanaVocabulary,

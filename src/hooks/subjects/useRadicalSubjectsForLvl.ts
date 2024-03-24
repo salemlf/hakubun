@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { setSubjectAvailImgs } from "../services/ImageSrcService/ImageSrcService";
-import { flattenData } from "../services/MiscService/MiscService";
-import { Radical } from "../types/Subject";
+import { WaniKaniAPI } from "../../api/WaniKaniApi";
+import { setSubjectAvailImgs } from "../../services/ImageSrcService/ImageSrcService";
+import { flattenData } from "../../services/MiscService/MiscService";
+import { Radical } from "../../types/Subject";
+import { subjectKeys } from "./subjectsKeyFactory";
 
 export const useRadicalSubjectsForLvl = (level: number) => {
   return useQuery({
-    queryKey: ["radical-subjects-for-lvl", level],
+    queryKey: subjectKeys.radicalsByLvl(level),
     queryFn: () => WaniKaniAPI.getRadicalSubjectsByLevel(level),
-    enabled: !!level,
     select: (pagedData) => {
       const flattened: Radical[] = flattenData(pagedData.data, false);
 

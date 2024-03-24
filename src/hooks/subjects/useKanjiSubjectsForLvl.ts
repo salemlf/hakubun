@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenData } from "../services/MiscService/MiscService";
-import { Kanji } from "../types/Subject";
+import { WaniKaniAPI } from "../../api/WaniKaniApi";
+import { flattenData } from "../../services/MiscService/MiscService";
+import { Kanji } from "../../types/Subject";
+import { subjectKeys } from "./subjectsKeyFactory";
 
 export const useKanjiSubjectsForLvl = (level: number) => {
   return useQuery({
-    queryKey: ["kanji-subjects-for-lvl", level],
+    queryKey: subjectKeys.kanjiByLvl(level),
     queryFn: () => WaniKaniAPI.getKanjiSubjectsByLevel(level),
     enabled: !!level,
     select: (data) => {
