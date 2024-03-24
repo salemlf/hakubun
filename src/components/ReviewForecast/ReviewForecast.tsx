@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
-import { useReviews } from "../../hooks/useReviews";
+import { useReviews } from "../../hooks/assignments/useReviews";
 import DailyReviewForecast from "./DailyReviewForecast";
 import SwipeableTabs from "../SwipeableTabs";
 import LoadingDots from "../LoadingDots";

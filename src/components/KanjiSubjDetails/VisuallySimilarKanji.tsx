@@ -1,6 +1,6 @@
 import { IonIcon, IonSkeletonText } from "@ionic/react";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
+import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsBySubjIDs";
 import { Kanji } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
 import SimilarCatsIcon from "../../images/similar-cats.svg";

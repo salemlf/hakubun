@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../api/WaniKaniApi";
 import useForecastTotalsStoreFacade from "../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
 import { ReviewPostItem } from "../types/Review";
+import { assignmentKeys } from "./assignments/assignmentsKeyFactory";
 
 type Props = {
   reviewSessionData: ReviewPostItem;
@@ -24,19 +25,24 @@ export const useCreateReview = () => {
         queryKey: ["user-info"],
       });
       queryClient.invalidateQueries({
-        queryKey: ["available-reviews"],
+        queryKey: assignmentKeys.all,
       });
-      queryClient.invalidateQueries({ queryKey: ["available-num-reviews"] });
-      queryClient.invalidateQueries({
-        queryKey: ["assignments-available-in-range"],
-      });
+
+      // queryClient.invalidateQueries({
+      //   queryKey: ["available-reviews"],
+      // });
+      // queryClient.invalidateQueries({ queryKey: ["available-num-reviews"] });
+      // queryClient.invalidateQueries({
+      //   queryKey: ["assignments-available-in-range"],
+      // });
+
       // refreshing data for radical and kanji assignments on home page
-      queryClient.invalidateQueries({
-        queryKey: ["radical-assignments-for-lvl"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["kanji-assignments-for-lvl"],
-      });
+      // queryClient.invalidateQueries({
+      //   queryKey: ["radical-assignments-for-lvl"],
+      // });
+      // queryClient.invalidateQueries({
+      //   queryKey: ["kanji-assignments-for-lvl"],
+      // });
     },
   });
 };

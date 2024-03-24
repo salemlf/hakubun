@@ -7,8 +7,8 @@ import {
 } from "../services/AssignmentQueueService/AssignmentQueueService";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
-import { useStartAssignment } from "../hooks/useStartAssignment";
-import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
+import { useStartAssignment } from "../hooks/assignments/useStartAssignment";
+import { useSubmittedQueueUpdate } from "../hooks/assignments/useSubmittedQueueUpdate";
 import {
   AssignmentQueueItem,
   AssignmentSubmitInfo,

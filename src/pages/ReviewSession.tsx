@@ -10,7 +10,7 @@ import {
 } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { useCreateReview } from "../hooks/useCreateReview";
-import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
+import { useSubmittedQueueUpdate } from "../hooks/assignments/useSubmittedQueueUpdate";
 import {
   AssignmentQueueItem,
   AssignmentSubmitInfo,

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import useForecastTotalsStoreFacade from "../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
+import { WaniKaniAPI } from "../../api/WaniKaniApi";
+import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
+import { assignmentKeys } from "./assignmentsKeyFactory";
 
 type Props = {
   assignmentID: number;
@@ -20,23 +21,7 @@ export const useStartAssignment = () => {
       });
       resetForecastTotals();
       queryClient.invalidateQueries({
-        queryKey: ["assignments-by-subj-ids"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["available-reviews"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["assignments-available-in-range"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["available-lessons"],
-      });
-      // refreshing data for radical and kanji assignments on home page
-      queryClient.invalidateQueries({
-        queryKey: ["radical-assignments-for-lvl"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["kanji-assignments-for-lvl"],
+        queryKey: assignmentKeys.all,
       });
     },
   });

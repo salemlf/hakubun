@@ -4,7 +4,7 @@ import { createWrapper, renderWithRouter } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { AVAIL_REVIEWS, assignmentsEndpoint } from "../../testing/endpoints";
 import { generateAssignmentCollection } from "../../testing/mocks/data-generators/collectionGenerator";
-import { useReviews } from "../../hooks/useReviews";
+import { useReviews } from "../../hooks/assignments/useReviews";
 import { AssignmentCollection } from "../../types/Collection";
 import { ReviewSettings } from "../../pages/ReviewSettings";
 import ReviewsButton from ".";

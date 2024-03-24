@@ -6,7 +6,7 @@ import {
   getSubjectColor,
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { countAssignmentTypesInSrsStage } from "./SrsStages.service";
-import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
+import { useAssignmentsByStage } from "../../hooks/assignments/useAssignmentsByStage";
 import { AssignmentTypeGroupCount } from "./SrsStages.types";
 import { Assignment } from "../../types/Assignment";
 import { SubjectType } from "../../types/Subject";

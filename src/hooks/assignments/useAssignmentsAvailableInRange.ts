@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenData } from "../services/MiscService/MiscService";
-import { Assignment } from "../types/Assignment";
+import { WaniKaniAPI } from "../../api/WaniKaniApi";
+import { flattenData } from "../../services/MiscService/MiscService";
+import { Assignment } from "../../types/Assignment";
+import { assignmentKeys } from "./assignmentsKeyFactory";
 
 export const useAssignmentsAvailableInRange = (
   startDateIsoString: string,
@@ -9,11 +10,10 @@ export const useAssignmentsAvailableInRange = (
   isEnabled: boolean
 ) => {
   return useQuery({
-    queryKey: [
-      "assignments-available-in-range",
+    queryKey: assignmentKeys.availableinRange(
       startDateIsoString,
-      endDateIsoString,
-    ],
+      endDateIsoString
+    ),
     enabled: !!isEnabled && !!endDateIsoString && !!startDateIsoString,
     queryFn: () =>
       WaniKaniAPI.getAssignmentsAvailableInRange(

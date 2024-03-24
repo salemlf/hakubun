@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { setBtnBackground } from "../../services/ImageSrcService/ImageSrcService";
 import { displayToast } from "../Toast/Toast.service";
-import { useReviews } from "../../hooks/useReviews";
+import { useReviews } from "../../hooks/assignments/useReviews";
 import ErrorMessage from "../ErrorMessage";
 import {
   BaseReviewLessonButton,

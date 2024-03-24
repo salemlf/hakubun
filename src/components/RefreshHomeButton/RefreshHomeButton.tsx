@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion, useAnimation } from "framer-motion";
+import { assignmentKeys } from "../../hooks/assignments/assignmentsKeyFactory";
 import Button from "../Button";
 import RefreshIcon from "../../images/refresh.svg";
 import styled from "styled-components";
@@ -30,13 +31,7 @@ function RefreshHomeButton() {
 
   const refresh = () => {
     queryClient.invalidateQueries({
-      queryKey: ["available-reviews"],
-    });
-    queryClient.invalidateQueries({
-      queryKey: ["assignments-available-in-range"],
-    });
-    queryClient.invalidateQueries({
-      queryKey: ["available-lessons"],
+      queryKey: assignmentKeys.allAvailable(),
     });
   };
 

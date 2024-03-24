@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import { useReviews } from "../hooks/useReviews";
+import { useReviews } from "../hooks/assignments/useReviews";
 import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
 import LoadingDots from "../components/LoadingDots";
 import PageHeader from "../components/PageHeader";

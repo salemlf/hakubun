@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { sortAssignmentsByAvailableDate } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
-import { useAssignmentsAvailableInRange } from "../../hooks/useAssignmentsAvailableInRange";
+import { useAssignmentsAvailableInRange } from "../../hooks/assignments/useAssignmentsAvailableInRange";
 import { Assignment } from "../../types/Assignment";
 import LoadingDots from "../LoadingDots";
 import { LoadingContainer } from "../../styles/BaseStyledComponents";

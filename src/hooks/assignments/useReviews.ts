@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { flattenData } from "../services/MiscService/MiscService";
-import { Assignment } from "../types/Assignment";
+import { WaniKaniAPI } from "../../api/WaniKaniApi";
+import { flattenData } from "../../services/MiscService/MiscService";
+import { Assignment } from "../../types/Assignment";
+import { assignmentKeys } from "./assignmentsKeyFactory";
 
-// TODO: add call to clear data for review forecast store?
 export const useReviews = (isEnabled: boolean = true) => {
   return useQuery({
-    queryKey: ["available-reviews"],
+    queryKey: assignmentKeys.reviews(),
     queryFn: () => WaniKaniAPI.getAssignmentsAvailForReview(),
     select: (pagedData) => {
       const flattenedData: Assignment[] = flattenData(pagedData.data, false);

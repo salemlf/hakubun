@@ -10,7 +10,7 @@ import {
   ASSIGNMENT_SUBJ_TYPES,
 } from "../../testing/endpoints";
 import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
-import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
+import { useKanjiAssignmentsForLvl } from "../../hooks/assignments/useKanjiAssignmentsForLvl";
 import { SubjectDetails } from "../../pages/SubjectDetails";
 import KanjiForLvlCard from ".";
 

@@ -1,5 +1,5 @@
 import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
+import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsBySubjIDs";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
 import { Radical } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";

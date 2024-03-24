@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
-import { useLessons } from "../hooks/useLessons";
+import { useLessons } from "../hooks/assignments/useLessons";
 import AssignmentSettings from "../components/AssignmentSettings";
 import LoadingDots from "../components/LoadingDots";
 import PageHeader from "../components/PageHeader";
