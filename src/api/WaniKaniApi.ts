@@ -1,5 +1,5 @@
 import { api, baseUrl } from "./ApiConfig";
-import { PagedData, PagingAPI } from "./PagingApi";
+import { PagingAPI } from "./PagingApi";
 import { AxiosResponse } from "axios";
 
 import { SrsLevelName } from "../types/MiscTypes";
@@ -10,11 +10,6 @@ import {
   StudyMaterialPostData,
   StudyMaterialPutBody,
 } from "../types/StudyMaterial";
-
-const emptyPagedData: PagedData = {
-  data: [],
-  total: 0,
-};
 
 // TODO: make paging "automatic" where no need to add special case for it
 export const WaniKaniAPI = {
@@ -69,11 +64,7 @@ export const WaniKaniAPI = {
     return radicalsCombined;
   },
 
-  getKanjiSubjectsByLevel: async function (level: number | undefined) {
-    if (level === undefined) {
-      return emptyPagedData;
-    }
-
+  getKanjiSubjectsByLevel: async function (level: number) {
     const url = `${baseUrl}subjects?levels=${level}&types=kanji`;
 
     const kanji = await PagingAPI.iterateOverPages(url, []);
@@ -115,11 +106,7 @@ export const WaniKaniAPI = {
     return response.data;
   },
 
-  getRadicalAssignmentsByLvl: async function (level: number | undefined) {
-    if (level === undefined) {
-      return emptyPagedData;
-    }
-
+  getRadicalAssignmentsByLvl: async function (level: number) {
     const url = `${baseUrl}assignments?levels=${level}&subject_types=radical`;
 
     const radicals = await PagingAPI.iterateOverPages(url, []);

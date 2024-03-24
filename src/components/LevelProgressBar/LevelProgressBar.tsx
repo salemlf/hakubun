@@ -54,7 +54,7 @@ const Contents = styled.div`
 `;
 
 type Props = {
-  level: number | undefined;
+  level: number;
 };
 
 function LevelProgressBar({ level }: Props) {
@@ -75,13 +75,13 @@ function LevelProgressBar({ level }: Props) {
 
   useEffect(() => {
     if (subjectsData && kanjiAssignmentsLvlData) {
-      let total = subjectsData.length;
+      const total = subjectsData.length;
 
-      let { passed } = getAssignmentStatuses(kanjiAssignmentsLvlData);
-      let numToPass = Math.ceil(total * 0.9);
-      let percentage = Math.round((passed / numToPass) * 100);
+      const { passed } = getAssignmentStatuses(kanjiAssignmentsLvlData);
+      const numToPass = Math.ceil(total * 0.9);
+      const percentage = Math.round((passed / numToPass) * 100);
 
-      let updatedTxt = `${passed} of ${numToPass} kanji passed`;
+      const updatedTxt = `${passed} of ${numToPass} kanji passed`;
       setCompletedTxt(updatedTxt);
 
       if (barRef.current) {

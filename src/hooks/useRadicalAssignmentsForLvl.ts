@@ -3,7 +3,7 @@ import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { flattenData } from "../services/MiscService/MiscService";
 import { Assignment } from "../types/Assignment";
 
-export const useRadicalAssignmentsForLvl = (level: number | undefined) => {
+export const useRadicalAssignmentsForLvl = (level: number) => {
   return useQuery({
     queryKey: ["radical-assignments-for-lvl", level],
     queryFn: () => WaniKaniAPI.getRadicalAssignmentsByLvl(level),

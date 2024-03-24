@@ -3,7 +3,7 @@ import { WaniKaniAPI } from "../api/WaniKaniApi";
 import { flattenData } from "../services/MiscService/MiscService";
 import { Kanji } from "../types/Subject";
 
-export const useKanjiSubjectsForLvl = (level: number | undefined) => {
+export const useKanjiSubjectsForLvl = (level: number) => {
   return useQuery({
     queryKey: ["kanji-subjects-for-lvl", level],
     queryFn: () => WaniKaniAPI.getKanjiSubjectsByLevel(level),

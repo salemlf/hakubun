@@ -17,7 +17,7 @@ import {
 } from "../../styles/BaseStyledComponents";
 
 interface Props {
-  level: number | undefined;
+  level: number;
 }
 
 function KanjiForLvlCard({ level }: Props) {
