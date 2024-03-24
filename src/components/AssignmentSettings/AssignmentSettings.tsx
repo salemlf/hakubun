@@ -14,7 +14,7 @@ import {
 import { capitalizeWord } from "../../services/MiscService/MiscService";
 import { displayToast } from "../Toast/Toast.service";
 import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
+import { useStudyMaterialsBySubjIDs } from "../../hooks/study-materials/useStudyMaterialsBySubjIDs";
 import {
   ALL_SUBJECT_TYPES,
   MAX_ASSIGNMENTS_BEFORE_SUBMIT,
@@ -24,7 +24,6 @@ import { AssignmentBatch } from "../../types/MiscTypes";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { Subject, SubjectType } from "../../types/Subject";
-import { StudyMaterial } from "../../types/StudyMaterial";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
@@ -77,7 +76,7 @@ function AssignmentSettings({
     queriesEnabled
   );
   const { data: studyMaterialsData, isLoading: studyMaterialsLoading } =
-    useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled, false);
+    useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled);
 
   useEffect(() => {
     if (
@@ -192,7 +191,7 @@ function AssignmentSettings({
     const assignmentQueue = createAssignmentQueueItems(
       batch,
       subjects,
-      studyMaterialsData as StudyMaterial[],
+      studyMaterialsData ?? [],
       backToBackChoice
     );
 

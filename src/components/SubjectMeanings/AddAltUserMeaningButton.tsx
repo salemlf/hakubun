@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { IonSkeletonText } from "@ionic/react";
 import { Subject } from "../../types/Subject";
 import { displayToast } from "../Toast/Toast.service";
-import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
+import { useStudyMaterialsBySubjID } from "../../hooks/study-materials/useStudyMaterialsBySubjID";
+import { useStudyMaterialsChange } from "../../hooks/study-materials/useStudyMaterialsChange";
 import Modal from "../Modal";
 import Label from "../Label";
 import Button from "../Button";
@@ -83,7 +83,7 @@ function AddAltUserMeaningButton({ subject }: Props) {
     isLoading: studyMaterialLoading,
     data: studyMaterialData,
     error: studyMaterialErr,
-  } = useStudyMaterialsBySubjIDs([subject.id]);
+  } = useStudyMaterialsBySubjID(subject.id);
   const { addUserAltSubjectMeaning } = useStudyMaterialsChange();
 
   useEffect(() => {
@@ -96,8 +96,8 @@ function AddAltUserMeaningButton({ subject }: Props) {
     event.preventDefault();
     const formData = new FormData(event.target);
 
-    let meaningInput = formData.get("user-meaning-input");
-    let meaningInputStr = meaningInput ? meaningInput.toString() : "";
+    const meaningInput = formData.get("user-meaning-input");
+    const meaningInputStr = meaningInput ? meaningInput.toString() : "";
 
     if (meaningInputStr === "") {
       setIsModalOpen(false);
