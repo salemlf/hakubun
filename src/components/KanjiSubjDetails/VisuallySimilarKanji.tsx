@@ -48,11 +48,13 @@ function VisuallySimilarKanji({ kanji }: Props) {
         <IonIcon src={SimilarCatsIcon} />
         <SubjDetailSubHeading>Visually Similar Kanji</SubjDetailSubHeading>
       </IconHeadingContainer>
-      <SubjectButtonList
-        btnSize="lg"
-        subjList={similarKanjiSubjData}
-        assignmentList={similarKanjiAssignmentsData ?? []}
-      />
+      {similarKanjiSubjData && (
+        <SubjectButtonList
+          btnSize="lg"
+          subjList={similarKanjiSubjData}
+          assignmentList={similarKanjiAssignmentsData ?? []}
+        />
+      )}
     </SubjDetailSection>
   );
 }

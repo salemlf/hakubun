@@ -63,12 +63,12 @@ function RadicalCombination({ kanji, displayQuestionTxt = false }: Props) {
       {displayQuestionTxt && (
         <p>Can you see where the radicals fit in the kanji?</p>
       )}
-      {radicalsUsedAssignmentsData && (
+      {radicalsUsedSubjData && (
         <SubjBtnListWrapper>
           <SubjectButtonList
             btnSize="lg"
             subjList={radicalsUsedSubjData}
-            assignmentList={radicalsUsedAssignmentsData}
+            assignmentList={radicalsUsedAssignmentsData ?? []}
           />
         </SubjBtnListWrapper>
       )}

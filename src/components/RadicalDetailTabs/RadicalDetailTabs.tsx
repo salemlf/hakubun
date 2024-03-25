@@ -77,11 +77,11 @@ function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
                     />
                     <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
                   </FoundInHeadingContainer>
-                  {hasAmalgamationSubjs && usedInKanjiAssignmentsData ? (
+                  {hasAmalgamationSubjs && usedInKanjiSubjData ? (
                     <SubjectButtonList
                       btnSize="lg"
                       subjList={usedInKanjiSubjData}
-                      assignmentList={usedInKanjiAssignmentsData}
+                      assignmentList={usedInKanjiAssignmentsData ?? []}
                     />
                   ) : (
                     <p>Hmm, well this shouldn't happen..</p>
