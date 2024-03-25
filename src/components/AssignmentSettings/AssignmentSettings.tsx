@@ -82,6 +82,7 @@ function AssignmentSettings({
     if (
       !subjectsLoading &&
       !studyMaterialsLoading &&
+      subjectsData &&
       subjectsData.length !== 0 &&
       studyMaterialsData !== undefined
     ) {
@@ -120,7 +121,7 @@ function AssignmentSettings({
       : "var(--wanikani-lesson)";
   const showMeaning = settingsType === "lesson";
 
-  const submitWithBasicSettings = (): AssignmentBatch => {
+  const submitWithBasicSettings = (subjData: Subject[]): AssignmentBatch => {
     const assignmentsFiltered = filterAssignmentsByType(
       assignmentData,
       Array.from(selectedAssignmentTypes)
@@ -129,7 +130,7 @@ function AssignmentSettings({
     const sorted = sortAssignmentsWithOption(
       assignmentsFiltered,
       sortOption,
-      subjectsData
+      subjData
     );
 
     const assignmentBatch =
@@ -171,9 +172,20 @@ function AssignmentSettings({
       return;
     }
 
+    if (!subjectsData) {
+      displayToast({
+        toastType: "error",
+        title: "No Subjects Found",
+        content:
+          "Unabled to start session. No subjects were returned from the server, oh no!",
+        timeout: 10000,
+      });
+      return;
+    }
+
     const sessionData =
       selectedAdvancedSubjIDs.length === 0
-        ? submitWithBasicSettings()
+        ? submitWithBasicSettings(subjectsData)
         : submitWithAdvancedSettings();
 
     // ending in case some weirdness occurred and there's a review session or lesson quiz in progress
