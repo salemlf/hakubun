@@ -98,6 +98,20 @@ function Note({
   const [textValue, setTextValue] = useState(initialTextValue);
   const [isEditable, setIsEditable] = useState(beganEditing);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const timerId = useRef<number | null>(null);
+
+  const removeTimeout = () => {
+    if (timerId.current) {
+      clearTimeout(timerId.current);
+      timerId.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      removeTimeout();
+    };
+  }, []);
 
   useAutosizeTextArea(textareaRef.current, textValue);
   useEffect(() => {
@@ -134,9 +148,10 @@ function Note({
           : addReadingNote(subject, studyMaterial, textValue);
       }
 
+      removeTimeout();
       // TODO: this is a meh workaround to avoid the add button flashing while waiting for the mutation to complete
       // TODO: possibly modify to wait for settled promise in useStudyMaterials
-      setTimeout(() => {
+      timerId.current = window.setTimeout(() => {
         setEditingInProgress(false);
         setIsEditable(false);
       }, 1000);

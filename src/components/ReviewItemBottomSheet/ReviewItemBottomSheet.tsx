@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import { useWindowSize } from "usehooks-ts";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
@@ -29,7 +29,22 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const { height } = useWindowSize();
 
-  let itemAsSubj = convertQueueItemsToSubjects([currentReviewItem])[0];
+  const timerId = useRef<number | null>(null);
+
+  const removeTimeout = () => {
+    if (timerId.current) {
+      clearTimeout(timerId.current);
+      timerId.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      removeTimeout();
+    };
+  }, []);
+
+  const itemAsSubj = convertQueueItemsToSubjects([currentReviewItem])[0];
 
   // TODO: also reopen to previous breakpoint on return?
   useEffect(() => {
@@ -38,8 +53,9 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
         location.pathname === "/lessons/quiz") &&
       showBottomSheet
     ) {
+      removeTimeout();
       // using timeout otherwise it gets all weird with the input state being disabled at same time
-      setTimeout(() => {
+      timerId.current = window.setTimeout(() => {
         setIsBottomSheetVisible(true);
       }, 500);
     } else {

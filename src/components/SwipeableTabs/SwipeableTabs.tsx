@@ -91,6 +91,20 @@ function SwipeableTabs({
   const { scrollXProgress } = useScroll({
     container: tabPanelsRef as RefObject<HTMLElement>,
   });
+  const timerId = useRef<number | null>(null);
+
+  const removeTimeout = () => {
+    if (timerId.current) {
+      clearTimeout(timerId.current);
+      timerId.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      removeTimeout();
+    };
+  }, []);
 
   // TODO: clean this up, a not ideal workaround for scrolling to default item. Necessary rn due to how tab components are being rendered
   useEffect(() => {
@@ -100,7 +114,8 @@ function SwipeableTabs({
       tabListRef.current &&
       tabPanelsRef.current
     ) {
-      setTimeout(() => {
+      removeTimeout();
+      timerId.current = window.setTimeout(() => {
         onSelectionChange(defaultValue);
       }, 500);
     }

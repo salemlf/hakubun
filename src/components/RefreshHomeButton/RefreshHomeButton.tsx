@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion, useAnimation } from "framer-motion";
 import { assignmentKeys } from "../../hooks/assignments/assignmentsKeyFactory";
@@ -28,6 +28,20 @@ function RefreshHomeButton() {
     Date | undefined
   >();
   const controls = useAnimation();
+  const timerId = useRef<number | null>(null);
+
+  const removeTimeout = () => {
+    if (timerId.current) {
+      clearTimeout(timerId.current);
+      timerId.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      removeTimeout();
+    };
+  }, []);
 
   const refresh = () => {
     queryClient.invalidateQueries({
@@ -44,12 +58,6 @@ function RefreshHomeButton() {
     }
 
     let timeDiff = (currTime.getTime() - lastTimeRefreshed.getTime()) / 60000;
-    // *testing
-    console.log(
-      "🚀 ~ file: RefreshHomeButton.tsx:49 ~ refreshIfTimeElapsed ~ timeDiff:",
-      timeDiff
-    );
-    // *testing
 
     // if it's been more than a minute, refresh
     // TODO: otherwise, show a toast letting user know they can't refresh yet
@@ -63,7 +71,8 @@ function RefreshHomeButton() {
     controls.start("spin");
     refreshIfTimeElapsed();
 
-    setTimeout(() => {
+    removeTimeout();
+    timerId.current = window.setTimeout(() => {
       controls.start("complete");
     }, 3000);
   };

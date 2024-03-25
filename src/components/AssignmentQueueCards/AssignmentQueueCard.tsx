@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   useMotionValue,
   useTransform,
@@ -123,9 +123,24 @@ export const AssignmentQueueCard = ({
   const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
   const exitTimeMs = 600;
 
+  const cardEnterTimerId = useRef<number | null>(null);
+  const cardExitTimerId = useRef<number | null>(null);
+
+  const removeTimeouts = () => {
+    if (cardEnterTimerId.current) {
+      clearTimeout(cardEnterTimerId.current);
+      cardEnterTimerId.current = null;
+    }
+    if (cardExitTimerId.current) {
+      clearTimeout(cardExitTimerId.current);
+      cardExitTimerId.current = null;
+    }
+  };
+
   useEffect(() => {
+    removeTimeouts();
     // slightly delaying so user has time to see screen before card appears
-    setTimeout(() => {
+    cardEnterTimerId.current = window.setTimeout(() => {
       hideAndMoveCenter();
       fadeForward();
     }, 500);
@@ -137,7 +152,8 @@ export const AssignmentQueueCard = ({
       currentReviewItem.readingAudios?.forEach((readingAudio) => {
         readingAudio.audioFile.unload();
       });
-    }
+    };
+    return () => removeTimeouts();
   }, []);
 
   // TODO: sometimes on retry drag motion value somehow becomes NaN (maybe somehow gets cancelled?) and...
@@ -184,7 +200,8 @@ export const AssignmentQueueCard = ({
       setSavedUserAnswer(strippedUserAnswer);
       controls.start("submit");
 
-      setTimeout(() => {
+      removeTimeouts();
+      cardExitTimerId.current = window.setTimeout(() => {
         hideAndMoveCenter();
         fadeForward();
         handleNextCard(currentReviewItem, strippedUserAnswer, setUserAnswer);
