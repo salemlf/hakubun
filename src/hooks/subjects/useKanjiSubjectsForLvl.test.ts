@@ -5,7 +5,7 @@ import { useKanjiSubjectsForLvl } from "./useKanjiSubjectsForLvl";
 
 test("useKanjiSubjectsForLvl gets successful response", async () => {
   const mockLvl = 1;
-  const mockKanjiSubjCollection = generateSubjectCollection("kanji", 20);
+  const mockKanjiSubjCollection = generateSubjectCollection(20, "kanji");
   mockSubjsOfTypeForLvlResponse(mockKanjiSubjCollection, "kanji");
   const { result } = renderHook(() => useKanjiSubjectsForLvl(mockLvl), {
     wrapper: createWrapper(),

@@ -84,13 +84,13 @@ export const generateAssignmentCollectionFromSubjs = ({
 };
 
 export const generateSubjectCollection = (
-  subjTypes: SubjectType,
   collectionLength: number,
+  subjType?: SubjectType,
   level?: number
 ): SubjectCollection => {
   const mockPreflattenedSubjs = generatePreflattenedSubjArray({
     numSubjects: collectionLength,
-    subjTypes,
+    subjType,
     level,
   });
   const mockSubjCollection: SubjectCollection = {

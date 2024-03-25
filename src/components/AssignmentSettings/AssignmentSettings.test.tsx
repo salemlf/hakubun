@@ -24,7 +24,7 @@ import {
 
 // TODO: change so creates a variety of subjects, not just one type
 const subjType = "vocabulary";
-const mockSubjCollection = generateSubjectCollection(subjType, 18);
+const mockSubjCollection = generateSubjectCollection(18, subjType);
 const subjIDs = getIDsFromSubjOrAssignmentCollection(mockSubjCollection);
 const correspondingSubjInfo: CorrespondingSubject[] = subjIDs.map((id) =>
   createCorrespondingSubject(id, subjType)

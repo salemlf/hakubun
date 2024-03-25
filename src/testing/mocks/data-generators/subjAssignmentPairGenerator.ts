@@ -99,7 +99,7 @@ export const generatePreflattenedSubjAssignmentPair = ({
 };
 
 type SubjAssignmentPairArrGeneratorParams = {
-  subjTypes: SubjectType;
+  subjType: SubjectType;
   numPairs: number;
   imagesOnly?: boolean;
   level?: number;
@@ -111,7 +111,7 @@ type SubjAssignmentPairArrGeneratorParams = {
 };
 
 export const generateSubjAssignmentPairArray = ({
-  subjTypes,
+  subjType,
   numPairs,
   imagesOnly = false,
   level,
@@ -122,7 +122,7 @@ export const generateSubjAssignmentPairArray = ({
 }: SubjAssignmentPairArrGeneratorParams): SubjAssignmentPairArr => {
   const subjArr = generateSubjArray({
     numSubjects: numPairs,
-    subjTypes,
+    subjType,
     imagesOnly,
     level,
     hasAllowedAuxMeanings,
@@ -148,7 +148,7 @@ export type PreflattenedSubjAssignmentPairArrGeneratorParams = Omit<
 
 // TODO: add areLessons option
 export const generatePreflattenedSubjAssignmentPairArray = ({
-  subjTypes,
+  subjType,
   numPairs,
   level,
   assignmentsBurned = false,
@@ -158,7 +158,7 @@ export const generatePreflattenedSubjAssignmentPairArray = ({
 }: PreflattenedSubjAssignmentPairArrGeneratorParams): PreflattenedSubjAssignmentPairArr => {
   const preflattenedSubjects = generatePreflattenedSubjArray({
     numSubjects: numPairs,
-    subjTypes,
+    subjType,
     level,
     hasAllowedAuxMeanings,
     hasForbiddenAuxMeanings,
@@ -202,7 +202,7 @@ export const generateVarietySubjAssignmentPairArray = ({
     .map((subjType) =>
       generateSubjArray({
         numSubjects: numEachSubjType,
-        subjTypes: subjType,
+        subjType,
         imagesOnly,
         level,
       })
