@@ -38,7 +38,9 @@ const mockReviewAndLessonResponses = (
     assignmentUpdated.object
   );
   const assignmentCreatedResponse = generatePreFlattenedAssignment({
-    correspondingSubject: correspondingSubj,
+    subjOrSubjType: {
+      correspondingSubject: correspondingSubj,
+    },
     isLesson: true,
   });
   server.use(
