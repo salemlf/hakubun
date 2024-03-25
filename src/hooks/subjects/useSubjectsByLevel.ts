@@ -11,8 +11,8 @@ export const useSubjectsByLevel = (level: number, enabled: boolean = true) => {
     queryFn: () => WaniKaniAPI.getSubjectsByLevel(level),
     placeholderData: keepPreviousData,
     enabled: enabled,
-    select: (data: any) => {
-      const flattened = flattenData(data);
+    select: (pagedData) => {
+      const flattened: Subject[] = flattenData(pagedData.data, false);
 
       const subjectsUpdated = flattened.reduce(function (
         filtered: Subject[],
