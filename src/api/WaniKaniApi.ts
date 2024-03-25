@@ -87,12 +87,10 @@ export const WaniKaniAPI = {
   getSubjectsBySubjIDs: async function (ids: number[]) {
     const url = `${baseUrl}subjects?ids=${ids}`;
 
-    const response: AxiosResponse = await api.request({
-      url: url,
-      method: "GET",
-    });
+    const subjects = await PagingAPI.iterateOverPages(url, []);
+    const subjectsCombined = PagingAPI.combinePages(subjects);
 
-    return response.data;
+    return subjectsCombined;
   },
 
   getAssignmentsBySubjIDs: async function (id: number[]) {
