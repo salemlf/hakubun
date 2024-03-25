@@ -14,7 +14,7 @@ import LevelProgressBar from ".";
 const kanjiSubjAssignmentsPairArrLvl1 =
   generatePreflattenedSubjAssignmentPairArray({
     numPairs: 10,
-    subjTypes: "kanji",
+    subjType: "kanji",
     level: 1,
   });
 
