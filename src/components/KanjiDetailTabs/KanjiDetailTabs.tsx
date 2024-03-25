@@ -139,7 +139,8 @@ function KanjiDetailTabs({ kanji, reviewType, scrollToDefault }: Props) {
                 {vocabFoundSubjLoading ? (
                   <IonSkeletonText animated={true}></IonSkeletonText>
                 ) : (
-                  findVocab && (
+                  findVocab &&
+                  vocabFoundSubjData && (
                     <SubjectWideBtnList subjList={vocabFoundSubjData} />
                   )
                 )}

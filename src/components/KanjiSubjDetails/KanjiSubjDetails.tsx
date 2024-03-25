@@ -51,7 +51,9 @@ function KanjiSubjDetails({ kanji }: Props) {
           <IonIcon src={MagnifyingGlassIcon} />
           <SubjDetailSubHeading>Found in Vocabulary</SubjDetailSubHeading>
         </FoundInHeadingContainer>
-        {findVocab && <SubjectWideBtnList subjList={vocabFoundSubjData} />}
+        {findVocab && vocabFoundSubjData && (
+          <SubjectWideBtnList subjList={vocabFoundSubjData} />
+        )}
       </SubjDetailSection>
     </SubjInfoContainer>
   );
