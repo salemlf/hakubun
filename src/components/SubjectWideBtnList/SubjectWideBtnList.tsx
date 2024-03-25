@@ -99,7 +99,7 @@ export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
     subject = updatedSubj;
   }
 
-  const onSubjBtnClick = (e: any) => {
+  const onSubjBtnClick = () => {
     navigate(`/subjects/${subject.id}`);
   };
 
@@ -135,7 +135,7 @@ type ListProps = {
 function SubjectWideBtnList({ subjList }: ListProps) {
   return (
     <ListContainer>
-      {(subjList as Subject[]).map((subject: any) => {
+      {(subjList as Subject[]).map((subject) => {
         return (
           <SubjectWideButton subject={subject} key={`wide_btn_${subject.id}`} />
         );
