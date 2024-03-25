@@ -6,7 +6,7 @@ import { assignmentKeys } from "./assignmentsKeyFactory";
 
 export const useKanjiAssignmentsForLvl = (level: number) => {
   return useQuery({
-    queryKey: assignmentKeys.radicalsByLvl(level),
+    queryKey: assignmentKeys.kanjiByLvl(level),
     queryFn: () => WaniKaniAPI.getKanjiAssignmentsByLvl(level),
     select: (pagedData) => {
       const flattenedData: Assignment[] = flattenData(pagedData.data, false);
