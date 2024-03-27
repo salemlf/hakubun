@@ -73,11 +73,8 @@ function ReviewForecast() {
     runningTotalAvailableReviews: runningTotals,
   } = useForecastTotalsStoreFacade();
 
-  const {
-    isLoading: availForReviewLoading,
-    data: availForReviewData,
-    error: availForReviewErr,
-  } = useReviews(isEnabled);
+  const { isLoading: availForReviewLoading, data: availForReviewData } =
+    useReviews(isEnabled);
 
   // TODO: this might have issues not conforming to invalidation times of availForReviewData, hmm
   useEffect(() => {

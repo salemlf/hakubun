@@ -28,11 +28,8 @@ function SubjectsOnLvlTab({ level, isSelected }: Props) {
   const [vocabulary, setVocabulary] = useState<Subject[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const {
-    isLoading: subjectCurrLvlLoading,
-    data: subjectCurrLvlData,
-    error: subjectCurrLvlErr,
-  } = useSubjectsByLevel(level);
+  const { isLoading: subjectCurrLvlLoading, data: subjectCurrLvlData } =
+    useSubjectsByLevel(level);
 
   useEffect(() => {
     if (!subjectCurrLvlLoading && subjectCurrLvlData) {

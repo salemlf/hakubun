@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { IonIcon } from "@ionic/react";
 import { ContextSentence } from "../../types/Subject";
 import Button from "../Button/Button";
 import SvgIcon from "../SvgIcon";
@@ -47,11 +46,6 @@ const EyeBallButton = styled(Button)`
   padding: 5px;
   color: black;
   margin-left: 10px;
-`;
-
-const EyeIcon = styled(IonIcon)`
-  width: 1.5em;
-  height: 1.5em;
 `;
 
 type EnglishContextSentenceTxtProps = {

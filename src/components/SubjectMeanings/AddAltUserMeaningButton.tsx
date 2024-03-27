@@ -79,11 +79,8 @@ function AddAltUserMeaningButton({ subject }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const {
-    isLoading: studyMaterialLoading,
-    data: studyMaterialData,
-    error: studyMaterialErr,
-  } = useStudyMaterialsBySubjID(subject.id);
+  const { isLoading: studyMaterialLoading, data: studyMaterialData } =
+    useStudyMaterialsBySubjID(subject.id);
   const { addUserAltSubjectMeaning } = useStudyMaterialsChange();
 
   useEffect(() => {

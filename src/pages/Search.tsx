@@ -113,10 +113,8 @@ export const Search = () => {
   const {
     isLoading: allSubjectsLoading,
     data: allSubjectsData,
-    error: allSubjectsErr,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
   } = useAllSubjects();
 
   useEffect(() => {
@@ -126,7 +124,7 @@ export const Search = () => {
         options
       );
       const results = fuse.search(debouncedQuery);
-      let flattenedSearch = flattenSearchResults(results);
+      const flattenedSearch = flattenSearchResults(results);
       setResults(flattenedSearch);
     }
   }, [allSubjectsData, debouncedQuery]);

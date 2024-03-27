@@ -49,11 +49,8 @@ type Props = {
 };
 
 function UserNote({ subject, noteType, isRadical = false }: Props) {
-  const {
-    isLoading: studyMaterialLoading,
-    data: studyMaterialData,
-    error: studyMaterialErr,
-  } = useStudyMaterialsBySubjID(subject.id);
+  const { isLoading: studyMaterialLoading, data: studyMaterialData } =
+    useStudyMaterialsBySubjID(subject.id);
 
   const [editingInProgress, setEditingInProgress] = useState(false);
 

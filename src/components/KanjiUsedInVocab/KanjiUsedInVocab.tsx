@@ -22,16 +22,12 @@ function KanjiUsedInVocab({
   displayQuestionTxt = false,
   vocabSlug,
 }: Props) {
-  const {
-    isLoading: kanjiUsedSubjLoading,
-    data: kanjiUsedSubjData,
-    error: kanjiUsedSubjErr,
-  } = useSubjectsByIDs(kanjiIDs);
+  const { isLoading: kanjiUsedSubjLoading, data: kanjiUsedSubjData } =
+    useSubjectsByIDs(kanjiIDs);
 
   const {
     isLoading: kanjiUsedAssignmentsLoading,
     data: kanjiUsedAssignmentsData,
-    error: kanjiUsedAssignmentsErr,
   } = useAssignmentsBySubjIDs(kanjiIDs);
 
   const [kanjiUsedSubjects, setKanjiUsedSubjects] = useState<Subject[]>([]);

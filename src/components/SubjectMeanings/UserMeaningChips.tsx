@@ -117,11 +117,8 @@ type Props = {
 };
 
 function UserMeaningChips({ subject }: Props) {
-  const {
-    isLoading: studyMaterialLoading,
-    data: studyMaterialData,
-    error: studyMaterialErr,
-  } = useStudyMaterialsBySubjID(subject.id);
+  const { isLoading: studyMaterialLoading, data: studyMaterialData } =
+    useStudyMaterialsBySubjID(subject.id);
 
   const createUserMeaningKeys = (
     studyMaterialsResponse: StudyMaterialDataResponse

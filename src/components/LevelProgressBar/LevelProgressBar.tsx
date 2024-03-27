@@ -64,14 +64,10 @@ function LevelProgressBar({ level }: Props) {
   const {
     isLoading: kanjiAssignmentsLvlLoading,
     data: kanjiAssignmentsLvlData,
-    error: kanjiAssignmentsLvlErr,
   } = useKanjiAssignmentsForLvl(level);
 
-  const {
-    isLoading: subjectsLoading,
-    data: subjectsData,
-    error: subjectsErr,
-  } = useKanjiSubjectsForLvl(level);
+  const { isLoading: subjectsLoading, data: subjectsData } =
+    useKanjiSubjectsForLvl(level);
 
   useEffect(() => {
     if (subjectsData && kanjiAssignmentsLvlData) {

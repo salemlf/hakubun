@@ -37,19 +37,16 @@ function KanjiDetailTabs({ kanji, reviewType, scrollToDefault }: Props) {
   const defaultTabKey = scrollToDefault ? (reviewType as string) : "radicals";
 
   const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
-  let findVocab =
+  const findVocab =
     kanji.amalgamation_subject_ids &&
     kanji.amalgamation_subject_ids.length !== 0;
 
-  let kanjiAmalgamationIDs = kanji.amalgamation_subject_ids
+  const kanjiAmalgamationIDs = kanji.amalgamation_subject_ids
     ? kanji.amalgamation_subject_ids
     : [];
 
-  const {
-    isLoading: vocabFoundSubjLoading,
-    data: vocabFoundSubjData,
-    error: vocabFoundSubjErr,
-  } = useSubjectsByIDs(kanjiAmalgamationIDs, findVocab, true);
+  const { isLoading: vocabFoundSubjLoading, data: vocabFoundSubjData } =
+    useSubjectsByIDs(kanjiAmalgamationIDs, findVocab, true);
 
   if (vocabFoundSubjLoading) {
     return (
