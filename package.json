@@ -57,7 +57,8 @@
     "build": "vite build",
     "format": "prettier . --write --config ./.prettierrc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
+    "lint-err-only": "eslint . --ext ts,tsx --report-unused-disable-directives --quiet",
+    "tsc-check": "tsc --noEmit",
     "android-live-reload": "NODE_ENV=dev npx cap copy android && NODE_ENV=dev npx cap sync android && NODE_ENV=dev npx cap run android",
     "ios-live-reload": "NODE_ENV=dev npx cap copy ios && NODE_ENV=dev npx cap sync ios && NODE_ENV=dev npx cap run ios"
   },
