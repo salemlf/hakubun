@@ -69,7 +69,7 @@ export const generateRandomQueueItems = ({
 }: RandomQueueItemsGeneratorParams): AssignmentQueueItem[] => {
   const mockSubjects = generateSubjArray({
     numSubjects: numItems,
-    subjTypes: subjectType,
+    subjType: subjectType,
     level,
   });
   const correspondingSubjInfo: CorrespondingSubject[] = mockSubjects.map(

@@ -13,7 +13,7 @@ import {
 } from "../testing/mocks/data-generators/userGenerator";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import * as useUserLogin from "../hooks/useUserLogin";
+import * as useUserLogin from "../hooks/user/useUserLogin";
 import Home from "./Home";
 import TokenInput from "./TokenInput";
 

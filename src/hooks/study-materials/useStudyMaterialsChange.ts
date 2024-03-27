@@ -1,16 +1,16 @@
 import {
   constructStudyMaterialData,
   updateValsInStudyMaterialData,
-} from "../services/MiscService/MiscService";
-import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+} from "../../services/MiscService/MiscService";
+import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import { useCreateStudyMaterials } from "./useCreateStudyMaterials";
 import { useUpdateStudyMaterials } from "./useUpdateStudyMaterials";
-import { Subject } from "../types/Subject";
+import { Subject } from "../../types/Subject";
 import {
   StudyMaterial,
   StudyMaterialDataResponse,
   StudyMaterialPostData,
-} from "../types/StudyMaterial";
+} from "../../types/StudyMaterial";
 
 type StudyMaterialsChangeActionType = "add" | "remove";
 
@@ -25,7 +25,7 @@ type ActionDictionary = {
 // TODO: use RequireAtLeastOne to make at least one of optional params required
 interface ActionParams {
   subject?: Subject;
-  studyMaterialData: StudyMaterialDataResponse;
+  studyMaterialData: StudyMaterialDataResponse | undefined;
   userMeaningToUpdate?: string;
   meaningNoteToUpdate?: string;
   readingNoteToUpdate?: string;
@@ -54,7 +54,7 @@ export const useStudyMaterialsChange = () => {
   );
 
   const getDataChangeMethod = (
-    studyMaterialData: StudyMaterialDataResponse
+    studyMaterialData: StudyMaterialDataResponse | undefined
   ): StudyMaterialsChangeMethod => {
     return studyMaterialData && !Array.isArray(studyMaterialData)
       ? "update"
@@ -65,14 +65,14 @@ export const useStudyMaterialsChange = () => {
   const createStudyMaterialsData: ActionCreateFunction = (
     createParams: ActionCreateParams
   ) => {
-    let {
+    const {
       subject,
       userMeaningToUpdate,
       meaningNoteToUpdate,
       readingNoteToUpdate,
     } = createParams;
 
-    let createdStudyMaterialData = constructStudyMaterialData({
+    const createdStudyMaterialData = constructStudyMaterialData({
       subject_id: subject.id,
       ...(userMeaningToUpdate && { meaning_synonyms: [userMeaningToUpdate] }),
       ...(meaningNoteToUpdate && { meaning_note: meaningNoteToUpdate }),
@@ -81,7 +81,7 @@ export const useStudyMaterialsChange = () => {
 
     createStudyMaterials({ studyMaterialsData: createdStudyMaterialData })
       .then((data) => {
-        let isMeaningBeingUpdated = userMeaningToUpdate !== undefined;
+        const isMeaningBeingUpdated = userMeaningToUpdate !== undefined;
         updateMeaningsInAssignmentQueue(data, isMeaningBeingUpdated);
       })
       .catch((err) => {
@@ -96,7 +96,7 @@ export const useStudyMaterialsChange = () => {
   const updateStudyMaterialsData: ActionUpdateFunction = (
     updateParams: ActionUpdateParams
   ) => {
-    let {
+    const {
       studyMaterialData,
       userMeaningToUpdate,
       meaningNoteToUpdate,
@@ -104,7 +104,10 @@ export const useStudyMaterialsChange = () => {
       actionType,
     } = updateParams;
 
-    let updatedStudyMaterialData = updateValsInStudyMaterialData({
+    // no-op
+    if (studyMaterialData === undefined) return;
+
+    const updatedStudyMaterialData = updateValsInStudyMaterialData({
       studyMaterial: studyMaterialData as StudyMaterial,
       ...(userMeaningToUpdate !== undefined && {
         meaningToUpdate: userMeaningToUpdate,
@@ -123,7 +126,7 @@ export const useStudyMaterialsChange = () => {
       updatedStudyMaterials: updatedStudyMaterialData,
     })
       .then((data) => {
-        let isMeaningBeingUpdated = userMeaningToUpdate !== undefined;
+        const isMeaningBeingUpdated = userMeaningToUpdate !== undefined;
         updateMeaningsInAssignmentQueue(data, isMeaningBeingUpdated);
       })
       .catch((err) => {
@@ -134,14 +137,15 @@ export const useStudyMaterialsChange = () => {
       });
   };
 
+  // TODO: type updatedItemData, returned from mutateAsync functions for useCreateStudyMaterials and useUpdateStudyMaterials
   const updateMeaningsInAssignmentQueue = (
     updatedItemData: any,
     isMeaningBeingUpdated: boolean
   ) => {
     if (!isMeaningBeingUpdated || !isSessionInProgress) return;
 
-    let subjectID = updatedItemData.data.subject_id;
-    let meaningSynonyms = updatedItemData.data.meaning_synonyms;
+    const subjectID = updatedItemData.data.subject_id;
+    const meaningSynonyms = updatedItemData.data.meaning_synonyms;
     updateQueueItemAltMeanings(subjectID, meaningSynonyms);
   };
 
@@ -150,7 +154,7 @@ export const useStudyMaterialsChange = () => {
     studyMaterialData: StudyMaterialDataResponse,
     meaningToDelete: string
   ) => {
-    let dataChangeMethod: StudyMaterialsChangeMethod =
+    const dataChangeMethod: StudyMaterialsChangeMethod =
       getDataChangeMethod(studyMaterialData);
 
     studyMaterialsActionDictionary[dataChangeMethod]({
@@ -168,15 +172,15 @@ export const useStudyMaterialsChange = () => {
 
   const addUserAltSubjectMeaning = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse,
+    studyMaterialData: StudyMaterialDataResponse | undefined,
     userMeaningToUpdate: string
   ) => {
-    let dataChangeMethod: StudyMaterialsChangeMethod =
+    const dataChangeMethod: StudyMaterialsChangeMethod =
       getDataChangeMethod(studyMaterialData);
 
     studyMaterialsActionDictionary[dataChangeMethod]({
       subject,
-      studyMaterialData,
+      studyMaterialData: studyMaterialData,
       userMeaningToUpdate,
       actionType: "add",
     });
@@ -184,10 +188,10 @@ export const useStudyMaterialsChange = () => {
 
   const addMeaningNote = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse,
+    studyMaterialData: StudyMaterialDataResponse | undefined,
     meaningNoteToUpdate: string
   ) => {
-    let dataChangeMethod: StudyMaterialsChangeMethod =
+    const dataChangeMethod: StudyMaterialsChangeMethod =
       getDataChangeMethod(studyMaterialData);
 
     studyMaterialsActionDictionary[dataChangeMethod]({
@@ -200,9 +204,12 @@ export const useStudyMaterialsChange = () => {
 
   const removeMeaningNote = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse
+    studyMaterialData: StudyMaterialDataResponse | undefined
   ) => {
-    let dataChangeMethod: StudyMaterialsChangeMethod =
+    // no-op
+    if (!studyMaterialData) return;
+
+    const dataChangeMethod: StudyMaterialsChangeMethod =
       getDataChangeMethod(studyMaterialData);
 
     studyMaterialsActionDictionary[dataChangeMethod]({
@@ -215,10 +222,10 @@ export const useStudyMaterialsChange = () => {
 
   const addReadingNote = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse,
+    studyMaterialData: StudyMaterialDataResponse | undefined,
     readingNoteToUpdate: string
   ) => {
-    let dataChangeMethod: StudyMaterialsChangeMethod =
+    const dataChangeMethod: StudyMaterialsChangeMethod =
       getDataChangeMethod(studyMaterialData);
 
     studyMaterialsActionDictionary[dataChangeMethod]({
@@ -231,9 +238,12 @@ export const useStudyMaterialsChange = () => {
 
   const removeReadingNote = (
     subject: Subject,
-    studyMaterialData: StudyMaterialDataResponse
+    studyMaterialData: StudyMaterialDataResponse | undefined
   ) => {
-    let dataChangeMethod: StudyMaterialsChangeMethod =
+    // no-op
+    if (!studyMaterialData) return;
+
+    const dataChangeMethod: StudyMaterialsChangeMethod =
       getDataChangeMethod(studyMaterialData);
 
     studyMaterialsActionDictionary[dataChangeMethod]({

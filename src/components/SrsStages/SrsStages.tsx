@@ -6,7 +6,7 @@ import {
   getSubjectColor,
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { countAssignmentTypesInSrsStage } from "./SrsStages.service";
-import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
+import { useAssignmentsByStage } from "../../hooks/assignments/useAssignmentsByStage";
 import { AssignmentTypeGroupCount } from "./SrsStages.types";
 import { Assignment } from "../../types/Assignment";
 import { SubjectType } from "../../types/Subject";
@@ -120,35 +120,35 @@ function SrsStages() {
     <SrsButtonContainer>
       <SRSButton
         stageName="apprentice"
-        stageData={apprenticeStageData}
+        stageData={apprenticeStageData ?? []}
         ariaLabel="Apprentice SRS Stage"
         showStageDetails={showStageDetails}
         setShowDetails={setShowStageDetails}
       />
       <SRSButton
         stageName="guru"
-        stageData={guruStageData}
+        stageData={guruStageData ?? []}
         ariaLabel="Guru SRS Stage"
         showStageDetails={showStageDetails}
         setShowDetails={setShowStageDetails}
       />
       <SRSButton
         stageName="master"
-        stageData={masterStageData}
+        stageData={masterStageData ?? []}
         ariaLabel="Master SRS Stage"
         showStageDetails={showStageDetails}
         setShowDetails={setShowStageDetails}
       />
       <SRSButton
         stageName="enlightened"
-        stageData={enlightenedStageData}
+        stageData={enlightenedStageData ?? []}
         ariaLabel="Enlightened SRS Stage"
         showStageDetails={showStageDetails}
         setShowDetails={setShowStageDetails}
       />
       <SRSButton
         stageName="burned"
-        stageData={burnedStageData}
+        stageData={burnedStageData ?? []}
         ariaLabel="Burned SRS Stage"
         showStageDetails={showStageDetails}
         setShowDetails={setShowStageDetails}
@@ -290,7 +290,7 @@ const SRSButton = ({
   setShowDetails,
   fullWidth = false,
 }: SRSStageButtonProps) => {
-  let stageGroupedByAssignmentType: AssignmentTypeGroupCount =
+  const stageGroupedByAssignmentType: AssignmentTypeGroupCount =
     countAssignmentTypesInSrsStage(stageData);
 
   return (

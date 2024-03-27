@@ -1,6 +1,6 @@
 import { IonRow, IonSkeletonText, IonIcon } from "@ionic/react";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsBySubjIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { Kanji } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
 import PuzzleIcon from "../../images/puzzle.svg";
@@ -22,7 +22,7 @@ type Props = {
 };
 
 function RadicalCombination({ kanji, displayQuestionTxt = false }: Props) {
-  let findComponents = kanji.component_subject_ids.length !== 0;
+  const findComponents = kanji.component_subject_ids.length !== 0;
 
   const {
     isLoading: radicalsUsedSubjLoading,
@@ -36,7 +36,7 @@ function RadicalCombination({ kanji, displayQuestionTxt = false }: Props) {
     error: radicalsUsedAssignmentsErr,
   } = useAssignmentsBySubjIDs(kanji.component_subject_ids, findComponents);
 
-  let radicalsUsedLoading =
+  const radicalsUsedLoading =
     findComponents &&
     (radicalsUsedSubjLoading ||
       radicalsUsedSubjErr ||
@@ -63,13 +63,15 @@ function RadicalCombination({ kanji, displayQuestionTxt = false }: Props) {
       {displayQuestionTxt && (
         <p>Can you see where the radicals fit in the kanji?</p>
       )}
-      <SubjBtnListWrapper>
-        <SubjectButtonList
-          btnSize="lg"
-          subjList={radicalsUsedSubjData}
-          assignmentList={radicalsUsedAssignmentsData ?? []}
-        />
-      </SubjBtnListWrapper>
+      {radicalsUsedSubjData && (
+        <SubjBtnListWrapper>
+          <SubjectButtonList
+            btnSize="lg"
+            subjList={radicalsUsedSubjData}
+            assignmentList={radicalsUsedAssignmentsData ?? []}
+          />
+        </SubjBtnListWrapper>
+      )}
     </SubjDetailSection>
   );
 }

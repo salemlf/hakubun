@@ -9,8 +9,8 @@ import {
   subjectsEndpoint,
   ASSIGNMENT_SUBJ_TYPES,
 } from "../../testing/endpoints";
-import { useRadicalSubjectsForLvl } from "../../hooks/useRadicalSubjectsForLvl";
-import { useRadicalAssignmentsForLvl } from "../../hooks/useRadicalAssignmentsForLvl";
+import { useRadicalSubjectsForLvl } from "../../hooks/subjects/useRadicalSubjectsForLvl";
+import { useRadicalAssignmentsForLvl } from "../../hooks/assignments/useRadicalAssignmentsForLvl";
 import { SubjectDetails } from "../../pages/SubjectDetails";
 import RadicalsForLvlCard from ".";
 

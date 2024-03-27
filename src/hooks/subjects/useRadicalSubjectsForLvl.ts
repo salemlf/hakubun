@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { setSubjectAvailImgs } from "../services/ImageSrcService/ImageSrcService";
-import { flattenData } from "../services/MiscService/MiscService";
-import { Radical } from "../types/Subject";
+import { WaniKaniAPI } from "../../api/WaniKaniApi";
+import { setSubjectAvailImgs } from "../../services/ImageSrcService/ImageSrcService";
+import { flattenData } from "../../services/MiscService/MiscService";
+import { Radical } from "../../types/Subject";
+import { subjectKeys } from "./subjectsKeyFactory";
 
-export const useRadicalSubjectsForLvl = (level: any) => {
+export const useRadicalSubjectsForLvl = (level: number) => {
   return useQuery({
-    queryKey: ["radical-subjects-for-lvl", level],
+    queryKey: subjectKeys.radicalsByLvl(level),
     queryFn: () => WaniKaniAPI.getRadicalSubjectsByLevel(level),
-    enabled: !!level,
-    select: (data: any) => {
-      const flattened: Radical[] = flattenData(data);
+    select: (pagedData) => {
+      const flattened: Radical[] = flattenData(pagedData.data, false);
 
       const radsUpdated = flattened.reduce(function (
         filtered: Radical[],
@@ -29,7 +29,7 @@ export const useRadicalSubjectsForLvl = (level: any) => {
     },
     // stale time of an hour
     staleTime: 60 * (60 * 1000),
-    // cache time of 1hr 15 minutes
+    // garbage collection time of 1hr 15 minutes
     gcTime: 75 * (60 * 1000),
     refetchOnWindowFocus: false,
   });

@@ -6,25 +6,44 @@ import {
   PreFlattenedAssignment,
 } from "../../../types/Assignment";
 import { SubjectType } from "../../../types/Subject";
+import { RequireExactlyOne } from "type-fest";
 
 export type CorrespondingSubject = {
   subjID: number;
   subjType: SubjectType;
 };
 
+type CorrespondingSubjAndSubjType = {
+  correspondingSubject: CorrespondingSubject;
+  subjType: SubjectType;
+};
+
+// TODO: change to use type-fest's RequireOneOrNone, prob simpler
+export type CorrespondingSubjOrSubjType = RequireExactlyOne<
+  CorrespondingSubjAndSubjType,
+  "correspondingSubject" | "subjType"
+>;
+
 type AssignmentGeneratorParams = {
   isBurned?: boolean;
   isResurrected?: boolean;
   isLesson?: boolean;
-  correspondingSubject?: CorrespondingSubject;
+  subjOrSubjType?: CorrespondingSubjOrSubjType;
 };
 
 export const generateAssignment = ({
   isBurned = false,
   isResurrected = false,
   isLesson = false,
-  correspondingSubject,
+  subjOrSubjType,
 }: AssignmentGeneratorParams): Assignment => {
+  const subjID =
+    subjOrSubjType?.correspondingSubject?.subjID ?? faker.number.int();
+  const subjType =
+    subjOrSubjType?.correspondingSubject?.subjType ??
+    subjOrSubjType?.subjType ??
+    faker.helpers.arrayElement(ALL_SUBJECT_TYPES);
+
   // TODO: change so dates are all possible, rn could have nonsensenical combos
   const mockAssignment: Assignment = {
     id: faker.number.int(),
@@ -41,10 +60,8 @@ export const generateAssignment = ({
       min: VALID_SRS_STAGES[0],
       max: VALID_SRS_STAGES[VALID_SRS_STAGES.length - 1],
     }),
-    subject_id: correspondingSubject?.subjID ?? faker.number.int(),
-    subject_type:
-      correspondingSubject?.subjType ??
-      faker.helpers.arrayElement(ALL_SUBJECT_TYPES),
+    subject_id: subjID,
+    subject_type: subjType,
     url: faker.internet.url(),
     data_updated_at: faker.date.past(),
   };
@@ -56,20 +73,20 @@ type PreFlattenedAssignmentGeneratorParams = {
   isBurned?: boolean;
   isResurrected?: boolean;
   isLesson?: boolean;
-  correspondingSubject?: CorrespondingSubject;
+  subjOrSubjType?: CorrespondingSubjOrSubjType;
 };
 
 export const generatePreFlattenedAssignment = ({
   isBurned = false,
   isResurrected = false,
   isLesson = false,
-  correspondingSubject,
+  subjOrSubjType,
 }: PreFlattenedAssignmentGeneratorParams): PreFlattenedAssignment => {
   const assignment: Assignment = generateAssignment({
     isBurned,
     isResurrected,
     isLesson,
-    correspondingSubject,
+    subjOrSubjType,
   });
   const assignmentAttrs: AssignmentAttrs = assignment as AssignmentAttrs;
 
@@ -90,6 +107,7 @@ type AssignmentArrayGeneratorParams = {
   haveBeenBurned?: boolean;
   haveBeenResurrected?: boolean;
   areLessons?: boolean;
+  subjOrSubjType?: CorrespondingSubjOrSubjType;
 };
 
 export const generateAssignmentArray = ({
@@ -97,6 +115,7 @@ export const generateAssignmentArray = ({
   haveBeenBurned = false,
   haveBeenResurrected = false,
   areLessons = false,
+  subjOrSubjType,
 }: AssignmentArrayGeneratorParams): Assignment[] => {
   const mockAssignments: Assignment[] = Array.from(
     { length: numAssignments },
@@ -105,6 +124,7 @@ export const generateAssignmentArray = ({
         isBurned: haveBeenBurned,
         isResurrected: haveBeenResurrected,
         isLesson: areLessons,
+        subjOrSubjType,
       });
     }
   );
@@ -129,9 +149,11 @@ export const generateAssignmentArrayFromSubjs = ({
     generateAssignment({
       isBurned: haveBeenBurned,
       isResurrected: haveBeenResurrected,
-      correspondingSubject: {
-        subjID: subj.subjID,
-        subjType: subj.subjType as SubjectType,
+      subjOrSubjType: {
+        correspondingSubject: {
+          subjID: subj.subjID,
+          subjType: subj.subjType as SubjectType,
+        },
       },
       isLesson: areLessons,
     })
@@ -150,9 +172,11 @@ export const generatePreflattenedAssignmentArrayFromSubjs = ({
     generatePreFlattenedAssignment({
       isBurned: haveBeenBurned,
       isResurrected: haveBeenResurrected,
-      correspondingSubject: {
-        subjID: subj.subjID,
-        subjType: subj.subjType as SubjectType,
+      subjOrSubjType: {
+        correspondingSubject: {
+          subjID: subj.subjID,
+          subjType: subj.subjType as SubjectType,
+        },
       },
       isLesson: areLessons,
     })
@@ -167,6 +191,7 @@ type PreFlattenedAssignmentArrayGeneratorParams = {
   haveBeenBurned?: boolean;
   haveBeenResurrected?: boolean;
   areLessons?: boolean;
+  subjType?: SubjectType;
 };
 
 export const generatePreflattenedAssignmentArray = ({
@@ -174,6 +199,7 @@ export const generatePreflattenedAssignmentArray = ({
   haveBeenBurned = false,
   haveBeenResurrected = false,
   areLessons = false,
+  subjType,
 }: PreFlattenedAssignmentArrayGeneratorParams): PreFlattenedAssignment[] => {
   const mockPreFlattenedAssignments: PreFlattenedAssignment[] = Array.from(
     { length: numAssignments },
@@ -182,6 +208,7 @@ export const generatePreflattenedAssignmentArray = ({
         isBurned: haveBeenBurned,
         isResurrected: haveBeenResurrected,
         isLesson: areLessons,
+        subjOrSubjType: subjType && { subjType },
       });
     }
   );

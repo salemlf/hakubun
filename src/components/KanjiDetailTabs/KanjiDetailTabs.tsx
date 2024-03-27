@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Kanji, Subject } from "../../types/Subject";
 import { IonSkeletonText } from "@ionic/react";
 import { ReviewType } from "../../types/AssignmentQueueTypes";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic";
 import RadicalCombination from "../RadicalCombination";
 import SubjectMeanings from "../SubjectMeanings";
@@ -37,19 +37,16 @@ function KanjiDetailTabs({ kanji, reviewType, scrollToDefault }: Props) {
   const defaultTabKey = scrollToDefault ? (reviewType as string) : "radicals";
 
   const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
-  let findVocab =
+  const findVocab =
     kanji.amalgamation_subject_ids &&
     kanji.amalgamation_subject_ids.length !== 0;
 
-  let kanjiAmalgamationIDs = kanji.amalgamation_subject_ids
+  const kanjiAmalgamationIDs = kanji.amalgamation_subject_ids
     ? kanji.amalgamation_subject_ids
     : [];
 
-  const {
-    isLoading: vocabFoundSubjLoading,
-    data: vocabFoundSubjData,
-    error: vocabFoundSubjErr,
-  } = useSubjectsByIDs(kanjiAmalgamationIDs, findVocab, true);
+  const { isLoading: vocabFoundSubjLoading, data: vocabFoundSubjData } =
+    useSubjectsByIDs(kanjiAmalgamationIDs, findVocab, true);
 
   if (vocabFoundSubjLoading) {
     return (
@@ -139,7 +136,8 @@ function KanjiDetailTabs({ kanji, reviewType, scrollToDefault }: Props) {
                 {vocabFoundSubjLoading ? (
                   <IonSkeletonText animated={true}></IonSkeletonText>
                 ) : (
-                  findVocab && (
+                  findVocab &&
+                  vocabFoundSubjData && (
                     <SubjectWideBtnList subjList={vocabFoundSubjData} />
                   )
                 )}

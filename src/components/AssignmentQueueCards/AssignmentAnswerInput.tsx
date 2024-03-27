@@ -44,20 +44,35 @@ function AssignmentAnswerInput({
   shakeInputTrigger,
 }: Props) {
   const { isSubmittingAnswer } = useQueueStoreFacade();
-  let reviewType = currentReviewItem.review_type;
+  const reviewType = currentReviewItem.review_type;
   const inputRef = useRef<HTMLInputElement>();
   const [inputContainerRef, animate] = useAnimate();
-  let isReadingType = reviewType === "reading";
-
-  let inputColor = isSubmittingAnswer
+  const isReadingType = reviewType === "reading";
+  const inputColor = isSubmittingAnswer
     ? currentReviewItem.is_correct_answer
       ? "var(--ion-color-tertiary)"
       : "var(--ion-color-danger)"
     : "var(--offwhite-color)";
 
+  const timerId = useRef<number | null>(null);
+
+  const removeTimeout = () => {
+    if (timerId.current) {
+      clearTimeout(timerId.current);
+      timerId.current = null;
+    }
+  };
+
   useEffect(() => {
+    return () => {
+      removeTimeout();
+    };
+  }, []);
+
+  useEffect(() => {
+    removeTimeout();
     // applying slight delay because this input is self-conscious and really doesn't like being focused on lol
-    setTimeout(() => {
+    timerId.current = window.setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
       }

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import { setBtnBackground } from "../../services/ImageSrcService/ImageSrcService";
 import { displayToast } from "../Toast/Toast.service";
-import { useLessons } from "../../hooks/useLessons";
+import { useLessons } from "../../hooks/assignments/useLessons";
 import ErrorMessage from "../ErrorMessage";
 import {
   BaseReviewLessonButton,

@@ -9,7 +9,7 @@ import {
   toHiragana,
 } from "wanakana";
 import Fuse from "fuse.js";
-import { BlockerFunction } from "react-router-dom";
+import { BlockerFunction, Location } from "react-router-dom";
 import { getNumObjsWithDistinctPropValue } from "../../utils";
 import { INVALID_ANSWER_CHARS } from "../../constants";
 import { displayToast } from "../../components/Toast/Toast.service";
@@ -532,8 +532,8 @@ export const blockUserLeavingPage = ({
   currentLocation,
   nextLocation,
 }: {
-  currentLocation: Location<any>;
-  nextLocation: Location<any>;
+  currentLocation: Location<unknown>;
+  nextLocation: Location<unknown>;
 }) => {
   // allowing user to view subjects pages during reviews and to review summary page
   const subjDetailsRegex = new RegExp("/subjects/*");

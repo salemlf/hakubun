@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { WaniKaniAPI } from "../api/WaniKaniApi";
-import { StudyMaterialPostData } from "../types/StudyMaterial";
+import { WaniKaniAPI } from "../../api/WaniKaniApi";
+import { StudyMaterialPostData } from "../../types/StudyMaterial";
+import { studyMaterialKeys } from "./studyMaterialsKeyFactory";
 
 type Props = {
   studyMaterialsData: StudyMaterialPostData;
@@ -15,7 +16,7 @@ export const useCreateStudyMaterials = () => {
     onSuccess: () => {
       // by returning instead of just calling, we keep query in a loading state while queries are invalidated
       return queryClient.invalidateQueries({
-        queryKey: ["study-materials-by-subj-ids"],
+        queryKey: studyMaterialKeys.all,
       });
     },
   });

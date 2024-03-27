@@ -1,5 +1,5 @@
 import { IonRow, IonSkeletonText } from "@ionic/react";
-import { useAssignmentBySubjID } from "../../hooks/useAssignmentBySubjID";
+import { useAssignmentBySubjID } from "../../hooks/assignments/useAssignmentBySubjID";
 import { Assignment } from "../../types/Assignment";
 import {
   Subject,
@@ -161,7 +161,7 @@ function SubjectSummary({ subject }: Props) {
     isLoading: assignmentLoading,
     data: assignment,
     error: assignmentErr,
-  } = useAssignmentBySubjID([subject.id]);
+  } = useAssignmentBySubjID(subject.id);
 
   if (assignmentLoading || assignmentErr) {
     return (

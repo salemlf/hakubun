@@ -1,6 +1,6 @@
 import { IonIcon, IonSkeletonText } from "@ionic/react";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
+import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsBySubjIDs";
 import { Kanji } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
 import SimilarCatsIcon from "../../images/similar-cats.svg";
@@ -27,7 +27,7 @@ function VisuallySimilarKanji({ kanji }: Props) {
     error: similarKanjiAssignmentsErr,
   } = useAssignmentsBySubjIDs(kanji.visually_similar_subject_ids);
 
-  let loading =
+  const loading =
     similarKanjiAssignmentsLoading ||
     similarKanjiAssignmentsErr ||
     similarKanjiSubjLoading ||
@@ -48,11 +48,13 @@ function VisuallySimilarKanji({ kanji }: Props) {
         <IonIcon src={SimilarCatsIcon} />
         <SubjDetailSubHeading>Visually Similar Kanji</SubjDetailSubHeading>
       </IconHeadingContainer>
-      <SubjectButtonList
-        btnSize="lg"
-        subjList={similarKanjiSubjData}
-        assignmentList={similarKanjiAssignmentsData ?? []}
-      />
+      {similarKanjiSubjData && (
+        <SubjectButtonList
+          btnSize="lg"
+          subjList={similarKanjiSubjData}
+          assignmentList={similarKanjiAssignmentsData ?? []}
+        />
+      )}
     </SubjDetailSection>
   );
 }

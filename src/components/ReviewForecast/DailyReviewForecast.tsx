@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { sortAssignmentsByAvailableDate } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/useForecastTotalsStore.facade";
-import { useAssignmentsAvailableInRange } from "../../hooks/useAssignmentsAvailableInRange";
+import { useAssignmentsAvailableInRange } from "../../hooks/assignments/useAssignmentsAvailableInRange";
 import { Assignment } from "../../types/Assignment";
 import LoadingDots from "../LoadingDots";
 import { LoadingContainer } from "../../styles/BaseStyledComponents";
@@ -125,11 +125,11 @@ const calculateDailyReviewInfo = (
       (sum += groupedByHour[hour].length)
   )(numAssignmentsAlreadyAvailable);
 
-  let dayTotal = Object.keys(groupedByHour).reduce((sum, hour) => {
+  const dayTotal = Object.keys(groupedByHour).reduce((sum, hour) => {
     return sum + groupedByHour[hour].length;
   }, 0);
 
-  let sumByHour = Object.keys(groupedByHour).map(cumulativeSum);
+  const sumByHour = Object.keys(groupedByHour).map(cumulativeSum);
 
   return {
     groupedByHour,
@@ -154,22 +154,19 @@ function DailyReviewForecast({
     runningTotalAvailableReviews: runningTotals,
     updateRunningTotalAvailableReviews,
   } = useForecastTotalsStoreFacade();
-  let enabled = runningTotals[index] !== undefined;
+  const enabled = runningTotals[index] !== undefined;
 
   const [isLoading, setIsLoading] = useState(true);
   const [reviewsByHour, setReviewsByHour] = useState<ReviewsByHourData>({});
   const [totalForDay, setTotalForDay] = useState<number>(0);
   const [sumReviewsByHour, setSumReviewsByHour] = useState<number[]>([]);
 
-  const {
-    isLoading: assignmentLoading,
-    data: assignments,
-    error: assignmentsErr,
-  } = useAssignmentsAvailableInRange(
-    startDateIsoString,
-    endDateIsoString,
-    enabled
-  );
+  const { isLoading: assignmentLoading, data: assignments } =
+    useAssignmentsAvailableInRange(
+      startDateIsoString,
+      endDateIsoString,
+      enabled
+    );
 
   useEffect(() => {
     if (!assignmentLoading && assignments && enabled) {
@@ -180,7 +177,7 @@ function DailyReviewForecast({
         "asc"
       );
 
-      let reviewCalculations = calculateDailyReviewInfo(
+      const reviewCalculations = calculateDailyReviewInfo(
         sortedAssignments,
         runningTotals[index]
       );

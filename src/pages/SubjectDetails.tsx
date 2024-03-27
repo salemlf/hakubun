@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { IonSkeletonText } from "@ionic/react";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
-import { useSubjectByID } from "../hooks/useSubjectByID";
+import { useSubjectByID } from "../hooks/subjects/useSubjectByID";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
 import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";
@@ -34,12 +34,6 @@ export const SubjectDetails = () => {
     data: subjectData,
     error: subjectErr,
   } = useSubjectByID(parsedID);
-  // *testing
-  console.log(
-    "🚀 ~ file: SubjectDetails.tsx:37 ~ SubjectDetails ~ subjectData:",
-    subjectData
-  );
-  // *testing
 
   // TODO: display loading skeleton for each component until all content on page is loaded
   if (subjectLoading) {

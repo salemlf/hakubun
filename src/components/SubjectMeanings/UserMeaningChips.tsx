@@ -3,8 +3,8 @@ import { IonIcon, IonSkeletonText } from "@ionic/react";
 import { closeCircle } from "ionicons/icons";
 import { displayToast } from "../Toast/Toast.service";
 import { generateUUID } from "../../utils";
-import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
-import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
+import { useStudyMaterialsBySubjID } from "../../hooks/study-materials/useStudyMaterialsBySubjID";
+import { useStudyMaterialsChange } from "../../hooks/study-materials/useStudyMaterialsChange";
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse } from "../../types/StudyMaterial";
 import AlertModal from "../AlertModal";
@@ -53,7 +53,7 @@ const Chips = ({
       });
       return;
     }
-    let meaningToDelete = meaningWithUUID.meaning;
+    const meaningToDelete = meaningWithUUID.meaning;
     deleteUserAltSubjectMeaning(
       subject,
       studyMaterialsResponse,
@@ -87,7 +87,7 @@ const Chips = ({
         return (
           <Fragment key={meaningWithUUID.uuid}>
             <UserMeaningChip
-              onPress={(e: any) => {
+              onPress={() => {
                 onUserMeaningChipPress(meaningWithUUID);
               }}
             >
@@ -117,16 +117,13 @@ type Props = {
 };
 
 function UserMeaningChips({ subject }: Props) {
-  const {
-    isLoading: studyMaterialLoading,
-    data: studyMaterialData,
-    error: studyMaterialErr,
-  } = useStudyMaterialsBySubjIDs([subject.id]);
+  const { isLoading: studyMaterialLoading, data: studyMaterialData } =
+    useStudyMaterialsBySubjID(subject.id);
 
   const createUserMeaningKeys = (
     studyMaterialsResponse: StudyMaterialDataResponse
   ) => {
-    return studyMaterialsResponse.meaning_synonyms.map((meaning: any) => ({
+    return studyMaterialsResponse.meaning_synonyms.map((meaning) => ({
       meaning,
       uuid: generateUUID(),
     }));

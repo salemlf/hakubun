@@ -4,7 +4,7 @@ import { createWrapper, renderWithClient } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { SRS_STAGES, assignmentsEndpoint } from "../../testing/endpoints";
 import { SrsLevelName } from "../../types/MiscTypes";
-import { useAssignmentsByStage } from "../../hooks/useAssignmentsByStage";
+import { useAssignmentsByStage } from "../../hooks/assignments/useAssignmentsByStage";
 import SrsStages from ".";
 
 test("SrsStages renders", () => {

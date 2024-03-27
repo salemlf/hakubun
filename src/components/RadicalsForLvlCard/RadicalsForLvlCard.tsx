@@ -1,6 +1,6 @@
 import { IonSkeletonText } from "@ionic/react";
-import { useRadicalSubjectsForLvl } from "../../hooks/useRadicalSubjectsForLvl";
-import { useRadicalAssignmentsForLvl } from "../../hooks/useRadicalAssignmentsForLvl";
+import { useRadicalSubjectsForLvl } from "../../hooks/subjects/useRadicalSubjectsForLvl";
+import { useRadicalAssignmentsForLvl } from "../../hooks/assignments/useRadicalAssignmentsForLvl";
 import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 import SubjectButton from "../SubjectButton";
@@ -14,7 +14,7 @@ import {
 } from "../../styles/BaseStyledComponents";
 
 interface Props {
-  level: number | undefined;
+  level: number;
 }
 
 function RadicalsForLvlCard({ level }: Props) {

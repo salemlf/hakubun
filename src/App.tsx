@@ -16,7 +16,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { routes } from "./navigation/routes";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
@@ -114,7 +114,7 @@ const queryClient = new QueryClient({
     queries: {
       // stale time of 10 minutes
       staleTime: 10 * (60 * 1000),
-      // cache time of 15 minutes
+      // garbage collection time of 15 minutes
       gcTime: 15 * (60 * 1000),
     },
   },

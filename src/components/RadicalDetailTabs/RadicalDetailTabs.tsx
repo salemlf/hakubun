@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IonSkeletonText } from "@ionic/react";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
+import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsBySubjIDs";
 import { Radical, Subject } from "../../types/Subject";
 import RadicalNameMnemonic from "../RadicalNameMnemonic";
 import SubjectMeanings from "../SubjectMeanings";
@@ -43,7 +43,7 @@ function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
     hasAmalgamationSubjs
   );
 
-  let usedInKanjiLoading =
+  const usedInKanjiLoading =
     hasAmalgamationSubjs &&
     (usedInKanjiSubjLoading ||
       usedInKanjiSubjErr ||
@@ -77,11 +77,11 @@ function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
                     />
                     <SubjDetailSubHeading>Found in Kanji</SubjDetailSubHeading>
                   </FoundInHeadingContainer>
-                  {hasAmalgamationSubjs ? (
+                  {hasAmalgamationSubjs && usedInKanjiSubjData ? (
                     <SubjectButtonList
                       btnSize="lg"
                       subjList={usedInKanjiSubjData}
-                      assignmentList={usedInKanjiAssignmentsData}
+                      assignmentList={usedInKanjiAssignmentsData ?? []}
                     />
                   ) : (
                     <p>Hmm, well this shouldn't happen..</p>

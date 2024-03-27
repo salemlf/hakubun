@@ -1,4 +1,4 @@
-import { AssignmentSortOption, SortOrder } from "./SortOrderOption.types";
+import { AssignmentSortOption } from "./SortOrderOption.types";
 import { Assignment } from "../../types/Assignment";
 import { Subject } from "../../types/Subject";
 import { SORT_OPTIONS } from "./SortOrderOption.constants";

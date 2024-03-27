@@ -1,6 +1,7 @@
 import { ButtonSize, SrsLevelName } from "../../types/MiscTypes";
 import {
   AssignmentCollection,
+  StudyMaterialCollection,
   SubjectCollection,
 } from "../../types/Collection";
 import {
@@ -91,6 +92,7 @@ export const capitalizeWord = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
 
+// TODO: add type for data, remove nested possibility
 export const flattenData = (data: any, nested: boolean = true) => {
   let iteratingLevel = nested ? data.data : data;
 
@@ -104,7 +106,7 @@ export const flattenData = (data: any, nested: boolean = true) => {
 };
 
 export const flattenCollectionOfOne = (
-  data: AssignmentCollection | SubjectCollection
+  data: AssignmentCollection | SubjectCollection | StudyMaterialCollection
 ) => {
   let flattenedCollection = Object.assign({}, data, data.data);
   let innerDataItem = flattenedCollection.data[0];
@@ -116,15 +118,6 @@ export const flattenCollectionOfOne = (
 
   delete flattenedInnerData.data;
   return flattenedInnerData;
-};
-
-export const flattenPagesOfData = (data: any) => {
-  let flattenedData = data.pages.map((elem: any) => {
-    return [...elem.data];
-  });
-
-  let flattenedPages = flattenedData.flat(1);
-  return flattenedPages;
 };
 
 export const flattenSearchResults = (data: any) => {

@@ -9,8 +9,8 @@ import {
   shouldBlock,
 } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
-import { useCreateReview } from "../hooks/useCreateReview";
-import { useSubmittedQueueUpdate } from "../hooks/useSubmittedQueueUpdate";
+import { useCreateReview } from "../hooks/assignments/useCreateReview";
+import { useSubmittedQueueUpdate } from "../hooks/assignments/useSubmittedQueueUpdate";
 import {
   AssignmentQueueItem,
   AssignmentSubmitInfo,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IonIcon, IonSkeletonText } from "@ionic/react";
-import { useAssignmentsBySubjIDs } from "../../hooks/useAssignmentsBySubjIDs";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsBySubjIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { Subject } from "../../types/Subject";
 import SubjectButtonList from "../SubjectButtonList/SubjectButtonList";
 import PuzzleIcon from "../../images/puzzle.svg";
@@ -22,16 +22,12 @@ function KanjiUsedInVocab({
   displayQuestionTxt = false,
   vocabSlug,
 }: Props) {
-  const {
-    isLoading: kanjiUsedSubjLoading,
-    data: kanjiUsedSubjData,
-    error: kanjiUsedSubjErr,
-  } = useSubjectsByIDs(kanjiIDs);
+  const { isLoading: kanjiUsedSubjLoading, data: kanjiUsedSubjData } =
+    useSubjectsByIDs(kanjiIDs);
 
   const {
     isLoading: kanjiUsedAssignmentsLoading,
     data: kanjiUsedAssignmentsData,
-    error: kanjiUsedAssignmentsErr,
   } = useAssignmentsBySubjIDs(kanjiIDs);
 
   const [kanjiUsedSubjects, setKanjiUsedSubjects] = useState<Subject[]>([]);
@@ -72,11 +68,13 @@ function KanjiUsedInVocab({
         <IonIcon src={PuzzleIcon} />
         <SubjDetailSubHeading>Kanji Used</SubjDetailSubHeading>
       </IconHeadingContainer>
-      <SubjectButtonList
-        btnSize="lg"
-        subjList={kanjiUsedSubjects}
-        assignmentList={kanjiUsedAssignmentsData ?? []}
-      />
+      {kanjiUsedSubjects && (
+        <SubjectButtonList
+          btnSize="lg"
+          subjList={kanjiUsedSubjects}
+          assignmentList={kanjiUsedAssignmentsData ?? []}
+        />
+      )}
       {displayQuestionTxt && (
         <>
           <p>

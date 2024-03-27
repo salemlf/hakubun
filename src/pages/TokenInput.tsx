@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
-import { useUserLogin } from "../hooks/useUserLogin";
+import { useUserLogin } from "../hooks/user/useUserLogin";
 import { AccordionItemData } from "../types/MiscTypes";
 import LoadingDots from "../components/LoadingDots";
 import Button from "../components/Button";

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { IonIcon } from "@ionic/react";
 import { capitalizeWord } from "../../services/MiscService/MiscService";
 import { displayToast } from "../Toast/Toast.service";
-import { useStudyMaterialsChange } from "../../hooks/useStudyMaterialsChange";
+import { useStudyMaterialsChange } from "../../hooks/study-materials/useStudyMaterialsChange";
 import { UserNoteType } from "../../types/MiscTypes";
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse } from "../../types/StudyMaterial";
@@ -37,28 +37,18 @@ const useAutosizeTextArea = (
   useEffect(() => {
     if (textAreaRef) {
       textAreaRef.style.height = "0px";
-      let scrollHeight = textAreaRef.scrollHeight;
+      const scrollHeight = textAreaRef.scrollHeight;
 
       textAreaRef.style.height = scrollHeight + "px";
     }
   }, [textAreaRef, value]);
 };
 
-type Props = {
-  subject: Subject;
-  studyMaterial: StudyMaterialDataResponse;
-  noteContent: string;
-  beganEditing: boolean;
-  setEditingInProgress: (isEditing: boolean) => void;
-  noteType: UserNoteType;
-  isRadical: boolean;
-};
-
 const generateNoteHeadingsAngMsg = (
   isRadical: boolean,
   noteType: UserNoteType
 ) => {
-  let noteTypeCapitalized = capitalizeWord(noteType);
+  const noteTypeCapitalized = capitalizeWord(noteType);
 
   if (isRadical) {
     return {
@@ -74,6 +64,16 @@ const generateNoteHeadingsAngMsg = (
       alertHeadingMsg: `Are you sure you want to delete your ${noteType} note?`,
     };
   }
+};
+
+type Props = {
+  subject: Subject;
+  studyMaterial: StudyMaterialDataResponse | undefined;
+  noteContent: string | null;
+  beganEditing: boolean;
+  setEditingInProgress: (isEditing: boolean) => void;
+  noteType: UserNoteType;
+  isRadical: boolean;
 };
 
 // TODO: scroll input into view on editing start
@@ -94,10 +94,25 @@ function Note({
     addReadingNote,
     removeReadingNote,
   } = useStudyMaterialsChange();
-  let initialTextValue = noteContent ? noteContent : "";
+  const initialTextValue = noteContent ? noteContent : "";
   const [textValue, setTextValue] = useState(initialTextValue);
   const [isEditable, setIsEditable] = useState(beganEditing);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const timerId = useRef<number | null>(null);
+
+  const removeTimeout = () => {
+    if (timerId.current) {
+      clearTimeout(timerId.current);
+      timerId.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      removeTimeout();
+    };
+  }, []);
+
   useAutosizeTextArea(textareaRef.current, textValue);
   useEffect(() => {
     if (isEditable && textareaRef.current) {
@@ -106,12 +121,12 @@ function Note({
     }
   }, [isEditable]);
 
-  let noteHeadingsAndMsg = generateNoteHeadingsAngMsg(isRadical, noteType);
+  const noteHeadingsAndMsg = generateNoteHeadingsAngMsg(isRadical, noteType);
 
   const handleTextAreaUpdate = (
     evt: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    let val = evt.target ? evt.target.value : "";
+    const val = evt.target ? evt.target.value : "";
     setTextValue(val);
   };
 
@@ -133,19 +148,20 @@ function Note({
           : addReadingNote(subject, studyMaterial, textValue);
       }
 
+      removeTimeout();
       // TODO: this is a meh workaround to avoid the add button flashing while waiting for the mutation to complete
       // TODO: possibly modify to wait for settled promise in useStudyMaterials
-      setTimeout(() => {
+      timerId.current = window.setTimeout(() => {
         setEditingInProgress(false);
         setIsEditable(false);
       }, 1000);
     } else {
-      setTextValue(noteContent);
+      setTextValue(noteContent ?? "");
       setEditingInProgress(false);
       setIsEditable(false);
     }
     if (saveEdit && remove) {
-      let noteTxt = isRadical ? "radical name" : noteType;
+      const noteTxt = isRadical ? "radical name" : noteType;
       displayToast({
         toastType: "success",
         title: `Deleted User Note`,
@@ -157,7 +173,7 @@ function Note({
 
   const onCancelDelete = () => {
     setIsModalOpen(false);
-    let noteTxt = isRadical ? "radical name" : noteType;
+    const noteTxt = isRadical ? "radical name" : noteType;
     displayToast({
       toastType: "warning",
       title: `Cancelled Note Deletion`,

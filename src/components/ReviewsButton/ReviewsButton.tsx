@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { setBtnBackground } from "../../services/ImageSrcService/ImageSrcService";
 import { displayToast } from "../Toast/Toast.service";
-import { useAssignmentsAvailForReview } from "../../hooks/useAssignmentsAvailForReview";
+import { useReviews } from "../../hooks/assignments/useReviews";
 import ErrorMessage from "../ErrorMessage";
 import {
   BaseReviewLessonButton,
@@ -31,19 +31,14 @@ const ReviewButtonErrContainer = styled(BaseReviewLessonButtonContainer)`
   border: 2px solid black;
 `;
 
-type Props = {
-  level: number;
-};
-
-// TODO: remove passing in level, unnecessary
-function ReviewsButton({ level }: Props) {
+function ReviewsButton() {
   const navigate = useNavigate();
 
   const {
     isLoading: availForReviewLoading,
     data: availForReviewData,
     error: availForReviewErr,
-  } = useAssignmentsAvailForReview(level);
+  } = useReviews();
 
   const onReviewBtnClick = () => {
     if (availForReviewData === undefined || availForReviewData.length === 0) {

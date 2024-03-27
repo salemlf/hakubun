@@ -4,7 +4,7 @@ import Fuse from "fuse.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDebounce } from "usehooks-ts";
 import { flattenSearchResults } from "../services/MiscService/MiscService";
-import { useAllSubjects } from "../hooks/useAllSubjects";
+import { useAllSubjects } from "../hooks/subjects/useAllSubjects";
 import { useStickyState } from "../hooks/useStickyState";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
 import Button from "../components/Button";
@@ -100,7 +100,7 @@ const crabigatorVariants = {
 };
 
 export const Search = () => {
-  let [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
+  const [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useStickyState("", "search-page-query");
   const debouncedQuery = useDebounce<string>(query, 1800);
 
@@ -113,10 +113,8 @@ export const Search = () => {
   const {
     isLoading: allSubjectsLoading,
     data: allSubjectsData,
-    error: allSubjectsErr,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
   } = useAllSubjects();
 
   useEffect(() => {
@@ -126,7 +124,7 @@ export const Search = () => {
         options
       );
       const results = fuse.search(debouncedQuery);
-      let flattenedSearch = flattenSearchResults(results);
+      const flattenedSearch = flattenSearchResults(results);
       setResults(flattenedSearch);
     }
   }, [allSubjectsData, debouncedQuery]);
@@ -176,7 +174,10 @@ export const Search = () => {
               transition={{ duration: 0.5 }}
             >
               <h2>No Results Found!</h2>
-              <img src={LogoExclamation} alt="Surprised Crabigator" />
+              <img
+                src={LogoExclamation}
+                alt="Unhappy crabigator looking upwards"
+              />
             </LogoSearchOutcomeContainer>
           ) : (
             <List>

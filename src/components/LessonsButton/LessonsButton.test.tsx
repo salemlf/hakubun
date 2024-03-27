@@ -12,7 +12,7 @@ import { AVAIL_LESSONS, assignmentsEndpoint } from "../../testing/endpoints";
 import { generateAssignmentCollection } from "../../testing/mocks/data-generators/collectionGenerator";
 import { generateUser } from "../../testing/mocks/data-generators/userGenerator";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
-import { useLessons } from "../../hooks/useLessons";
+import { useLessons } from "../../hooks/assignments/useLessons";
 import LessonSettings from "../../pages/LessonSettings";
 import { AssignmentCollection } from "../../types/Collection";
 import LessonsButton from ".";

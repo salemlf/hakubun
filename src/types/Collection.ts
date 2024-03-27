@@ -12,7 +12,7 @@ export interface Collection {
   object: string;
   url: string;
   data_updated_at: Date | null;
-  data: any[];
+  data: unknown[];
   pages: PagesObj;
   total_count: number;
 }

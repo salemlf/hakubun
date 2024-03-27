@@ -13,8 +13,8 @@ import {
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { capitalizeWord } from "../../services/MiscService/MiscService";
 import { displayToast } from "../Toast/Toast.service";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
-import { useStudyMaterialsBySubjIDs } from "../../hooks/useStudyMaterialsBySubjIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
+import { useStudyMaterialsBySubjIDs } from "../../hooks/study-materials/useStudyMaterialsBySubjIDs";
 import {
   ALL_SUBJECT_TYPES,
   MAX_ASSIGNMENTS_BEFORE_SUBMIT,
@@ -24,7 +24,6 @@ import { AssignmentBatch } from "../../types/MiscTypes";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { Subject, SubjectType } from "../../types/Subject";
-import { StudyMaterial } from "../../types/StudyMaterial";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
@@ -77,12 +76,13 @@ function AssignmentSettings({
     queriesEnabled
   );
   const { data: studyMaterialsData, isLoading: studyMaterialsLoading } =
-    useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled, false);
+    useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled);
 
   useEffect(() => {
     if (
       !subjectsLoading &&
       !studyMaterialsLoading &&
+      subjectsData &&
       subjectsData.length !== 0 &&
       studyMaterialsData !== undefined
     ) {
@@ -121,7 +121,7 @@ function AssignmentSettings({
       : "var(--wanikani-lesson)";
   const showMeaning = settingsType === "lesson";
 
-  const submitWithBasicSettings = (): AssignmentBatch => {
+  const submitWithBasicSettings = (subjData: Subject[]): AssignmentBatch => {
     const assignmentsFiltered = filterAssignmentsByType(
       assignmentData,
       Array.from(selectedAssignmentTypes)
@@ -130,7 +130,7 @@ function AssignmentSettings({
     const sorted = sortAssignmentsWithOption(
       assignmentsFiltered,
       sortOption,
-      subjectsData
+      subjData
     );
 
     const assignmentBatch =
@@ -172,9 +172,20 @@ function AssignmentSettings({
       return;
     }
 
+    if (!subjectsData) {
+      displayToast({
+        toastType: "error",
+        title: "No Subjects Found",
+        content:
+          "Unabled to start session. No subjects were returned from the server, oh no!",
+        timeout: 10000,
+      });
+      return;
+    }
+
     const sessionData =
       selectedAdvancedSubjIDs.length === 0
-        ? submitWithBasicSettings()
+        ? submitWithBasicSettings(subjectsData)
         : submitWithAdvancedSettings();
 
     // ending in case some weirdness occurred and there's a review session or lesson quiz in progress
@@ -192,7 +203,7 @@ function AssignmentSettings({
     const assignmentQueue = createAssignmentQueueItems(
       batch,
       subjects,
-      studyMaterialsData as StudyMaterial[],
+      studyMaterialsData ?? [],
       backToBackChoice
     );
 

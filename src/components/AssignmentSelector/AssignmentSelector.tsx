@@ -9,7 +9,7 @@ import {
   getSubjectColor,
   sortBySubjectTypeAndLevel,
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { Assignment } from "../../types/Assignment";
 import {
   KanaVocabulary,
@@ -230,7 +230,10 @@ function AssignmentSelector({
                 Hmm, looks like we can't find any {settingsType}s using those
                 filters...
               </LogoContainerHeading>
-              <img src={LogoExclamation} />
+              <img
+                src={LogoExclamation}
+                alt="Unhappy crabigator looking upwards"
+              />
             </LogoContainer>
           </NoAssignmentsContainer>
         ) : (

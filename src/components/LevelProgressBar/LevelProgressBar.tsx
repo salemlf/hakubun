@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { IonSkeletonText } from "@ionic/react";
 import { getAssignmentStatuses } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
-import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
-import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
+import { useKanjiAssignmentsForLvl } from "../../hooks/assignments/useKanjiAssignmentsForLvl";
+import { useKanjiSubjectsForLvl } from "../../hooks/subjects/useKanjiSubjectsForLvl";
 import styled from "styled-components";
 
 const PillShapedBar = styled.div`
@@ -54,7 +54,7 @@ const Contents = styled.div`
 `;
 
 type Props = {
-  level: number | undefined;
+  level: number;
 };
 
 function LevelProgressBar({ level }: Props) {
@@ -64,24 +64,20 @@ function LevelProgressBar({ level }: Props) {
   const {
     isLoading: kanjiAssignmentsLvlLoading,
     data: kanjiAssignmentsLvlData,
-    error: kanjiAssignmentsLvlErr,
   } = useKanjiAssignmentsForLvl(level);
 
-  const {
-    isLoading: subjectsLoading,
-    data: subjectsData,
-    error: subjectsErr,
-  } = useKanjiSubjectsForLvl(level);
+  const { isLoading: subjectsLoading, data: subjectsData } =
+    useKanjiSubjectsForLvl(level);
 
   useEffect(() => {
     if (subjectsData && kanjiAssignmentsLvlData) {
-      let total = subjectsData.length;
+      const total = subjectsData.length;
 
-      let { passed } = getAssignmentStatuses(kanjiAssignmentsLvlData);
-      let numToPass = Math.ceil(total * 0.9);
-      let percentage = Math.round((passed / numToPass) * 100);
+      const { passed } = getAssignmentStatuses(kanjiAssignmentsLvlData);
+      const numToPass = Math.ceil(total * 0.9);
+      const percentage = Math.round((passed / numToPass) * 100);
 
-      let updatedTxt = `${passed} of ${numToPass} kanji passed`;
+      const updatedTxt = `${passed} of ${numToPass} kanji passed`;
       setCompletedTxt(updatedTxt);
 
       if (barRef.current) {

@@ -158,7 +158,7 @@ export const generatePreFlattenedSubject = ({
 
 type PreFlattenedSubjArrGeneratorParams = {
   numSubjects: number;
-  subjTypes?: SubjectType;
+  subjType?: SubjectType;
   level?: number;
   hasAllowedAuxMeanings?: boolean;
   hasForbiddenAuxMeanings?: boolean;
@@ -166,7 +166,7 @@ type PreFlattenedSubjArrGeneratorParams = {
 
 export const generatePreflattenedSubjArray = ({
   numSubjects,
-  subjTypes,
+  subjType,
   level,
   hasAllowedAuxMeanings,
   hasForbiddenAuxMeanings,
@@ -175,7 +175,7 @@ export const generatePreflattenedSubjArray = ({
     { length: numSubjects },
     () => {
       return generatePreFlattenedSubject({
-        subjType: subjTypes,
+        subjType,
         level,
         hasAllowedAuxMeanings,
         hasForbiddenAuxMeanings,
@@ -188,7 +188,7 @@ export const generatePreflattenedSubjArray = ({
 
 type SubjArrGeneratorParams = {
   numSubjects: number;
-  subjTypes?: SubjectType;
+  subjType?: SubjectType;
   imagesOnly?: boolean;
   level?: number;
   hasAllowedAuxMeanings?: boolean;
@@ -197,7 +197,7 @@ type SubjArrGeneratorParams = {
 
 export const generateSubjArray = ({
   numSubjects,
-  subjTypes,
+  subjType,
   imagesOnly = false,
   level,
   hasAllowedAuxMeanings,
@@ -205,7 +205,7 @@ export const generateSubjArray = ({
 }: SubjArrGeneratorParams): Subject[] => {
   const mockSubjs: Subject[] = Array.from({ length: numSubjects }, () => {
     return generateSubject({
-      subjType: subjTypes,
+      subjType,
       imagesOnly,
       level,
       hasAllowedAuxMeanings,

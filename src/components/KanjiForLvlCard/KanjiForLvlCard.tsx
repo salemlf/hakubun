@@ -3,8 +3,8 @@ import {
   findAssignmentWithSubjID,
   isAssignmentLocked,
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
-import { useKanjiSubjectsForLvl } from "../../hooks/useKanjiSubjectsForLvl";
-import { useKanjiAssignmentsForLvl } from "../../hooks/useKanjiAssignmentsForLvl";
+import { useKanjiSubjectsForLvl } from "../../hooks/subjects/useKanjiSubjectsForLvl";
+import { useKanjiAssignmentsForLvl } from "../../hooks/assignments/useKanjiAssignmentsForLvl";
 import { Subject } from "../../types/Subject";
 import SubjectButton from "../SubjectButton";
 import SrsStageProgressBar from "../SrsStageProgressBar/SrsStageProgressBar";
@@ -17,7 +17,7 @@ import {
 } from "../../styles/BaseStyledComponents";
 
 interface Props {
-  level: number | undefined;
+  level: number;
 }
 
 function KanjiForLvlCard({ level }: Props) {

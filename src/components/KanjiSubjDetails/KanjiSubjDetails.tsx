@@ -1,5 +1,5 @@
 import { IonIcon, IonRow, IonSkeletonText } from "@ionic/react";
-import { useSubjectsByIDs } from "../../hooks/useSubjectsByIDs";
+import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { Kanji } from "../../types/Subject";
 import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic/KanjiMeaningMnemonic";
 import RadicalCombination from "../RadicalCombination/RadicalCombination";
@@ -19,14 +19,11 @@ type Props = {
 };
 
 function KanjiSubjDetails({ kanji }: Props) {
-  let findSimilar = kanji.visually_similar_subject_ids.length !== 0;
-  let findVocab = kanji.amalgamation_subject_ids.length !== 0;
+  const findSimilar = kanji.visually_similar_subject_ids.length !== 0;
+  const findVocab = kanji.amalgamation_subject_ids.length !== 0;
 
-  const {
-    isLoading: vocabFoundSubjLoading,
-    data: vocabFoundSubjData,
-    error: vocabFoundSubjErr,
-  } = useSubjectsByIDs(kanji.amalgamation_subject_ids, findVocab, true);
+  const { isLoading: vocabFoundSubjLoading, data: vocabFoundSubjData } =
+    useSubjectsByIDs(kanji.amalgamation_subject_ids, findVocab, true);
 
   // TODO: make this laoding skeleton actually good lol
   if (vocabFoundSubjLoading) {
@@ -51,7 +48,9 @@ function KanjiSubjDetails({ kanji }: Props) {
           <IonIcon src={MagnifyingGlassIcon} />
           <SubjDetailSubHeading>Found in Vocabulary</SubjDetailSubHeading>
         </FoundInHeadingContainer>
-        {findVocab && <SubjectWideBtnList subjList={vocabFoundSubjData} />}
+        {findVocab && vocabFoundSubjData && (
+          <SubjectWideBtnList subjList={vocabFoundSubjData} />
+        )}
       </SubjDetailSection>
     </SubjInfoContainer>
   );
