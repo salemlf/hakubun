@@ -97,6 +97,7 @@ function BottomSheetContentCore(
 
   const controls = useAnimation();
   const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+  const sheetContentProps = isBottomSheetOpen ? {} : { inert: "true" };
 
   const mostlyClose = useCallback(() => {
     controls.start("mostlyClosed");
@@ -197,7 +198,7 @@ function BottomSheetContentCore(
               />
               <SheetHeadingTxt>{title}</SheetHeadingTxt>
             </SheetHeader>
-            <GhostParent inert={!isBottomSheetOpen}>{children}</GhostParent>
+            <GhostParent {...sheetContentProps}>{children}</GhostParent>
           </FocusScope>
         </motion.div>
       </Content>
