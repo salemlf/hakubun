@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useRef } from "react";
 import { useResizeObserver } from "usehooks-ts";
 import type { ForwardedRef } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
@@ -94,12 +94,6 @@ function BottomSheetContentCore(
   const dragHeight = height - headerHeight - sheetHeightMargin;
   const controls = useAnimation();
   const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
-
-  // useEffect(() => {
-  //   if (headerRef.current) {
-  //     setHeaderHeight(headerRef.current.clientHeight);
-  //   }
-  // }, [headerRef.current?.clientHeight]);
 
   const mostlyClose = useCallback(() => {
     controls.start("mostlyClosed");
