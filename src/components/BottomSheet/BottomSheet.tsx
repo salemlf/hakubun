@@ -18,6 +18,8 @@ const Content = styled(RadixDialog.Content)`
   pointer-events: auto;
   position: absolute;
   background-color: var(--dark-greyish-purple);
+  left: 0;
+  right: 0;
 `;
 
 const SheetHeader = styled.header`
@@ -88,10 +90,11 @@ function BottomSheetContentCore(
 ) {
   const headerRef = useRef<HTMLDivElement | null>(null);
   const sheetContainerRef = useRef<HTMLDivElement | null>(null);
-  const { height: headerHeight = 0 } = useResizeObserver({
+  const { height: headerHeight } = useResizeObserver({
     ref: headerRef,
   });
-  const dragHeight = height - headerHeight - sheetHeightMargin;
+  const dragHeight = height - (headerHeight ?? 0) - sheetHeightMargin;
+
   const controls = useAnimation();
   const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
 
@@ -181,30 +184,21 @@ function BottomSheetContentCore(
             zIndex: 5,
           }}
         >
-          {isBottomSheetOpen ? (
-            <FocusScope contain autoFocus>
-              <SheetHeader ref={headerRef}>
-                <SheetOpenCloseButton
-                  data-testid="bottom-sheet-btn"
-                  onPress={onSheetBtnPress}
-                  aria-label="Open or close the bottom sheet"
-                />
-                <SheetHeadingTxt>{title}</SheetHeadingTxt>
-              </SheetHeader>
-              {children}
-            </FocusScope>
-          ) : (
-            <>
-              <SheetHeader ref={headerRef}>
-                <SheetOpenCloseButton
-                  data-testid="bottom-sheet-btn"
-                  onPress={onSheetBtnPress}
-                />
-                <SheetHeadingTxt>{title}</SheetHeadingTxt>
-              </SheetHeader>
-              <GhostParent inert="true">{children}</GhostParent>
-            </>
-          )}
+          <FocusScope
+            contain={isBottomSheetOpen}
+            autoFocus
+            restoreFocus={false}
+          >
+            <SheetHeader ref={headerRef}>
+              <SheetOpenCloseButton
+                data-testid="bottom-sheet-btn"
+                onPress={onSheetBtnPress}
+                aria-label="Open or close the bottom sheet"
+              />
+              <SheetHeadingTxt>{title}</SheetHeadingTxt>
+            </SheetHeader>
+            <GhostParent inert={!isBottomSheetOpen}>{children}</GhostParent>
+          </FocusScope>
         </motion.div>
       </Content>
     </SheetContainer>
