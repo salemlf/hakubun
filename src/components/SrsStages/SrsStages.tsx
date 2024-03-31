@@ -234,6 +234,7 @@ const SubjTypeRow = styled.div<SubjTypeRowProps>`
 const SubjTypeLabel = styled.p`
   font-size: 1rem;
   margin: 0;
+  text-align: left;
 `;
 
 const SubjTypeCount = styled.p`
@@ -334,7 +335,7 @@ const SRSButton = ({
           </SubjTypeCount>
         </SubjTypeRow>
         <SubjTypeRow assignmentType="kana_vocabulary">
-          <SubjTypeLabel>Kana Vocabulary</SubjTypeLabel>
+          <SubjTypeLabel>Kana Vocab</SubjTypeLabel>
           <SubjTypeCount>
             {stageGroupedByAssignmentType.kana_vocabulary}
           </SubjTypeCount>
