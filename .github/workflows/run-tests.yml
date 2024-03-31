@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  build:
+  install-deps:
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -18,19 +18,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
   unit-tests:
-    needs: build
+    needs: install-deps
     runs-on: macos-latest
     steps:
       - name: Execute tests
         run: npm run test
   typescript-check:
-    needs: build
+    needs: install-deps
     runs-on: macos-latest
     steps:
       - name: Execute tests
         run: npm run tsc-check
   lint:
-    needs: build
+    needs: install-deps
     runs-on: macos-latest
     steps:
       - name: Execute tests
