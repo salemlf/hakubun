@@ -95,6 +95,10 @@ function BottomSheetContentCore(
   });
   const dragHeight = height - (headerHeight ?? 0) - sheetHeightMargin;
 
+  useEffect(() => {
+    mostlyClose();
+  }, []);
+
   const controls = useAnimation();
   const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
   const sheetContentProps = isBottomSheetOpen ? {} : { inert: "true" };
