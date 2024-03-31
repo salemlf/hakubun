@@ -31,6 +31,7 @@ const ContextSentenceTxt = styled.p`
 
 const JapaneseContextSentenceTxt = styled(ContextSentenceTxt)`
   font-family: var(--japanese-font-family);
+  font-weight: 400;
 `;
 
 const EnglishSentenceContainer = styled.div`
