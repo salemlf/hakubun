@@ -33,6 +33,7 @@ const Tag = styled.span<TagProps>`
 
 const JapaneseTxt = styled.span`
   font-family: var(--japanese-font-family);
+  font-weight: 400;
 `;
 
 type TaggedTxtProps = {
@@ -52,6 +53,7 @@ const TaggedTxt = styled.p<TaggedTxtProps>`
 
 const JapaneseTag = styled(Tag)`
   font-family: var(--japanese-font-family);
+  font-weight: 400;
 `;
 
 // this is used so there's no icky wrapping for words where color is cut off/no border-radius on one side

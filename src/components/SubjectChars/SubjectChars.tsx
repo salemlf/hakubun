@@ -37,6 +37,7 @@ const DivWithTxt = styled(CharDiv)<CharDivProps>`
 
   p {
     font-family: var(--japanese-font-family);
+    font-weight: 400;
     margin: 0;
     color: white;
     font-size: ${({ fontSize }) => fontSize};

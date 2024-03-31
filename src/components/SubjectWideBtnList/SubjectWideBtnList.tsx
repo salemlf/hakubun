@@ -49,6 +49,7 @@ const ReadingAndMeaningTxt = styled.p`
 
 const ReadingTxt = styled(ReadingAndMeaningTxt)`
   font-family: var(--japanese-font-family);
+  font-weight: 400;
 `;
 
 type RadInfoProps = {

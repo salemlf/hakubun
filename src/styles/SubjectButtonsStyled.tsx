@@ -67,6 +67,7 @@ export const SubjBtnDetailsTxt = styled.p<DetailsBtnProps>`
 
 export const JapaneseDetailsTxt = styled(SubjBtnDetailsTxt)`
   font-family: var(--japanese-font-family);
+  font-weight: 400;
 `;
 
 export const BtnWithImage = styled(DefaultBtn)`
