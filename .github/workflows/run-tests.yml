@@ -1,14 +1,11 @@
-name: Run Vite Tests
+name: Run Unit Tests, TypeScript Check, and Linting
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-env:
-  VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 jobs:
-  run-tests:
+  build:
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -20,5 +17,21 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
+  unit-tests:
+    needs: build
+    runs-on: macos-latest
+    steps:
       - name: Execute tests
         run: npm run test
+  typescript-check:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - name: Execute tests
+        run: npm run tsc-check
+  lint:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - name: Execute tests
+        run: npm run lint-err-only
