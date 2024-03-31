@@ -25,10 +25,8 @@ import {
   RetryCardOverlay,
   AssignmentCardStyled,
   SwipeIconAndText,
-  Retry,
-  Next,
-  RetryTxt,
-  NextTxt,
+  SwipeTxt,
+  SwipeIcon,
 } from "./AssignmentQueueCardsStyled";
 import styled from "styled-components";
 
@@ -278,10 +276,10 @@ export const AssignmentQueueCard = ({
               }}
             >
               <SwipeIconAndText>
-                <Retry>
+                <SwipeIcon>
                   <SvgIcon icon={<RetryIcon />} width="85px" height="85px" />
-                </Retry>
-                <RetryTxt>Retry</RetryTxt>
+                </SwipeIcon>
+                <SwipeTxt>Retry</SwipeTxt>
               </SwipeIconAndText>
             </RetryCardOverlay>
             <NextCardOverlay
@@ -290,10 +288,10 @@ export const AssignmentQueueCard = ({
               }}
             >
               <SwipeIconAndText>
-                <Next>
+                <SwipeIcon>
                   <SvgIcon icon={<NextIcon />} width="85px" height="85px" />
-                </Next>
-                <NextTxt>Next</NextTxt>
+                </SwipeIcon>
+                <SwipeTxt>Next</SwipeTxt>
               </SwipeIconAndText>
             </NextCardOverlay>
             <SwipeMeHint>

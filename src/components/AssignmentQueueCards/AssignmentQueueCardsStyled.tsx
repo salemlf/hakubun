@@ -68,35 +68,22 @@ export const SwipeIcon = styled(motion.div)`
     width: 85px;
     height: 85px;
   }
-`;
 
-export const Retry = styled(SwipeIcon)`
   color: white;
   border: 2px solid white;
 `;
 
-export const Next = styled(SwipeIcon)`
-  color: black;
-  border: 2px solid black;
-`;
-
 export const SwipeTxt = styled.p`
+  color: white;
   font-size: 1.75rem;
   font-weight: 500;
   margin: 16px 0;
   text-transform: uppercase;
 `;
 
-export const RetryTxt = styled(SwipeTxt)`
-  color: white;
-`;
-
-export const NextTxt = styled(SwipeTxt)`
-  color: black;
-`;
-
 export const NextCardOverlay = styled(SwipeOverlay)`
-  background-color: var(--ion-color-tertiary);
+  /* background-color: var(--ion-color-tertiary); */
+  background-color: #0077b3;
 `;
 
 export const RetryCardOverlay = styled(SwipeOverlay)`
