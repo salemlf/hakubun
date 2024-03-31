@@ -33,15 +33,15 @@ export const getTimeFromNow = (availableTime: Date | null) => {
   const day = hour * 24;
   const month = day * 30;
 
-  let availDate = new Date(availableTime);
-  let rightNow = new Date();
-  let timeDiff = availDate.getTime() - rightNow.getTime();
+  const availDate = new Date(availableTime);
+  const rightNow = new Date();
+  const timeDiff = availDate.getTime() - rightNow.getTime();
 
   // TODO: display one decimal point?
-  let monthsTill = Math.floor(timeDiff / month);
-  let daysTill = Math.floor(timeDiff / day);
-  let hrsTill = Math.floor(timeDiff / hour);
-  let minsTill = Math.floor(timeDiff / minute);
+  const monthsTill = Math.floor(timeDiff / month);
+  const daysTill = Math.floor(timeDiff / day);
+  const hrsTill = Math.floor(timeDiff / hour);
+  const minsTill = Math.floor(timeDiff / minute);
 
   return (
     createTimeTillStr(monthsTill, "month") ||
@@ -94,9 +94,9 @@ export const capitalizeWord = (word: string) => {
 
 // TODO: add type for data, remove nested possibility
 export const flattenData = (data: any, nested: boolean = true) => {
-  let iteratingLevel = nested ? data.data : data;
+  const iteratingLevel = nested ? data.data : data;
 
-  let flattened = iteratingLevel.map((elem: any) => {
+  const flattened = iteratingLevel.map((elem: any) => {
     elem = Object.assign({}, elem, elem.data);
     delete elem.data;
     return elem;
@@ -108,9 +108,9 @@ export const flattenData = (data: any, nested: boolean = true) => {
 export const flattenCollectionOfOne = (
   data: AssignmentCollection | SubjectCollection | StudyMaterialCollection
 ) => {
-  let flattenedCollection = Object.assign({}, data, data.data);
-  let innerDataItem = flattenedCollection.data[0];
-  let flattenedInnerData: any = Object.assign(
+  const flattenedCollection = Object.assign({}, data, data.data);
+  const innerDataItem = flattenedCollection.data[0];
+  const flattenedInnerData: any = Object.assign(
     {},
     innerDataItem,
     innerDataItem.data
@@ -121,9 +121,9 @@ export const flattenCollectionOfOne = (
 };
 
 export const flattenSearchResults = (data: any) => {
-  let flattenedResults = data.map((elem: any) => {
+  const flattenedResults = data.map((elem: any) => {
     const { item } = elem;
-    let flattenedSearchResult = {
+    const flattenedSearchResult = {
       ...item,
       ...item.data,
       data_updated_at: item.data.created_at,
