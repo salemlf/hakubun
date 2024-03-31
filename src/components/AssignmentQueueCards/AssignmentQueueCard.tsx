@@ -4,6 +4,7 @@ import {
   useTransform,
   AnimatePresence,
   useAnimation,
+  PanInfo,
 } from "framer-motion";
 import { toHiragana } from "wanakana";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
@@ -108,7 +109,7 @@ export const AssignmentQueueCard = ({
 }: CardProps) => {
   const { savedUserAnswer, setSavedUserAnswer, isSubmittingAnswer } =
     useQueueStoreFacade();
-  let initialUserAnswer =
+  const initialUserAnswer =
     !isSubmittingAnswer || savedUserAnswer === null ? "" : savedUserAnswer;
   const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
 
@@ -159,14 +160,14 @@ export const AssignmentQueueCard = ({
   // TODO: sometimes on retry drag motion value somehow becomes NaN (maybe somehow gets cancelled?) and...
   // TODO: ...freezes up the dragging. Tough bug to fix, may be a library issue
   const retryTriggered = () => {
-    let strippedUserAnswer = userAnswer.trim();
+    const strippedUserAnswer = userAnswer.trim();
 
     if (isSubmittingAnswer) {
       controls.start("retry");
       handleRetryCard(currentReviewItem, strippedUserAnswer, setUserAnswer);
       controls.start("center");
     } else {
-      let cantRetryMsg =
+      const cantRetryMsg =
         strippedUserAnswer === ""
           ? "Input is empty, you can't retry this item!"
           : "You haven't submitted your answer, you can't retry this item!";
@@ -183,11 +184,14 @@ export const AssignmentQueueCard = ({
 
   const attemptToAdvance = () => {
     closeAllToasts();
-    let strippedUserAnswer = userAnswer.trim();
+    const strippedUserAnswer = userAnswer.trim();
     currentReviewItem.review_type === "reading" &&
       setUserAnswer(toHiragana(strippedUserAnswer));
 
-    let isValidInfo = isUserAnswerValid(currentReviewItem, strippedUserAnswer);
+    const isValidInfo = isUserAnswerValid(
+      currentReviewItem,
+      strippedUserAnswer
+    );
     if (isValidInfo.isValid === false) {
       displayToast({
         toastType: "warning",
@@ -219,7 +223,7 @@ export const AssignmentQueueCard = ({
     controls.start("fadeForward");
   };
 
-  const handleDragEnd = (_event: MouseEvent | TouchEvent, info: any) => {
+  const handleDragEnd = (_event: MouseEvent | TouchEvent, info: PanInfo) => {
     const xOffsetTrigger = 150;
     const xMinOffset = 100;
     const xMinVelocity = 350;
