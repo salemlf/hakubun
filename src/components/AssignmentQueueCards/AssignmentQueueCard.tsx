@@ -152,8 +152,8 @@ export const AssignmentQueueCard = ({
       currentReviewItem.readingAudios?.forEach((readingAudio) => {
         readingAudio.audioFile.unload();
       });
+      removeTimeouts();
     };
-    return () => removeTimeouts();
   }, []);
 
   // TODO: sometimes on retry drag motion value somehow becomes NaN (maybe somehow gets cancelled?) and...

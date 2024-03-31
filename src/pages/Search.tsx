@@ -2,7 +2,7 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { IonList } from "@ionic/react";
 import Fuse from "fuse.js";
 import { AnimatePresence, motion } from "framer-motion";
-import { useDebounce } from "usehooks-ts";
+import { useDebounceValue } from "usehooks-ts";
 import { flattenSearchResults } from "../services/MiscService/MiscService";
 import { useAllSubjects } from "../hooks/subjects/useAllSubjects";
 import { useStickyState } from "../hooks/useStickyState";
@@ -102,7 +102,7 @@ const crabigatorVariants = {
 export const Search = () => {
   const [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useStickyState("", "search-page-query");
-  const debouncedQuery = useDebounce<string>(query, 1800);
+  const [debouncedQuery] = useDebounceValue(query, 1800);
 
   const options = {
     threshold: 0.1,

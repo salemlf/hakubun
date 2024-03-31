@@ -1,4 +1,5 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useRef } from "react";
+import { useResizeObserver } from "usehooks-ts";
 import type { ForwardedRef } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { PanInfo, motion, useAnimation } from "framer-motion";
@@ -17,6 +18,8 @@ const Content = styled(RadixDialog.Content)`
   pointer-events: auto;
   position: absolute;
   background-color: var(--dark-greyish-purple);
+  left: 0;
+  right: 0;
 `;
 
 const SheetHeader = styled.header`
@@ -71,7 +74,6 @@ const sheetPosVariants = {
   mostlyClosed: (dragHeight: number) => ({
     y: dragHeight,
   }),
-  closed: { y: "100%" },
 };
 
 type BottomSheetContentCoreProps = RadixDialog.DialogContentProps & {
@@ -86,24 +88,25 @@ function BottomSheetContentCore(
   { title, height, children, ...props }: BottomSheetContentCoreProps,
   forwardedRef: ForwardedRef<HTMLDivElement>
 ) {
-  const [headerHeight, setHeaderHeight] = useState(0);
-  // TODO: change to not use "any" type
-  const headerRef = useRef<any>(null);
-  const sheetContainerRef = useRef<HTMLDivElement>(null);
-  const dragHeight = height - headerHeight - sheetHeightMargin;
-  const controls = useAnimation();
-  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const sheetContainerRef = useRef<HTMLDivElement | null>(null);
+  const { height: headerHeight } = useResizeObserver({
+    ref: headerRef,
+  });
+  const dragHeight = height - (headerHeight ?? 0) - sheetHeightMargin;
 
   useEffect(() => {
-    if (headerRef.current) {
-      setHeaderHeight(headerRef.current.clientHeight);
-    }
-  }, [headerRef.current]);
+    mostlyClose();
+  }, []);
 
-  const mostlyClose = () => {
+  const controls = useAnimation();
+  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+  const sheetContentProps = isBottomSheetOpen ? {} : { inert: "true" };
+
+  const mostlyClose = useCallback(() => {
     controls.start("mostlyClosed");
     setIsBottomSheetOpen(false);
-  };
+  }, [controls, setIsBottomSheetOpen]);
 
   const fullyOpen = () => {
     controls.start("fullyOpen");
@@ -122,7 +125,7 @@ function BottomSheetContentCore(
     if (!isBottomSheetOpen) {
       mostlyClose();
     }
-  }, [controls, headerHeight]);
+  }, [controls, headerHeight, isBottomSheetOpen, mostlyClose]);
 
   const onDragEnd = (
     event: MouseEvent | TouchEvent | PointerEvent,
@@ -130,10 +133,6 @@ function BottomSheetContentCore(
   ) => {
     const offsetTriggersChange = Math.abs(info.offset.y) > 300;
     const velocityTriggersChange = Math.abs(info.velocity.y) > 400;
-    console.log(
-      "🚀 ~ file: BottomSheet.tsx:130 ~ info.velocity.y:",
-      info.velocity.y
-    );
     if (offsetTriggersChange || velocityTriggersChange) {
       const shouldClose =
         info.velocity.y > 20 || (info.velocity.y >= 0 && info.point.y > 45);
@@ -190,30 +189,21 @@ function BottomSheetContentCore(
             zIndex: 5,
           }}
         >
-          {isBottomSheetOpen ? (
-            <FocusScope contain autoFocus>
-              <SheetHeader ref={headerRef}>
-                <SheetOpenCloseButton
-                  data-testid="bottom-sheet-btn"
-                  onPress={onSheetBtnPress}
-                  aria-label="Open or close the bottom sheet"
-                />
-                <SheetHeadingTxt>{title}</SheetHeadingTxt>
-              </SheetHeader>
-              {children}
-            </FocusScope>
-          ) : (
-            <>
-              <SheetHeader ref={headerRef}>
-                <SheetOpenCloseButton
-                  data-testid="bottom-sheet-btn"
-                  onPress={onSheetBtnPress}
-                />
-                <SheetHeadingTxt>{title}</SheetHeadingTxt>
-              </SheetHeader>
-              <GhostParent inert="true">{children}</GhostParent>
-            </>
-          )}
+          <FocusScope
+            contain={isBottomSheetOpen}
+            autoFocus
+            restoreFocus={false}
+          >
+            <SheetHeader ref={headerRef}>
+              <SheetOpenCloseButton
+                data-testid="bottom-sheet-btn"
+                onPress={onSheetBtnPress}
+                aria-label="Open or close the bottom sheet"
+              />
+              <SheetHeadingTxt>{title}</SheetHeadingTxt>
+            </SheetHeader>
+            <GhostParent {...sheetContentProps}>{children}</GhostParent>
+          </FocusScope>
         </motion.div>
       </Content>
     </SheetContainer>
