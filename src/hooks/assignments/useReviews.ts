@@ -9,7 +9,9 @@ export const useReviews = (isEnabled: boolean = true) => {
     queryKey: assignmentKeys.reviews(),
     queryFn: () => WaniKaniAPI.getAssignmentsAvailForReview(),
     select: (pagedData) => {
-      const flattenedData: Assignment[] = flattenData(pagedData.data, false);
+      const flattenedData: Assignment[] = flattenData(
+        pagedData.data
+      ) as Assignment[];
       return flattenedData;
     },
     enabled: isEnabled,

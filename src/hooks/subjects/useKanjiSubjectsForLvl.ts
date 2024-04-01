@@ -8,8 +8,8 @@ export const useKanjiSubjectsForLvl = (level: number) => {
   return useQuery({
     queryKey: subjectKeys.kanjiByLvl(level),
     queryFn: () => WaniKaniAPI.getKanjiSubjectsByLevel(level),
-    select: (data) => {
-      const flattenedSubj: Kanji[] = flattenData(data);
+    select: (pagedData) => {
+      const flattenedSubj: Kanji[] = flattenData(pagedData.data) as Kanji[];
       return flattenedSubj;
     },
     // stale time of an hour

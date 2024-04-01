@@ -9,7 +9,9 @@ export const useLessons = () => {
     queryKey: assignmentKeys.lessons(),
     queryFn: WaniKaniAPI.getLessons,
     select: (pagedData) => {
-      const flattenedData: Assignment[] = flattenData(pagedData.data, false);
+      const flattenedData: Assignment[] = flattenData(
+        pagedData.data
+      ) as Assignment[];
       return flattenedData;
     },
     // stale time of 20 minutes

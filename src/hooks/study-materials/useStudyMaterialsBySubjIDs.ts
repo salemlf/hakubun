@@ -13,10 +13,7 @@ export const useStudyMaterialsBySubjIDs = (
     queryFn: () => WaniKaniAPI.getStudyMaterialsBySubjIDs(subjIDs),
     enabled: enabled && subjIDs.length !== 0,
     select: (collectionData) => {
-      const flattenedData: StudyMaterial[] = flattenData(
-        collectionData.data,
-        false
-      );
+      const flattenedData: StudyMaterial[] = flattenData(collectionData.data);
       return flattenedData;
     },
   });
