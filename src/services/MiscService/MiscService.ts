@@ -92,14 +92,14 @@ export const capitalizeWord = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
 
-// TODO: add type for data, remove nested possibility
-export const flattenData = (data: any, nested: boolean = true) => {
-  const iteratingLevel = nested ? data.data : data;
+interface DataObject<T> {
+  data: T;
+}
 
-  const flattened = iteratingLevel.map((elem: any) => {
-    elem = Object.assign({}, elem, elem.data);
-    delete elem.data;
-    return elem;
+export const flattenData = <T>(data: DataObject<T>[]) => {
+  const flattened = data.map((elem) => {
+    const { data, ...rest } = elem;
+    return { ...rest, ...data };
   });
 
   return flattened;
