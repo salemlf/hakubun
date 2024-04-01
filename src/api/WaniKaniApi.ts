@@ -1,5 +1,5 @@
 import { api, baseUrl } from "./ApiConfig";
-import { PagingAPI } from "./PagingApi";
+import { PagedData, PagingAPI } from "./PagingApi";
 import { AxiosResponse } from "axios";
 
 import { SrsLevelName } from "../types/MiscTypes";
@@ -10,6 +10,9 @@ import {
   StudyMaterialPostData,
   StudyMaterialPutBody,
 } from "../types/StudyMaterial";
+import { AssignmentCollection, Collection } from "../types/Collection";
+import { PreFlattenedSubject } from "../types/Subject";
+import { PreFlattenedAssignment } from "../types/Assignment";
 
 // TODO: make paging "automatic" where no need to add special case for it
 export const WaniKaniAPI = {
@@ -30,8 +33,10 @@ export const WaniKaniAPI = {
   getAssignmentsAvailForReview: async function () {
     const url = `${baseUrl}assignments?immediately_available_for_review=true`;
 
-    const reviews = await PagingAPI.iterateOverPages(url, []);
-    const reviewsCombined = PagingAPI.combinePages(reviews);
+    const reviews: Collection<PreFlattenedAssignment>[] =
+      await PagingAPI.iterateOverPages(url, []);
+    const reviewsCombined: PagedData<PreFlattenedAssignment> =
+      PagingAPI.combinePages(reviews);
 
     return reviewsCombined;
   },
@@ -39,8 +44,10 @@ export const WaniKaniAPI = {
   getLessons: async function () {
     const url = `${baseUrl}assignments?immediately_available_for_lessons=true`;
 
-    const lessons = await PagingAPI.iterateOverPages(url, []);
-    const lessonsCombined = PagingAPI.combinePages(lessons);
+    const lessons: Collection<PreFlattenedAssignment>[] =
+      await PagingAPI.iterateOverPages(url, []);
+    const lessonsCombined: PagedData<PreFlattenedAssignment> =
+      PagingAPI.combinePages(lessons);
 
     return lessonsCombined;
   },
@@ -49,8 +56,10 @@ export const WaniKaniAPI = {
   getSubjectsByLevel: async function (level: number) {
     const url = `${baseUrl}subjects?levels=${level}`;
 
-    const subjects = await PagingAPI.iterateOverPages(url, []);
-    const subjectsCombined = PagingAPI.combinePages(subjects);
+    const subjects: Collection<PreFlattenedSubject>[] =
+      await PagingAPI.iterateOverPages(url, []);
+    const subjectsCombined: PagedData<PreFlattenedSubject> =
+      PagingAPI.combinePages(subjects);
 
     return subjectsCombined;
   },
@@ -58,8 +67,10 @@ export const WaniKaniAPI = {
   getRadicalSubjectsByLevel: async function (level: number) {
     const url = `${baseUrl}subjects?levels=${level}&types=radical`;
 
-    const radicals = await PagingAPI.iterateOverPages(url, []);
-    const radicalsCombined = PagingAPI.combinePages(radicals);
+    const radicals: Collection<PreFlattenedSubject>[] =
+      await PagingAPI.iterateOverPages(url, []);
+    const radicalsCombined: PagedData<PreFlattenedSubject> =
+      PagingAPI.combinePages(radicals);
 
     return radicalsCombined;
   },
@@ -67,8 +78,10 @@ export const WaniKaniAPI = {
   getKanjiSubjectsByLevel: async function (level: number) {
     const url = `${baseUrl}subjects?levels=${level}&types=kanji`;
 
-    const kanji = await PagingAPI.iterateOverPages(url, []);
-    const kanjiCombined = PagingAPI.combinePages(kanji);
+    const kanji: Collection<PreFlattenedSubject>[] =
+      await PagingAPI.iterateOverPages(url, []);
+    const kanjiCombined: PagedData<PreFlattenedSubject> =
+      PagingAPI.combinePages(kanji);
 
     return kanjiCombined;
   },
@@ -87,13 +100,17 @@ export const WaniKaniAPI = {
   getSubjectsBySubjIDs: async function (ids: number[]) {
     const url = `${baseUrl}subjects?ids=${ids}`;
 
-    const subjects = await PagingAPI.iterateOverPages(url, []);
-    const subjectsCombined = PagingAPI.combinePages(subjects);
+    const subjects: Collection<PreFlattenedSubject>[] =
+      await PagingAPI.iterateOverPages(url, []);
+    const subjectsCombined: PagedData<PreFlattenedSubject> =
+      PagingAPI.combinePages(subjects);
 
     return subjectsCombined;
   },
 
-  getAssignmentsBySubjIDs: async function (id: number[]) {
+  getAssignmentsBySubjIDs: async function (
+    id: number[]
+  ): Promise<AssignmentCollection> {
     const url = `${baseUrl}assignments?subject_ids=${id}`;
 
     const response: AxiosResponse = await api.request({
@@ -107,8 +124,10 @@ export const WaniKaniAPI = {
   getRadicalAssignmentsByLvl: async function (level: number) {
     const url = `${baseUrl}assignments?levels=${level}&subject_types=radical`;
 
-    const radicals = await PagingAPI.iterateOverPages(url, []);
-    const radicalsCombined = PagingAPI.combinePages(radicals);
+    const radicals: Collection<PreFlattenedAssignment>[] =
+      await PagingAPI.iterateOverPages(url, []);
+    const radicalsCombined: PagedData<PreFlattenedAssignment> =
+      PagingAPI.combinePages(radicals);
 
     return radicalsCombined;
   },
@@ -116,8 +135,10 @@ export const WaniKaniAPI = {
   getKanjiAssignmentsByLvl: async function (level: number) {
     const url = `${baseUrl}assignments?levels=${level}&subject_types=kanji`;
 
-    const kanji = await PagingAPI.iterateOverPages(url, []);
-    const kanjiCombined = PagingAPI.combinePages(kanji);
+    const kanji: Collection<PreFlattenedAssignment>[] =
+      await PagingAPI.iterateOverPages(url, []);
+    const kanjiCombined: PagedData<PreFlattenedAssignment> =
+      PagingAPI.combinePages(kanji);
 
     return kanjiCombined;
   },
@@ -126,8 +147,10 @@ export const WaniKaniAPI = {
     const lvlRange = getSrsLvlBySrsName(srsLvl);
     const url = `${baseUrl}assignments?srs_stages=${lvlRange}&started=true`;
 
-    const assignments = await PagingAPI.iterateOverPages(url, []);
-    const assignmentsCombined = PagingAPI.combinePages(assignments);
+    const assignments: Collection<PreFlattenedAssignment>[] =
+      await PagingAPI.iterateOverPages(url, []);
+    const assignmentsCombined: PagedData<PreFlattenedAssignment> =
+      PagingAPI.combinePages(assignments);
 
     return assignmentsCombined;
   },
