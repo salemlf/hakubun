@@ -1,16 +1,16 @@
 import { Collection } from "../types/Collection";
 import { pagingApi } from "./ApiConfig";
 
-export type PagedData = {
-  data: unknown[];
+export type PagedData<T> = {
+  data: T[];
   total: number;
 };
 
 export const PagingAPI = {
-  iterateOverPages: async function (
+  iterateOverPages: async function <T>(
     url: string,
-    data: Collection[]
-  ): Promise<Collection[]> {
+    data: Collection<T>[]
+  ): Promise<Collection<T>[]> {
     if (!url) {
       return data;
     }
@@ -26,9 +26,9 @@ export const PagingAPI = {
     return this.iterateOverPages(nextPgURL, data);
   },
 
-  combinePages: (pageData: Collection[]): PagedData => {
+  combinePages: <T>(pageData: Collection<T>[]): PagedData<T> => {
     const combined = {
-      data: [] as unknown[],
+      data: [] as T[],
       total: pageData[0].total_count,
     };
 
