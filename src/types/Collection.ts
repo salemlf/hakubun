@@ -8,23 +8,17 @@ type PagesObj = {
   previous_url: string | null;
 };
 
-export interface Collection {
+export interface Collection<T> {
   object: string;
   url: string;
   data_updated_at: Date | null;
-  data: unknown[];
+  data: T[];
   pages: PagesObj;
   total_count: number;
 }
 
-export interface AssignmentCollection extends Collection {
-  data: PreFlattenedAssignment[];
-}
+export type AssignmentCollection = Collection<PreFlattenedAssignment>;
 
-export interface SubjectCollection extends Collection {
-  data: PreFlattenedSubject[];
-}
+export type SubjectCollection = Collection<PreFlattenedSubject>;
 
-export interface StudyMaterialCollection extends Collection {
-  data: PreflattenedStudyMaterial[];
-}
+export type StudyMaterialCollection = Collection<PreflattenedStudyMaterial>;
