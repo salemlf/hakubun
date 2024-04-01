@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { WaniKaniAPI } from "../../api/WaniKaniApi";
 import { flattenData } from "../../services/MiscService/MiscService";
-import { Assignment } from "../../types/Assignment";
+import { Assignment, PreFlattenedAssignment } from "../../types/Assignment";
 import { assignmentKeys } from "./assignmentsKeyFactory";
 
 export const useAssignmentsAvailableInRange = (
@@ -21,7 +21,11 @@ export const useAssignmentsAvailableInRange = (
         endDateIsoString
       ),
     select: (pagedData) => {
-      const flattenedData: Assignment[] = flattenData(pagedData.data, false);
+      const preFlattenedAssignments: PreFlattenedAssignment[] =
+        pagedData.data as PreFlattenedAssignment[];
+      const flattenedData: Assignment[] = flattenData(
+        preFlattenedAssignments
+      ) as Assignment[];
       return flattenedData;
     },
   });

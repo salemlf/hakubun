@@ -11,7 +11,9 @@ export const useAssignmentsByStage = (stage: SrsLevelName) => {
     queryFn: () => WaniKaniAPI.getAssignmentsByStage(stage),
     enabled: !!stage,
     select: (pagedData) => {
-      const flattenedData: Assignment[] = flattenData(pagedData.data, false);
+      const flattenedData: Assignment[] = flattenData(
+        pagedData.data
+      ) as Assignment[];
       return flattenedData;
     },
   });

@@ -15,7 +15,7 @@ export const useSubjectsByIDs = (
     queryFn: () => WaniKaniAPI.getSubjectsBySubjIDs(ids),
     enabled: enabled && ids.length !== 0,
     select: (pagedData) => {
-      const flattened: Subject[] = flattenData(pagedData.data, false);
+      const flattened: Subject[] = flattenData(pagedData.data) as Subject[];
 
       const subjsUpdated = flattened.reduce(function (
         filtered: Subject[],

@@ -9,7 +9,9 @@ export const useKanjiAssignmentsForLvl = (level: number) => {
     queryKey: assignmentKeys.kanjiByLvl(level),
     queryFn: () => WaniKaniAPI.getKanjiAssignmentsByLvl(level),
     select: (pagedData) => {
-      const flattenedData: Assignment[] = flattenData(pagedData.data, false);
+      const flattenedData: Assignment[] = flattenData(
+        pagedData.data
+      ) as Assignment[];
       return flattenedData;
     },
   });

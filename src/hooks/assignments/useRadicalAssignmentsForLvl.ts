@@ -9,7 +9,9 @@ export const useRadicalAssignmentsForLvl = (level: number) => {
     queryKey: assignmentKeys.radicalsByLvl(level),
     queryFn: () => WaniKaniAPI.getRadicalAssignmentsByLvl(level),
     select: (pagedData) => {
-      const flattenedData: Assignment[] = flattenData(pagedData.data, false);
+      const flattenedData: Assignment[] = flattenData(
+        pagedData.data
+      ) as Assignment[];
       return flattenedData;
     },
   });

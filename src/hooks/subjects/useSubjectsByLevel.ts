@@ -12,7 +12,7 @@ export const useSubjectsByLevel = (level: number, enabled: boolean = true) => {
     placeholderData: keepPreviousData,
     enabled: enabled,
     select: (pagedData) => {
-      const flattened: Subject[] = flattenData(pagedData.data, false);
+      const flattened: Subject[] = flattenData(pagedData.data) as Subject[];
 
       const subjectsUpdated = flattened.reduce(function (
         filtered: Subject[],

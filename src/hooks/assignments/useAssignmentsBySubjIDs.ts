@@ -12,8 +12,10 @@ export const useAssignmentsBySubjIDs = (
     queryKey: assignmentKeys.bySubjIDs(ids),
     queryFn: () => WaniKaniAPI.getAssignmentsBySubjIDs(ids),
     enabled: ids.length !== 0 && enabled,
-    select: (pagedData) => {
-      const flattenedData: Assignment[] = flattenData(pagedData.data, false);
+    select: (data) => {
+      const flattenedData: Assignment[] = flattenData(
+        data.data
+      ) as Assignment[];
       return flattenedData;
     },
   });
