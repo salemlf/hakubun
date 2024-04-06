@@ -52,7 +52,7 @@ const queueCardVariants = {
     y: 0,
     transition: {
       type: "spring",
-      bounce: 0.5,
+      bounce: 0,
       duration: 1,
     },
   },
@@ -65,7 +65,7 @@ const queueCardVariants = {
     },
   },
   hideVisibility: {
-    scale: 0.33,
+    scale: 0.5,
     opacity: 0,
     x: 0,
     transition: {
@@ -80,7 +80,7 @@ const queueCardVariants = {
     opacity: 1,
     transition: {
       type: "spring",
-      bounce: 0.3,
+      bounce: 0.2,
       duration: 1,
     },
   },
@@ -155,8 +155,6 @@ export const AssignmentQueueCard = ({
     };
   }, []);
 
-  // TODO: sometimes on retry drag motion value somehow becomes NaN (maybe somehow gets cancelled?) and...
-  // TODO: ...freezes up the dragging. Tough bug to fix, may be a library issue
   const retryTriggered = () => {
     const strippedUserAnswer = userAnswer.trim();
 
@@ -212,9 +210,9 @@ export const AssignmentQueueCard = ({
     }
   };
 
-  const hideAndMoveCenter = async () => {
-    await controls.set("hideVisibility");
-    await controls.start("center");
+  const hideAndMoveCenter = () => {
+    controls.set("hideVisibility");
+    controls.set("center");
   };
 
   const fadeForward = async () => {
