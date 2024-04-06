@@ -1,0 +1,4 @@
+# global code owners
+* @salemlf
+# owner(s) of this file
+/.github/CODEOWNERS @salemlf
