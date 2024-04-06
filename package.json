@@ -4,13 +4,13 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@capacitor/android": "5.6.0",
-    "@capacitor/app": "5.0.7",
+    "@capacitor/android": "^5.0.0",
+    "@capacitor/app": "^5.0.0",
     "@capacitor/core": "^5.0.0",
-    "@capacitor/haptics": "5.0.7",
-    "@capacitor/ios": "5.6.0",
-    "@capacitor/keyboard": "5.0.8",
-    "@capacitor/status-bar": "5.0.7",
+    "@capacitor/haptics": "^5.0.0",
+    "@capacitor/ios": "^5.0.0",
+    "@capacitor/keyboard": "^5.0.0",
+    "@capacitor/status-bar": "^5.0.0",
     "@ionic/react": "^7.0.0",
     "@ionic/storage": "^3.0.6",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -46,7 +46,6 @@
     "type-fest": "^4.6.0",
     "usehooks-ts": "^3.0.2",
     "wanakana": "^5.1.0",
-    "web-vitals": "^0.2.4",
     "zustand": "^4.4.1"
   },
   "scripts": {
@@ -73,7 +72,7 @@
   ],
   "devDependencies": {
     "@capacitor/assets": "3.0.4",
-    "@capacitor/cli": "5.6.0",
+    "@capacitor/cli": "^5.0.0",
     "@faker-js/faker": "^8.3.1",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",

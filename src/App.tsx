@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import * as LogRocket from "logrocket";
 import * as Sentry from "@sentry/react";
-import { HttpClient } from "@sentry/integrations";
+import { httpClientIntegration } from "@sentry/integrations";
 import {
   createBrowserRouter,
   createRoutesFromChildren,
@@ -84,20 +84,18 @@ if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
     tracePropagationTargets: [baseUrlRegex],
     environment: import.meta.env.MODE,
     integrations: [
-      new Sentry.BrowserTracing({
-        routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-          useEffect,
-          useLocation,
-          useNavigationType,
-          createRoutesFromChildren,
-          matchRoutes
-        ),
+      Sentry.reactRouterV6BrowserTracingIntegration({
+        useEffect,
+        useLocation,
+        useNavigationType,
+        createRoutesFromChildren,
+        matchRoutes,
       }),
-      new Sentry.Replay({
+      Sentry.replayIntegration({
         maskAllText: false,
         blockAllMedia: false,
       }),
-      new HttpClient({}),
+      httpClientIntegration(),
     ],
     // Performance Monitoring
     tracesSampleRate: 1.0, // Capture 100% of the transactions
