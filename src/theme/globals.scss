@@ -20,6 +20,8 @@ body {
   // to avoid absolute positioning issues based on viewport
   position: relative;
   color: var(--text-color);
+  margin-top: constant(safe-area-inset-top);
+  margin-top: env(safe-area-inset-top);
 }
 
 h1,
