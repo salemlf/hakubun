@@ -16,7 +16,8 @@ const TabBarContainer = styled(motion(NavigationMenu.Root))`
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 16px;
+  bottom: calc(constant(safe-area-inset-top) + 16px);
+  bottom: calc(env(safe-area-inset-top) + 16px);
   z-index: 12;
 `;
 
