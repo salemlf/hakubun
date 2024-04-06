@@ -186,13 +186,17 @@ export const FloatingButtonContainer = styled(
 )<FloatingButtonContainerProps>`
   position: fixed;
   z-index: 1;
-  bottom: ${({ distancefrombottom }) => distancefrombottom};
   left: 50%;
   margin: auto;
   width: 100%;
   display: flex;
   justify-content: center;
   z-index: 10;
+
+  bottom: ${({ distancefrombottom }) =>
+    `calc(constant(safe-area-inset-top) + ${distancefrombottom})`};
+  bottom: ${({ distancefrombottom }) =>
+    `calc(env(safe-area-inset-top) + ${distancefrombottom})`};
 `;
 
 export const FullWidthColumn = styled.div`
