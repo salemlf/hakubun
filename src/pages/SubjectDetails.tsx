@@ -1,16 +1,60 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IonSkeletonText } from "@ionic/react";
+import { AnimatePresence } from "framer-motion";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import { capitalizeWord } from "../services/MiscService/MiscService";
 import { useSubjectByID } from "../hooks/subjects/useSubjectByID";
 import { GeneralVocabulary, Kanji, Radical } from "../types/Subject";
+import { AssignmentSessionType } from "../types/AssignmentQueueTypes";
 import SubjectSummary from "../components/SubjectSummary/SubjectSummary";
 import RadicalSubjDetails from "../components/RadicalSubjDetails/RadicalSubjDetails";
 import KanjiSubjDetails from "../components/KanjiSubjDetails/KanjiSubjDetails";
 import VocabSubjDetails from "../components/VocabSubjDetails/VocabSubjDetails";
 import SubjectHeader from "../components/SubjectHeader/SubjectHeader";
 import ErrorMessage from "../components/ErrorMessage";
-import { ContentWithTabBar } from "../styles/BaseStyledComponents";
+import SvgIcon from "../components/SvgIcon";
+import {
+  ContentWithTabBar,
+  FloatingButton,
+  FloatingButtonContainer,
+} from "../styles/BaseStyledComponents";
+import BackArrowIcon from "../images/back-arrow.svg?react";
 import styled from "styled-components";
+
+const BackToSessionTxt = styled.p`
+  margin: 0;
+  color: black;
+  font-size: 1rem;
+`;
+
+type BackToSessionBtnProps = {
+  sessionType: AssignmentSessionType;
+};
+
+function BackToSessionBtn({ sessionType }: BackToSessionBtnProps) {
+  const navigate = useNavigate();
+
+  return (
+    <FloatingButtonContainer
+      distancefrombottom={"35px"}
+      transition={{ type: "spring", delay: 0.5 }}
+      initial={{ scale: 0, x: "-50%" }}
+      animate={{ scale: 1 }}
+      exit={{ scale: 0 }}
+    >
+      <FloatingButton
+        backgroundColor="var(--ion-color-tertiary)"
+        color="black"
+        onPress={() => navigate(-1)}
+      >
+        <SvgIcon icon={<BackArrowIcon />} width="1em" height="1em" />
+        <BackToSessionTxt>
+          Back to {capitalizeWord(sessionType)}s
+        </BackToSessionTxt>
+      </FloatingButton>
+    </FloatingButtonContainer>
+  );
+}
 
 const FullWidthGrid = styled.section`
   padding: 5px 0;
@@ -22,12 +66,8 @@ export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
 
-  const { sessionInProgress: isSessionInProgress } =
+  const { sessionInProgress: isSessionInProgress, sessionType } =
     useAssignmentQueueStoreFacade();
-  console.log(
-    "🚀 ~ file: SubjectDetails.tsx:34 ~ SubjectDetails ~ isSessionInProgress:",
-    isSessionInProgress
-  );
 
   const {
     isLoading: subjectLoading,
@@ -73,6 +113,11 @@ export const SubjectDetails = () => {
               )}
             </FullWidthGrid>
           </ContentWithTabBar>
+          <AnimatePresence>
+            {isSessionInProgress && (
+              <BackToSessionBtn sessionType={sessionType} />
+            )}
+          </AnimatePresence>
         </>
       )}
     </>
