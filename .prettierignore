@@ -16,3 +16,4 @@
 .env.production.local
 /.vscode/*
 !/.vscode/extensions.json
+mockServiceWorker.js

@@ -1,2 +1,2 @@
-export * from './KanaVocabReading';
-export { default } from './KanaVocabReading';
+export * from "./KanaVocabReading";
+export { default } from "./KanaVocabReading";

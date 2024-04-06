@@ -17,7 +17,7 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
-      - name: Execute tests
+      - name: Run unit/integration tests
         run: npm run test
   typescript-check:
     runs-on: macos-latest
@@ -31,7 +31,7 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
-      - name: Execute tests
+      - name: Check for TypeScript errors
         run: npm run tsc-check
   lint:
     runs-on: macos-latest
@@ -45,5 +45,19 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
-      - name: Execute tests
+      - name: Check for linting errors
         run: npm run lint-err-only
+  check-format:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Ensure code is formatted
+        run: npm run check-format
