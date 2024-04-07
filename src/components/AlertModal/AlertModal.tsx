@@ -18,14 +18,12 @@ function AlertModal({ open, onOpenChange, children }: Props) {
 }
 
 const OverlayPrimitive = styled(motion.div)`
-  position: absolute;
   background-color: rgba(0, 0, 0, 0.447);
   inset: 0;
-  z-index: 4000;
+  z-index: 1000;
 `;
 
 const ContentPrimitive = styled(AlertDialogPrimitive.Content)`
-  position: relative;
   padding: 16px;
   border-radius: 12px;
   box-shadow: 2px 1px 10px var(--box-shadow-color);
@@ -35,7 +33,6 @@ const ContentPrimitive = styled(AlertDialogPrimitive.Content)`
   max-height: 85vh;
   overflow-y: auto;
   background-color: var(--foreground-color);
-  z-index: 5000;
 `;
 
 const Content = styled(motion.div)``;
@@ -88,13 +85,8 @@ const MiscButton = styled(DialogButton)`
 `;
 
 const PortalContainer = styled.div`
-  position: absolute;
-  inset: 0;
+  width: 100%;
   pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
 `;
 
 const Title = styled(AlertDialogPrimitive.Title)`
@@ -158,6 +150,8 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1, transition: { delay: DELAY } }}
                     exit={{ opacity: 0 }}
+                    style={{ position: "fixed", height: "100vh" }}
+                    layout
                   />
                 </AlertDialogPrimitive.Overlay>
                 <ContentPrimitive
@@ -170,6 +164,7 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
                     initial={{ scale: 0 }}
                     animate={{ scale: 1, transition: { delay: DELAY } }}
                     exit={{ scale: 0 }}
+                    style={{ position: "absolute", zIndex: 5000 }}
                   >
                     <Title>{title}</Title>
                     {description && <Description>{description}</Description>}
@@ -201,6 +196,7 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
         <PortalContainer
           id="alert-modal-portal-root"
           ref={portalContainerRef}
+          style={{ position: "relative", zIndex: 4000 }}
         />
       </>
     );

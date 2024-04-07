@@ -19,15 +19,13 @@ function Modal({ open, onOpenChange, children }: Props) {
   );
 }
 
-const OverlayPrimitive = styled(DialogPrimitive.Overlay)`
-  position: absolute;
+const OverlayPrimitive = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0.447);
   inset: 0;
-  z-index: 4000;
+  z-index: 1000;
 `;
 
 const ContentPrimitive = styled(DialogPrimitive.Content)`
-  position: relative;
   padding: 16px;
   border-radius: 12px;
   box-shadow: 2px 1px 10px rgba(0, 0, 0, 0.2);
@@ -37,7 +35,6 @@ const ContentPrimitive = styled(DialogPrimitive.Content)`
   max-height: 85vh;
   overflow-y: auto;
   background-color: var(--foreground-color);
-  z-index: 5000;
 `;
 
 const ClosePrimitive = styled(DialogPrimitive.Close)`
@@ -64,15 +61,11 @@ const Description = styled(DialogPrimitive.Description)`
 `;
 
 const PortalContainer = styled.div`
-  position: absolute;
-  inset: 0;
+  width: 100%;
   pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
 `;
 
+const DELAY = 0.3;
 type ContentRef = HTMLDivElement;
 
 type ContentProps = {
@@ -99,7 +92,15 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
           {isOpen && (
             <>
               <DialogPrimitive.Portal forceMount container={portalContainer}>
-                <OverlayPrimitive />
+                <DialogPrimitive.Overlay asChild>
+                  <OverlayPrimitive
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1, transition: { delay: DELAY } }}
+                    exit={{ opacity: 0 }}
+                    style={{ position: "fixed", height: "100vh" }}
+                    layout
+                  />
+                </DialogPrimitive.Overlay>
                 <ContentPrimitive
                   {...props}
                   ref={forwardedRef}
@@ -110,6 +111,7 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
+                    style={{ position: "absolute", zIndex: 5000 }}
                   >
                     <TitleBar>
                       <Title>{title}</Title>
@@ -132,6 +134,7 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
         <PortalContainer
           id="modal-dialog-portal-root"
           ref={portalContainerRef}
+          style={{ position: "relative", zIndex: 4000 }}
         />
       </>
     );
