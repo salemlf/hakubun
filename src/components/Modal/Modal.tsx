@@ -110,6 +110,10 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
             </>
           )}
         </AnimatePresence>
+        <PortalContainer
+          id="modal-dialog-portal-root"
+          ref={portalContainerRef}
+        />
       </>
     );
   }

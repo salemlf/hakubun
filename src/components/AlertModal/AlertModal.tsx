@@ -164,6 +164,10 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
             </>
           )}
         </AnimatePresence>
+        <PortalContainer
+          id="alert-modal-portal-root"
+          ref={portalContainerRef}
+        />
       </>
     );
   }
