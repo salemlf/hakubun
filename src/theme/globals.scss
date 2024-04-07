@@ -12,6 +12,11 @@ body {
 
   ion-app {
     overflow: -moz-hidden-unscrollable !important;
+    margin-top: constant(safe-area-inset-top);
+    margin-top: env(safe-area-inset-top);
+
+    margin-bottom: constant(safe-area-inset-bottom);
+    margin-bottom: env(safe-area-inset-bottom);
   }
 }
 
@@ -20,8 +25,6 @@ body {
   // to avoid absolute positioning issues based on viewport
   position: relative;
   color: var(--text-color);
-  margin-top: constant(safe-area-inset-top);
-  margin-top: env(safe-area-inset-top);
 }
 
 h1,
