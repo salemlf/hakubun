@@ -1,4 +1,4 @@
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useRef, useEffect } from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { AnimatePresence, motion } from "framer-motion";
 import styled from "styled-components";
@@ -135,57 +135,67 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
     forwardedRef
   ) => {
     const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const portalContainerRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+      setContainer(portalContainerRef.current);
+    }, []);
 
     return (
       <>
         <AnimatePresence>
           {isOpen && (
-            <AlertDialogPrimitive.Portal forceMount container={container}>
-              <AlertDialogPrimitive.Overlay asChild>
-                <OverlayPrimitive
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, transition: { delay: DELAY } }}
-                  exit={{ opacity: 0 }}
-                />
-              </AlertDialogPrimitive.Overlay>
-              <ContentPrimitive
-                {...props}
-                ref={forwardedRef}
-                forceMount
-                asChild
-              >
-                <Content
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1, transition: { delay: DELAY } }}
-                  exit={{ scale: 0 }}
+            <>
+              <AlertDialogPrimitive.Portal forceMount container={container}>
+                <AlertDialogPrimitive.Overlay asChild>
+                  <OverlayPrimitive
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1, transition: { delay: DELAY } }}
+                    exit={{ opacity: 0 }}
+                  />
+                </AlertDialogPrimitive.Overlay>
+                <ContentPrimitive
+                  {...props}
+                  ref={forwardedRef}
+                  forceMount
+                  asChild
                 >
-                  <Title>{title}</Title>
-                  {description && <Description>{description}</Description>}
-                  <ButtonContainer>
-                    <AlertDialogPrimitive.Cancel asChild>
-                      <CancelButton onClick={onCancelClick}>
-                        {cancelText}
-                      </CancelButton>
-                    </AlertDialogPrimitive.Cancel>
-                    <AlertDialogPrimitive.Action asChild>
-                      <ConfirmButton onClick={onConfirmClick}>
-                        {confirmText}
-                      </ConfirmButton>
-                    </AlertDialogPrimitive.Action>
-                    {showAddtlAction && (
+                  <Content
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1, transition: { delay: DELAY } }}
+                    exit={{ scale: 0 }}
+                  >
+                    <Title>{title}</Title>
+                    {description && <Description>{description}</Description>}
+                    <ButtonContainer>
+                      <AlertDialogPrimitive.Cancel asChild>
+                        <CancelButton onClick={onCancelClick}>
+                          {cancelText}
+                        </CancelButton>
+                      </AlertDialogPrimitive.Cancel>
                       <AlertDialogPrimitive.Action asChild>
-                        <MiscButton onClick={onAddtlActionClick}>
-                          {addtlActionText}
-                        </MiscButton>
+                        <ConfirmButton onClick={onConfirmClick}>
+                          {confirmText}
+                        </ConfirmButton>
                       </AlertDialogPrimitive.Action>
-                    )}
-                  </ButtonContainer>
-                </Content>
-              </ContentPrimitive>
-            </AlertDialogPrimitive.Portal>
+                      {showAddtlAction && (
+                        <AlertDialogPrimitive.Action asChild>
+                          <MiscButton onClick={onAddtlActionClick}>
+                            {addtlActionText}
+                          </MiscButton>
+                        </AlertDialogPrimitive.Action>
+                      )}
+                    </ButtonContainer>
+                  </Content>
+                </ContentPrimitive>
+              </AlertDialogPrimitive.Portal>
+              <PortalContainer
+                id="alert-modal-portal-root"
+                ref={portalContainerRef}
+              />
+            </>
           )}
         </AnimatePresence>
-        <PortalContainer id="alert-modal-portal-root" ref={setContainer} />
       </>
     );
   }
