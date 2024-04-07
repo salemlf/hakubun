@@ -187,18 +187,13 @@ export const FloatingButtonContainer = styled(
   motion.div
 )<FloatingButtonContainerProps>`
   position: fixed;
-  z-index: 1;
   left: 50%;
   margin: auto;
   width: 100%;
   display: flex;
   justify-content: center;
   z-index: 10;
-
-  bottom: ${({ distancefrombottom }) =>
-    `calc(constant(safe-area-inset-top) + ${distancefrombottom})`};
-  bottom: ${({ distancefrombottom }) =>
-    `calc(env(safe-area-inset-top) + ${distancefrombottom})`};
+  bottom: ${({ distancefrombottom }) => distancefrombottom};
 `;
 
 export const FullWidthColumn = styled.div`
