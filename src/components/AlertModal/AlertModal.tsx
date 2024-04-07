@@ -134,19 +134,23 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
     },
     forwardedRef
   ) => {
-    const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const [portalContainer, setPortalContainer] =
+      useState<HTMLDivElement | null>(null);
     const portalContainerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-      setContainer(portalContainerRef.current);
-    }, []);
+      setPortalContainer(portalContainerRef.current);
+    }, [portalContainer]);
 
     return (
       <>
         <AnimatePresence>
           {isOpen && (
             <>
-              <AlertDialogPrimitive.Portal forceMount container={container}>
+              <AlertDialogPrimitive.Portal
+                forceMount
+                container={portalContainer}
+              >
                 <AlertDialogPrimitive.Overlay asChild>
                   <OverlayPrimitive
                     initial={{ opacity: 0 }}

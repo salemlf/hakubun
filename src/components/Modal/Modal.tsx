@@ -89,7 +89,7 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
 
     useEffect(() => {
       setPortalContainer(portalContainerRef.current);
-    }, []);
+    }, [portalContainer]);
 
     return (
       <>
