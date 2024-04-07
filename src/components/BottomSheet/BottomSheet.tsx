@@ -1,5 +1,4 @@
 import { forwardRef, useCallback, useEffect, useRef } from "react";
-import { useResizeObserver } from "usehooks-ts";
 import type { ForwardedRef } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { PanInfo, motion, useAnimation } from "framer-motion";
@@ -13,20 +12,25 @@ const Content = styled(RadixDialog.Content)`
   width: 100%;
   border-radius: 12px 12px 0 0;
   height: 100%;
-  background-color: var(--light-greyish-purple);
   overflow-y: clip;
   pointer-events: auto;
   position: absolute;
-  background-color: var(--dark-greyish-purple);
+  background-color: var(--foreground-color);
   left: 0;
   right: 0;
+  z-index: 12;
 `;
 
-const SheetHeader = styled.header`
+type SheetHeaderProps = {
+  $headerHeight: string;
+};
+
+const SheetHeader = styled.header<SheetHeaderProps>`
   background-color: var(--foreground-color);
   padding: 5px 0 10px;
   color: white;
   text-align: center;
+  height: ${({ $headerHeight }) => $headerHeight};
 `;
 
 const SheetHeadingTxt = styled(RadixDialog.Title)`
@@ -46,17 +50,16 @@ const SheetOpenCloseButton = styled(Button)`
 `;
 
 const SheetContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 21;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
   overflow-y: hidden;
   pointer-events: none;
 `;
@@ -69,31 +72,26 @@ function BottomSheetRoot({ children, ...props }: RadixDialog.DialogProps) {
   );
 }
 
-const sheetPosVariants = {
-  fullyOpen: { y: 0 },
-  mostlyClosed: (dragHeight: number) => ({
-    y: dragHeight,
-  }),
-};
-
 type BottomSheetContentCoreProps = RadixDialog.DialogContentProps & {
-  height: number;
   title: string;
 };
 
-const sheetHeightMargin = 100;
-
 // TODO: fix bug where can't tab back once tabbed to open/close button (workaround rn is to open sheet and then tab back)
 function BottomSheetContentCore(
-  { title, height, children, ...props }: BottomSheetContentCoreProps,
+  { title, children, ...props }: BottomSheetContentCoreProps,
   forwardedRef: ForwardedRef<HTMLDivElement>
 ) {
   const headerRef = useRef<HTMLDivElement | null>(null);
   const sheetContainerRef = useRef<HTMLDivElement | null>(null);
-  const { height: headerHeight } = useResizeObserver({
-    ref: headerRef,
-  });
-  const dragHeight = height - (headerHeight ?? 0) - sheetHeightMargin;
+  const bottomSheetHeight = "85svh";
+  const headerHeight = "12svh";
+
+  const sheetPosVariants = {
+    fullyOpen: { y: 0 },
+    mostlyClosed: (dragHeight: string) => ({
+      y: `calc(${bottomSheetHeight} - ${dragHeight})`,
+    }),
+  };
 
   useEffect(() => {
     mostlyClose();
@@ -125,7 +123,7 @@ function BottomSheetContentCore(
     if (!isBottomSheetOpen) {
       mostlyClose();
     }
-  }, [controls, headerHeight, isBottomSheetOpen, mostlyClose]);
+  }, [controls, isBottomSheetOpen, mostlyClose]);
 
   const onDragEnd = (
     event: MouseEvent | TouchEvent | PointerEvent,
@@ -149,7 +147,14 @@ function BottomSheetContentCore(
   };
 
   return (
-    <SheetContainer ref={sheetContainerRef}>
+    <SheetContainer
+      ref={sheetContainerRef}
+      as={motion.div}
+      transition={{ type: "spring", bounce: 0.1 }}
+      initial={{ y: "5%", opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ opacity: 0, y: "5%" }}
+    >
       <Content
         onEscapeKeyDown={(event: KeyboardEvent) => {
           event.preventDefault();
@@ -178,14 +183,13 @@ function BottomSheetContentCore(
             damping: 20,
             stiffness: 300,
           }}
-          custom={dragHeight}
+          custom={headerHeight}
           variants={sheetPosVariants}
-          dragConstraints={{ top: 0, bottom: dragHeight }}
+          dragConstraints={sheetContainerRef}
           dragElastic={0.3}
           style={{
             width: "100%",
-            height: height - sheetHeightMargin,
-            // overflowY: "hidden",
+            height: bottomSheetHeight,
             zIndex: 5,
           }}
         >
@@ -194,7 +198,7 @@ function BottomSheetContentCore(
             autoFocus
             restoreFocus={false}
           >
-            <SheetHeader ref={headerRef}>
+            <SheetHeader ref={headerRef} $headerHeight={headerHeight}>
               <SheetOpenCloseButton
                 data-testid="bottom-sheet-btn"
                 onPress={onSheetBtnPress}
