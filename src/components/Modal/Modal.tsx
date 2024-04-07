@@ -23,6 +23,7 @@ const OverlayPrimitive = styled(DialogPrimitive.Overlay)`
   position: absolute;
   background-color: rgba(0, 0, 0, 0.447);
   inset: 0;
+  z-index: 4000;
 `;
 
 const ContentPrimitive = styled(DialogPrimitive.Content)`
@@ -89,7 +90,8 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
 
     useEffect(() => {
       setPortalContainer(portalContainerRef.current);
-    }, [portalContainer]);
+      // this dependency is actually necessary due to a bug in Radix Dialog
+    }, [portalContainerRef.current]);
 
     return (
       <>
@@ -124,13 +126,13 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                   </Content>
                 </ContentPrimitive>
               </DialogPrimitive.Portal>
-              <PortalContainer
-                id="modal-dialog-portal-root"
-                ref={portalContainerRef}
-              />
             </>
           )}
         </AnimatePresence>
+        <PortalContainer
+          id="modal-dialog-portal-root"
+          ref={portalContainerRef}
+        />
       </>
     );
   }
