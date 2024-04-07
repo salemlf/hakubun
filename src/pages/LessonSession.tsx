@@ -15,7 +15,7 @@ import styled from "styled-components";
 
 // TODO: extract into HomeButton component
 const HomeBtn = styled(Button)`
-  position: fixed;
+  position: absolute;
   top: 10px;
   left: 10px;
   border-radius: 10px;
