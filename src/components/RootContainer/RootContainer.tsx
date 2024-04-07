@@ -5,7 +5,7 @@ import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/
 import FloatingTabBar from "../FloatingTabBar";
 import styled from "styled-components";
 
-export const containerVariants = {
+const containerVariants = {
   initial: { opacity: 0, y: 20 },
   in: { opacity: 1, y: 0 },
   out: { opacity: 0, y: -20 },
