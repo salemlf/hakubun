@@ -171,8 +171,7 @@ export const FloatingButtonContainer = styled(
   display: flex;
   justify-content: center;
   z-index: 10;
-  bottom: ${({ distancefrombottom }) =>
-    `calc(env(safe-area-inset-top) + ${distancefrombottom})`};
+  bottom: ${({ distancefrombottom }) => distancefrombottom};
 `;
 
 export const FullWidthColumn = styled.div`
