@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "framer-motion";
 import SvgIcon from "../SvgIcon/SvgIcon";
@@ -83,38 +83,54 @@ type ContentProps = {
 
 export const ModalContent = forwardRef<ContentRef, ContentProps>(
   ({ children, title, description, isOpen, ...props }, forwardedRef) => {
-    const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const [portalContainer, setPortalContainer] =
+      useState<HTMLDivElement | null>(null);
+    const portalContainerRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+      setPortalContainer(portalContainerRef.current);
+    }, []);
+
     return (
       <>
         <AnimatePresence>
           {isOpen && (
-            <DialogPrimitive.Portal forceMount container={container}>
-              <OverlayPrimitive />
-              <ContentPrimitive
-                {...props}
-                ref={forwardedRef}
-                forceMount
-                asChild
-              >
-                <Content
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  exit={{ scale: 0 }}
+            <>
+              <DialogPrimitive.Portal forceMount container={portalContainer}>
+                <OverlayPrimitive />
+                <ContentPrimitive
+                  {...props}
+                  ref={forwardedRef}
+                  forceMount
+                  asChild
                 >
-                  <TitleBar>
-                    <Title>{title}</Title>
-                    <ClosePrimitive aria-label="Close">
-                      <SvgIcon icon={<CloseIcon />} width="2em" height="2em" />
-                    </ClosePrimitive>
-                  </TitleBar>
-                  {description && <Description>{description}</Description>}
-                  {children}
-                </Content>
-              </ContentPrimitive>
-            </DialogPrimitive.Portal>
+                  <Content
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                  >
+                    <TitleBar>
+                      <Title>{title}</Title>
+                      <ClosePrimitive aria-label="Close">
+                        <SvgIcon
+                          icon={<CloseIcon />}
+                          width="2em"
+                          height="2em"
+                        />
+                      </ClosePrimitive>
+                    </TitleBar>
+                    {description && <Description>{description}</Description>}
+                    {children}
+                  </Content>
+                </ContentPrimitive>
+              </DialogPrimitive.Portal>
+              <PortalContainer
+                id="modal-dialog-portal-root"
+                ref={portalContainerRef}
+              />
+            </>
           )}
         </AnimatePresence>
-        <PortalContainer id="modal-dialog-portal-root" ref={setContainer} />
       </>
     );
   }
