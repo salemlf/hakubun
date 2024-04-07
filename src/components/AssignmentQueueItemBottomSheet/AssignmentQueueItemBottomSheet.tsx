@@ -22,8 +22,7 @@ type Props = {
   currentReviewItem: AssignmentQueueItem;
 };
 
-// TODO: rename so matches AssignmentQueue naming convention
-function ReviewItemBottomSheet({ currentReviewItem }: Props) {
+function AssignmentQueueItemBottomSheet({ currentReviewItem }: Props) {
   const location = useLocation();
   const { isBottomSheetVisible: showBottomSheet } = useQueueStoreFacade();
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -99,4 +98,4 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   );
 }
 
-export default ReviewItemBottomSheet;
+export default AssignmentQueueItemBottomSheet;
