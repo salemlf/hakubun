@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { getReviewedAssignmentQueueItems } from "../../services/AssignmentQueueService/AssignmentQueueService";
 import { MAX_ASSIGNMENTS_BEFORE_SUBMIT } from "../../constants";
 import { useAssignmentQueue } from "./AssignmentQueueCards.hooks";
@@ -8,10 +9,10 @@ import {
   AssignmentSubmitInfo,
 } from "../../types/AssignmentQueueTypes";
 import { AssignmentQueueCard } from "./AssignmentQueueCard";
+import AssignmentQueueItemBottomSheet from "../AssignmentQueueItemBottomSheet";
 import LoadingDots from "../LoadingDots";
 import { AssignmentCardContainer } from "./AssignmentQueueCardsStyled";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
-import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 
 export type CardProps = {
   submitItems: (reviewData: AssignmentQueueItem[]) => void;
@@ -29,6 +30,7 @@ function AssignmentQueueCards({
   const { handleNextCard, handleRetryCard } = useAssignmentQueue();
   const { assignmentQueue, currQueueIndex } = useAssignmentQueueStoreFacade();
   const { shouldBatchSubmit } = useAssignmentSubmitStoreFacade();
+  const currReviewItem = assignmentQueue[currQueueIndex];
 
   useEffect(() => {
     // if we've gone past the last item in the queue, submit
@@ -36,10 +38,11 @@ function AssignmentQueueCards({
       currQueueIndex === assignmentQueue.length &&
       assignmentQueue.length !== 0
     ) {
-      let reviewedItemsInfo = getReviewedAssignmentQueueItems(assignmentQueue);
+      const reviewedItemsInfo =
+        getReviewedAssignmentQueueItems(assignmentQueue);
       submitItems(reviewedItemsInfo.reviewedQueueItems);
     }
-  }, [assignmentQueue[currQueueIndex]]);
+  }, [currQueueIndex, assignmentQueue]);
 
   useEffect(() => {
     const checkForReviewedBatch =
@@ -47,7 +50,8 @@ function AssignmentQueueCards({
       assignmentQueue.length > 0 &&
       !(currQueueIndex >= assignmentQueue.length - 1);
     if (checkForReviewedBatch) {
-      let reviewedItemsInfo = getReviewedAssignmentQueueItems(assignmentQueue);
+      const reviewedItemsInfo =
+        getReviewedAssignmentQueueItems(assignmentQueue);
 
       // *testing
       console.log(
@@ -66,7 +70,7 @@ function AssignmentQueueCards({
         );
       }
     }
-  }, [currQueueIndex]);
+  }, [currQueueIndex, assignmentQueue]);
 
   return (
     <>
@@ -76,13 +80,16 @@ function AssignmentQueueCards({
           <LoadingDots />
         </FixedCenterContainer>
       ) : (
-        <AssignmentCardContainer>
-          <AssignmentQueueCard
-            currentReviewItem={assignmentQueue[currQueueIndex]}
-            handleNextCard={handleNextCard}
-            handleRetryCard={handleRetryCard}
-          />
-        </AssignmentCardContainer>
+        <>
+          <AssignmentCardContainer>
+            <AssignmentQueueCard
+              currentReviewItem={currReviewItem}
+              handleNextCard={handleNextCard}
+              handleRetryCard={handleRetryCard}
+            />
+          </AssignmentCardContainer>
+          <AssignmentQueueItemBottomSheet currentReviewItem={currReviewItem} />
+        </>
       )}
     </>
   );
