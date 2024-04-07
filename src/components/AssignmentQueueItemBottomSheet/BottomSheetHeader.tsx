@@ -1,4 +1,3 @@
-import { IonHeader } from "@ionic/react";
 import { Subject, SubjectType } from "../../types/Subject";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import SubjectChars from "../SubjectChars/SubjectChars";
@@ -8,12 +7,10 @@ type ContainerProps = {
   subjType: SubjectType;
 };
 
-const Container = styled(IonHeader)<ContainerProps>`
+const Container = styled.header<ContainerProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  --ion-toolbar-background: ${({ subjType }) => getSubjectColor(subjType)};
-  --ion-background-color: ${({ subjType }) => getSubjectColor(subjType)};
   background-color: ${({ subjType }) => getSubjectColor(subjType)};
   border-radius: 0 0 20px 20px;
 
