@@ -18,7 +18,7 @@ function AlertModal({ open, onOpenChange, children }: Props) {
 }
 
 const OverlayPrimitive = styled(motion.div)`
-  position: fixed;
+  position: absolute;
   background-color: rgba(0, 0, 0, 0.447);
   inset: 0;
 `;
@@ -87,7 +87,7 @@ const MiscButton = styled(DialogButton)`
 `;
 
 const PortalContainer = styled.div`
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
   display: flex;

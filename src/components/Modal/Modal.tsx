@@ -20,7 +20,7 @@ function Modal({ open, onOpenChange, children }: Props) {
 }
 
 const OverlayPrimitive = styled(DialogPrimitive.Overlay)`
-  position: fixed;
+  position: absolute;
   background-color: rgba(0, 0, 0, 0.447);
   inset: 0;
 `;
@@ -63,7 +63,7 @@ const Description = styled(DialogPrimitive.Description)`
 `;
 
 const PortalContainer = styled.div`
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
   display: flex;

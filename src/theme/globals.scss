@@ -63,7 +63,7 @@ ion-toast {
 
 // keeps toast region from being on same level as ion-app, weird bug where can't apply in normal styled components
 div[role="region"] {
-  position: fixed;
+  position: absolute;
   z-index: 2000;
 }
 
