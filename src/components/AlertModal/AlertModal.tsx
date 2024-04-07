@@ -123,6 +123,8 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1, transition: { delay: DELAY } }}
                     exit={{ opacity: 0 }}
+                    style={{ position: "fixed", height: "100vh" }}
+                    layout
                   />
                 </AlertDialogPrimitive.Overlay>
                 <AlertDialogPrimitive.Content
