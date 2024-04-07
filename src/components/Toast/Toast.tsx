@@ -31,6 +31,7 @@ const Root = styled(ToastPrimitive.Root)<RootProps>`
   align-items: center;
   max-height: 300px;
   overflow-y: auto;
+  pointer-events: auto;
 `;
 
 const Title = styled(ToastPrimitive.Title)`
