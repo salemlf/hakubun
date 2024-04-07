@@ -186,7 +186,7 @@ type FloatingButtonContainerProps = {
 export const FloatingButtonContainer = styled(
   motion.div
 )<FloatingButtonContainerProps>`
-  position: fixed;
+  position: absolute;
   left: 50%;
   margin: auto;
   width: 100%;
@@ -245,8 +245,9 @@ export const SettingRow = styled.div`
   }
 `;
 
+// okay, not actually "fixed" cuz ios is picky
 export const FixedCenterContainer = styled.div`
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
