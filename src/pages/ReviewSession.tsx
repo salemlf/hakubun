@@ -1,11 +1,13 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useBlocker, useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import {
   createReviewPostData,
   getCompletedAssignmentQueueData,
+  shouldBlock,
 } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { useCreateReview } from "../hooks/assignments/useCreateReview";
 import { useSubmittedQueueUpdate } from "../hooks/assignments/useSubmittedQueueUpdate";
@@ -130,6 +132,7 @@ const Description = () => {
   );
 };
 
+// TODO: clean up how blocker is used, extract into a hook?
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 function ReviewSession() {
   const navigate = useNavigate();
@@ -140,6 +143,15 @@ function ReviewSession() {
     currQueueIndex,
     updateAssignmentQueueData,
   } = useAssignmentQueueStoreFacade();
+  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+  const blocker = useBlocker(shouldBlock);
+
+  useEffect(() => {
+    if (blocker.state === "blocked" && isBottomSheetOpen) {
+      blocker.reset();
+      setIsBottomSheetOpen(false);
+    }
+  }, [blocker.state, isBottomSheetOpen]);
 
   const updateSubmitted = useSubmittedQueueUpdate();
 

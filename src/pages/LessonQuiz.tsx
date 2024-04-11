@@ -1,8 +1,12 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useBlocker, useNavigate } from "react-router-dom";
+import {
+  getCompletedAssignmentQueueData,
+  shouldBlock,
+} from "../services/AssignmentQueueService/AssignmentQueueService";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
-import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService/AssignmentQueueService";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
+import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { useStartAssignment } from "../hooks/assignments/useStartAssignment";
 import { useSubmittedQueueUpdate } from "../hooks/assignments/useSubmittedQueueUpdate";
 import {
@@ -24,6 +28,7 @@ const Content = styled(MainContent)`
   align-content: space-between;
 `;
 
+// TODO: clean up how blocker is used, extract into a hook?
 function LessonQuiz() {
   const navigate = useNavigate();
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
@@ -35,6 +40,23 @@ function LessonQuiz() {
   );
   const updateSubmitted = useSubmittedQueueUpdate();
   const { mutateAsync: startAssignmentAsync } = useStartAssignment();
+  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+
+  const blocker = useBlocker(shouldBlock);
+
+  useEffect(() => {
+    if (blocker.state === "blocked" && isBottomSheetOpen) {
+      blocker.reset();
+      setIsBottomSheetOpen(false);
+    }
+  }, [blocker.state, isBottomSheetOpen]);
+
+  useEffect(() => {
+    if (blocker.state === "blocked" && isBottomSheetOpen) {
+      blocker.reset();
+      setIsBottomSheetOpen(false);
+    }
+  }, [blocker.state, isBottomSheetOpen]);
 
   useEffect(() => {
     if (assignmentQueue.length === 0) {

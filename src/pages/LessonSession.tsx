@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useBlocker, useNavigate } from "react-router-dom";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import LessonCards from "../components/LessonCards";
 import LeaveSessionPrompt from "../components/LeaveSessionPrompt";
@@ -21,6 +22,7 @@ const HomeBtn = styled(Button)`
   z-index: 10;
 `;
 
+// TODO: clean up how blocker is used, extract into a hook?
 function LessonSession() {
   const navigate = useNavigate();
   const [uniqueLessonQueue, setUniqueLessonQueue] = useState<
@@ -30,6 +32,23 @@ function LessonSession() {
   const { resetAll: resetAssignmentQueue, assignmentQueue: lessonQueue } =
     useAssignmentQueueStoreFacade();
   const { reset: resetLessonPaginator } = useLessonPaginatorStoreFacade();
+  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+
+  const blocker = useBlocker(shouldBlock);
+
+  useEffect(() => {
+    if (blocker.state === "blocked" && isBottomSheetOpen) {
+      blocker.reset();
+      setIsBottomSheetOpen(false);
+    }
+  }, [blocker.state, isBottomSheetOpen]);
+
+  useEffect(() => {
+    if (blocker.state === "blocked" && isBottomSheetOpen) {
+      blocker.reset();
+      setIsBottomSheetOpen(false);
+    }
+  }, [blocker.state, isBottomSheetOpen]);
 
   useEffect(() => {
     if (lessonQueue.length === 0) {
