@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useBlocker, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useBlocker, useNavigate, Location } from "react-router-dom";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
-import { shouldBlock } from "../services/AssignmentQueueService/AssignmentQueueService";
+import { blockUserLeavingPage } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import LessonCards from "../components/LessonCards";
 import Button from "../components/Button";
@@ -23,6 +23,7 @@ const HomeBtn = styled(Button)`
   z-index: 10;
 `;
 
+// TODO: clean up how blocker is used, extract into a hook?
 function LessonSession() {
   const navigate = useNavigate();
   const [uniqueLessonQueue, setUniqueLessonQueue] = useState<
@@ -32,9 +33,21 @@ function LessonSession() {
   const { resetAll: resetAssignmentQueue, assignmentQueue: lessonQueue } =
     useAssignmentQueueStoreFacade();
   const { reset: resetLessonPaginator } = useLessonPaginatorStoreFacade();
-
-  const blocker = useBlocker(shouldBlock);
   const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+
+  const shouldBlock = useCallback(
+    ({
+      currentLocation,
+      nextLocation,
+    }: {
+      currentLocation: Location<unknown>;
+      nextLocation: Location<unknown>;
+    }) => {
+      return blockUserLeavingPage({ currentLocation, nextLocation });
+    },
+    []
+  );
+  const blocker = useBlocker(shouldBlock);
 
   useEffect(() => {
     if (blocker.state === "blocked" && isBottomSheetOpen) {
@@ -47,7 +60,7 @@ function LessonSession() {
     if (lessonQueue.length === 0) {
       // TODO: redirect to home page, shouldn't be here with no lessons!
     } else {
-      let uniqueLessonsToLearn = lessonQueue.filter(
+      const uniqueLessonsToLearn = lessonQueue.filter(
         (lesson, index, self) =>
           index === self.findIndex((l) => l.id === lesson.id)
       );

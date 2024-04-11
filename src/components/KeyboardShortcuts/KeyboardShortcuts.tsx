@@ -1,11 +1,10 @@
 import styled from "styled-components";
 
 const KeyBoardShortcuts = styled.div`
-  position: absolute;
   width: 100%;
-  bottom: 10px;
   display: flex;
   justify-content: space-around;
+  margin-bottom: 10px;
 `;
 
 const Shortcut = styled.p`

@@ -82,7 +82,6 @@ export const SwipeTxt = styled.p`
 `;
 
 export const NextCardOverlay = styled(SwipeOverlay)`
-  /* background-color: var(--ion-color-tertiary); */
   background-color: #0077b3;
 `;
 
