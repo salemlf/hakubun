@@ -76,6 +76,7 @@ type Props = {
   isRadical: boolean;
 };
 
+// TODO: change to just use a dialog for editing
 // TODO: scroll input into view on editing start
 function Note({
   subject,
@@ -240,6 +241,7 @@ function Note({
       </NoteContainer>
       <AlertModal open={isModalOpen} onOpenChange={setIsModalOpen}>
         <AlertModal.Content
+          modalID="delete-meaning-note-alert-modal"
           isOpen={isModalOpen}
           title={noteHeadingsAndMsg.alertHeadingTxt}
           description={noteHeadingsAndMsg.alertHeadingMsg}
