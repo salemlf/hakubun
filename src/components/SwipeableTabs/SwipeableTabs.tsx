@@ -22,6 +22,7 @@ const TabPanelStyled = styled(Tabs.Content)`
   width: 100%;
   height: 85%;
   scroll-snap-align: start;
+  -webkit-scroll-snap-align: start;
   flex-shrink: 0;
   margin: 0 5px;
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -47,7 +48,9 @@ const TabPanels = styled.div`
   font-weight: 300;
   color: white;
   scroll-snap-type: x mandatory;
+  -webkit-scroll-snap-type: x mandatory;
   overscroll-behavior-x: auto;
+  -webkit-overflow-scrolling: touch;
   height: 100%;
   padding-bottom: 30px;
 
@@ -129,7 +132,7 @@ function SwipeableTabs({
       if (tabElements.length <= 1) {
         return 0;
       }
-      let optionsToRoundTo: number[] = [];
+      const optionsToRoundTo: number[] = [];
       for (let i = 0; i < tabElements.length; i++) {
         optionsToRoundTo.push(i / (tabElements.length - 1));
       }
@@ -167,9 +170,10 @@ function SwipeableTabs({
       tabElements.length > 0
     ) {
       const index = tabs.findIndex((tab) => tab.id === selectedTabKey);
-      let currSelected = tabElements[index];
+      const currSelected = tabElements[index];
       if (currSelected) {
-        let scrollToCenterPos =
+        // TODO: this doesn't work as expected in webkit browsers, fix
+        const scrollToCenterPos =
           currSelected.offsetLeft +
           currSelected.offsetWidth / 2 -
           tabListRef.current.offsetWidth / 2;
