@@ -1,12 +1,12 @@
-import { useEffect } from "react";
-import { useBlocker, useNavigate } from "react-router-dom";
+import { useCallback, useEffect } from "react";
+import { useBlocker, useNavigate, Location } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import {
+  blockUserLeavingPage,
   createReviewPostData,
   getCompletedAssignmentQueueData,
-  shouldBlock,
 } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { useCreateReview } from "../hooks/assignments/useCreateReview";
@@ -25,7 +25,10 @@ import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Content = styled(MainContent)`
-  height: 100%;
+  height: 100svh;
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: space-between;
 `;
 
 const WrapUpFlagContainer = styled(motion.div)`
@@ -129,6 +132,7 @@ const Description = () => {
   );
 };
 
+// TODO: clean up how blocker is used, extract into a hook?
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 function ReviewSession() {
   const navigate = useNavigate();
@@ -140,8 +144,21 @@ function ReviewSession() {
     updateAssignmentQueueData,
   } = useAssignmentQueueStoreFacade();
 
-  const blocker = useBlocker(shouldBlock);
   const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+
+  const shouldBlock = useCallback(
+    ({
+      currentLocation,
+      nextLocation,
+    }: {
+      currentLocation: Location<unknown>;
+      nextLocation: Location<unknown>;
+    }) => {
+      return blockUserLeavingPage({ currentLocation, nextLocation });
+    },
+    []
+  );
+  const blocker = useBlocker(shouldBlock);
 
   useEffect(() => {
     if (blocker.state === "blocked" && isBottomSheetOpen) {
@@ -267,6 +284,7 @@ function ReviewSession() {
       {blocker.state === "blocked" && (
         <AlertModal open={blocker.state === "blocked"}>
           <AlertModal.Content
+            modalID="end-review-session-alert-modal"
             isOpen={blocker.state === "blocked"}
             title="End Review Session?"
             confirmText="End Session"
@@ -290,31 +308,29 @@ function ReviewSession() {
       )}
       <QueueHeader />
       <Content data-testid="review-session-content">
-        <>
-          {assignmentQueue.length !== 0 && (
-            <AssignmentQueueCards
-              submitItems={submitAndRedirect}
-              submitBatch={submitReviewBatch}
-              updateSubmitted={updateSubmitted}
-            />
-          )}
-          <WrapUpFlagContainer
-            variants={finishFlagBgVariants}
-            animate={bgControls}
-            initial="hidden"
+        {assignmentQueue.length !== 0 && (
+          <AssignmentQueueCards
+            submitItems={submitAndRedirect}
+            submitBatch={submitReviewBatch}
+            updateSubmitted={updateSubmitted}
+          />
+        )}
+        <WrapUpFlagContainer
+          variants={finishFlagBgVariants}
+          animate={bgControls}
+          initial="hidden"
+        >
+          <FlagAndTxtContainer
+            variants={flagImgAndTxtVariants}
+            animate={flgImgAndTxtControls}
+            initial="hideAbove"
           >
-            <FlagAndTxtContainer
-              variants={flagImgAndTxtVariants}
-              animate={flgImgAndTxtControls}
-              initial="hideAbove"
-            >
-              <img title="Checkered Flag" src={FinishFlagIcon} />
-              <WrappingUpTxt>Wrapping Up!</WrappingUpTxt>
-            </FlagAndTxtContainer>
-          </WrapUpFlagContainer>
-        </>
+            <img title="Checkered Flag" src={FinishFlagIcon} />
+            <WrappingUpTxt>Wrapping Up!</WrappingUpTxt>
+          </FlagAndTxtContainer>
+        </WrapUpFlagContainer>
+        <KeyboardShortcuts />
       </Content>
-      <KeyboardShortcuts />
     </>
   );
 }

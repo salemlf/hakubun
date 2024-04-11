@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { useBlocker, useNavigate } from "react-router-dom";
+import { useCallback, useEffect } from "react";
+import { useBlocker, useNavigate, Location } from "react-router-dom";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import {
+  blockUserLeavingPage,
   getCompletedAssignmentQueueData,
-  shouldBlock,
 } from "../services/AssignmentQueueService/AssignmentQueueService";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
@@ -21,10 +21,14 @@ import KeyboardShortcuts from "../components/KeyboardShortcuts";
 import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-const MainContentWithMargin = styled(MainContent)`
-  margin: 10px;
+const Content = styled(MainContent)`
+  height: 100svh;
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: space-between;
 `;
 
+// TODO: clean up how blocker is used, extract into a hook?
 function LessonQuiz() {
   const navigate = useNavigate();
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
@@ -36,9 +40,21 @@ function LessonQuiz() {
   );
   const updateSubmitted = useSubmittedQueueUpdate();
   const { mutateAsync: startAssignmentAsync } = useStartAssignment();
-
-  const blocker = useBlocker(shouldBlock);
   const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+
+  const shouldBlock = useCallback(
+    ({
+      currentLocation,
+      nextLocation,
+    }: {
+      currentLocation: Location<unknown>;
+      nextLocation: Location<unknown>;
+    }) => {
+      return blockUserLeavingPage({ currentLocation, nextLocation });
+    },
+    []
+  );
+  const blocker = useBlocker(shouldBlock);
 
   useEffect(() => {
     if (blocker.state === "blocked" && isBottomSheetOpen) {
@@ -106,6 +122,7 @@ function LessonQuiz() {
       {blocker.state === "blocked" && (
         <AlertModal open={blocker.state === "blocked"}>
           <AlertModal.Content
+            modalID="end-lesson-quiz-alert-modal"
             isOpen={blocker.state === "blocked"}
             title="End Lesson Quiz?"
             confirmText="End Quiz"
@@ -119,7 +136,7 @@ function LessonQuiz() {
         </AlertModal>
       )}
       {assignmentQueue.length !== 0 && <QueueHeader />}
-      <MainContentWithMargin>
+      <Content>
         {assignmentQueue.length !== 0 && (
           <AssignmentQueueCards
             submitItems={submitAndRedirect}
@@ -127,7 +144,7 @@ function LessonQuiz() {
             updateSubmitted={updateSubmitted}
           />
         )}
-      </MainContentWithMargin>
+      </Content>
       <KeyboardShortcuts />
     </>
   );
