@@ -6,6 +6,7 @@ import SvgIcon from "../SvgIcon/SvgIcon";
 import CloseIcon from "../../images/close.svg?react";
 import { Content, Overlay } from "./Modal.styles";
 import styled from "styled-components";
+import { Content, Overlay } from "./Modal.styles";
 
 type Props = {
   children: React.ReactNode;
@@ -91,7 +92,6 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
-                    style={{ position: "absolute", zIndex: 5000 }}
                   >
                     <TitleBar>
                       <Title>{title}</Title>
