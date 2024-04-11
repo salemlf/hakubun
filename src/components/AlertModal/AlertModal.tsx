@@ -74,8 +74,7 @@ const Title = styled(AlertDialogPrimitive.Title)`
 const DELAY = 0.3;
 type ContentRef = HTMLDivElement;
 
-// TODO: improve types so requires onAddtlActionCallback if showAddtlAction is true
-export type AlertModalContentProps = {
+type AlertModalContentProps = {
   modalID: string;
   isOpen: boolean;
   title: string;
@@ -123,8 +122,6 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1, transition: { delay: DELAY } }}
                     exit={{ opacity: 0 }}
-                    style={{ position: "fixed", height: "100vh" }}
-                    layout
                   />
                 </AlertDialogPrimitive.Overlay>
                 <AlertDialogPrimitive.Content
