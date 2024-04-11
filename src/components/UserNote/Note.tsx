@@ -76,6 +76,7 @@ type Props = {
   isRadical: boolean;
 };
 
+// TODO: change to just use a dialog for editing
 // TODO: scroll input into view on editing start
 function Note({
   subject,
