@@ -548,11 +548,6 @@ export const blockUserLeavingPage = ({
   return true;
 };
 
-export const shouldBlock: BlockerFunction = ({
-  currentLocation,
-  nextLocation,
-}) => blockUserLeavingPage({ currentLocation, nextLocation });
-
 export const convertToHiragana = (japanese: string) => {
   if (isMixed(japanese) || isKatakana(japanese)) {
     return toHiragana(japanese);
