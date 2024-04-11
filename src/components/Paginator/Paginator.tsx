@@ -170,7 +170,6 @@ const CountSeparator = styled.p`
 `;
 
 const PageCountContainer = styled.div`
-  position: relative;
   display: flex;
   justify-content: center;
   position: absolute;
