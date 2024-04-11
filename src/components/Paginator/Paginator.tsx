@@ -81,11 +81,9 @@ type WrapperProps = {
 
 const PagesWrapper = styled.div`
   background-color: var(--background-color);
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(6, 1fr);
-  align-items: flex-end;
   height: 100%;
+  position: relative;
+  width: 100%;
 `;
 
 const PageContainer = styled(motion.div)<WrapperProps>`
@@ -97,6 +95,8 @@ const PageContainer = styled(motion.div)<WrapperProps>`
   right: 0;
   overflow-y: auto;
   grid-row: 1 / 6;
+  padding-bottom: ${({ $hasbottompadding }) =>
+    $hasbottompadding ? "60px" : 0};
 `;
 
 type PagesProps = {
@@ -170,11 +170,12 @@ const CountSeparator = styled.p`
 `;
 
 const PageCountContainer = styled.div`
-  position: relative;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
-  grid-row: 6 / 7;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
 `;
 
 const ChangePageButton = styled(Button)`
