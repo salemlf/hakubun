@@ -1,5 +1,3 @@
-// TODO: add other necessary global styles for items that can't easily be modified with styled components
-
 html,
 body {
   height: 100%;
@@ -41,6 +39,25 @@ h6 {
     background-color: var(--ion-color-primary);
     color: black;
   }
+}
+
+// prevents input cursor being in wrong position on ios
+body[data-scroll-locked].modal-open {
+  position: fixed !important;
+}
+
+div.modal-container {
+  position: -webkit-fixed;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 }
 
 a {
