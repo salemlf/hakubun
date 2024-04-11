@@ -9,6 +9,7 @@ import {
   toHiragana,
 } from "wanakana";
 import Fuse from "fuse.js";
+import { Location } from "react-router-dom";
 import { getNumObjsWithDistinctPropValue } from "../../utils";
 import { INVALID_ANSWER_CHARS } from "../../constants";
 import { displayToast } from "../../components/Toast/Toast.service";
@@ -525,6 +526,26 @@ export const createReviewPostData = (reviewedItems: AssignmentQueueItem[]) => {
     incorrect_meaning_answers: reviewedItem.incorrect_meaning_answers,
     incorrect_reading_answers: reviewedItem.incorrect_reading_answers,
   }));
+};
+
+export const blockUserLeavingPage = ({
+  currentLocation,
+  nextLocation,
+}: {
+  currentLocation: Location<unknown>;
+  nextLocation: Location<unknown>;
+}) => {
+  // allowing user to view subjects pages during reviews and to review summary page
+  const subjDetailsRegex = new RegExp("/subjects/*");
+  if (
+    subjDetailsRegex.test(nextLocation.pathname) ||
+    nextLocation.pathname === "/reviews/summary" ||
+    nextLocation.pathname === "/lessons/quiz" ||
+    nextLocation.pathname === "/lessons/summary"
+  ) {
+    return false;
+  }
+  return true;
 };
 
 export const convertToHiragana = (japanese: string) => {
