@@ -1,9 +1,11 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import { useModalContainer } from "../../hooks/useModalContainer";
 import SvgIcon from "../SvgIcon/SvgIcon";
 import CloseIcon from "../../images/close.svg?react";
 import styled from "styled-components";
+import { Content, Overlay } from "./Modal.styles";
 
 type Props = {
   children: React.ReactNode;
@@ -19,30 +21,10 @@ function Modal({ open, onOpenChange, children }: Props) {
   );
 }
 
-const OverlayPrimitive = styled(motion.div)`
-  background-color: rgba(0, 0, 0, 0.447);
-  inset: 0;
-  z-index: 1000;
-`;
-
-const ContentPrimitive = styled(DialogPrimitive.Content)`
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 2px 1px 10px rgba(0, 0, 0, 0.2);
-  color: var(--text-color);
-  width: 90vw;
-  max-width: 400px;
-  max-height: 85vh;
-  overflow-y: auto;
-  background-color: var(--foreground-color);
-`;
-
 const ClosePrimitive = styled(DialogPrimitive.Close)`
   background-color: transparent;
   border-radius: 50%;
 `;
-
-const Content = styled(motion.div)``;
 
 const TitleBar = styled.div`
   display: flex;
@@ -60,15 +42,11 @@ const Description = styled(DialogPrimitive.Description)`
   margin: 10px 0 16px 0;
 `;
 
-const PortalContainer = styled.div`
-  width: 100%;
-  pointer-events: none;
-`;
-
 const DELAY = 0.3;
 type ContentRef = HTMLDivElement;
 
 type ContentProps = {
+  modalID: string;
   title: string;
   description?: string;
   children: React.ReactNode;
@@ -76,32 +54,29 @@ type ContentProps = {
 };
 
 export const ModalContent = forwardRef<ContentRef, ContentProps>(
-  ({ children, title, description, isOpen, ...props }, forwardedRef) => {
-    const [portalContainer, setPortalContainer] =
-      useState<HTMLDivElement | null>(null);
-    const portalContainerRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-      setPortalContainer(portalContainerRef.current);
-      // this dependency is actually necessary due to a bug in Radix Dialog
-    }, [portalContainerRef.current]);
+  (
+    { modalID, children, title, description, isOpen, ...props },
+    forwardedRef
+  ) => {
+    const { modalContainerRef } = useModalContainer(modalID, isOpen);
 
     return (
       <>
         <AnimatePresence>
           {isOpen && (
             <>
-              <DialogPrimitive.Portal forceMount container={portalContainer}>
+              <DialogPrimitive.Portal
+                forceMount
+                container={modalContainerRef.current}
+              >
                 <DialogPrimitive.Overlay asChild>
-                  <OverlayPrimitive
+                  <Overlay
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1, transition: { delay: DELAY } }}
                     exit={{ opacity: 0 }}
-                    style={{ position: "fixed", height: "100vh" }}
-                    layout
                   />
                 </DialogPrimitive.Overlay>
-                <ContentPrimitive
+                <DialogPrimitive.Content
                   {...props}
                   ref={forwardedRef}
                   forceMount
@@ -111,7 +86,6 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
-                    style={{ position: "absolute", zIndex: 5000 }}
                   >
                     <TitleBar>
                       <Title>{title}</Title>
@@ -126,16 +100,11 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                     {description && <Description>{description}</Description>}
                     {children}
                   </Content>
-                </ContentPrimitive>
+                </DialogPrimitive.Content>
               </DialogPrimitive.Portal>
             </>
           )}
         </AnimatePresence>
-        <PortalContainer
-          id="modal-dialog-portal-root"
-          ref={portalContainerRef}
-          style={{ position: "relative", zIndex: 4000 }}
-        />
       </>
     );
   }

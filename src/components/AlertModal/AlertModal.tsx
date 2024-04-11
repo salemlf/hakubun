@@ -1,6 +1,8 @@
-import { useState, forwardRef, useRef, useEffect } from "react";
+import { forwardRef } from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import { useModalContainer } from "../../hooks/useModalContainer";
+import { Content, Overlay } from "../Modal/Modal.styles";
 import styled from "styled-components";
 
 type Props = {
@@ -16,26 +18,6 @@ function AlertModal({ open, onOpenChange, children }: Props) {
     </AlertDialogPrimitive.Root>
   );
 }
-
-const OverlayPrimitive = styled(motion.div)`
-  background-color: rgba(0, 0, 0, 0.447);
-  inset: 0;
-  z-index: 1000;
-`;
-
-const ContentPrimitive = styled(AlertDialogPrimitive.Content)`
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 2px 1px 10px var(--box-shadow-color);
-  color: white;
-  width: 90vw;
-  max-width: 400px;
-  max-height: 85vh;
-  overflow-y: auto;
-  background-color: var(--foreground-color);
-`;
-
-const Content = styled(motion.div)``;
 
 const Description = styled(AlertDialogPrimitive.Description)`
   margin-bottom: 20px;
@@ -84,11 +66,6 @@ const MiscButton = styled(DialogButton)`
   color: white;
 `;
 
-const PortalContainer = styled.div`
-  width: 100%;
-  pointer-events: none;
-`;
-
 const Title = styled(AlertDialogPrimitive.Title)`
   margin: 10px 0;
   font-size: 1.5rem;
@@ -98,21 +75,23 @@ const DELAY = 0.3;
 type ContentRef = HTMLDivElement;
 
 type AlertModalContentProps = {
+  modalID: string;
   isOpen: boolean;
   title: string;
   description?: string | React.ReactNode;
   confirmText: string;
-  onConfirmClick: (e: any) => void;
+  onConfirmClick: () => void;
   cancelText: string;
-  onCancelClick: (e: any) => void;
+  onCancelClick: () => void;
   showAddtlAction?: boolean;
   addtlActionText?: string;
-  onAddtlActionClick?: (e: any) => void;
+  onAddtlActionClick?: () => void;
 };
 
 export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
   (
     {
+      modalID,
       title,
       description,
       isOpen,
@@ -127,14 +106,7 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
     },
     forwardedRef
   ) => {
-    const [portalContainer, setPortalContainer] =
-      useState<HTMLDivElement | null>(null);
-    const portalContainerRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-      setPortalContainer(portalContainerRef.current);
-      // this dependency is actually necessary due to a bug in Radix Dialog
-    }, [portalContainerRef.current]);
+    const { modalContainerRef } = useModalContainer(modalID, isOpen);
 
     return (
       <>
@@ -143,18 +115,16 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
             <>
               <AlertDialogPrimitive.Portal
                 forceMount
-                container={portalContainer}
+                container={modalContainerRef.current}
               >
                 <AlertDialogPrimitive.Overlay asChild>
-                  <OverlayPrimitive
+                  <Overlay
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1, transition: { delay: DELAY } }}
                     exit={{ opacity: 0 }}
-                    style={{ position: "fixed", height: "100vh" }}
-                    layout
                   />
                 </AlertDialogPrimitive.Overlay>
-                <ContentPrimitive
+                <AlertDialogPrimitive.Content
                   {...props}
                   ref={forwardedRef}
                   forceMount
@@ -164,7 +134,7 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
                     initial={{ scale: 0 }}
                     animate={{ scale: 1, transition: { delay: DELAY } }}
                     exit={{ scale: 0 }}
-                    style={{ position: "absolute", zIndex: 5000 }}
+                    className="modal-content"
                   >
                     <Title>{title}</Title>
                     {description && <Description>{description}</Description>}
@@ -188,16 +158,11 @@ export const AlertModalContent = forwardRef<ContentRef, AlertModalContentProps>(
                       )}
                     </ButtonContainer>
                   </Content>
-                </ContentPrimitive>
+                </AlertDialogPrimitive.Content>
               </AlertDialogPrimitive.Portal>
             </>
           )}
         </AnimatePresence>
-        <PortalContainer
-          id="alert-modal-portal-root"
-          ref={portalContainerRef}
-          style={{ position: "relative", zIndex: 4000 }}
-        />
       </>
     );
   }
