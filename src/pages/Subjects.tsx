@@ -10,6 +10,12 @@ import Paginator from "../components/Paginator";
 import { FixedCenterContainer, Header } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
+const HeaderAndTabsContainer = styled.div`
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+`;
+
 const SubjectsHeader = styled(Header)`
   color: black;
   text-align: center;
@@ -70,7 +76,7 @@ const SubjectsContent = ({ level, setLevel }: SubjectsContentProps) => {
   };
 
   return (
-    <>
+    <HeaderAndTabsContainer>
       <SubjectsHeader bgcolor="var(--ion-color-primary-tint)">
         Level
         <SubjectTabs
@@ -87,7 +93,7 @@ const SubjectsContent = ({ level, setLevel }: SubjectsContentProps) => {
         direction={direction}
         setCurrentPage={setCurrentPage}
       />
-    </>
+    </HeaderAndTabsContainer>
   );
 };
 
