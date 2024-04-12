@@ -74,7 +74,8 @@ const Title = styled(AlertDialogPrimitive.Title)`
 const DELAY = 0.3;
 type ContentRef = HTMLDivElement;
 
-type AlertModalContentProps = {
+// TODO: improve types so requires onAddtlActionCallback if showAddtlAction is true
+export type AlertModalContentProps = {
   modalID: string;
   isOpen: boolean;
   title: string;
