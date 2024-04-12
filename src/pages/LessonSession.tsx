@@ -1,14 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
-import { useBlocker, useNavigate, Location } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
-import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
-import { blockUserLeavingPage } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import LessonCards from "../components/LessonCards";
+import LeaveSessionPrompt from "../components/LeaveSessionPrompt";
 import Button from "../components/Button";
-import AlertModal from "../components/AlertModal";
 import SvgIcon from "../components/SvgIcon";
 import HomeIconColor from "../images/home-color.svg?react";
 import styled from "styled-components";
@@ -23,7 +21,6 @@ const HomeBtn = styled(Button)`
   z-index: 10;
 `;
 
-// TODO: clean up how blocker is used, extract into a hook?
 function LessonSession() {
   const navigate = useNavigate();
   const [uniqueLessonQueue, setUniqueLessonQueue] = useState<
@@ -33,28 +30,6 @@ function LessonSession() {
   const { resetAll: resetAssignmentQueue, assignmentQueue: lessonQueue } =
     useAssignmentQueueStoreFacade();
   const { reset: resetLessonPaginator } = useLessonPaginatorStoreFacade();
-  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
-
-  const shouldBlock = useCallback(
-    ({
-      currentLocation,
-      nextLocation,
-    }: {
-      currentLocation: Location<unknown>;
-      nextLocation: Location<unknown>;
-    }) => {
-      return blockUserLeavingPage({ currentLocation, nextLocation });
-    },
-    []
-  );
-  const blocker = useBlocker(shouldBlock);
-
-  useEffect(() => {
-    if (blocker.state === "blocked" && isBottomSheetOpen) {
-      blocker.reset();
-      setIsBottomSheetOpen(false);
-    }
-  }, [blocker.state, isBottomSheetOpen]);
 
   useEffect(() => {
     if (lessonQueue.length === 0) {
@@ -82,23 +57,13 @@ function LessonSession() {
     <>
       {uniqueLessonQueue.length !== 0 && (
         <>
-          {blocker.state === "blocked" && (
-            <AlertModal open={blocker.state === "blocked"}>
-              <AlertModal.Content
-                modalID="end-lesson-session-alert-modal"
-                isOpen={blocker.state === "blocked"}
-                title="End Lesson Session?"
-                confirmText="End Session"
-                description="Are you sure you want to leave? You'll lose all progress from this lesson session."
-                cancelText="Cancel"
-                onConfirmClick={() => {
-                  endLessonSession();
-                  blocker.proceed();
-                }}
-                onCancelClick={() => blocker.reset()}
-              />
-            </AlertModal>
-          )}
+          <LeaveSessionPrompt
+            modalID="end-lesson-session-alert-modal"
+            title="End Lesson Session?"
+            description="Are you sure you want to leave? You'll lose all progress from this lesson session."
+            confirmText="End Session"
+            onConfirmClick={endLessonSession}
+          />
           <HomeBtn
             aria-label="Home page"
             onPress={() => navigate("/", { replace: true })}

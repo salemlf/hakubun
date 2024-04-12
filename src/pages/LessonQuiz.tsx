@@ -1,12 +1,8 @@
-import { useCallback, useEffect } from "react";
-import { useBlocker, useNavigate, Location } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
-import {
-  blockUserLeavingPage,
-  getCompletedAssignmentQueueData,
-} from "../services/AssignmentQueueService/AssignmentQueueService";
+import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService/AssignmentQueueService";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
-import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { useStartAssignment } from "../hooks/assignments/useStartAssignment";
 import { useSubmittedQueueUpdate } from "../hooks/assignments/useSubmittedQueueUpdate";
 import {
@@ -16,7 +12,7 @@ import {
 import { PreFlattenedAssignment } from "../types/Assignment";
 import AssignmentQueueCards from "../components/AssignmentQueueCards";
 import QueueHeader from "../components/QueueHeader";
-import AlertModal from "../components/AlertModal";
+import LeaveSessionPrompt from "../components/LeaveSessionPrompt";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
 import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
@@ -28,7 +24,6 @@ const Content = styled(MainContent)`
   align-content: space-between;
 `;
 
-// TODO: clean up how blocker is used, extract into a hook?
 function LessonQuiz() {
   const navigate = useNavigate();
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
@@ -40,28 +35,6 @@ function LessonQuiz() {
   );
   const updateSubmitted = useSubmittedQueueUpdate();
   const { mutateAsync: startAssignmentAsync } = useStartAssignment();
-  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
-
-  const shouldBlock = useCallback(
-    ({
-      currentLocation,
-      nextLocation,
-    }: {
-      currentLocation: Location<unknown>;
-      nextLocation: Location<unknown>;
-    }) => {
-      return blockUserLeavingPage({ currentLocation, nextLocation });
-    },
-    []
-  );
-  const blocker = useBlocker(shouldBlock);
-
-  useEffect(() => {
-    if (blocker.state === "blocked" && isBottomSheetOpen) {
-      blocker.reset();
-      setIsBottomSheetOpen(false);
-    }
-  }, [blocker.state, isBottomSheetOpen]);
 
   useEffect(() => {
     if (assignmentQueue.length === 0) {
@@ -119,22 +92,12 @@ function LessonQuiz() {
 
   return (
     <>
-      {blocker.state === "blocked" && (
-        <AlertModal open={blocker.state === "blocked"}>
-          <AlertModal.Content
-            modalID="end-lesson-quiz-alert-modal"
-            isOpen={blocker.state === "blocked"}
-            title="End Lesson Quiz?"
-            confirmText="End Quiz"
-            cancelText="Cancel"
-            onConfirmClick={() => {
-              endLessonQuiz();
-              blocker.proceed();
-            }}
-            onCancelClick={() => blocker.reset()}
-          />
-        </AlertModal>
-      )}
+      <LeaveSessionPrompt
+        modalID="end-lesson-quiz-alert-modal"
+        title="End Lesson Quiz?"
+        confirmText="End Quiz"
+        onConfirmClick={endLessonQuiz}
+      />
       {assignmentQueue.length !== 0 && <QueueHeader />}
       <Content>
         {assignmentQueue.length !== 0 && (
