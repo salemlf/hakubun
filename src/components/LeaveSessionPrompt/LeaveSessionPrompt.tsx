@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
-import { useNavBlocker } from "../../hooks/useNavBlocker";
 import { Location } from "react-router-dom";
 import { useIsBottomSheetOpen } from "../../contexts/BottomSheetOpenContext";
+import { useNavBlocker } from "../../hooks/useNavBlocker";
 import AlertModal, { AlertModalContentProps } from "../AlertModal";
 
 type ShouldBlockParams = {
