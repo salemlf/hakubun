@@ -9,7 +9,6 @@ import {
   toHiragana,
 } from "wanakana";
 import Fuse from "fuse.js";
-import { BlockerFunction, Location } from "react-router-dom";
 import { getNumObjsWithDistinctPropValue } from "../../utils";
 import { INVALID_ANSWER_CHARS } from "../../constants";
 import { displayToast } from "../../components/Toast/Toast.service";
