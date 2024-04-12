@@ -528,26 +528,6 @@ export const createReviewPostData = (reviewedItems: AssignmentQueueItem[]) => {
   }));
 };
 
-export const blockUserLeavingPage = ({
-  currentLocation,
-  nextLocation,
-}: {
-  currentLocation: Location<unknown>;
-  nextLocation: Location<unknown>;
-}) => {
-  // allowing user to view subjects pages during reviews and to review summary page
-  const subjDetailsRegex = new RegExp("/subjects/*");
-  if (
-    subjDetailsRegex.test(nextLocation.pathname) ||
-    nextLocation.pathname === "/reviews/summary" ||
-    nextLocation.pathname === "/lessons/quiz" ||
-    nextLocation.pathname === "/lessons/summary"
-  ) {
-    return false;
-  }
-  return true;
-};
-
 export const convertToHiragana = (japanese: string) => {
   if (isMixed(japanese) || isKatakana(japanese)) {
     return toHiragana(japanese);

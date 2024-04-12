@@ -132,7 +132,6 @@ const Description = () => {
   );
 };
 
-// TODO: clean up how blocker is used, extract into a hook?
 // TODO: redirect to home if user somehow ends up on this screen without data passed
 function ReviewSession() {
   const navigate = useNavigate();

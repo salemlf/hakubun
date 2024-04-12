@@ -1,12 +1,9 @@
 import { useEffect } from "react";
 import { useBlocker, useNavigate } from "react-router-dom";
-import {
-  getCompletedAssignmentQueueData,
-  shouldBlock,
-} from "../services/AssignmentQueueService/AssignmentQueueService";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
-import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
+import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService/AssignmentQueueService";
+import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import { useStartAssignment } from "../hooks/assignments/useStartAssignment";
 import { useSubmittedQueueUpdate } from "../hooks/assignments/useSubmittedQueueUpdate";
 import {
@@ -28,7 +25,6 @@ const Content = styled(MainContent)`
   align-content: space-between;
 `;
 
-// TODO: clean up how blocker is used, extract into a hook?
 function LessonQuiz() {
   const navigate = useNavigate();
   const { resetAll: resetQueueStore } = useQueueStoreFacade();

@@ -22,7 +22,6 @@ const HomeBtn = styled(Button)`
   z-index: 10;
 `;
 
-// TODO: clean up how blocker is used, extract into a hook?
 function LessonSession() {
   const navigate = useNavigate();
   const [uniqueLessonQueue, setUniqueLessonQueue] = useState<
