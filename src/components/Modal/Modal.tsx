@@ -6,7 +6,6 @@ import SvgIcon from "../SvgIcon/SvgIcon";
 import CloseIcon from "../../images/close.svg?react";
 import { Content, Overlay } from "./Modal.styles";
 import styled from "styled-components";
-import { Content, Overlay } from "./Modal.styles";
 
 type Props = {
   children: React.ReactNode;
