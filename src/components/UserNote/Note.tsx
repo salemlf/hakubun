@@ -240,6 +240,7 @@ function Note({
       </NoteContainer>
       <AlertModal open={isModalOpen} onOpenChange={setIsModalOpen}>
         <AlertModal.Content
+          modalID="delete-meaning-note-alert-modal"
           isOpen={isModalOpen}
           title={noteHeadingsAndMsg.alertHeadingTxt}
           description={noteHeadingsAndMsg.alertHeadingMsg}

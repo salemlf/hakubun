@@ -189,8 +189,9 @@ function BottomSheetContentCore(
             zIndex: 5,
           }}
         >
+          {/* TODO: re-add conditional contain property after figuring out how to account for modals appearing over this */}
           <FocusScope
-            contain={isBottomSheetOpen}
+            // contain={isBottomSheetOpen}
             autoFocus
             restoreFocus={false}
           >

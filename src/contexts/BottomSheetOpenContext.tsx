@@ -39,7 +39,9 @@ const useIsBottomSheetOpen = () => {
   const context = useContext(BottomSheetOpenContext);
 
   if (!context) {
-    throw new Error("useIsBottomSheetOpen must be used within a ThemeProvider");
+    throw new Error(
+      "useIsBottomSheetOpen must be used within a BottomSheetOpenProvider"
+    );
   }
 
   return context;

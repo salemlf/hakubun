@@ -99,6 +99,7 @@ const Chips = ({
       })}
       <AlertModal open={isModalOpen} onOpenChange={setIsModalOpen}>
         <AlertModal.Content
+          modalID="delete-meaning-chip-alert-modal"
           isOpen={isModalOpen}
           title="Delete Meaning"
           confirmText="Delete"
