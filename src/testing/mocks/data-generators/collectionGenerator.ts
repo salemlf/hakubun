@@ -140,14 +140,23 @@ export const generateStudyMaterialCollection = (
 
 type StudyMaterialsFromSubjsCollectionGeneratorParams = {
   correspondingSubjects: CorrespondingSubject[];
+  hasMeaningNote?: boolean;
+  hasReadingNote?: boolean;
+  hasMeaningSynonyms?: boolean;
 };
 
 export const generateStudyMaterialCollectionFromSubjs = ({
   correspondingSubjects,
+  hasMeaningNote,
+  hasReadingNote,
+  hasMeaningSynonyms,
 }: StudyMaterialsFromSubjsCollectionGeneratorParams): StudyMaterialCollection => {
   const mockPreflattenedStudyMaterials =
     generatePreflattenedStudyMaterialsArrFromSubjs({
       correspondingSubjects,
+      hasMeaningNote,
+      hasReadingNote,
+      hasMeaningSynonyms,
     });
 
   const mockAssignmentCollection: StudyMaterialCollection = {
