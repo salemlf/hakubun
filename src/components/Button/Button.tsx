@@ -34,9 +34,9 @@ function Button({
   disabled,
   ...props
 }: Props) {
-  let { children } = props;
-  let ref = useRef(null);
-  let { buttonProps, isPressed } = useButton(
+  const { children } = props;
+  const ref = useRef(null);
+  const { buttonProps, isPressed } = useButton(
     {
       ...props,
       elementType: "button",
