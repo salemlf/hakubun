@@ -82,7 +82,7 @@ const userNoteNotEmpty = (
   );
 };
 
-type Props = {
+export type Props = {
   subject: Subject;
   noteType: UserNoteType;
   isRadical?: boolean;
@@ -127,7 +127,9 @@ function UserNote({ subject, noteType, isRadical = false }: Props) {
                 <ButtonContainer>
                   <>
                     <TrashButton
-                      aria-label="Delete note"
+                      aria-label={
+                        isRadical ? "Delete Note" : `Delete ${noteType} Note`
+                      }
                       onPress={() => setIsDelNoteModalOpen(true)}
                     >
                       <SvgIcon
@@ -138,7 +140,9 @@ function UserNote({ subject, noteType, isRadical = false }: Props) {
                     </TrashButton>
                     <PencilButton
                       onPress={() => setIsEditNoteModalOpen(true)}
-                      aria-label="Edit note"
+                      aria-label={
+                        isRadical ? "Edit Note" : `Edit ${noteType} Note`
+                      }
                     >
                       <SvgIcon
                         icon={<PencilIcon />}
