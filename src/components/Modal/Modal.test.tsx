@@ -12,7 +12,7 @@ const renderComponent = () => {
       <Modal.Trigger asChild>
         <button>Test button</button>
       </Modal.Trigger>
-      <Modal.Content title="Test" isOpen={false}>
+      <Modal.Content modalID="test-modal" title="Test" isOpen={false}>
         <p>Content</p>
       </Modal.Content>
     </Modal>
