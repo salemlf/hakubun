@@ -125,7 +125,6 @@ function EditNoteModal({
     : `Add Note`;
 
   const isEditing = userNoteContent !== undefined && userNoteContent !== "";
-  console.log("🚀 ~ userNoteContent:", userNoteContent);
 
   const handleSubmit = (event: React.ChangeEvent<CustomUserNoteForm>) => {
     event.preventDefault();
