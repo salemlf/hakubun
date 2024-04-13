@@ -34,6 +34,7 @@ type AudioProps = {
   audioForReading: ReadingAudio;
 };
 
+// TODO: add test to ensure that the audio file is loaded and played
 function AudioBtn({ audioForReading, reading }: AudioProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioFile = audioForReading.audioFile;
@@ -42,8 +43,7 @@ function AudioBtn({ audioForReading, reading }: AudioProps) {
     audioFile.load();
     audioFile.on("end", function () {
       setIsPlaying(false);
-    }),
-      [];
+    });
 
     audioFile.on("loaderror", function () {
       console.error("Load error occurred for audio file");
@@ -55,7 +55,7 @@ function AudioBtn({ audioForReading, reading }: AudioProps) {
     return () => {
       audioFile.unload();
     };
-  }, []);
+  }, [audioFile]);
 
   const playAudio = () => {
     setIsPlaying(true);

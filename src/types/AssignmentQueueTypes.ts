@@ -70,4 +70,5 @@ export type ReadingAudio = {
   gender: string;
   accent: string;
   audioFile: Howl;
+  backupAudioFiles?: Howl;
 };
