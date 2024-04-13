@@ -69,6 +69,7 @@ export const NoteHintHeading = styled.h6`
   margin: 3px 0;
   font-size: 0.9rem;
   font-weight: 600;
+  text-transform: capitalize;
 `;
 
 export const IconHeadingContainer = styled.div`
@@ -98,30 +99,6 @@ export const SvgIconHeadingContainer = styled.div`
 
 export const FoundInHeadingContainer = styled(IconHeadingContainer)`
   margin-bottom: 10px;
-`;
-
-export const Chip = styled(Button)`
-  padding: 8px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-
-  user-select: text;
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-
-  &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
-  }
-
-  ion-icon {
-    margin-left: 5px;
-    width: 1.25em;
-    height: 1.25em;
-  }
 `;
 
 export const BottomSheetContainer = styled.div`
