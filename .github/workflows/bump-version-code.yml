@@ -1,0 +1,51 @@
+# Workflow based on this article https://www.paleblueapps.com/rockandnull/github-actions-android-version/
+name: Bump version code & change version name
+on:
+  push:
+    branches:
+      - "bump/v*.*.*"
+
+jobs:
+  bump-version-and-open-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Extract existing version code
+        run: |
+          # Extract version number from branch name
+          version_name=${GITHUB_REF#refs/heads/bump/v}
+
+          # Get existing version code from build.gradle
+          version_code=$(grep "versionCode" android/app/build.gradle | awk '{print $2}' | tr -d '\n')
+
+          # Increment existing version code by 1
+          version_code=$((version_code + 1))
+
+          # Set environment variable for later use
+          echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
+          echo "VERSION_CODE=$version_code" >> $GITHUB_ENV
+
+      - name: Increase version code and change version name
+        run: |
+          # Update build.gradle with new version code and name
+          echo "${{ env.VERSION_CODE }} - ${{ env.version_name }}"
+          sed -i "s/versionCode [0-9]\+/versionCode ${{ env.VERSION_CODE }}/g" android/app/build.gradle
+          sed -i "s/versionName \"[^\"]*\"/versionName \"${{ env.VERSION_NAME }}\"/g" android/app/build.gradle
+
+      - name: Commit and push changes
+        run: |
+          git config user.email "github-actions@github.com"
+          git config user.name "Github Actions"
+          git commit -am "Bump version code and change version name"
+          git push origin HEAD
+
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "Bumping to ${{ env.VERSION_CODE }}"
+          branch: "${{ github.ref }}"
+          title: "${{ env.VERSION_NAME }} - (${{ env.VERSION_CODE }})"
+          body: "${{ env.VERSION_NAME }} - (${{ env.VERSION_CODE }})"
+          base: "main"
