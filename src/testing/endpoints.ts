@@ -15,3 +15,4 @@ export const SUBJECT_SUBJ_TYPES = "types";
 export const ASSIGNMENT_SUBJ_TYPES = "subject_types";
 export const LEVELS_PARAM = "levels";
 export const SRS_STAGES = "srs_stages";
+export const SUBJECT_IDS = "subject_ids";
