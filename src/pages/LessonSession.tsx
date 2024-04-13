@@ -72,6 +72,7 @@ function LessonSession() {
           {blocker.state === "blocked" && (
             <AlertModal open={blocker.state === "blocked"}>
               <AlertModal.Content
+                modalID="end-lesson-session-alert-modal"
                 isOpen={blocker.state === "blocked"}
                 title="End Lesson Session?"
                 confirmText="End Session"

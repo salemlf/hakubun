@@ -267,6 +267,7 @@ function ReviewSession() {
       {blocker.state === "blocked" && (
         <AlertModal open={blocker.state === "blocked"}>
           <AlertModal.Content
+            modalID="end-review-session-alert-modal"
             isOpen={blocker.state === "blocked"}
             title="End Review Session?"
             confirmText="End Session"

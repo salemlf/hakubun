@@ -94,6 +94,7 @@ export const findVoiceInPronunciationAudios = (
   return null;
 };
 
+// TODO: utilize backup audio files, rn not used at all and rely on first audio file
 export const createReadingAudioFiles = (
   pronunciationAudios: PronunciationAudio[],
   isKanaVocab: boolean,
@@ -145,18 +146,30 @@ export const createReadingAudioFiles = (
         (audioItem) => audioItem.content_type.split("/")[1]
       );
 
+      const [primaryAudioSrc, ...backupSrcs] = audioSources;
+      const [primaryAudioFormat, ...backupFormats] = audioFormats;
+
       return {
         reading: sampleFromGroup.metadata.pronunciation,
         isPrimary: isPrimaryPronunciation,
         gender: sampleFromGroup.metadata.gender,
         accent: sampleFromGroup.metadata.voice_description,
         audioFile: new Howl({
-          src: [...audioSources],
-          format: [...audioFormats],
+          src: primaryAudioSrc,
+          format: primaryAudioFormat,
           preload: false,
           html5: true,
           volume: 1.0,
         }),
+        backupAudioFiles: backupSrcs.length
+          ? new Howl({
+              src: [...backupSrcs],
+              format: [...backupFormats],
+              preload: false,
+              html5: true,
+              volume: 1.0,
+            })
+          : undefined,
       };
     }
   );

@@ -106,6 +106,7 @@ function LessonQuiz() {
       {blocker.state === "blocked" && (
         <AlertModal open={blocker.state === "blocked"}>
           <AlertModal.Content
+            modalID="end-lesson-quiz-alert-modal"
             isOpen={blocker.state === "blocked"}
             title="End Lesson Quiz?"
             confirmText="End Quiz"

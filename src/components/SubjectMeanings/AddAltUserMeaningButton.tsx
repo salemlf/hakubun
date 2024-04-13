@@ -119,6 +119,7 @@ function AddAltUserMeaningButton({ subject }: Props) {
               Add <PlusSign>+</PlusSign>
             </AddButton>
             <Modal.Content
+              modalID="add-alt-user-meaning-modal"
               title="Add Meaning"
               isOpen={isModalOpen}
               description="Add an alternative meaning, these will be accepted as correct answers!"
