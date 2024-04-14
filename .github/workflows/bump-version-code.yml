@@ -30,24 +30,27 @@ jobs:
           echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
           echo "VERSION_CODE=$version_code" >> $GITHUB_ENV
 
-      - name: Increase version code and change version name
+      - name: Increment version code and update version name
         run: |
           # Update build.gradle with new version code and name
           echo "${{ env.VERSION_CODE }} - ${{ env.version_name }}"
           sed -i "s/versionCode [0-9]\+/versionCode ${{ env.VERSION_CODE }}/g" android/app/build.gradle
           sed -i "s/versionName \"[^\"]*\"/versionName \"${{ env.VERSION_NAME }}\"/g" android/app/build.gradle
 
+          # Update App.tsx with new version name
+          sed -i '' 's/\(const RELEASE_VERSION = "\)[^"]*\(.*\)/\1${{ env.VERSION_NAME }}\2/' src/App.tsx
+
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Bump version code and change version name"
+          commit_message: "Incrementing version to ${{ env.VERSION_NAME }}"
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Bumping to ${{ env.VERSION_CODE }}"
+          commit-message: "Incrementing version to ${{ env.VERSION_NAME }}, Android version code to ${{ env.VERSION_CODE }}"
           branch: "${{ github.ref }}"
-          title: "${{ env.VERSION_NAME }} - (${{ env.VERSION_CODE }})"
-          body: "${{ env.VERSION_NAME }} - (${{ env.VERSION_CODE }})"
+          title: "Bump App to Version ${{ env.VERSION_NAME }}, Android version code ${{ env.VERSION_CODE }}"
+          body: "App version name updated to ${{ env.VERSION_NAME }} and Android version code set to ${{ env.VERSION_CODE }}"
           base: "main"
