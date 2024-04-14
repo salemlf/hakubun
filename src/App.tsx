@@ -49,7 +49,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
-const releaseVersion = "0.4.2-alpha";
+const RELEASE_VERSION = "0.4.2-alpha";
 
 // for mock service worker
 async function enableMocking() {
@@ -69,7 +69,7 @@ await enableMocking();
 // TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
   LogRocket.init("cleqvf/hakubun", {
-    release: releaseVersion,
+    release: RELEASE_VERSION,
     shouldCaptureIP: false,
     network: {
       requestSanitizer: (request) => {
@@ -79,7 +79,7 @@ if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
     },
   });
   Sentry.init({
-    release: releaseVersion,
+    release: RELEASE_VERSION,
     dsn: import.meta.env.VITE_SENTRY_DSN,
     tracePropagationTargets: [baseUrlRegex],
     environment: import.meta.env.MODE,
