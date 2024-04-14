@@ -1,5 +1,6 @@
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 import { copyToClipboard } from "../utils";
+import { RELEASE_VERSION } from "../App";
 import FloatingHomeButton from "../components/FloatingHomeButton";
 import Emoji from "../components/Emoji";
 import Button from "../components/Button";
@@ -37,6 +38,7 @@ const ErrorDetails = styled.div`
   background-color: var(--secondary-foreground-color);
   border-radius: 8px;
 
+  h3,
   h4,
   p {
     margin: 0;
@@ -44,9 +46,22 @@ const ErrorDetails = styled.div`
     white-space: pre-line;
   }
 
+  p {
+    margin-bottom: 10px;
+  }
+
+  h3,
+  h4 {
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
   h4 {
     font-size: 1rem;
-    font-weight: 600;
+    margin: 5px 0;
   }
 `;
 
@@ -109,14 +124,21 @@ function ErrorOccurred() {
       <Content>
         <ErrorDetails>
           <ErrAndCopyBtnContainer>
-            <h4>{errorMessage}</h4>
+            <h3>{errorMessage}</h3>
             <CopyContentBtn
-              onPress={() => copyToClipboard(`${errorMessage}\n${stackTrace}`)}
+              onPress={() =>
+                copyToClipboard(
+                  `${RELEASE_VERSION}\n${errorMessage}\n${stackTrace}`
+                )
+              }
             >
               Copy Error{" "}
               <SvgIcon icon={<CopyIcon />} width="1.5em" height="1.5em" />
             </CopyContentBtn>
           </ErrAndCopyBtnContainer>
+          <h4>App Version</h4>
+          <p>{RELEASE_VERSION}</p>
+          <h4>Stacktrace</h4>
           {stackTrace && <p>{stackTrace}</p>}
         </ErrorDetails>
         <DistressedCrabigatorContainer>
