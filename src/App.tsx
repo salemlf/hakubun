@@ -66,7 +66,6 @@ Howler.html5PoolSize = 100;
 
 await enableMocking();
 
-// TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
   LogRocket.init("cleqvf/hakubun", {
     release: RELEASE_VERSION,
