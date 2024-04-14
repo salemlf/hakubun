@@ -38,7 +38,7 @@ jobs:
           sed -i "s/versionName \"[^\"]*\"/versionName \"${{ env.VERSION_NAME }}\"/g" android/app/build.gradle
 
           # Update App.tsx with new version name
-          sed -i '' 's/\(const RELEASE_VERSION = "\)[^"]*\(.*\)/\1${{ env.VERSION_NAME }}\2/' src/App.tsx
+          sed -i "s/const RELEASE_VERSION = \"[^\"]*\"/const RELEASE_VERSION = \"${{ env.VERSION_NAME }}\"/g" src/App.tsx
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
