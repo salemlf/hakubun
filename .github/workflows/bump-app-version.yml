@@ -48,7 +48,7 @@ jobs:
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_W_WORKFLOW_TRIGGER }}
           commit-message: "Incrementing version to ${{ env.VERSION_NAME }}, Android version code to ${{ env.VERSION_CODE }}"
           branch: "${{ github.ref }}"
           title: "Bump App to Version ${{ env.VERSION_NAME }}, Android version code ${{ env.VERSION_CODE }}"
