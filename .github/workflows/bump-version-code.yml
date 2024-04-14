@@ -45,6 +45,7 @@ jobs:
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Bumping to ${{ env.VERSION_CODE }}"
           branch: "${{ github.ref }}"
           title: "${{ env.VERSION_NAME }} - (${{ env.VERSION_CODE }})"
