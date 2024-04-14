@@ -9,6 +9,7 @@ jobs:
   bump-version-and-open-pr:
     permissions:
       contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
