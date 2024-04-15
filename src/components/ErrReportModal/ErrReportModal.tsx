@@ -126,7 +126,7 @@ interface ErrReportForm extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-type Props = {
+export type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   errMsg: string;
