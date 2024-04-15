@@ -3,6 +3,7 @@ on: workflow_dispatch
 env:
   VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  VITE_GH_USER_FEEDBACK_PAT: ${{ secrets.GH_USER_FEEDBACK_PAT }}
 jobs:
   build-app-bundle:
     runs-on: macos-latest

@@ -6,9 +6,11 @@ export const subjectsEndpoint = `${baseUrl}subjects`;
 export const studyMaterialsEndpoint = `${baseUrl}study_materials`;
 export const reviewsEndpoint = `${baseUrl}reviews`;
 
+export const octokitApiEndpoint = "https://api.github.com/";
+export const octokitApiIssuesEndpoint = `${octokitApiEndpoint}repos/salemlf/hakubun/issues`;
+
 export const AVAIL_REVIEWS = "immediately_available_for_review";
 export const AVAIL_LESSONS = "immediately_available_for_lessons";
-
 export const SUBJECT_SUBJ_TYPES = "types";
 export const ASSIGNMENT_SUBJ_TYPES = "subject_types";
 export const LEVELS_PARAM = "levels";

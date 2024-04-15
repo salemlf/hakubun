@@ -49,7 +49,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
-const RELEASE_VERSION = "0.4.2-alpha";
+export const RELEASE_VERSION = "0.4.2-alpha";
 
 // for mock service worker
 async function enableMocking() {
@@ -66,7 +66,6 @@ Howler.html5PoolSize = 100;
 
 await enableMocking();
 
-// TODO: improve this so not manually changing release version every time
 if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
   LogRocket.init("cleqvf/hakubun", {
     release: RELEASE_VERSION,

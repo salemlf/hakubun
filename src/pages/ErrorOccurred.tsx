@@ -1,12 +1,20 @@
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  isRouteErrorResponse,
+  useNavigate,
+  useRouteError,
+} from "react-router-dom";
 import { copyToClipboard } from "../utils";
-import FloatingHomeButton from "../components/FloatingHomeButton";
+import { RELEASE_VERSION } from "../App";
 import Emoji from "../components/Emoji";
 import Button from "../components/Button";
 import SvgIcon from "../components/SvgIcon";
+import ErrReportModal from "../components/ErrReportModal";
 import LogoExclamation from "../images/logo-exclamation.svg";
 import CopyIcon from "../images/copy.svg?react";
-import { Header } from "../styles/BaseStyledComponents";
+import ColorHomeIcon from "../images/home-color.svg?react";
+import ErrorIcon from "../images/error.svg?react";
+import { FloatingButton, Header } from "../styles/BaseStyledComponents";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -37,6 +45,7 @@ const ErrorDetails = styled.div`
   background-color: var(--secondary-foreground-color);
   border-radius: 8px;
 
+  h3,
   h4,
   p {
     margin: 0;
@@ -44,9 +53,22 @@ const ErrorDetails = styled.div`
     white-space: pre-line;
   }
 
+  p {
+    margin-bottom: 10px;
+  }
+
+  h3,
+  h4 {
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
   h4 {
     font-size: 1rem;
-    font-weight: 600;
+    margin: 5px 0;
   }
 `;
 
@@ -63,6 +85,7 @@ const CopyContentBtn = styled(Button)`
   border: 1px solid black;
   gap: 4px;
   font-size: 0.875rem;
+  color: #000;
 `;
 
 const ErrAndCopyBtnContainer = styled.div`
@@ -73,26 +96,57 @@ const ErrAndCopyBtnContainer = styled.div`
   margin-bottom: 5px;
 `;
 
+const StackTraceAppVersionContainer = styled.div`
+  max-height: 300px;
+  overflow-y: auto;
+`;
+
+const BtnTxt = styled.p`
+  margin: 0;
+  text-transform: capitalize;
+`;
+
+const FloatingButtonsContainer = styled.div`
+  position: fixed;
+  z-index: 1;
+  bottom: 35px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+`;
+
 function ErrorOccurred() {
   const error = useRouteError();
-  console.error(error);
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string>("Unknown Error");
+  const [stackTrace, setStackTrace] = useState<string | undefined>();
+  const [isErrReportModalOpen, setIsErrReportModalOpen] = useState(false);
 
-  let errorMessage: string;
+  useEffect(() => {
+    if (isRouteErrorResponse(error)) {
+      // error is type `ErrorResponse`
+      setErrorMessage(
+        `Response error: ${error.data?.message || error.statusText}`
+      );
+    } else if (error instanceof Error) {
+      setErrorMessage(error.message);
+      setStackTrace(error.stack);
+    } else if (typeof error === "string") {
+      setErrorMessage(error);
+    } else {
+      console.error(error);
+      setErrorMessage(`Unknown error occurred: ${JSON.stringify(error)}`);
+    }
 
-  let stackTrace: string | undefined;
-
-  if (isRouteErrorResponse(error)) {
-    // error is type `ErrorResponse`
-    errorMessage = `Response error: ${error.data?.message || error.statusText}`;
-  } else if (error instanceof Error) {
-    errorMessage = error.message;
-    stackTrace = error.stack;
-  } else if (typeof error === "string") {
-    errorMessage = error;
-  } else {
     console.error(error);
-    errorMessage = `Unknown error occurred: ${JSON.stringify(error)}`;
-  }
+  }, [error]);
 
   return (
     <>
@@ -109,21 +163,53 @@ function ErrorOccurred() {
       <Content>
         <ErrorDetails>
           <ErrAndCopyBtnContainer>
-            <h4>{errorMessage}</h4>
+            <h3>{errorMessage}</h3>
             <CopyContentBtn
-              onPress={() => copyToClipboard(`${errorMessage}\n${stackTrace}`)}
+              onPress={() =>
+                copyToClipboard(
+                  `${RELEASE_VERSION}\n${errorMessage}\n${stackTrace}`
+                )
+              }
             >
               Copy Error{" "}
               <SvgIcon icon={<CopyIcon />} width="1.5em" height="1.5em" />
             </CopyContentBtn>
           </ErrAndCopyBtnContainer>
-          {stackTrace && <p>{stackTrace}</p>}
+          <StackTraceAppVersionContainer>
+            <h4>App Version</h4>
+            <p>{RELEASE_VERSION}</p>
+            <h4>Stacktrace</h4>
+            {stackTrace && <p>{stackTrace}</p>}
+          </StackTraceAppVersionContainer>
         </ErrorDetails>
         <DistressedCrabigatorContainer>
           <img src={LogoExclamation} alt="Unhappy crabigator looking upwards" />
         </DistressedCrabigatorContainer>
       </Content>
-      <FloatingHomeButton />
+      <ErrReportModal
+        isOpen={isErrReportModalOpen}
+        setIsOpen={setIsErrReportModalOpen}
+        errMsg={errorMessage}
+        stackTrace={stackTrace}
+      />
+      <FloatingButtonsContainer>
+        <FloatingButton
+          backgroundColor="var(--ion-color-warning)"
+          color="black"
+          onPress={() => setIsErrReportModalOpen(true)}
+        >
+          <SvgIcon icon={<ErrorIcon />} width="1.5em" height="1.5em" />
+          <BtnTxt>Report Error</BtnTxt>
+        </FloatingButton>
+        <FloatingButton
+          backgroundColor="var(--ion-color-tertiary)"
+          color="black"
+          onPress={() => navigate("/", { replace: true })}
+        >
+          <SvgIcon icon={<ColorHomeIcon />} width="1.5em" height="1.5em" />
+          <BtnTxt>Home</BtnTxt>
+        </FloatingButton>
+      </FloatingButtonsContainer>
     </>
   );
 }

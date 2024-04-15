@@ -10,6 +10,7 @@ type RootProps = {
 };
 
 const Root = styled(SwitchPrimitive.Root)<RootProps>`
+  position: relative;
   width: ${({ rootwidth }) => `${rootwidth}`};
   height: ${({ rootheight }) => `${rootheight}`};
   background-color: var(--ion-color-danger);
@@ -39,15 +40,38 @@ const Toggle = styled(motion.span)<ToggleProps>`
   border: 1px solid black;
 `;
 
+const SwitchTxt = styled.p`
+  position: absolute;
+  margin: 0px;
+  font-size: 0.875em;
+`;
+
+const OnText = styled(SwitchTxt)`
+  left: 0.25em;
+  color: #000;
+`;
+
+const OffText = styled(SwitchTxt)`
+  right: 0.5em;
+  color: #fff;
+`;
+
 type Props = {
   isSwitchedOn: boolean;
   setIsSwitchedOn: (isSwitchedOn: boolean) => void;
   size: SwitchSize;
   labelId: string;
+  showText?: boolean;
 };
 
-function Switch({ isSwitchedOn, setIsSwitchedOn, size, labelId }: Props) {
-  let switchSize = getSwitchSize(size);
+function Switch({
+  isSwitchedOn,
+  setIsSwitchedOn,
+  size,
+  labelId,
+  showText = false,
+}: Props) {
+  const switchSize = getSwitchSize(size);
 
   return (
     <Root
@@ -57,6 +81,8 @@ function Switch({ isSwitchedOn, setIsSwitchedOn, size, labelId }: Props) {
       rootwidth={switchSize.rootSize.width}
       rootheight={switchSize.rootSize.height}
     >
+      {showText &&
+        (isSwitchedOn ? <OnText>Yes</OnText> : <OffText>No</OffText>)}
       <SwitchPrimitive.Thumb asChild>
         <Toggle
           togglewidth={switchSize.toggleSize.width}

@@ -69,6 +69,7 @@ const PopoverContent = forwardRef<PopoverRef, PopoverProps>(
               sideOffset={5}
               {...props}
               side="top"
+              style={{ zIndex: 5001 }}
             >
               <Content
                 contentbgcolor={contentBgColor}
