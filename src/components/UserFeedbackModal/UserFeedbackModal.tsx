@@ -141,7 +141,7 @@ type Props = {
 };
 
 function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
-  const titleInputRef = useRef<HTMLInputElement>(null);
+  const feedbackTypeSelectorRef = useRef<HTMLButtonElement>(null);
   const [isUsernameIncluded, setIsUsernameIncluded] = useState<boolean>(false);
   const [isDeviceInfoIncluded, setIsDeviceInfoIncluded] =
     useState<boolean>(false);
@@ -158,8 +158,8 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
   }, [isOpen]);
 
   useEffect(() => {
-    if (isOpen && titleInputRef.current) {
-      titleInputRef.current.focus();
+    if (isOpen && feedbackTypeSelectorRef.current) {
+      feedbackTypeSelectorRef.current.focus();
     }
   }, [isOpen]);
 
@@ -207,6 +207,7 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
               isBold={true}
             />
             <Selector
+              ref={feedbackTypeSelectorRef}
               id="feedbackTypeSelector"
               value={selectedFeedbackType?.value}
               onValueChange={(updatedValue) =>
@@ -233,7 +234,6 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
               <TitleInput
                 id="feedbackTitleInput"
                 aria-label="User feedback title"
-                ref={titleInputRef}
                 required
               />
             </FeedbackInfoLabel>
