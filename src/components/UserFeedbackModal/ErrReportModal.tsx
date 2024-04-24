@@ -1,12 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Device } from "@capacitor/device";
-import { RELEASE_VERSION } from "../../App";
-import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
-import { filterProfanity } from "../../services/ProfanityFilterService/ProfanityFilterService";
-import { displayToast } from "../Toast/Toast.service";
-import { useCreateIssue } from "../../hooks/octokit/useCreateIssue";
-import { IssuePostData } from "../../types/Octokit";
-import Button from "../Button";
+import { useUserFeedbackSubmit } from "./UserFeedbackModal.hooks";
 import Modal from "../Modal";
 import HelpSpan from "../HelpSpan";
 import Label from "../Label";
@@ -14,71 +7,17 @@ import Switch from "../Switch";
 import LoadingDots from "../LoadingDots";
 import SvgIcon from "../SvgIcon";
 import SendIcon from "../../images/paper-airplane.svg?react";
-import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
+import {
+  ButtonContainer,
+  FeedbackInfoLabel,
+  FeedbackTextArea,
+  FieldContainer,
+  LoadingDotsContainer,
+  MarginlessParagraph,
+  SubmitButton,
+  SwitchFieldContainer,
+} from "./UserFeedbackModal";
 import styled from "styled-components";
-
-const LoadingDotsContainer = styled(FixedCenterContainer)`
-  z-index: 5000;
-`;
-
-const AddtlErrInfoLabel = styled.label`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  span {
-    font-weight: 600;
-  }
-`;
-
-const ErrInfoTextArea = styled.textarea`
-  width: 100%;
-  display: inline-flex;
-  color: black;
-  background-color: white;
-  flex: 1;
-
-  &::selection {
-    background-color: var(--ion-color-primary);
-    color: black;
-  }
-
-  &::-moz-selection {
-    background-color: var(--ion-color-primary);
-    color: black;
-  }
-`;
-
-const FieldContainer = styled.div`
-  margin-bottom: 16px;
-`;
-
-const SwitchFieldContainer = styled(FieldContainer)`
-  display: grid;
-  gap: 10px;
-  align-items: center;
-  grid-template-columns: auto auto;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 16px;
-`;
-
-const SubmitButton = styled(Button)`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 10px;
-  border-radius: 12px;
-  border: 1px solid black;
-`;
-
-const MarginlessParagraph = styled.p`
-  margin: 0;
-  font-size: 1rem;
-`;
 
 const BtnTxt = styled.p`
   margin: 0;
@@ -94,29 +33,6 @@ const AddtlErrHelpPopoverContents = (
     </strong>
   </MarginlessParagraph>
 );
-
-type IssueLinkProps = {
-  url: string;
-};
-
-const IssueLink = ({ url }: IssueLinkProps) => {
-  return (
-    <MarginlessParagraph>
-      You can view your error report{" "}
-      <a target="_blank" href={url}>
-        here
-      </a>
-    </MarginlessParagraph>
-  );
-};
-
-const getDeviceDebugInfo = async () => {
-  const deviceInfo = await Device.getInfo();
-  const { name, memUsed, realDiskFree, realDiskTotal, ...infoForDebugging } =
-    deviceInfo;
-
-  return JSON.stringify(infoForDebugging, null, "\t");
-};
 
 interface FormElements extends HTMLFormControlsCollection {
   errInfoTextarea: HTMLTextAreaElement;
@@ -135,11 +51,12 @@ export type Props = {
 
 function ErrReportModal({ isOpen, setIsOpen, errMsg, stackTrace }: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [isReportSubmitting, setIsReportSubmitting] = useState<boolean>(false);
+  // const [isReportSubmitting, setIsReportSubmitting] = useState<boolean>(false);
   const [isUsernameIncluded, setIsUsernameIncluded] = useState<boolean>(false);
   const [isDeviceInfoIncluded, setIsDeviceInfoIncluded] =
     useState<boolean>(false);
-  const { userInfo } = useUserInfoStoreFacade();
+  const { isReportSubmitting, createAndPostIssue, setIsReportSubmitting } =
+    useUserFeedbackSubmit(setIsOpen);
 
   // bails out of submitting issue if modal is closed
   useEffect(() => {
@@ -148,7 +65,7 @@ function ErrReportModal({ isOpen, setIsOpen, errMsg, stackTrace }: Props) {
     }
   }, [isOpen]);
 
-  const { mutateAsync: createGitHubIssue } = useCreateIssue();
+  // const { mutateAsync: createGitHubIssue } = useCreateIssue();
 
   useEffect(() => {
     if (isOpen && textareaRef.current) {
@@ -160,55 +77,17 @@ function ErrReportModal({ isOpen, setIsOpen, errMsg, stackTrace }: Props) {
     event.preventDefault();
     const target = event.currentTarget.elements.errInfoTextarea;
     const errInfoTextareaValue = target.value;
-    const username =
-      isUsernameIncluded && userInfo?.username
-        ? userInfo.username
-        : "Anonymous User";
 
-    const deviceInfo = isDeviceInfoIncluded
-      ? await getDeviceDebugInfo()
-      : "No device info provided";
+    const errInfo = `## Error\n### Error Message\n\`${errMsg}\`\n### Stack Trace\n\`\`\`\n${stackTrace} \n\`\`\`\n`;
 
-    // it's not that I don't trust y'all.. but also don't want my hakubun issue bot account banned lol
-    const filteredErrInfoValue = filterProfanity(errInfoTextareaValue);
-    const issueBody = `## Error\n### Error Message\n\`${errMsg}\`\n### Stack Trace\n\`\`\`\n${stackTrace} \n\`\`\`\n## Description from User\n${filteredErrInfoValue}\n## Additional Info\n### Release Version\n${RELEASE_VERSION}\n### Device Info\n\`\`\`\n${deviceInfo}\n\`\`\`\n### Bug Reported By\n${username}`;
-
-    const issueInfo: IssuePostData = {
+    createAndPostIssue({
       title: errMsg,
-      body: issueBody,
       issueType: "bug",
-    };
-    setIsReportSubmitting(true);
-
-    createGitHubIssue({ issuePostData: issueInfo })
-      .then((response) => {
-        if (response.status > 299) {
-          displayToast({
-            toastType: "error",
-            title: "Oh no, an API Error!",
-            content: `There was an issue submitting your error report (oh, the irony).\nResponded with status code: ${response.status}`,
-            timeout: 10000,
-          });
-        } else {
-          setIsOpen(false);
-          displayToast({
-            toastType: "success",
-            title: "Your error report has been submitted!",
-            content: <IssueLink url={response.data.html_url} />,
-            timeout: 10000,
-          });
-        }
-        setIsReportSubmitting(false);
-      })
-      .catch((err) => {
-        displayToast({
-          toastType: "error",
-          title: "Oh no, an API Error!",
-          content: `There was an issue submitting your error report (oh, the irony)\n Error: ${err}`,
-          timeout: 10000,
-        });
-        setIsReportSubmitting(false);
-      });
+      description: errInfoTextareaValue,
+      isUsernameIncluded,
+      isDeviceInfoIncluded,
+      errInfo,
+    });
   };
 
   return (
@@ -222,16 +101,16 @@ function ErrReportModal({ isOpen, setIsOpen, errMsg, stackTrace }: Props) {
         >
           <form onSubmit={submitErrReport}>
             <FieldContainer>
-              <AddtlErrInfoLabel htmlFor="errInfoTextarea">
+              <FeedbackInfoLabel htmlFor="errInfoTextarea">
                 <HelpSpan helpPopoverContents={AddtlErrHelpPopoverContents}>
                   <span>What caused the error to occur?</span>
                 </HelpSpan>
-                <ErrInfoTextArea
+                <FeedbackTextArea
                   id="errInfoTextarea"
                   ref={textareaRef}
                   aria-label={`Error Details`}
                 />
-              </AddtlErrInfoLabel>
+              </FeedbackInfoLabel>
             </FieldContainer>
             <SwitchFieldContainer>
               <Label

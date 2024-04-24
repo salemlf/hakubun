@@ -9,7 +9,7 @@ import { RELEASE_VERSION } from "../App";
 import Emoji from "../components/Emoji";
 import Button from "../components/Button";
 import SvgIcon from "../components/SvgIcon";
-import ErrReportModal from "../components/ErrReportModal";
+import ErrReportModal from "../components/UserFeedbackModal/ErrReportModal";
 import LogoExclamation from "../images/logo-exclamation.svg";
 import CopyIcon from "../images/copy.svg?react";
 import ColorHomeIcon from "../images/home-color.svg?react";
