@@ -34,6 +34,13 @@ export const useModalContainer = (modalID: string, isModalOpen: boolean) => {
     isModalOpen
       ? document.body.classList.add("modal-open")
       : document.body.classList.remove("modal-open");
+
+    // workaround for pointer events bug where cannot click on anything after closing modal sometimes
+    if (!isModalOpen) {
+      setTimeout(() => {
+        document.body.style.pointerEvents = "";
+      }, 800);
+    }
   }, [isModalOpen]);
 
   return { modalContainerRef };
