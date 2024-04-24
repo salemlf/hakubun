@@ -1,4 +1,3 @@
-import React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { SelectProps, SelectItemProps } from "@radix-ui/react-select";
 // TODO: change so not relying on IonIcon
@@ -7,6 +6,7 @@ import ExpandArrowIcon from "../../images/expand-arrow.svg";
 import CollapseArrowIcon from "../../images/collapse-arrow.svg";
 import CheckmarkIcon from "../../images/checkmark.svg";
 import styled from "styled-components";
+import { forwardRef, useEffect, useRef } from "react";
 
 const Item = styled(SelectPrimitive.Item)`
   font-size: 1.2rem;
@@ -56,7 +56,7 @@ const ItemIndicator = styled(SelectPrimitive.ItemIndicator)`
 
 type SelectItemRef = HTMLDivElement;
 
-export const SelectItem = React.forwardRef<SelectItemRef, SelectItemProps>(
+export const SelectItem = forwardRef<SelectItemRef, SelectItemProps>(
   ({ children, ...props }, forwardedRef) => {
     return (
       <Item {...props} ref={forwardedRef}>
@@ -108,6 +108,7 @@ const Trigger = styled(SelectPrimitive.Trigger)`
 `;
 
 const SelectContent = styled(SelectPrimitive.Content)`
+  z-index: 5001;
   overflow: hidden;
   background-color: white;
   border-radius: 6px;
@@ -137,37 +138,51 @@ const SelectViewport = styled(SelectPrimitive.Viewport)`
 type ButtonRef = HTMLButtonElement;
 
 type SelectorProps = SelectProps & {
+  open?: boolean;
   id: string;
 };
 
 // TODO: create a composed version of the selector where can pass in an array of items and they'll be mapped
-const Selector = React.forwardRef<ButtonRef, SelectorProps>(
-  ({ id, children, ...props }, forwardedRef) => {
+const Selector = forwardRef<ButtonRef, SelectorProps>(
+  ({ open, id, children, ...props }, forwardedRef) => {
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      const currContentRef = contentRef.current;
+      if (!currContentRef) return;
+
+      currContentRef.addEventListener("touchend", (e) => e.preventDefault());
+
+      return () => {
+        currContentRef.removeEventListener("touchend", (e) =>
+          e.preventDefault()
+        );
+      };
+    }, [contentRef.current, open]);
+
     return (
-      <SelectorRoot {...props}>
+      <SelectorRoot {...props} open={open}>
         <Trigger ref={forwardedRef} id={id}>
           <SelectPrimitive.Value />
           <Expand>
             <IonIcon src={ExpandArrowIcon} />
           </Expand>
         </Trigger>
-        <SelectPrimitive.Portal>
-          <SelectContent>
-            <SelectPrimitive.ScrollUpButton
-              className="scrollButton"
-              aria-label="Scroll up"
-            >
-              <IonIcon src={CollapseArrowIcon} />
-            </SelectPrimitive.ScrollUpButton>
-            <SelectViewport>{children}</SelectViewport>
-            <SelectPrimitive.ScrollDownButton
-              className="scrollButton"
-              aria-label="Scroll down"
-            >
-              <IonIcon src={ExpandArrowIcon} />
-            </SelectPrimitive.ScrollDownButton>
-          </SelectContent>
-        </SelectPrimitive.Portal>
+        <SelectContent ref={contentRef}>
+          <SelectPrimitive.ScrollUpButton
+            className="scrollButton"
+            aria-label="Scroll up"
+          >
+            <IonIcon src={CollapseArrowIcon} />
+          </SelectPrimitive.ScrollUpButton>
+          <SelectViewport>{children}</SelectViewport>
+          <SelectPrimitive.ScrollDownButton
+            className="scrollButton"
+            aria-label="Scroll down"
+          >
+            <IonIcon src={ExpandArrowIcon} />
+          </SelectPrimitive.ScrollDownButton>
+        </SelectContent>
       </SelectorRoot>
     );
   }
