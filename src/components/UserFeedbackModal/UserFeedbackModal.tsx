@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useUserFeedbackSubmit } from "./UserFeedbackModal.hooks";
 import { IssueType } from "../../types/Octokit";
 import Switch from "../Switch";
@@ -9,6 +10,7 @@ import SvgIcon from "../SvgIcon";
 import Button from "../Button";
 import LoadingDots from "../LoadingDots";
 import Selector, { SelectItem } from "../Selector";
+import ErrorIcon from "../../images/error.svg?react";
 import SendIcon from "../../images/paper-airplane.svg?react";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
@@ -21,9 +23,11 @@ export const FeedbackInfoLabel = styled.label`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  font-weight: 600;
 
   span {
     font-weight: 600;
+    line-height: 1.875;
   }
 `;
 
@@ -54,6 +58,7 @@ export const SwitchFieldContainer = styled(FieldContainer)`
   gap: 10px;
   align-items: center;
   grid-template-columns: auto auto;
+  justify-content: space-between;
 `;
 
 export const ButtonContainer = styled.div`
@@ -88,6 +93,29 @@ const TitleInput = styled.input`
   border-radius: 5px;
 `;
 
+const RequiredFieldContainer = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 5px;
+  background-color: white;
+  border-radius: 5px;
+  margin-top: 5px;
+`;
+
+const RequiredFieldMsg = styled.p`
+  font-size: 0.75rem;
+  color: var(--ion-color-danger);
+  margin: 0;
+`;
+
+const FeedbackTypeLabel = styled.label`
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 1rem;
+`;
+
 const AddtlErrHelpPopoverContents = (
   <MarginlessParagraph>
     Give a detailed explanation of the feature, bug, or question you have.{" "}
@@ -103,14 +131,10 @@ const SubjectInputPopoverContents = (
   </MarginlessParagraph>
 );
 
-interface FormElements extends HTMLFormControlsCollection {
-  feedbackDescriptionTextarea: HTMLTextAreaElement;
-  feedbackTitleInput: HTMLInputElement;
-}
-
-interface FeedbackForm extends HTMLFormElement {
-  readonly elements: FormElements;
-}
+type FormInputs = {
+  feedbackDescription: string;
+  feedbackTitle: string;
+};
 
 type FeedbackTypeSelection = {
   value: IssueType;
@@ -141,6 +165,12 @@ type Props = {
 };
 
 function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>();
+
   const feedbackTypeSelectorRef = useRef<HTMLButtonElement>(null);
   const [isUsernameIncluded, setIsUsernameIncluded] = useState<boolean>(false);
   const [isDeviceInfoIncluded, setIsDeviceInfoIncluded] =
@@ -172,17 +202,14 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
     setSelectedFeedbackType(selected);
   };
 
-  const submitFeedback = async (event: React.ChangeEvent<FeedbackForm>) => {
-    event.preventDefault();
-    const formElements = event.currentTarget.elements;
-    const descriptionTextareaValue =
-      formElements.feedbackDescriptionTextarea.value;
-    const titleInputValue = formElements.feedbackTitleInput.value;
+  const submitFeedback: SubmitHandler<FormInputs> = (data) => {
+    const feedbackDescriptionValue = data.feedbackDescription;
+    const feedbackTitleValue = data.feedbackTitle;
 
     const issueToCreate = {
-      title: titleInputValue,
+      title: feedbackTitleValue,
       issueType: selectedFeedbackType.value,
-      description: descriptionTextareaValue,
+      description: feedbackDescriptionValue,
       isUsernameIncluded,
       isDeviceInfoIncluded,
     };
@@ -198,14 +225,11 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
         isOpen={isOpen}
         description="This info will be sent to the developer. You can ask a question, suggest a feature, or report a bug!"
       >
-        <form onSubmit={submitFeedback}>
+        <form noValidate onSubmit={handleSubmit(submitFeedback)}>
           <FieldContainer>
-            <Label
-              labelText="Type of feedback"
-              idOfControl="feedbackTypeSelector"
-              labelfontSize="1rem"
-              isBold={true}
-            />
+            <FeedbackTypeLabel htmlFor="feedbackTypeSelector">
+              Type of feedback
+            </FeedbackTypeLabel>
             <Selector
               ref={feedbackTypeSelectorRef}
               id="feedbackTypeSelector"
@@ -232,11 +256,17 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
                 <span>Title</span>
               </HelpSpan>
               <TitleInput
+                {...register("feedbackTitle", { required: true })}
                 id="feedbackTitleInput"
                 aria-label="User feedback title"
-                required
               />
             </FeedbackInfoLabel>
+            {errors.feedbackTitle && (
+              <RequiredFieldContainer>
+                <SvgIcon icon={<ErrorIcon />} width="1.25em" height="1.25em" />
+                <RequiredFieldMsg>This field is required</RequiredFieldMsg>
+              </RequiredFieldContainer>
+            )}
           </FieldContainer>
           <FieldContainer>
             <FeedbackInfoLabel htmlFor="feedbackDescriptionTextarea">
@@ -244,11 +274,17 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
                 <span>{selectedFeedbackType.descriptionInputLabel}</span>
               </HelpSpan>
               <FeedbackTextArea
+                {...register("feedbackDescription", { required: true })}
                 id="feedbackDescriptionTextarea"
                 aria-label={`User Feedback`}
-                required
               />
             </FeedbackInfoLabel>
+            {errors.feedbackDescription && (
+              <RequiredFieldContainer>
+                <SvgIcon icon={<ErrorIcon />} width="1.25em" height="1.25em" />
+                <RequiredFieldMsg>This field is required</RequiredFieldMsg>
+              </RequiredFieldContainer>
+            )}
           </FieldContainer>
           <SwitchFieldContainer>
             <Label
