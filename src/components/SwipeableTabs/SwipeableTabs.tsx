@@ -34,7 +34,7 @@ const TabPanelStyled = styled(Tabs.Content)`
   scrollbar-width: none; /* Firefox */
 
   &:focus-visible {
-    outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
   }
 `;
 

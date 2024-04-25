@@ -113,8 +113,8 @@ export const Chip = styled(Button)`
   -ms-user-select: text;
 
   &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
   }
 
   ion-icon {
@@ -158,8 +158,10 @@ export const BaseButton = styled.button<ButtonContainerProps>`
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+
   &:focus-visible {
-    outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
   }
 `;
 
@@ -316,7 +318,7 @@ export const SubjectItemContainer = styled.button<ItemContainerProps>`
   border: 2px solid black;
 
   &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
   }
 `;

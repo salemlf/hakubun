@@ -36,8 +36,8 @@ export const BtnWithTxt = styled(DefaultBtn)<TxtBtnProps>`
     lockedStyle && `var(--ion-color-step-300)`};
 
   &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
   }
 `;
 
@@ -75,8 +75,8 @@ export const BtnWithImage = styled(DefaultBtn)`
   padding: 4px;
 
   &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
   }
 `;
 
@@ -110,8 +110,8 @@ export const BaseReviewLessonButton = styled(Button)`
   }
 
   &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 3px;
   }
 `;
 

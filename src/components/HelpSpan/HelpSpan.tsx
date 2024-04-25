@@ -41,6 +41,13 @@ const ClickableHelp = styled.button`
   }
 `;
 
+const Popover = styled(PopoverContent)`
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+  }
+`;
+
 const HelpContentWrapper = styled.div`
   padding: 12px;
   max-width: 260px;
@@ -88,9 +95,9 @@ function HelpSpan({
             </Punctuation>
           </ClickableHelp>
         </PopoverTrigger>
-        <PopoverContent isOpen={isOpen} showBorder={true}>
+        <Popover isOpen={isOpen} showBorder={true}>
           <HelpContentWrapper>{helpPopoverContents}</HelpContentWrapper>
-        </PopoverContent>
+        </Popover>
       </PopoverRoot>
     </ContainerSpan>
   );

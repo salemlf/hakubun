@@ -41,7 +41,7 @@ const SheetOpenCloseButton = styled(Button)`
   border: 1px solid black;
 
   &:focus-visible {
-    outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
   }
 `;
 

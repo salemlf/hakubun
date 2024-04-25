@@ -42,15 +42,13 @@ const ClearButton = styled(Button)`
 
 const Form = styled.form`
   display: flex;
-  &:focus-within {
-    outline: 2px solid white;
+
+  &:focus-within,
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
     outline-offset: 3px;
   }
 
-  &:focus-visible {
-    outline: 2px solid white;
-    outline-offset: 3px;
-  }
   background-color: var(--offwhite-color);
   border-radius: 8px;
   align-items: center;
