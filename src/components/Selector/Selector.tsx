@@ -1,12 +1,11 @@
+import { forwardRef, useEffect, useRef } from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { SelectProps, SelectItemProps } from "@radix-ui/react-select";
-// TODO: change so not relying on IonIcon
-import { IonIcon } from "@ionic/react";
-import ExpandArrowIcon from "../../images/expand-arrow.svg";
-import CollapseArrowIcon from "../../images/collapse-arrow.svg";
-import CheckmarkIcon from "../../images/checkmark.svg";
+import SvgIcon from "../SvgIcon";
+import ExpandArrowIcon from "../../images/expand-arrow.svg?react";
+import CollapseArrowIcon from "../../images/collapse-arrow.svg?react";
+import CheckmarkIcon from "../../images/checkmark.svg?react";
 import styled from "styled-components";
-import { forwardRef, useEffect, useRef } from "react";
 
 const Item = styled(SelectPrimitive.Item)`
   font-size: 1.2rem;
@@ -62,7 +61,7 @@ export const SelectItem = forwardRef<SelectItemRef, SelectItemProps>(
       <Item {...props} ref={forwardedRef}>
         <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
         <ItemIndicator>
-          <IonIcon src={CheckmarkIcon} />
+          <SvgIcon icon={<CheckmarkIcon />} width="1.25em" height="1.25em" />
         </ItemIndicator>
       </Item>
     );
@@ -92,8 +91,8 @@ const Trigger = styled(SelectPrimitive.Trigger)`
   max-width: 55vw;
 
   &:focus-visible {
-    outline: 2px solid white;
-    outline-offset: 4px;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 3px;
   }
 
   &[data-placeholder] {
@@ -165,7 +164,11 @@ const Selector = forwardRef<ButtonRef, SelectorProps>(
         <Trigger ref={forwardedRef} id={id}>
           <SelectPrimitive.Value />
           <Expand>
-            <IonIcon src={ExpandArrowIcon} />
+            <SvgIcon
+              icon={<ExpandArrowIcon />}
+              width="1.25em"
+              height="1.25em"
+            />
           </Expand>
         </Trigger>
         <SelectContent ref={contentRef}>
@@ -173,14 +176,22 @@ const Selector = forwardRef<ButtonRef, SelectorProps>(
             className="scrollButton"
             aria-label="Scroll up"
           >
-            <IonIcon src={CollapseArrowIcon} />
+            <SvgIcon
+              icon={<CollapseArrowIcon />}
+              width="1.25em"
+              height="1.25em"
+            />
           </SelectPrimitive.ScrollUpButton>
           <SelectViewport>{children}</SelectViewport>
           <SelectPrimitive.ScrollDownButton
             className="scrollButton"
             aria-label="Scroll down"
           >
-            <IonIcon src={ExpandArrowIcon} />
+            <SvgIcon
+              icon={<ExpandArrowIcon />}
+              width="1.25em"
+              height="1.25em"
+            />
           </SelectPrimitive.ScrollDownButton>
         </SelectContent>
       </SelectorRoot>
