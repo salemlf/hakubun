@@ -33,6 +33,7 @@ export const FeedbackInfoLabel = styled.label`
 
 export const FeedbackTextArea = styled.textarea`
   width: 100%;
+  border-radius: 5px;
   display: inline-flex;
   color: black;
   background-color: white;
@@ -46,6 +47,11 @@ export const FeedbackTextArea = styled.textarea`
   &::-moz-selection {
     background-color: var(--ion-color-primary);
     color: black;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 3px;
   }
 `;
 
@@ -74,6 +80,11 @@ export const SubmitButton = styled(Button)`
   padding: 10px;
   border-radius: 12px;
   border: 1px solid black;
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 3px;
+  }
 `;
 
 export const MarginlessParagraph = styled.p`
@@ -91,6 +102,11 @@ const TitleInput = styled.input`
   margin: 0px;
   width: 100%;
   border-radius: 5px;
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 3px;
+  }
 `;
 
 const RequiredFieldContainer = styled.div`

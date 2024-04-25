@@ -34,8 +34,10 @@ const Punctuation = styled.span<PunctuationProps>`
 const ClickableHelp = styled.button`
   all: unset;
   color: var(--text-color);
+
   &:focus-visible {
-    outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
   }
 `;
 
