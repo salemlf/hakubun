@@ -14,10 +14,6 @@ import styled from "styled-components";
 
 const LessonsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-lesson);
-  &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
-  }
 `;
 
 const LessonButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`

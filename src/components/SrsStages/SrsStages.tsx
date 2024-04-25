@@ -196,9 +196,10 @@ const SrsStageButton = styled.button<ButtonProps>`
   border-radius: 6px;
   border: 2px solid black;
   background: ${({ srsStage }) => getSrsLevelColor(srsStage)};
+
   &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 1px;
   }
   grid-column: ${({ fullWidth }) => fullWidth && "1 / 3"};
   display: grid;

@@ -27,6 +27,11 @@ const PopoverContainerStyled = styled.button<PopoverProps>`
   background-color: ${({ subjType }) =>
     subjType === "radical" ? `var(--wanikani-blue)` : `var(--wanikani-pink)`};
   color: var(--text-color);
+
+  &:focus-visible {
+    outline: 3px solid var(--focus-color);
+    outline-offset: 4px;
+  }
 `;
 
 const SubjectTimeTill = styled.p`

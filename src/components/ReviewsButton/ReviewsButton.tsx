@@ -13,10 +13,6 @@ import styled from "styled-components";
 
 const ReviewsButtonStyled = styled(BaseReviewLessonButton)`
   background-color: var(--wanikani-review);
-  &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
-  }
 `;
 
 const ReviewsButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`

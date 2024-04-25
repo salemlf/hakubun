@@ -30,8 +30,8 @@ const AddButton = styled(Modal.Trigger)`
   -ms-user-select: text;
 
   &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
   }
 
   ion-icon {

@@ -52,9 +52,8 @@ const AssignmentTypeItem = styled(ToggleGroup.Item)<AssignTypeOptionProps>`
   color: white;
 
   &:focus-visible {
-    outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
     outline-offset: 2px;
-    --outline: 2px solid white;
   }
 `;
 

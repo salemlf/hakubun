@@ -13,8 +13,10 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
   background-color: ${({ backgroundcolor }) => `${backgroundcolor}`};
   color: ${({ color }) => `${color}`};
   cursor: pointer;
+
   &:focus-visible {
-    outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
   }
 `;
 

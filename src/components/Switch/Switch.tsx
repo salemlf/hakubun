@@ -24,6 +24,11 @@ const Root = styled(SwitchPrimitive.Root)<RootProps>`
     background-color: var(--ion-color-tertiary);
     justify-content: flex-end;
   }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 3px;
+  }
 `;
 
 type ToggleProps = {

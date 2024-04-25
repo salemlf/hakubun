@@ -130,7 +130,7 @@ const PageTab = styled.button`
   line-height: 1.25rem;
 
   &:focus-visible {
-    outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
     outline-offset: 2px;
   }
 `;

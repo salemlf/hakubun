@@ -56,6 +56,11 @@ const Root = styled(SwitchPrimitive.Root)`
     );
     justify-content: flex-end;
   }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 3px;
+  }
 `;
 
 const Toggle = styled(motion.span)`

@@ -134,15 +134,12 @@ const TokenAndBtnContainer = styled.div`
   padding: 5px;
   background-color: white;
 
-  &:focus-within {
-    outline: 2px solid white;
+  &:focus-within,
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
     outline-offset: 3px;
   }
 
-  &:focus-visible {
-    outline: 2px solid white;
-    outline-offset: 3px;
-  }
   color: black;
   margin: 10px 0;
   border-radius: 5px;

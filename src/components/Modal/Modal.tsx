@@ -24,6 +24,11 @@ function Modal({ open, onOpenChange, children }: Props) {
 const ClosePrimitive = styled(DialogPrimitive.Close)`
   background-color: transparent;
   border-radius: 50%;
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+  }
 `;
 
 const TitleBar = styled.div`

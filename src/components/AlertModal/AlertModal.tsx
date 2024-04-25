@@ -46,7 +46,7 @@ const DialogButton = styled.button`
   border: 1px solid black;
 
   &:focus-visible {
-    outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
     outline-offset: 2px;
   }
 `;

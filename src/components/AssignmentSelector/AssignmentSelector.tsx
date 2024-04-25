@@ -62,8 +62,8 @@ const SubjectItem = styled(motion.button)<ItemContainerProps>`
   border: 2px solid black;
 
   &:focus-visible {
-    outline: 2px solid white;
-    --outline: 2px solid white;
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
   }
 `;
 
