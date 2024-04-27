@@ -65,11 +65,11 @@ function AdvancedAssignmentFilters({
         </FilterSettingContainer>
       )}
       <FilterSettingContainer>
-          <LastUpdateOption
-            lastUpdateChoice={lastUpdateChoice}
-            onLastUpdateChoiceChange={setLastUpdateChoice}
-            headingFontSize="small"
-          />
+        <LastUpdateOption
+          lastUpdateChoice={lastUpdateChoice}
+          onLastUpdateChoiceChange={setLastUpdateChoice}
+          headingFontSize="small"
+        />
       </FilterSettingContainer>
       <FilterSettingContainer>
         <CurrentLevelOnlyOption

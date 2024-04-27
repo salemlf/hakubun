@@ -314,13 +314,23 @@ export const filterSubjectsByLevel = (subjects: Subject[], level: number) => {
   return subjects.filter((subject) => subject.level === level);
 };
 
-export const filterAssignmentsByLastUpdate = (assignments: Assignment[], hours: number) => {
+export const filterAssignmentsByLastUpdate = (
+  assignments: Assignment[],
+  hours: number
+) => {
   if (hours < 0) {
     return assignments;
   }
 
   var currentDateTime = new Date();
-  return assignments.filter((assignment) => Math.abs((currentDateTime.getTime() - new Date(assignment.data_updated_at).getTime()) / 36e5) <= hours);
+  return assignments.filter(
+    (assignment) =>
+      Math.abs(
+        (currentDateTime.getTime() -
+          new Date(assignment.data_updated_at).getTime()) /
+          36e5
+      ) <= hours
+  );
 };
 
 export const sortBySubjectTypeAndLevel = (subjArr: Subject[]): Subject[] => {

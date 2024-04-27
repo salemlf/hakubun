@@ -185,7 +185,10 @@ function AssignmentSelector({
   const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
   const { userInfo } = useUserInfoStoreFacade();
 
-  var filterdAssignments = filterAssignmentsByLastUpdate(assignmentData, filterByLastUpdate);
+  var filterdAssignments = filterAssignmentsByLastUpdate(
+    assignmentData,
+    filterByLastUpdate
+  );
   let assignmentSubjIDs = filterdAssignments.map(
     (assignmentItem: any) => assignmentItem.subject_id
   );
@@ -208,7 +211,12 @@ function AssignmentSelector({
           : subjectsFiltered;
       setAvailableSubjects(subjectsFilteredByLevel);
     }
-  }, [subjectsLoading, assignmentTypeFilter, filterByCurrentLevel, filterByLastUpdate]);
+  }, [
+    subjectsLoading,
+    assignmentTypeFilter,
+    filterByCurrentLevel,
+    filterByLastUpdate,
+  ]);
 
   const onSelectDeselectAllPress = () => {
     if (areAllSelected) {

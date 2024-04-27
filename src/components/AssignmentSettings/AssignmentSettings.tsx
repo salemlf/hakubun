@@ -54,7 +54,8 @@ function AssignmentSettings({
   const [backToBackChoice, setBackToBackChoice] = useState<BackToBackChoice>(
     backToBackOptionDefault
   );
-  const [lastUpdateChoice, setLastUpdateChoice] = useState<LastUpdateChoice>("-1");
+  const [lastUpdateChoice, setLastUpdateChoice] =
+    useState<LastUpdateChoice>("-1");
   const [sortOption, setSortOption] =
     useState<AssignmentSortOption>(defaultSortOrder);
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
