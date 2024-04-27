@@ -3,12 +3,12 @@ import AssignmentTypeSelector from "../AssignmentTypeSelector";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { SubjectType } from "../../types/Subject";
+import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import Collapsible from "../Collapsible";
 import BackToBackOption from "../BackToBackOption";
 import CurrentLevelOnlyOption from "../CurrentLevelOnlyOption";
-import styled from "styled-components";
 import LastUpdateOption from "../LastUpdateOption/LastUpdateOption";
-import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
+import styled from "styled-components";
 
 const FilterSettingContainer = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ type Props = {
   backToBackChoice: BackToBackChoice;
   setBackToBackChoice: (choice: BackToBackChoice) => void;
   lastUpdateChoice: LastUpdateChoice;
-  setLastUpdateChoice: (choice: LastUpdateChoice) => void;
+  setLastUpdateChoice: (selectedLastUpdate: LastUpdateChoice) => void;
   filterByCurrentLevel: boolean;
   setFilterByCurrentLevel: (isFilteringByCurrLvl: boolean) => void;
 };

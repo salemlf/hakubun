@@ -3,12 +3,12 @@ import { Assignment } from "../../types/Assignment";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
+import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import { SubjectType } from "../../types/Subject";
 import Card from "../Card";
 import AssignmentSelector from "../AssignmentSelector";
 import AdvancedAssignmentFilters from "../AdvancedAssignmentFilters";
 import { SettingOptionContainer } from "../../styles/BaseStyledComponents";
-import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 
 type Props = {
   assignmentData: Assignment[];
@@ -21,7 +21,7 @@ type Props = {
   backToBackChoice: BackToBackChoice;
   setBackToBackChoice: (choice: BackToBackChoice) => void;
   lastUpdateChoice: LastUpdateChoice;
-  setLastUpdateChoice: (choice: LastUpdateChoice) => void;
+  setLastUpdateChoice: (selectedLastUpdate: LastUpdateChoice) => void;
   settingsType: AssignmentSessionType;
 };
 

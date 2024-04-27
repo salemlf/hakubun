@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { IonSkeletonText, IonIcon } from "@ionic/react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
+import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import {
   filterSubjectsByLevel,
   filterSubjectsByType,
@@ -21,6 +22,7 @@ import {
   Vocabulary,
 } from "../../types/Subject";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
+import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import SubjectChars from "../SubjectChars";
 import { RadicalMeaning, ReadingAndMeaning } from "../SubjectWideBtnList";
 import Button from "../Button";
@@ -31,7 +33,6 @@ import CheckIcon from "../../images/checkmark.svg";
 import LogoExclamation from "../../images/logo-exclamation.svg";
 import { AbsoluteCenterContainer } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
-import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 
 const SubjectList = styled(ToggleGroup.Root)`
   display: flex;
@@ -163,7 +164,7 @@ type Props = {
   selectedAdvancedSubjIDs: string[];
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
   filterByCurrentLevel: boolean;
-  filterByLastUpdate: number;
+  filterByLastUpdate: LastUpdateChoice;
   settingsType: AssignmentSessionType;
   assignmentTypeFilter?: SubjectType[];
   showMeaning?: boolean;
@@ -185,12 +186,12 @@ function AssignmentSelector({
   const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
   const { userInfo } = useUserInfoStoreFacade();
 
-  var filterdAssignments = filterAssignmentsByLastUpdate(
+  const filteredAssignments = filterAssignmentsByLastUpdate(
     assignmentData,
-    filterByLastUpdate
+    filterByLastUpdate.value
   );
-  let assignmentSubjIDs = filterdAssignments.map(
-    (assignmentItem: any) => assignmentItem.subject_id
+  const assignmentSubjIDs = filteredAssignments.map(
+    (assignmentItem: Assignment) => assignmentItem.subject_id
   );
 
   const { isLoading: subjectsLoading, data: subjectsData } =
@@ -198,24 +199,27 @@ function AssignmentSelector({
 
   useEffect(() => {
     if (subjectsData) {
-      let sortedAssignments = sortBySubjectTypeAndLevel(subjectsData);
-      let subjectsFiltered = assignmentTypeFilter
+      const sortedAssignments = sortBySubjectTypeAndLevel(subjectsData);
+      const subjectsFiltered = assignmentTypeFilter
         ? filterSubjectsByType(
             sortedAssignments,
             Array.from(assignmentTypeFilter)
           )
         : sortedAssignments;
-      let subjectsFilteredByLevel =
+      const subjectsFilteredByLevel =
         filterByCurrentLevel && userInfo && userInfo.level
           ? filterSubjectsByLevel(subjectsFiltered, userInfo.level)
           : subjectsFiltered;
+
       setAvailableSubjects(subjectsFilteredByLevel);
+    } else {
+      setAvailableSubjects([]);
     }
   }, [
     subjectsLoading,
     assignmentTypeFilter,
     filterByCurrentLevel,
-    filterByLastUpdate,
+    subjectsData?.length,
   ]);
 
   const onSelectDeselectAllPress = () => {
