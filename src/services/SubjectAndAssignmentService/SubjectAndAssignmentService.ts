@@ -317,14 +317,15 @@ export const filterSubjectsByLevel = (subjects: Subject[], level: number) => {
 export const filterAssignmentsByLastUpdate = (
   assignments: Assignment[],
   hours: number
-) => {
+): Assignment[] => {
   if (hours < 0) {
     return assignments;
   }
 
-  var currentDateTime = new Date();
+  const currentDateTime = new Date();
   return assignments.filter(
     (assignment) =>
+      assignment.data_updated_at !== null &&
       Math.abs(
         (currentDateTime.getTime() -
           new Date(assignment.data_updated_at).getTime()) /
