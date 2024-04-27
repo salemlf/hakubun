@@ -23,10 +23,8 @@ export const FeedbackInfoLabel = styled.label`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  font-weight: 600;
 
   span {
-    font-weight: 600;
     line-height: 1.875;
   }
 `;
@@ -57,6 +55,13 @@ export const FeedbackTextArea = styled.textarea`
 
 export const FieldContainer = styled.div`
   margin-bottom: 16px;
+`;
+
+const TypeOfFeedbackContainer = styled(FieldContainer)`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
 `;
 
 export const SwitchFieldContainer = styled(FieldContainer)`
@@ -123,13 +128,6 @@ const RequiredFieldMsg = styled.p`
   font-size: 0.75rem;
   color: var(--ion-color-danger);
   margin: 0;
-`;
-
-const FeedbackTypeLabel = styled.label`
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 600;
-  font-size: 1rem;
 `;
 
 const AddtlErrHelpPopoverContents = (
@@ -201,7 +199,7 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
     if (!isOpen) {
       setIsReportSubmitting(false);
     }
-  }, [isOpen]);
+  }, [isOpen, setIsReportSubmitting]);
 
   useEffect(() => {
     if (isOpen && feedbackTypeSelectorRef.current) {
@@ -242,10 +240,13 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
         description="This info will be sent to the developer. You can ask a question, suggest a feature, or report a bug!"
       >
         <form noValidate onSubmit={handleSubmit(submitFeedback)}>
-          <FieldContainer>
-            <FeedbackTypeLabel htmlFor="feedbackTypeSelector">
-              Type of feedback
-            </FeedbackTypeLabel>
+          <TypeOfFeedbackContainer>
+            <Label
+              labelText="Type of feedback"
+              idOfControl="feedbackTypeSelector"
+              labelfontSize="1rem"
+              isBold={true}
+            />
             <Selector
               ref={feedbackTypeSelectorRef}
               id="feedbackTypeSelector"
@@ -265,10 +266,13 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
                 );
               })}
             </Selector>
-          </FieldContainer>
+          </TypeOfFeedbackContainer>
           <FieldContainer>
             <FeedbackInfoLabel htmlFor="feedbackTitleInput">
-              <HelpSpan helpPopoverContents={SubjectInputPopoverContents}>
+              <HelpSpan
+                helpPopoverContents={SubjectInputPopoverContents}
+                isBold={true}
+              >
                 <span>Title</span>
               </HelpSpan>
               <TitleInput
@@ -286,7 +290,10 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
           </FieldContainer>
           <FieldContainer>
             <FeedbackInfoLabel htmlFor="feedbackDescriptionTextarea">
-              <HelpSpan helpPopoverContents={AddtlErrHelpPopoverContents}>
+              <HelpSpan
+                helpPopoverContents={AddtlErrHelpPopoverContents}
+                isBold={true}
+              >
                 <span>{selectedFeedbackType.descriptionInputLabel}</span>
               </HelpSpan>
               <FeedbackTextArea
