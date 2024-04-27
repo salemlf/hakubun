@@ -31,9 +31,14 @@ const Punctuation = styled.span<PunctuationProps>`
   margin-left: 2px;
 `;
 
-const ClickableHelp = styled.button`
+type ClickableHelpProps = {
+  $isBold: boolean;
+};
+
+const ClickableHelp = styled.button<ClickableHelpProps>`
   all: unset;
   color: var(--text-color);
+  font-weight: ${({ $isBold }) => ($isBold ? "600" : "400")};
 
   &:focus-visible {
     outline: 2px solid var(--focus-color);
@@ -74,12 +79,14 @@ type Props = {
   children: React.ReactNode;
   helpPopoverContents: React.ReactNode;
   punctuation?: PunctuationType;
+  isBold?: boolean;
 };
 
 function HelpSpan({
   children,
   helpPopoverContents,
   punctuation = "question",
+  isBold = false,
 }: Props) {
   const punctuationInfo = punctuationMap[punctuation];
 
@@ -88,7 +95,7 @@ function HelpSpan({
     <ContainerSpan>
       <PopoverRoot open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <ClickableHelp>
+          <ClickableHelp $isBold={isBold}>
             {children}
             <Punctuation $color={punctuationInfo.color}>
               {punctuationInfo.text}
