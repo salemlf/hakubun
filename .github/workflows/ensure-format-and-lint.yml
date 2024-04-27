@@ -2,7 +2,7 @@ name: Format and lint on push
 on: [push]
 
 jobs:
-  lint:
+  ensure-linted:
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -16,7 +16,7 @@ jobs:
         run: npm ci
       - name: Check for linting errors
         run: npm run lint-err-only
-  check-format:
+  ensure-formatted:
     runs-on: macos-latest
     steps:
       - name: Checkout
