@@ -7,7 +7,7 @@ import Selector, { SelectItem } from "../Selector";
 
 type Props = {
   lastUpdateChoice: LastUpdateChoice;
-  onLastUpdateChoiceChange: (choice: LastUpdateChoice) => void;
+  onLastUpdateChoiceChange: (selectedLastUpdate: LastUpdateChoice) => void;
   headingFontSize: SettingHeadingFontSize;
   labelId?: string;
 };
@@ -18,10 +18,17 @@ function LastUpdateOption({
   headingFontSize,
   labelId = "last-update-option-selector",
 }: Props) {
-  let headingSize = getSettingHeadingFontSize(headingFontSize);
+  const headingSize = getSettingHeadingFontSize(headingFontSize);
 
-  const updateLastUpdateChoice = (updatedValue: string) => {
-    onLastUpdateChoiceChange(updatedValue as LastUpdateChoice);
+  const updateLastUpdateChoice = (lastUpdatedVal: string) => {
+    const lastUpdatedHrs = parseInt(lastUpdatedVal);
+
+    const selectedLastUpdate =
+      LAST_UPDATE_CHOICES.find(
+        (lastUpdateChoice: LastUpdateChoice) =>
+          lastUpdateChoice.value === lastUpdatedHrs
+      ) ?? LAST_UPDATE_CHOICES[0];
+    onLastUpdateChoiceChange(selectedLastUpdate);
   };
 
   return (
@@ -33,14 +40,14 @@ function LastUpdateOption({
       />
       <Selector
         id={labelId}
-        value={lastUpdateChoice.toString()}
+        value={lastUpdateChoice.value.toString()}
         onValueChange={(updatedValue) => updateLastUpdateChoice(updatedValue)}
       >
         {LAST_UPDATE_CHOICES.map((lastUpdateChoice: LastUpdateChoice) => {
           return (
             <SelectItem
               key={`last_update_${lastUpdateChoice.value}`}
-              value={lastUpdateChoice.value}
+              value={lastUpdateChoice.value.toString()}
             >
               {lastUpdateChoice.displayOption}
             </SelectItem>

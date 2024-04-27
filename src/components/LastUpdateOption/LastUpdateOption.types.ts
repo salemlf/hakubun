@@ -8,6 +8,6 @@ export type LastUpdateOption =
   | "disabled";
 
 export type LastUpdateChoice = {
-  value: string;
+  value: number;
   displayOption: LastUpdateOption;
 };
