@@ -17,9 +17,11 @@ export interface AssignmentAttrs {
 
 export interface PreFlattenedAssignment extends ApiResponse {
   id: number;
+  data_updated_at: Date;
   data: AssignmentAttrs;
 }
 
 export interface Assignment extends AssignmentAttrs, ApiResponse {
   id: number;
+  data_updated_at: Date;
 }

@@ -7,6 +7,8 @@ import Collapsible from "../Collapsible";
 import BackToBackOption from "../BackToBackOption";
 import CurrentLevelOnlyOption from "../CurrentLevelOnlyOption";
 import styled from "styled-components";
+import LastUpdateOption from "../LastUpdateOption/LastUpdateOption";
+import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 
 const FilterSettingContainer = styled.div`
   display: flex;
@@ -23,6 +25,8 @@ type Props = {
   showBackToBackOption: boolean;
   backToBackChoice: BackToBackChoice;
   setBackToBackChoice: (choice: BackToBackChoice) => void;
+  lastUpdateChoice: LastUpdateChoice;
+  setLastUpdateChoice: (choice: LastUpdateChoice) => void;
   filterByCurrentLevel: boolean;
   setFilterByCurrentLevel: (isFilteringByCurrLvl: boolean) => void;
 };
@@ -34,6 +38,8 @@ function AdvancedAssignmentFilters({
   showBackToBackOption,
   backToBackChoice,
   setBackToBackChoice,
+  lastUpdateChoice,
+  setLastUpdateChoice,
   filterByCurrentLevel,
   setFilterByCurrentLevel,
 }: Props) {
@@ -58,6 +64,13 @@ function AdvancedAssignmentFilters({
           />
         </FilterSettingContainer>
       )}
+      <FilterSettingContainer>
+          <LastUpdateOption
+            lastUpdateChoice={lastUpdateChoice}
+            onLastUpdateChoiceChange={setLastUpdateChoice}
+            headingFontSize="small"
+          />
+      </FilterSettingContainer>
       <FilterSettingContainer>
         <CurrentLevelOnlyOption
           isSwitchedOn={filterByCurrentLevel}

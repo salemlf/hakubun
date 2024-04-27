@@ -8,6 +8,7 @@ import {
   filterSubjectsByType,
   getSubjectColor,
   sortBySubjectTypeAndLevel,
+  filterAssignmentsByLastUpdate,
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { Assignment } from "../../types/Assignment";
@@ -162,6 +163,7 @@ type Props = {
   selectedAdvancedSubjIDs: string[];
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
   filterByCurrentLevel: boolean;
+  filterByLastUpdate: number;
   settingsType: AssignmentSessionType;
   assignmentTypeFilter?: SubjectType[];
   showMeaning?: boolean;
@@ -174,6 +176,7 @@ function AssignmentSelector({
   selectedAdvancedSubjIDs,
   setSelectedAdvancedSubjIDs,
   filterByCurrentLevel,
+  filterByLastUpdate,
   settingsType,
   assignmentTypeFilter,
   showMeaning = true,
@@ -182,7 +185,8 @@ function AssignmentSelector({
   const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
   const { userInfo } = useUserInfoStoreFacade();
 
-  let assignmentSubjIDs = assignmentData.map(
+  var filterdAssignments = filterAssignmentsByLastUpdate(assignmentData, filterByLastUpdate);
+  let assignmentSubjIDs = filterdAssignments.map(
     (assignmentItem: any) => assignmentItem.subject_id
   );
 
@@ -192,22 +196,19 @@ function AssignmentSelector({
   useEffect(() => {
     if (subjectsData) {
       let sortedAssignments = sortBySubjectTypeAndLevel(subjectsData);
-
       let subjectsFiltered = assignmentTypeFilter
         ? filterSubjectsByType(
             sortedAssignments,
             Array.from(assignmentTypeFilter)
           )
         : sortedAssignments;
-
       let subjectsFilteredByLevel =
         filterByCurrentLevel && userInfo && userInfo.level
           ? filterSubjectsByLevel(subjectsFiltered, userInfo.level)
           : subjectsFiltered;
-
       setAvailableSubjects(subjectsFilteredByLevel);
     }
-  }, [subjectsLoading, assignmentTypeFilter, filterByCurrentLevel]);
+  }, [subjectsLoading, assignmentTypeFilter, filterByCurrentLevel, filterByLastUpdate]);
 
   const onSelectDeselectAllPress = () => {
     if (areAllSelected) {

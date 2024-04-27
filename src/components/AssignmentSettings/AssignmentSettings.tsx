@@ -23,6 +23,7 @@ import { Assignment } from "../../types/Assignment";
 import { AssignmentBatch } from "../../types/MiscTypes";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
+import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import { Subject, SubjectType } from "../../types/Subject";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
@@ -53,6 +54,7 @@ function AssignmentSettings({
   const [backToBackChoice, setBackToBackChoice] = useState<BackToBackChoice>(
     backToBackOptionDefault
   );
+  const [lastUpdateChoice, setLastUpdateChoice] = useState<LastUpdateChoice>("-1");
   const [sortOption, setSortOption] =
     useState<AssignmentSortOption>(defaultSortOrder);
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
@@ -268,6 +270,8 @@ function AssignmentSettings({
                     showBackToBackOption={settingsType === "review"}
                     backToBackChoice={backToBackChoice}
                     setBackToBackChoice={setBackToBackChoice}
+                    lastUpdateChoice={lastUpdateChoice}
+                    setLastUpdateChoice={setLastUpdateChoice}
                     settingsType={settingsType}
                   />
                 ),
