@@ -13,6 +13,7 @@ const LabelStyled = styled(LabelPrimitive.Root)<LabelStyledProps>`
   font-size: ${({ labelfontsize }) => `${labelfontsize}`};
   color: ${({ color }) => `${color}`};
   font-weight: ${({ $isBold }) => $isBold && 600};
+  display: block;
 `;
 
 type LabelContents = {
