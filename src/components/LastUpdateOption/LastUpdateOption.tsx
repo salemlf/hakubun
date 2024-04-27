@@ -39,8 +39,8 @@ function LastUpdateOption({
         {LAST_UPDATE_CHOICES.map((lastUpdateChoice: LastUpdateChoice) => {
           return (
             <SelectItem
-              key={`last_update_${lastUpdateChoice.hours}`}
-              value={lastUpdateChoice.hours}
+              key={`last_update_${lastUpdateChoice.value}`}
+              value={lastUpdateChoice.value}
             >
               {lastUpdateChoice.displayOption}
             </SelectItem>
