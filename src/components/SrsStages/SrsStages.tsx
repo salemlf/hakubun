@@ -227,9 +227,6 @@ const SubjTypeRow = styled.div<SubjTypeRowProps>`
   padding: 5px 8px;
   background: ${({ assignmentType }) => getSubjectColor(assignmentType)};
   font-size: 1rem;
-  &:last-child {
-    border-radius: 0 0 6px 6px;
-  }
 `;
 
 const SubjTypeLabel = styled.p`
@@ -320,6 +317,9 @@ const SRSButton = ({
         initial={false}
         variants={buttonVariants}
         animate={showStageDetails ? "display" : "hide"}
+        style={{
+          borderRadius: "0 0 4px 4px",
+        }}
       >
         <SubjTypeRow assignmentType="radical">
           <SubjTypeLabel>Radicals</SubjTypeLabel>
