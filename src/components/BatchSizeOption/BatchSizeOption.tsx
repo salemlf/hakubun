@@ -3,8 +3,8 @@ import Label from "../Label";
 
 type Props = {
   batchSize: string;
-  availableSizes: string[];
   onBatchSizeChange: (batchSize: string) => void;
+  availableSizes: string[];
   labelId?: string;
 };
 

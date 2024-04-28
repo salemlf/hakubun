@@ -5,9 +5,9 @@ import Label from "../Label";
 import Selector, { SelectItem } from "../Selector";
 
 type Props = {
+  labelId?: string;
   sortOption: AssignmentSortOption;
   setSortOption: (sortOption: AssignmentSortOption) => void;
-  labelId?: string;
 };
 
 function SortOrderOption({
@@ -16,7 +16,7 @@ function SortOrderOption({
   labelId = "sort-option-selector",
 }: Props) {
   const onSortUpdate = (sortOptionId: string) => {
-    let option = getSortOrderOptionById(sortOptionId);
+    const option = getSortOrderOptionById(sortOptionId);
     setSortOption(option);
   };
 

@@ -72,13 +72,6 @@ test("AssignmentSettings renders", () => {
   mockStudyMaterialsResponse(studyMaterialCollectionForSubjs);
   const mockSettings: AssignmentSettingsProps = {
     assignmentData: assignmentsFromSubjCollection,
-    settingsType: "review",
-    defaultBatchSize: "10",
-    defaultSortOrder: {
-      id: "shuffled",
-      option: "shuffled",
-      order: "neither",
-    },
   };
   const { baseElement } = renderComponent(mockSettings);
   expect(baseElement).toBeDefined();

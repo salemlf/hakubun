@@ -1,13 +1,13 @@
 import { useState } from "react";
-import AssignmentTypeSelector from "../AssignmentTypeSelector";
+import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
-import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { SubjectType } from "../../types/Subject";
 import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
+import AssignmentTypeSelector from "../AssignmentTypeSelector";
 import Collapsible from "../Collapsible";
 import BackToBackOption from "../BackToBackOption";
 import CurrentLevelOnlyOption from "../CurrentLevelOnlyOption";
-import LastUpdateOption from "../LastUpdateOption/LastUpdateOption";
+import LastUpdateOption from "../LastUpdateOption";
 import styled from "styled-components";
 
 const FilterSettingContainer = styled.div`
@@ -23,8 +23,6 @@ type Props = {
   selectedAssignmentTypes: SubjectType[];
   setSelectedAssignmentTypes: (assignmentTypesSelected: SubjectType[]) => void;
   showBackToBackOption: boolean;
-  backToBackChoice: BackToBackChoice;
-  setBackToBackChoice: (choice: BackToBackChoice) => void;
   lastUpdateChoice: LastUpdateChoice;
   setLastUpdateChoice: (selectedLastUpdate: LastUpdateChoice) => void;
   filterByCurrentLevel: boolean;
@@ -36,14 +34,18 @@ function AdvancedAssignmentFilters({
   selectedAssignmentTypes,
   setSelectedAssignmentTypes,
   showBackToBackOption,
-  backToBackChoice,
-  setBackToBackChoice,
   lastUpdateChoice,
   setLastUpdateChoice,
   filterByCurrentLevel,
   setFilterByCurrentLevel,
 }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const backToBackChoice = useAssignmentSettingsCtxStore(
+    (s) => s.backToBackChoice
+  );
+  const setBackToBackChoice = useAssignmentSettingsCtxStore(
+    (s) => s.setBackToBackChoice
+  );
 
   return (
     <Collapsible title="Filters" isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -58,9 +60,9 @@ function AdvancedAssignmentFilters({
       {showBackToBackOption && (
         <FilterSettingContainer>
           <BackToBackOption
-            backToBackChoice={backToBackChoice}
-            onBackToBackChoiceChange={setBackToBackChoice}
             headingFontSize="small"
+            backToBackChoice={backToBackChoice}
+            setBackToBackChoice={setBackToBackChoice}
           />
         </FilterSettingContainer>
       )}

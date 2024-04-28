@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
-import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
-import { LAST_UPDATE_CHOICES } from "../LastUpdateOption/LastUpdateOption.constants";
+import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
 import {
   checkIfAssignmentTypeInQueue,
   createAssignmentQueueItems,
@@ -23,10 +22,6 @@ import {
 } from "../../constants";
 import { Assignment } from "../../types/Assignment";
 import { AssignmentBatch } from "../../types/MiscTypes";
-import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
-import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
-import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
-import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import { Subject, SubjectType } from "../../types/Subject";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
@@ -36,30 +31,18 @@ import LoadingDots from "../LoadingDots";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 
 export type AssignmentSettingsProps = {
-  settingsType: AssignmentSessionType;
   assignmentData: Assignment[];
-  defaultBatchSize: string;
-  defaultSortOrder: AssignmentSortOption;
 };
 
-function AssignmentSettings({
-  settingsType,
-  assignmentData,
-  defaultBatchSize,
-  defaultSortOrder,
-}: AssignmentSettingsProps) {
+function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
   const navigate = useNavigate();
-  const [batchSize, setBatchSize] = useState<string>(defaultBatchSize);
-  const { reviewBackToBackOption: backToBackOptionDefault } =
-    useUserSettingsStoreFacade();
-  const [backToBackChoice, setBackToBackChoice] = useState<BackToBackChoice>(
-    backToBackOptionDefault
+  const settingsType = useAssignmentSettingsCtxStore((s) => s.settingsType);
+  const sortOption = useAssignmentSettingsCtxStore((s) => s.sortOption);
+  const batchSize = useAssignmentSettingsCtxStore((s) => s.batchSize);
+  const backToBackChoice = useAssignmentSettingsCtxStore(
+    (s) => s.backToBackChoice
   );
-  const [lastUpdateChoice, setLastUpdateChoice] = useState<LastUpdateChoice>(
-    LAST_UPDATE_CHOICES[0]
-  );
-  const [sortOption, setSortOption] =
-    useState<AssignmentSortOption>(defaultSortOrder);
+
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
 
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
@@ -247,15 +230,9 @@ function AssignmentSettings({
                   <BasicAssignmentSettings
                     availableAssignmentTypeNames={availableAssignmentTypeNames}
                     assignmentData={assignmentData}
-                    defaultBatchSize={batchSize}
-                    setBatchSize={setBatchSize}
                     selectedAssignmentTypes={selectedAssignmentTypes}
                     setSelectedAssignmentTypes={setSelectedAssignmentTypes}
-                    sortOption={sortOption}
-                    setSortOption={setSortOption}
                     showBackToBackOption={settingsType === "review"}
-                    backToBackChoice={backToBackChoice}
-                    setBackToBackChoice={setBackToBackChoice}
                   />
                 ),
               },
@@ -271,11 +248,6 @@ function AssignmentSettings({
                     availableAssignmentTypeNames={availableAssignmentTypeNames}
                     availableAssignmentTypes={availableAssignmentTypes}
                     showBackToBackOption={settingsType === "review"}
-                    backToBackChoice={backToBackChoice}
-                    setBackToBackChoice={setBackToBackChoice}
-                    lastUpdateChoice={lastUpdateChoice}
-                    setLastUpdateChoice={setLastUpdateChoice}
-                    settingsType={settingsType}
                   />
                 ),
               },

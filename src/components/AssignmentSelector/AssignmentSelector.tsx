@@ -4,6 +4,7 @@ import { IonSkeletonText, IonIcon } from "@ionic/react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
+import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
 import {
   filterSubjectsByLevel,
   filterSubjectsByType,
@@ -21,7 +22,6 @@ import {
   SubjectType,
   Vocabulary,
 } from "../../types/Subject";
-import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import SubjectChars from "../SubjectChars";
 import { RadicalMeaning, ReadingAndMeaning } from "../SubjectWideBtnList";
@@ -165,7 +165,6 @@ type Props = {
   setSelectedAdvancedSubjIDs: React.Dispatch<React.SetStateAction<string[]>>;
   filterByCurrentLevel: boolean;
   filterByLastUpdate: LastUpdateChoice;
-  settingsType: AssignmentSessionType;
   assignmentTypeFilter?: SubjectType[];
   showMeaning?: boolean;
 };
@@ -178,13 +177,13 @@ function AssignmentSelector({
   setSelectedAdvancedSubjIDs,
   filterByCurrentLevel,
   filterByLastUpdate,
-  settingsType,
   assignmentTypeFilter,
   showMeaning = true,
 }: Props) {
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
   const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
   const { userInfo } = useUserInfoStoreFacade();
+  const settingsType = useAssignmentSettingsCtxStore((s) => s.settingsType);
 
   const filteredAssignments = filterAssignmentsByLastUpdate(
     assignmentData,
