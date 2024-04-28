@@ -9,6 +9,10 @@ import {
 } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { AssignmentSettingsProvider } from "../contexts/AssignmentSettingsContext";
+import { getSortOrderOptionById } from "../components/SortOrderOption/SortOrderOption.service";
+import { AssignmentSessionType } from "../types/AssignmentQueueTypes";
+import { BackToBackChoice } from "../components/BackToBackOption/BackToBackOption.types";
 import { ToastDisplayProvider } from "../components/Toast/ToastDisplayProvider";
 
 /* Core CSS required for Ionic components to work properly */
@@ -146,6 +150,24 @@ export const createWrapper = () => {
     <QueryClientProvider client={testQueryClient}>
       {children}
     </QueryClientProvider>
+  );
+};
+
+// TODO: allow passing in mockedProviderProps
+export const createAssignmentSettingsWrapper = (
+  settingsType: AssignmentSessionType
+) => {
+  const mockedProviderProps = {
+    batchSize: "2",
+    backToBackChoice: "disabled" as BackToBackChoice,
+    sortOption: getSortOrderOptionById("level_asc"),
+    settingsType: settingsType,
+  };
+
+  return ({ children }: { children: React.ReactNode }) => (
+    <AssignmentSettingsProvider {...mockedProviderProps}>
+      {children}
+    </AssignmentSettingsProvider>
   );
 };
 
