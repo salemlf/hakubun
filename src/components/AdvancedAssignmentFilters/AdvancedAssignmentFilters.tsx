@@ -3,9 +3,11 @@ import AssignmentTypeSelector from "../AssignmentTypeSelector";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { SubjectType } from "../../types/Subject";
+import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import Collapsible from "../Collapsible";
 import BackToBackOption from "../BackToBackOption";
 import CurrentLevelOnlyOption from "../CurrentLevelOnlyOption";
+import LastUpdateOption from "../LastUpdateOption/LastUpdateOption";
 import styled from "styled-components";
 
 const FilterSettingContainer = styled.div`
@@ -23,6 +25,8 @@ type Props = {
   showBackToBackOption: boolean;
   backToBackChoice: BackToBackChoice;
   setBackToBackChoice: (choice: BackToBackChoice) => void;
+  lastUpdateChoice: LastUpdateChoice;
+  setLastUpdateChoice: (selectedLastUpdate: LastUpdateChoice) => void;
   filterByCurrentLevel: boolean;
   setFilterByCurrentLevel: (isFilteringByCurrLvl: boolean) => void;
 };
@@ -34,6 +38,8 @@ function AdvancedAssignmentFilters({
   showBackToBackOption,
   backToBackChoice,
   setBackToBackChoice,
+  lastUpdateChoice,
+  setLastUpdateChoice,
   filterByCurrentLevel,
   setFilterByCurrentLevel,
 }: Props) {
@@ -58,6 +64,13 @@ function AdvancedAssignmentFilters({
           />
         </FilterSettingContainer>
       )}
+      <FilterSettingContainer>
+        <LastUpdateOption
+          lastUpdateChoice={lastUpdateChoice}
+          onLastUpdateChoiceChange={setLastUpdateChoice}
+          headingFontSize="small"
+        />
+      </FilterSettingContainer>
       <FilterSettingContainer>
         <CurrentLevelOnlyOption
           isSwitchedOn={filterByCurrentLevel}

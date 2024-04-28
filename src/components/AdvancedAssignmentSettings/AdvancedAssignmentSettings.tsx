@@ -3,6 +3,7 @@ import { Assignment } from "../../types/Assignment";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
+import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import { SubjectType } from "../../types/Subject";
 import Card from "../Card";
 import AssignmentSelector from "../AssignmentSelector";
@@ -19,6 +20,8 @@ type Props = {
   showBackToBackOption: boolean;
   backToBackChoice: BackToBackChoice;
   setBackToBackChoice: (choice: BackToBackChoice) => void;
+  lastUpdateChoice: LastUpdateChoice;
+  setLastUpdateChoice: (selectedLastUpdate: LastUpdateChoice) => void;
   settingsType: AssignmentSessionType;
 };
 
@@ -32,6 +35,8 @@ function AdvancedAssignmentSettings({
   showBackToBackOption,
   backToBackChoice,
   setBackToBackChoice,
+  lastUpdateChoice,
+  setLastUpdateChoice,
   settingsType,
 }: Props) {
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState(
@@ -53,6 +58,8 @@ function AdvancedAssignmentSettings({
           showBackToBackOption={showBackToBackOption}
           backToBackChoice={backToBackChoice}
           setBackToBackChoice={setBackToBackChoice}
+          lastUpdateChoice={lastUpdateChoice}
+          setLastUpdateChoice={setLastUpdateChoice}
         />
       </SettingOptionContainer>
       <AssignmentSelector
@@ -61,6 +68,7 @@ function AdvancedAssignmentSettings({
         showMeaning={showMeaning}
         assignmentData={assignmentData}
         filterByCurrentLevel={filterByCurrentLevel}
+        filterByLastUpdate={lastUpdateChoice}
         assignmentTypeFilter={selectedAssignmentTypes}
         settingsType={settingsType}
       ></AssignmentSelector>

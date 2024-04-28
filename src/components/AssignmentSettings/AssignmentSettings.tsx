@@ -4,6 +4,7 @@ import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/us
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
+import { LAST_UPDATE_CHOICES } from "../LastUpdateOption/LastUpdateOption.constants";
 import {
   checkIfAssignmentTypeInQueue,
   createAssignmentQueueItems,
@@ -13,6 +14,7 @@ import {
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { capitalizeWord } from "../../services/MiscService/MiscService";
 import { displayToast } from "../Toast/Toast.service";
+import { sortAssignmentsWithOption } from "../SortOrderOption/SortOrderOption.service";
 import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import { useStudyMaterialsBySubjIDs } from "../../hooks/study-materials/useStudyMaterialsBySubjIDs";
 import {
@@ -23,6 +25,8 @@ import { Assignment } from "../../types/Assignment";
 import { AssignmentBatch } from "../../types/MiscTypes";
 import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
 import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
+import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
+import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import { Subject, SubjectType } from "../../types/Subject";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import SwipeableTabs from "../SwipeableTabs";
@@ -30,8 +34,6 @@ import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
 import LoadingDots from "../LoadingDots";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
-import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
-import { sortAssignmentsWithOption } from "../SortOrderOption/SortOrderOption.service";
 
 export type AssignmentSettingsProps = {
   settingsType: AssignmentSessionType;
@@ -52,6 +54,9 @@ function AssignmentSettings({
     useUserSettingsStoreFacade();
   const [backToBackChoice, setBackToBackChoice] = useState<BackToBackChoice>(
     backToBackOptionDefault
+  );
+  const [lastUpdateChoice, setLastUpdateChoice] = useState<LastUpdateChoice>(
+    LAST_UPDATE_CHOICES[0]
   );
   const [sortOption, setSortOption] =
     useState<AssignmentSortOption>(defaultSortOrder);
@@ -268,6 +273,8 @@ function AssignmentSettings({
                     showBackToBackOption={settingsType === "review"}
                     backToBackChoice={backToBackChoice}
                     setBackToBackChoice={setBackToBackChoice}
+                    lastUpdateChoice={lastUpdateChoice}
+                    setLastUpdateChoice={setLastUpdateChoice}
                     settingsType={settingsType}
                   />
                 ),
