@@ -1,4 +1,3 @@
-import { useStore } from "zustand";
 import { BACK_TO_BACK_CHOICES } from "./BackToBackOption.constants";
 import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
 import { getSettingHeadingFontSize } from "../AssignmentSettings/AssignmentSettings.service";
@@ -16,13 +15,10 @@ function BackToBackOption({
   headingFontSize,
   labelId = "back-to-back-option-selector",
 }: Props) {
-  const assignmentSettings = useAssignmentSettingsCtxStore();
-  const backToBackChoice = useStore(
-    assignmentSettings,
+  const backToBackChoice = useAssignmentSettingsCtxStore(
     (s) => s.backToBackChoice
   );
-  const setBackToBackChoice = useStore(
-    assignmentSettings,
+  const setBackToBackChoice = useAssignmentSettingsCtxStore(
     (s) => s.setBackToBackChoice
   );
 

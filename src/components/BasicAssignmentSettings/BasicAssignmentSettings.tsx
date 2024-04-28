@@ -1,4 +1,3 @@
-import { useStore } from "zustand";
 import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
 import { Assignment } from "../../types/Assignment";
@@ -26,8 +25,7 @@ function BasicAssignmentSettings({
   setSelectedAssignmentTypes,
   showBackToBackOption,
 }: Props) {
-  const assignmentSettings = useAssignmentSettingsCtxStore();
-  const defaultBatchSize = useStore(assignmentSettings, (s) => s.batchSize);
+  const defaultBatchSize = useAssignmentSettingsCtxStore((s) => s.batchSize);
 
   const availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter((batchSize) => {
     return Number.parseInt(batchSize)
