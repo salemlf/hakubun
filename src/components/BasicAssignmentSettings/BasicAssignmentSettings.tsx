@@ -26,6 +26,15 @@ function BasicAssignmentSettings({
   showBackToBackOption,
 }: Props) {
   const defaultBatchSize = useAssignmentSettingsCtxStore((s) => s.batchSize);
+  const setBatchSize = useAssignmentSettingsCtxStore((s) => s.setBatchSize);
+  const sortOption = useAssignmentSettingsCtxStore((s) => s.sortOption);
+  const setSortOption = useAssignmentSettingsCtxStore((s) => s.setSortOption);
+  const backToBackChoice = useAssignmentSettingsCtxStore(
+    (s) => s.backToBackChoice
+  );
+  const setBackToBackChoice = useAssignmentSettingsCtxStore(
+    (s) => s.setBackToBackChoice
+  );
 
   const availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter((batchSize) => {
     return Number.parseInt(batchSize)
@@ -59,10 +68,14 @@ function BasicAssignmentSettings({
         <BatchSizeOption
           availableSizes={availBatchSizesStr}
           batchSize={selectedBatchSize}
+          onBatchSizeChange={setBatchSize}
         />
       </SettingOptionContainer>
       <SettingOptionContainer>
-        <SortOrderOption />
+        <SortOrderOption
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+        />
       </SettingOptionContainer>
       <SettingOptionContainer>
         <AssignmentTypeSelector
@@ -74,7 +87,11 @@ function BasicAssignmentSettings({
       </SettingOptionContainer>
       {showBackToBackOption && (
         <SettingOptionContainer>
-          <BackToBackOption headingFontSize="large" />
+          <BackToBackOption
+            headingFontSize="large"
+            backToBackChoice={backToBackChoice}
+            setBackToBackChoice={setBackToBackChoice}
+          />
         </SettingOptionContainer>
       )}
     </Card>

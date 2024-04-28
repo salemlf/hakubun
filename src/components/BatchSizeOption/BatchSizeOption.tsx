@@ -1,9 +1,9 @@
-import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
 import Selector, { SelectItem } from "../Selector";
 import Label from "../Label";
 
 type Props = {
   batchSize: string;
+  onBatchSizeChange: (batchSize: string) => void;
   availableSizes: string[];
   labelId?: string;
 };
@@ -11,17 +11,16 @@ type Props = {
 function BatchSizeOption({
   availableSizes,
   batchSize,
+  onBatchSizeChange,
   labelId = "batch-size-selector",
 }: Props) {
-  const setBatchSize = useAssignmentSettingsCtxStore((s) => s.setBatchSize);
-
   return (
     <>
       <Label labelText="Batch Size" idOfControl={labelId} />
       <Selector
         id={labelId}
         value={batchSize.toString()}
-        onValueChange={(updatedValue) => setBatchSize(updatedValue)}
+        onValueChange={(updatedValue) => onBatchSizeChange(updatedValue)}
       >
         {availableSizes.map((batchSize: string) => {
           return (

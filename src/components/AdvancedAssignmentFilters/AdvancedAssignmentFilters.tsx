@@ -1,8 +1,9 @@
 import { useState } from "react";
-import AssignmentTypeSelector from "../AssignmentTypeSelector";
+import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
 import { SubjectType } from "../../types/Subject";
 import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
+import AssignmentTypeSelector from "../AssignmentTypeSelector";
 import Collapsible from "../Collapsible";
 import BackToBackOption from "../BackToBackOption";
 import CurrentLevelOnlyOption from "../CurrentLevelOnlyOption";
@@ -39,6 +40,12 @@ function AdvancedAssignmentFilters({
   setFilterByCurrentLevel,
 }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const backToBackChoice = useAssignmentSettingsCtxStore(
+    (s) => s.backToBackChoice
+  );
+  const setBackToBackChoice = useAssignmentSettingsCtxStore(
+    (s) => s.setBackToBackChoice
+  );
 
   return (
     <Collapsible title="Filters" isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -52,7 +59,11 @@ function AdvancedAssignmentFilters({
       </FilterSettingContainer>
       {showBackToBackOption && (
         <FilterSettingContainer>
-          <BackToBackOption headingFontSize="small" />
+          <BackToBackOption
+            headingFontSize="small"
+            backToBackChoice={backToBackChoice}
+            setBackToBackChoice={setBackToBackChoice}
+          />
         </FilterSettingContainer>
       )}
       <FilterSettingContainer>
