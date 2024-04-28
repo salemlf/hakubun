@@ -1,7 +1,6 @@
 import { useState } from "react";
 import AssignmentTypeSelector from "../AssignmentTypeSelector";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
-import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { SubjectType } from "../../types/Subject";
 import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import Collapsible from "../Collapsible";
@@ -23,8 +22,6 @@ type Props = {
   selectedAssignmentTypes: SubjectType[];
   setSelectedAssignmentTypes: (assignmentTypesSelected: SubjectType[]) => void;
   showBackToBackOption: boolean;
-  backToBackChoice: BackToBackChoice;
-  setBackToBackChoice: (choice: BackToBackChoice) => void;
   lastUpdateChoice: LastUpdateChoice;
   setLastUpdateChoice: (selectedLastUpdate: LastUpdateChoice) => void;
   filterByCurrentLevel: boolean;
@@ -36,8 +33,6 @@ function AdvancedAssignmentFilters({
   selectedAssignmentTypes,
   setSelectedAssignmentTypes,
   showBackToBackOption,
-  backToBackChoice,
-  setBackToBackChoice,
   lastUpdateChoice,
   setLastUpdateChoice,
   filterByCurrentLevel,
@@ -57,11 +52,7 @@ function AdvancedAssignmentFilters({
       </FilterSettingContainer>
       {showBackToBackOption && (
         <FilterSettingContainer>
-          <BackToBackOption
-            backToBackChoice={backToBackChoice}
-            onBackToBackChoiceChange={setBackToBackChoice}
-            headingFontSize="small"
-          />
+          <BackToBackOption headingFontSize="small" />
         </FilterSettingContainer>
       )}
       <FilterSettingContainer>

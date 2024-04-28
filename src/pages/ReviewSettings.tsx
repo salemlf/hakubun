@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
+import { AssignmentSettingsProvider } from "../contexts/AssignmentSettingsContext";
 import { useReviews } from "../hooks/assignments/useReviews";
 import AssignmentSettings from "../components/AssignmentSettings/AssignmentSettings";
 import LoadingDots from "../components/LoadingDots";
@@ -28,11 +29,16 @@ export const ReviewSettings = () => {
     error: availForReviewErr,
   } = useReviews(isEnabled);
 
-  const { reviewBatchSize, reviewSortOrderOption } =
+  const { reviewBatchSize, reviewSortOrderOption, reviewBackToBackOption } =
     useUserSettingsStoreFacade();
 
   return (
-    <>
+    <AssignmentSettingsProvider
+      batchSize={reviewBatchSize}
+      backToBackChoice={reviewBackToBackOption}
+      sortOption={reviewSortOrderOption}
+      settingsType="review"
+    >
       <PageHeader title="Review Settings" bgColor="var(--wanikani-review)" />
       <MainContent>
         {availForReviewLoading && (
@@ -44,14 +50,9 @@ export const ReviewSettings = () => {
           <div>{`Error: ${availForReviewErr}`}</div>
         )}
         {!availForReviewLoading && !availForReviewErr && availForReviewData && (
-          <AssignmentSettings
-            settingsType="review"
-            assignmentData={availForReviewData}
-            defaultBatchSize={reviewBatchSize}
-            defaultSortOrder={reviewSortOrderOption}
-          />
+          <AssignmentSettings assignmentData={availForReviewData} />
         )}
       </MainContent>
-    </>
+    </AssignmentSettingsProvider>
   );
 };

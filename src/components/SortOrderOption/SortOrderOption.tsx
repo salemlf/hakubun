@@ -1,22 +1,20 @@
 import { getSortOrderOptionById } from "./SortOrderOption.service";
 import { SORT_OPTIONS } from "./SortOrderOption.constants";
+import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
 import { AssignmentSortOption } from "./SortOrderOption.types";
 import Label from "../Label";
 import Selector, { SelectItem } from "../Selector";
 
 type Props = {
-  sortOption: AssignmentSortOption;
-  setSortOption: (sortOption: AssignmentSortOption) => void;
   labelId?: string;
 };
 
-function SortOrderOption({
-  sortOption,
-  setSortOption,
-  labelId = "sort-option-selector",
-}: Props) {
+function SortOrderOption({ labelId = "sort-option-selector" }: Props) {
+  const sortOption = useAssignmentSettingsCtxStore((s) => s.sortOption);
+  const setSortOption = useAssignmentSettingsCtxStore((s) => s.setSortOption);
+
   const onSortUpdate = (sortOptionId: string) => {
-    let option = getSortOrderOptionById(sortOptionId);
+    const option = getSortOrderOptionById(sortOptionId);
     setSortOption(option);
   };
 

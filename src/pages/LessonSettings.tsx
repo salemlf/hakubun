@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { AssignmentSettingsProvider } from "../contexts/AssignmentSettingsContext";
 import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
 import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import { useLessons } from "../hooks/assignments/useLessons";
@@ -16,7 +17,7 @@ function LessonSettings() {
     data: lessonsData,
     error: lessonsErr,
   } = useLessons();
-  const { lessonBatchSize, lessonSortOrderOption } =
+  const { lessonBatchSize, lessonSortOrderOption, reviewBackToBackOption } =
     useUserSettingsStoreFacade();
 
   const { reset: resetLessonPaginator } = useLessonPaginatorStoreFacade();
@@ -26,7 +27,12 @@ function LessonSettings() {
   }, []);
 
   return (
-    <>
+    <AssignmentSettingsProvider
+      batchSize={lessonBatchSize}
+      backToBackChoice={reviewBackToBackOption}
+      sortOption={lessonSortOrderOption}
+      settingsType="lesson"
+    >
       <PageHeader title="Lesson Settings" bgColor="var(--wanikani-lesson)" />
       <MainContent>
         {lessonsLoading && (
@@ -36,15 +42,10 @@ function LessonSettings() {
         )}
         {!lessonsLoading && lessonsErr && <div>{`Error: ${lessonsErr}`}</div>}
         {!lessonsLoading && !lessonsErr && lessonsData && (
-          <AssignmentSettings
-            settingsType="lesson"
-            assignmentData={lessonsData}
-            defaultBatchSize={lessonBatchSize}
-            defaultSortOrder={lessonSortOrderOption}
-          />
+          <AssignmentSettings assignmentData={lessonsData} />
         )}
       </MainContent>
-    </>
+    </AssignmentSettingsProvider>
   );
 }
 

@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Assignment } from "../../types/Assignment";
+import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
-import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
-import { AssignmentSessionType } from "../../types/AssignmentQueueTypes";
-import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import { SubjectType } from "../../types/Subject";
 import Card from "../Card";
 import AssignmentSelector from "../AssignmentSelector";
@@ -18,11 +16,6 @@ type Props = {
   availableAssignmentTypes: SubjectType[];
   availableAssignmentTypeNames: AssignmentTypeName[];
   showBackToBackOption: boolean;
-  backToBackChoice: BackToBackChoice;
-  setBackToBackChoice: (choice: BackToBackChoice) => void;
-  lastUpdateChoice: LastUpdateChoice;
-  setLastUpdateChoice: (selectedLastUpdate: LastUpdateChoice) => void;
-  settingsType: AssignmentSessionType;
 };
 
 function AdvancedAssignmentSettings({
@@ -33,14 +26,15 @@ function AdvancedAssignmentSettings({
   availableAssignmentTypes,
   availableAssignmentTypeNames,
   showBackToBackOption,
-  backToBackChoice,
-  setBackToBackChoice,
-  lastUpdateChoice,
-  setLastUpdateChoice,
-  settingsType,
 }: Props) {
   const [selectedAssignmentTypes, setSelectedAssignmentTypes] = useState(
     availableAssignmentTypes
+  );
+  const lastUpdateChoice = useAssignmentSettingsCtxStore(
+    (s) => s.lastUpdateChoice
+  );
+  const setLastUpdateChoice = useAssignmentSettingsCtxStore(
+    (s) => s.setLastUpdateChoice
   );
 
   const [filterByCurrentLevel, setFilterByCurrentLevel] =
@@ -56,8 +50,6 @@ function AdvancedAssignmentSettings({
           selectedAssignmentTypes={selectedAssignmentTypes}
           setSelectedAssignmentTypes={setSelectedAssignmentTypes}
           showBackToBackOption={showBackToBackOption}
-          backToBackChoice={backToBackChoice}
-          setBackToBackChoice={setBackToBackChoice}
           lastUpdateChoice={lastUpdateChoice}
           setLastUpdateChoice={setLastUpdateChoice}
         />
@@ -70,7 +62,6 @@ function AdvancedAssignmentSettings({
         filterByCurrentLevel={filterByCurrentLevel}
         filterByLastUpdate={lastUpdateChoice}
         assignmentTypeFilter={selectedAssignmentTypes}
-        settingsType={settingsType}
       ></AssignmentSelector>
     </Card>
   );

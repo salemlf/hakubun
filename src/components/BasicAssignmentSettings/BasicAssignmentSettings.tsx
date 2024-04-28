@@ -1,8 +1,8 @@
+import { useStore } from "zustand";
 import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
+import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
 import { Assignment } from "../../types/Assignment";
-import { AssignmentSortOption } from "../SortOrderOption/SortOrderOption.types";
 import { AssignmentTypeName } from "../AssignmentTypeSelector/AssignmentTypeSelector.types";
-import { BackToBackChoice } from "../BackToBackOption/BackToBackOption.types";
 import { SubjectType } from "../../types/Subject";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
@@ -11,55 +11,45 @@ import SortOrderOption from "../SortOrderOption";
 import BackToBackOption from "../BackToBackOption";
 import { SettingOptionContainer } from "../../styles/BaseStyledComponents";
 
-// TODO: change so this isn't using so many props
 type Props = {
   assignmentData: Assignment[];
-  defaultBatchSize: string;
-  setBatchSize: (size: string) => void;
   availableAssignmentTypeNames: AssignmentTypeName[];
   selectedAssignmentTypes: SubjectType[];
   setSelectedAssignmentTypes: (assignmentTypesSelected: SubjectType[]) => void;
-  sortOption: AssignmentSortOption;
-  setSortOption: (sortOption: AssignmentSortOption) => void;
   showBackToBackOption: boolean;
-  backToBackChoice: BackToBackChoice;
-  setBackToBackChoice: (choice: BackToBackChoice) => void;
 };
 
 function BasicAssignmentSettings({
   assignmentData,
-  defaultBatchSize,
-  setBatchSize,
   availableAssignmentTypeNames,
   selectedAssignmentTypes,
   setSelectedAssignmentTypes,
-  sortOption,
-  setSortOption,
   showBackToBackOption,
-  backToBackChoice,
-  setBackToBackChoice,
 }: Props) {
-  let availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter((batchSize) => {
+  const assignmentSettings = useAssignmentSettingsCtxStore();
+  const defaultBatchSize = useStore(assignmentSettings, (s) => s.batchSize);
+
+  const availBatchSizes = ASSIGNMENT_BATCH_SIZES.filter((batchSize) => {
     return Number.parseInt(batchSize)
       ? Number.parseInt(batchSize) <= assignmentData.length
       : true;
   });
 
-  let availBatchSizesStr = availBatchSizes as string[];
+  const availBatchSizesStr = availBatchSizes as string[];
 
-  let batchSizeWithoutAll = availBatchSizes.filter((batchSize) => {
+  const batchSizeWithoutAll = availBatchSizes.filter((batchSize) => {
     return batchSize !== "All";
   });
 
-  let batchSizeNumbers = batchSizeWithoutAll.map((batchSize) => {
+  const batchSizeNumbers = batchSizeWithoutAll.map((batchSize) => {
     return Number.parseInt(batchSize);
   });
 
-  let defaultBatchSizeNum =
+  const defaultBatchSizeNum =
     defaultBatchSize === "All"
       ? assignmentData.length
       : parseInt(defaultBatchSize);
-  let selectedBatchSize = (
+  const selectedBatchSize = (
     defaultBatchSizeNum <= assignmentData.length
       ? defaultBatchSize
       : Math.max(...batchSizeNumbers)
@@ -71,16 +61,10 @@ function BasicAssignmentSettings({
         <BatchSizeOption
           availableSizes={availBatchSizesStr}
           batchSize={selectedBatchSize}
-          onBatchSizeChange={(updatedBatchSize) =>
-            setBatchSize(updatedBatchSize)
-          }
         />
       </SettingOptionContainer>
       <SettingOptionContainer>
-        <SortOrderOption
-          sortOption={sortOption}
-          setSortOption={setSortOption}
-        />
+        <SortOrderOption />
       </SettingOptionContainer>
       <SettingOptionContainer>
         <AssignmentTypeSelector
@@ -92,11 +76,7 @@ function BasicAssignmentSettings({
       </SettingOptionContainer>
       {showBackToBackOption && (
         <SettingOptionContainer>
-          <BackToBackOption
-            backToBackChoice={backToBackChoice}
-            onBackToBackChoiceChange={setBackToBackChoice}
-            headingFontSize="large"
-          />
+          <BackToBackOption headingFontSize="large" />
         </SettingOptionContainer>
       )}
     </Card>
