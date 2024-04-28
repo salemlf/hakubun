@@ -50,7 +50,6 @@ const setUpUserInfo = async () => {
 
 test("LessonsButton redirects to lesson settings on click", async () => {
   await setUpUserInfo();
-
   mockAvailLessonsResponse(mockLessonCollection);
 
   const { user } = renderComponent(true);
@@ -163,6 +162,7 @@ const renderComponent = (withLessonSettings: boolean = false) => {
   const routes = withLessonSettings
     ? [{ element: <LessonSettings />, path: "/lessons/settings" }]
     : [];
+
   return renderWithRouter({
     routeObj: {
       element: <LessonsButton />,
