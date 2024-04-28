@@ -12,8 +12,8 @@ const containerVariants = {
 };
 
 const PageContainer = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   min-height: 100%;
   position: relative;
   background-size: cover;
@@ -52,9 +52,9 @@ function RootContainer() {
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <AnimatedOutlet />
+          <AnimatePresence>{shouldShow && <FloatingTabBar />}</AnimatePresence>
         </PageContainer>
       </AnimatePresence>
-      <AnimatePresence>{shouldShow && <FloatingTabBar />}</AnimatePresence>
     </>
   );
 }

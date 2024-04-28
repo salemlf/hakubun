@@ -19,8 +19,6 @@ type Props = {
   hasTabBar?: boolean;
 };
 
-// TODO: make sure other pages aren't selectable with keyboard/screenreader when not selected
-// TODO: improve animations between pages
 function Paginator({
   pageArr,
   currentPage,
@@ -84,6 +82,7 @@ const PagesWrapper = styled.div`
   height: 100%;
   position: relative;
   width: 100%;
+  min-height: 100svh;
 `;
 
 const PageContainer = styled(motion.div)<WrapperProps>`
@@ -96,7 +95,7 @@ const PageContainer = styled(motion.div)<WrapperProps>`
   overflow-y: auto;
   grid-row: 1 / 6;
   padding-bottom: ${({ $hasbottompadding }) =>
-    $hasbottompadding ? "60px" : 0};
+    $hasbottompadding ? "150px" : 0};
 `;
 
 type PagesProps = {
