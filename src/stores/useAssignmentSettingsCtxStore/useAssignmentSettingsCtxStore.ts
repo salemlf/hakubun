@@ -1,7 +1,14 @@
 import { useContext } from "react";
-import { AssignmentSettingsContext } from "../../contexts/AssignmentSettingsContext";
+import { useStoreWithEqualityFn } from "zustand/traditional";
+import { shallow } from "zustand/shallow";
+import {
+  AssignmentSettingsContext,
+  AssignmentSettingsStateAndActions,
+} from "../../contexts/AssignmentSettingsContext";
 
-export const useAssignmentSettingsCtxStore = () => {
+export const useAssignmentSettingsCtxStore = <T>(
+  selector: (state: AssignmentSettingsStateAndActions) => T
+) => {
   const context = useContext(AssignmentSettingsContext);
 
   if (!context) {
@@ -10,5 +17,5 @@ export const useAssignmentSettingsCtxStore = () => {
     );
   }
 
-  return context;
+  return useStoreWithEqualityFn(context, selector, shallow);
 };
