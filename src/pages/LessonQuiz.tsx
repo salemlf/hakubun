@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { useBlocker, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
-import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService/AssignmentQueueService";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import { useStartAssignment } from "../hooks/assignments/useStartAssignment";
@@ -36,23 +35,6 @@ function LessonQuiz() {
   );
   const updateSubmitted = useSubmittedQueueUpdate();
   const { mutateAsync: startAssignmentAsync } = useStartAssignment();
-  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
-
-  const blocker = useBlocker(shouldBlock);
-
-  useEffect(() => {
-    if (blocker.state === "blocked" && isBottomSheetOpen) {
-      blocker.reset();
-      setIsBottomSheetOpen(false);
-    }
-  }, [blocker.state, isBottomSheetOpen]);
-
-  useEffect(() => {
-    if (blocker.state === "blocked" && isBottomSheetOpen) {
-      blocker.reset();
-      setIsBottomSheetOpen(false);
-    }
-  }, [blocker.state, isBottomSheetOpen]);
 
   useEffect(() => {
     if (assignmentQueue.length === 0) {
