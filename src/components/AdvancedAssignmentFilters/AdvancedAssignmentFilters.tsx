@@ -6,7 +6,7 @@ import { LastUpdateChoice } from "../LastUpdateOption/LastUpdateOption.types";
 import Collapsible from "../Collapsible";
 import BackToBackOption from "../BackToBackOption";
 import CurrentLevelOnlyOption from "../CurrentLevelOnlyOption";
-import LastUpdateOption from "../LastUpdateOption/LastUpdateOption";
+import LastUpdateOption from "../LastUpdateOption";
 import styled from "styled-components";
 
 const FilterSettingContainer = styled.div`
