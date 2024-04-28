@@ -25,6 +25,9 @@ interface AssignmentSettingsActions {
   resetAll: () => void;
 }
 
+export type AssignmentSettingsStateAndActions = AssignmentSettingsState &
+  AssignmentSettingsActions;
+
 type AssignmentSettingsStore = ReturnType<typeof createAssignmentSettingsStore>;
 
 const createAssignmentSettingsStore = (initProps: AssignmentSettingsProps) => {
@@ -33,21 +36,19 @@ const createAssignmentSettingsStore = (initProps: AssignmentSettingsProps) => {
     lastUpdateChoice: LAST_UPDATE_CHOICES[0],
   };
 
-  return createStore<AssignmentSettingsState & AssignmentSettingsActions>()(
-    (set) => ({
-      ...initialState,
-      setBatchSize: (size: string) => set({ batchSize: size }),
-      setBackToBackChoice: (choice: BackToBackChoice) =>
-        set({ backToBackChoice: choice }),
-      setSortOption: (option: AssignmentSortOption) =>
-        set({ sortOption: option }),
-      setLastUpdateChoice: (choice: LastUpdateChoice) =>
-        set({ lastUpdateChoice: choice }),
-      resetAll: () => {
-        set(initialState);
-      },
-    })
-  );
+  return createStore<AssignmentSettingsStateAndActions>()((set) => ({
+    ...initialState,
+    setBatchSize: (size: string) => set({ batchSize: size }),
+    setBackToBackChoice: (choice: BackToBackChoice) =>
+      set({ backToBackChoice: choice }),
+    setSortOption: (option: AssignmentSortOption) =>
+      set({ sortOption: option }),
+    setLastUpdateChoice: (choice: LastUpdateChoice) =>
+      set({ lastUpdateChoice: choice }),
+    resetAll: () => {
+      set(initialState);
+    },
+  }));
 };
 
 const AssignmentSettingsContext = createContext<AssignmentSettingsStore | null>(
