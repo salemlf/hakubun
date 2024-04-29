@@ -144,21 +144,6 @@ type SelectorProps = SelectProps & {
 // TODO: create a composed version of the selector where can pass in an array of items and they'll be mapped
 const Selector = forwardRef<ButtonRef, SelectorProps>(
   ({ open, id, children, ...props }, forwardedRef) => {
-    const contentRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-      const currContentRef = contentRef.current;
-      if (!currContentRef) return;
-
-      currContentRef.addEventListener("touchend", (e) => e.preventDefault());
-
-      return () => {
-        currContentRef.removeEventListener("touchend", (e) =>
-          e.preventDefault()
-        );
-      };
-    }, [contentRef.current, open]);
-
     return (
       <SelectorRoot {...props} open={open}>
         <Trigger ref={forwardedRef} id={id}>
@@ -171,7 +156,11 @@ const Selector = forwardRef<ButtonRef, SelectorProps>(
             />
           </Expand>
         </Trigger>
-        <SelectContent ref={contentRef}>
+        <SelectContent
+          ref={(ref) =>
+            ref?.addEventListener("touchend", (e) => e.preventDefault())
+          }
+        >
           <SelectPrimitive.ScrollUpButton
             className="scrollButton"
             aria-label="Scroll up"
