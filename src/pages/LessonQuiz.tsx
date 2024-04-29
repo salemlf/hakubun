@@ -18,7 +18,6 @@ import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Content = styled(MainContent)`
-  height: 100svh;
   display: grid;
   grid-template-rows: auto auto;
   align-content: space-between;
@@ -107,8 +106,8 @@ function LessonQuiz() {
             updateSubmitted={updateSubmitted}
           />
         )}
+        <KeyboardShortcuts />
       </Content>
-      <KeyboardShortcuts />
     </>
   );
 }
