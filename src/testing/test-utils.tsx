@@ -10,6 +10,8 @@ import {
 import userEvent from "@testing-library/user-event";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import { AssignmentSettingsProvider } from "../contexts/AssignmentSettingsContext";
+import { BottomSheetOpenProvider } from "../contexts/BottomSheetOpenContext";
+import { TabBarHeightProvider } from "../contexts/TabBarHeightContext";
 import { getSortOrderOptionById } from "../components/SortOrderOption/SortOrderOption.service";
 import { AssignmentSessionType } from "../types/AssignmentQueueTypes";
 import { BackToBackChoice } from "../components/BackToBackOption/BackToBackOption.types";
@@ -61,9 +63,13 @@ const TestingApp = ({ children }: TestAppProps) => {
   return (
     <QueryClientProvider client={testQueryClient}>
       <ToastDisplayProvider />
-      <ThemeProvider>
-        <IonApp>{children}</IonApp>
-      </ThemeProvider>
+      <BottomSheetOpenProvider>
+        <TabBarHeightProvider>
+          <ThemeProvider>
+            <IonApp>{children}</IonApp>
+          </ThemeProvider>
+        </TabBarHeightProvider>
+      </BottomSheetOpenProvider>
     </QueryClientProvider>
   );
 };
@@ -118,9 +124,13 @@ const renderWithRouter = ({
       <QueryClientProvider client={testQueryClient}>
         <ToastDisplayProvider />
         <ThemeProvider>
-          <IonApp>
-            <RouterProvider router={router} />
-          </IonApp>
+          <BottomSheetOpenProvider>
+            <TabBarHeightProvider>
+              <IonApp>
+                <RouterProvider router={router} />
+              </IonApp>
+            </TabBarHeightProvider>
+          </BottomSheetOpenProvider>
         </ThemeProvider>
       </QueryClientProvider>
     ),
