@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef } from "react";
+import { forwardRef } from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { SelectProps, SelectItemProps } from "@radix-ui/react-select";
 import SvgIcon from "../SvgIcon";
