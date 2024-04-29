@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
+import { useTabBarHeight } from "../../contexts/TabBarHeightContext";
 import { getPageIndex } from "../../services/MiscService/MiscService";
 import Button from "../Button";
 import Counter from "../Counter";
@@ -73,10 +74,6 @@ const variants = {
   }),
 };
 
-type WrapperProps = {
-  $hasbottompadding: boolean;
-};
-
 const PagesWrapper = styled.div`
   background-color: var(--background-color);
   height: 100%;
@@ -85,17 +82,38 @@ const PagesWrapper = styled.div`
   min-height: 100svh;
 `;
 
-const PageContainer = styled(motion.div)<WrapperProps>`
+type PgContainerProps = {
+  $hasbottompadding: boolean;
+  $tabBarHeight: string;
+};
+
+const PageContainer = styled(motion.div)<PgContainerProps>`
   background-color: var(--background-color);
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
   right: 0;
   overflow-y: auto;
   grid-row: 1 / 6;
-  padding-bottom: ${({ $hasbottompadding }) =>
-    $hasbottompadding ? "150px" : 0};
+  padding-bottom: ${({ $hasbottompadding, $tabBarHeight }) =>
+    $hasbottompadding
+      ? `calc(${$tabBarHeight} + 30px + constant(safe-area-inset-bottom))`
+      : "constant(safe-area-inset-bottom)"};
+
+  padding-bottom: ${({ $hasbottompadding, $tabBarHeight }) =>
+    $hasbottompadding
+      ? `calc(${$tabBarHeight} + 30px + env(safe-area-inset-bottom))`
+      : "env(safe-area-inset-bottom)"};
+
+  bottom: ${({ $hasbottompadding, $tabBarHeight }) =>
+    $hasbottompadding
+      ? `calc(${$tabBarHeight} + constant(safe-area-inset-bottom))`
+      : 0};
+
+  bottom: ${({ $hasbottompadding, $tabBarHeight }) =>
+    $hasbottompadding
+      ? `calc(${$tabBarHeight} + env(safe-area-inset-bottom))`
+      : 0};
 `;
 
 type PagesProps = {
@@ -113,6 +131,7 @@ function Pages({
   pageArr,
   hasTabBar,
 }: PagesProps) {
+  const { tabBarHeight } = useTabBarHeight();
   const hasPaginated = useRef<boolean>(false);
 
   function onPageDrag(
@@ -143,6 +162,7 @@ function Pages({
     <>
       <AnimatePresence initial={false} custom={direction}>
         <PageContainer
+          $tabBarHeight={tabBarHeight}
           $hasbottompadding={hasTabBar}
           key={currentPage}
           data-page={currentPage}
