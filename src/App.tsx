@@ -49,7 +49,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
-export const RELEASE_VERSION = "0.6.0-alpha";
+export const RELEASE_VERSION = "0.6.1-alpha";
 
 // for mock service worker
 async function enableMocking() {
