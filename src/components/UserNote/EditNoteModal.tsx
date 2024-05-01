@@ -4,6 +4,8 @@ import { displayToast } from "../Toast/Toast.service";
 import { UserNoteType } from "../../types/MiscTypes";
 import Modal from "../Modal";
 import Button from "../Button";
+import ReadingIcon from "../../images/reading.svg?react";
+import MeaningIcon from "../../images/meaning.svg?react";
 import styled from "styled-components";
 
 const AddButtonContainer = styled.div`
@@ -161,6 +163,8 @@ function EditNoteModal({
         modalID="add-user-note-modal"
         title={`${noteTypeCapitalized} Note`}
         isOpen={isOpen}
+        description={`Come up with a note that helps you remember the ${noteType}!`}
+        icon={noteType === "meaning" ? <MeaningIcon /> : <ReadingIcon />}
       >
         <UserNoteForm onSubmit={handleSubmit}>
           <Fieldset>
