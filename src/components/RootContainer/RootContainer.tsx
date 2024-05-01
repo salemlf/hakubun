@@ -18,6 +18,7 @@ const PageContainer = styled(motion.div)`
   position: relative;
   background-size: cover;
   background-color: var(--background-color);
+  overflow-y: auto;
 `;
 
 const AnimatedOutlet: React.FC = () => {
@@ -52,9 +53,9 @@ function RootContainer() {
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <AnimatedOutlet />
-          <AnimatePresence>{shouldShow && <FloatingTabBar />}</AnimatePresence>
         </PageContainer>
       </AnimatePresence>
+      <AnimatePresence>{shouldShow && <FloatingTabBar />}</AnimatePresence>
     </>
   );
 }
