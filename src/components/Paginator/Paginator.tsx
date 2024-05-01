@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
-import { useTabBarHeight } from "../../contexts/TabBarHeightContext";
 import { getPageIndex } from "../../services/MiscService/MiscService";
 import Button from "../Button";
 import Counter from "../Counter";
@@ -17,7 +16,6 @@ type Props = {
   direction: number;
   setCurrentPage: (updateProps: CurrPageUpdateProps) => void;
   showNavigationButtons: boolean;
-  hasTabBar?: boolean;
 };
 
 function Paginator({
@@ -26,7 +24,6 @@ function Paginator({
   direction,
   setCurrentPage,
   showNavigationButtons,
-  hasTabBar = false,
 }: Props) {
   const pageIndices = [...Array(pageArr.length).keys()];
 
@@ -44,7 +41,6 @@ function Paginator({
         pageArr={pageArr}
         direction={direction}
         setPage={setPage}
-        hasTabBar={hasTabBar}
       />
       {showNavigationButtons && (
         <PageIndicator
@@ -75,45 +71,18 @@ const variants = {
 };
 
 const PagesWrapper = styled.div`
+  display: grid;
+  grid-template-rows: 2fr auto;
+  position: relative;
   background-color: var(--background-color);
   height: 100%;
-  position: relative;
   width: 100%;
-  min-height: 100svh;
+  min-height: 100%;
 `;
 
-type PgContainerProps = {
-  $hasbottompadding: boolean;
-  $tabBarHeight: string;
-};
-
-const PageContainer = styled(motion.div)<PgContainerProps>`
+const PageContainer = styled(motion.div)`
   background-color: var(--background-color);
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   overflow-y: auto;
-  grid-row: 1 / 6;
-  padding-bottom: ${({ $hasbottompadding, $tabBarHeight }) =>
-    $hasbottompadding
-      ? `calc(${$tabBarHeight} + 30px + constant(safe-area-inset-bottom))`
-      : "constant(safe-area-inset-bottom)"};
-
-  padding-bottom: ${({ $hasbottompadding, $tabBarHeight }) =>
-    $hasbottompadding
-      ? `calc(${$tabBarHeight} + 30px + env(safe-area-inset-bottom))`
-      : "env(safe-area-inset-bottom)"};
-
-  bottom: ${({ $hasbottompadding, $tabBarHeight }) =>
-    $hasbottompadding
-      ? `calc(${$tabBarHeight} + constant(safe-area-inset-bottom))`
-      : 0};
-
-  bottom: ${({ $hasbottompadding, $tabBarHeight }) =>
-    $hasbottompadding
-      ? `calc(${$tabBarHeight} + env(safe-area-inset-bottom))`
-      : 0};
 `;
 
 type PagesProps = {
@@ -121,17 +90,9 @@ type PagesProps = {
   setPage: (page: number, direction: number) => void;
   direction: number;
   pageArr: React.ReactNode[];
-  hasTabBar: boolean;
 };
 
-function Pages({
-  currentPage,
-  setPage,
-  direction,
-  pageArr,
-  hasTabBar,
-}: PagesProps) {
-  const { tabBarHeight } = useTabBarHeight();
+function Pages({ currentPage, setPage, direction, pageArr }: PagesProps) {
   const hasPaginated = useRef<boolean>(false);
 
   function onPageDrag(
@@ -162,8 +123,6 @@ function Pages({
     <>
       <AnimatePresence initial={false} custom={direction}>
         <PageContainer
-          $tabBarHeight={tabBarHeight}
-          $hasbottompadding={hasTabBar}
           key={currentPage}
           data-page={currentPage}
           variants={variants}
@@ -184,31 +143,36 @@ function Pages({
   );
 }
 
+const PageIndicatorContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 10px 5px;
+`;
+
 const CountSeparator = styled.p`
   margin: 0 0.45em;
 `;
 
 const PageCountContainer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 20px;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
 `;
 
 const ChangePageButton = styled(Button)`
-  position: absolute;
-  bottom: 20px;
   z-index: 12;
+  grid-row: 1 / 2;
 `;
 
 const PrevPageButton = styled(ChangePageButton)`
   left: 20px;
+  grid-column: 1 / 2;
 `;
 
 const NextPageButton = styled(ChangePageButton)`
-  right: 20px;
+  grid-column: 3 / 4;
 `;
 
 type PageIndicatorProps = {
@@ -225,7 +189,7 @@ function PageIndicator({
   const hasNext = currentPage < pageIndices.length - 1;
 
   return (
-    <>
+    <PageIndicatorContainer>
       <PageCountContainer>
         <Counter value={currentPage + 1} maxNum={pageIndices.length} />
         <CountSeparator>/</CountSeparator>
@@ -257,7 +221,7 @@ function PageIndicator({
           <SvgIcon icon={<NextArrowIcon />} width="3.5em" height="3.5em" />
         </NextPageButton>
       )}
-    </>
+    </PageIndicatorContainer>
   );
 }
 
