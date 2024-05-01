@@ -23,6 +23,7 @@ import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStor
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserSettingsStore } from "./stores/useUserSettingsStore/useUserSettingsStore";
 import { onQueryError } from "./services/ApiQueryService/ApiQueryService";
+import { TabBarHeightProvider } from "./contexts/TabBarHeightContext";
 import { BottomSheetOpenProvider } from "./contexts/BottomSheetOpenContext";
 import { PersistentStore } from "./hooks/useHydration";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -149,9 +150,11 @@ const App: React.FC = () => {
       <HydrationWrapper store={useUserSettingsStore as PersistentStore}>
         <ThemeProvider>
           <BottomSheetOpenProvider>
-            <IonApp>
-              <RouterProvider router={browserRouter} />
-            </IonApp>
+            <TabBarHeightProvider>
+              <IonApp>
+                <RouterProvider router={browserRouter} />
+              </IonApp>
+            </TabBarHeightProvider>
           </BottomSheetOpenProvider>
         </ThemeProvider>
       </HydrationWrapper>

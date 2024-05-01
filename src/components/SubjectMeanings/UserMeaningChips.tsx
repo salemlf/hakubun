@@ -8,11 +8,32 @@ import { useStudyMaterialsChange } from "../../hooks/study-materials/useStudyMat
 import { Subject } from "../../types/Subject";
 import { StudyMaterialDataResponse } from "../../types/StudyMaterial";
 import AlertModal from "../AlertModal";
-import { Chip } from "../../styles/BaseStyledComponents";
+import Button from "../Button";
 import styled from "styled-components";
 
-const UserMeaningChip = styled(Chip)`
+const UserMeaningChip = styled(Button)`
   background-color: var(--light-grey);
+  padding: 8px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+
+  &:focus-visible {
+    outline: 2px solid white;
+    --outline: 2px solid white;
+  }
+
+  ion-icon {
+    margin-left: 5px;
+    width: 1.25em;
+    height: 1.25em;
+  }
 `;
 
 type MeaningWithUUID = {

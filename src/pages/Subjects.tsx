@@ -1,14 +1,30 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import { useStickyState } from "../hooks/useStickyState";
 import { LEVELS } from "../constants";
+import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
+import { useTabBarHeight } from "../contexts/TabBarHeightContext";
+import { useStickyState } from "../hooks/useStickyState";
 import { getPageIndex } from "../services/MiscService/MiscService";
 import SubjectsOnLvlTab from "../components/SubjectsOnLvlTab/SubjectsOnLvlTab";
 import LoadingDots from "../components/LoadingDots";
 import Paginator from "../components/Paginator";
 import { FixedCenterContainer, Header } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
+
+type HeaderAndTabsContainerProps = {
+  $tabBarHeight: string;
+};
+
+const HeaderAndTabsContainer = styled.div<HeaderAndTabsContainerProps>`
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  padding-bottom: ${({ $tabBarHeight }) =>
+    `calc(${$tabBarHeight} + 30px + constant(safe-area-inset-bottom))`};
+
+  padding-bottom: ${({ $tabBarHeight }) =>
+    `calc(${$tabBarHeight} + 30px + env(safe-area-inset-bottom))`};
+`;
 
 const SubjectsHeader = styled(Header)`
   color: black;
@@ -52,6 +68,7 @@ type SubjectsContentProps = {
 };
 
 const SubjectsContent = ({ level, setLevel }: SubjectsContentProps) => {
+  const { tabBarHeight } = useTabBarHeight();
   const [[currentPage, direction], setCurrentPage] = useState([level - 1, 0]);
   const levelPages = LEVELS.map((levelPg) => (
     <SubjectsOnLvlTab
@@ -70,7 +87,7 @@ const SubjectsContent = ({ level, setLevel }: SubjectsContentProps) => {
   };
 
   return (
-    <>
+    <HeaderAndTabsContainer $tabBarHeight={tabBarHeight}>
       <SubjectsHeader bgcolor="var(--ion-color-primary-tint)">
         Level
         <SubjectTabs
@@ -80,14 +97,13 @@ const SubjectsContent = ({ level, setLevel }: SubjectsContentProps) => {
         />
       </SubjectsHeader>
       <Paginator
-        hasTabBar={true}
         showNavigationButtons={false}
         pageArr={levelPages}
         currentPage={currentPage}
         direction={direction}
         setCurrentPage={setCurrentPage}
       />
-    </>
+    </HeaderAndTabsContainer>
   );
 };
 
@@ -176,10 +192,9 @@ const SubjectTabs = ({
       tabElements &&
       tabElements.length > 0
     ) {
-      // const index = tabs.findIndex((tab) => tab.id === selectedTabKey);
-      let currSelected = tabElements[selectedIndex];
+      const currSelected = tabElements[selectedIndex];
       if (currSelected) {
-        let scrollToCenterPos =
+        const scrollToCenterPos =
           currSelected.offsetLeft +
           currSelected.offsetWidth / 2 -
           tabListRef.current.offsetWidth / 2;

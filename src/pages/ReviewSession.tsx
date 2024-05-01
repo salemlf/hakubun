@@ -1,14 +1,12 @@
 import { useEffect } from "react";
-import { useBlocker, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import {
   createReviewPostData,
   getCompletedAssignmentQueueData,
-  shouldBlock,
 } from "../services/AssignmentQueueService/AssignmentQueueService";
-import { useIsBottomSheetOpen } from "../contexts/BottomSheetOpenContext";
 import { useCreateReview } from "../hooks/assignments/useCreateReview";
 import { useSubmittedQueueUpdate } from "../hooks/assignments/useSubmittedQueueUpdate";
 import {
@@ -18,14 +16,16 @@ import {
 import { PreFlattenedAssignment } from "../types/Assignment";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
-import AlertModal from "../components/AlertModal";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
+import LeaveSessionPrompt from "../components/LeaveSessionPrompt";
 import FinishFlagIcon from "../images/finish-flag.svg";
 import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
 const Content = styled(MainContent)`
-  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: space-between;
 `;
 
 const WrapUpFlagContainer = styled(motion.div)`
@@ -139,16 +139,6 @@ function ReviewSession() {
     currQueueIndex,
     updateAssignmentQueueData,
   } = useAssignmentQueueStoreFacade();
-
-  const blocker = useBlocker(shouldBlock);
-  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
-
-  useEffect(() => {
-    if (blocker.state === "blocked" && isBottomSheetOpen) {
-      blocker.reset();
-      setIsBottomSheetOpen(false);
-    }
-  }, [blocker.state, isBottomSheetOpen]);
 
   const updateSubmitted = useSubmittedQueueUpdate();
 
@@ -264,58 +254,40 @@ function ReviewSession() {
 
   return (
     <>
-      {blocker.state === "blocked" && (
-        <AlertModal open={blocker.state === "blocked"}>
-          <AlertModal.Content
-            modalID="end-review-session-alert-modal"
-            isOpen={blocker.state === "blocked"}
-            title="End Review Session?"
-            confirmText="End Session"
-            description={<Description />}
-            cancelText="Cancel"
-            onConfirmClick={() => {
-              endReviewSession();
-              blocker.proceed();
-            }}
-            onCancelClick={() => {
-              blocker.reset();
-            }}
-            showAddtlAction={true}
-            addtlActionText="Wrap Up"
-            onAddtlActionClick={() => {
-              wrapUpReviewSession();
-              blocker.reset();
-            }}
-          />
-        </AlertModal>
-      )}
+      <LeaveSessionPrompt
+        modalID="end-review-session-alert-modal"
+        title="End Review Session?"
+        confirmText="End Session"
+        description={<Description />}
+        showAddtlAction={true}
+        onAddtlActionClick={wrapUpReviewSession}
+        onConfirmClick={endReviewSession}
+      />
       <QueueHeader />
       <Content data-testid="review-session-content">
-        <>
-          {assignmentQueue.length !== 0 && (
-            <AssignmentQueueCards
-              submitItems={submitAndRedirect}
-              submitBatch={submitReviewBatch}
-              updateSubmitted={updateSubmitted}
-            />
-          )}
-          <WrapUpFlagContainer
-            variants={finishFlagBgVariants}
-            animate={bgControls}
-            initial="hidden"
+        {assignmentQueue.length !== 0 && (
+          <AssignmentQueueCards
+            submitItems={submitAndRedirect}
+            submitBatch={submitReviewBatch}
+            updateSubmitted={updateSubmitted}
+          />
+        )}
+        <WrapUpFlagContainer
+          variants={finishFlagBgVariants}
+          animate={bgControls}
+          initial="hidden"
+        >
+          <FlagAndTxtContainer
+            variants={flagImgAndTxtVariants}
+            animate={flgImgAndTxtControls}
+            initial="hideAbove"
           >
-            <FlagAndTxtContainer
-              variants={flagImgAndTxtVariants}
-              animate={flgImgAndTxtControls}
-              initial="hideAbove"
-            >
-              <img title="Checkered Flag" src={FinishFlagIcon} />
-              <WrappingUpTxt>Wrapping Up!</WrappingUpTxt>
-            </FlagAndTxtContainer>
-          </WrapUpFlagContainer>
-        </>
+            <img title="Checkered Flag" src={FinishFlagIcon} />
+            <WrappingUpTxt>Wrapping Up!</WrappingUpTxt>
+          </FlagAndTxtContainer>
+        </WrapUpFlagContainer>
+        <KeyboardShortcuts />
       </Content>
-      <KeyboardShortcuts />
     </>
   );
 }

@@ -1,13 +1,15 @@
-import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+import { useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { useResizeObserver } from "usehooks-ts";
+import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { motion } from "framer-motion";
+import { useTabBarHeight } from "../../contexts/TabBarHeightContext";
 import SvgIcon from "../SvgIcon";
 import HomeIcon from "../../images/home.svg?react";
 import SubjectsIcon from "../../images/subjects.svg?react";
 import SearchIcon from "../../images/search.svg?react";
 import styled from "styled-components";
 
-// TODO: change to this once no longer using IonPage
 const TabBarContainer = styled(motion(NavigationMenu.Root))`
   width: 80%;
   min-width: 200px;
@@ -97,8 +99,24 @@ const PageLink = ({
 };
 
 function FloatingTabBar() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { setTabBarHeight } = useTabBarHeight();
+  const { height = 0 } = useResizeObserver({
+    ref,
+  });
+
+  useEffect(() => {
+    if (height) {
+      setTabBarHeight(`${height}px`);
+    }
+  }, [height]);
+
   return (
-    <TabBarContainer exit={{ y: -150 }} transition={{ type: "spring" }}>
+    <TabBarContainer
+      ref={ref}
+      exit={{ y: -150 }}
+      transition={{ type: "spring" }}
+    >
       <TabList>
         <NavigationMenu.Item>
           <PageLink pathName="/subjects" pageName="Subjects">

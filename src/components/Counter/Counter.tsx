@@ -10,6 +10,7 @@ type CounterContainerProps = {
   fontsize: number;
 };
 
+// TODO: specify font-size in ch?
 const CounterContainer = styled.div<CounterContainerProps>`
   display: flex;
   overflow: hidden;
@@ -21,6 +22,7 @@ const CounterContainer = styled.div<CounterContainerProps>`
   line-height: 1;
   color: black;
   background-color: #ffffff;
+  height: 2.5ch;
 `;
 
 type Props = {
@@ -51,7 +53,6 @@ const DigitContainer = styled.div<DigitContainerProps>`
   font-variant-numeric: tabular-nums;
   width: 1ch;
   height: 2.5ch;
-  /* height: ${({ containerheight }) => containerheight}; */
 `;
 
 type DigitProps = {
@@ -60,8 +61,8 @@ type DigitProps = {
 };
 
 function Digit({ place, value }: DigitProps) {
-  let valueRoundedToPlace = Math.floor(value / place);
-  let animatedValue = useSpring(valueRoundedToPlace);
+  const valueRoundedToPlace = Math.floor(value / place);
+  const animatedValue = useSpring(valueRoundedToPlace);
 
   useEffect(() => {
     animatedValue.set(valueRoundedToPlace);
@@ -93,9 +94,9 @@ type NumberProps = {
 };
 
 function Number({ mv, number }: NumberProps) {
-  let y = useTransform(mv, (latest) => {
-    let placeValue = latest % 10;
-    let offset = (10 + number - placeValue) % 10;
+  const y = useTransform(mv, (latest) => {
+    const placeValue = latest % 10;
+    const offset = (10 + number - placeValue) % 10;
 
     let memo = offset * height;
 

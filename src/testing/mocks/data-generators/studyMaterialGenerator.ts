@@ -34,7 +34,8 @@ export const generateStudyMaterial = ({
   return {
     created_at: faker.date.past(),
     subject_id: subjID ?? faker.number.int(),
-    subject_type: faker.helpers.arrayElement(ALL_SUBJECT_TYPES),
+    subject_type:
+      selectedSubjType ?? faker.helpers.arrayElement(ALL_SUBJECT_TYPES),
     meaning_note: hasMeaningNote
       ? faker.lorem.paragraph({ min: 1, max: 3 })
       : null,

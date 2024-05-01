@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { AnimatePresence, PanInfo, motion } from "framer-motion";
-// TODO: change so not relying on IonIcon
 import { getPageIndex } from "../../services/MiscService/MiscService";
 import Button from "../Button";
 import Counter from "../Counter";
@@ -17,18 +16,14 @@ type Props = {
   direction: number;
   setCurrentPage: (updateProps: CurrPageUpdateProps) => void;
   showNavigationButtons: boolean;
-  hasTabBar?: boolean;
 };
 
-// TODO: make sure other pages aren't selectable with keyboard/screenreader when not selected
-// TODO: improve animations between pages
 function Paginator({
   pageArr,
   currentPage,
   direction,
   setCurrentPage,
   showNavigationButtons,
-  hasTabBar = false,
 }: Props) {
   const pageIndices = [...Array(pageArr.length).keys()];
 
@@ -40,13 +35,12 @@ function Paginator({
   };
 
   return (
-    <>
+    <PagesWrapper>
       <Pages
         currentPage={currentPage}
         pageArr={pageArr}
         direction={direction}
         setPage={setPage}
-        hasTabBar={hasTabBar}
       />
       {showNavigationButtons && (
         <PageIndicator
@@ -55,7 +49,7 @@ function Paginator({
           pageIndices={pageIndices}
         />
       )}
-    </>
+    </PagesWrapper>
   );
 }
 
@@ -76,27 +70,19 @@ const variants = {
   }),
 };
 
-type WrapperProps = {
-  $hasbottompadding: boolean;
-};
-
 const PagesWrapper = styled.div`
-  background-color: var(--background-color);
+  display: grid;
+  grid-template-rows: 2fr auto;
   position: relative;
+  background-color: var(--background-color);
   height: 100%;
   width: 100%;
+  min-height: 100%;
 `;
 
-const PageContainer = styled(motion.div)<WrapperProps>`
+const PageContainer = styled(motion.div)`
   background-color: var(--background-color);
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
   overflow-y: auto;
-  padding-bottom: ${({ $hasbottompadding }) =>
-    $hasbottompadding ? "60px" : 0};
 `;
 
 type PagesProps = {
@@ -104,23 +90,16 @@ type PagesProps = {
   setPage: (page: number, direction: number) => void;
   direction: number;
   pageArr: React.ReactNode[];
-  hasTabBar: boolean;
 };
 
-function Pages({
-  currentPage,
-  setPage,
-  direction,
-  pageArr,
-  hasTabBar,
-}: PagesProps) {
+function Pages({ currentPage, setPage, direction, pageArr }: PagesProps) {
   const hasPaginated = useRef<boolean>(false);
 
   function onPageDrag(
     event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
   ) {
-    let offset = info.offset;
+    const offset = info.offset;
 
     if (hasPaginated.current) return;
     let newPage = currentPage;
@@ -134,17 +113,16 @@ function Pages({
 
     if (newPage !== currentPage) {
       hasPaginated.current = true;
-      let updatedIndex = getPageIndex(currentPage, newPage, pageArr.length);
+      const updatedIndex = getPageIndex(currentPage, newPage, pageArr.length);
 
       setPage(updatedIndex, offset.x < 0 ? 1 : -1);
     }
   }
 
   return (
-    <PagesWrapper>
+    <>
       <AnimatePresence initial={false} custom={direction}>
         <PageContainer
-          $hasbottompadding={hasTabBar}
           key={currentPage}
           data-page={currentPage}
           variants={variants}
@@ -161,9 +139,15 @@ function Pages({
           {pageArr[currentPage]}
         </PageContainer>
       </AnimatePresence>
-    </PagesWrapper>
+    </>
   );
 }
+
+const PageIndicatorContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 10px 5px;
+`;
 
 const CountSeparator = styled.p`
   margin: 0 0.45em;
@@ -171,22 +155,24 @@ const CountSeparator = styled.p`
 
 const PageCountContainer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
 `;
 
-const PrevPageButton = styled(Button)`
-  position: absolute;
-  bottom: 20px;
+const ChangePageButton = styled(Button)`
+  z-index: 12;
+  grid-row: 1 / 2;
+`;
+
+const PrevPageButton = styled(ChangePageButton)`
   left: 20px;
-  z-index: 12;
+  grid-column: 1 / 2;
 `;
 
-const NextPageButton = styled(Button)`
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  z-index: 12;
+const NextPageButton = styled(ChangePageButton)`
+  grid-column: 3 / 4;
 `;
 
 type PageIndicatorProps = {
@@ -200,10 +186,10 @@ function PageIndicator({
   currentPage,
   setPage,
 }: PageIndicatorProps) {
-  let hasNext = currentPage < pageIndices.length - 1;
+  const hasNext = currentPage < pageIndices.length - 1;
 
   return (
-    <>
+    <PageIndicatorContainer>
       <PageCountContainer>
         <Counter value={currentPage + 1} maxNum={pageIndices.length} />
         <CountSeparator>/</CountSeparator>
@@ -235,7 +221,7 @@ function PageIndicator({
           <SvgIcon icon={<NextArrowIcon />} width="3.5em" height="3.5em" />
         </NextPageButton>
       )}
-    </>
+    </PageIndicatorContainer>
   );
 }
 

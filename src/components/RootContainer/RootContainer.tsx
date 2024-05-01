@@ -5,19 +5,20 @@ import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/
 import FloatingTabBar from "../FloatingTabBar";
 import styled from "styled-components";
 
-export const containerVariants = {
+const containerVariants = {
   initial: { opacity: 0, y: 20 },
   in: { opacity: 1, y: 0 },
   out: { opacity: 0, y: -20 },
 };
 
 const PageContainer = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   min-height: 100%;
   position: relative;
   background-size: cover;
   background-color: var(--background-color);
+  overflow-y: auto;
 `;
 
 const AnimatedOutlet: React.FC = () => {

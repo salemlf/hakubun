@@ -69,6 +69,7 @@ export const NoteHintHeading = styled.h6`
   margin: 3px 0;
   font-size: 0.9rem;
   font-weight: 600;
+  text-transform: capitalize;
 `;
 
 export const IconHeadingContainer = styled.div`
@@ -98,30 +99,6 @@ export const SvgIconHeadingContainer = styled.div`
 
 export const FoundInHeadingContainer = styled(IconHeadingContainer)`
   margin-bottom: 10px;
-`;
-
-export const Chip = styled(Button)`
-  padding: 8px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-
-  user-select: text;
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-
-  &:focus-visible {
-    outline: 2px solid var(--focus-color);
-    outline-offset: 2px;
-  }
-
-  ion-icon {
-    margin-left: 5px;
-    width: 1.25em;
-    height: 1.25em;
-  }
 `;
 
 export const BottomSheetContainer = styled.div`
@@ -188,13 +165,13 @@ export const FloatingButtonContainer = styled(
 )<FloatingButtonContainerProps>`
   position: fixed;
   z-index: 1;
-  bottom: ${({ distancefrombottom }) => distancefrombottom};
   left: 50%;
   margin: auto;
   width: 100%;
   display: flex;
   justify-content: center;
   z-index: 10;
+  bottom: ${({ distancefrombottom }) => distancefrombottom};
 `;
 
 export const FullWidthColumn = styled.div`
@@ -246,8 +223,9 @@ export const SettingRow = styled.div`
   }
 `;
 
+// okay, not actually "fixed" cuz ios is picky
 export const FixedCenterContainer = styled.div`
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

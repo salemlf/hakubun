@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
-import { useWindowSize } from "usehooks-ts";
+import { AnimatePresence } from "framer-motion";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import { convertQueueItemsToSubjects } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
@@ -22,12 +22,10 @@ type Props = {
   currentReviewItem: AssignmentQueueItem;
 };
 
-// TODO: rename so matches AssignmentQueue naming convention
-function ReviewItemBottomSheet({ currentReviewItem }: Props) {
+function AssignmentQueueItemBottomSheet({ currentReviewItem }: Props) {
   const location = useLocation();
   const { isBottomSheetVisible: showBottomSheet } = useQueueStoreFacade();
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  const { height } = useWindowSize();
 
   const timerId = useRef<number | null>(null);
 
@@ -64,39 +62,41 @@ function ReviewItemBottomSheet({ currentReviewItem }: Props) {
   }, [location.pathname, showBottomSheet]);
 
   return (
-    isBottomSheetVisible && (
-      <>
-        <BottomSheetRoot>
-          <BottomSheetContent title="Subject Info" height={height}>
-            <BottomSheetHeader subject={itemAsSubj} />
-            <SectionWithPadding>
-              {currentReviewItem.object == "radical" && (
-                <RadicalDetailTabs
-                  radical={itemAsSubj}
-                  scrollToDefault={true}
-                />
-              )}
-              {currentReviewItem.object == "kanji" && (
-                <KanjiDetailTabs
-                  kanji={itemAsSubj}
-                  reviewType={currentReviewItem.review_type}
-                  scrollToDefault={true}
-                />
-              )}
-              {(currentReviewItem.object == "vocabulary" ||
-                currentReviewItem.object == "kana_vocabulary") && (
-                <VocabDetailTabs
-                  vocab={itemAsSubj}
-                  reviewType={currentReviewItem.review_type}
-                  scrollToDefault={true}
-                />
-              )}
-            </SectionWithPadding>
-          </BottomSheetContent>
-        </BottomSheetRoot>
-      </>
-    )
+    <AnimatePresence>
+      {isBottomSheetVisible && (
+        <>
+          <BottomSheetRoot>
+            <BottomSheetContent title="Subject Info">
+              <BottomSheetHeader subject={itemAsSubj} />
+              <SectionWithPadding>
+                {currentReviewItem.object == "radical" && (
+                  <RadicalDetailTabs
+                    radical={itemAsSubj}
+                    scrollToDefault={true}
+                  />
+                )}
+                {currentReviewItem.object == "kanji" && (
+                  <KanjiDetailTabs
+                    kanji={itemAsSubj}
+                    reviewType={currentReviewItem.review_type}
+                    scrollToDefault={true}
+                  />
+                )}
+                {(currentReviewItem.object == "vocabulary" ||
+                  currentReviewItem.object == "kana_vocabulary") && (
+                  <VocabDetailTabs
+                    vocab={itemAsSubj}
+                    reviewType={currentReviewItem.review_type}
+                    scrollToDefault={true}
+                  />
+                )}
+              </SectionWithPadding>
+            </BottomSheetContent>
+          </BottomSheetRoot>
+        </>
+      )}
+    </AnimatePresence>
   );
 }
 
-export default ReviewItemBottomSheet;
+export default AssignmentQueueItemBottomSheet;
