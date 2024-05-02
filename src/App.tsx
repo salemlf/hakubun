@@ -50,7 +50,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
-export const RELEASE_VERSION = "0.6.1-alpha";
+export const RELEASE_VERSION = "1.0.0-beta";
 
 // for mock service worker
 async function enableMocking() {
