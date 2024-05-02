@@ -42,7 +42,7 @@ function AssignmentQueueCards({
         getReviewedAssignmentQueueItems(assignmentQueue);
       submitItems(reviewedItemsInfo.reviewedQueueItems);
     }
-  }, [currQueueIndex, assignmentQueue]);
+  }, [currQueueIndex]);
 
   useEffect(() => {
     const checkForReviewedBatch =
@@ -70,7 +70,7 @@ function AssignmentQueueCards({
         );
       }
     }
-  }, [currQueueIndex, assignmentQueue]);
+  }, [currQueueIndex]);
 
   return (
     <>
