@@ -47,6 +47,13 @@ const Description = styled(DialogPrimitive.Description)`
   margin: 10px 0 16px 0;
 `;
 
+const IconAndTitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  word-break: break-word;
+`;
+
 const DELAY = 0.3;
 type ContentRef = HTMLDivElement;
 
@@ -56,11 +63,12 @@ type ContentProps = {
   description?: string;
   children: React.ReactNode;
   isOpen: boolean;
+  icon?: React.ReactNode;
 };
 
 export const ModalContent = forwardRef<ContentRef, ContentProps>(
   (
-    { modalID, children, title, description, isOpen, ...props },
+    { modalID, children, title, description, isOpen, icon, ...props },
     forwardedRef
   ) => {
     const { modalContainerRef } = useModalContainer(modalID, isOpen);
@@ -93,7 +101,12 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                     exit={{ scale: 0 }}
                   >
                     <TitleBar>
-                      <Title>{title}</Title>
+                      <IconAndTitleContainer>
+                        {icon && (
+                          <SvgIcon icon={icon} width="1.75em" height="1.75em" />
+                        )}
+                        <Title>{title}</Title>
+                      </IconAndTitleContainer>
                       <ClosePrimitive aria-label="Close">
                         <SvgIcon
                           icon={<CloseIcon />}
