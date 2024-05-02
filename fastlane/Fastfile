@@ -21,6 +21,10 @@ platform :ios do
             workspace: File.join(ios_dir, "App/App.xcworkspace")
         )
     end
+
+    lane :beta do
+        build_app(scheme: "App", workspace: File.join(ios_dir, "App/App.xcworkspace"))
+      end
 end
 
 platform :android do
@@ -30,7 +34,7 @@ platform :android do
         gradle(task: 'clean', project_dir: android_dir)
         gradle(
             task: "assemble", 
-            project_dir: android_dir,
+            project_dir: android_dir,   
         )
         APK_LOCATION = "#{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}"
         sh("cp", "#{APK_LOCATION}", ENV["OUTPUT_PATH"])
