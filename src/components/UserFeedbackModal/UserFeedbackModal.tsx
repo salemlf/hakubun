@@ -173,6 +173,11 @@ const feedbackTypeSelections: FeedbackTypeSelection[] = [
   },
 ];
 
+const formDefaults = {
+  isUserNameIncluded: false,
+  isDeviceInfoIncluded: false,
+  selectedFeedbackType: feedbackTypeSelections[0],
+};
 type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -183,16 +188,34 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormInputs>();
 
-  const feedbackTypeSelectorRef = useRef<HTMLButtonElement>(null);
-  const [isUsernameIncluded, setIsUsernameIncluded] = useState<boolean>(false);
-  const [isDeviceInfoIncluded, setIsDeviceInfoIncluded] =
-    useState<boolean>(false);
-  const { isReportSubmitting, createAndPostIssue, setIsReportSubmitting } =
-    useUserFeedbackSubmit(setIsOpen);
+  const [isUsernameIncluded, setIsUsernameIncluded] = useState<boolean>(
+    formDefaults.isUserNameIncluded
+  );
+  const [isDeviceInfoIncluded, setIsDeviceInfoIncluded] = useState<boolean>(
+    formDefaults.isDeviceInfoIncluded
+  );
   const [selectedFeedbackType, setSelectedFeedbackType] =
-    useState<FeedbackTypeSelection>(feedbackTypeSelections[0]);
+    useState<FeedbackTypeSelection>(formDefaults.selectedFeedbackType);
+
+  const resetForm = () => {
+    reset();
+    setIsUsernameIncluded(formDefaults.isUserNameIncluded);
+    setIsDeviceInfoIncluded(formDefaults.isDeviceInfoIncluded);
+    setSelectedFeedbackType(formDefaults.selectedFeedbackType);
+  };
+
+  const onSubmitSuccess = () => {
+    setIsOpen(false);
+    resetForm();
+  };
+
+  const feedbackTypeSelectorRef = useRef<HTMLButtonElement>(null);
+
+  const { isReportSubmitting, createAndPostIssue, setIsReportSubmitting } =
+    useUserFeedbackSubmit(onSubmitSuccess);
 
   // bails out of submitting issue if modal is closed
   useEffect(() => {
