@@ -9,6 +9,7 @@ import ReviewUserSettings from "../components/ReviewUserSettings/ReviewUserSetti
 import Button from "../components/Button";
 import UserFeedbackModal from "../components/UserFeedbackModal";
 import PageHeader from "../components/PageHeader";
+import AlertModal from "../components/AlertModal";
 import { MainContent } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -62,12 +63,13 @@ const ReleaseTxt = styled.p`
 // TODO: change to get defaults from API
 function Settings() {
   const [isFeedbackModalShown, setIsFeedbackModalShown] = useState(false);
+  const [isLogoutConfirmationShown, setIsLogoutConfirmationShown] =
+    useState(false);
   const { logout } = useUserLogin();
   const { userInfo } = useUserInfoStoreFacade();
   const navigate = useNavigate();
   const username = userInfo?.username;
 
-  // TODO: add confirmation after pressing
   const removeAuth = () => {
     logout();
     navigate("/authenticate");
@@ -94,9 +96,9 @@ function Settings() {
           <ButtonRow>
             <SettingsBtn
               backgroundColor="var(--ion-color-danger)"
-              onPress={() => removeAuth()}
+              onPress={() => setIsLogoutConfirmationShown(true)}
             >
-              Logout
+              Log Out
             </SettingsBtn>
           </ButtonRow>
         </SettingBtnsContainer>
@@ -120,6 +122,21 @@ function Settings() {
         isOpen={isFeedbackModalShown}
         setIsOpen={setIsFeedbackModalShown}
       />
+      <AlertModal
+        open={isLogoutConfirmationShown}
+        onOpenChange={setIsLogoutConfirmationShown}
+      >
+        <AlertModal.Content
+          modalID="confirm-log-out-alert-modal"
+          isOpen={isLogoutConfirmationShown}
+          title="Log Out"
+          confirmText="Yes"
+          description="Are you sure you want to log out?"
+          cancelText="No"
+          onConfirmClick={() => removeAuth()}
+          onCancelClick={() => setIsLogoutConfirmationShown(false)}
+        />
+      </AlertModal>
     </>
   );
 }
