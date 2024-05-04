@@ -52,17 +52,7 @@ function AssignmentQueueCards({
     if (checkForReviewedBatch) {
       const reviewedItemsInfo =
         getReviewedAssignmentQueueItems(assignmentQueue);
-
-      // *testing
-      console.log(
-        "🚀 ~ file: AssignmentQueueCards.tsx:62 ~ useEffect ~ reviewedItemsInfo:",
-        reviewedItemsInfo
-      );
-      // *testing
       if (reviewedItemsInfo.totalUniqueItems >= MAX_ASSIGNMENTS_BEFORE_SUBMIT) {
-        // *testing
-        console.log("SUBMITTING BATCH");
-        // *testing
         submitBatch(reviewedItemsInfo.reviewedQueueItems).then(
           (submittedInfo) => {
             updateSubmitted(submittedInfo);

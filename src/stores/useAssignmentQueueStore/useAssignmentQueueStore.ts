@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { getLastIndexOfQueueItem } from "../../services/AssignmentQueueService/AssignmentQueueService";
 import {
   AssignmentQueueItem,
   AssignmentSessionType,
@@ -44,19 +45,12 @@ export const useAssignmentQueueStore = create<
   incrementCurrQueueIndex: () =>
     set((state) => ({ currQueueIndex: state.currQueueIndex + 1 })),
   updateQueueItem: (item) => {
-    const lastIndexOfItem =
-      get().assignmentQueue.length -
-      1 -
-      get()
-        .assignmentQueue.slice()
-        .reverse()
-        .findIndex(
-          (reviewItem) =>
-            reviewItem.itemID === item.itemID &&
-            reviewItem.review_type === item.review_type
-        );
+    const lastIndexOfItem = getLastIndexOfQueueItem(
+      get().assignmentQueue,
+      item
+    );
 
-    let updatedQueueItem = Object.assign({}, item);
+    const updatedQueueItem = { ...item };
 
     set((state) => ({
       assignmentQueue: [
@@ -69,9 +63,7 @@ export const useAssignmentQueueStore = create<
   updateQueueItemAltMeanings: (subjectID, altMeanings) => {
     const shouldUpdateAltMeanings = (
       assignmentQueueItem: AssignmentQueueItem
-    ): boolean =>
-      assignmentQueueItem.id === subjectID &&
-      assignmentQueueItem.review_type === "meaning";
+    ): boolean => assignmentQueueItem.subject_id === subjectID;
 
     const queueItemsWithUpdatedMeanings = get().assignmentQueue.map(
       (assignmentQueueItem: AssignmentQueueItem) => {
