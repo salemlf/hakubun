@@ -69,9 +69,7 @@ export const useAssignmentQueueStore = create<
   updateQueueItemAltMeanings: (subjectID, altMeanings) => {
     const shouldUpdateAltMeanings = (
       assignmentQueueItem: AssignmentQueueItem
-    ): boolean =>
-      assignmentQueueItem.id === subjectID &&
-      assignmentQueueItem.review_type === "meaning";
+    ): boolean => assignmentQueueItem.subject_id === subjectID;
 
     const queueItemsWithUpdatedMeanings = get().assignmentQueue.map(
       (assignmentQueueItem: AssignmentQueueItem) => {
