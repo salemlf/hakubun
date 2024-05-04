@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { RELEASE_VERSION } from "../App";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserLogin } from "../hooks/user/useUserLogin";
 import GeneralUserSettings from "../components/GeneralUserSettings";
@@ -37,17 +38,28 @@ const Username = styled.h2`
   text-align: center;
 `;
 
-const CreditsContainer = styled.div`
-  width: 100%;
+const CreditsAndVersionContainer = styled.div`
   text-align: center;
+  margin: 16px;
   margin-top: 20px;
 
   p {
-    margin: 10px 0;
+    margin: 0;
   }
 `;
 
-// TODO: change to get/set defaults from API
+const CreditsVersionContent = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 5px;
+`;
+
+const ReleaseTxt = styled.p`
+  grid-column: 1 / 3;
+  font-size: 1.125rem;
+`;
+
+// TODO: change to get defaults from API
 function Settings() {
   const [isFeedbackModalShown, setIsFeedbackModalShown] = useState(false);
   const { logout } = useUserLogin();
@@ -88,16 +100,21 @@ function Settings() {
             </SettingsBtn>
           </ButtonRow>
         </SettingBtnsContainer>
-        <CreditsContainer>
+        <CreditsAndVersionContainer>
           <h3>Credits</h3>
-          <p>
-            Logo by{" "}
-            <a href="https://www.instagram.com/calebsevenhawks">Caleb Walsh</a>
-          </p>
-          <p>
-            Other icons from <a href="https://icons8.com/">Icons8</a>
-          </p>
-        </CreditsContainer>
+          <CreditsVersionContent>
+            <p>
+              Logo by{" "}
+              <a href="https://www.instagram.com/calebsevenhawks">
+                Caleb Walsh
+              </a>
+            </p>
+            <p>
+              Other icons from <a href="https://icons8.com/">Icons8</a>
+            </p>
+            <ReleaseTxt>{`Version ${RELEASE_VERSION}`}</ReleaseTxt>
+          </CreditsVersionContent>
+        </CreditsAndVersionContainer>
       </Content>
       <UserFeedbackModal
         isOpen={isFeedbackModalShown}
