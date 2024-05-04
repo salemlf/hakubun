@@ -56,7 +56,7 @@ export const useAssignmentQueueStore = create<
             reviewItem.review_type === item.review_type
         );
 
-    let updatedQueueItem = Object.assign({}, item);
+    const updatedQueueItem = { ...item };
 
     set((state) => ({
       assignmentQueue: [
