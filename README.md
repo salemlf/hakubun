@@ -78,7 +78,21 @@ Please [email me](mailto:salemlfenn@gmail.com) if you have any questions or conc
 
 ## Building the App
 
-### Hot Reload for iOS and Android
+Make sure to run `npm install` before trying the steps below!
+
+### Web Version
+
+**Building using this method for general development is highly recommended over the iOS and Android methods,** it's much easier to debug and inspect changes. Running the app with iOS and Android simulators is only recommended to double-check that the changes you made are compatible with both platforms.
+
+Start server:
+
+```bash
+npm run start
+```
+
+The app should then be available at http://localhost:5173/
+
+### iOS and Android Simulators (with Hot Reload)
 
 If below doesn't work, check that network URL after displayed after running `npm run start-exposed` matches the URL in the _capacitor.config.ts_ file
 
@@ -96,13 +110,31 @@ Then run the script for the platform in another terminal:
 npm run ios-live-reload
 ```
 
+You can then select the type of iOS device you'd like to use as a simulator
+
+##### To view debug info (inspect elements, view console output)
+
+- If you've never done this before, you'll likely have to the make sure "Show features for web developers" is enabled under Safari's Settings
+  <img src="./resources/debugging-screenshots/safari-web-dev-settings.png" width="300" alt="Safari settings displaying 'Show features for web developers'" />
+- Open Safari and click the iOS simulator for Hakubun under Develop -> iOS device you chose as simulator -> IP address displayed. _If this is not displayed, make sure you followed the previous step. If it's still not displayed, opening Xcode can sometimes make it appear_
+  <img src="./resources/debugging-screenshots/safari-select-ios-simulator.png" width="300" alt="selecting iOS simulator" />
+  <img src="./resources/debugging-screenshots/safari-inspecting-ios-device.png" width="300" alt="inspecting iOS simulator" />
+
 #### Android
 
 ```bash
 npm run android-live-reload
 ```
 
+##### To view debug info (inspect elements, view console output)
+
+- In Chrome, go to chrome://inspect/#devices
+- An address should be available under "Remote Target", you can click on "inspect" to bring up a web inspector. This can be used to inspect elements and view console output
+  <img src="./resources/debugging-screenshots/chrome-remote-targets.png" width="300" alt="remote targets in Chrome" /> <img src="./resources/debugging-screenshots/chrome-web-inspector.png" width="300" alt="web inspector in Chrome for Android device" />
+
 ### Running Fastlane
+
+[Fastlane](https://fastlane.tools/) is a tool used to build the Android and iOS apps for Hakubun
 
 To run android lanes:
 
