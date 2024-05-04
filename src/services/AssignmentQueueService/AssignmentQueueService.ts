@@ -557,3 +557,21 @@ export const sortQueueItemsByMeaningAndReading = (
     return 0;
   });
 };
+
+export const getLastIndexOfQueueItem = (
+  assignmentQueue: AssignmentQueueItem[],
+  queueItem: AssignmentQueueItem
+): number => {
+  return (
+    assignmentQueue.length -
+    1 -
+    assignmentQueue
+      .slice()
+      .reverse()
+      .findIndex(
+        (reviewItem) =>
+          reviewItem.itemID === queueItem.itemID &&
+          reviewItem.review_type === queueItem.review_type
+      )
+  );
+};
