@@ -7,20 +7,20 @@ const mockAssignmentQueueItems = generateRandomQueueItems({
   queueProgressState: "not_started",
 });
 
-describe("useAssignmentQueueStore", () => {
-  test("Initial values are as expected", () => {
-    const { result } = renderHook(() => useAssignmentQueueStoreFacade());
-    expect(result.current.currQueueIndex).toEqual(
-      result.current.initialState.currQueueIndex
-    );
-    expect(result.current.sessionInProgress).toEqual(
-      result.current.initialState.sessionInProgress
-    );
-    expect(result.current.sessionType).toEqual(
-      result.current.initialState.sessionType
-    );
-  });
+test("Initial values are as expected", () => {
+  const { result } = renderHook(() => useAssignmentQueueStoreFacade());
+  expect(result.current.currQueueIndex).toEqual(
+    result.current.initialState.currQueueIndex
+  );
+  expect(result.current.sessionInProgress).toEqual(
+    result.current.initialState.sessionInProgress
+  );
+  expect(result.current.sessionType).toEqual(
+    result.current.initialState.sessionType
+  );
+});
 
+describe("incrementCurrQueueIndex", () => {
   test("currQueueIndex increments", () => {
     const { result } = renderHook(() => useAssignmentQueueStoreFacade());
     expect(result.current.currQueueIndex).toEqual(0);
@@ -29,7 +29,9 @@ describe("useAssignmentQueueStore", () => {
     act(() => result.current.incrementCurrQueueIndex());
     expect(result.current.currQueueIndex).toEqual(2);
   });
+});
 
+describe("resetAll", () => {
   test("currQueueIndex resets", () => {
     const { result } = renderHook(() => useAssignmentQueueStoreFacade());
     expect(result.current.currQueueIndex).toEqual(0);
@@ -38,7 +40,8 @@ describe("useAssignmentQueueStore", () => {
     act(() => result.current.resetAll());
     expect(result.current.currQueueIndex).toEqual(0);
   });
-
+});
+describe("updateAssignmentSubmittedStates", () => {
   test("Submitted states for queue items update", () => {
     const { result } = renderHook(() => useAssignmentQueueStoreFacade());
 
@@ -47,11 +50,11 @@ describe("useAssignmentQueueStore", () => {
       result.current.setAssignmentQueueData(mockAssignmentQueueItems, "review")
     );
 
-    let randomQueueItem =
+    const randomQueueItem =
       result.current.assignmentQueue[
         Math.floor(Math.random() * result.current.assignmentQueue.length)
       ];
-    let assignmentIDOfRandomQueueItem = randomQueueItem.assignment_id;
+    const assignmentIDOfRandomQueueItem = randomQueueItem.assignment_id;
 
     // all submitted states should be false at first
     expect(
