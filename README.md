@@ -115,6 +115,7 @@ You can then select the type of iOS device you'd like to use as a simulator
 ##### To view debug info (inspect elements, view console output)
 
 - If you've never done this before, you'll likely have to the make sure "Show features for web developers" is enabled under Safari's Settings
+
   <img src="./resources/debugging-screenshots/safari-web-dev-settings.png" width="300" alt="Safari settings displaying Show features for web developers setting" />
 - Open Safari and click the iOS simulator for Hakubun under Develop -> iOS device you chose as simulator -> IP address displayed. _If this is not displayed, make sure you followed the previous step. If it's still not displayed, opening Xcode can sometimes make it appear_
   <img src="./resources/debugging-screenshots/safari-select-ios-simulator.png" width="300" alt="selecting iOS simulator" />
