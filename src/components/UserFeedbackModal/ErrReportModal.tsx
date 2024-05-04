@@ -49,14 +49,29 @@ export type Props = {
   stackTrace?: string;
 };
 
+const formDefaults = {
+  isUserNameIncluded: false,
+  isDeviceInfoIncluded: false,
+};
+
 function ErrReportModal({ isOpen, setIsOpen, errMsg, stackTrace }: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   // const [isReportSubmitting, setIsReportSubmitting] = useState<boolean>(false);
-  const [isUsernameIncluded, setIsUsernameIncluded] = useState<boolean>(false);
-  const [isDeviceInfoIncluded, setIsDeviceInfoIncluded] =
-    useState<boolean>(false);
+  const [isUsernameIncluded, setIsUsernameIncluded] = useState<boolean>(
+    formDefaults.isUserNameIncluded
+  );
+  const [isDeviceInfoIncluded, setIsDeviceInfoIncluded] = useState<boolean>(
+    formDefaults.isDeviceInfoIncluded
+  );
+
+  const onSubmitSuccess = () => {
+    setIsOpen(false);
+    setIsUsernameIncluded(formDefaults.isUserNameIncluded);
+    setIsDeviceInfoIncluded(formDefaults.isDeviceInfoIncluded);
+  };
+
   const { isReportSubmitting, createAndPostIssue, setIsReportSubmitting } =
-    useUserFeedbackSubmit(setIsOpen);
+    useUserFeedbackSubmit(onSubmitSuccess);
 
   // bails out of submitting issue if modal is closed
   useEffect(() => {

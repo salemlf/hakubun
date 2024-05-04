@@ -41,7 +41,7 @@ type CreateAndPostIssueParams = {
   errInfo?: string;
 };
 
-export const useUserFeedbackSubmit = (setIsOpen: (isOpen: boolean) => void) => {
+export const useUserFeedbackSubmit = (onSubmitSuccess: () => void) => {
   const [isReportSubmitting, setIsReportSubmitting] = useState<boolean>(false);
   const { mutateAsync: createGitHubIssue } = useCreateIssue();
   const { userInfo } = useUserInfoStoreFacade();
@@ -102,7 +102,7 @@ export const useUserFeedbackSubmit = (setIsOpen: (isOpen: boolean) => void) => {
             timeout: 10000,
           });
         } else {
-          setIsOpen(false);
+          onSubmitSuccess();
           displayToast({
             toastType: "success",
             title: `Your ${bodyDetails.term} has been submitted!`,
