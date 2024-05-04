@@ -56,7 +56,6 @@ const formDefaults = {
 
 function ErrReportModal({ isOpen, setIsOpen, errMsg, stackTrace }: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  // const [isReportSubmitting, setIsReportSubmitting] = useState<boolean>(false);
   const [isUsernameIncluded, setIsUsernameIncluded] = useState<boolean>(
     formDefaults.isUserNameIncluded
   );
@@ -79,8 +78,6 @@ function ErrReportModal({ isOpen, setIsOpen, errMsg, stackTrace }: Props) {
       setIsReportSubmitting(false);
     }
   }, [isOpen]);
-
-  // const { mutateAsync: createGitHubIssue } = useCreateIssue();
 
   useEffect(() => {
     if (isOpen && textareaRef.current) {
