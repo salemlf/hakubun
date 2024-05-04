@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { getLastIndexOfQueueItem } from "../../services/AssignmentQueueService/AssignmentQueueService";
 import {
   AssignmentQueueItem,
   AssignmentSessionType,
@@ -44,17 +45,10 @@ export const useAssignmentQueueStore = create<
   incrementCurrQueueIndex: () =>
     set((state) => ({ currQueueIndex: state.currQueueIndex + 1 })),
   updateQueueItem: (item) => {
-    const lastIndexOfItem =
-      get().assignmentQueue.length -
-      1 -
-      get()
-        .assignmentQueue.slice()
-        .reverse()
-        .findIndex(
-          (reviewItem) =>
-            reviewItem.itemID === item.itemID &&
-            reviewItem.review_type === item.review_type
-        );
+    const lastIndexOfItem = getLastIndexOfQueueItem(
+      get().assignmentQueue,
+      item
+    );
 
     const updatedQueueItem = { ...item };
 
