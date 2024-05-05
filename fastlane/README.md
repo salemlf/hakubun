@@ -38,10 +38,16 @@ Generate new development certificates
 
 Generate new appstore certificates
 
-### ios beta
+### ios build_beta
 
 ```sh
-[bundle exec] fastlane ios beta
+[bundle exec] fastlane ios build_beta
+```
+
+### ios upload_beta
+
+```sh
+[bundle exec] fastlane ios upload_beta
 ```
 
 ---
