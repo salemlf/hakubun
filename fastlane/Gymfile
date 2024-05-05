@@ -5,8 +5,3 @@
 # fastlane gym --help
 
 scheme("App")
-
-# Excludes bitcode from the build
-include_bitcode(false)
-# Excludes symbols from the build.
-include_symbols(false)
