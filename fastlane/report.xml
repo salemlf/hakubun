@@ -5,7 +5,22 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: sync_code_signing" time="13.280085">
+      <testcase classname="fastlane.lanes" name="0: Switch to ios sync_certs lane" time="0.000123">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: sync_code_signing" time="1.325445">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: sync_code_signing" time="1.273474">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: build_app" time="40.960947">
         
       </testcase>
     

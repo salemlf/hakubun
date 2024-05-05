@@ -8,6 +8,11 @@
 
 scheme("App")
 
-# sdk("iphoneos9.0")
+# Specify the path to store .ipa file
+output_directory("./fastlane/builds")
 
-output_directory("./")
+
+# Excludes bitcode from the build
+include_bitcode(false)
+# Excludes symbols from the build.
+include_symbols(false)

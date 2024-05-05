@@ -1,4 +1,5 @@
-app_identifier("io.hakubun.app")
+# app_identifier("io.hakubun.app")
+app_identifier(ENV["DEVELOPER_APP_IDENTIFIER"])
 team_name "Salem Fenn"
 team_id "salemlfenn@gmail.com"
 itc_team_id "6502036212"

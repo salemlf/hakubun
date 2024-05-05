@@ -1,4 +1,5 @@
-## fastlane documentation
+fastlane documentation
+----
 
 # Installation
 
@@ -14,21 +15,29 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
-### ios certificates
+### ios sync_certs
 
 ```sh
-[bundle exec] fastlane ios certificates
+[bundle exec] fastlane ios sync_certs
 ```
 
 Get certificates
 
-### ios generate_new_certificates
+### ios generate_new_certs_dev
 
 ```sh
-[bundle exec] fastlane ios generate_new_certificates
+[bundle exec] fastlane ios generate_new_certs_dev
 ```
 
-Generate new certificates
+Generate new development certificates
+
+### ios generate_new_certs_appstore
+
+```sh
+[bundle exec] fastlane ios generate_new_certs_appstore
+```
+
+Generate new appstore certificates
 
 ### ios beta
 
@@ -36,7 +45,10 @@ Generate new certificates
 [bundle exec] fastlane ios beta
 ```
 
----
+
+
+----
+
 
 ## Android
 
@@ -46,13 +58,17 @@ Generate new certificates
 [bundle exec] fastlane android buildApk
 ```
 
+
+
 ### android buildBundle
 
 ```sh
 [bundle exec] fastlane android buildBundle
 ```
 
----
+
+
+----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
 
