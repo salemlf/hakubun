@@ -45,13 +45,6 @@ platform :ios do
         readonly: false
       )
     end
-  
-
-    lane :test do
-        run_tests(
-            project: File.join(ios_dir, "App/App.xcodeproj")
-        )
-    end
 
     lane :beta do
         build_app(
