@@ -64,7 +64,7 @@ platform :ios do
       )
     end
 
-    lane :beta do
+    lane :build_beta do
         sync_certs
         build_app(
             configuration: "Release",
@@ -79,6 +79,13 @@ platform :ios do
             clean: true,
             )
       end
+
+    lane :upload_beta do
+        build_beta
+        upload_to_testflight(
+            beta_app_feedback_email: "salemlfenn@gmail.com",
+        )
+    end
 end
 
 platform :android do
