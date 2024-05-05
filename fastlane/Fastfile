@@ -16,15 +16,51 @@
 platform :ios do
     ios_dir = File.expand_path('../ios')
 
+    desc "Get certificates"
+    lane :certificates do
+        sync_code_signing(
+            git_branch: "main",
+            type: "development",
+            app_identifier: "io.hakubun.app",
+            force_for_new_devices: true,
+            readonly: true
+        )
+
+        # You can repeat the sync_code_signing with other types of certificates such as appstore and adhoc
+        sync_code_signing(
+            git_branch: "main",
+            type: "appstore",
+            app_identifier: "io.hakubun.app",
+            readonly: true
+        )
+    end
+
+    desc "Generate new certificates"
+    lane :generate_new_certificates do
+      sync_code_signing(
+        git_branch: "main",
+        type: "development",
+        app_identifier: "io.hakubun.app",
+        force_for_new_devices: true,
+        readonly: false
+      )
+    end
+  
+
     lane :test do
         run_tests(
-            workspace: File.join(ios_dir, "App/App.xcworkspace")
+            project: File.join(ios_dir, "App/App.xcodeproj")
         )
     end
 
     lane :beta do
-        build_app(scheme: "App", workspace: File.join(ios_dir, "App/App.xcworkspace"))
+        build_app(
+            scheme: "App", 
+            project: File.join(ios_dir, "App/App.xcodeproj"),
+            clean: true,
+            )
       end
+    
 end
 
 platform :android do
