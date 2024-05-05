@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: Switch to ios build_beta lane" time="0.000113">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: Switch to ios sync_certs lane" time="5.6e-05">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: sync_code_signing" time="0.852154">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: sync_code_signing" time="0.779831">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: build_app" time="40.80062">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: upload_to_testflight" time="164.640653">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

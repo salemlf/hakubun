@@ -13,12 +13,82 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+APPLE_ISSUER_ID = ENV["APPLE_ISSUER_ID"]
+APPLE_KEY_ID = ENV["APPLE_KEY_ID"]
+APPLE_KEY_CONTENT = ENV["APPLE_KEY_CONTENT"]
+DEVELOPER_APP_ID = ENV["DEVELOPER_APP_ID"]
+DEVELOPER_APP_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"]
+PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"]
+FASTLANE_APPLE_ID = ENV["FASTLANE_APPLE_ID"]
+FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD = ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"]
+
 platform :ios do
     ios_dir = File.expand_path('../ios')
 
-    lane :test do
-        run_tests(
-            workspace: File.join(ios_dir, "App/App.xcworkspace")
+    desc "Get certificates"
+    lane :sync_certs do
+        sync_code_signing(
+            git_branch: "main",
+            type: "development",
+            app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+            force_for_new_devices: true,
+            readonly: true
+        )
+
+        # You can repeat the sync_code_signing with other types of certificates such as appstore and adhoc
+        sync_code_signing(
+            git_branch: "main",
+            type: "appstore",
+            app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+            readonly: true
+        )
+    end
+
+    desc "Generate new development certificates"
+    lane :generate_new_certs_dev do
+      sync_code_signing(
+        git_branch: "main",
+        type: "development",
+        app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+        force_for_new_devices: true,
+        readonly: false
+      )
+    end
+
+    desc "Generate new appstore certificates"
+    lane :generate_new_certs_appstore do
+      sync_code_signing(
+        git_branch: "main",
+        type: "appstore",
+        app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+        force_for_new_devices: true,
+        readonly: false
+      )
+    end
+
+    lane :build_beta do
+        setup_ci if ENV['CI']
+        sync_certs
+        build_app(
+            configuration: "Release",
+            workspace: File.join(ios_dir, "App/App.xcworkspace"),
+            scheme: "App", 
+            export_method: "app-store",
+            export_options: {
+              provisioningProfiles: {
+                  DEVELOPER_APP_ID => "#{PROVISIONING_PROFILE_SPECIFIER}"
+              }
+            },
+            clean: true,
+            )
+      end
+
+    lane :upload_beta do
+        build_beta
+        upload_to_testflight(
+            beta_app_feedback_email: "salemlfenn@gmail.com",
+            username: "#{FASTLANE_APPLE_ID}",
+            app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
         )
     end
 end
@@ -30,7 +100,7 @@ platform :android do
         gradle(task: 'clean', project_dir: android_dir)
         gradle(
             task: "assemble", 
-            project_dir: android_dir,
+            project_dir: android_dir,   
         )
         APK_LOCATION = "#{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}"
         sh("cp", "#{APK_LOCATION}", ENV["OUTPUT_PATH"])
