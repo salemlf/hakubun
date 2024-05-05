@@ -65,6 +65,7 @@ platform :ios do
     end
 
     lane :build_beta do
+        setup_ci if ENV['CI']
         sync_certs
         build_app(
             configuration: "Release",
