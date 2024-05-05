@@ -56,12 +56,16 @@ function BasicAssignmentSettings({
     defaultBatchSize === "All"
       ? assignmentData.length
       : parseInt(defaultBatchSize);
-  const selectedBatchSize = (
+  let selectedBatchSize = (
     defaultBatchSizeNum <= assignmentData.length
       ? defaultBatchSize
       : Math.max(...batchSizeNumbers)
   ) as string;
 
+  // If the selectedBatchSize batch size is smaller than the preffered batch size, set the batch size to "All"
+  if (parseInt(selectedBatchSize) < defaultBatchSizeNum) {
+    selectedBatchSize = "All";
+  }
   return (
     <Card>
       <SettingOptionContainer>
