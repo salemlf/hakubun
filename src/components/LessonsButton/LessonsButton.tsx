@@ -12,10 +12,6 @@ import {
 } from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components";
 
-const LessonsButtonStyled = styled(BaseReviewLessonButton)`
-  background-color: var(--wanikani-lesson);
-`;
-
 const LessonButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`
   --background: var(--wani-kani-pink-rgba);
   --background-rgb: var(--wani-kani-pink-rgb);
@@ -50,7 +46,7 @@ function LessonsButton() {
   }
 
   const onLessonBtnClick = () => {
-    let paidSubscription = userInfo && userInfo.subscription.type !== "free";
+    const paidSubscription = userInfo && userInfo.subscription.type !== "free";
     if (lessonsData === undefined || lessonsData.length === 0) {
       displayToast({
         title: "No lessons available!",
@@ -77,8 +73,10 @@ function LessonsButton() {
 
   return (
     <>
-      <LessonsButtonStyled
+      <BaseReviewLessonButton
+        backgroundColor="var(--wanikani-lesson)"
         aria-label="Lessons"
+        className="base-button"
         onPress={onLessonBtnClick}
         style={{
           backgroundImage: `url(${setBtnBackground({
@@ -91,7 +89,7 @@ function LessonsButton() {
         <BaseReviewLessonButtonBadge>
           {lessonsData ? lessonsData.length : 0}
         </BaseReviewLessonButtonBadge>
-      </LessonsButtonStyled>
+      </BaseReviewLessonButton>
     </>
   );
 }

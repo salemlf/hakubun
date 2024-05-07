@@ -11,10 +11,6 @@ import {
 } from "../../styles/SubjectButtonsStyled";
 import styled from "styled-components";
 
-const ReviewsButtonStyled = styled(BaseReviewLessonButton)`
-  background-color: var(--wanikani-review);
-`;
-
 const ReviewsButtonSkeleton = styled(BaseReviewLessonButtonSkeleton)`
   --background: var(--wanikani-blue-rgba);
   --background-rgb: var(--wanikani-blue-rgb);
@@ -65,7 +61,8 @@ function ReviewsButton() {
   // TODO: delay loading until image is set
   return (
     <>
-      <ReviewsButtonStyled
+      <BaseReviewLessonButton
+        backgroundColor="var(--wanikani-review)"
         aria-label="Reviews"
         onPress={onReviewBtnClick}
         style={{
@@ -79,7 +76,7 @@ function ReviewsButton() {
         <BaseReviewLessonButtonBadge>
           {availForReviewData ? availForReviewData.length : 0}
         </BaseReviewLessonButtonBadge>
-      </ReviewsButtonStyled>
+      </BaseReviewLessonButton>
     </>
   );
 }
