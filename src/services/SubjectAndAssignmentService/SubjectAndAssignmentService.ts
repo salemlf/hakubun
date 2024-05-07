@@ -259,6 +259,24 @@ export const createAssignmentQueueItems = (
   return queueItemsWithBackToBackChoice;
 };
 
+export const sortAssignmentsByDateUpdated = (
+  assignments: Assignment[],
+  sortOrder: SortOrder
+): Assignment[] => {
+  const assignmentsCopyToSort = [...assignments];
+  return assignmentsCopyToSort.sort((a: Assignment, b: Assignment) => {
+    // keep assignments that have not been updated as part of the list
+    if (a.data_updated_at === null) {
+      return sortOrder === "asc" ? 1 : -1;
+    } else if (b.data_updated_at === null) {
+      return sortOrder === "asc" ? -1 : 1;
+    }
+    return sortOrder === "asc"
+      ? new Date(a.data_updated_at).getTime() - new Date(b.data_updated_at).getTime()
+      : new Date(b.data_updated_at).getTime() - new Date(a.data_updated_at).getTime();
+  });
+};
+
 export const sortAssignmentsByAvailableDate = (
   assignments: Assignment[],
   sortOrder: SortOrder
