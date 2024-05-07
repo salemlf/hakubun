@@ -7,13 +7,14 @@ type LabelStyledProps = {
   labelfontsize: string;
   color: string;
   $isBold: boolean;
+  $isHidden: boolean;
 };
 
 const LabelStyled = styled(LabelPrimitive.Root)<LabelStyledProps>`
   font-size: ${({ labelfontsize }) => `${labelfontsize}`};
   color: ${({ color }) => `${color}`};
   font-weight: ${({ $isBold }) => $isBold && 600};
-  display: block;
+  display: ${({ $isHidden }) => ($isHidden ? "none" : "block")};
 `;
 
 type LabelContents = {
@@ -21,6 +22,7 @@ type LabelContents = {
   labelfontSize?: string;
   isBold?: boolean;
   color?: string;
+  hidden?: boolean;
   children: React.ReactNode;
   labelText: string;
 };
@@ -33,6 +35,7 @@ function Label({
   labelfontSize = "1.2rem",
   color = "var(--text-color)",
   isBold = false,
+  hidden = false,
   labelText,
   children,
 }: LabelProps) {
@@ -42,6 +45,8 @@ function Label({
       labelfontsize={labelfontSize}
       color={color}
       $isBold={isBold}
+      $isHidden={hidden}
+      hidden={hidden}
     >
       {children || labelText}
     </LabelStyled>
