@@ -272,8 +272,10 @@ export const sortAssignmentsByDateUpdated = (
       return sortOrder === "asc" ? -1 : 1;
     }
     return sortOrder === "asc"
-      ? new Date(a.data_updated_at).getTime() - new Date(b.data_updated_at).getTime()
-      : new Date(b.data_updated_at).getTime() - new Date(a.data_updated_at).getTime();
+      ? new Date(a.data_updated_at).getTime() -
+          new Date(b.data_updated_at).getTime()
+      : new Date(b.data_updated_at).getTime() -
+          new Date(a.data_updated_at).getTime();
   });
 };
 

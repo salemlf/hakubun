@@ -20,7 +20,7 @@ const sortFunctionMap = {
   level: sortAssignmentsByLevel,
   "srs stage": sortAssignmentsBySrsStage,
   shuffled: shuffleArray,
-  "date updated": sortAssignmentsByDateUpdated
+  "date updated": sortAssignmentsByDateUpdated,
 };
 
 export const sortAssignmentsWithOption = (

@@ -9,5 +9,5 @@ export const SORT_OPTIONS: AssignmentSortOption[] = [
   { id: "available_date_asc", option: "available date", order: "asc" },
   { id: "available_date_desc", option: "available date", order: "desc" },
   { id: "date_updated_asc", option: "date updated", order: "asc" },
-  { id: "date_updated_desc", option: "date updated", order: "desc" }
+  { id: "date_updated_desc", option: "date updated", order: "desc" },
 ];
