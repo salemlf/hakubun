@@ -1,23 +1,17 @@
-import { CSSProperties, useRef } from "react";
-import { useButton } from "react-aria";
+import { CSSProperties, forwardRef } from "react";
+import { useButton, useObjectRef } from "react-aria";
 import { AriaButtonProps } from "@react-types/button";
 import styled from "styled-components";
 
 type ButtonContainerProps = {
-  isPressed: boolean;
-  backgroundcolor: string;
-  color: string;
+  backgroundcolor?: string;
+  color?: string;
 };
 
 const ButtonContainer = styled.button<ButtonContainerProps>`
-  background-color: ${({ backgroundcolor }) => `${backgroundcolor}`};
-  color: ${({ color }) => `${color}`};
-  cursor: pointer;
-
-  &:focus-visible {
-    outline: 2px solid var(--focus-color);
-    outline-offset: 2px;
-  }
+  background-color: ${({ backgroundcolor }) =>
+    backgroundcolor ? `${backgroundcolor}` : "var(--button-color)"};
+  color: ${({ color }) => (color ? `${color}` : "var(--text-color)")};
 `;
 
 interface Props extends AriaButtonProps {
@@ -28,39 +22,43 @@ interface Props extends AriaButtonProps {
   disabled?: boolean;
 }
 
-function Button({
-  backgroundColor = "var(--ion-color-primary)",
-  color = "white",
-  className,
-  style,
-  disabled,
-  ...props
-}: Props) {
-  const { children } = props;
-  const ref = useRef(null);
-  const { buttonProps, isPressed } = useButton(
+const Button = forwardRef<HTMLButtonElement, Props>(
+  (
     {
-      ...props,
-      elementType: "button",
+      backgroundColor = "var(--button-color)",
+      color = "var(--text-color)",
+      className,
+      style,
+      disabled,
+      ...props
     },
-    ref
-  );
+    forwardedRef
+  ) => {
+    const { children } = props;
+    const ref = useObjectRef(forwardedRef);
+    const { buttonProps } = useButton(
+      {
+        ...props,
+        elementType: "button",
+      },
+      ref
+    );
 
-  return (
-    <ButtonContainer
-      backgroundcolor={backgroundColor}
-      color={color}
-      {...buttonProps}
-      ref={ref}
-      isPressed={isPressed}
-      tabIndex={0}
-      className={className}
-      style={style}
-      disabled={disabled}
-    >
-      {children}
-    </ButtonContainer>
-  );
-}
+    return (
+      <ButtonContainer
+        backgroundcolor={backgroundColor}
+        color={color}
+        {...buttonProps}
+        ref={ref}
+        tabIndex={0}
+        className={className}
+        style={style}
+        disabled={disabled}
+      >
+        {children}
+      </ButtonContainer>
+    );
+  }
+);
 
 export default Button;
