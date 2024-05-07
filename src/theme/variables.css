@@ -145,6 +145,7 @@ http://ionicframework.com/docs/theming/ */
   --box-shadow-color: var(--pale-grey);
   --contrast-color: var(--light-grey);
   --text-color: black;
+  --button-color: var(--ion-color-primary);
   --contrast-text-color: white;
   --link-text-color: var(--ion-color-secondary-darkest);
   --focus-color: black;
@@ -195,6 +196,7 @@ http://ionicframework.com/docs/theming/ */
     --contrast-color: var(--offwhite-color);
     --box-shadow-color: var(--darkest-purple);
     --text-color: white;
+    --button-color: var(--ion-color-secondary);
     --link-text-color: var(--ion-color-primary-tint);
     --contrast-text-color: black;
     --focus-color: white;

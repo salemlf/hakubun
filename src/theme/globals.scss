@@ -144,3 +144,17 @@ ion-toast.custom-toast.warning-toast {
     font-size: 15px;
   }
 }
+
+.base-button {
+  background-color: var(--button-color);
+  color: var(--text-color);
+  cursor: pointer;
+
+  border: 1px solid black;
+  box-shadow: #000 2px 2px 0 0;
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+  }
+}
