@@ -123,25 +123,6 @@ export const BottomSheetContent = styled(IonRow)`
   padding-bottom: var(--ion-padding, 16px);
 `;
 
-type ButtonContainerProps = {
-  isPressed: boolean;
-  backgroundcolor: string;
-  color: string;
-};
-
-export const BaseButton = styled.button<ButtonContainerProps>`
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-
-  &:focus-visible {
-    outline: 2px solid var(--focus-color);
-    outline-offset: 2px;
-  }
-`;
-
 export const FloatingButton = styled(Button)`
   user-select: none;
   -webkit-user-select: none;
