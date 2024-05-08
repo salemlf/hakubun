@@ -20,7 +20,10 @@ const HeaderAndTabsContainer = styled.div<HeaderAndTabsContainerProps>`
   grid-template-rows: auto 1fr;
   height: 100%;
   padding-bottom: ${({ $tabBarHeight }) =>
-    `calc(${$tabBarHeight} + 30px + var(--safe-area-inset-bottom))`};
+    `calc(${$tabBarHeight} + 30px + constant(safe-area-inset-bottom))`};
+
+  padding-bottom: ${({ $tabBarHeight }) =>
+    `calc(${$tabBarHeight} + 30px + env(safe-area-inset-bottom))`};
 `;
 
 const SubjectsHeader = styled(Header)`
