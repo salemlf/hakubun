@@ -6,6 +6,7 @@ import {
   sortAssignmentsByAvailableDate,
   sortAssignmentsByLevel,
   sortAssignmentsBySrsStage,
+  sortAssignmentsByDateUpdated,
 } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { shuffleArray } from "../../services/MiscService/MiscService";
 
@@ -19,6 +20,7 @@ const sortFunctionMap = {
   level: sortAssignmentsByLevel,
   "srs stage": sortAssignmentsBySrsStage,
   shuffled: shuffleArray,
+  "date updated": sortAssignmentsByDateUpdated,
 };
 
 export const sortAssignmentsWithOption = (
