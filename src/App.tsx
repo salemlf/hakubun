@@ -16,6 +16,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { SafeArea } from "capacitor-plugin-safe-area";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import { routes } from "./navigation/routes";
@@ -50,7 +51,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
-export const RELEASE_VERSION = "1.1.0-beta";
+export const RELEASE_VERSION = "1.1.1-beta";
 
 // for mock service worker
 async function enableMocking() {
@@ -129,6 +130,19 @@ const sentryCreateBrowserRouter =
 const App: React.FC = () => {
   const { authToken } = useAuthTokenStoreFacade();
   const { userInfo } = useUserInfoStoreFacade();
+
+  useEffect(() => {
+    (async function () {
+      const safeAreaData = await SafeArea.getSafeAreaInsets();
+      const { insets } = safeAreaData;
+      for (const [key, value] of Object.entries(insets)) {
+        document.documentElement.style.setProperty(
+          `--safe-area-inset-${key}`,
+          `${value}px`
+        );
+      }
+    })();
+  }, []);
 
   const browserRouter = getBrowserRouter();
 
