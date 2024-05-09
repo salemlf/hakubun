@@ -38,6 +38,18 @@ Generate new development certificates
 
 Generate new appstore certificates
 
+### ios bump
+
+```sh
+[bundle exec] fastlane ios bump
+```
+
+### ios set_version_number
+
+```sh
+[bundle exec] fastlane ios set_version_number
+```
+
 ### ios build_beta
 
 ```sh
