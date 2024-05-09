@@ -149,3 +149,22 @@ To run iOS lanes:
 ```bash
 fastlane ios <LANE>
 ```
+
+## Testing
+
+### Unit Testing
+
+To run all unit tests:
+
+```bash
+npm run test
+```
+
+### Device Testing for Android, iOS, etc.
+
+This project is tested with BrowserStack
+
+## License
+
+This project uses [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html), a [copyleft license](https://en.wikipedia.org/wiki/Copyleft). Essentially this means that the source code for this app and all further iterations must stay free and open-source.
+See [license file](./license.md) for complete license information.
