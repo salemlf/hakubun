@@ -13,6 +13,9 @@ const config: CapacitorConfig = {
       url: "http://192.168.0.23:5173",
       cleartext: true,
     },
+    ios: {
+      contentInset: "always",
+    },
   }),
 };
 
