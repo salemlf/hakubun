@@ -21,6 +21,7 @@ DEVELOPER_APP_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"]
 PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"]
 FASTLANE_APPLE_ID = ENV["FASTLANE_APPLE_ID"]
 FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD = ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"]
+VERSION_NAME = ENV["VERSION_NAME"]
 
 platform :ios do
     ios_dir = File.expand_path('../ios')
@@ -66,6 +67,19 @@ platform :ios do
       )
     end
 
+    lane :bump do
+        increment_build_number(
+            xcodeproj: File.join(ios_dir, "App/App.xcodeproj"),
+        )
+    end
+
+    lane :set_version_number do
+        increment_version_number(
+            version_number: "#{VERSION_NAME}",
+            xcodeproj: File.join(ios_dir, "App/App.xcodeproj"),
+        )
+    end
+
     lane :build_beta do
         setup_ci if ENV['CI']
         sync_certs
@@ -81,7 +95,7 @@ platform :ios do
             },
             clean: true,
             )
-      end
+    end
 
     lane :upload_beta do
         build_beta
