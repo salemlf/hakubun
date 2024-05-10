@@ -68,12 +68,14 @@ platform :ios do
     end
 
     lane :bump do
+        skip_docs
         increment_build_number(
             xcodeproj: File.join(ios_dir, "App/App.xcodeproj"),
         )
     end
 
     lane :set_version_number do
+        skip_docs
         increment_version_number(
             version_number: "#{VERSION_NAME}",
             xcodeproj: File.join(ios_dir, "App/App.xcodeproj"),
