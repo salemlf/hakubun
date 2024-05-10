@@ -1,5 +1,5 @@
 # Workflow based on this article https://www.paleblueapps.com/rockandnull/github-actions-android-version/
-name: Bump version code & updates version name
+name: Bump version code & update version name
 on:
   push:
     branches:
