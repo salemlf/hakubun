@@ -18,17 +18,22 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Get version name from input
-        if: ${{ inputs.version_name }}
-        run: echo "VERSION_NAME=${{ inputs.version_name }}" >> $GITHUB_ENV
 
-      - name: Get version name from branch name
-        if: ${{ !inputs.version_name }}
+      - name: Get version name
+        id: versionname
         run: |
+          VERSION_NAME=${{ github.event.inputs.version_name }}
           version_name=${GITHUB_REF#refs/heads/bump/v}
-          echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
 
-      - name: Extract existing version code
+          echo "version_output=${VERSION_NAME:-$version_name}" >> "$GITHUB_OUTPUT"
+
+      - name: Set version name
+        run: |
+          version="${{ steps.versionname.outputs.version_output }}"
+          echo "VERSION_NAME: $version"
+          echo "VERSION_NAME=${{ steps.versionname.outputs.version_output }}" >> $GITHUB_ENV
+
+      - name: Extract existing android version code
         run: |
           # Get existing Android version code from build.gradle
           version_code_android=$(grep "versionCode" android/app/build.gradle | awk '{print $2}' | tr -d '\n')
@@ -39,8 +44,14 @@ jobs:
           # Set env var for later use
           echo "VERSION_CODE_ANDROID=$version_code_android" >> $GITHUB_ENV
 
+      - name: Increment Android build number
+        run: sed -i '' "s/versionCode [0-9]\+/versionCode ${{ env.VERSION_CODE_ANDROID }}/g" android/app/build.gradle
+
+      - name: Update version for Android
+        run: sed -i '' "s/versionName \"[^\"]*\"/versionName \"${{ env.VERSION_NAME }}\"/g" android/app/build.gradle
+
       - name: Set up Ruby env
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@v1.171.0
         with:
           ruby-version: 3.3.0
           bundler-cache: true
@@ -50,12 +61,6 @@ jobs:
 
       - name: Update version name for iOS
         run: bundle exec fastlane ios set_version_number
-
-      - name: Increment Android build number
-        run: sed -i "s/versionCode [0-9]\+/versionCode ${{ env.VERSION_CODE_ANDROID }}/g" android/app/build.gradle
-
-      - name: Update version for Android
-        run: sed -i "s/versionName \"[^\"]*\"/versionName \"${{ env.VERSION_NAME }}\"/g" android/app/build.gradle
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
