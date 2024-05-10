@@ -5,7 +5,6 @@ import {
   useRouteError,
 } from "react-router-dom";
 import { copyToClipboard } from "../utils";
-import { RELEASE_VERSION } from "../App";
 import Emoji from "../components/Emoji";
 import Button from "../components/Button";
 import SvgIcon from "../components/SvgIcon";
@@ -167,7 +166,7 @@ function ErrorOccurred() {
             <CopyContentBtn
               onPress={() =>
                 copyToClipboard(
-                  `${RELEASE_VERSION}\n${errorMessage}\n${stackTrace}`
+                  `${APP_VERSION}\n${errorMessage}\n${stackTrace}`
                 )
               }
             >
@@ -177,7 +176,7 @@ function ErrorOccurred() {
           </ErrAndCopyBtnContainer>
           <StackTraceAppVersionContainer>
             <h4>App Version</h4>
-            <p>{RELEASE_VERSION}</p>
+            <p>{APP_VERSION}</p>
             <h4>Stacktrace</h4>
             {stackTrace && <p>{stackTrace}</p>}
           </StackTraceAppVersionContainer>

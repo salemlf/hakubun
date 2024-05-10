@@ -5,7 +5,6 @@ import { displayToast } from "../Toast/Toast.service";
 import { filterProfanity } from "../../services/ProfanityFilterService/ProfanityFilterService";
 import { useCreateIssue } from "../../hooks/octokit/useCreateIssue";
 import { IssuePostData, IssueType } from "../../types/Octokit";
-import { RELEASE_VERSION } from "../../App";
 import { IssueLink } from "./IssueLink";
 
 type IssueBodyDetail = {
@@ -76,7 +75,7 @@ export const useUserFeedbackSubmit = (onSubmitSuccess: () => void) => {
     // it's not that I don't trust y'all.. but also don't want my hakubun issue bot account banned lol
     const titleFiltered = filterProfanity(title);
     const descriptionFiltered = filterProfanity(description);
-    const descriptionAndOptionalData = `# ${bodyDetails.bodyHeading}\n## ${bodyDetails.descriptionHeading}\n${descriptionFiltered}\n## Additional Info\n### Release Version\n${RELEASE_VERSION}\n### Issue Created By\n${username}`;
+    const descriptionAndOptionalData = `# ${bodyDetails.bodyHeading}\n## ${bodyDetails.descriptionHeading}\n${descriptionFiltered}\n## Additional Info\n### Release Version\n${APP_VERSION}\n### Issue Created By\n${username}`;
 
     const deviceInfoTxt = `\n### Device Info\n\`\`\`\n${deviceInfo}\n\`\`\`\n`;
 

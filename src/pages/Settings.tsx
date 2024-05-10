@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { RELEASE_VERSION } from "../App";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserLogin } from "../hooks/user/useUserLogin";
 import GeneralUserSettings from "../components/GeneralUserSettings";
@@ -114,7 +113,7 @@ function Settings() {
             <p>
               Other icons from <a href="https://icons8.com/">Icons8</a>
             </p>
-            <ReleaseTxt>{`Version ${RELEASE_VERSION}`}</ReleaseTxt>
+            <ReleaseTxt>{`Version ${APP_VERSION}`}</ReleaseTxt>
           </CreditsVersionContent>
         </CreditsAndVersionContainer>
       </Content>
