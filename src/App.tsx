@@ -50,8 +50,6 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/globals.scss";
 
-export const RELEASE_VERSION = "1.1.1-beta";
-
 // for mock service worker
 async function enableMocking() {
   if (import.meta.env.MODE === "development") {
@@ -69,7 +67,7 @@ await enableMocking();
 
 if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
   LogRocket.init("cleqvf/hakubun", {
-    release: RELEASE_VERSION,
+    release: APP_VERSION,
     shouldCaptureIP: false,
     network: {
       requestSanitizer: (request) => {
@@ -79,7 +77,7 @@ if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
     },
   });
   Sentry.init({
-    release: RELEASE_VERSION,
+    release: APP_VERSION,
     dsn: import.meta.env.VITE_SENTRY_DSN,
     tracePropagationTargets: [baseUrlRegex],
     environment: import.meta.env.MODE,
