@@ -67,15 +67,14 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Updating version to ${{ env.VERSION_NAME }} and incrementing build numbers"
-          file_pattern: "*.pbxproj, */build.gradle, */info.plist, */App.tsx"
-          disable_globbing: true
+          file_pattern: "ios/**, android/**, src/**"
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.PAT_W_WORKFLOW_TRIGGER }}
-          commit-message: "Incrementing version to ${{ env.VERSION_NAME }}, Android version code to ${{ env.VERSION_CODE }}"
+          commit-message: "Incrementing version to ${{ env.VERSION_NAME }}, bumping iOS and Android build numbers"
           branch: "${{ github.ref }}"
-          title: "Bump App to Version ${{ env.VERSION_NAME }}, Android version code ${{ env.VERSION_CODE }}"
-          body: "App version name updated to ${{ env.VERSION_NAME }} and Android version code set to ${{ env.VERSION_CODE }}"
+          title: "Bump App to Version ${{ env.VERSION_NAME }}"
+          body: "App version name updated to ${{ env.VERSION_NAME }} and build numbers incremented"
           base: "main"
