@@ -33,6 +33,14 @@ jobs:
           echo "VERSION_NAME: $version"
           echo "VERSION_NAME=${{ steps.versionNameStep.outputs.version_output }}" >> $GITHUB_ENV
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Update version in package.json and package-lock.json
+        run: npm version --no-git-tag-version ${{ env.VERSION_NAME }}
+
       - name: Extract existing android version code
         run: |
           # Get existing Android version code from build.gradle
