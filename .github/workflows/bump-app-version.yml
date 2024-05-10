@@ -68,6 +68,7 @@ jobs:
         with:
           commit_message: "Updating version to ${{ env.VERSION_NAME }} and incrementing build numbers"
           file_pattern: "*.pbxproj, */build.gradle, */info.plist, */App.tsx"
+          disable_globbing: true
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
