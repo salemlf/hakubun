@@ -1,4 +1,5 @@
-## fastlane documentation
+fastlane documentation
+----
 
 # Installation
 
@@ -44,11 +45,15 @@ Generate new appstore certificates
 [bundle exec] fastlane ios bump
 ```
 
+
+
 ### ios set_version_number
 
 ```sh
 [bundle exec] fastlane ios set_version_number
 ```
+
+
 
 ### ios build_beta
 
@@ -56,13 +61,18 @@ Generate new appstore certificates
 [bundle exec] fastlane ios build_beta
 ```
 
+
+
 ### ios upload_beta
 
 ```sh
 [bundle exec] fastlane ios upload_beta
 ```
 
----
+
+
+----
+
 
 ## Android
 
@@ -72,13 +82,17 @@ Generate new appstore certificates
 [bundle exec] fastlane android buildApk
 ```
 
+
+
 ### android buildBundle
 
 ```sh
 [bundle exec] fastlane android buildBundle
 ```
 
----
+
+
+----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
 
