@@ -60,3 +60,7 @@ keystore.jks
 
 # Fastlane
 **/fastlane/report.xml
+
+# Ruby and bundle
+**/vendor/bundle/ruby/*
+.bundle/*
