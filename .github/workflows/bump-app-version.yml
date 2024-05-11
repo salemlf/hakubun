@@ -19,6 +19,16 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Create new branch if workflow_dispatch
+        if: github.event_name == 'workflow_dispatch'
+        run: git checkout -b "bump/v${{ github.event.inputs.version_name }}"
+
+      - name: Checkout new branch if workflow_dispatch
+        uses: actions/checkout@v4
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          ref: "bump/v${{ github.event.inputs.version_name }}"
+
       - name: Get version name
         id: versionNameStep
         run: |
@@ -71,25 +81,12 @@ jobs:
       - name: Update version name for iOS
         run: bundle exec fastlane ios set_version_number
 
-      - name: Commit and push changes if workflow_dispatch
-        uses: stefanzweifel/git-auto-commit-action@v5
-        if: github.event_name == 'workflow_dispatch'
-        with:
-          commit_message: "Updating version to ${{ env.VERSION_NAME }} and incrementing build numbers"
-          create_branch: true
-          branch: "bump/v${{ env.VERSION_NAME }}"
-
-      - name: Checkout created branch if workflow_dispatch
-        uses: actions/checkout@v4
-        if: github.event_name == 'workflow_dispatch'
-        with:
-          ref: "bump/v${{ env.VERSION_NAME }}"
-
       - name: Commit and push changes
         if: github.event_name == 'pull_request'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Updating version to ${{ env.VERSION_NAME }} and incrementing build numbers"
+          create_branch: true
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
