@@ -27,8 +27,11 @@ jobs:
         id: getAppVersion
         run: |
           echo "version=v$(cat package.json | grep \"version\" | cut -d'"' -f 4)" >> $GITHUB_OUTPUT
-      - name: Tag the commit
+      - name: Set git info and tag the commit
         run: |
+          git config --global user.email "salemlfenn@gmail.com"
+          git config --global user.name "Salem Fenn"
+
           updated_tag=${{ steps.getAppVersion.outputs.version }}
           git tag -a "$updated_tag" -m "Version $updated_tag"
           git push origin --tags
