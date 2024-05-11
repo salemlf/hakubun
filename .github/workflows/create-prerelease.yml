@@ -1,48 +1,34 @@
 name: Tag and Prerelease
 on:
-  pull_request:
+  push:
     branches:
       - main
-    types:
-      - closed
-  # TODO: this trigger is temporary, used for testing
-  workflow_dispatch:
-    inputs:
-      version_name:
-        description: "App version name"
-        type: string
 
 jobs:
-  release:
+  prerelease:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     # only runs if a bump app version PR is merged
-    if: ${{ (startsWith(github.event.pull_request.title, 'Bump App')) && (github.event.pull_request.merged == true) }}
+    if: ${{ (startsWith(github.event.head_commit.message, 'UPDATE APP VERSION')) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-      - name: Install dependencies
-        run: npm ci
-      # - name: Build
-      #   run: npm run build
-      - name: Get tag
-        id: get_tag
+      - name: Get current version
+        id: getAppVersion
         run: |
-          git branch --show-current
-          git pull
-          echo "version=v$(npm pkg get version | tr -d '\"')" >> $GITHUB_OUTPUT
+          # echo "version=v$(npm pkg get version | tr -d '\"')" >> $GITHUB_OUTPUT
+          echo "version=v$(cat package.json | grep \"version\" | cut -d'"' -f 4)" >> $GITHUB_OUTPUT
       - name: Tag the commit
         run: |
-          next_version=${{ steps.get_tag.outputs.version }}
-          git tag -a "$next_version" -m "Version $next_version"
-          git push --follow-tags
-      # TODO: remove --draft flag when ready
+          updated_tag=${{ steps.getAppVersion.outputs.version }}
+          git tag -a "$updated_tag" -m "Version $updated_tag"
+          git push origin --tags
+
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
+          tag: ${{ steps.getAppVersion.outputs.version }}
+        # TODO: remove --draft flag when sure that everything works
         run: |
-          gh release create "$tag" --generate-notes --prerelease
+          gh release create "$tag" --generate-notes --prerelease --draft
