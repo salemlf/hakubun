@@ -16,15 +16,13 @@ jobs:
       pull-requests: write
     runs-on: macos-latest
     steps:
-      - name: Sets branch name for workflow_dispatch event
-        if: github.event_name == 'workflow_dispatch'
+      - name: Sets branch name
         run: |
-          echo "PR_BRANCH_NAME=bump/v${{ github.event.inputs.version_name }}" >> $GITHUB_ENV
-
-      - name: Sets branch name for pull_request event
-        if: github.event_name == 'pull_request'
-        run: |
-          echo "PR_BRANCH_NAME=${{ github.ref }}" >> $GITHUB_ENV
+          if [[ ${{ github.event_name == 'workflow_dispatch' }} ]]; then
+              echo "PR_BRANCH_NAME=version-update-v${{ github.event.inputs.version_name }}" >> $GITHUB_ENV
+            else
+              echo "PR_BRANCH_NAME=${{ github.ref }}" >> $GITHUB_ENV
+            fi
 
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -35,13 +33,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: "bump/v${{ github.event.inputs.version_name }}"
+          branch: ${{ env.PR_BRANCH_NAME }}
 
       - name: Checkout new branch if workflow_dispatch
         uses: actions/checkout@v4
         if: github.event_name == 'workflow_dispatch'
         with:
-          ref: "bump/v${{ github.event.inputs.version_name }}"
+          ref: ${{ env.PR_BRANCH_NAME }}
 
       - name: Get version name
         id: versionNameStep
