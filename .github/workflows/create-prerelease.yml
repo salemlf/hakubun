@@ -1,17 +1,26 @@
 name: Tag and Prerelease
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 
+env:
+  USERS_ALLOWED_TO_TRIGGER: '["salemlf"]'
 jobs:
   prerelease:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    # only runs if a bump app version PR is merged
-    if: ${{ (startsWith(github.event.head_commit.message, 'UPDATE APP VERSION')) }}
     steps:
+      - name: Fail if branch is not main
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "This workflow should only be triggered on the main branch"
+          exit 1
+
+      - name: Fail if user is not in allowed list
+        if: (!contains(fromJson(env.USERS_ALLOWED_TO_TRIGGER), github.actor))
+        run: |
+          echo "User is not in allowed list for triggering this workflow"
+          exit 1
+
       - name: Checkout
         uses: actions/checkout@v4
       - name: Get current version
