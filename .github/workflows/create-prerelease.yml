@@ -1,0 +1,33 @@
+name: Tag and Prerelease
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  prerelease:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    # only runs if a bump app version PR is merged
+    if: ${{ (startsWith(github.event.head_commit.message, 'UPDATE APP VERSION')) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Get current version
+        id: getAppVersion
+        run: |
+          echo "version=v$(cat package.json | grep \"version\" | cut -d'"' -f 4)" >> $GITHUB_OUTPUT
+      - name: Tag the commit
+        run: |
+          updated_tag=${{ steps.getAppVersion.outputs.version }}
+          git tag -a "$updated_tag" -m "Version $updated_tag"
+          git push origin --tags
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.getAppVersion.outputs.version }}
+        # TODO: remove --draft flag when sure that everything works
+        run: |
+          gh release create "$tag" --generate-notes --prerelease --draft
