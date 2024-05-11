@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - "bump/v*.*.*"
-  workflow_dispatch:
-    inputs:
-      version_name:
-        description: "App version name"
-        type: string
 jobs:
   bump-version-and-open-pr:
     permissions:
@@ -16,44 +11,15 @@ jobs:
       pull-requests: write
     runs-on: macos-latest
     steps:
-      - name: Sets branch name
-        run: |
-          if [[ ${{ github.event_name == 'workflow_dispatch' }} ]]; then
-              echo "PR_BRANCH_NAME=version-update-v${{ github.event.inputs.version_name }}" >> $GITHUB_ENV
-            else
-              echo "PR_BRANCH_NAME=${{ github.ref }}" >> $GITHUB_ENV
-            fi
-
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Create new branch and set if workflow_dispatch
-        if: github.event_name == 'workflow_dispatch'
-        uses: peterjgrainger/action-create-branch@v2.2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch: ${{ env.PR_BRANCH_NAME }}
-
-      - name: Checkout new branch if workflow_dispatch
-        uses: actions/checkout@v4
-        if: github.event_name == 'workflow_dispatch'
-        with:
-          ref: ${{ env.PR_BRANCH_NAME }}
-
-      - name: Get version name
-        id: versionNameStep
-        run: |
-          VERSION_NAME=${{ github.event.inputs.version_name }}
-          version_name=${GITHUB_REF#refs/heads/bump/v}
-
-          echo "version_output=${VERSION_NAME:-$version_name}" >> "$GITHUB_OUTPUT"
-
       - name: Set version name
         run: |
-          version="${{ steps.versionNameStep.outputs.version_output }}"
-          echo "VERSION_NAME: $version"
-          echo "VERSION_NAME=${{ steps.versionNameStep.outputs.version_output }}" >> $GITHUB_ENV
+          # Extract version number from branch name
+          version_name=${GITHUB_REF#refs/heads/bump/v}
+
+          echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -63,7 +29,7 @@ jobs:
       - name: Update version in package.json and package-lock.json
         run: npm version --no-git-tag-version ${{ env.VERSION_NAME }}
 
-      - name: Extract existing android version code
+      - name: Extract existing android build number
         run: |
           # Get existing Android version code from build.gradle
           version_code_android=$(grep "versionCode" android/app/build.gradle | awk '{print $2}' | tr -d '\n')
@@ -78,7 +44,7 @@ jobs:
       - name: Increment Android build number
         run: sed -i '' 's/versionCode [0-9]*/versionCode ${{ env.VERSION_CODE_ANDROID }}/g' android/app/build.gradle
 
-      - name: Update version for Android
+      - name: Update version name for Android
         run: sed -i '' "s/versionName \"[^\"]*\"/versionName \"${{ env.VERSION_NAME }}\"/g" android/app/build.gradle
 
       - name: Set up Ruby env
@@ -97,15 +63,13 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Updating version to ${{ env.VERSION_NAME }} and incrementing build numbers"
-          branch: ${{ env.PR_BRANCH_NAME }}
-          create_branch: true
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.PAT_W_WORKFLOW_TRIGGER }}
           commit-message: "UPDATE APP VERSION: Incrementing version to ${{ env.VERSION_NAME }}, bumping iOS and Android build numbers"
-          branch: "${{ env.PR_BRANCH_NAME }}"
+          branch: "${{ github.ref }}"
           title: "Bump App to Version ${{ env.VERSION_NAME }}"
           body: "App version name updated to ${{ env.VERSION_NAME }} and build numbers incremented"
           base: "main"
