@@ -97,6 +97,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Updating version to ${{ env.VERSION_NAME }} and incrementing build numbers"
+          branch: ${{ env.PR_BRANCH_NAME }}
           create_branch: true
 
       - name: Open pull request
