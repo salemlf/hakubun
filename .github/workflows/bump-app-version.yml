@@ -16,12 +16,26 @@ jobs:
       pull-requests: write
     runs-on: macos-latest
     steps:
+      - name: Sets branch name for workflow_dispatch event
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "PR_BRANCH_NAME=bump/v${{ github.event.inputs.version_name }}" >> $GITHUB_ENV
+
+      - name: Sets branch name for pull_request event
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "PR_BRANCH_NAME=${{ github.ref }}" >> $GITHUB_ENV
+
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Create new branch if workflow_dispatch
+      - name: Create new branch and set if workflow_dispatch
         if: github.event_name == 'workflow_dispatch'
-        run: git checkout -b "bump/v${{ github.event.inputs.version_name }}"
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: "bump/v${{ github.event.inputs.version_name }}"
 
       - name: Checkout new branch if workflow_dispatch
         uses: actions/checkout@v4
@@ -92,7 +106,7 @@ jobs:
         with:
           token: ${{ secrets.PAT_W_WORKFLOW_TRIGGER }}
           commit-message: "UPDATE APP VERSION: Incrementing version to ${{ env.VERSION_NAME }}, bumping iOS and Android build numbers"
-          branch: "${{ github.ref }}"
+          branch: "${{ env.PR_BRANCH_NAME }}"
           title: "Bump App to Version ${{ env.VERSION_NAME }}"
           body: "App version name updated to ${{ env.VERSION_NAME }} and build numbers incremented"
           base: "main"
