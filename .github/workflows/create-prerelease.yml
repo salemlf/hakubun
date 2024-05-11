@@ -17,7 +17,6 @@ jobs:
       - name: Get current version
         id: getAppVersion
         run: |
-          # echo "version=v$(npm pkg get version | tr -d '\"')" >> $GITHUB_OUTPUT
           echo "version=v$(cat package.json | grep \"version\" | cut -d'"' -f 4)" >> $GITHUB_OUTPUT
       - name: Tag the commit
         run: |
