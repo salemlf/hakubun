@@ -1,4 +1,4 @@
-name: Bump version code & update version name
+name: Bump build numbers & update version name
 
 on:
   workflow_dispatch:
@@ -54,7 +54,7 @@ jobs:
         run: bundle exec fastlane ios bump
 
       - name: Update version name for iOS
-        run: bundle exec fastlane ios set_version_number
+        run: bundle exec fastlane ios set_version_number version:${{ inputs.versionName }}
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5

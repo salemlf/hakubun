@@ -74,10 +74,11 @@ platform :ios do
         )
     end
 
-    lane :set_version_number do
+    lane :set_version_number do |options|
         skip_docs
+        version_name = options[:version]
         increment_version_number(
-            version_number: "#{VERSION_NAME}",
+            version_number: "#{version_name}",
             xcodeproj: File.join(ios_dir, "App/App.xcodeproj"),
         )
     end
@@ -88,7 +89,7 @@ platform :ios do
         build_app(
             configuration: "Release",
             workspace: File.join(ios_dir, "App/App.xcworkspace"),
-            scheme: "App", 
+            scheme: "App",
             export_method: "app-store",
             export_options: {
               provisioningProfiles: {
@@ -115,8 +116,8 @@ platform :android do
     lane :buildApk do
         gradle(task: 'clean', project_dir: android_dir)
         gradle(
-            task: "assemble", 
-            project_dir: android_dir,   
+            task: "assemble",
+            project_dir: android_dir,
         )
         APK_LOCATION = "#{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}"
         sh("cp", "#{APK_LOCATION}", ENV["OUTPUT_PATH"])
@@ -125,7 +126,7 @@ platform :android do
     lane :buildBundle do
         gradle(task: 'clean', project_dir: android_dir)
         gradle(
-            task: "bundleRelease", 
+            task: "bundleRelease",
             project_dir: android_dir,
             properties: {
                 "android.injected.signing.store.file" => File.join(Dir.pwd, "..", ENV["KEYSTORE_FILE_PATH"]),
