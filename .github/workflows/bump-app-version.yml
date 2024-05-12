@@ -1,11 +1,11 @@
 name: Bump build numbers & update version name
-
 on:
   workflow_dispatch:
     inputs:
       versionName:
         description: "Updated app version name"
         required: true
+
 jobs:
   bump-version-and-open-pr:
     permissions:
