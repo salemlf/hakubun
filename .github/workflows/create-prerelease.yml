@@ -1,8 +1,6 @@
 name: Tag and Prerelease
 on: workflow_dispatch
 
-env:
-  USERS_ALLOWED_TO_TRIGGER: '["salemlf"]'
 jobs:
   prerelease:
     permissions:
@@ -13,12 +11,6 @@ jobs:
         if: github.ref != 'refs/heads/main'
         run: |
           echo "This workflow should only be triggered on the main branch"
-          exit 1
-
-      - name: Fail if user is not in allowed list
-        if: (!contains(fromJson(env.USERS_ALLOWED_TO_TRIGGER), github.actor))
-        run: |
-          echo "User is not in allowed list for triggering this workflow"
           exit 1
 
       - name: Checkout
