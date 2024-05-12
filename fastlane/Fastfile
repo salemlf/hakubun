@@ -100,6 +100,7 @@ platform :ios do
             )
     end
 
+    # TODO: pass changelog as parameter
     lane :upload_beta do
         build_beta
         upload_to_testflight(
