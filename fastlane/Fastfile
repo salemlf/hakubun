@@ -102,11 +102,13 @@ platform :ios do
     )
   end
 
-  # TODO: pass changelog as parameter
-  lane :upload_beta do
+  lane :upload_beta do |options|
+    skip_docs
+    changelog_contents = options[:changelogContents]
     build_beta
     upload_to_testflight(
       beta_app_feedback_email: "salemlfenn@gmail.com",
+      changelog: "#{changelog_contents}",
       username: "#{FASTLANE_APPLE_ID}",
       app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
     )
