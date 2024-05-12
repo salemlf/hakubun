@@ -38,7 +38,7 @@ jobs:
         run: |
           echo $KEYSTORE_CONTENT | base64 --decode > keystore.jks
       - name: Build Android bundle
-        run: bundle exec fastlane android buildBundle
+        run: bundle exec fastlane android build_bundle
         env:
           KEYSTORE_FILE_PATH: keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}

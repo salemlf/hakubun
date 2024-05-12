@@ -114,7 +114,7 @@ end
 platform :android do
     android_dir = File.expand_path('../android')
 
-    lane :buildApk do
+    lane :build_apk do
         gradle(task: 'clean', project_dir: android_dir)
         gradle(
             task: "assemble",
@@ -124,7 +124,7 @@ platform :android do
         sh("cp", "#{APK_LOCATION}", ENV["OUTPUT_PATH"])
     end
 
-    lane :buildBundle do
+    lane :build_bundle do
         gradle(task: 'clean', project_dir: android_dir)
         gradle(
             task: "bundleRelease",

@@ -34,7 +34,7 @@ jobs:
           ruby-version: 3.3.0
           bundler-cache: true
       - name: Build Android APK
-        run: bundle exec fastlane android buildApk
+        run: bundle exec fastlane android build_apk
         env:
           OUTPUT_PATH: hakubun.apk
       - name: Upload Android APK Artifact
