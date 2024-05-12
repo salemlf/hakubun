@@ -45,7 +45,7 @@ jobs:
         run: sed -i '' "s/versionName \"[^\"]*\"/versionName \"${{ inputs.versionName }}\"/g" android/app/build.gradle
 
       - name: Set up Ruby env
-        uses: ruby/setup-ruby@v1.171.0
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3.0
           bundler-cache: true
@@ -56,20 +56,21 @@ jobs:
       - name: Update version name for iOS
         run: bundle exec fastlane ios set_version_number version:${{ inputs.versionName }}
 
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Generate changelog
+        uses: mikepenz/release-changelog-builder-action@v4
         with:
-          branch: bump/v${{ inputs.versionName }}
-          create_branch: true
-          commit_message: "Updating version to ${{ inputs.versionName }} and incrementing build numbers"
+          configuration: ".github/config/changelog-config.json"
+          outputFile: fastlane/metadata/android/en-US/changelogs/${{ steps.get-android-build-number.outputs.versionCodeAndroid }}.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.PAT_W_WORKFLOW_TRIGGER }}
           commit-message: "Incrementing version to ${{ inputs.versionName }}, bumping iOS and Android build numbers"
-          branch: "${{ github.ref }}"
-          title: "Bump App to Version ${{ inputs.versionName }}"
+          branch: bump/v${{ inputs.versionName }}
+          title: "App Version Updated to ${{ inputs.versionName }}"
           body: "App version name updated to ${{ inputs.versionName }} and build numbers incremented"
           base: "main"
           labels: "bump version"

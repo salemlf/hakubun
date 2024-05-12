@@ -1,0 +1,27 @@
+{
+  "ignore_labels": ["ignore in changelog", "bump version"],
+  "template": "Changelog for #{{TO_TAG}}\n\n#{{CHANGELOG}}",
+  "pr_template": "- #{{TITLE}}\n\t- Author: #{{AUTHOR}}",
+  "categories": [
+    {
+      "title": "Features/Enhancements",
+      "labels": ["enhancement", "feature"]
+    },
+    {
+      "title": "Bug Fixes",
+      "labels": ["bug"]
+    },
+    {
+      "title": "Refactor",
+      "labels": ["refactor"]
+    },
+    {
+      "title": "Dependencies",
+      "labels": ["dependencies"]
+    },
+    {
+      "title": "Other",
+      "labels": ["styling", "documentation", "cicd", "testing"]
+    }
+  ]
+}
