@@ -145,7 +145,6 @@ platform :android do
     sh("cp", "#{AAB_LOCATION}", ENV["OUTPUT_PATH"])
   end
 
-  # TODO: remove validate_only once sure this works as expected
   lane :upload_beta do
     skip_docs
     build_bundle
@@ -156,7 +155,6 @@ platform :android do
       json_key_data: ENV["PLAY_STORE_JSON_KEY"],
       skip_upload_images: true,
       skip_upload_screenshots: true,
-      validate_only: true,
     )
   end
 end
