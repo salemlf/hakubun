@@ -64,11 +64,21 @@ type ContentProps = {
   children: React.ReactNode;
   isOpen: boolean;
   icon?: React.ReactNode;
+  closeOnOutsidePress?: boolean;
 };
 
 export const ModalContent = forwardRef<ContentRef, ContentProps>(
   (
-    { modalID, children, title, description, isOpen, icon, ...props },
+    {
+      modalID,
+      children,
+      title,
+      description,
+      isOpen,
+      icon,
+      closeOnOutsidePress = true,
+      ...props
+    },
     forwardedRef
   ) => {
     const { modalContainerRef } = useModalContainer(modalID, isOpen);
@@ -94,6 +104,12 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                   ref={forwardedRef}
                   forceMount
                   asChild
+                  onPointerDownOutside={(event) => {
+                    !closeOnOutsidePress && event.preventDefault();
+                  }}
+                  onInteractOutside={(event) => {
+                    !closeOnOutsidePress && event.preventDefault();
+                  }}
                 >
                   <Content
                     initial={{ scale: 0 }}
@@ -110,8 +126,8 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                       <ClosePrimitive aria-label="Close">
                         <SvgIcon
                           icon={<CloseIcon />}
-                          width="2em"
-                          height="2em"
+                          width="2.5em"
+                          height="2.5em"
                         />
                       </ClosePrimitive>
                     </TitleBar>

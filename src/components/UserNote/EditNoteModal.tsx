@@ -15,11 +15,10 @@ const AddButtonContainer = styled.div`
   margin-top: 10px;
 `;
 
-const AddButton = styled(Modal.Trigger)`
+const AddButton = styled.button`
   display: flex;
   align-items: center;
   padding: 8px;
-  background-color: var(--ion-color-secondary);
   border: 2px solid black;
   border-radius: 16px;
   font-size: 0.9rem;
@@ -74,6 +73,7 @@ const SubmitButton = styled(Button)`
   padding: 10px;
   border-radius: 12px;
   border: 1px solid black;
+  font-size: 1.25rem;
 `;
 
 const PlusSign = styled.span`
@@ -153,10 +153,12 @@ function EditNoteModal({
     <Modal onOpenChange={setIsOpen} open={isOpen}>
       {isAddBtnVisible && (
         <AddButtonContainer>
-          <AddButton aria-label={`Add ${noteType} note`}>
-            {addButtonTxt}
-            <PlusSign>+</PlusSign>
-          </AddButton>
+          <Modal.Trigger aria-label={`Add ${noteType} note`} asChild>
+            <AddButton className="base-button">
+              {addButtonTxt}
+              <PlusSign>+</PlusSign>
+            </AddButton>
+          </Modal.Trigger>
         </AddButtonContainer>
       )}
       <Modal.Content
@@ -165,6 +167,7 @@ function EditNoteModal({
         isOpen={isOpen}
         description={`Come up with a note that helps you remember the ${noteType}!`}
         icon={noteType === "meaning" ? <MeaningIcon /> : <ReadingIcon />}
+        closeOnOutsidePress={false}
       >
         <UserNoteForm onSubmit={handleSubmit}>
           <Fieldset>
@@ -177,6 +180,7 @@ function EditNoteModal({
           </Fieldset>
           <ButtonContainer>
             <SubmitButton
+              className="base-button"
               type="submit"
               backgroundColor="var(--ion-color-tertiary)"
               color="black"

@@ -15,12 +15,12 @@ const PlusSign = styled.span`
   padding-left: 5px;
 `;
 
-const AddButton = styled(Modal.Trigger)`
+const AddButton = styled.button`
   display: flex;
   align-items: center;
   padding: 8px;
-  background-color: var(--ion-color-secondary);
   border-radius: 16px;
+  border: 2px solid black;
   font-size: 0.9rem;
   color: white;
 
@@ -32,12 +32,6 @@ const AddButton = styled(Modal.Trigger)`
   &:focus-visible {
     outline: 2px solid var(--focus-color);
     outline-offset: 2px;
-  }
-
-  ion-icon {
-    margin-left: 5px;
-    width: 1.25em;
-    height: 1.25em;
   }
 `;
 
@@ -69,6 +63,7 @@ const SubmitButton = styled(Button)`
   padding: 10px;
   border-radius: 12px;
   border: 1px solid black;
+  font-size: 1.25rem;
 `;
 
 type Props = {
@@ -115,22 +110,24 @@ function AddAltUserMeaningButton({ subject }: Props) {
       {!studyMaterialLoading ? (
         <>
           <Modal onOpenChange={setIsModalOpen} open={isModalOpen}>
-            <AddButton aria-label="Add alternative meaning">
-              Add <PlusSign>+</PlusSign>
-            </AddButton>
+            <Modal.Trigger aria-label="Add alternative meaning" asChild>
+              <AddButton className="base-button">
+                Add <PlusSign>+</PlusSign>
+              </AddButton>
+            </Modal.Trigger>
             <Modal.Content
               modalID="add-alt-user-meaning-modal"
               title="Add Meaning"
               isOpen={isModalOpen}
-              description="Add an alternative meaning, these will be accepted as correct answers!"
+              description="Add an alternative meaning, this will be accepted as a correct answer!"
+              closeOnOutsidePress={false}
             >
               <MeaningForm onSubmit={handleSubmit}>
                 <Fieldset>
                   <Label
-                    labelfontSize="1rem"
-                    isBold={true}
                     labelText="Meaning"
                     idOfControl="alt-user-meaning-input"
+                    hidden={true}
                   />
                   <MeaningInput
                     ref={inputRef}
@@ -141,6 +138,7 @@ function AddAltUserMeaningButton({ subject }: Props) {
                 </Fieldset>
                 <ButtonContainer>
                   <SubmitButton
+                    className="base-button"
                     type="submit"
                     backgroundColor="var(--ion-color-tertiary)"
                     color="black"
