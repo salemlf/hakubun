@@ -1,9 +1,11 @@
-# Workflow based on this article https://www.paleblueapps.com/rockandnull/github-actions-android-version/
-name: Bump version code & update version name
+name: Bump build numbers & update version name
 on:
-  push:
-    branches:
-      - "bump/v*.*.*"
+  workflow_dispatch:
+    inputs:
+      versionName:
+        description: "Updated app version name"
+        required: true
+
 jobs:
   bump-version-and-open-pr:
     permissions:
@@ -14,22 +16,16 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set version name
-        run: |
-          # Extract version number from branch name
-          version_name=${GITHUB_REF#refs/heads/bump/v}
-
-          echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
 
       - name: Update version in package.json and package-lock.json
-        run: npm version --no-git-tag-version ${{ env.VERSION_NAME }}
+        run: npm version --no-git-tag-version ${{ inputs.versionName }}
 
-      - name: Extract existing android build number
+      - name: Extract and increment existing android build number
+        id: get-android-build-number
         run: |
           # Get existing Android version code from build.gradle
           version_code_android=$(grep "versionCode" android/app/build.gradle | awk '{print $2}' | tr -d '\n')
@@ -39,13 +35,14 @@ jobs:
 
           # Set env var for later use
           # echo "VERSION_CODE_ANDROID: $version_code_android"
-          echo "VERSION_CODE_ANDROID=$version_code_android" >> $GITHUB_ENV
+          # echo "VERSION_CODE_ANDROID=$version_code_android" >> $GITHUB_ENV
+          echo "versionCodeAndroid=$version_code_android" >> $GITHUB_OUTPUT
 
-      - name: Increment Android build number
-        run: sed -i '' 's/versionCode [0-9]*/versionCode ${{ env.VERSION_CODE_ANDROID }}/g' android/app/build.gradle
+      - name: Set incremented Android build number
+        run: sed -i '' 's/versionCode [0-9]*/versionCode ${{ steps.get-android-build-number.outputs.versionCodeAndroid }}/g' android/app/build.gradle
 
       - name: Update version name for Android
-        run: sed -i '' "s/versionName \"[^\"]*\"/versionName \"${{ env.VERSION_NAME }}\"/g" android/app/build.gradle
+        run: sed -i '' "s/versionName \"[^\"]*\"/versionName \"${{ inputs.versionName }}\"/g" android/app/build.gradle
 
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1.171.0
@@ -57,19 +54,22 @@ jobs:
         run: bundle exec fastlane ios bump
 
       - name: Update version name for iOS
-        run: bundle exec fastlane ios set_version_number
+        run: bundle exec fastlane ios set_version_number version:${{ inputs.versionName }}
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Updating version to ${{ env.VERSION_NAME }} and incrementing build numbers"
+          branch: bump/v${{ inputs.versionName }}
+          create_branch: true
+          commit_message: "Updating version to ${{ inputs.versionName }} and incrementing build numbers"
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.PAT_W_WORKFLOW_TRIGGER }}
-          commit-message: "UPDATE APP VERSION: Incrementing version to ${{ env.VERSION_NAME }}, bumping iOS and Android build numbers"
+          commit-message: "Incrementing version to ${{ inputs.versionName }}, bumping iOS and Android build numbers"
           branch: "${{ github.ref }}"
-          title: "Bump App to Version ${{ env.VERSION_NAME }}"
-          body: "App version name updated to ${{ env.VERSION_NAME }} and build numbers incremented"
+          title: "Bump App to Version ${{ inputs.versionName }}"
+          body: "App version name updated to ${{ inputs.versionName }} and build numbers incremented"
           base: "main"
+          labels: "bump version"
