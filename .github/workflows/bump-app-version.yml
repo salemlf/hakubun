@@ -45,7 +45,7 @@ jobs:
         run: sed -i '' "s/versionName \"[^\"]*\"/versionName \"${{ inputs.versionName }}\"/g" android/app/build.gradle
 
       - name: Set up Ruby env
-        uses: ruby/setup-ruby@v1.171.0
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3.0
           bundler-cache: true
@@ -55,6 +55,27 @@ jobs:
 
       - name: Update version name for iOS
         run: bundle exec fastlane ios set_version_number version:${{ inputs.versionName }}
+
+      # TODO: remove ls, change from temp.txt to {BUILD_NUMBER}
+      - name: Create file for changelog
+        run: |
+          ls
+          touch ./fastlane/metadata/android/en-US/changelogs/temp.txt
+
+      - name: Generate changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          #   fromTag: "${{ steps.get-prev-tag.outputs.previous-tag }}"
+          #   fromTag: ${{ steps.previoustag.outputs.tag }}
+          #   toTag: "HEAD"
+          #   toTag: ${{ github.ref }}
+          #   toTag: "${{ steps.get-prev-tag.outputs.new-tag }}"
+          # toTag: "${{ steps.get-new-tag.outputs.new-tag }}"
+          configuration: ".github/config/changelog-config.json"
+          # TODO: change so outputs to fastlane/metadata/android/en-US/changelogs/{BUILD_NUMBER}.txt
+          outputFile: fastlane/metadata/android/en-US/changelogs/temp.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
