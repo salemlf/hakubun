@@ -78,6 +78,12 @@ Generate new appstore certificates
 [bundle exec] fastlane android build_bundle
 ```
 
+### android upload_beta
+
+```sh
+[bundle exec] fastlane android upload_beta
+```
+
 ---
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

@@ -142,4 +142,19 @@ platform :android do
     AAB_LOCATION = "#{lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
     sh("cp", "#{AAB_LOCATION}", ENV["OUTPUT_PATH"])
   end
+
+  # TODO: remove validate_only once sure this works as expected
+  lane :upload_beta do
+    skip_docs
+    build_bundle
+    AAB_LOCATION = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    upload_to_play_store(
+      track: "beta",
+      aab: AAB_LOCATION,
+      json_key_data: ENV["PLAY_STORE_JSON_KEY"],
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      validate_only: true,
+    )
+  end
 end
