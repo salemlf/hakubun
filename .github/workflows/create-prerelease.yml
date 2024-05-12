@@ -1,10 +1,12 @@
-name: Tag and Prerelease
+name: Tag prerelease, deploy iOS and Android apps
 on: workflow_dispatch
 
 env:
-  USERS_ALLOWED_TO_TRIGGER: '["salemlf"]'
+  VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  VITE_GH_USER_FEEDBACK_PAT: ${{ secrets.GH_USER_FEEDBACK_PAT }}
 jobs:
-  prerelease:
+  create-prerelease:
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -15,18 +17,13 @@ jobs:
           echo "This workflow should only be triggered on the main branch"
           exit 1
 
-      - name: Fail if user is not in allowed list
-        if: (!contains(fromJson(env.USERS_ALLOWED_TO_TRIGGER), github.actor))
-        run: |
-          echo "User is not in allowed list for triggering this workflow"
-          exit 1
-
       - name: Checkout
         uses: actions/checkout@v4
       - name: Get current version
         id: getAppVersion
         run: |
           echo "version=v$(cat package.json | grep \"version\" | cut -d'"' -f 4)" >> $GITHUB_OUTPUT
+
       - name: Set git info and tag the commit
         run: |
           git config --global user.email "salemlfenn@gmail.com"
@@ -40,6 +37,114 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.getAppVersion.outputs.version }}
-        # TODO: remove --draft flag when sure that everything works
         run: |
-          gh release create "$tag" --generate-notes --prerelease --draft
+          gh release create "$tag" --generate-notes --prerelease
+
+  deploy-ios-beta:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create build
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+        run: npm run build
+
+      - name: Sync with Capacitor
+        run: npx cap sync
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.0
+          bundler-cache: true
+
+      - name: Get latest changelog contents
+        id: get-changelog-contents
+        run: |
+          fastlane_changelogs_dir=fastlane/metadata/android/en-US/changelogs
+
+          # Get latest build file name by finding file name with highest number (or default.txt as backup)
+          latest_build_file_name=$(exec ls $fastlane_changelogs_dir | sed 's/\([0-9]\+\).*/\1/g' | sort -n | tail -1)
+          full_file_path=$fastlane_changelogs_dir/$latest_build_file_name
+          changelog_contents="$(cat $full_file_path)"
+
+          # Allows multiline string to be passed to next step
+          echo "changelogContents<<EOF"$'\n'"$changelog_contents"$'\n'EOF >> "$GITHUB_OUTPUT"
+
+      - name: Deploy iOS beta app on TestFlight
+        run: bundle exec fastlane ios upload_beta changelogContents:"${{ steps.get-changelog-contents.outputs.changelogContents }}"
+        env:
+          DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+          DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
+          PROVISIONING_PROFILE_SPECIFIER: match AppStore ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+          APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
+          APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+          APPLE_KEY_CONTENT: ${{ secrets.APPLE_KEY_CONTENT }}
+          CERTIFICATE_STORE_URL: https://github.com/${{ secrets.CERTIFICATE_STORE_REPO }}.git
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+          FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          MATCH_USERNAME: ${{ secrets.FASTLANE_APPLE_ID }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_TEAM_ID: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
+          DEVELOPER_PORTAL_TEAM_ID: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
+
+  deploy-android-beta:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create build
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+        run: npm run build
+
+      - name: Sync with Capacitor
+        run: npx cap sync
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.0
+          bundler-cache: true
+
+      - name: Decode keystore and place in file
+        env:
+          KEYSTORE_CONTENT: ${{ secrets.KEYSTORE }}
+        run: |
+          echo $KEYSTORE_CONTENT | base64 --decode > keystore.jks
+
+      - name: Deploy Android beta app on Play Store
+        run: bundle exec fastlane android upload_beta
+        env:
+          KEYSTORE_FILE_PATH: keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          KEYSTORE_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_FILE_PATH: keystore.jks
+          OUTPUT_PATH: hakubun.aab
