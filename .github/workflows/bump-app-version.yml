@@ -70,7 +70,7 @@ jobs:
           token: ${{ secrets.PAT_W_WORKFLOW_TRIGGER }}
           commit-message: "Incrementing version to ${{ inputs.versionName }}, bumping iOS and Android build numbers"
           branch: bump/v${{ inputs.versionName }}
-          title: "Bump App to Version ${{ inputs.versionName }}"
+          title: "App Version Updated to ${{ inputs.versionName }}"
           body: "App version name updated to ${{ inputs.versionName }} and build numbers incremented"
           base: "main"
           labels: "bump version"
