@@ -56,13 +56,6 @@ jobs:
       - name: Update version name for iOS
         run: bundle exec fastlane ios set_version_number version:${{ inputs.versionName }}
 
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: bump/v${{ inputs.versionName }}
-          create_branch: true
-          commit_message: "Updating version to ${{ inputs.versionName }} and incrementing build numbers"
-
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
         with:
