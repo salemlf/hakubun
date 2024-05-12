@@ -66,16 +66,16 @@ Generate new appstore certificates
 
 ## Android
 
-### android buildApk
+### android build_apk
 
 ```sh
-[bundle exec] fastlane android buildApk
+[bundle exec] fastlane android build_apk
 ```
 
-### android buildBundle
+### android build_bundle
 
 ```sh
-[bundle exec] fastlane android buildBundle
+[bundle exec] fastlane android build_bundle
 ```
 
 ---

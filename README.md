@@ -138,6 +138,14 @@ npm run android-live-reload
 
 [Fastlane](https://fastlane.tools/) is a tool used to build the Android and iOS apps for Hakubun
 
+#### Install Dependencies
+
+```bash
+bundle install
+```
+
+#### Running Lanes
+
 To run android lanes:
 
 ```bash

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app_identifier("io.hakubun.app")
 app_identifier(ENV["DEVELOPER_APP_IDENTIFIER"])
 team_name "Salem Fenn"
