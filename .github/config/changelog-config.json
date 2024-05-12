@@ -1,0 +1,26 @@
+{
+  "ignore_labels": ["ignore-in-changelog", "bump version"],
+  "template": "Changelog for ${{ inputs.versionName }}\n\n #{{CHANGELOG}}",
+  "categories": [
+    {
+      "title": "Features/Enhancements",
+      "labels": ["enhancement", "feature"]
+    },
+    {
+      "title": "Bug Fixes",
+      "labels": ["bug"]
+    },
+    {
+      "title": "Refactor",
+      "labels": ["refactor"]
+    },
+    {
+      "title": "Dependencies",
+      "labels": ["dependencies"]
+    },
+    {
+      "title": "Other",
+      "labels": ["styling", "documentation", "cicd"]
+    }
+  ]
+}
