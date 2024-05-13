@@ -102,7 +102,6 @@ platform :ios do
     )
   end
 
-  # TODO: remove "skip_submission: true", added for testing purposes
   lane :upload_beta do |options|
     skip_docs
     changelog_contents = options[:changelogContents]
@@ -119,7 +118,6 @@ platform :ios do
       beta_app_feedback_email: "salemlfenn@gmail.com",
       changelog: "#{changelog_contents}",
       app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
-      skip_submission: true,
     )
   end
 end
