@@ -1,6 +1,6 @@
 {
   "ignore_labels": ["ignore in changelog", "bump version"],
-  "template": "Changelog for #{{TO_TAG}}\n\n#{{CHANGELOG}}",
+  "template": "Changelog\n\n#{{CHANGELOG}}",
   "pr_template": "- #{{TITLE}}\n\t- Author: #{{AUTHOR}}",
   "categories": [
     {
