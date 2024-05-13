@@ -24,15 +24,12 @@
       "labels": ["styling"]
     },
     {
-      "title": "Other",
-      "labels": ["documentation", "cicd", "testing"],
-      "exclude_labels": [
-        "bug",
-        "enhancement",
-        "refactor",
-        "dependencies",
-        "styling"
-      ]
+      "title": "Documentation",
+      "labels": ["documentation"]
+    },
+    {
+      "title": "CICD",
+      "labels": ["cicd"]
     }
   ]
 }
