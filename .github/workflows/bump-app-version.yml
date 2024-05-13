@@ -61,6 +61,7 @@ jobs:
         with:
           configuration: ".github/config/changelog-config.json"
           outputFile: fastlane/metadata/android/en-US/changelogs/${{ steps.get-android-build-number.outputs.versionCodeAndroid }}.txt
+          toTag: "HEAD"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
