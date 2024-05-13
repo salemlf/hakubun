@@ -4,6 +4,9 @@ const baseConfig: CapacitorConfig = {
   appId: "io.hakubun.app",
   appName: "Hakubun",
   webDir: "dist",
+  ios: {
+    contentInset: "always",
+  },
 };
 
 const config: CapacitorConfig = {

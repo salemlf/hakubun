@@ -11,11 +11,11 @@ import styled from "styled-components";
 const Content = styled(RadixDialog.Content)`
   width: 100%;
   border-radius: 12px 12px 0 0;
-  height: 100%;
   overflow-y: clip;
   pointer-events: auto;
   position: absolute;
   background-color: var(--foreground-color);
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 12;
@@ -83,8 +83,8 @@ function BottomSheetContentCore(
 ) {
   const headerRef = useRef<HTMLDivElement | null>(null);
   const sheetContainerRef = useRef<HTMLDivElement | null>(null);
-  const bottomSheetHeight = "85svh";
-  const headerHeight = "12svh";
+  const bottomSheetHeight = "85dvh";
+  const headerHeight = "12dvh";
 
   const sheetPosVariants = {
     fullyOpen: { y: 0 },

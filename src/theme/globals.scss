@@ -10,11 +10,6 @@ body {
 
   ion-app {
     overflow: -moz-hidden-unscrollable !important;
-    margin-top: constant(safe-area-inset-top);
-    margin-top: env(safe-area-inset-top);
-
-    margin-bottom: constant(safe-area-inset-bottom);
-    margin-bottom: env(safe-area-inset-bottom);
   }
 }
 
@@ -125,10 +120,6 @@ ion-toast {
 div[role="region"] {
   position: absolute;
   z-index: 2000;
-  top: constant(safe-area-inset-top);
-  top: env(safe-area-inset-top);
-  bottom: constant(safe-area-inset-bottom);
-  bottom: env(safe-area-inset-bottom);
   pointer-events: none;
   touch-action: none;
 }
