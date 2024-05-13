@@ -1,34 +1,55 @@
-name: Build iOS App
+name: Deploy iOS beta app
 on: workflow_dispatch
+
 env:
   VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
   VITE_GH_USER_FEEDBACK_PAT: ${{ secrets.GH_USER_FEEDBACK_PAT }}
+
 jobs:
-  build-ios:
+  deploy-ios-beta:
     runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
+
       - name: Install dependencies
         run: npm ci
+
       - name: Create build
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
         run: npm run build
+
       - name: Sync with Capacitor
         run: npx cap sync
+
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3.0
           bundler-cache: true
-      - name: Build iOS App
-        run: bundle exec fastlane ios build_beta
+
+      - name: Get latest changelog contents
+        id: get-changelog-contents
+        run: |
+          fastlane_changelogs_dir=fastlane/metadata/android/en-US/changelogs
+
+          # Get latest build file name by finding file name with highest number (or default.txt as backup)
+          latest_build_file_name=$(exec ls $fastlane_changelogs_dir | sed 's/\([0-9]\+\).*/\1/g' | sort -n | tail -1)
+          full_file_path=$fastlane_changelogs_dir/$latest_build_file_name
+          changelog_contents="$(cat $full_file_path)"
+
+          # Allows multiline string to be passed to next step
+          echo "changelogContents<<EOF"$'\n'"$changelog_contents"$'\n'EOF >> "$GITHUB_OUTPUT"
+
+      - name: Deploy iOS beta app on TestFlight
+        run: bundle exec fastlane ios upload_beta changelogContents:"${{ steps.get-changelog-contents.outputs.changelogContents }}"
         env:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
@@ -47,9 +68,3 @@ jobs:
           APP_STORE_CONNECT_TEAM_ID: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
           DEVELOPER_PORTAL_TEAM_ID: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
-
-      - name: Upload iOS release bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: ios-release
-          path: ./App.ipa

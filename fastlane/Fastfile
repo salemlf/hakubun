@@ -102,15 +102,25 @@ platform :ios do
     )
   end
 
+  # TODO: remove "skip_submission: true", added for testing purposes
   lane :upload_beta do |options|
     skip_docs
     changelog_contents = options[:changelogContents]
     build_beta
+    api_key = app_store_connect_api_key(
+      key_id: "#{APPLE_KEY_ID}",
+      issuer_id: "#{APPLE_ISSUER_ID}",
+      key_content: "#{APPLE_KEY_CONTENT}",
+      duration: 1200,
+      in_house: false,
+    )
     upload_to_testflight(
+      api_key: api_key,
       beta_app_feedback_email: "salemlfenn@gmail.com",
       changelog: "#{changelog_contents}",
       username: "#{FASTLANE_APPLE_ID}",
       app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+      skip_submission: true,
     )
   end
 end
