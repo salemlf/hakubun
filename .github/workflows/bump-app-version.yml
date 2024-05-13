@@ -50,11 +50,17 @@ jobs:
           ruby-version: 3.3.0
           bundler-cache: true
 
+      - name: Make version name iOS compatible
+        id: get-ios-version-name
+        run: |
+          version_no_prerelease=$(echo "${{ github.event.inputs.versionName }}" | sed 's/\([0-9.]*\).*/\1/')
+          echo "versionNoPrerelease=$version_no_prerelease" >> $GITHUB_OUTPUT
+
       - name: Increment iOS build number
         run: bundle exec fastlane ios bump
 
       - name: Update version name for iOS
-        run: bundle exec fastlane ios set_version_number version:${{ inputs.versionName }}
+        run: bundle exec fastlane ios set_version_number version:${{ steps.get-ios-version-name.outputs.versionNoPrerelease }}
 
       - name: Generate changelog
         uses: mikepenz/release-changelog-builder-action@v4
