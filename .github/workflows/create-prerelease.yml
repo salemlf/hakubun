@@ -151,3 +151,4 @@ jobs:
           SIGNING_KEY_FILE_PATH: keystore.jks
           OUTPUT_PATH: hakubun.aab
           PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+          PACKAGE_NAME: ${{ secrets.PACKAGE_NAME }}

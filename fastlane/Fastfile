@@ -157,6 +157,7 @@ platform :android do
     build_bundle
     AAB_LOCATION = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
     upload_to_play_store(
+      package_name: ENV["PACKAGE_NAME"],
       track: "beta",
       aab: AAB_LOCATION,
       json_key_data: ENV["PLAY_STORE_JSON_KEY"],
