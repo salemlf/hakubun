@@ -95,6 +95,7 @@ function Settings() {
           <ButtonRow>
             <SettingsBtn
               backgroundColor="var(--ion-color-danger)"
+              color="white"
               onPress={() => setIsLogoutConfirmationShown(true)}
             >
               Log Out
