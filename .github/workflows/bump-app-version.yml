@@ -5,6 +5,8 @@ on:
       versionName:
         description: "Updated app version name"
         required: true
+env:
+  REPO_LOCATION: https://github.com/salemlf/hakubun
 
 jobs:
   bump-version-and-open-pr:
@@ -70,6 +72,22 @@ jobs:
           toTag: "HEAD"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Truncate changelog if more than 480 characters, add link to full release notes
+        run: |
+          ellipsis="..."
+          full_changelog_msg="\nFull changes available at ${{ env.REPO_LOCATION }}/releases/tag/v${{ inputs.versionName }}\n"
+          num_chars_to_truncate_to=$((480 - ${#ellipsis} -${#full_changelog_msg}))
+
+          changelog_file="fastlane/metadata/android/en-US/changelogs/${{ steps.get-android-build-number.outputs.versionCodeAndroid }}.txt"
+          changelog_length=$(cat "$changelog_file" | wc -m)
+
+          if [ $(cat "$changelog_file" | wc -m) -gt $(($num_chars_to_truncate_to)) ]; then
+            truncate -s $(($num_chars_to_truncate_to)) $changelog_file
+            echo -e "$ellipsis" >> $changelog_file
+          fi
+
+          echo -e "$full_changelog_msg" >> $changelog_file
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v5
