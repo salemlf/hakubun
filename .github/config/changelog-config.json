@@ -12,16 +12,8 @@
       "labels": ["bug"]
     },
     {
-      "title": "Refactor",
-      "labels": ["refactor"]
-    },
-    {
       "title": "Styling",
       "labels": ["styling"]
-    },
-    {
-      "title": "Documentation",
-      "labels": ["documentation"]
     }
   ]
 }
