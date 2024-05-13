@@ -41,10 +41,13 @@ jobs:
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
           FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           MATCH_USERNAME: ${{ secrets.FASTLANE_APPLE_ID }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APP_STORE_CONNECT_TEAM_ID: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
           DEVELOPER_PORTAL_TEAM_ID: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+
       - name: Upload iOS release bundle
         uses: actions/upload-artifact@v4
         with:
