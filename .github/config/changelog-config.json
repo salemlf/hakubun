@@ -12,10 +12,6 @@
       "labels": ["bug"]
     },
     {
-      "title": "Refactor",
-      "labels": ["refactor"]
-    },
-    {
       "title": "Styling",
       "labels": ["styling"]
     }
