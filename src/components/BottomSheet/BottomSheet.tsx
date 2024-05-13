@@ -201,6 +201,7 @@ function BottomSheetContentCore(
           >
             <SheetHeader ref={headerRef} $headerHeight={headerHeight}>
               <SheetOpenCloseButton
+                backgroundColor="var(--ion-color-primary)"
                 data-testid="bottom-sheet-btn"
                 onPress={onSheetBtnPress}
                 aria-label="Open or close the bottom sheet"

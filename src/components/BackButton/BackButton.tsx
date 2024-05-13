@@ -31,6 +31,7 @@ function BackButton({
       aria-label="Back to previous page"
       backgroundColor={backgroundColor}
       onPress={() => navigate(-1)}
+      color="white"
     >
       <SvgIcon
         icon={<BackArrowIcon />}

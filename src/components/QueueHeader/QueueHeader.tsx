@@ -38,7 +38,7 @@ const HomeBtn = styled(Button)`
 `;
 
 const calculateNumItemsInQueue = (queue: AssignmentQueueItem[]) => {
-  let notReviewed = queue.filter(
+  const notReviewed = queue.filter(
     (reviewItem) => reviewItem.is_reviewed === false
   );
 
@@ -58,9 +58,9 @@ function QueueHeader() {
     (state) => state.currQueueIndex
   );
 
-  let currentQueueItem = assignmentQueue[currQueueIndex];
+  const currentQueueItem = assignmentQueue[currQueueIndex];
 
-  let numUniqueItemsInQueue = currentQueueItem
+  const numUniqueItemsInQueue = currentQueueItem
     ? calculateNumItemsInQueue(assignmentQueue)
     : undefined;
 
@@ -68,6 +68,7 @@ function QueueHeader() {
     <SessionHeader bgcolor="var(--foreground-color)">
       <HomeButtonAndNumReviewsLeftContainer>
         <HomeBtn
+          backgroundColor="var(--ion-color-primary)"
           onPress={() => navigate("/", { replace: true })}
           aria-label="Home page"
         >
