@@ -5,7 +5,7 @@
   "categories": [
     {
       "title": "Features/Enhancements",
-      "labels": ["enhancement", "feature"]
+      "labels": ["enhancement"]
     },
     {
       "title": "Bug Fixes",
@@ -16,12 +16,12 @@
       "labels": ["refactor"]
     },
     {
-      "title": "Dependencies",
-      "labels": ["dependencies"]
+      "title": "Styling",
+      "labels": ["styling"]
     },
     {
-      "title": "Other",
-      "labels": ["styling", "documentation", "cicd", "testing"]
+      "title": "Documentation",
+      "labels": ["documentation"]
     }
   ]
 }
