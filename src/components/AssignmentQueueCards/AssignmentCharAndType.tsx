@@ -107,19 +107,19 @@ function AssignmentCharAndType({
 }: Props) {
   const { displayPopoverMsg, popoverInfo } = useQueueStoreFacade();
 
-  let popoverStyles = getPopoverStyles(popoverInfo.messageType);
+  const popoverStyles = getPopoverStyles(popoverInfo.messageType);
 
-  let subjType = currentReviewItem.object as SubjectType;
-  let reviewType = currentReviewItem.review_type;
-  let reviewTypeCapitalized = capitalizeWord(reviewType);
-  let reviewDisplayTxt = getSubjectTypeDisplayText(
+  const subjType = currentReviewItem.object as SubjectType;
+  const reviewType = currentReviewItem.review_type;
+  const reviewTypeCapitalized = capitalizeWord(reviewType);
+  const reviewDisplayTxt = getSubjectTypeDisplayText(
     currentReviewItem.object,
     false
   );
 
   // TODO: Not an ideal fix, so do padding/margin bottom and input focus fix later
   // Decreasing font size for vocab to avoid keyboard hidding input
-  let charFontSize =
+  const charFontSize =
     subjType === "vocabulary" || subjType === "kana_vocabulary"
       ? "3rem"
       : "4rem";
