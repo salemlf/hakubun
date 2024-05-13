@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useOutlet } from "react-router";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useWillChange } from "framer-motion";
 import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import FloatingTabBar from "../FloatingTabBar";
 import styled from "styled-components";
@@ -14,7 +14,7 @@ const containerVariants = {
 const PageContainer = styled(motion.div)`
   display: grid;
   grid-template-rows: auto 1fr auto;
-  min-height: 100%;
+  min-height: 100dvh;
   position: relative;
   background-size: cover;
   background-color: var(--background-color);
@@ -32,6 +32,7 @@ function RootContainer() {
   const routerLocation = useLocation();
   const { sessionInProgress: isSessionInProgress } =
     useAssignmentQueueStoreFacade();
+  const willChange = useWillChange();
 
   const pgsToShowTabBar = ["/", "/search", "/subjects"];
   const subjectDetailsPgRegex = /\/subjects\/\d+/;
@@ -51,6 +52,7 @@ function RootContainer() {
           exit="out"
           variants={containerVariants}
           transition={{ duration: 0.5, delay: 0.1 }}
+          style={{ willChange }}
         >
           <AnimatedOutlet />
         </PageContainer>
