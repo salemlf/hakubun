@@ -1,5 +1,3 @@
-Changelog
-
 Features/Enhancements
 
 - Adds sort by date updated
@@ -16,7 +14,6 @@ Bug Fixes
 
 Styling
 
-- Prevent Alt Meaning Modal Close on Outside Click, Increase "Add" Button Size
-	- Author: salemlf
-- Button Color Contrast Improvements
-	- Author: salemlf
+- Prevent Alt Meaning Modal Close on Outsid...
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.0.0-beta
