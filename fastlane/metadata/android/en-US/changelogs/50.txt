@@ -1,0 +1,30 @@
+Changelog
+
+Features/Enhancements
+
+- Adds sort by date updated
+	- Author: DannyBrandt90
+
+Bug Fixes
+
+- Fix for #204: doesn't honor batch size if cards are less than batch size
+	- Author: 00alia00
+- Prevent Alt Meaning Modal Close on Outside Click, Increase "Add" Button Size
+	- Author: salemlf
+- Account for iOS Notch/Safe Areas
+	- Author: salemlf
+
+Styling
+
+- Prevent Alt Meaning Modal Close on Outside Click, Increase "Add" Button Size
+	- Author: salemlf
+- Button Color Contrast Improvements
+	- Author: salemlf
+
+Documentation
+
+- App Web Build and Android/iOS Debugging and Inspecting Instructions
+	- Author: salemlf
+- License and Testing Info
+	- Author: salemlf
+
