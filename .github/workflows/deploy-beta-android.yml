@@ -1,0 +1,59 @@
+name: Deploy beta Android app
+on: workflow_dispatch
+
+env:
+  VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  VITE_GH_USER_FEEDBACK_PAT: ${{ secrets.GH_USER_FEEDBACK_PAT }}
+  FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+
+jobs:
+  deploy-beta-android:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create build
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+        run: npm run build
+
+      - name: Sync with Capacitor
+        run: npx cap sync
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.0
+          bundler-cache: true
+
+      - name: Decode keystore and place in file
+        env:
+          KEYSTORE_CONTENT: ${{ secrets.KEYSTORE }}
+        run: |
+          echo $KEYSTORE_CONTENT | base64 --decode > keystore.jks
+
+      - name: Deploy Android beta app on Play Store
+        run: bundle exec fastlane android upload_beta
+        env:
+          KEYSTORE_FILE_PATH: keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          KEYSTORE_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_FILE_PATH: keystore.jks
+          OUTPUT_PATH: hakubun.aab
+          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
