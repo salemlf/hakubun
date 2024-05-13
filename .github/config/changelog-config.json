@@ -16,20 +16,12 @@
       "labels": ["refactor"]
     },
     {
-      "title": "Dependencies",
-      "labels": ["dependencies"]
-    },
-    {
       "title": "Styling",
       "labels": ["styling"]
     },
     {
       "title": "Documentation",
       "labels": ["documentation"]
-    },
-    {
-      "title": "CICD",
-      "labels": ["cicd"]
     }
   ]
 }
