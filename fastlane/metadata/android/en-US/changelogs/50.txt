@@ -1,0 +1,14 @@
+Changelog for v1.1.0-beta
+
+Features/Enhancements
+
+- Log Out Confirmation Dialog
+	- Author: salemlf
+
+Bug Fixes
+
+- reset form on submit feedback
+	- Author: jyo142
+- Bug Fix: Alternative Meaning Not Accepted In Review and Lesson Sessions
+	- Author: salemlf
+
