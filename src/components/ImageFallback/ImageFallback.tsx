@@ -33,7 +33,7 @@ function ImageFallback({ images, altText, ...props }: Props) {
     if (images && images.length > 0) {
       setCurrImg(images[0]);
     }
-  }, []);
+  }, [images]);
 
   return (
     <>
