@@ -50,7 +50,7 @@ jobs:
           ruby-version: 3.3.0
           bundler-cache: true
 
-      - name: Make version name iOS compatible
+      - name: Make version name iOS-compatible
         id: get-ios-version-name
         run: |
           version_no_prerelease=$(echo "${{ github.event.inputs.versionName }}" | sed 's/\([0-9.]*\).*/\1/')
