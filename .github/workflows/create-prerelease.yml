@@ -5,6 +5,7 @@ env:
   VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
   VITE_GH_USER_FEEDBACK_PAT: ${{ secrets.GH_USER_FEEDBACK_PAT }}
+  FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
 jobs:
   create-prerelease:
     permissions:
@@ -99,6 +100,7 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APP_STORE_CONNECT_TEAM_ID: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
           DEVELOPER_PORTAL_TEAM_ID: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
 
   deploy-android-beta:
     runs-on: macos-latest
