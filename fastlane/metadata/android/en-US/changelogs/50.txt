@@ -1,0 +1,50 @@
+Changelog
+
+Features/Enhancements
+
+- Adds sort by date updated
+	- Author: DannyBrandt90
+
+Bug Fixes
+
+- Fix for #204: doesn't honor batch size if cards are less than batch size
+	- Author: 00alia00
+- Prevent Alt Meaning Modal Close on Outside Click, Increase "Add" Button Size
+	- Author: salemlf
+- Account for iOS Notch/Safe Areas
+	- Author: salemlf
+
+Dependencies
+
+- Updated Capacitor to v6
+	- Author: salemlf
+
+Other
+
+- App Web Build and Android/iOS Debugging and Inspecting Instructions
+	- Author: salemlf
+- License and Testing Info
+	- Author: salemlf
+- Simplify App Versioning
+	- Author: salemlf
+- Release Workflow
+	- Author: salemlf
+- Bump App Version Branch Creation Reorder
+	- Author: salemlf
+- Create Prerelease Dispatch
+	- Author: salemlf
+- Setting Git User
+	- Author: salemlf
+- Refactor bump app build number and update version name
+	- Author: salemlf
+- Generate Changelog on App Version Update
+	- Author: salemlf
+- Prevent Alt Meaning Modal Close on Outside Click, Increase "Add" Button Size
+	- Author: salemlf
+- Release Creation Workflow - Deploying iOS and Android Beta Apps
+	- Author: salemlf
+- Button Color Contrast Improvements
+	- Author: salemlf
+- Changelog Compares Most Recent Updates
+	- Author: salemlf
+
