@@ -83,8 +83,6 @@ function BottomSheetContentCore(
 ) {
   const headerRef = useRef<HTMLDivElement | null>(null);
   const sheetContainerRef = useRef<HTMLDivElement | null>(null);
-  // const bottomSheetHeight = "85svh";
-  // const headerHeight = "12svh";
   const bottomSheetHeight = "85dvh";
   const headerHeight = "12dvh";
 
