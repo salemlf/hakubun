@@ -14,7 +14,7 @@ const ImgWithAltText = styled.img`
 
 function ImageFallback({ images, altText, ...props }: Props) {
   const [currImg, setCurrImg] = useState<string>();
-  let defaultImagesAvail = images ? images : [];
+  const defaultImagesAvail = images ? images : [];
   const [imagesAvail, setImagesAvail] = useState<string[]>(defaultImagesAvail);
 
   const useImageFallback = (event: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -23,7 +23,7 @@ function ImageFallback({ images, altText, ...props }: Props) {
       return;
     }
 
-    let updatedImagesAvail = imagesAvail.slice(1);
+    const updatedImagesAvail = imagesAvail.slice(1);
     setImagesAvail(updatedImagesAvail);
 
     event.currentTarget.src = updatedImagesAvail[0];

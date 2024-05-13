@@ -82,7 +82,7 @@ function SubjectChars({
   withBgColor = false,
   disableTextSelection = false,
 }: Props) {
-  let subjType = subject.object as SubjectType;
+  const subjType = subject.object as SubjectType;
 
   return (
     <>
