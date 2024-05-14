@@ -112,13 +112,13 @@ platform :ios do
       key_content: "#{APPLE_KEY_CONTENT}",
       duration: 1200,
       in_house: false,
-      submit_beta_review: true,
     )
     upload_to_testflight(
       api_key: api_key,
       beta_app_feedback_email: "salemlfenn@gmail.com",
       changelog: "#{changelog_contents}",
       app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+      submit_beta_review: true,
     )
   end
 end
