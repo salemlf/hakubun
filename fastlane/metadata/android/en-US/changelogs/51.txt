@@ -1,0 +1,17 @@
+Bug Fixes
+
+- Mismatching Radical Image in Reviews and Lessons
+	- Author: salemlf
+- Render Italics in Meaning and Reading Explanations
+	- Author: salemlf
+
+Styling
+
+- Lighten Background Color for Search Clear Button
+	- Author: salemlf
+- Consistent Reviews and Lessons Button Styles
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.0.1-beta
+
