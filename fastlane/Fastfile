@@ -112,6 +112,7 @@ platform :ios do
       key_content: "#{APPLE_KEY_CONTENT}",
       duration: 1200,
       in_house: false,
+      submit_beta_review: true,
     )
     upload_to_testflight(
       api_key: api_key,
@@ -163,6 +164,7 @@ platform :android do
       json_key_data: ENV["PLAY_STORE_JSON_KEY"],
       skip_upload_images: true,
       skip_upload_screenshots: true,
+      release_status: "completed",
     )
   end
 end
