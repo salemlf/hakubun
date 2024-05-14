@@ -64,6 +64,7 @@ function ReviewsButton() {
       <BaseReviewLessonButton
         backgroundColor="var(--wanikani-review)"
         aria-label="Reviews"
+        className="base-button"
         onPress={onReviewBtnClick}
         style={{
           backgroundImage: `url(${setBtnBackground({
