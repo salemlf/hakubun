@@ -20,6 +20,7 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Get current version
         id: getAppVersion
         run: |
@@ -34,12 +35,21 @@ jobs:
           git tag -a "$updated_tag" -m "Version $updated_tag"
           git push origin --tags
 
+      - name: Generate release notes
+        id: generate-release-notes
+        uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          configuration: ".github/config/app-release-config.json"
+          toTag: "HEAD"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.getAppVersion.outputs.version }}
         run: |
-          gh release create "$tag" --generate-notes --prerelease
+          gh release create "$tag" --notes ${{steps.generate-release-notes.outputs.changelog}} --prerelease
 
   deploy-ios-beta:
     runs-on: macos-latest
