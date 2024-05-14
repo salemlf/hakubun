@@ -7,8 +7,8 @@ android {
         applicationId "io.hakubun.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 50
-        versionName "2.0.0-beta"
+        versionCode 51
+        versionName "2.0.1-beta"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
