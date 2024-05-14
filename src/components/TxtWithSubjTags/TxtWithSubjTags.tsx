@@ -16,6 +16,7 @@ type TagRegexes = {
   kanjiJapaneseRegEx: RegExp;
   japaneseReadingRegEx: RegExp;
   readingJapaneseRegEx: RegExp;
+  italicsRegEx: RegExp;
 };
 
 type TagProps = {
@@ -91,8 +92,23 @@ const createSubjectTags = (
 ) => {
   let currUUIDArrIndex = 0;
 
-  let replaced = reactStringReplace(text, regexForTags.radRegEx, (match, i) => {
-    let uuid = uuidsArr[currUUIDArrIndex];
+  let replaced = reactStringReplace(
+    text,
+    regexForTags.italicsRegEx,
+    (match, i) => {
+      const uuid = uuidsArr[currUUIDArrIndex];
+      currUUIDArrIndex++;
+
+      return (
+        <Fragment key={`italics-${uuid}`}>
+          <em>{match}</em>
+        </Fragment>
+      );
+    }
+  );
+
+  replaced = reactStringReplace(replaced, regexForTags.radRegEx, (match, i) => {
+    const uuid = uuidsArr[currUUIDArrIndex];
     currUUIDArrIndex++;
 
     return (
@@ -109,7 +125,7 @@ const createSubjectTags = (
     replaced,
     regexForTags.kanjiJapaneseRegEx,
     (match, i) => {
-      let uuid = uuidsArr[currUUIDArrIndex];
+      const uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
       return (
         <Fragment key={`kanji-ja-tag${uuid}`}>
@@ -126,7 +142,7 @@ const createSubjectTags = (
     replaced,
     regexForTags.kanjiRegEx,
     (match, i) => {
-      let uuid = uuidsArr[currUUIDArrIndex];
+      const uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
       return (
         <Fragment key={`kanji-tag${uuid}`}>
@@ -143,11 +159,13 @@ const createSubjectTags = (
     replaced,
     regexForTags.vocabRegEx,
     (match, i) => {
-      let uuid = uuidsArr[currUUIDArrIndex];
+      const uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
 
       const found = regexForTags.japaneseRegEx.exec(match);
-      let leftover = found ? match.replace(regexForTags.japaneseRegEx, "") : "";
+      const leftover = found
+        ? match.replace(regexForTags.japaneseRegEx, "")
+        : "";
 
       return (
         <Fragment key={`vocabulary-tag${uuid}`}>
@@ -173,7 +191,7 @@ const createSubjectTags = (
     replaced,
     regexForTags.readingJapaneseRegEx,
     (match, i) => {
-      let uuid = uuidsArr[currUUIDArrIndex];
+      const uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
 
       return (
@@ -191,11 +209,13 @@ const createSubjectTags = (
     replaced,
     regexForTags.japaneseRegEx,
     (match, i) => {
-      let uuid = uuidsArr[currUUIDArrIndex];
+      const uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
 
       const found = regexForTags.readingRegEx.exec(match);
-      let leftover = found ? match.replace(regexForTags.readingRegEx, "") : "";
+      const leftover = found
+        ? match.replace(regexForTags.readingRegEx, "")
+        : "";
 
       return (
         <Fragment key={`japanese-tag${uuid}`}>
@@ -219,7 +239,7 @@ const createSubjectTags = (
     replaced,
     regexForTags.readingRegEx,
     (match, i) => {
-      let uuid = uuidsArr[currUUIDArrIndex];
+      const uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
 
       return (
@@ -237,7 +257,7 @@ const createSubjectTags = (
     replaced,
     regexForTags.meaningRegEx,
     (match, i) => {
-      let uuid = uuidsArr[currUUIDArrIndex];
+      const uuid = uuidsArr[currUUIDArrIndex];
       currUUIDArrIndex++;
 
       return (
@@ -259,7 +279,7 @@ const getKeysForTags = (textWithTags: string, regexForTags: TagRegexes) => {
   let numUUIDsNeeded = 0;
 
   Object.entries(regexForTags).forEach(([key, regex]) => {
-    let matches = ((textWithTags || "").match(regex) || []).length;
+    const matches = ((textWithTags || "").match(regex) || []).length;
     numUUIDsNeeded += matches;
   });
 
@@ -272,7 +292,7 @@ type Props = {
 };
 
 function TxtWithSubjTags({ textWithTags, txtSize = "1rem" }: Props) {
-  let uuids = getKeysForTags(textWithTags, TAG_REGEXES);
+  const uuids = getKeysForTags(textWithTags, TAG_REGEXES);
 
   return (
     <TaggedTxt txtsize={txtSize}>
