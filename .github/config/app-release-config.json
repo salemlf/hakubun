@@ -1,0 +1,35 @@
+{
+  "ignore_labels": ["ignore in changelog", "bump version"],
+  "template": "#{{CHANGELOG}}\n\n<details>\n<summary>❓ Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+  "pr_template": "- #{{TITLE}}\n\t- PR: ##{{NUMBER}}\n\t- Author: #{{AUTHOR}}",
+  "categories": [
+    {
+      "title": "## 🚀 Features/Enhancements",
+      "labels": ["enhancement"]
+    },
+    {
+      "title": "## 🐛 Bug Fixes",
+      "labels": ["bug"]
+    },
+    {
+      "title": "## 🧪 Tests",
+      "labels": ["tests"]
+    },
+    {
+      "title": "## 📦 Dependencies",
+      "labels": ["dependencies"]
+    },
+    {
+      "title": "## 📝 Documentation",
+      "labels": ["documentation"]
+    },
+    {
+      "title": "## 🔧 CICD",
+      "labels": ["cicd"]
+    },
+    {
+      "title": "## ✨ Styling",
+      "labels": ["styling"]
+    }
+  ]
+}
