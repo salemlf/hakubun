@@ -164,6 +164,7 @@ platform :android do
       json_key_data: ENV["PLAY_STORE_JSON_KEY"],
       skip_upload_images: true,
       skip_upload_screenshots: true,
+      release_status: "completed",
     )
   end
 end
