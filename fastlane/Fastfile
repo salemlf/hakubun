@@ -112,6 +112,7 @@ platform :ios do
       key_content: "#{APPLE_KEY_CONTENT}",
       duration: 1200,
       in_house: false,
+      submit_beta_review: true,
     )
     upload_to_testflight(
       api_key: api_key,
