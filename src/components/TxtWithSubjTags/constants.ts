@@ -11,4 +11,5 @@ export const TAG_REGEXES = {
   vocabRegEx: new RegExp(`<vocabulary>(.+?)</vocabulary>`, "g"),
   readingRegEx: new RegExp(`<reading>(.+?)</reading>`, "g"),
   meaningRegEx: new RegExp(`<meaning>(.+?)</meaning>`, "g"),
+  italicsRegEx: new RegExp(`<I>(.+?)</I>`, "g"),
 };
