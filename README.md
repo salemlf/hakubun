@@ -78,7 +78,7 @@ Please [email me](mailto:salemlfenn@gmail.com) if you have any questions or conc
 
 ## 🏆 Contributing
 
-See [this doc](.github/CONTRIBUTING) for full details on how to contribute!
+See [this doc](.github/CONTRIBUTING.md) for full details on how to contribute!
 
 ### Formatting and Linting
 
