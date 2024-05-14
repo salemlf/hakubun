@@ -20,6 +20,7 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Get current version
         id: getAppVersion
         run: |
