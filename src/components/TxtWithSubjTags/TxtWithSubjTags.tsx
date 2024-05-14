@@ -16,6 +16,7 @@ type TagRegexes = {
   kanjiJapaneseRegEx: RegExp;
   japaneseReadingRegEx: RegExp;
   readingJapaneseRegEx: RegExp;
+  italicsRegEx: RegExp;
 };
 
 type TagProps = {
@@ -91,7 +92,22 @@ const createSubjectTags = (
 ) => {
   let currUUIDArrIndex = 0;
 
-  let replaced = reactStringReplace(text, regexForTags.radRegEx, (match, i) => {
+  let replaced = reactStringReplace(
+    text,
+    regexForTags.italicsRegEx,
+    (match, i) => {
+      const uuid = uuidsArr[currUUIDArrIndex];
+      currUUIDArrIndex++;
+
+      return (
+        <Fragment key={`italics-${uuid}`}>
+          <em>{match}</em>
+        </Fragment>
+      );
+    }
+  );
+
+  replaced = reactStringReplace(replaced, regexForTags.radRegEx, (match, i) => {
     const uuid = uuidsArr[currUUIDArrIndex];
     currUUIDArrIndex++;
 
