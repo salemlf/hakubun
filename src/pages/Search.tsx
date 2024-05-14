@@ -142,7 +142,10 @@ export const Search = () => {
       <Content>
         <Form>
           <SearchBar type="search" value={query} onChange={handleChange} />
-          <ClearButton onPress={() => setQuery("")}>
+          <ClearButton
+            backgroundColor="var(--ion-color-primary)"
+            onPress={() => setQuery("")}
+          >
             <SvgIcon icon={<ClearIcon />} width="1.75em" height="1.75em" />
           </ClearButton>
         </Form>
