@@ -76,6 +76,26 @@ Please [email me](mailto:salemlfenn@gmail.com) if you have any questions or conc
 
 <img src="./resources/app-screenshots/subject-details/vocab-and-user-meaning.jpg" width="300" alt="subject details page for vocabulary with user-added meaning" /> <img src="./resources/app-screenshots/subject-details/vocab-context-sentences.jpg" width="300" alt="subject details page for vocabulary, showing context sentences with translations that can be hidden and shown" /> <img src="./resources/app-screenshots/subject-details/kanji-entering-user-note.jpg" width="300" alt="subject details page for kanji with user entering their own meaning note" /> <img src="./resources/app-screenshots/subject-details/kanji-reading-user-note.jpg" width="300" alt="subject details page for kanji with saved meaning note by user, displaying reading section below" />
 
+## 🏆 Contributing
+
+See [this doc](.github/CONTRIBUTING) for full details on how to contribute!
+
+### Formatting and Linting
+
+```bash
+# Verify files are formatted correctly
+npm run check-format
+
+# If formatting issues...
+npm run format
+
+# Make sure no linting errors
+npm run lint-err-only
+
+# Make sure no TypeScript errors
+npm run tsc-check
+```
+
 ## Building the App
 
 Make sure to run `npm install` before trying the steps below!
@@ -134,9 +154,24 @@ npm run android-live-reload
 - An address should be available under "Remote Target", you can click on "inspect" to bring up a web inspector. This can be used to inspect elements and view console output
   <img src="./resources/debugging-screenshots/chrome-remote-targets.png" width="300" alt="remote targets in Chrome" /> <img src="./resources/debugging-screenshots/chrome-web-inspector.png" width="300" alt="web inspector in Chrome for Android device" />
 
+## Testing
+
+### Unit Testing
+
+To run all unit tests:
+
+```bash
+npm run test
+```
+
+### Device Testing for Android, iOS, etc.
+
+This project is tested with BrowserStack
+
 ### Running Fastlane
 
-[Fastlane](https://fastlane.tools/) is a tool used to build the Android and iOS apps for Hakubun
+[Fastlane](https://fastlane.tools/) is a tool used to build and deploy the Android and iOS apps for Hakubun.
+**Note: it's unlikely you'll need to know this info, just used for GitHub workflows/CICD**
 
 #### Install Dependencies
 
@@ -157,20 +192,6 @@ To run iOS lanes:
 ```bash
 fastlane ios <LANE>
 ```
-
-## Testing
-
-### Unit Testing
-
-To run all unit tests:
-
-```bash
-npm run test
-```
-
-### Device Testing for Android, iOS, etc.
-
-This project is tested with BrowserStack
 
 ## License
 
