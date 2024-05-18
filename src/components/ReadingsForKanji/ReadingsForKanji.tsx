@@ -12,6 +12,12 @@ const KanjiReadings = styled(ReadingsStyle)`
   flex-wrap: wrap;
 `;
 
+const readingTypeDisplayNameMap: Record<ReadingType, string> = {
+  onyomi: "On'yomi",
+  kunyomi: "Kun'yomi",
+  nanori: "Nanori",
+};
+
 type Props = {
   kanji: Kanji;
   readingType: ReadingType;
@@ -24,13 +30,12 @@ function ReadingsForKanji({
   hideReadingType = false,
 }: Props) {
   const kanjiReadings = getKanjiReadings(kanji.readings, readingType);
-  const readingDisplayName =
-    readingType === "onyomi" ? "On'yomi Readings" : "Kun'yomi Readings";
+  const readingTypeDisplayName = `${readingTypeDisplayNameMap[readingType]} Readings`;
 
   return (
     <>
       {!hideReadingType && (
-        <ReadingTypeHeading>{readingDisplayName}</ReadingTypeHeading>
+        <ReadingTypeHeading>{readingTypeDisplayName}</ReadingTypeHeading>
       )}
       <KanjiReadings>
         {kanjiReadings && kanjiReadings.length
