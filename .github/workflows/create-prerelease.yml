@@ -21,16 +21,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set git info
+        run: |
+          git config --global user.email "salemlfenn@gmail.com"
+          git config --global user.name "Salem Fenn"
+
+      - name: Get previous tag
+        id: get_prev_tag
+        run: |
+          echo "prevTag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+
       - name: Get current version
         id: getAppVersion
         run: |
           echo "version=v$(cat package.json | grep \"version\" | cut -d'"' -f 4)" >> $GITHUB_OUTPUT
 
-      - name: Set git info and tag the commit
+      - name: Create new tag
         run: |
-          git config --global user.email "salemlfenn@gmail.com"
-          git config --global user.name "Salem Fenn"
-
           updated_tag=${{ steps.getAppVersion.outputs.version }}
           git tag -a "$updated_tag" -m "Version $updated_tag"
           git push origin --tags
@@ -40,6 +47,7 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v4
         with:
           configuration: ".github/config/app-release-config.json"
+          fromTag: "${{ steps.get_prev_tag.outputs.prevTag }}"
           toTag: "HEAD"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,7 +57,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.getAppVersion.outputs.version }}
         run: |
-          gh release create "$tag" --notes ${{steps.generate-release-notes.outputs.changelog}} --prerelease
+          gh release create "$tag" --notes "${{steps.generate-release-notes.outputs.changelog}}" --prerelease
 
   deploy-ios-beta:
     runs-on: macos-latest
