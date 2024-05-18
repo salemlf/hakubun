@@ -12,6 +12,10 @@ const KanjiReadings = styled(ReadingsStyle)`
   flex-wrap: wrap;
 `;
 
+const ReadingContainer = styled.div`
+  display: flex;
+`;
+
 const readingTypeDisplayNameMap: Record<ReadingType, string> = {
   onyomi: "On'yomi",
   kunyomi: "Kun'yomi",
@@ -39,11 +43,12 @@ function ReadingsForKanji({
       )}
       <KanjiReadings>
         {kanjiReadings && kanjiReadings.length
-          ? kanjiReadings
-              .map((kanjiReading) => {
-                return kanjiReading.reading;
-              })
-              .join(", ")
+          ? kanjiReadings.map((kanjiReading, index) => [
+              <ReadingContainer key={`${kanjiReading.reading}_${index}`}>
+                {kanjiReading.reading}
+                {index >= 0 && index !== kanjiReadings.length - 1 && ","}
+              </ReadingContainer>,
+            ])
           : "-"}
       </KanjiReadings>
     </>
