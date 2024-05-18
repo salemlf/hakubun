@@ -60,6 +60,7 @@ jobs:
           gh release create "$tag" --notes "${{steps.generate-release-notes.outputs.changelog}}" --prerelease
 
   deploy-ios-beta:
+    needs: create-prerelease
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -121,6 +122,7 @@ jobs:
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
 
   deploy-android-beta:
+    needs: create-prerelease
     runs-on: macos-latest
     steps:
       - name: Checkout
