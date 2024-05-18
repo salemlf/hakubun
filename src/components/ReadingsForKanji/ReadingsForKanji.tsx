@@ -1,9 +1,9 @@
 import { getKanjiReadings } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
-import { Kanji } from "../../types/Subject";
+import { Kanji, ReadingType } from "../../types/Subject";
 import { ReadingsStyle } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
-const ReadingType = styled.h5`
+const ReadingTypeHeading = styled.h5`
   font-size: 1rem;
   margin: 10px 0 5px 0;
 `;
@@ -14,7 +14,7 @@ const KanjiReadings = styled(ReadingsStyle)`
 
 type Props = {
   kanji: Kanji;
-  readingType: "onyomi" | "kunyomi";
+  readingType: ReadingType;
   hideReadingType?: boolean;
 };
 
@@ -29,7 +29,9 @@ function ReadingsForKanji({
 
   return (
     <>
-      {!hideReadingType && <ReadingType>{readingDisplayName}</ReadingType>}
+      {!hideReadingType && (
+        <ReadingTypeHeading>{readingDisplayName}</ReadingTypeHeading>
+      )}
       <KanjiReadings>
         {kanjiReadings && kanjiReadings.length
           ? kanjiReadings
