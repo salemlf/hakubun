@@ -1,5 +1,7 @@
 import { getKanjiReadings } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
+import SvgIcon from "../SvgIcon";
 import { Kanji, ReadingType } from "../../types/Subject";
+import CheckCircleIcon from "../../images/check-in-circle.svg?react";
 import { ReadingsStyle } from "../../styles/SubjectDetailsStyled";
 import styled from "styled-components";
 
@@ -14,6 +16,7 @@ const KanjiReadings = styled(ReadingsStyle)`
 
 const ReadingContainer = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const readingTypeDisplayNameMap: Record<ReadingType, string> = {
@@ -46,6 +49,13 @@ function ReadingsForKanji({
           ? kanjiReadings.map((kanjiReading, index) => [
               <ReadingContainer key={`${kanjiReading.reading}_${index}`}>
                 {kanjiReading.reading}
+                {kanjiReading.primary && (
+                  <SvgIcon
+                    icon={<CheckCircleIcon />}
+                    width="1em"
+                    height="1em"
+                  />
+                )}
                 {index >= 0 && index !== kanjiReadings.length - 1 && ","}
               </ReadingContainer>,
             ])
