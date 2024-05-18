@@ -1,0 +1,8 @@
+Features/Enhancements
+
+- Indicating Primary Kanji Reading(s)
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.1.0-beta
+
