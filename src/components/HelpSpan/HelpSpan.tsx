@@ -33,12 +33,16 @@ const Punctuation = styled.span<PunctuationProps>`
 
 type ClickableHelpProps = {
   $isBold: boolean;
+  $hidePunctuation: boolean;
 };
 
 const ClickableHelp = styled.button<ClickableHelpProps>`
   all: unset;
   color: var(--text-color);
   font-weight: ${({ $isBold }) => ($isBold ? "600" : "400")};
+
+  display: ${({ $hidePunctuation }) => $hidePunctuation && "flex"};
+  align-items: ${({ $hidePunctuation }) => $hidePunctuation && "center"};
 
   &:focus-visible {
     outline: 2px solid var(--focus-color);
@@ -78,6 +82,7 @@ const punctuationMap: Record<PunctuationType, PunctuationContent> = {
 type Props = {
   children: React.ReactNode;
   helpPopoverContents: React.ReactNode;
+  hidePunctuation?: boolean;
   punctuation?: PunctuationType;
   isBold?: boolean;
 };
@@ -85,6 +90,7 @@ type Props = {
 function HelpSpan({
   children,
   helpPopoverContents,
+  hidePunctuation = false,
   punctuation = "question",
   isBold = false,
 }: Props) {
@@ -95,11 +101,13 @@ function HelpSpan({
     <ContainerSpan>
       <PopoverRoot open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <ClickableHelp $isBold={isBold}>
+          <ClickableHelp $isBold={isBold} $hidePunctuation={hidePunctuation}>
             {children}
-            <Punctuation $color={punctuationInfo.color}>
-              {punctuationInfo.text}
-            </Punctuation>
+            {!hidePunctuation && (
+              <Punctuation $color={punctuationInfo.color}>
+                {punctuationInfo.text}
+              </Punctuation>
+            )}
           </ClickableHelp>
         </PopoverTrigger>
         <Popover isOpen={isOpen} showBorder={true}>
