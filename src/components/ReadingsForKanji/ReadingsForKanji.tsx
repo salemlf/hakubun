@@ -24,8 +24,8 @@ function ReadingsForKanji({
   readingType,
   hideReadingType = false,
 }: Props) {
-  let kanjiReadings = getKanjiReadings(kanji.readings, readingType);
-  let readingDisplayName =
+  const kanjiReadings = getKanjiReadings(kanji.readings, readingType);
+  const readingDisplayName =
     readingType === "onyomi" ? "On'yomi Readings" : "Kun'yomi Readings";
 
   return (
@@ -34,7 +34,7 @@ function ReadingsForKanji({
       <KanjiReadings>
         {kanjiReadings && kanjiReadings.length
           ? kanjiReadings
-              .map((kanjiReading: any) => {
+              .map((kanjiReading) => {
                 return kanjiReading.reading;
               })
               .join(", ")
