@@ -48,7 +48,7 @@ jobs:
         with:
           configuration: ".github/config/app-release-config.json"
           fromTag: "${{ steps.get_prev_tag.outputs.prevTag }}"
-          toTag: "HEAD"
+          toTag: "${{ steps.getAppVersion.outputs.version }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
