@@ -31,7 +31,34 @@ const Grid = styled(FullWidthGridDiv)`
 `;
 
 const WarningMsg = styled.p`
-  margin: 16px;
+  margin: 10px 0;
+  color: var(--text-color);
+`;
+
+const ErrorsContainer = styled.div`
+  padding: 10px;
+  background-color: var(--secondary-foreground-color);
+  border-radius: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+
+  pre {
+    white-space: pre-wrap;
+
+    &::selection {
+      background-color: var(--ion-color-primary);
+      color: black;
+    }
+
+    &::-moz-selection {
+      background-color: var(--ion-color-primary);
+      color: black;
+    }
+  }
+
+  hr {
+    background-color: #000;
+  }
 `;
 
 // TODO: move this to Summary type file
@@ -46,9 +73,14 @@ function LessonSummary() {
   const { submittedAssignmentQueueItems, submittedAssignmentsWithErrs } =
     useAssignmentSubmitStoreFacade();
 
+  const itemErrors = submittedAssignmentsWithErrs.map((item) => item.error);
+  const queueItemsThatHadErrors = submittedAssignmentsWithErrs.map(
+    (item) => item.queueItem
+  );
+
   const allSubmitted = [
     ...submittedAssignmentQueueItems,
-    ...submittedAssignmentsWithErrs,
+    ...queueItemsThatHadErrors,
   ];
 
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
@@ -57,7 +89,7 @@ function LessonSummary() {
   );
 
   // combine queue items so reading and meaning aren't separate anymore
-  let completedLessons = getCompletedAssignmentQueueData(allSubmitted);
+  const completedLessons = getCompletedAssignmentQueueData(allSubmitted);
 
   const lessonsBySubjType: SubjectsGroupedByType = groupDataByProperty(
     completedLessons,
@@ -76,6 +108,32 @@ function LessonSummary() {
       </LessonSummaryHeader>
       <ContentWithTabBar>
         <Grid>
+          {submittedAssignmentsWithErrs.length > 0 && (
+            <Card
+              title={`Oh no, looks like we weren't able to start all your lessons for
+            some reason...`}
+              headerBgColor="var(--ion-color-danger)"
+              headerFontSize="1.25rem"
+              headerTextColor="white"
+            >
+              <WarningMsg>
+                {submittedAssignmentsWithErrs.length} lesson(s) had errors when
+                starting!
+              </WarningMsg>
+              <ErrorsContainer>
+                {submittedAssignmentsWithErrs.map((itemWithErr, idx) => (
+                  <>
+                    <pre key={itemWithErr.queueItem.assignment_id}>
+                      Error for subject ID {itemWithErr.queueItem.subject_id}:
+                      {"\n"}
+                      {itemWithErr.error}
+                    </pre>
+                    {idx >= 0 && idx !== itemErrors.length - 1 && <hr />}
+                  </>
+                ))}
+              </ErrorsContainer>
+            </Card>
+          )}
           <Card
             title={`${
               ((lessonsBySubjType.radical as Subject[]) ?? []).length
@@ -122,12 +180,6 @@ function LessonSummary() {
               justify="flex-start"
             />
           </Card>
-          {submittedAssignmentsWithErrs.length > 0 && (
-            <WarningMsg>
-              Oh no, looks like we weren't able to start all your lessons for
-              some reason... {submittedAssignmentsWithErrs.length} had errors!
-            </WarningMsg>
-          )}
         </Grid>
         <FloatingHomeButton />
       </ContentWithTabBar>
