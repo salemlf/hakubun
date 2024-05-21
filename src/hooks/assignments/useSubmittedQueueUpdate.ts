@@ -3,7 +3,6 @@ import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/us
 import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { AssignmentSubmitInfo } from "../../types/AssignmentQueueTypes";
 
-// TODO: also update SRS level based on responses?
 export const useSubmittedQueueUpdate = () => {
   const updateAssignmentSubmittedStates = useAssignmentQueueStore(
     (state) => state.updateAssignmentSubmittedStates
@@ -13,7 +12,7 @@ export const useSubmittedQueueUpdate = () => {
     useAssignmentSubmitStoreFacade();
 
   const updateSubmitted = (submittedInfo: AssignmentSubmitInfo) => {
-    updateQueueItemsWithErrs(submittedInfo.errors);
+    updateQueueItemsWithErrs(submittedInfo.assignmentsWithErrs);
 
     const submittedAssignmentIDs = getAssignmentIDs(
       submittedInfo.submitResponses

@@ -66,7 +66,7 @@ test("AssignmentQueueCards renders", () => {
   const emptySubmitInfo: AssignmentSubmitInfo = {
     assignmentData: [],
     submitResponses: [],
-    errors: [],
+    assignmentsWithErrs: [],
   };
   const callbackParams = mockCallbackParams(emptySubmitInfo);
   const selectedSettingType = faker.helpers.arrayElement(settingTypes);
@@ -115,7 +115,7 @@ test.todo("Correct answer is marked as correct", () => {
   // const queueSubmitInfo: AssignmentSubmitInfo = {
   //   assignmentData: assignmentQueueStoreResult.current.assignmentQueue,
   //   submitResponses: [],
-  //   errors: [],
+  //   assignmentsWithErrs: [],
   // };
   // const callbackParams = mockCallbackParams(queueSubmitInfo);
   // const { user } = renderComponent(callbackParams, componentProps.currPath);
