@@ -1,3 +1,4 @@
+import { QueueItemAndErr } from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore";
 import { Subject, SubjectType } from "./Subject";
 import { Assignment, PreFlattenedAssignment } from "./Assignment";
 
@@ -56,7 +57,13 @@ export type AssignmentSessionType = "lesson" | "review";
 export type AssignmentSubmitInfo = {
   assignmentData: AssignmentQueueItem[];
   submitResponses: PreFlattenedAssignment[];
-  errors: AssignmentQueueItem[];
+  assignmentsWithErrs: QueueItemAndErr[];
+};
+
+export type AssignmentSubmitOutcome = {
+  assignmentID: number;
+  response?: PreFlattenedAssignment;
+  error?: string;
 };
 
 export type ReviewedQueueItemInfo = {

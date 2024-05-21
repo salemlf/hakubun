@@ -1,15 +1,19 @@
 import { create } from "zustand";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 
+export type QueueItemAndErr = {
+  queueItem: AssignmentQueueItem;
+  error: string;
+};
+
 export interface AssignmentSubmitState {
   shouldBatchSubmit: boolean;
-  // TODO: remove responses, using queue items instead
   submittedAssignmentQueueItems: AssignmentQueueItem[];
-  submittedAssignmentsWithErrs: AssignmentQueueItem[];
+  submittedAssignmentsWithErrs: QueueItemAndErr[];
 }
 
 export interface AssignmentSubmitActions {
-  updateQueueItemsWithErrs: (assignmentErrs: AssignmentQueueItem[]) => void;
+  updateQueueItemsWithErrs: (assignmentsAndErrs: QueueItemAndErr[]) => void;
   updateSubmittedQueueItems: (
     assignmentQueueItems: AssignmentQueueItem[]
   ) => void;
@@ -37,7 +41,7 @@ export const useAssignmentSubmitStore = create<
       ],
     }));
   },
-  updateQueueItemsWithErrs: (assignmentErrs: AssignmentQueueItem[]) => {
+  updateQueueItemsWithErrs: (assignmentErrs: QueueItemAndErr[]) => {
     set((state) => ({
       submittedAssignmentsWithErrs: [
         ...state.submittedAssignmentsWithErrs,
