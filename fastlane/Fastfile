@@ -119,6 +119,8 @@ platform :ios do
       changelog: "#{changelog_contents}",
       app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
       submit_beta_review: true,
+      groups: ["hakubun_beta_testers_external"],
+      distribute_external: true,
     )
   end
 end
