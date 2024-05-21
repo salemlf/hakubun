@@ -95,6 +95,7 @@ function ContextSentences({ sentences }: Props) {
                   <EyeBallButton
                     onPress={() => toggleTranslationBlur(index)}
                     aria-label={`Show/Hide English Translation for Context Sentence ${index}`}
+                    backgroundColor="var(--ion-color-primary)"
                   >
                     <SvgIcon
                       icon={
