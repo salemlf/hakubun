@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { getReviewsGroupedByResult } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { useQueueStore } from "../stores/useQueueStore/useQueueStore";
@@ -7,6 +7,7 @@ import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/u
 import ReviewResults from "../components/ReviewResults";
 import ResultsHeader from "../components/ReviewResults/ResultsHeader";
 import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
+import Card from "../components/Card";
 import {
   ContentWithTabBar,
   FullWidthGridDiv,
@@ -14,8 +15,34 @@ import {
 import styled from "styled-components";
 
 const WarningMsg = styled.p`
-  margin: 16px;
+  margin: 10px 0;
   color: var(--text-color);
+`;
+
+const ErrorsContainer = styled.div`
+  padding: 10px;
+  background-color: var(--secondary-foreground-color);
+  border-radius: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+
+  pre {
+    white-space: pre-wrap;
+
+    &::selection {
+      background-color: var(--ion-color-primary);
+      color: black;
+    }
+
+    &::-moz-selection {
+      background-color: var(--ion-color-primary);
+      color: black;
+    }
+  }
+
+  hr {
+    background-color: #000;
+  }
 `;
 
 // TODO: make sure to attempt to resubmit reviews that had errors
@@ -23,9 +50,15 @@ function ReviewSummary() {
   const { submittedAssignmentQueueItems, submittedAssignmentsWithErrs } =
     useAssignmentSubmitStoreFacade();
 
+  const queueItemsThatHadErrors = submittedAssignmentsWithErrs.map(
+    (item) => item.queueItem
+  );
+
+  const itemErrors = submittedAssignmentsWithErrs.map((item) => item.error);
+
   const allSubmitted = [
     ...submittedAssignmentQueueItems,
-    ...submittedAssignmentsWithErrs,
+    ...queueItemsThatHadErrors,
   ];
 
   const resetQueueStore = useQueueStore((state) => state.resetAll);
@@ -51,13 +84,33 @@ function ReviewSummary() {
       <ResultsHeader numCorrect={totalCorrect} numReviews={totalNumSubmitted} />
       <ContentWithTabBar>
         <FullWidthGridDiv>
-          <ReviewResults groupedReviewItems={groupedReviewItems} />
           {submittedAssignmentsWithErrs.length > 0 && (
-            <WarningMsg>
-              Oh no, looks like we weren't able to submit all your reviews for
-              some reason... {submittedAssignmentsWithErrs.length} had errors!
-            </WarningMsg>
+            <Card
+              title={`Oh no, looks like we weren't able to submit all your reviews for
+            some reason...`}
+              headerBgColor="var(--ion-color-danger)"
+              headerFontSize="1.25rem"
+              headerTextColor="white"
+            >
+              <WarningMsg>
+                {submittedAssignmentsWithErrs.length} review(s) had errors when
+                submitting!
+              </WarningMsg>
+              <ErrorsContainer>
+                {submittedAssignmentsWithErrs.map((itemWithErr, idx) => (
+                  <Fragment key={itemWithErr.queueItem.assignment_id}>
+                    <pre>
+                      Error for subject ID {itemWithErr.queueItem.subject_id}:
+                      {"\n"}
+                      {itemWithErr.error}
+                    </pre>
+                    {idx >= 0 && idx !== itemErrors.length - 1 && <hr />}
+                  </Fragment>
+                ))}
+              </ErrorsContainer>
+            </Card>
           )}
+          <ReviewResults groupedReviewItems={groupedReviewItems} />
         </FullWidthGridDiv>
         <FloatingHomeButton />
       </ContentWithTabBar>

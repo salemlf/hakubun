@@ -1,17 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
+import { AxiosError } from "axios";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import { QueueItemAndErr } from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore";
 import {
   createReviewPostData,
   getCompletedAssignmentQueueData,
 } from "../services/AssignmentQueueService/AssignmentQueueService";
+import { determine401Msg } from "../services/ApiQueryService/ApiQueryService";
+import { displayToast } from "../components/Toast/Toast.service";
 import { useCreateReview } from "../hooks/assignments/useCreateReview";
 import { useSubmittedQueueUpdate } from "../hooks/assignments/useSubmittedQueueUpdate";
 import {
   AssignmentQueueItem,
   AssignmentSubmitInfo,
+  AssignmentSubmitOutcome,
 } from "../types/AssignmentQueueTypes";
 import { PreFlattenedAssignment } from "../types/Assignment";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
@@ -139,6 +144,7 @@ function ReviewSession() {
     currQueueIndex,
     updateAssignmentQueueData,
   } = useAssignmentQueueStoreFacade();
+  const [hasShown404, setHasShown404] = useState(false);
 
   const updateSubmitted = useSubmittedQueueUpdate();
 
@@ -195,7 +201,6 @@ function ReviewSession() {
     await bgControls.start("hidden");
   };
 
-  // TODO: add to submit store and just use data from that on summary pages
   const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
     const reviewInfo = await submitReviewBatch(queueData);
     updateSubmitted(reviewInfo);
@@ -204,48 +209,70 @@ function ReviewSession() {
 
   const submitReviewBatch = (queueData: AssignmentQueueItem[]) => {
     const reviewData = getCompletedAssignmentQueueData(queueData);
-    // *testing
-    console.log(
-      "🚀 ~ file: ReviewSession.tsx:224 ~ submitBatch ~ reviewData:",
-      reviewData
-    );
-    // *testing
     const reviewPostData = createReviewPostData(reviewData);
 
-    // TODO: change to actually catch errors
-    const promises = reviewPostData.map(function (reviewItem) {
-      return createReviewsAsync({
-        reviewSessionData: reviewItem,
-      })
-        .then(function (results) {
-          return results?.resources_updated.assignment;
-        })
-        .catch((err) => {
-          // *testing
-          console.log("🚀 ~ file: ReviewSession.tsx:96 ~ promises ~ err:", err);
-          // *testing
-        });
-    });
+    const submitOutcomePromises: Promise<AssignmentSubmitOutcome>[] =
+      reviewPostData.map((reviewItem) => {
+        return createReviewsAsync(
+          {
+            reviewSessionData: reviewItem,
+          },
+          {
+            onError: (error) => {
+              if (error instanceof AxiosError) {
+                if (error.response?.status === 401 && !hasShown404) {
+                  const msg401 = determine401Msg(error.response);
+                  displayToast({
+                    toastType: "error",
+                    title: "Oh no, an API Error!",
+                    content: msg401,
+                    timeout: 10000,
+                  });
 
-    return Promise.all(promises).then(function (results) {
-      // *testing
-      console.log(results);
-      // *testing
-      const unableToUpdate: AssignmentQueueItem[] = [];
+                  setHasShown404(true);
+                }
+              }
+            },
+          }
+        )
+          .then((results) => {
+            return {
+              assignmentID: reviewItem.assignment_id,
+              response: results?.resources_updated.assignment,
+              queueItem: reviewItem,
+            };
+          })
+          .catch((err) => {
+            console.error(
+              `An error occured when submitting a review: ${JSON.stringify(err)}`
+            );
+            const errMsg = `${err?.response?.data?.code} - ${err?.response?.data?.error}\n${err.name} - ${err.message}`;
+            return {
+              assignmentID: reviewItem.assignment_id,
+              error: errMsg,
+            };
+          });
+      });
+
+    return Promise.all(submitOutcomePromises).then((submitOutcomes) => {
+      const unableToUpdate: QueueItemAndErr[] = [];
       const reviewResponses: PreFlattenedAssignment[] = [];
 
-      results.forEach((response, index) => {
-        if (response === undefined) {
-          unableToUpdate.push(reviewData[index]);
+      submitOutcomes.forEach((outcome, index) => {
+        if (outcome.response === undefined) {
+          unableToUpdate.push({
+            queueItem: reviewData[index],
+            error: outcome.error ?? "Unknown error",
+          });
         } else {
-          reviewResponses.push(response);
+          reviewResponses.push(outcome.response);
         }
       });
 
       const reviewInfo: AssignmentSubmitInfo = {
         assignmentData: reviewData,
         submitResponses: reviewResponses,
-        errors: unableToUpdate,
+        assignmentsWithErrs: unableToUpdate,
       };
 
       return reviewInfo;
