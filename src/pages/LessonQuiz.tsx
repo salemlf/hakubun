@@ -88,7 +88,7 @@ function LessonQuiz() {
           .then((results) => {
             return {
               assignmentID: lessonItem.assignment_id,
-              response: results?.resources_updated.assignment,
+              response: results,
               queueItem: lessonItem,
             };
           })
