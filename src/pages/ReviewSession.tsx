@@ -19,6 +19,7 @@ import {
   AssignmentSubmitOutcome,
 } from "../types/AssignmentQueueTypes";
 import { PreFlattenedAssignment } from "../types/Assignment";
+import { ReviewUpdateResponse } from "../types/Review";
 import QueueHeader from "../components/QueueHeader/QueueHeader";
 import AssignmentQueueCards from "../components/AssignmentQueueCards/AssignmentQueueCards";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
@@ -235,10 +236,10 @@ function ReviewSession() {
             },
           }
         )
-          .then((results) => {
+          .then((response: ReviewUpdateResponse) => {
             return {
               assignmentID: reviewItem.assignment_id,
-              response: results?.resources_updated.assignment,
+              response: response.resources_updated.assignment,
               queueItem: reviewItem,
             };
           })
