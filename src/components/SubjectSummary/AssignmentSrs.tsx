@@ -33,6 +33,7 @@ const SrsTxt = styled.p`
 const SrsLvlTxt = styled(SrsTxt)`
   color: white;
   text-transform: capitalize;
+  font-size: 0.8rem;
 `;
 
 const TimeTillContainer = styled.div`
@@ -52,6 +53,7 @@ const SrsIcon = styled(IonIcon)`
 
 const TimeTillTxt = styled(SrsTxt)`
   color: black;
+  font-size: 0.8rem;
 `;
 
 type Props = {
@@ -60,11 +62,11 @@ type Props = {
 
 function AssignmentSrs({ assignment }: Props) {
   // TODO: display locked icon
-  let srsLevelName = assignment
+  const srsLevelName = assignment
     ? getSrsNameBySrsLvl(assignment.srs_stage)
     : "locked";
 
-  let timeTillReview = assignment
+  const timeTillReview = assignment
     ? getTimeFromNow(assignment.available_at)
     : "N/A";
 
