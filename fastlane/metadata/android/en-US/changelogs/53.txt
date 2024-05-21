@@ -1,0 +1,13 @@
+Features/Enhancements
+
+- Displays Error Info on Review and Lesson Summary Pages
+	- Author: salemlf
+
+Styling
+
+- Background Color for Show/Hide Context Sentence Translation Button
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.2.0-beta
+
