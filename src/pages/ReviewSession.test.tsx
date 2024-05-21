@@ -144,14 +144,6 @@ const renderComponent = (
       element: <ReviewSession />,
     },
     defaultPath: reviewSessionPath,
-    // routes: withHomeRoute
-    //   ? [
-    //       {
-    //         path: "/",
-    //         element: <Home />,
-    //       },
-    //     ]
-    //   : [],
     routes,
   });
 };
