@@ -1,0 +1,13 @@
+Bug Fixes
+
+- Lessons Displaying Error on Summary Page
+	- Author: salemlf
+
+Styling
+
+- Subject Details SRS Level and Review Availability Font Size
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.2.1-beta
+
