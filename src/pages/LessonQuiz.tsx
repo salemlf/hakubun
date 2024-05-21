@@ -85,10 +85,10 @@ function LessonQuiz() {
             },
           }
         )
-          .then((results) => {
+          .then((response: PreFlattenedAssignment) => {
             return {
               assignmentID: lessonItem.assignment_id,
-              response: results,
+              response,
               queueItem: lessonItem,
             };
           })
