@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { getReviewsGroupedByResult } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { useQueueStore } from "../stores/useQueueStore/useQueueStore";
@@ -98,14 +98,14 @@ function ReviewSummary() {
               </WarningMsg>
               <ErrorsContainer>
                 {submittedAssignmentsWithErrs.map((itemWithErr, idx) => (
-                  <>
-                    <pre key={itemWithErr.queueItem.assignment_id}>
+                  <Fragment key={itemWithErr.queueItem.assignment_id}>
+                    <pre>
                       Error for subject ID {itemWithErr.queueItem.subject_id}:
                       {"\n"}
                       {itemWithErr.error}
                     </pre>
                     {idx >= 0 && idx !== itemErrors.length - 1 && <hr />}
-                  </>
+                  </Fragment>
                 ))}
               </ErrorsContainer>
             </Card>
