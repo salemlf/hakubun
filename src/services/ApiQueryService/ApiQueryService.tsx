@@ -41,3 +41,19 @@ export const onQueryError = (
     }
   }
 };
+
+export const getRetryDelay = (attemptIndex: number, error: Error) => {
+  // accounting for rate limiting, retrying after rate limit resets
+  if (
+    error &&
+    error instanceof AxiosError &&
+    error.response?.status === 429 &&
+    error.response.headers["ratelimit-reset"]
+  ) {
+    const rateLimitResetTime = error.response.headers["ratelimit-reset"];
+    const rateLimitResetTimeMs = parseInt(rateLimitResetTime) * 1000;
+    const timeToReset = rateLimitResetTimeMs - Date.now() + 1000;
+    return timeToReset;
+  }
+  return Math.min(1000 * 2 ** attemptIndex, 30000);
+};
