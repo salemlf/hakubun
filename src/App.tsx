@@ -23,7 +23,10 @@ import { routes } from "./navigation/routes";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserSettingsStore } from "./stores/useUserSettingsStore/useUserSettingsStore";
-import { onQueryError } from "./services/ApiQueryService/ApiQueryService";
+import {
+  getRetryDelay,
+  onQueryError,
+} from "./services/ApiQueryService/ApiQueryService";
 import { TabBarHeightProvider } from "./contexts/TabBarHeightContext";
 import { BottomSheetOpenProvider } from "./contexts/BottomSheetOpenContext";
 import { PersistentStore } from "./hooks/useHydration";
@@ -115,18 +118,12 @@ const queryClient = new QueryClient({
       gcTime: 15 * (60 * 1000),
       // accounting for rate limiting, retrying after rate limit resets
       retryDelay: (attemptIndex, error) => {
-        if (
-          error &&
-          error instanceof AxiosError &&
-          error.response?.status === 429 &&
-          error.response.headers["ratelimit-reset"]
-        ) {
-          const rateLimitResetTime = error.response.headers["ratelimit-reset"];
-          const rateLimitResetTimeMs = parseInt(rateLimitResetTime) * 1000;
-          const timeToReset = rateLimitResetTimeMs - Date.now() + 1000;
-          return timeToReset;
-        }
-        return Math.min(1000 * 2 ** attemptIndex, 30000);
+        return getRetryDelay(attemptIndex, error);
+      },
+    },
+    mutations: {
+      retryDelay: (attemptIndex, error) => {
+        return getRetryDelay(attemptIndex, error);
       },
     },
   },
