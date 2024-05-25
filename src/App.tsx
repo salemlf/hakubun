@@ -11,7 +11,6 @@ import {
   useNavigationType,
 } from "react-router-dom";
 import { IonApp, setupIonicReact } from "@ionic/react";
-import { AxiosError } from "axios";
 import {
   QueryCache,
   QueryClient,
