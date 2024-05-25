@@ -11,6 +11,7 @@ import {
   useNavigationType,
 } from "react-router-dom";
 import { IonApp, setupIonicReact } from "@ionic/react";
+import { AxiosError } from "axios";
 import {
   QueryCache,
   QueryClient,
@@ -112,6 +113,21 @@ const queryClient = new QueryClient({
       staleTime: 10 * (60 * 1000),
       // garbage collection time of 15 minutes
       gcTime: 15 * (60 * 1000),
+      // accounting for rate limiting, retrying after rate limit resets
+      retryDelay: (attemptIndex, error) => {
+        if (
+          error &&
+          error instanceof AxiosError &&
+          error.response?.status === 429 &&
+          error.response.headers["ratelimit-reset"]
+        ) {
+          const rateLimitResetTime = error.response.headers["ratelimit-reset"];
+          const rateLimitResetTimeMs = parseInt(rateLimitResetTime) * 1000;
+          const timeToReset = rateLimitResetTimeMs - Date.now() + 1000;
+          return timeToReset;
+        }
+        return Math.min(1000 * 2 ** attemptIndex, 30000);
+      },
     },
   },
   queryCache: new QueryCache({
