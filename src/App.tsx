@@ -22,7 +22,10 @@ import { routes } from "./navigation/routes";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserSettingsStore } from "./stores/useUserSettingsStore/useUserSettingsStore";
-import { onQueryError } from "./services/ApiQueryService/ApiQueryService";
+import {
+  getRetryDelay,
+  onQueryError,
+} from "./services/ApiQueryService/ApiQueryService";
 import { TabBarHeightProvider } from "./contexts/TabBarHeightContext";
 import { BottomSheetOpenProvider } from "./contexts/BottomSheetOpenContext";
 import { PersistentStore } from "./hooks/useHydration";
@@ -112,6 +115,15 @@ const queryClient = new QueryClient({
       staleTime: 10 * (60 * 1000),
       // garbage collection time of 15 minutes
       gcTime: 15 * (60 * 1000),
+      // accounting for rate limiting, retrying after rate limit resets
+      retryDelay: (attemptIndex, error) => {
+        return getRetryDelay(attemptIndex, error);
+      },
+    },
+    mutations: {
+      retryDelay: (attemptIndex, error) => {
+        return getRetryDelay(attemptIndex, error);
+      },
     },
   },
   queryCache: new QueryCache({
