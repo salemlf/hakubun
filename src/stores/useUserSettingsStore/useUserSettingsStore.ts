@@ -13,6 +13,8 @@ export interface UserSettingsState {
   lessonSortOrderOption: AssignmentSortOption;
   reviewSortOrderOption: AssignmentSortOption;
   reviewBackToBackOption: BackToBackChoice;
+  reviewNextItemOnCorrect: boolean;
+  lessonNextItemOnCorrect: boolean;
   prefersDarkModeTheme: boolean;
 }
 
@@ -23,6 +25,8 @@ export interface UserSettingsActions {
   setLessonSortOrderOption: (sortOption: AssignmentSortOption) => void;
   setReviewSortOrderOption: (sortOption: AssignmentSortOption) => void;
   setReviewBackToBackOption: (backToBackChoice: BackToBackChoice) => void;
+  setLessonNextItemOnCorrect: (goToNext: boolean) => void;
+  setReviewNextItemOnCorrect: (goToNext: boolean) => void;
   setPrefersDarkModeTheme: (isDarkMode: boolean) => void;
 }
 
@@ -40,6 +44,8 @@ export const initialState: UserSettingsState = {
   lessonSortOrderOption: getSortOrderOptionById("level_asc"),
   reviewSortOrderOption: getSortOrderOptionById("shuffled"),
   reviewBackToBackOption: "disabled",
+  reviewNextItemOnCorrect: false,
+  lessonNextItemOnCorrect: false,
   prefersDarkModeTheme:
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches,
@@ -61,6 +67,10 @@ export const useUserSettingsStore = create<
         set({ reviewSortOrderOption: sortOption }),
       setReviewBackToBackOption: (backToBackChoice: BackToBackChoice) =>
         set({ reviewBackToBackOption: backToBackChoice }),
+      setLessonNextItemOnCorrect: (goToNext: boolean) =>
+        set({ lessonNextItemOnCorrect: goToNext }),
+      setReviewNextItemOnCorrect: (goToNext: boolean) =>
+        set({ reviewNextItemOnCorrect: goToNext }),
       setPrefersDarkModeTheme: (prefersDarkMode: boolean) =>
         set({ prefersDarkModeTheme: prefersDarkMode }),
     }),
