@@ -1,3 +1,6 @@
+import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
+import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import {
   calculateSRSLevel,
   checkIfReviewIsComplete,
@@ -8,13 +11,9 @@ import {
   getSrsNameBySrsLvl,
 } from "../../services/MiscService/MiscService";
 import { getReadingAudio } from "../../services/AudioService/AudioService";
-import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
-import useUserSettingsStoreFacade from "../../stores/useUserSettingsStore/useUserSettingsStore.facade";
-import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import { SubjectReading } from "../../types/Subject";
 
-// TODO: refactor this, kinda a mess
 export const useAssignmentQueue = () => {
   const {
     showPopoverMsg,
@@ -28,18 +27,27 @@ export const useAssignmentQueue = () => {
   } = useQueueStoreFacade();
 
   const {
+    sessionType,
     assignmentQueue,
     updateQueueItem,
     incrementCurrQueueIndex,
     addToAssignmentQueue,
     removeOldQueueItem,
   } = useAssignmentQueueStoreFacade();
-  const { pronunciationVoice } = useUserSettingsStoreFacade();
+  const {
+    pronunciationVoice,
+    reviewNextItemOnCorrect,
+    lessonNextItemOnCorrect,
+  } = useUserSettingsStoreFacade();
+  const moveToNextOnCorrect =
+    sessionType === "review"
+      ? reviewNextItemOnCorrect
+      : lessonNextItemOnCorrect;
 
-  const displaySRSStatus = (reviewItem: AssignmentQueueItem) => {
-    const endingSRS = reviewItem.ending_srs_stage!;
+  const displaySRSStatus = (queueItem: AssignmentQueueItem) => {
+    const endingSRS = queueItem.ending_srs_stage!;
 
-    const hasIncreased = endingSRS > reviewItem.srs_stage;
+    const hasIncreased = endingSRS > queueItem.srs_stage;
     const endingSRSName = capitalizeWord(getSrsNameBySrsLvl(endingSRS));
 
     // TODO: change to use more specific types that display up or down arrows based on correct/incorrect
@@ -96,7 +104,7 @@ export const useAssignmentQueue = () => {
       incrementCurrQueueIndex();
       setUserAnswer("");
     } else {
-      correctOnFirstSubmit(currReviewItem, userAnswer);
+      correctOnFirstSubmit(currReviewItem, userAnswer, setUserAnswer);
     }
   };
 
@@ -128,7 +136,8 @@ export const useAssignmentQueue = () => {
 
   const correctOnFirstSubmit = (
     currReviewItem: AssignmentQueueItem,
-    userAnswer: string
+    userAnswer: string,
+    setUserAnswer: (value: string) => void
   ) => {
     // only playing if kana vocab or vocab of reading type
     if (
@@ -167,7 +176,14 @@ export const useAssignmentQueue = () => {
       updateQueueItem(updatedReviewItem);
     }
 
-    correctShowResult();
+    if (moveToNextOnCorrect) {
+      correctMoveToNext();
+      incrementCurrQueueIndex();
+      submitChoice();
+      setUserAnswer("");
+    } else {
+      correctShowResult();
+    }
   };
 
   const handleNextCard = (
