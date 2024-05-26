@@ -15,6 +15,8 @@ const useUserSettingsStoreFacade = () => {
     lessonSortOrderOption,
     reviewSortOrderOption,
     reviewBackToBackOption,
+    lessonNextItemOnCorrect,
+    reviewNextItemOnCorrect,
     prefersDarkModeTheme,
     setPronunciationVoice,
     setLessonBatchSize,
@@ -22,6 +24,8 @@ const useUserSettingsStoreFacade = () => {
     setLessonSortOrderOption,
     setReviewSortOrderOption,
     setReviewBackToBackOption,
+    setLessonNextItemOnCorrect,
+    setReviewNextItemOnCorrect,
     setPrefersDarkModeTheme,
   }: UserSettingsState & UserSettingsActions = useUserSettingsStore(
     useShallow((state: UserSettingsState & UserSettingsActions) => ({
@@ -31,6 +35,8 @@ const useUserSettingsStoreFacade = () => {
       lessonSortOrderOption: state.lessonSortOrderOption,
       reviewSortOrderOption: state.reviewSortOrderOption,
       reviewBackToBackOption: state.reviewBackToBackOption,
+      lessonNextItemOnCorrect: state.lessonNextItemOnCorrect,
+      reviewNextItemOnCorrect: state.reviewNextItemOnCorrect,
       prefersDarkModeTheme: state.prefersDarkModeTheme,
       setPronunciationVoice: state.setPronunciationVoice,
       setLessonBatchSize: state.setLessonBatchSize,
@@ -38,6 +44,8 @@ const useUserSettingsStoreFacade = () => {
       setLessonSortOrderOption: state.setLessonSortOrderOption,
       setReviewSortOrderOption: state.setReviewSortOrderOption,
       setReviewBackToBackOption: state.setReviewBackToBackOption,
+      setLessonNextItemOnCorrect: state.setLessonNextItemOnCorrect,
+      setReviewNextItemOnCorrect: state.setReviewNextItemOnCorrect,
       setPrefersDarkModeTheme: state.setPrefersDarkModeTheme,
     }))
   );
@@ -49,6 +57,8 @@ const useUserSettingsStoreFacade = () => {
     lessonSortOrderOption,
     reviewSortOrderOption,
     reviewBackToBackOption,
+    lessonNextItemOnCorrect,
+    reviewNextItemOnCorrect,
     prefersDarkModeTheme,
     setPronunciationVoice,
     setLessonBatchSize,
@@ -56,6 +66,8 @@ const useUserSettingsStoreFacade = () => {
     setLessonSortOrderOption,
     setReviewSortOrderOption,
     setReviewBackToBackOption,
+    setLessonNextItemOnCorrect,
+    setReviewNextItemOnCorrect,
     setPrefersDarkModeTheme,
     // exporting to check that state is reset properly
     initialState,
