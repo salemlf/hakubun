@@ -57,7 +57,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.getAppVersion.outputs.version }}
         run: |
-          gh release create "$tag" --notes "${{steps.generate-release-notes.outputs.changelog}}" --prerelease
+          gh release create "$tag" \
+          --prerelease \
+          --notes "${{steps.generate-release-notes.outputs.changelog}}"
 
   deploy-ios-beta:
     needs: create-prerelease
