@@ -1,21 +1,23 @@
 import { faker } from "@faker-js/faker";
-import { renderWithRouter } from "../../testing/test-utils";
-import { AssignmentSubmitInfo } from "../../types/AssignmentQueueTypes";
+import {
+  act,
+  renderHook,
+  renderWithRouter,
+  screen,
+} from "../../testing/test-utils";
+import {
+  AssignmentQueueItem,
+  AssignmentSubmitInfo,
+} from "../../types/AssignmentQueueTypes";
 import AssignmentQueueCards, { CardProps } from ".";
-
-// const mockReviewAndLessonResponses = (
-//   assignmentUpdated: AssignmentQueueItem
-// ) => {
-//   const reviewUpdateResponse = fakeReviewUpdatedResponse(
-//     assignmentUpdated.subject_id,
-//     assignmentUpdated.object,
-//     assignmentUpdated.assignment_id
-//   );
-//   server.use(
-//     http.post(reviewsEndpoint, () => {
-//       return HttpResponse.json(reviewUpdateResponse);
-//     })
-//   );
+import { generateRandomQueueItems } from "../../testing/mocks/data-generators/assignmentQueueGenerator";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
+import { mockReviewUpdateResponse } from "../../testing/mocks/api-responses/review-responses";
+import {
+  getAnswersForMeaningReviews,
+  getAnswersForReadingReviews,
+} from "../../services/AssignmentQueueService/AssignmentQueueService";
+import { useSubmittedQueueUpdate } from "../../hooks/assignments/useSubmittedQueueUpdate";
 
 //   const correspondingSubj = createCorrespondingSubject(
 //     assignmentUpdated.subject_id,
@@ -39,12 +41,14 @@ const settingTypes = ["reviews", "lessons"] as const;
 const mockCallbackParams = (submitInfo: AssignmentSubmitInfo) => {
   const submitItemsMock = vi.fn();
   const submitBatchMock = vi.fn().mockResolvedValue(submitInfo);
-  const updateSubmittedMock = vi.fn();
+  const { result: submittedQueueUpdateResult } = renderHook(() =>
+    useSubmittedQueueUpdate()
+  );
 
   return {
     submitItems: submitItemsMock,
     submitBatch: submitBatchMock,
-    updateSubmitted: updateSubmittedMock,
+    updateSubmitted: submittedQueueUpdateResult.current,
   };
 };
 
@@ -60,6 +64,27 @@ const getComponentProps = (page: "reviews" | "lessons") => {
     currPath: "/lessons/quiz" as const,
     settingsType: "lesson" as const,
   };
+};
+
+const getCorrectAnswer = (queueItem: AssignmentQueueItem): string => {
+  const reviewType = queueItem.review_type as string;
+  if (reviewType === "reading") {
+    const readingAnswers = getAnswersForReadingReviews({
+      reviewItem: queueItem,
+      acceptedAnswersOnly: true,
+    });
+
+    const randomReadingAnswer = faker.helpers.arrayElement(readingAnswers);
+    return randomReadingAnswer.reading;
+  } else {
+    const meaningAnswer = getAnswersForMeaningReviews({
+      reviewItem: queueItem,
+      acceptedAnswersOnly: true,
+    });
+
+    const randomMeaningAnswer = faker.helpers.arrayElement(meaningAnswer);
+    return randomMeaningAnswer.meaning;
+  }
 };
 
 test("AssignmentQueueCards renders", () => {
@@ -79,46 +104,45 @@ test("AssignmentQueueCards renders", () => {
   expect(baseElement).toBeDefined();
 });
 
-// TODO: finish this test, user will enter answer and check it's been marked as correct
-test.todo("Correct answer is marked as correct", () => {
-  // const selectedSettingType = faker.helpers.arrayElement(settingTypes);
-  // const componentProps = getComponentProps(selectedSettingType);
-  // const queueItems = generateRandomQueueItems({
-  //   numItems: 10,
-  //   queueProgressState: "not_started",
-  // });
-  // const { result: assignmentQueueStoreResult } = renderHook(() =>
-  //   useAssignmentQueueStore()
-  // );
-  // act(() =>
-  //   assignmentQueueStoreResult.current.setAssignmentQueueData(
-  //     queueItems,
-  //     componentProps.settingsType
-  //   )
-  // );
-  // const queueItem = queueItems[0];
-  // mockReviewAndLessonResponses(queueItem);
-  // // *testing
-  // console.log(
-  //   "🚀 ~ file: AssignmentQueueCards.test.tsx:115 ~ test ~ queueItem:",
-  //   queueItem
-  // );
-  // // *testing
-  // const { result: queueStoreResult } = renderHook(() => useQueueStoreFacade());
-  // const { result: assignmentSubmitStoreResult } = renderHook(() =>
-  //   useAssignmentSubmitStoreFacade()
-  // );
-  // const { result: assignmentQueueResult } = renderHook(() =>
-  //   useAssignmentQueue()
-  // );
-  // // const { handleNextCard, handleRetryCard } = useAssignmentQueue();
-  // const queueSubmitInfo: AssignmentSubmitInfo = {
-  //   assignmentData: assignmentQueueStoreResult.current.assignmentQueue,
-  //   submitResponses: [],
-  //   assignmentsWithErrs: [],
-  // };
-  // const callbackParams = mockCallbackParams(queueSubmitInfo);
-  // const { user } = renderComponent(callbackParams, componentProps.currPath);
+// TODO: finish this test, need to mock framer motion to get it working
+test.todo("Correct review answer is marked as correct", async () => {
+  const componentProps = getComponentProps("reviews");
+  const queueItems = generateRandomQueueItems({
+    numItems: 10,
+    queueProgressState: "not_started",
+  });
+  const { result: assignmentQueueStoreResult } = renderHook(() =>
+    useAssignmentQueueStoreFacade()
+  );
+  act(() =>
+    assignmentQueueStoreResult.current.setAssignmentQueueData(
+      queueItems,
+      componentProps.settingsType
+    )
+  );
+  const queueItem = queueItems[0];
+  mockReviewUpdateResponse(queueItem);
+
+  const queueSubmitInfo: AssignmentSubmitInfo = {
+    assignmentData: assignmentQueueStoreResult.current.assignmentQueue,
+    submitResponses: [],
+    assignmentsWithErrs: [],
+  };
+  const callbackParams = mockCallbackParams(queueSubmitInfo);
+  const { user } = renderComponent(callbackParams, componentProps.currPath);
+
+  const correctAnswer = getCorrectAnswer(queueItem);
+  const answerInput = await screen.findByTestId("wanakana-input");
+  await user.type(answerInput, correctAnswer);
+
+  expect(answerInput).toHaveValue(correctAnswer);
+
+  // press twice to submit answer and move to next
+  await user.keyboard("[F12]");
+  await user.keyboard("[F12]");
+
+  // TODO: check that the answer has been reviewed and marked as correct
+  // const firstInQueue = assignmentQueueStoreResult.current.assignmentQueue[0];
 });
 
 test.todo(
@@ -134,6 +158,7 @@ const renderComponent = (
       path: currPath,
       element: <AssignmentQueueCards {...props} />,
     },
+    defaultPath: currPath,
     mockHome: true,
   });
 };
