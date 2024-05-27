@@ -84,7 +84,6 @@ const CopyContentBtn = styled(Button)`
   border: 1px solid black;
   gap: 4px;
   font-size: 0.875rem;
-  color: #000;
 `;
 
 const ErrAndCopyBtnContainer = styled.div`
@@ -164,6 +163,7 @@ function ErrorOccurred() {
           <ErrAndCopyBtnContainer>
             <h3>{errorMessage}</h3>
             <CopyContentBtn
+              // className="base-button"
               onPress={() =>
                 copyToClipboard(
                   `${APP_VERSION}\n${errorMessage}\n${stackTrace}`
