@@ -59,7 +59,10 @@ jobs:
         run: |
           gh release create "$tag" \
           --prerelease \
-          --notes "${{steps.generate-release-notes.outputs.changelog}}"
+          --notes "$(cat << 'EOM'
+          ${{steps.generate-release-notes.outputs.changelog}}
+          EOM
+          )"
 
   deploy-ios-beta:
     needs: create-prerelease
