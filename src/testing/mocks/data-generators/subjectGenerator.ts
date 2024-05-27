@@ -1,4 +1,5 @@
 import { faker, fakerJA } from "@faker-js/faker";
+import { isKana } from "wanakana";
 import { getRandomIntArr } from "../../../utils";
 import { ALL_SUBJECT_TYPES, PARTS_OF_SPEECH } from "../../../constants";
 import {
@@ -59,7 +60,7 @@ export const generateSubject = ({
 
   const charImages = hasCharImages ? generateSubjCharImages() : undefined;
 
-  const jaChars = fakerJA.word.words({ count: { min: 1, max: 8 } });
+  const jaChars = fakerJA.lorem.words({ min: 1, max: 8 });
   const subjReadings = hasReadings ? generateSubjReadings() : undefined;
 
   const readingsForMockAudio = getReadingsForMockAudio(
@@ -319,6 +320,16 @@ const generateSubjectMeanings = (): SubjectMeaning[] => {
   return mockSubjMeaningsWithMinPrimaryAndAccepted;
 };
 
+const createKanaWord = (): string => {
+  let isKanaWord = false;
+  let kanaWord = "";
+  while (!isKanaWord) {
+    kanaWord = fakerJA.lorem.words({ min: 1, max: 4 });
+    isKanaWord = isKana(kanaWord);
+  }
+  return kanaWord;
+};
+
 const generateSubjReadings = (): SubjectReading[] => {
   const numReadings = faker.number.int({ min: 1, max: 5 });
   const mockSubjReadings: SubjectReading[] = Array.from(
@@ -328,7 +339,7 @@ const generateSubjReadings = (): SubjectReading[] => {
         type: generateReadingType(),
         primary: faker.datatype.boolean(0.2),
         accepted_answer: faker.datatype.boolean(0.8),
-        reading: fakerJA.word.words({ count: { min: 1, max: 4 } }),
+        reading: createKanaWord(),
       };
     }
   );
@@ -489,7 +500,7 @@ const generateContextSentences = (): ContextSentence[] => {
     () => {
       return {
         en: faker.word.words({ count: { min: 7, max: 15 } }),
-        ja: fakerJA.word.words({ count: { min: 5, max: 10 } }),
+        ja: fakerJA.lorem.words({ min: 5, max: 10 }),
       };
     }
   );

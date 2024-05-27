@@ -3,6 +3,8 @@ import { ASSIGNMENT_BATCH_SIZES } from "../../constants";
 import Card from "../Card";
 import BatchSizeOption from "../BatchSizeOption";
 import SortOrderOption from "../SortOrderOption";
+import Label from "../Label";
+import Switch from "../Switch";
 import { SettingRow } from "../../styles/BaseStyledComponents";
 
 function LessonUserSettings() {
@@ -11,6 +13,8 @@ function LessonUserSettings() {
     setLessonBatchSize,
     lessonSortOrderOption,
     setLessonSortOrderOption,
+    lessonNextItemOnCorrect,
+    setLessonNextItemOnCorrect,
   } = useUserSettingsStoreFacade();
 
   return (
@@ -32,6 +36,19 @@ function LessonUserSettings() {
           sortOption={lessonSortOrderOption}
           setSortOption={setLessonSortOrderOption}
           labelId="user-default-lesson-sort-order-selector"
+        />
+      </SettingRow>
+      <SettingRow>
+        <Label
+          labelText="Go to Next Item on Correct Answer"
+          idOfControl="user-default-lesson-next-on-correct-switch"
+        />
+        <Switch
+          isSwitchedOn={lessonNextItemOnCorrect}
+          setIsSwitchedOn={setLessonNextItemOnCorrect}
+          labelId="user-default-lesson-next-on-correct-switch"
+          size="medium"
+          showText={true}
         />
       </SettingRow>
     </Card>
