@@ -1,0 +1,13 @@
+Bug Fixes
+
+- Retry Delay Configuration for Rate Limiting
+	- Author: salemlf
+
+Styling
+
+- Show Context Sentence Translation Button Size
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.2.2-beta
+
