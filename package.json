@@ -1,6 +1,6 @@
 {
   "name": "hakubun",
-  "version": "2.2.2-beta",
+  "version": "2.3.0-beta",
   "private": true,
   "type": "module",
   "dependencies": {
