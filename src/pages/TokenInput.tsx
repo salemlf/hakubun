@@ -148,7 +148,6 @@ const TokenAndBtnContainer = styled.div`
 const ShowHideButton = styled(Button)`
   border-radius: 0.5rem;
   padding: 5px;
-  color: black;
   margin-left: 10px;
 
   &:focus-visible {
