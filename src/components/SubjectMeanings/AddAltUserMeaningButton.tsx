@@ -22,7 +22,6 @@ const AddButton = styled.button`
   border-radius: 16px;
   border: 2px solid black;
   font-size: 0.9rem;
-  color: white;
 
   user-select: text;
   -webkit-user-select: text;
