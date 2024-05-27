@@ -10,8 +10,8 @@ type ButtonContainerProps = {
 
 const ButtonContainer = styled.button<ButtonContainerProps>`
   background-color: ${({ backgroundcolor }) =>
-    backgroundcolor ? `${backgroundcolor}` : "var(--button-color)"};
-  color: ${({ color }) => (color ? `${color}` : "var(--text-color)")};
+    backgroundcolor && `${backgroundcolor}`};
+  color: ${({ color }) => color && `${color}`};
 `;
 
 interface Props extends AriaButtonProps {
@@ -26,7 +26,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
   (
     {
       backgroundColor = "var(--button-color)",
-      color = "var(--text-color)",
+      color = "var(--button-text-color)",
       className,
       style,
       disabled,
@@ -46,12 +46,12 @@ const Button = forwardRef<HTMLButtonElement, Props>(
 
     return (
       <ButtonContainer
+        {...buttonProps}
+        className={className}
         backgroundcolor={backgroundColor}
         color={color}
-        {...buttonProps}
         ref={ref}
         tabIndex={0}
-        className={className}
         style={style}
         disabled={disabled}
       >
