@@ -1,0 +1,13 @@
+Features/Enhancements
+
+- Setting to Proceed to Next Queue Item After Correct Answer
+	- Author: salemlf
+
+Styling
+
+- Default Button Color Styling Fix
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.3.0-beta
+
