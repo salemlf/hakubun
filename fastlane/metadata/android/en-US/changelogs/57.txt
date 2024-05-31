@@ -1,0 +1,10 @@
+Styling
+
+- Widths for Switch Component Increased
+	- Author: salemlf
+- Placeholders No Longer Displaying on Top of Search Box
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.3.1-beta
+
