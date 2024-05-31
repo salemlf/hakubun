@@ -3,7 +3,7 @@ import { SwitchSize, SwitchSizeMapValue } from "./Switch.types";
 const switchSizeMap: { [index: string]: SwitchSizeMapValue } = {
   small: {
     rootSize: {
-      width: "58px",
+      width: "70px",
       height: "30px",
     },
     toggleSize: {
@@ -13,7 +13,7 @@ const switchSizeMap: { [index: string]: SwitchSizeMapValue } = {
   },
   medium: {
     rootSize: {
-      width: "68px",
+      width: "82px",
       height: "37px",
     },
     toggleSize: {
@@ -23,7 +23,7 @@ const switchSizeMap: { [index: string]: SwitchSizeMapValue } = {
   },
   large: {
     rootSize: {
-      width: "90px",
+      width: "110px",
       height: "49px",
     },
     toggleSize: {
