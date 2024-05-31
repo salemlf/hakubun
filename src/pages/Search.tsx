@@ -4,6 +4,7 @@ import Fuse from "fuse.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDebounceValue } from "usehooks-ts";
 import { flattenSearchResults } from "../services/MiscService/MiscService";
+import { useTabBarHeight } from "../contexts/TabBarHeightContext";
 import { useAllSubjects } from "../hooks/subjects/useAllSubjects";
 import { useStickyState } from "../hooks/useStickyState";
 import { SubjectWideButton } from "../components/SubjectWideBtnList";
@@ -14,19 +15,19 @@ import ClearIcon from "../images/clear.svg?react";
 import ThinkingLogo from "../images/logo-thinking.svg";
 import QuestionLogo from "../images/logo-question.svg";
 import LogoExclamation from "../images/logo-exclamation.svg";
-import {
-  AbsoluteCenterContainer,
-  ContentWithTabBar,
-} from "../styles/BaseStyledComponents";
+import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-const Content = styled(ContentWithTabBar)`
-  display: flex;
-  flex-direction: column;
+type ContentProps = {
+  $tabBarHeight: string;
+};
+
+const Content = styled(ContentWithTabBar)<ContentProps>`
   padding: 12px;
-  /* !added */
-  height: 100vh;
-  /* !added */
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding-bottom: ${({ $tabBarHeight }) => `calc(${$tabBarHeight} + 20px)`};
+  height: 100dvh;
 `;
 
 const ClearButton = styled(Button)`
@@ -77,12 +78,9 @@ const List = styled(IonList)`
   padding: 8px 0;
 `;
 
-const LogoSearchOutcomeContainer = styled(AbsoluteCenterContainer)`
+const LogoSearchOutcomeContainer = styled.div`
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 0 16px;
+  padding: 10px 16px;
   text-align: center;
 
   h2 {
@@ -101,6 +99,7 @@ export const Search = () => {
   const [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useStickyState("", "search-page-query");
   const [debouncedQuery] = useDebounceValue(query, 1800);
+  const { tabBarHeight } = useTabBarHeight();
 
   const options = {
     threshold: 0.1,
@@ -114,6 +113,12 @@ export const Search = () => {
     fetchNextPage,
     hasNextPage,
   } = useAllSubjects();
+
+  const showPlaceholder =
+    allSubjectsLoading ||
+    (!allSubjectsLoading &&
+      (debouncedQuery === "" ||
+        (results.length === 0 && debouncedQuery !== "")));
 
   useEffect(() => {
     if (allSubjectsData) {
@@ -138,62 +143,29 @@ export const Search = () => {
   };
 
   return (
-    <>
-      <Content>
-        <Form>
-          <SearchBar type="search" value={query} onChange={handleChange} />
-          <ClearButton
-            backgroundColor="var(--ion-color-primary)"
-            onPress={() => setQuery("")}
-          >
-            <SvgIcon icon={<ClearIcon />} width="1.75em" height="1.75em" />
-          </ClearButton>
-        </Form>
-        <AnimatePresence>
-          {debouncedQuery === "" && !allSubjectsLoading && (
-            <LogoSearchOutcomeContainer
-              as={motion.div}
-              initial="initial"
-              animate="show"
-              exit="hide"
-              variants={crabigatorVariants}
-              transition={{ duration: 0.5 }}
-            >
-              <h2>Try Searching for Something!</h2>
-              <img src={QuestionLogo} alt="Confused Crabigator" />
-            </LogoSearchOutcomeContainer>
-          )}
-        </AnimatePresence>
-        {!allSubjectsLoading ? (
-          results.length === 0 && debouncedQuery !== "" ? (
-            <LogoSearchOutcomeContainer
-              as={motion.div}
-              initial="initial"
-              animate="show"
-              exit="hide"
-              variants={crabigatorVariants}
-              transition={{ duration: 0.5 }}
-            >
-              <h2>No Results Found!</h2>
-              <img
-                src={LogoExclamation}
-                alt="Unhappy crabigator looking upwards"
-              />
-            </LogoSearchOutcomeContainer>
-          ) : (
-            <List>
-              {results.map((subject: any) => (
-                <SubjectWideButton
-                  subject={subject}
-                  key={subject.id}
-                  findImages={true}
-                />
-              ))}
-            </List>
-          )
-        ) : (
+    <Content
+      $tabBarHeight={tabBarHeight}
+      as={motion.main}
+      style={
+        showPlaceholder ? { alignItems: "center" } : { alignItems: "stretch" }
+      }
+      layoutScroll
+    >
+      <Form>
+        <SearchBar type="search" value={query} onChange={handleChange} />
+        <ClearButton
+          backgroundColor="var(--ion-color-primary)"
+          onPress={() => setQuery("")}
+        >
+          <SvgIcon icon={<ClearIcon />} width="1.75em" height="1.75em" />
+        </ClearButton>
+      </Form>
+      <AnimatePresence>
+        {allSubjectsLoading ? (
           <LogoSearchOutcomeContainer
             as={motion.div}
+            key="loading-placeholder"
+            layout
             initial="initial"
             animate="show"
             exit="hide"
@@ -203,8 +175,63 @@ export const Search = () => {
             <h2>Loading...</h2>
             <img src={ThinkingLogo} alt="Crabigator thinking" />
           </LogoSearchOutcomeContainer>
+        ) : (
+          <>
+            {debouncedQuery === "" && (
+              <LogoSearchOutcomeContainer
+                layout
+                key="no-query-placeholder"
+                as={motion.div}
+                initial="initial"
+                animate="show"
+                exit="hide"
+                variants={crabigatorVariants}
+                transition={{ duration: 0.5 }}
+              >
+                <h2>Try Searching for Something!</h2>
+                <img src={QuestionLogo} alt="Confused Crabigator" />
+              </LogoSearchOutcomeContainer>
+            )}
+            {results.length === 0 && debouncedQuery !== "" ? (
+              <LogoSearchOutcomeContainer
+                key="no-results-placeholder"
+                layout
+                as={motion.div}
+                initial="initial"
+                animate="show"
+                exit="hide"
+                variants={crabigatorVariants}
+                transition={{ duration: 0.5 }}
+                style={{ alignSelf: "center" }}
+              >
+                <h2>No Results Found!</h2>
+                <img
+                  src={LogoExclamation}
+                  alt="Unhappy crabigator looking upwards"
+                />
+              </LogoSearchOutcomeContainer>
+            ) : (
+              <List
+                key="results-found"
+                as={motion.div}
+                layoutScroll
+                initial="initial"
+                animate="show"
+                exit="hide"
+                transition={{ duration: 0.5 }}
+              >
+                {results.map((subject: any) => (
+                  <SubjectWideButton
+                    subject={subject}
+                    key={subject.id}
+                    findImages={true}
+                  />
+                ))}
+              </List>
+            )}
+          </>
         )}
-      </Content>
-    </>
+      </AnimatePresence>
+    </Content>
   );
 };
