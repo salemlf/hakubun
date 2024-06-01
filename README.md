@@ -54,27 +54,27 @@ Please [email me](mailto:salemlfenn@gmail.com) if you have any questions or conc
 
 ### Home
 
-<img src="./resources/app-screenshots/home/home-page.jpg" width="300" alt="home page" /> <img src="./resources/app-screenshots/home/subject-popover.jpg" width="300" alt="subject popover" /> <img src="./resources/app-screenshots/home/review-forecast.jpg" width="300" alt="review forecast" />
+<img src="./resources/app-screenshots/home/home-page.jpg" width="200" alt="home page" /> <img src="./resources/app-screenshots/home/subject-popover.jpg" width="200" alt="subject popover" /> <img src="./resources/app-screenshots/home/review-forecast.jpg" width="200" alt="review forecast" />
 
 ### Lessons
 
-<img src="./resources/app-screenshots/lessons/settings-basic.jpg" width="300" alt="basic lesson settings" /> <img src="./resources/app-screenshots/lessons/settings-advanced.jpg" width="300" alt="advanced lesson settings" /> <img src="./resources/app-screenshots/lessons/settings-advanced-filters.jpg" width="300" alt="advanced lesson settings with filters" /> <img src="./resources/app-screenshots/lessons/lesson-quiz.jpg" width="300" alt="lesson quiz" /> <img src="./resources/app-screenshots/lessons/lesson-session.jpg" width="300" alt="lesson session, card with 'correct' popover after user input" /> <img src="./resources/app-screenshots/lessons/lesson-summary.jpg" width="300" alt="lesson summary, shows user what items they learned" />
+<img src="./resources/app-screenshots/lessons/settings-basic.jpg" width="200" alt="basic lesson settings" /> <img src="./resources/app-screenshots/lessons/settings-advanced.jpg" width="200" alt="advanced lesson settings" /> <img src="./resources/app-screenshots/lessons/settings-advanced-filters.jpg" width="200" alt="advanced lesson settings with filters" /> <img src="./resources/app-screenshots/lessons/lesson-quiz.jpg" width="200" alt="lesson quiz" /> <img src="./resources/app-screenshots/lessons/lesson-session.jpg" width="200" alt="lesson session, card with 'correct' popover after user input" /> <img src="./resources/app-screenshots/lessons/lesson-summary.jpg" width="200" alt="lesson summary, shows user what items they learned" />
 
 ### Reviews
 
-<img src="./resources/app-screenshots/reviews/settings-basic.jpg" width="300" alt="basic review settings" /> <img src="./resources/app-screenshots/reviews/settings-advanced-filters.jpg" width="300" alt="advanced review settings with filters" /> <img src="./resources/app-screenshots/reviews/review-session-correct.jpg" width="300" alt="correct review item after user input" /> <img src="./resources/app-screenshots/reviews/retry-item.jpg" width="300" alt="retrying a review after a bad typo" /> <img src="./resources/app-screenshots/reviews/next-item.jpg" width="300" alt="moving to the next item in review queue" /> <img src="./resources/app-screenshots/reviews/subject-info.jpg" width="300" alt="Viewing subject info in bottom sheet for subject during review" /> <img src="./resources/app-screenshots/reviews/end-review-dialog.jpg" width="300" alt="dialog with cancel, end session, and wrap up options for when user attempts to leave page before completing all reviews" /> <img src="./resources/app-screenshots/reviews/wrapping-up-overlay.jpg" width="300" alt="overlay of checkered flag displaying after 'wrap up' is selected" /> <img src="./resources/app-screenshots/reviews/review-summary.jpg" width="300" alt="summary of reviews items user got correct and incorrect" />
+<img src="./resources/app-screenshots/reviews/settings-basic.jpg" width="200" alt="basic review settings" /> <img src="./resources/app-screenshots/reviews/settings-advanced-filters.jpg" width="200" alt="advanced review settings with filters" /> <img src="./resources/app-screenshots/reviews/review-session-correct.jpg" width="200" alt="correct review item after user input" /> <img src="./resources/app-screenshots/reviews/retry-item.jpg" width="200" alt="retrying a review after a bad typo" /> <img src="./resources/app-screenshots/reviews/next-item.jpg" width="200" alt="moving to the next item in review queue" /> <img src="./resources/app-screenshots/reviews/subject-info.jpg" width="200" alt="Viewing subject info in bottom sheet for subject during review" /> <img src="./resources/app-screenshots/reviews/end-review-dialog.jpg" width="200" alt="dialog with cancel, end session, and wrap up options for when user attempts to leave page before completing all reviews" /> <img src="./resources/app-screenshots/reviews/wrapping-up-overlay.jpg" width="200" alt="overlay of checkered flag displaying after 'wrap up' is selected" /> <img src="./resources/app-screenshots/reviews/review-summary.jpg" width="200" alt="summary of reviews items user got correct and incorrect" />
 
 ### Subjects
 
-<img src="./resources/app-screenshots/subjects/subjects-levels.jpg" width="300" alt="subjects page with radicals, kanji, and vocabulary where you can browse the levels" /> <img src="./resources/app-screenshots/subjects/subjects-level-vocab.jpg" width="300" alt="subjects page scrolled down to view vocabulary for level" />
+<img src="./resources/app-screenshots/subjects/subjects-levels.jpg" width="200" alt="subjects page with radicals, kanji, and vocabulary where you can browse the levels" /> <img src="./resources/app-screenshots/subjects/subjects-level-vocab.jpg" width="200" alt="subjects page scrolled down to view vocabulary for level" />
 
 ### Search
 
-<img src="./resources/app-screenshots/search/empty-input.jpg" width="300" alt="empty search box with Hakubun crabigator asking user to search for something" /> <img src="./resources/app-screenshots/search/no-results.jpg" width="300" alt="search box with nonsense input, Hakubun crabigator saying 'no results' while looking distressed" /> <img src="./resources/app-screenshots/search/results.jpg" width="300" alt="search box with 'cat' input and long list of results to choose from" />
+<img src="./resources/app-screenshots/search/empty-input.jpg" width="200" alt="empty search box with Hakubun crabigator asking user to search for something" /> <img src="./resources/app-screenshots/search/no-results.jpg" width="200" alt="search box with nonsense input, Hakubun crabigator saying 'no results' while looking distressed" /> <img src="./resources/app-screenshots/search/results.jpg" width="200" alt="search box with 'cat' input and long list of results to choose from" />
 
 ### Subject Details
 
-<img src="./resources/app-screenshots/subject-details/vocab-and-user-meaning.jpg" width="300" alt="subject details page for vocabulary with user-added meaning" /> <img src="./resources/app-screenshots/subject-details/vocab-context-sentences.jpg" width="300" alt="subject details page for vocabulary, showing context sentences with translations that can be hidden and shown" /> <img src="./resources/app-screenshots/subject-details/kanji-entering-user-note.jpg" width="300" alt="subject details page for kanji with user entering their own meaning note" /> <img src="./resources/app-screenshots/subject-details/kanji-reading-user-note.jpg" width="300" alt="subject details page for kanji with saved meaning note by user, displaying reading section below" />
+<img src="./resources/app-screenshots/subject-details/vocab-and-user-meaning.jpg" width="200" alt="subject details page for vocabulary with user-added meaning" /> <img src="./resources/app-screenshots/subject-details/vocab-context-sentences.jpg" width="200" alt="subject details page for vocabulary, showing context sentences with translations that can be hidden and shown" /> <img src="./resources/app-screenshots/subject-details/kanji-entering-user-note.jpg" width="200" alt="subject details page for kanji with user entering their own meaning note" /> <img src="./resources/app-screenshots/subject-details/kanji-reading-user-note.jpg" width="200" alt="subject details page for kanji with saved meaning note by user, displaying reading section below" />
 
 ## 🏆 Contributing
 
@@ -136,11 +136,11 @@ You can then select the type of iOS device you'd like to use as a simulator
 
 - If you've never done this before, you'll likely have to the make sure "Show features for web developers" is enabled under Safari's Settings
 
-  <img src="./resources/debugging-screenshots/safari-web-dev-settings.png" width="300" alt="Safari settings displaying Show features for web developers setting" />
+  <img src="./resources/debugging-screenshots/safari-web-dev-settings.png" width="200" alt="Safari settings displaying Show features for web developers setting" />
 
 - Open Safari and click the iOS simulator for Hakubun under Develop -> iOS device you chose as simulator -> IP address displayed. _If this is not displayed, make sure you followed the previous step. If it's still not displayed, opening Xcode can sometimes make it appear_
-  <img src="./resources/debugging-screenshots/safari-select-ios-simulator.png" width="300" alt="selecting iOS simulator" />
-  <img src="./resources/debugging-screenshots/safari-inspecting-ios-device.png" width="300" alt="inspecting iOS simulator" />
+  <img src="./resources/debugging-screenshots/safari-select-ios-simulator.png" width="200" alt="selecting iOS simulator" />
+  <img src="./resources/debugging-screenshots/safari-inspecting-ios-device.png" width="200" alt="inspecting iOS simulator" />
 
 #### Android
 
@@ -152,7 +152,7 @@ npm run android-live-reload
 
 - In Chrome, go to chrome://inspect/#devices
 - An address should be available under "Remote Target", you can click on "inspect" to bring up a web inspector. This can be used to inspect elements and view console output
-  <img src="./resources/debugging-screenshots/chrome-remote-targets.png" width="300" alt="remote targets in Chrome" /> <img src="./resources/debugging-screenshots/chrome-web-inspector.png" width="300" alt="web inspector in Chrome for Android device" />
+  <img src="./resources/debugging-screenshots/chrome-remote-targets.png" width="200" alt="remote targets in Chrome" /> <img src="./resources/debugging-screenshots/chrome-web-inspector.png" width="200" alt="web inspector in Chrome for Android device" />
 
 ## Testing
 
