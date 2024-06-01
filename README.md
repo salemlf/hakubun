@@ -1,16 +1,36 @@
-# Hakubun
+<div align="center">
+  <a href="https://github.com/salemlf/hakubun">
+    <img src="./src/images/logo.svg" alt="Hakubun Logo - Crabigator creature with alligator head and crab arm" width="85" height="85">
+  </a>
 
-A cross-platform, third-party Japanese Study App for Wanikani
+  <h1 style="font-size: 2.5rem" align="center">Hakubun</h3>
+
+  <p align="center">
+    A cross-platform, third-party Japanese Study App for Wanikani
+  </p>
+  <p style="display: flex; align-items: center; flex-wrap: wrap; justify-content: center; margin: 0">
+    <a href="https://github.com/salemlf/hakubun/issues/new?labels=bug&template=bug-report.md">Report Bug 🐛</a>
+    <span style="padding: 0 5px; font-size: 2rem">·</span>
+    <a href="https://github.com/salemlf/hakubun/issues/new?labels=enhancement&template=feature-request.md">Request Feature 🚀</a>  
+    <span style="padding: 0 5px; font-size: 2rem">·</span>
+    <a href="https://play.google.com/store/apps/details?id=io.hakubun.app">Android Beta App <img src="./resources/play-store-icon.svg" width="12" alt="Android play store icon" /></a>
+    <span style="padding: 0 5px; font-size: 2rem">·</span>
+    <a href="https://testflight.apple.com/join/8ajt7uYv">iOS Beta App <img src="./resources/app-store-icon.svg" width="12" alt="Apple app store icon" /></a>
+  </p>
+</div>
 
 ## Overview
 
-Hakubun is a Japanese learning app that can be used with Wanikani, an SRS-based Japanese learning service. Learn and review radicals, kanji, and vocabulary, easily search for subjects, and explore content across levels.
+Hakubun is a Japanese learning app that can be used with [Wanikani](https://www.wanikani.com/), an SRS-based Japanese learning service. Learn and review radicals, kanji, and vocabulary, easily search for subjects, and explore content across levels.
 
-## Download the App
+## Download the App :zap:
 
-The iOS and web versions are still being tested, but the alpha version Android is [available on the Play Store through early access!](https://play.google.com/store/apps/details?id=io.hakubun.app)
+The web version is still being tested, but the beta versions of both Android and iOS are available to download!
 
-### Interface
+- [Android App on Play Store](https://play.google.com/store/apps/details?id=io.hakubun.app), available through early access
+- [iOS App on Testflight](https://testflight.apple.com/join/8ajt7uYv)
+
+### Interface :iphone:
 
 - Use swipe gestures or keyboard shortcuts to submit or retry answers
 - Cross-platform, web-based app with native-like interactions and animations
