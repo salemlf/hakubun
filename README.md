@@ -23,11 +23,14 @@
 
 Hakubun is a Japanese learning app that can be used with [Wanikani](https://www.wanikani.com/), an SRS-based Japanese learning service. Learn and review radicals, kanji, and vocabulary, easily search for subjects, and explore content across levels.
 
-## Download the App
+## Download the App :zap:
 
-The iOS and web versions are still being tested, but the alpha version Android is [available on the Play Store through early access!](https://play.google.com/store/apps/details?id=io.hakubun.app)
+The web version is still being tested, but the beta versions of both Android and iOS are available to download!
 
-### Interface
+- [Android App on Play Store](https://play.google.com/store/apps/details?id=io.hakubun.app), available through early access
+- [iOS App on Testflight](https://testflight.apple.com/join/8ajt7uYv)
+
+### Interface :iphone:
 
 - Use swipe gestures or keyboard shortcuts to submit or retry answers
 - Cross-platform, web-based app with native-like interactions and animations
