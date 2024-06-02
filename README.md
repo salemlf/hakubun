@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/salemlf/hakubun">
-    <img src="./src/images/logo.svg" alt="Hakubun Logo - Crabigator creature with alligator head and crab arm" width="85" height="85">
+    <img src="./src/images/logo.svg" alt="Hakubun Logo - Crabigator creature with alligator head and crab arm" width="100" height="100">
   </a>
 
   <h1 style="font-size: 2.5rem" align="center">Hakubun</h3>
