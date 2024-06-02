@@ -1,9 +1,10 @@
 ---
-name: "Feature Request"
-about: "Suggest an idea"
-title: ""
+name: Feature Request
+about: Suggest an idea
+title: ''
 labels: enhancement
-assignees: ""
+assignees: ''
+
 ---
 
 ## Describe the Feature :rocket:

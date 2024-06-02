@@ -1,9 +1,10 @@
 ---
-name: "Bug Report"
-about: "Report an issue you've encountered"
-title: ""
+name: Bug Report
+about: Report an issue you've encountered
+title: ''
 labels: bug
-assignees: ""
+assignees: ''
+
 ---
 
 ## Describe the Bug :bug:
@@ -12,7 +13,7 @@ _A clear and concise description of what the bug is_
 
 ### Steps to Reproduce :paw_prints:
 
-_Steps to reproduce the behavior_
+_How to reproduce the bug/behavior you're encountering_
 
 ### Expected Behavior :relieved:
 
@@ -20,9 +21,12 @@ _A clear and concise description of what you expected to happen_
 
 ### Environment :computer:
 
-- OS: [e.g. iOS, Android, etc.]
-- Other details that you think may affect
+#### OS: (iOS, Android, etc.)
+
+#### App Version
+
+_This can be found at the bottom of the settings page_
 
 ### Additional context :question:
 
-Add any other context about the problem here.
+_Add any other context about the problem here_
