@@ -18,13 +18,15 @@
     <span style="padding: 0 5px; font-size: 2rem">·</span>
     <a href="https://testflight.apple.com/join/8ajt7uYv">iOS Beta App <img src="./resources/testflight.svg" width="14" alt="Apple Testflight icon" /></a>
   </p>
-
   <p style="display: flex; align-items: center; flex-wrap: wrap; justify-content: center; margin: 0">
-    <a href="#contributing-trophy">Contributing 🏆</a>
+    <a href="#features-">Features 🌟</a>
     <span style="padding: 0 5px; font-size: 2rem">·</span>
-    <a href="#development-desktop_computer">Development 🖥️</a>
+    <a href="#contributing-">Contributing 🏆</a>
     <span style="padding: 0 5px; font-size: 2rem">·</span>
-    <a href="#license-notebook">License 📓</a>
+    <a href="#development-️">Development 🖥️</a>
+    <span style="padding: 0 5px; font-size: 2rem">·</span>
+    <a href="#license-">License 📓</a>
+    <span style="padding: 0 5px; font-size: 2rem">·</span>
     <a href="#credits-">Credits 🥇</a>
   </p>
 </div>
@@ -37,21 +39,26 @@ Hakubun is a Japanese learning app that can be used with [Wanikani](https://www.
 
 The web version is still being tested, but the beta versions of both Android and iOS are available to download!
 
-- [Android App on Play Store](https://play.google.com/store/apps/details?id=io.hakubun.app), available through early access
+- [Android App on Play Store](https://play.google.com/store/apps/details?id=io.hakubun.app), available through Early Access
 - [iOS App on Testflight](https://testflight.apple.com/join/8ajt7uYv)
 
-### Interface :iphone:
+## Features :star2:
+
+### Interface
 
 - Use swipe gestures or keyboard shortcuts to submit or retry answers
 - Cross-platform, web-based app with native-like interactions and animations
+- Light or dark theme options
 
 ### Reviews and Lessons
 
 - Review or learn by subject
   - Radical, kanji, vocabulary, kana vocabulary
 - Select specific items to review or learn
-- Shuffle or sort by SRS stage, level, available date
+- Batch size selection
+- Shuffle or sort by SRS stage, level, available date, date updated
 - Option to filter subjects by current level
+- Go to next item on correct answer
 - Typo tolerance
 
 ### Reviews
