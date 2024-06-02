@@ -18,6 +18,15 @@
     <span style="padding: 0 5px; font-size: 2rem">·</span>
     <a href="https://testflight.apple.com/join/8ajt7uYv">iOS Beta App <img src="./resources/testflight.svg" width="14" alt="Apple Testflight icon" /></a>
   </p>
+
+  <p style="display: flex; align-items: center; flex-wrap: wrap; justify-content: center; margin: 0">
+    <a href="#contributing-trophy">Contributing 🏆</a>
+    <span style="padding: 0 5px; font-size: 2rem">·</span>
+    <a href="#development-desktop_computer">Development 🖥️</a>
+    <span style="padding: 0 5px; font-size: 2rem">·</span>
+    <a href="#license-notebook">License 📓</a>
+    <a href="#credits-">Credits 🥇</a>
+  </p>
 </div>
 
 ## Overview
@@ -71,7 +80,7 @@ The following information is **NOT** stored and I will never be able to access t
 
 Please [email me](mailto:salemlfenn@gmail.com) if you have any questions or concerns about how/what data is stored.
 
-## Screenshots
+## Screenshots :camera_flash:
 
 ### Home
 
@@ -97,11 +106,13 @@ Please [email me](mailto:salemlfenn@gmail.com) if you have any questions or conc
 
 <img src="./resources/app-screenshots/subject-details/vocab-and-user-meaning.jpg" width="200" alt="subject details page for vocabulary with user-added meaning" /> <img src="./resources/app-screenshots/subject-details/vocab-context-sentences.jpg" width="200" alt="subject details page for vocabulary, showing context sentences with translations that can be hidden and shown" /> <img src="./resources/app-screenshots/subject-details/kanji-entering-user-note.jpg" width="200" alt="subject details page for kanji with user entering their own meaning note" /> <img src="./resources/app-screenshots/subject-details/kanji-reading-user-note.jpg" width="200" alt="subject details page for kanji with saved meaning note by user, displaying reading section below" />
 
-## 🏆 Contributing
+## Contributing :trophy:
 
-See [this doc](.github/CONTRIBUTING.md) for full details on how to contribute!
+Contributions are appreciated! See [this doc](.github/CONTRIBUTING.md) for full details on how to contribute, and the [development section](#development-desktop_computer) for how to build and test Hakubun
 
-### Formatting and Linting
+## Development :desktop_computer:
+
+### Formatting and Linting :sparkles:
 
 ```bash
 # Verify files are formatted correctly
@@ -117,11 +128,11 @@ npm run lint-err-only
 npm run tsc-check
 ```
 
-## Building the App
+### Building the App :hammer:
 
 Make sure to run `npm install` before trying the steps below!
 
-### Web Version
+#### Web Version
 
 **Building using this method for general development is highly recommended over the iOS and Android methods,** it's much easier to debug and inspect changes. Running the app with iOS and Android simulators is only recommended to double-check that the changes you made are compatible with both platforms.
 
@@ -133,7 +144,7 @@ npm run start
 
 The app should then be available at http://localhost:5173/
 
-### iOS and Android Simulators (with Hot Reload)
+#### iOS and Android Simulators (with Hot Reload)
 
 If below doesn't work, check that network URL after displayed after running `npm run start-exposed` matches the URL in the _capacitor.config.ts_ file
 
@@ -153,7 +164,7 @@ npm run ios-live-reload
 
 You can then select the type of iOS device you'd like to use as a simulator
 
-##### To view debug info (inspect elements, view console output)
+###### To view debug info (inspect elements, view console output)
 
 - If you've never done this before, you'll likely have to the make sure "Show features for web developers" is enabled under Safari's Settings
 
@@ -175,9 +186,9 @@ npm run android-live-reload
 - An address should be available under "Remote Target", you can click on "inspect" to bring up a web inspector. This can be used to inspect elements and view console output
   <img src="./resources/debugging-screenshots/chrome-remote-targets.png" width="200" alt="remote targets in Chrome" /> <img src="./resources/debugging-screenshots/chrome-web-inspector.png" width="200" alt="web inspector in Chrome for Android device" />
 
-## Testing
+### Testing
 
-### Unit Testing
+#### Unit Testing
 
 To run all unit tests:
 
@@ -185,14 +196,15 @@ To run all unit tests:
 npm run test
 ```
 
-### Device Testing for Android, iOS, etc.
+#### Device Testing for Android, iOS, etc.
 
 This project is tested with BrowserStack
 
 ### Running Fastlane
 
-[Fastlane](https://fastlane.tools/) is a tool used to build and deploy the Android and iOS apps for Hakubun.
 **Note: it's unlikely you'll need to know this info, just used for GitHub workflows/CICD**
+
+[Fastlane](https://fastlane.tools/) is a tool used to build and deploy the Android and iOS apps for Hakubun.
 
 #### Install Dependencies
 
@@ -214,7 +226,12 @@ To run iOS lanes:
 fastlane ios <LANE>
 ```
 
-## License
+## License :notebook:
 
 This project uses [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html), a [copyleft license](https://en.wikipedia.org/wiki/Copyleft). Essentially this means that the source code for this app and all further iterations must stay free and open-source.
 See [license file](./license.md) for complete license information.
+
+## Credits :1st_place_medal:
+
+- Logo by [Caleb Walsh](https://www.instagram.com/calebsevenhawks)
+- Icons by [Icons8](https://icons8.com/)

@@ -28,4 +28,4 @@ Branch from and [submit your pull request](https://help.github.com/en/github/col
 
 ### Address Any CI Failures
 
-If your pull request fails to build or pass tests, please push another commit to fix it. See the [README](../README.md) for building, formatting/linting, and testing info.
+If your pull request fails to build or pass tests, please push another commit to fix it. See [development section of README](../README.md#development-desktop_computer) for building, formatting/linting, and testing info.
