@@ -13,9 +13,9 @@
     <span style="padding: 0 5px; font-size: 2rem">·</span>
     <a href="https://github.com/salemlf/hakubun/issues/new?labels=enhancement&template=feature-request.md">Request Feature 🚀</a>  
     <span style="padding: 0 5px; font-size: 2rem">·</span>
-    <a href="https://play.google.com/store/apps/details?id=io.hakubun.app">Android Beta App <img src="./resources/play-store-icon.svg" width="12" alt="Android play store icon" /></a>
+    <a href="https://play.google.com/store/apps/details?id=io.hakubun.app">Android Beta App <img src="./resources/play-store.svg" width="14" alt="Android play store icon" /></a>
     <span style="padding: 0 5px; font-size: 2rem">·</span>
-    <a href="https://testflight.apple.com/join/8ajt7uYv">iOS Beta App <img src="./resources/app-store-icon.svg" width="12" alt="Apple app store icon" /></a>
+    <a href="https://testflight.apple.com/join/8ajt7uYv">iOS Beta App <img src="./resources/testflight.svg" width="14" alt="Apple app store icon" /></a>
   </p>
 </div>
 
