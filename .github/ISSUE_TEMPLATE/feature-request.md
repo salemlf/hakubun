@@ -1,10 +1,9 @@
 ---
 name: Feature Request
 about: Suggest an idea
-title: ''
+title: ""
 labels: enhancement
-assignees: ''
-
+assignees: ""
 ---
 
 ## Describe the Feature :rocket:
