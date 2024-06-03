@@ -19,15 +19,15 @@
     <a href="https://testflight.apple.com/join/8ajt7uYv">iOS Beta App <img src="./resources/testflight.svg" width="14" alt="Apple Testflight icon" /></a>
   </p>
   <p style="display: flex; align-items: center; flex-wrap: wrap; justify-content: center; margin: 0">
-    <a href="#features-">Features 🌟</a>
+    <a href="#features-star2">Features 🌟</a>
     <span style="padding: 0 5px; font-size: 2rem">·</span>
-    <a href="#contributing-">Contributing 🏆</a>
+    <a href="#contributing-trophy">Contributing 🏆</a>
     <span style="padding: 0 5px; font-size: 2rem">·</span>
-    <a href="#development-️">Development 🖥️</a>
+    <a href="#development-desktop_computer">Development 🖥️</a>
     <span style="padding: 0 5px; font-size: 2rem">·</span>
-    <a href="#license-">License 📓</a>
+    <a href="#license-notebook">License 📓</a>
     <span style="padding: 0 5px; font-size: 2rem">·</span>
-    <a href="#credits-">Credits 🥇</a>
+    <a href="#credits-1st_place_medal">Credits 🥇</a>
   </p>
 </div>
 
