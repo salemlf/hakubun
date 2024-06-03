@@ -178,6 +178,7 @@ You can then select the type of iOS device you'd like to use as a simulator
   <img src="./resources/debugging-screenshots/safari-web-dev-settings.png" width="200" alt="Safari settings displaying Show features for web developers setting" />
 
 - Open Safari and click the iOS simulator for Hakubun under Develop -> iOS device you chose as simulator -> IP address displayed. _If this is not displayed, make sure you followed the previous step. If it's still not displayed, opening Xcode can sometimes make it appear_
+
   <img src="./resources/debugging-screenshots/safari-select-ios-simulator.png" width="200" alt="selecting iOS simulator" />
   <img src="./resources/debugging-screenshots/safari-inspecting-ios-device.png" width="200" alt="inspecting iOS simulator" />
 
@@ -191,6 +192,7 @@ npm run android-live-reload
 
 - In Chrome, go to chrome://inspect/#devices
 - An address should be available under "Remote Target", you can click on "inspect" to bring up a web inspector. This can be used to inspect elements and view console output
+
   <img src="./resources/debugging-screenshots/chrome-remote-targets.png" width="200" alt="remote targets in Chrome" /> <img src="./resources/debugging-screenshots/chrome-web-inspector.png" width="200" alt="web inspector in Chrome for Android device" />
 
 ### Testing
