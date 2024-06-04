@@ -26,8 +26,6 @@ import { Subject, SubjectType } from "../../types/Subject";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
-import LoadingDots from "../LoadingDots";
-import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 import Tabs from "../Tabs";
 
 export type AssignmentSettingsProps = {
@@ -210,11 +208,7 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
 
   return (
     <>
-      {isLoading ? (
-        <FixedCenterContainer>
-          <LoadingDots />
-        </FixedCenterContainer>
-      ) : (
+      {!isLoading && (
         <>
           <Tabs
             id="assignmentSettingsTabs"
