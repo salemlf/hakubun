@@ -3,10 +3,10 @@ import useForecastTotalsStoreFacade from "../../stores/useForecastTotalsStore/us
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useReviews } from "../../hooks/assignments/useReviews";
 import DailyReviewForecast from "./DailyReviewForecast";
-import SwipeableTabs from "../SwipeableTabs";
 import LoadingDots from "../LoadingDots";
 import Card from "../Card";
 import { LoadingContainer } from "../../styles/BaseStyledComponents";
+import Tabs from "../Tabs";
 
 const dayOfWeekNames = [
   "Sunday",
@@ -106,7 +106,8 @@ function ReviewForecast() {
           title="Review Forecast"
           headerTextColor="black"
         >
-          <SwipeableTabs
+          <Tabs
+            id="reviewForecastTabs"
             tabBgColor="var(--ion-color-primary)"
             roundedContainer={true}
             selectedTabKey={selectedTabKey}
@@ -126,7 +127,6 @@ function ReviewForecast() {
                 ),
               };
             })}
-            defaultValue={"0"}
           />
         </Card>
       )}
