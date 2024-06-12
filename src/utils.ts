@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { nanoid } from "nanoid";
+import { MutableRefObject, RefCallback } from "react";
 import { displayToast } from "./components/Toast/Toast.service";
 
 export const generateUUID = (): string => {
@@ -83,4 +84,24 @@ export const copyToClipboard = (textToCopy: string) => {
       });
     }
   );
+};
+
+export type MutableRefList<T> = Array<
+  RefCallback<T> | MutableRefObject<T> | undefined | null
+>;
+
+const setRef = <T>(val: T, ...refs: MutableRefList<T>): void => {
+  refs.forEach((ref) => {
+    if (typeof ref === "function") {
+      ref(val);
+    } else if (ref != null) {
+      ref.current = val;
+    }
+  });
+};
+
+export const mergeRefs = <T>(...refs: MutableRefList<T>): RefCallback<T> => {
+  return (val: T) => {
+    setRef(val, ...refs);
+  };
 };
