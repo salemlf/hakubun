@@ -70,16 +70,13 @@ function AssignmentQueueItemBottomSheet({ currentReviewItem }: Props) {
               <BottomSheetHeader subject={itemAsSubj} />
               <SectionWithPadding>
                 {currentReviewItem.object == "radical" && (
-                  <RadicalDetailTabs
-                    radical={itemAsSubj}
-                    scrollToDefault={true}
-                  />
+                  <RadicalDetailTabs radical={itemAsSubj} />
                 )}
                 {currentReviewItem.object == "kanji" && (
                   <KanjiDetailTabs
                     kanji={itemAsSubj}
                     reviewType={currentReviewItem.review_type}
-                    scrollToDefault={true}
+                    defaultTabKey={currentReviewItem.review_type as string}
                   />
                 )}
                 {(currentReviewItem.object == "vocabulary" ||
@@ -87,7 +84,6 @@ function AssignmentQueueItemBottomSheet({ currentReviewItem }: Props) {
                   <VocabDetailTabs
                     vocab={itemAsSubj}
                     reviewType={currentReviewItem.review_type}
-                    scrollToDefault={true}
                   />
                 )}
               </SectionWithPadding>

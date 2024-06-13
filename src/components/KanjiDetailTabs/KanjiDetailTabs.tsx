@@ -6,7 +6,6 @@ import { useSubjectsByIDs } from "../../hooks/subjects/useSubjectsByIDs";
 import KanjiMeaningMnemonic from "../KanjiMeaningMnemonic";
 import RadicalCombination from "../RadicalCombination";
 import SubjectMeanings from "../SubjectMeanings";
-import SwipeableTabs from "../SwipeableTabs";
 import ReadingsForKanji from "../ReadingsForKanji";
 import KanjiReadingMnemonic from "../KanjiReadingMnemonic";
 import SubjectWideBtnList from "../SubjectWideBtnList";
@@ -22,6 +21,7 @@ import {
   SvgIconHeadingContainer,
 } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
+import Tabs from "../Tabs";
 
 const FoundInHeadingContainer = styled(SvgIconHeadingContainer)`
   margin-bottom: 10px;
@@ -30,12 +30,10 @@ const FoundInHeadingContainer = styled(SvgIconHeadingContainer)`
 type Props = {
   kanji: Subject;
   reviewType: ReviewType;
-  scrollToDefault: boolean;
+  defaultTabKey: string;
 };
 
-function KanjiDetailTabs({ kanji, reviewType, scrollToDefault }: Props) {
-  const defaultTabKey = scrollToDefault ? (reviewType as string) : "radicals";
-
+function KanjiDetailTabs({ kanji, defaultTabKey, reviewType }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
   const findVocab =
     kanji.amalgamation_subject_ids &&
@@ -58,7 +56,8 @@ function KanjiDetailTabs({ kanji, reviewType, scrollToDefault }: Props) {
   }
 
   return (
-    <SwipeableTabs
+    <Tabs
+      id={`kanjiTabs${kanji.id}${reviewType}`}
       selectedTabKey={selectedTabKey}
       setSelectedTabKey={setSelectedTabKey}
       tabs={[
@@ -146,8 +145,6 @@ function KanjiDetailTabs({ kanji, reviewType, scrollToDefault }: Props) {
           ),
         },
       ]}
-      defaultValue={reviewType as string}
-      scrollToDefault={scrollToDefault}
     />
   );
 }

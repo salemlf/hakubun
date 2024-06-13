@@ -36,6 +36,10 @@ type CardProps = {
 // TODO: persist selected tab so doesn't reset when leaving page and coming back
 function LessonCard({ lesson }: CardProps) {
   let itemAsSubj = convertQueueItemsToSubjects([lesson])[0];
+  // const defaultTabKey = scrollToDefault
+  //   ? (reviewType as string)
+  //   : tabData[0].id;
+
   return (
     <>
       <LessonSessionHeader subjType={lesson.subject_type}>
@@ -48,22 +52,18 @@ function LessonCard({ lesson }: CardProps) {
       </LessonSessionHeader>
       <LessonContent data-testid="lesson-session-content">
         {lesson.object == "radical" && (
-          <RadicalDetailTabs radical={itemAsSubj} scrollToDefault={false} />
+          <RadicalDetailTabs radical={itemAsSubj} />
         )}
         {lesson.object == "kanji" && (
           <KanjiDetailTabs
             kanji={itemAsSubj}
             reviewType={lesson.review_type}
-            scrollToDefault={false}
+            defaultTabKey="radicals"
           />
         )}
         {(lesson.object == "vocabulary" ||
           lesson.object == "kana_vocabulary") && (
-          <VocabDetailTabs
-            vocab={itemAsSubj}
-            reviewType={lesson.review_type}
-            scrollToDefault={false}
-          />
+          <VocabDetailTabs vocab={itemAsSubj} reviewType={lesson.review_type} />
         )}
       </LessonContent>
     </>

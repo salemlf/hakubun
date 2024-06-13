@@ -34,6 +34,16 @@ HTMLMediaElement.prototype.pause = vi.fn();
 
 vi.mock("zustand");
 
+vi.mock("react-snap-carousel", () => {
+  return {
+    useSnapCarousel: vi.fn().mockImplementation(() => ({
+      scrollRef: vi.fn(),
+      activePageIndex: 1,
+      goTo: vi.fn(),
+    })),
+  };
+});
+
 // extends Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);
 

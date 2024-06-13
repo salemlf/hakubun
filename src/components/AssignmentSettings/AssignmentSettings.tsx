@@ -24,11 +24,11 @@ import { Assignment } from "../../types/Assignment";
 import { AssignmentBatch } from "../../types/MiscTypes";
 import { Subject, SubjectType } from "../../types/Subject";
 import BasicAssignmentSettings from "../BasicAssignmentSettings";
-import SwipeableTabs from "../SwipeableTabs";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
 import LoadingDots from "../LoadingDots";
 import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
+import Tabs from "../Tabs";
 
 export type AssignmentSettingsProps = {
   assignmentData: Assignment[];
@@ -216,7 +216,8 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
         </FixedCenterContainer>
       ) : (
         <>
-          <SwipeableTabs
+          <Tabs
+            id="assignmentSettingsTabs"
             selectedTabKey={selectedTabKey}
             setSelectedTabKey={setSelectedTabKey}
             tabBgColor={tabBgColor}
@@ -252,8 +253,6 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
                 ),
               },
             ]}
-            defaultValue="basic"
-            scrollToDefault={false}
           />
           <StartSessionButton
             onStartBtnClick={onStartSessionBtnClick}
