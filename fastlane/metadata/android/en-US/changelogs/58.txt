@@ -1,0 +1,19 @@
+Bug Fixes
+
+- Swipeable Tabs
+	- Author: salemlf
+- Vocab Audio Not Always Playing on Correct Answer
+	- Author: salemlf
+- Cannot Delete Existing Meaning or Reading Note
+	- Author: salemlf
+
+Styling
+
+- README Style Improvements, Link iOS App
+	- Author: salemlf
+- README Linking Important Sections
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.3.2-beta
+
