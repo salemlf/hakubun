@@ -36,11 +36,11 @@ vi.mock("zustand");
 
 vi.mock("react-snap-carousel", () => {
   return {
-    useSnapCarousel: {
+    useSnapCarousel: vi.fn().mockImplementation(() => ({
       scrollRef: vi.fn(),
       activePageIndex: 1,
       goTo: vi.fn(),
-    },
+    })),
   };
 });
 
