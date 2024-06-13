@@ -97,7 +97,12 @@ function Tabs({
 }: TabsProps) {
   const tabListRef = useRef<HTMLDivElement | null>(null);
   const panelScrollRef = useRef<HTMLDivElement | null>(null);
-  const { scrollRef: snapScrollRef, activePageIndex, goTo } = useSnapCarousel();
+  const {
+    scrollRef: snapScrollRef,
+    activePageIndex,
+    goTo,
+    pages,
+  } = useSnapCarousel();
 
   const { scrollX } = useScroll({
     container: panelScrollRef,
@@ -109,7 +114,7 @@ function Tabs({
 
   useEffect(() => {
     goToSelectedTab();
-  }, [selectedTabKey]);
+  }, [selectedTabKey, pages]);
 
   useMotionValueEvent(scrollVelocity, "change", (latest) => {
     if (Math.abs(latest) < 275) {
@@ -158,7 +163,7 @@ function Tabs({
     if (activePageIndex !== indexOfSelected) {
       goTo(indexOfSelected);
     }
-  }, [selectedTabKey]);
+  }, [selectedTabKey, pages]);
 
   const getSelectedIndex = (selectedTabKey: string) => {
     return tabs.findIndex((tab) => tab.id === selectedTabKey);
