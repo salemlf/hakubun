@@ -1,0 +1,10 @@
+Bug Fixes
+
+- Content Cut Off at Bottom of Subject Info Tab Content
+	- Author: salemlf
+- Select Subject Info Tab Based on Assignment Queue Card Type
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.3.3-beta
+
