@@ -17,6 +17,8 @@ const TabsStyled = styled(TabsPrimitive.Root)`
   max-width: 100%;
   height: 100%;
   margin: auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 const TabPanels = styled.div`
@@ -24,6 +26,7 @@ const TabPanels = styled.div`
   display: flex;
   overflow-x: auto;
   margin: 0;
+  margin-bottom: 20px;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 300;
