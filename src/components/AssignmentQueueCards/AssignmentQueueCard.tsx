@@ -123,6 +123,7 @@ export const AssignmentQueueCard = ({
 
   const cardEnterTimerId = useRef<number | null>(null);
   const cardExitTimerId = useRef<number | null>(null);
+  const unloadAudioTimerId = useRef<number | null>(null);
 
   const removeTimeouts = () => {
     if (cardEnterTimerId.current) {
@@ -147,9 +148,16 @@ export const AssignmentQueueCard = ({
       readingAudio.audioFile.load();
     });
     return () => {
-      currentReviewItem.readingAudios?.forEach((readingAudio) => {
-        readingAudio.audioFile.unload();
-      });
+      unloadAudioTimerId.current = window.setTimeout(() => {
+        currentReviewItem.readingAudios?.forEach((readingAudio) => {
+          readingAudio.audioFile.unload();
+        });
+
+        if (unloadAudioTimerId.current) {
+          clearTimeout(unloadAudioTimerId.current);
+          unloadAudioTimerId.current = null;
+        }
+      }, 5000);
       removeTimeouts();
     };
   }, []);
