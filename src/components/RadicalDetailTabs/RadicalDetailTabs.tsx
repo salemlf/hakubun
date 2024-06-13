@@ -5,7 +5,6 @@ import { useAssignmentsBySubjIDs } from "../../hooks/assignments/useAssignmentsB
 import { Radical, Subject } from "../../types/Subject";
 import RadicalNameMnemonic from "../RadicalNameMnemonic";
 import SubjectMeanings from "../SubjectMeanings";
-import SwipeableTabs from "../SwipeableTabs";
 import SubjectButtonList from "../SubjectButtonList";
 import SvgIcon from "../SvgIcon";
 import {
@@ -15,13 +14,13 @@ import {
 } from "../../styles/SubjectDetailsStyled";
 import { FoundInHeadingContainer } from "../../styles/BaseStyledComponents";
 import MagnifyingGlassIcon from "../../images/magnifying-glass-color.svg?react";
+import Tabs from "../Tabs";
 
 type Props = {
   radical: Subject;
-  scrollToDefault: boolean;
 };
 
-function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
+function RadicalDetailTabs({ radical }: Props) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>("name");
   const hasAmalgamationSubjs = radical.amalgamation_subject_ids!.length > 0;
   const {
@@ -51,7 +50,8 @@ function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
       usedInKanjiAssignmentsErr);
 
   return (
-    <SwipeableTabs
+    <Tabs
+      id={`radical${radical.id}`}
       selectedTabKey={selectedTabKey}
       setSelectedTabKey={setSelectedTabKey}
       tabs={[
@@ -92,8 +92,6 @@ function RadicalDetailTabs({ radical, scrollToDefault }: Props) {
           ),
         },
       ]}
-      defaultValue="name"
-      scrollToDefault={scrollToDefault}
     />
   );
 }

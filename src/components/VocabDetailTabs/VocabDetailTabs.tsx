@@ -9,8 +9,8 @@ import SubjectMeanings from "../SubjectMeanings";
 import VocabMeaningExplanation from "../VocabMeaningExplanation";
 import VocabReadings from "../VocabReadings";
 import VocabReadingExplanation from "../VocabReadingExplanation";
-import SwipeableTabs from "../SwipeableTabs";
 import KanaVocabReading from "../KanaVocabReading";
+import Tabs from "../Tabs";
 import {
   SubjDetailSection,
   SubjDetailSubHeading,
@@ -31,8 +31,8 @@ const PartsOfSpeechContainer = styled(FullWidthColumn)`
   margin-bottom: 15px;
 `;
 
-const getTabsForVocab = (vocab: Subject) => {
-  const isKanaVocab = vocab.object === "kana_vocabulary";
+const getTabsForVocab = (vocab: Subject, isKanaVocab: boolean) => {
+  // const isKanaVocab = vocab.object === "kana_vocabulary";
   const hasReadings = vocab.readings && vocab.readings.length !== 0;
 
   const meaningTab: TabData[] = [
@@ -102,23 +102,21 @@ const getTabsForVocab = (vocab: Subject) => {
 type Props = {
   vocab: Subject;
   reviewType: ReviewType;
-  scrollToDefault: boolean;
 };
 
-function VocabDetailTabs({ vocab, reviewType, scrollToDefault }: Props) {
-  const tabData = getTabsForVocab(vocab);
-  const defaultTabKey = scrollToDefault
-    ? (reviewType as string)
-    : tabData[0].id;
+function VocabDetailTabs({ vocab, reviewType }: Props) {
+  const isKanaVocab = vocab.object === "kana_vocabulary";
+  const tabData = getTabsForVocab(vocab, isKanaVocab);
+
+  const defaultTabKey = isKanaVocab ? "meaning" : (reviewType as string);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
 
   return (
-    <SwipeableTabs
+    <Tabs
+      id={`vocabTabs${vocab.id}${reviewType}`}
       selectedTabKey={selectedTabKey}
       setSelectedTabKey={setSelectedTabKey}
       tabs={tabData}
-      defaultValue={reviewType as string}
-      scrollToDefault={scrollToDefault}
     />
   );
 }

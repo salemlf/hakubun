@@ -1,13 +1,13 @@
 import { ForwardedRef, forwardRef } from "react";
-import { motion } from "framer-motion";
+import { LayoutGroup, motion } from "framer-motion";
 import * as Tabs from "@radix-ui/react-tabs";
 import { TabData } from "../../types/MiscTypes";
+import styled from "styled-components";
 import {
   CustomBgColor,
   TabContainerStyles,
   TabStyledProps,
-} from "./SwipeableTabsTypes";
-import styled from "styled-components";
+} from "./Tabs.types";
 
 const TabListStyled = styled(Tabs.List)<TabContainerStyles>`
   display: flex;
@@ -20,7 +20,8 @@ const TabListStyled = styled(Tabs.List)<TabContainerStyles>`
   max-width: 100vw;
   padding: 5px 12px;
   overflow-x: auto;
-  /* isolation: isolate; */
+  isolation: isolate;
+
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: none;
@@ -72,9 +73,9 @@ const Selector = styled(motion.div)<CustomBgColor>`
   margin: 0;
 `;
 
-type SwipeableTabsListProps = {
+type TabsListProps = {
+  id: string;
   tabs: TabData[];
-  tabElements: Element[];
   selectedTabKey: string;
   tabBgColor: string;
   tabSelectionColor: string;
@@ -84,15 +85,15 @@ type SwipeableTabsListProps = {
 
 function TabListCore(
   {
+    id,
     tabs,
-    tabElements,
     selectedTabKey,
     roundedContainer,
     tabBgColor,
     tabSelectionColor,
     tabFontSize,
     ...props
-  }: SwipeableTabsListProps,
+  }: TabsListProps,
   tabListRef: ForwardedRef<HTMLDivElement>
 ) {
   return (
@@ -102,27 +103,34 @@ function TabListCore(
       $roundedcontainer={roundedContainer}
       {...props}
     >
-      {tabs.map((tab) => (
-        <TabStyled
-          key={tab.id}
-          value={tab.id}
-          bgcolor={tabBgColor}
-          selectioncolor={tabSelectionColor}
-          tabfontsize={tabFontSize}
-        >
-          {selectedTabKey === tab.id && (
-            <Selector
-              style={{ borderRadius: 9999, backgroundColor: tabBgColor }}
-              bgcolor={tabBgColor}
-              layoutId="selector"
-              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-            />
-          )}
-          {tab.label}
-        </TabStyled>
-      ))}
+      <LayoutGroup id={id}>
+        {tabs.map((tab) => (
+          <TabStyled
+            key={tab.id}
+            value={tab.id}
+            bgcolor={tabBgColor}
+            selectioncolor={tabSelectionColor}
+            tabfontsize={tabFontSize}
+          >
+            {selectedTabKey === tab.id && (
+              <Selector
+                style={{ borderRadius: 9999, backgroundColor: tabBgColor }}
+                bgcolor={tabBgColor}
+                layoutId="selector"
+                transition={{
+                  type: "spring",
+                  bounce: 0.2,
+                  duration: 0.6,
+                  delay: 0.1,
+                }}
+              />
+            )}
+            {tab.label}
+          </TabStyled>
+        ))}
+      </LayoutGroup>
     </TabListStyled>
   );
 }
 
-export const TabList = forwardRef(TabListCore);
+export const TabsList = forwardRef(TabListCore);
