@@ -197,7 +197,7 @@ export const getUpdatedAltMeanings = (
 };
 
 export const getUpdatedNote = (note: string, action: "add" | "remove") => {
-  return action == "add" ? note : null;
+  return action == "add" ? note : "";
 };
 
 type UpdateStudyMaterialProps = {
