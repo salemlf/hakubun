@@ -1,0 +1,13 @@
+Features/Enhancements
+
+- Vocab Pitch Accent Info
+	- Author: salemlf
+
+Styling
+
+- Decrease Height of Help Span Punctation
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.4.0-beta
+
