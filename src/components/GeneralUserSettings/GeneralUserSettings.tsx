@@ -11,7 +11,7 @@ import Switch from "../Switch";
 import { SettingRow } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-const AudioVoiceDisclaimer = styled.div`
+const Disclaimer = styled.div`
   font-size: 0.875rem;
   color: var(--text-color);
   p {
@@ -20,12 +20,21 @@ const AudioVoiceDisclaimer = styled.div`
 `;
 
 const AudioVoiceDisclaimerContents = (
-  <AudioVoiceDisclaimer>
+  <Disclaimer>
     <p>
       Kyoto accent isn't always available for vocab, Tokyo accent of same gender
       may be used as backup
     </p>
-  </AudioVoiceDisclaimer>
+  </Disclaimer>
+);
+
+const PitchAccentDisclaimerContents = (
+  <Disclaimer>
+    <p>
+      Pitch accent info is not available for all vocab, info will only be
+      displayed when available
+    </p>
+  </Disclaimer>
 );
 
 function GeneralUserSettings() {
@@ -95,10 +104,14 @@ function GeneralUserSettings() {
         />
       </SettingRow>
       <SettingRow>
-        <Label
-          labelText="Display Pitch Accent for Vocab"
-          idOfControl="pitchAccentSwitch"
-        />
+        <Label idOfControl="pitchAccentSwitch">
+          <HelpSpan
+            helpPopoverContents={PitchAccentDisclaimerContents}
+            punctuation="asterisk"
+          >
+            Display Pitch Accent for Vocab
+          </HelpSpan>
+        </Label>
         <Switch
           isSwitchedOn={shouldDisplayPitchAccent}
           setIsSwitchedOn={setShouldDisplayPitchAccent}
