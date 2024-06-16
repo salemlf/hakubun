@@ -18,6 +18,7 @@ const useUserSettingsStoreFacade = () => {
     lessonNextItemOnCorrect,
     reviewNextItemOnCorrect,
     prefersDarkModeTheme,
+    shouldDisplayPitchAccent,
     setPronunciationVoice,
     setLessonBatchSize,
     setReviewBatchSize,
@@ -27,6 +28,7 @@ const useUserSettingsStoreFacade = () => {
     setLessonNextItemOnCorrect,
     setReviewNextItemOnCorrect,
     setPrefersDarkModeTheme,
+    setShouldDisplayPitchAccent,
   }: UserSettingsState & UserSettingsActions = useUserSettingsStore(
     useShallow((state: UserSettingsState & UserSettingsActions) => ({
       pronunciationVoice: state.pronunciationVoice,
@@ -38,6 +40,7 @@ const useUserSettingsStoreFacade = () => {
       lessonNextItemOnCorrect: state.lessonNextItemOnCorrect,
       reviewNextItemOnCorrect: state.reviewNextItemOnCorrect,
       prefersDarkModeTheme: state.prefersDarkModeTheme,
+      shouldDisplayPitchAccent: state.shouldDisplayPitchAccent,
       setPronunciationVoice: state.setPronunciationVoice,
       setLessonBatchSize: state.setLessonBatchSize,
       setReviewBatchSize: state.setReviewBatchSize,
@@ -47,6 +50,7 @@ const useUserSettingsStoreFacade = () => {
       setLessonNextItemOnCorrect: state.setLessonNextItemOnCorrect,
       setReviewNextItemOnCorrect: state.setReviewNextItemOnCorrect,
       setPrefersDarkModeTheme: state.setPrefersDarkModeTheme,
+      setShouldDisplayPitchAccent: state.setShouldDisplayPitchAccent,
     }))
   );
 
@@ -60,6 +64,7 @@ const useUserSettingsStoreFacade = () => {
     lessonNextItemOnCorrect,
     reviewNextItemOnCorrect,
     prefersDarkModeTheme,
+    shouldDisplayPitchAccent,
     setPronunciationVoice,
     setLessonBatchSize,
     setReviewBatchSize,
@@ -69,6 +74,7 @@ const useUserSettingsStoreFacade = () => {
     setLessonNextItemOnCorrect,
     setReviewNextItemOnCorrect,
     setPrefersDarkModeTheme,
+    setShouldDisplayPitchAccent,
     // exporting to check that state is reset properly
     initialState,
   };

@@ -244,3 +244,4 @@ See [license file](./license.md) for complete license information.
 
 - Logo by [Caleb Walsh](https://www.instagram.com/calebsevenhawks)
 - Icons by [Icons8](https://icons8.com/)
+- Pitch Accent Info from [Jotoba API](https://jotoba.de/docs.html)

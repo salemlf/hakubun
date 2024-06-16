@@ -7,10 +7,11 @@ import Card from "../Card";
 import Selector, { SelectItem } from "../Selector";
 import ColorThemeSwitch from "../ColorThemeSwitch";
 import HelpSpan from "../HelpSpan";
+import Switch from "../Switch";
 import { SettingRow } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-const AudioVoiceDisclaimer = styled.div`
+const Disclaimer = styled.div`
   font-size: 0.875rem;
   color: var(--text-color);
   p {
@@ -19,17 +20,31 @@ const AudioVoiceDisclaimer = styled.div`
 `;
 
 const AudioVoiceDisclaimerContents = (
-  <AudioVoiceDisclaimer>
+  <Disclaimer>
     <p>
       Kyoto accent isn't always available for vocab, Tokyo accent of same gender
       may be used as backup
     </p>
-  </AudioVoiceDisclaimer>
+  </Disclaimer>
+);
+
+const PitchAccentDisclaimerContents = (
+  <Disclaimer>
+    <p>
+      Pitch accent info is not available for all vocab, info will only be
+      displayed when available
+    </p>
+  </Disclaimer>
 );
 
 function GeneralUserSettings() {
-  const { pronunciationVoice, setPronunciationVoice, setPrefersDarkModeTheme } =
-    useUserSettingsStoreFacade();
+  const {
+    pronunciationVoice,
+    setPronunciationVoice,
+    setPrefersDarkModeTheme,
+    shouldDisplayPitchAccent,
+    setShouldDisplayPitchAccent,
+  } = useUserSettingsStoreFacade();
   const { isDarkMode, setIsDarkMode } = useTheme();
   const voiceID = pronunciationVoice.id;
   const isKyotoAccentSelected = pronunciationVoice.details.accent === "Kyoto";
@@ -86,6 +101,23 @@ function GeneralUserSettings() {
           isSwitchedOn={isDarkMode}
           setIsSwitchedOn={setIsDarkModeOn}
           labelId="color-theme-switch"
+        />
+      </SettingRow>
+      <SettingRow>
+        <Label idOfControl="pitchAccentSwitch">
+          <HelpSpan
+            helpPopoverContents={PitchAccentDisclaimerContents}
+            punctuation="asterisk"
+          >
+            Display Pitch Accent for Vocab
+          </HelpSpan>
+        </Label>
+        <Switch
+          isSwitchedOn={shouldDisplayPitchAccent}
+          setIsSwitchedOn={setShouldDisplayPitchAccent}
+          labelId="pitchAccentSwitch"
+          size="medium"
+          showText={true}
         />
       </SettingRow>
     </Card>

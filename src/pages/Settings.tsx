@@ -48,10 +48,12 @@ const CreditsAndVersionContainer = styled.div`
   }
 `;
 
-const CreditsVersionContent = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 5px;
+const CreditsContent = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 16px;
+  justify-content: center;
+  margin-bottom: 16px;
 `;
 
 const ReleaseTxt = styled.p`
@@ -104,7 +106,7 @@ function Settings() {
         </SettingBtnsContainer>
         <CreditsAndVersionContainer>
           <h3>Credits</h3>
-          <CreditsVersionContent>
+          <CreditsContent>
             <p>
               Logo by{" "}
               <a href="https://www.instagram.com/calebsevenhawks">
@@ -114,8 +116,12 @@ function Settings() {
             <p>
               Other icons from <a href="https://icons8.com/">Icons8</a>
             </p>
-            <ReleaseTxt>{`Version ${APP_VERSION}`}</ReleaseTxt>
-          </CreditsVersionContent>
+            <p>
+              Pitch accent data from{" "}
+              <a href="https://jotoba.de/docs.html">Jotoba API</a>
+            </p>
+          </CreditsContent>
+          <ReleaseTxt>{`Version ${APP_VERSION}`}</ReleaseTxt>
         </CreditsAndVersionContainer>
       </Content>
       <UserFeedbackModal

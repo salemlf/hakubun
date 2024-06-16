@@ -2,9 +2,14 @@ import axios from "axios";
 
 export const baseUrl = "https://api.wanikani.com/v2/";
 export const baseUrlRegex = /https:\/\/api\.wanikani\.com\/v2\//;
+export const jotobaBaseUrl = "https://jotoba.de/api/";
 
 export const api = axios.create({
   baseURL: baseUrl,
+});
+
+export const jotobaApi = axios.create({
+  baseURL: jotobaBaseUrl,
 });
 
 export const pagingApi = axios.create();
@@ -31,6 +36,10 @@ api.interceptors.response.use(undefined, (error) => {
 });
 
 pagingApi.interceptors.response.use(undefined, (error) => {
+  return errorHandler(error);
+});
+
+jotobaApi.interceptors.response.use(undefined, (error) => {
   return errorHandler(error);
 });
 
