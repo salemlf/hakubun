@@ -7,6 +7,7 @@ import Card from "../Card";
 import Selector, { SelectItem } from "../Selector";
 import ColorThemeSwitch from "../ColorThemeSwitch";
 import HelpSpan from "../HelpSpan";
+import Switch from "../Switch";
 import { SettingRow } from "../../styles/BaseStyledComponents";
 import styled from "styled-components";
 
@@ -28,8 +29,13 @@ const AudioVoiceDisclaimerContents = (
 );
 
 function GeneralUserSettings() {
-  const { pronunciationVoice, setPronunciationVoice, setPrefersDarkModeTheme } =
-    useUserSettingsStoreFacade();
+  const {
+    pronunciationVoice,
+    setPronunciationVoice,
+    setPrefersDarkModeTheme,
+    shouldDisplayPitchAccent,
+    setShouldDisplayPitchAccent,
+  } = useUserSettingsStoreFacade();
   const { isDarkMode, setIsDarkMode } = useTheme();
   const voiceID = pronunciationVoice.id;
   const isKyotoAccentSelected = pronunciationVoice.details.accent === "Kyoto";
@@ -86,6 +92,19 @@ function GeneralUserSettings() {
           isSwitchedOn={isDarkMode}
           setIsSwitchedOn={setIsDarkModeOn}
           labelId="color-theme-switch"
+        />
+      </SettingRow>
+      <SettingRow>
+        <Label
+          labelText="Display Pitch Accent for Vocab"
+          idOfControl="pitchAccentSwitch"
+        />
+        <Switch
+          isSwitchedOn={shouldDisplayPitchAccent}
+          setIsSwitchedOn={setShouldDisplayPitchAccent}
+          labelId="pitchAccentSwitch"
+          size="medium"
+          showText={true}
         />
       </SettingRow>
     </Card>
