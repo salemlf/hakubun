@@ -16,6 +16,7 @@ export interface UserSettingsState {
   reviewNextItemOnCorrect: boolean;
   lessonNextItemOnCorrect: boolean;
   prefersDarkModeTheme: boolean;
+  shouldDisplayPitchAccent: boolean;
 }
 
 export interface UserSettingsActions {
@@ -28,6 +29,7 @@ export interface UserSettingsActions {
   setLessonNextItemOnCorrect: (goToNext: boolean) => void;
   setReviewNextItemOnCorrect: (goToNext: boolean) => void;
   setPrefersDarkModeTheme: (isDarkMode: boolean) => void;
+  setShouldDisplayPitchAccent: (shouldDisplayPitchAccent: boolean) => void;
 }
 
 export const initialState: UserSettingsState = {
@@ -46,6 +48,8 @@ export const initialState: UserSettingsState = {
   reviewBackToBackOption: "disabled",
   reviewNextItemOnCorrect: false,
   lessonNextItemOnCorrect: false,
+  shouldDisplayPitchAccent: true,
+
   prefersDarkModeTheme:
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches,
@@ -73,6 +77,8 @@ export const useUserSettingsStore = create<
         set({ reviewNextItemOnCorrect: goToNext }),
       setPrefersDarkModeTheme: (prefersDarkMode: boolean) =>
         set({ prefersDarkModeTheme: prefersDarkMode }),
+      setShouldDisplayPitchAccent: (displayPitchAccent: boolean) =>
+        set({ shouldDisplayPitchAccent: displayPitchAccent }),
     }),
     {
       name: "user-settings-storage",
