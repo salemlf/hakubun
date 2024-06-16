@@ -92,7 +92,6 @@ function PitchIllustration({ pitchForReading, children }: Props) {
     }
   }, [pitchForReading.pitch, pitchForReading.reading]);
 
-  // TODO: display loading skeleton instead, will not display pitch illustration if no pitch info
   if (!xCoordInfo) {
     return (
       <ReadingTxt>
