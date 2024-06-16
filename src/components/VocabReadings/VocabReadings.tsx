@@ -68,8 +68,8 @@ function VocabReadings({
   subjectReadings,
   hideReadingTxt = false,
 }: VocabReadingsProps) {
-  const { pronunciationVoice } = useUserSettingsStoreFacade();
-  // TODO: check if shouldDisplayPitchAccent setting is true
+  const { pronunciationVoice, shouldDisplayPitchAccent } =
+    useUserSettingsStoreFacade();
   const [readingPitchInfo, setReadingPitchInfo] = useState<PitchForReading[]>(
     []
   );
@@ -81,7 +81,7 @@ function VocabReadings({
   const { mutateAsync: findWordInfo } = useSearchWord();
 
   useEffect(() => {
-    if (vocab.characters) {
+    if (shouldDisplayPitchAccent && vocab.characters) {
       findWordInfo({ word: vocab.characters })
         .then((searchResult: WordSearchResult) => {
           const wordsWithPitch = searchResult.words.filter(
@@ -129,7 +129,8 @@ function VocabReadings({
               (vocabReading: VocabWithAudio, index: number) => {
                 return (
                   <VocabReadingContainer key={`reading_${index}`}>
-                    {!isPitchInfoLoading &&
+                    {shouldDisplayPitchAccent &&
+                    !isPitchInfoLoading &&
                     readingPitchInfo.find(
                       (pitch) => pitch.reading === vocabReading.reading
                     ) !== undefined ? (
