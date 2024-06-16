@@ -20,7 +20,7 @@ const Punctuation = styled.span<PunctuationProps>`
   font-size: 1.125em;
   font-weight: 700;
   color: ${({ $color }) => $color};
-  transform: translate(10%, -30%);
+  transform: translate(10%, -10%);
   background-color: transparent;
   /* creates text outline */
   text-shadow:
