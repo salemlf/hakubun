@@ -1,0 +1,8 @@
+Features/Enhancements
+
+- Review More Button
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.5.0-beta
+
