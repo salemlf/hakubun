@@ -17,4 +17,20 @@ export const JotobaApi = {
 
     return response.data;
   },
+
+  postKanjiSearch: async function (kanji: string) {
+    const kanjiSearchBody = {
+      query: kanji,
+      language: "English",
+      no_english: false,
+    };
+
+    const response: AxiosResponse = await jotobaApi.request({
+      url: "search/kanji",
+      method: "POST",
+      data: kanjiSearchBody,
+    });
+
+    return response.data;
+  },
 };

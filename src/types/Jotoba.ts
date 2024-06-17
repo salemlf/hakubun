@@ -3,6 +3,10 @@ export type WordSearchResult = {
   words: WordsResult[];
 };
 
+export type KanjiSearchResult = {
+  kanji: KanjiResult[];
+};
+
 export type KanjiResult = {
   chinese?: string[];
   frequency?: number;
