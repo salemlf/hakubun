@@ -118,6 +118,7 @@ function AddAltUserMeaningButton({ subject }: Props) {
               modalID="add-alt-user-meaning-modal"
               title="Add Meaning"
               isOpen={isModalOpen}
+              delayOpenClose={true}
               description="Add an alternative meaning, this will be accepted as a correct answer!"
               closeOnOutsidePress={false}
             >

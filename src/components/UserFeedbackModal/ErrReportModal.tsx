@@ -80,8 +80,8 @@ function ErrReportModal({ isOpen, setIsOpen, errMsg, stackTrace }: Props) {
   }, [isOpen]);
 
   useEffect(() => {
-    if (isOpen && textareaRef.current) {
-      textareaRef.current.focus();
+    if (textareaRef.current) {
+      isOpen ? textareaRef.current.focus() : textareaRef.current.blur();
     }
   }, [isOpen]);
 
@@ -109,6 +109,7 @@ function ErrReportModal({ isOpen, setIsOpen, errMsg, stackTrace }: Props) {
           modalID="err-report-modal"
           title="Send Error Report"
           isOpen={isOpen}
+          delayOpenClose={true}
           description="The error report will be sent to the developer. It'll include the error message, stack trace, and any additional info you provide."
         >
           <form onSubmit={submitErrReport}>

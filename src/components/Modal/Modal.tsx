@@ -8,9 +8,9 @@ import { Content, Overlay } from "./Modal.styles";
 import styled from "styled-components";
 
 type Props = {
-  children: React.ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  children: React.ReactNode;
 };
 
 function Modal({ open, onOpenChange, children }: Props) {
@@ -54,7 +54,8 @@ const IconAndTitleContainer = styled.div`
   word-break: break-word;
 `;
 
-const DELAY = 0.3;
+const OVERLAY_DELAY = 0.3;
+const CONTENT_DELAY = 0.5;
 type ContentRef = HTMLDivElement;
 
 type ContentProps = {
@@ -63,6 +64,7 @@ type ContentProps = {
   description?: string;
   children: React.ReactNode;
   isOpen: boolean;
+  delayOpenClose?: boolean;
   icon?: React.ReactNode;
   closeOnOutsidePress?: boolean;
 };
@@ -77,6 +79,7 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
       isOpen,
       icon,
       closeOnOutsidePress = true,
+      delayOpenClose = false,
       ...props
     },
     forwardedRef
@@ -95,8 +98,18 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                 <DialogPrimitive.Overlay asChild>
                   <Overlay
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, transition: { delay: DELAY } }}
-                    exit={{ opacity: 0 }}
+                    animate={{
+                      opacity: 1,
+                      transition: {
+                        delay: delayOpenClose ? CONTENT_DELAY : OVERLAY_DELAY,
+                      },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      transition: {
+                        delay: delayOpenClose ? CONTENT_DELAY : OVERLAY_DELAY,
+                      },
+                    }}
                   />
                 </DialogPrimitive.Overlay>
                 <DialogPrimitive.Content
@@ -113,8 +126,15 @@ export const ModalContent = forwardRef<ContentRef, ContentProps>(
                 >
                   <Content
                     initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
+                    // animate={{ scale: 1 }}
+                    animate={{
+                      scale: 1,
+                      transition: { delay: delayOpenClose ? CONTENT_DELAY : 0 },
+                    }}
+                    exit={{
+                      scale: 0,
+                      transition: { delay: delayOpenClose ? CONTENT_DELAY : 0 },
+                    }}
                   >
                     <TitleBar>
                       <IconAndTitleContainer>

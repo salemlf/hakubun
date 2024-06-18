@@ -114,10 +114,15 @@ function EditNoteModal({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (isOpen && textareaRef.current) {
-      textareaRef.current.focus();
-      // cursor moved to end of text
-      textareaRef.current.selectionStart = textareaRef.current.value.length;
+    if (textareaRef.current) {
+      if (isOpen) {
+        textareaRef.current.focus();
+        // cursor moved to end of text
+        textareaRef.current.selectionStart = textareaRef.current.value.length;
+      } else {
+        // helps prevent icky animation choppiness when closing modal
+        textareaRef.current.blur();
+      }
     }
   }, [isOpen]);
 
@@ -165,6 +170,7 @@ function EditNoteModal({
         modalID="add-user-note-modal"
         title={`${noteTypeCapitalized} Note`}
         isOpen={isOpen}
+        delayOpenClose={true}
         description={`Come up with a note that helps you remember the ${noteType}!`}
         icon={noteType === "meaning" ? <MeaningIcon /> : <ReadingIcon />}
         closeOnOutsidePress={false}
