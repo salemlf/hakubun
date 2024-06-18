@@ -225,8 +225,10 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
   }, [isOpen, setIsReportSubmitting]);
 
   useEffect(() => {
-    if (isOpen && feedbackTypeSelectorRef.current) {
-      feedbackTypeSelectorRef.current.focus();
+    if (feedbackTypeSelectorRef.current) {
+      isOpen
+        ? feedbackTypeSelectorRef.current.focus()
+        : feedbackTypeSelectorRef.current.blur();
     }
   }, [isOpen]);
 
@@ -260,6 +262,7 @@ function UserFeedbackModal({ isOpen, setIsOpen }: Props) {
         modalID="user-feedback-modal"
         title="Send User Feedback"
         isOpen={isOpen}
+        delayOpenClose={true}
         description="This info will be sent to the developer. You can ask a question, suggest a feature, or report a bug!"
       >
         <form noValidate onSubmit={handleSubmit(submitFeedback)}>
