@@ -1,0 +1,8 @@
+Styling
+
+- Delaying Modal Animations to Account for Keyboard
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.5.1-beta
+
