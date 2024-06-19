@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation } from "@tanstack/react-router";
 import { AnimatePresence } from "framer-motion";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import { convertQueueItemsToSubjects } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
