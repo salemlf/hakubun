@@ -11,96 +11,102 @@
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
-import { Route as SettingsImport } from "./routes/settings";
-import { Route as SearchImport } from "./routes/search";
 import { Route as AuthenticateImport } from "./routes/authenticate";
-import { Route as IndexImport } from "./routes/index";
-import { Route as SubjectsIndexImport } from "./routes/subjects.index";
-import { Route as SubjectsSubjIdImport } from "./routes/subjects.$subjId";
-import { Route as ReviewsSummaryImport } from "./routes/reviews/summary";
-import { Route as ReviewsSettingsImport } from "./routes/reviews/settings";
-import { Route as ReviewsSessionImport } from "./routes/reviews/session";
-import { Route as LessonsSummaryImport } from "./routes/lessons/summary";
-import { Route as LessonsSettingsImport } from "./routes/lessons/settings";
-import { Route as LessonsSessionImport } from "./routes/lessons/session";
-import { Route as LessonsQuizImport } from "./routes/lessons/quiz";
+import { Route as AuthImport } from "./routes/_auth";
+import { Route as AuthIndexImport } from "./routes/_auth.index";
+import { Route as AuthSettingsImport } from "./routes/_auth.settings";
+import { Route as AuthSearchImport } from "./routes/_auth.search";
+import { Route as AuthSubjectsIndexImport } from "./routes/_auth.subjects.index";
+import { Route as AuthSubjectsSubjIdImport } from "./routes/_auth.subjects.$subjId";
+import { Route as AuthReviewsSummaryImport } from "./routes/_auth.reviews.summary";
+import { Route as AuthReviewsSettingsImport } from "./routes/_auth.reviews.settings";
+import { Route as AuthReviewsSessionImport } from "./routes/_auth.reviews.session";
+import { Route as AuthLessonsSummaryImport } from "./routes/_auth.lessons.summary";
+import { Route as AuthLessonsSettingsImport } from "./routes/_auth.lessons.settings";
+import { Route as AuthLessonsSessionImport } from "./routes/_auth.lessons.session";
+import { Route as AuthLessonsQuizImport } from "./routes/_auth.lessons.quiz";
 
 // Create/Update Routes
-
-const SettingsRoute = SettingsImport.update({
-  path: "/settings",
-  getParentRoute: () => rootRoute,
-} as any);
-
-const SearchRoute = SearchImport.update({
-  path: "/search",
-  getParentRoute: () => rootRoute,
-} as any);
 
 const AuthenticateRoute = AuthenticateImport.update({
   path: "/authenticate",
   getParentRoute: () => rootRoute,
 } as any);
 
-const IndexRoute = IndexImport.update({
+const AuthRoute = AuthImport.update({
+  id: "/_auth",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const AuthIndexRoute = AuthIndexImport.update({
   path: "/",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any);
 
-const SubjectsIndexRoute = SubjectsIndexImport.update({
+const AuthSettingsRoute = AuthSettingsImport.update({
+  path: "/settings",
+  getParentRoute: () => AuthRoute,
+} as any);
+
+const AuthSearchRoute = AuthSearchImport.update({
+  path: "/search",
+  getParentRoute: () => AuthRoute,
+} as any);
+
+const AuthSubjectsIndexRoute = AuthSubjectsIndexImport.update({
   path: "/subjects/",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any);
 
-const SubjectsSubjIdRoute = SubjectsSubjIdImport.update({
+const AuthSubjectsSubjIdRoute = AuthSubjectsSubjIdImport.update({
   path: "/subjects/$subjId",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any);
 
-const ReviewsSummaryRoute = ReviewsSummaryImport.update({
+const AuthReviewsSummaryRoute = AuthReviewsSummaryImport.update({
   path: "/reviews/summary",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any);
 
-const ReviewsSettingsRoute = ReviewsSettingsImport.update({
+const AuthReviewsSettingsRoute = AuthReviewsSettingsImport.update({
   path: "/reviews/settings",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any);
 
-const ReviewsSessionRoute = ReviewsSessionImport.update({
+const AuthReviewsSessionRoute = AuthReviewsSessionImport.update({
   path: "/reviews/session",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any);
 
-const LessonsSummaryRoute = LessonsSummaryImport.update({
+const AuthLessonsSummaryRoute = AuthLessonsSummaryImport.update({
   path: "/lessons/summary",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any);
 
-const LessonsSettingsRoute = LessonsSettingsImport.update({
+const AuthLessonsSettingsRoute = AuthLessonsSettingsImport.update({
   path: "/lessons/settings",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any);
 
-const LessonsSessionRoute = LessonsSessionImport.update({
+const AuthLessonsSessionRoute = AuthLessonsSessionImport.update({
   path: "/lessons/session",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any);
 
-const LessonsQuizRoute = LessonsQuizImport.update({
+const AuthLessonsQuizRoute = AuthLessonsQuizImport.update({
   path: "/lessons/quiz",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any);
 
 // Populate the FileRoutesByPath interface
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
+    "/_auth": {
+      id: "/_auth";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof AuthImport;
       parentRoute: typeof rootRoute;
     };
     "/authenticate": {
@@ -110,82 +116,89 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticateImport;
       parentRoute: typeof rootRoute;
     };
-    "/search": {
-      id: "/search";
+    "/_auth/search": {
+      id: "/_auth/search";
       path: "/search";
       fullPath: "/search";
-      preLoaderRoute: typeof SearchImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthSearchImport;
+      parentRoute: typeof AuthImport;
     };
-    "/settings": {
-      id: "/settings";
+    "/_auth/settings": {
+      id: "/_auth/settings";
       path: "/settings";
       fullPath: "/settings";
-      preLoaderRoute: typeof SettingsImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthSettingsImport;
+      parentRoute: typeof AuthImport;
     };
-    "/lessons/quiz": {
-      id: "/lessons/quiz";
+    "/_auth/": {
+      id: "/_auth/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof AuthIndexImport;
+      parentRoute: typeof AuthImport;
+    };
+    "/_auth/lessons/quiz": {
+      id: "/_auth/lessons/quiz";
       path: "/lessons/quiz";
       fullPath: "/lessons/quiz";
-      preLoaderRoute: typeof LessonsQuizImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthLessonsQuizImport;
+      parentRoute: typeof AuthImport;
     };
-    "/lessons/session": {
-      id: "/lessons/session";
+    "/_auth/lessons/session": {
+      id: "/_auth/lessons/session";
       path: "/lessons/session";
       fullPath: "/lessons/session";
-      preLoaderRoute: typeof LessonsSessionImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthLessonsSessionImport;
+      parentRoute: typeof AuthImport;
     };
-    "/lessons/settings": {
-      id: "/lessons/settings";
+    "/_auth/lessons/settings": {
+      id: "/_auth/lessons/settings";
       path: "/lessons/settings";
       fullPath: "/lessons/settings";
-      preLoaderRoute: typeof LessonsSettingsImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthLessonsSettingsImport;
+      parentRoute: typeof AuthImport;
     };
-    "/lessons/summary": {
-      id: "/lessons/summary";
+    "/_auth/lessons/summary": {
+      id: "/_auth/lessons/summary";
       path: "/lessons/summary";
       fullPath: "/lessons/summary";
-      preLoaderRoute: typeof LessonsSummaryImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthLessonsSummaryImport;
+      parentRoute: typeof AuthImport;
     };
-    "/reviews/session": {
-      id: "/reviews/session";
+    "/_auth/reviews/session": {
+      id: "/_auth/reviews/session";
       path: "/reviews/session";
       fullPath: "/reviews/session";
-      preLoaderRoute: typeof ReviewsSessionImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthReviewsSessionImport;
+      parentRoute: typeof AuthImport;
     };
-    "/reviews/settings": {
-      id: "/reviews/settings";
+    "/_auth/reviews/settings": {
+      id: "/_auth/reviews/settings";
       path: "/reviews/settings";
       fullPath: "/reviews/settings";
-      preLoaderRoute: typeof ReviewsSettingsImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthReviewsSettingsImport;
+      parentRoute: typeof AuthImport;
     };
-    "/reviews/summary": {
-      id: "/reviews/summary";
+    "/_auth/reviews/summary": {
+      id: "/_auth/reviews/summary";
       path: "/reviews/summary";
       fullPath: "/reviews/summary";
-      preLoaderRoute: typeof ReviewsSummaryImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthReviewsSummaryImport;
+      parentRoute: typeof AuthImport;
     };
-    "/subjects/$subjId": {
-      id: "/subjects/$subjId";
+    "/_auth/subjects/$subjId": {
+      id: "/_auth/subjects/$subjId";
       path: "/subjects/$subjId";
       fullPath: "/subjects/$subjId";
-      preLoaderRoute: typeof SubjectsSubjIdImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthSubjectsSubjIdImport;
+      parentRoute: typeof AuthImport;
     };
-    "/subjects/": {
-      id: "/subjects/";
+    "/_auth/subjects/": {
+      id: "/_auth/subjects/";
       path: "/subjects";
       fullPath: "/subjects";
-      preLoaderRoute: typeof SubjectsIndexImport;
-      parentRoute: typeof rootRoute;
+      preLoaderRoute: typeof AuthSubjectsIndexImport;
+      parentRoute: typeof AuthImport;
     };
   }
 }
@@ -193,19 +206,21 @@ declare module "@tanstack/react-router" {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-  IndexRoute,
+  AuthRoute: AuthRoute.addChildren({
+    AuthSearchRoute,
+    AuthSettingsRoute,
+    AuthIndexRoute,
+    AuthLessonsQuizRoute,
+    AuthLessonsSessionRoute,
+    AuthLessonsSettingsRoute,
+    AuthLessonsSummaryRoute,
+    AuthReviewsSessionRoute,
+    AuthReviewsSettingsRoute,
+    AuthReviewsSummaryRoute,
+    AuthSubjectsSubjIdRoute,
+    AuthSubjectsIndexRoute,
+  }),
   AuthenticateRoute,
-  SearchRoute,
-  SettingsRoute,
-  LessonsQuizRoute,
-  LessonsSessionRoute,
-  LessonsSettingsRoute,
-  LessonsSummaryRoute,
-  ReviewsSessionRoute,
-  ReviewsSettingsRoute,
-  ReviewsSummaryRoute,
-  SubjectsSubjIdRoute,
-  SubjectsIndexRoute,
 });
 
 /* prettier-ignore-end */
@@ -216,59 +231,77 @@ export const routeTree = rootRoute.addChildren({
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/authenticate",
-        "/search",
-        "/settings",
-        "/lessons/quiz",
-        "/lessons/session",
-        "/lessons/settings",
-        "/lessons/summary",
-        "/reviews/session",
-        "/reviews/settings",
-        "/reviews/summary",
-        "/subjects/$subjId",
-        "/subjects/"
+        "/_auth",
+        "/authenticate"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
+        "/_auth/search",
+        "/_auth/settings",
+        "/_auth/",
+        "/_auth/lessons/quiz",
+        "/_auth/lessons/session",
+        "/_auth/lessons/settings",
+        "/_auth/lessons/summary",
+        "/_auth/reviews/session",
+        "/_auth/reviews/settings",
+        "/_auth/reviews/summary",
+        "/_auth/subjects/$subjId",
+        "/_auth/subjects/"
+      ]
     },
     "/authenticate": {
       "filePath": "authenticate.tsx"
     },
-    "/search": {
-      "filePath": "search.tsx"
+    "/_auth/search": {
+      "filePath": "_auth.search.tsx",
+      "parent": "/_auth"
     },
-    "/settings": {
-      "filePath": "settings.tsx"
+    "/_auth/settings": {
+      "filePath": "_auth.settings.tsx",
+      "parent": "/_auth"
     },
-    "/lessons/quiz": {
-      "filePath": "lessons/quiz.tsx"
+    "/_auth/": {
+      "filePath": "_auth.index.tsx",
+      "parent": "/_auth"
     },
-    "/lessons/session": {
-      "filePath": "lessons/session.tsx"
+    "/_auth/lessons/quiz": {
+      "filePath": "_auth.lessons.quiz.tsx",
+      "parent": "/_auth"
     },
-    "/lessons/settings": {
-      "filePath": "lessons/settings.tsx"
+    "/_auth/lessons/session": {
+      "filePath": "_auth.lessons.session.tsx",
+      "parent": "/_auth"
     },
-    "/lessons/summary": {
-      "filePath": "lessons/summary.tsx"
+    "/_auth/lessons/settings": {
+      "filePath": "_auth.lessons.settings.tsx",
+      "parent": "/_auth"
     },
-    "/reviews/session": {
-      "filePath": "reviews/session.tsx"
+    "/_auth/lessons/summary": {
+      "filePath": "_auth.lessons.summary.tsx",
+      "parent": "/_auth"
     },
-    "/reviews/settings": {
-      "filePath": "reviews/settings.tsx"
+    "/_auth/reviews/session": {
+      "filePath": "_auth.reviews.session.tsx",
+      "parent": "/_auth"
     },
-    "/reviews/summary": {
-      "filePath": "reviews/summary.tsx"
+    "/_auth/reviews/settings": {
+      "filePath": "_auth.reviews.settings.tsx",
+      "parent": "/_auth"
     },
-    "/subjects/$subjId": {
-      "filePath": "subjects.$subjId.tsx"
+    "/_auth/reviews/summary": {
+      "filePath": "_auth.reviews.summary.tsx",
+      "parent": "/_auth"
     },
-    "/subjects/": {
-      "filePath": "subjects.index.tsx"
+    "/_auth/subjects/$subjId": {
+      "filePath": "_auth.subjects.$subjId.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/subjects/": {
+      "filePath": "_auth.subjects.index.tsx",
+      "parent": "/_auth"
     }
   }
 }

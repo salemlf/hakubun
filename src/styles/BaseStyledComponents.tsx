@@ -21,6 +21,22 @@ type OptionalBgColor = {
   bgcolor?: string;
 };
 
+export const containerVariants = {
+  initial: { opacity: 0, y: 20 },
+  in: { opacity: 1, y: 0 },
+  out: { opacity: 0, y: -20 },
+};
+
+export const PageContainer = styled(motion.div)`
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100dvh;
+  position: relative;
+  background-size: cover;
+  background-color: var(--background-color);
+  overflow-y: auto;
+`;
+
 export const FullWidthGrid = styled(IonGrid)`
   margin-left: 0;
   margin-right: 0;
