@@ -52,18 +52,23 @@ function PitchIllustration({ pitchForReading, children }: Props) {
 
   const createXCoords = (charWidths: number[]): XCoords[] => {
     const xCoords = charWidths.map((_width, idx) => {
+      const accumulatorStart =
+        pitchForReading.pitch[idx].part === ""
+          ? 0 - nodeRadius * 0.5 - strokeWidth * 2
+          : nodeRadius;
+
       const x1 =
         idx === 0
           ? nodeRadius + strokeWidth
           : pitchForReading.pitch.slice(0, idx).reduce((acc, _curr, i) => {
-              return acc + charWidths[i] + strokeWidth;
-            }, nodeRadius);
+              return acc + charWidths[i];
+            }, accumulatorStart);
 
       const x2 = pitchForReading.pitch
         .slice(0, idx + 1)
         .reduce((acc, curr, i) => {
           return acc + charWidths[i];
-        }, nodeRadius);
+        }, accumulatorStart);
 
       return { x1, x2 };
     });
@@ -80,13 +85,15 @@ function PitchIllustration({ pitchForReading, children }: Props) {
       const finalXStart = pitchForReading.pitch
         .slice(0, pitchForReading.pitch.length - 1)
         .reduce((acc, curr, i) => {
-          return acc + charWidths[i];
+          return acc + charWidths[i] + strokeWidth;
         }, nodeRadius);
 
       const finalXEnd =
         finalXStart +
         charWidths[charWidths.length - 1] -
-        nodeRadius * (charWidths.length * 2);
+        nodeRadius * (charWidths.length * 2) +
+        nodeRadius +
+        strokeWidth;
 
       setXCoordInfo({ coords: xCoordinates, finalXStart, finalXEnd });
     }
@@ -131,12 +138,20 @@ function PitchIllustration({ pitchForReading, children }: Props) {
                 <line
                   x1={x1}
                   y1={y - strokeWidth}
-                  x2={x2}
+                  x2={
+                    pitchForReading.pitch[index + 1].part === ""
+                      ? x2 - nodeRadius * 1.5 - strokeWidth * 2
+                      : x2
+                  }
                   y2={
                     pitchForReading.pitch[index + 1].high
-                      ? highY - strokeWidth
-                      : lowY + strokeWidth
+                      ? highY - strokeWidth * 2
+                      : lowY
                   }
+                  {...(pitchForReading.pitch[index + 1].part === "" && {
+                    strokeDasharray: "1,4",
+                    strokeLinecap: "round",
+                  })}
                   stroke="var(--text-color)"
                   strokeWidth={`${strokeWidth}`}
                 />
@@ -157,7 +172,10 @@ function PitchIllustration({ pitchForReading, children }: Props) {
               />
               <title id={`pitchNode${index}`}>
                 {pitchAccent.high ? "High" : "Low"} pitch accent for{" "}
-                {pitchAccent.part} part
+                {pitchAccent.part === ""
+                  ? `end of ${pitchForReading.pitch[index - 1].part}`
+                  : `${pitchAccent.part}`}{" "}
+                part
               </title>
             </React.Fragment>
           );
@@ -165,27 +183,27 @@ function PitchIllustration({ pitchForReading, children }: Props) {
         {addEndingNode && (
           <>
             <line
-              x1={finalXStart + nodeRadius + strokeWidth}
+              x1={finalXStart + strokeWidth}
               y1={
-                pitchForReading.pitch[pitchForReading.pitch.length - 1].high
-                  ? highY - strokeWidth
-                  : lowY + strokeWidth
+                (pitchForReading.pitch[pitchForReading.pitch.length - 1].high
+                  ? highY
+                  : lowY) - strokeWidth
               }
-              x2={finalXEnd + nodeRadius - 2}
+              x2={finalXEnd}
               y2={
-                pitchForReading.pitch[pitchForReading.pitch.length - 1].high
-                  ? highY - strokeWidth
-                  : lowY + strokeWidth
+                (pitchForReading.pitch[pitchForReading.pitch.length - 1].high
+                  ? highY
+                  : lowY) - strokeWidth
               }
               stroke="var(--text-color)"
               strokeWidth={`${strokeWidth}`}
             />
             <circle
-              cx={finalXEnd + nodeRadius * 2 - 2}
+              cx={finalXEnd + nodeRadius}
               cy={
-                pitchForReading.pitch[pitchForReading.pitch.length - 1].high
-                  ? highY - strokeWidth
-                  : lowY + strokeWidth
+                (pitchForReading.pitch[pitchForReading.pitch.length - 1].high
+                  ? highY
+                  : lowY) - strokeWidth
               }
               r={nodeRadius}
               fill="none"
