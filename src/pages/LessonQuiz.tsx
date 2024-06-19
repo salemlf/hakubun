@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { AxiosError } from "axios";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
@@ -55,7 +55,7 @@ function LessonQuiz() {
   const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
     const submittedLessonInfo = await submitLessonBatch(queueData);
     updateSubmitted(submittedLessonInfo);
-    navigate("/lessons/summary", { replace: true });
+    navigate({ to: "/lessons/summary", replace: true });
   };
 
   const submitLessonBatch = (queueData: AssignmentQueueItem[]) => {

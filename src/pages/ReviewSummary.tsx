@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, useMotionValueEvent, useScroll } from "framer-motion";
 import { getReviewsGroupedByResult } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService/AssignmentQueueService";
@@ -165,7 +165,9 @@ function ReviewSummary() {
               <NavButton
                 backgroundColor="var(--ion-color-primary)"
                 color="black"
-                onPress={() => navigate("/reviews/settings", { replace: true })}
+                onPress={() =>
+                  navigate({ to: "/reviews/settings", replace: true })
+                }
               >
                 <SvgIcon
                   icon={<ReviewsIcon />}
@@ -177,7 +179,7 @@ function ReviewSummary() {
               <NavButton
                 backgroundColor="var(--ion-color-tertiary)"
                 color="black"
-                onPress={() => navigate("/", { replace: true })}
+                onPress={() => navigate({ to: "/", replace: true })}
               >
                 <SvgIcon
                   icon={<ColorHomeIcon />}

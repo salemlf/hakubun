@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
@@ -213,9 +213,9 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
     setAssignmentQueueData(assignmentQueue, settingsType);
 
     if (settingsType === "review") {
-      navigate("/reviews/session", { replace: true });
+      navigate({ to: "/reviews/session", replace: true });
     } else {
-      navigate("/lessons/session", { replace: true });
+      navigate({ to: "/lessons/session", replace: true });
     }
   };
 

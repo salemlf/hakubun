@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, useLocation } from "@tanstack/react-router";
 import { useResizeObserver } from "usehooks-ts";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { motion } from "framer-motion";
@@ -93,7 +93,7 @@ const PageLink = ({
       {...props}
       aria-label={`${pageName} page`}
     >
-      <NavLink to={pathName}>{children}</NavLink>
+      <Link to={pathName}>{children}</Link>
     </TabButton>
   );
 };

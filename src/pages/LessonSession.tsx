@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
@@ -44,7 +44,7 @@ function LessonSession() {
   }, []);
 
   const onStartLessonBtnClick = () => {
-    navigate("/lessons/quiz", { replace: true });
+    navigate({ to: "/lessons/quiz", replace: true });
     resetLessonPaginator();
   };
 
@@ -66,7 +66,7 @@ function LessonSession() {
           />
           <HomeBtn
             aria-label="Home page"
-            onPress={() => navigate("/", { replace: true })}
+            onPress={() => navigate({ to: "/", replace: true })}
           >
             <SvgIcon icon={<HomeIconColor />} width="3em" height="3em" />
           </HomeBtn>

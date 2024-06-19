@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { getTimeFromNow } from "../../services/MiscService/MiscService";
 import { getSubjectColor } from "../../services/SubjectAndAssignmentService/SubjectAndAssignmentService";
 import { Subject, SubjectType } from "../../types/Subject";
@@ -74,7 +74,10 @@ export const PopoverSubjButton = ({
 
   const onPopoverClick = (e: any) => {
     setIsOpen(false);
-    navigate(`/subjects/${subject.id}`);
+    navigate({
+      to: `/subjects/$subjId`,
+      params: { subjId: subject.id },
+    });
   };
 
   let timeTill;

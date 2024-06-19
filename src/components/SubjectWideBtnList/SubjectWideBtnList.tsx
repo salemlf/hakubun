@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { setSubjectAvailImgs } from "../../services/ImageSrcService/ImageSrcService";
 import {
   getSubjectDisplayName,
@@ -101,7 +101,10 @@ export const SubjectWideButton = ({ subject, findImages = false }: Props) => {
   }
 
   const onSubjBtnClick = () => {
-    navigate(`/subjects/${subject.id}`);
+    navigate({
+      to: `/subjects/$subjId`,
+      params: { subjId: subject.id },
+    });
   };
 
   return (

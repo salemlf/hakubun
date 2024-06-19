@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { motion, useAnimation } from "framer-motion";
 import { AxiosError } from "axios";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
@@ -205,7 +205,7 @@ function ReviewSession() {
   const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
     const reviewInfo = await submitReviewBatch(queueData);
     updateSubmitted(reviewInfo);
-    navigate("/reviews/summary", { replace: true });
+    navigate({ to: "/reviews/summary", replace: true });
   };
 
   const submitReviewBatch = (queueData: AssignmentQueueItem[]) => {

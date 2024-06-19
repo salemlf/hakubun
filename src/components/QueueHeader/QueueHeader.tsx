@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import { AssignmentQueueItem } from "../../types/AssignmentQueueTypes";
 import Button from "../Button/Button";
@@ -69,7 +69,7 @@ function QueueHeader() {
       <HomeButtonAndNumReviewsLeftContainer>
         <HomeBtn
           backgroundColor="var(--ion-color-primary)"
-          onPress={() => navigate("/", { replace: true })}
+          onPress={() => navigate({ to: "/", replace: true })}
           aria-label="Home page"
         >
           <SvgIcon icon={<HomeIconColor />} width="3em" height="3em" />
