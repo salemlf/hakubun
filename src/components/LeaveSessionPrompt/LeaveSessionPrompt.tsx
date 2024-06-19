@@ -1,7 +1,7 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useBlocker, useLocation } from "@tanstack/react-router";
 import { Location } from "react-router-dom";
 import { useIsBottomSheetOpen } from "../../contexts/BottomSheetOpenContext";
-import { useNavBlocker } from "../../hooks/useNavBlocker";
 import AlertModal, { AlertModalContentProps } from "../AlertModal";
 
 type ShouldBlockParams = {
@@ -35,16 +35,33 @@ function LeaveSessionPrompt({
   onConfirmClick,
   onAddtlActionClick = () => {},
 }: Props) {
-  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
-
+  const location = useLocation();
   const shouldBlock = useCallback(
     ({ currentLocation, nextLocation }: ShouldBlockParams) => {
       return blockUserLeavingPage({ currentLocation, nextLocation });
     },
-    []
+    [location.pathname]
   );
-  const { isNavBlocked, proceedNavigating, cancelNavigating } =
-    useNavBlocker(shouldBlock);
+  const {
+    proceed: proceedNavigating,
+    reset: cancelNavigating,
+    status,
+  } = useBlocker({
+    condition: shouldBlock,
+  });
+  const [isNavBlocked, setIsNavBlocked] = useState(status === "blocked");
+  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+
+  // resetting the blocker in case it's somehow already blocked
+  useEffect(() => {
+    if (isNavBlocked) {
+      cancelNavigating();
+    }
+  }, []);
+
+  useEffect(() => {
+    setIsNavBlocked(status === "blocked");
+  }, [status]);
 
   useEffect(() => {
     if (isNavBlocked && isBottomSheetOpen) {
