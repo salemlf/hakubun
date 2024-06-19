@@ -15,8 +15,6 @@ import {
 import { AnimatePresence, useIsPresent } from "framer-motion";
 import { cloneDeep } from "lodash";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
-import { useAuthTokenStore } from "../stores/useAuthTokenStore/useAuthTokenStore";
-import { PersistentStore, useHydration } from "../hooks/useHydration";
 import { useAuth } from "../hooks/useAuth";
 import FloatingTabBar from "../components/FloatingTabBar";
 import LoadingDots from "../components/LoadingDots";
@@ -73,7 +71,6 @@ function Auth() {
   const { sessionInProgress: isSessionInProgress } =
     useAssignmentQueueStoreFacade();
   const { isAuthLoading } = useAuth();
-  const isHydrated = useHydration(useAuthTokenStore as PersistentStore);
 
   const pgsToShowTabBar = ["/", "/search", "/subjects"];
   const subjectDetailsPgRegex = /\/subjects\/\d+/;
@@ -102,7 +99,7 @@ function Auth() {
     };
   }, [history]);
 
-  if (isAuthLoading || !isHydrated) {
+  if (isAuthLoading) {
     return (
       <FixedCenterContainer>
         <LoadingDots />

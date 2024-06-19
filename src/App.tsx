@@ -15,6 +15,7 @@ import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserSettingsStore } from "./stores/useUserSettingsStore/useUserSettingsStore";
+import { useAuthTokenStore } from "./stores/useAuthTokenStore/useAuthTokenStore";
 import {
   getRetryDelay,
   onQueryError,
@@ -160,19 +161,21 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <HydrationWrapper store={useUserSettingsStore as PersistentStore}>
-        <AuthProvider>
-          <ToastDisplayProvider />
-          <ThemeProvider>
-            <BottomSheetOpenProvider>
-              <TabBarHeightProvider>
-                <IonApp>
-                  <InnerApp />
-                </IonApp>
-              </TabBarHeightProvider>
-            </BottomSheetOpenProvider>
-          </ThemeProvider>
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-        </AuthProvider>
+        <HydrationWrapper store={useAuthTokenStore as PersistentStore}>
+          <AuthProvider>
+            <ToastDisplayProvider />
+            <ThemeProvider>
+              <BottomSheetOpenProvider>
+                <TabBarHeightProvider>
+                  <IonApp>
+                    <InnerApp />
+                  </IonApp>
+                </TabBarHeightProvider>
+              </BottomSheetOpenProvider>
+            </ThemeProvider>
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+          </AuthProvider>
+        </HydrationWrapper>
       </HydrationWrapper>
     </QueryClientProvider>
   );
