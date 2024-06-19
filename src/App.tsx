@@ -26,6 +26,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { PersistentStore } from "./hooks/useHydration";
 import { useAuth } from "./hooks/useAuth";
+import NotFound from "./pages/NotFound";
 import { ToastDisplayProvider } from "./components/Toast/ToastDisplayProvider";
 import HydrationWrapper from "./components/HydrationWrapper";
 
@@ -128,6 +129,7 @@ const router = createRouter({
   context: {
     auth: undefined!,
   },
+  defaultNotFoundComponent: () => <NotFound />,
 });
 
 // Register the router instance for type safety
