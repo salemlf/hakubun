@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import { IonIcon, IonSkeletonText } from "@ionic/react";
+// TODO: use custom close icon, then can uninstall ionicons
 import { closeCircle } from "ionicons/icons";
 import { displayToast } from "../Toast/Toast.service";
 import { generateUUID } from "../../utils";
