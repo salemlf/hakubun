@@ -172,7 +172,10 @@ function PitchIllustration({ pitchForReading, children }: Props) {
               />
               <title id={`pitchNode${index}`}>
                 {pitchAccent.high ? "High" : "Low"} pitch accent for{" "}
-                {pitchAccent.part} part
+                {pitchAccent.part === ""
+                  ? `end of ${pitchForReading.pitch[index - 1].part}`
+                  : `${pitchAccent.part}`}{" "}
+                part
               </title>
             </React.Fragment>
           );
