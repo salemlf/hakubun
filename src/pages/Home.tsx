@@ -68,7 +68,7 @@ const Home = () => {
   }, [userInfoLoading]);
 
   return (
-    <HydrationWrapper store={useAuthTokenStore as PersistentStore}>
+    <>
       <HomeHeader></HomeHeader>
       <HomePageContainer ref={ref}>
         {!homeLoading ? (
@@ -96,7 +96,7 @@ const Home = () => {
           </FixedCenterContainer>
         )}
       </HomePageContainer>
-    </HydrationWrapper>
+    </>
   );
 };
 
