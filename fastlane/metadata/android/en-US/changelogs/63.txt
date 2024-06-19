@@ -1,0 +1,10 @@
+Bug Fixes
+
+- Pitch Accent Nodes Misaligned
+	- Author: salemlf
+- Search Input Not Allowing Spaces
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.5.2-beta
+
