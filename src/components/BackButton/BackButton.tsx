@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "@tanstack/react-router";
 import Button from "../Button";
 import SvgIcon from "../SvgIcon";
 import BackArrowIcon from "../../images/back-arrow.svg?react";
@@ -24,13 +24,13 @@ function BackButton({
   backgroundColor = "var(--darkest-purple)",
   color = "var(--white)",
 }: Props) {
-  const navigate = useNavigate();
+  const { history } = useRouter();
 
   return (
     <BackButtonStyled
       aria-label="Back to previous page"
       backgroundColor={backgroundColor}
-      onPress={() => navigate(-1)}
+      onPress={() => history.go(-1)}
       color="white"
     >
       <SvgIcon

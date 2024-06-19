@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
@@ -239,7 +239,7 @@ const TokenInput = () => {
 
   useEffect(() => {
     if (userInfo !== undefined && isAuthenticated) {
-      navigate("/", { replace: true });
+      navigate({ to: "/", replace: true });
     }
   }, [userInfo]);
 

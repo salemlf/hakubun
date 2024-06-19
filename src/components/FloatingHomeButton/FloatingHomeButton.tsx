@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import SvgIcon from "../SvgIcon";
 import {
   FloatingButton,
@@ -25,7 +25,7 @@ function FloatingHomeButton() {
       <FloatingButton
         backgroundColor="var(--ion-color-tertiary)"
         color="black"
-        onPress={() => navigate("/", { replace: true })}
+        onPress={() => navigate({ to: "/", replace: true })}
       >
         <SvgIcon icon={<ColorHomeIcon />} width="1.5em" height="1.5em" />
         <HomeTxt>Home</HomeTxt>

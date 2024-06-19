@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "@tanstack/react-router";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import { setBtnBackground } from "../../services/ImageSrcService/ImageSrcService";
 import { displayToast } from "../Toast/Toast.service";
@@ -67,7 +67,7 @@ function LessonsButton() {
         timeout: 10000,
       });
     } else {
-      navigate("/lessons/settings");
+      navigate({ to: "/lessons/settings" });
     }
   };
 

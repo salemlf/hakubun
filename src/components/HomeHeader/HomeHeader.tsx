@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
 import Button from "../Button";
 import RefreshHomeButton from "../RefreshHomeButton";
@@ -95,7 +95,7 @@ function HomeHeader() {
           <SettingsButton
             aria-label="User settings page"
             backgroundColor="transparent"
-            onPress={() => navigate("/settings")}
+            onPress={() => navigate({ to: "/settings" })}
           >
             <SvgIcon icon={<SettingsIcon />} width="2.75em" height="2.75em" />
           </SettingsButton>

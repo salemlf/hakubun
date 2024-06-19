@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { getSubjectBtnSize } from "../../services/MiscService/MiscService";
 import { KanaVocabulary, Subject, Vocabulary } from "../../types/Subject";
 import { ButtonSize } from "../../types/MiscTypes";
@@ -22,7 +22,10 @@ export const VocabButton = ({
     : getSubjectBtnSize(btnSize).fontSizeNoDetails;
 
   const onSubjBtnClick = (e: any) => {
-    navigate(`/subjects/${subject.id}`);
+    navigate({
+      to: `/subjects/$subjId`,
+      params: { subjId: subject.id },
+    });
   };
 
   return (

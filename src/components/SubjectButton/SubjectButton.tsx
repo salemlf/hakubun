@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment";
 import { ButtonSize } from "../../types/MiscTypes";
@@ -32,7 +32,10 @@ function SubjectButton({
 
   const onClickEvent = (e: any) => {
     if (isButtonLink) {
-      navigate(`/subjects/${subject.id}`);
+      navigate({
+        to: `/subjects/$subjId`,
+        params: { subjId: subject.id },
+      });
     }
   };
 

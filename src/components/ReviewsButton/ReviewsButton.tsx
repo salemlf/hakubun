@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { setBtnBackground } from "../../services/ImageSrcService/ImageSrcService";
 import { displayToast } from "../Toast/Toast.service";
 import { useReviews } from "../../hooks/assignments/useReviews";
@@ -42,7 +42,7 @@ function ReviewsButton() {
         timeout: 10000,
       });
     } else {
-      navigate("/reviews/settings");
+      navigate({ to: "/reviews/settings" });
     }
   };
 

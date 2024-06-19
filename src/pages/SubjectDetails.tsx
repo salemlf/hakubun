@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useRouter } from "@tanstack/react-router";
 import { IonSkeletonText } from "@ionic/react";
 import { AnimatePresence } from "framer-motion";
 import { useScrollRestoration } from "use-scroll-restoration";
@@ -33,7 +33,7 @@ type BackToSessionBtnProps = {
 };
 
 function BackToSessionBtn({ sessionType }: BackToSessionBtnProps) {
-  const navigate = useNavigate();
+  const { history } = useRouter();
 
   return (
     <FloatingButtonContainer
@@ -46,7 +46,8 @@ function BackToSessionBtn({ sessionType }: BackToSessionBtnProps) {
       <FloatingButton
         backgroundColor="var(--ion-color-tertiary)"
         color="black"
-        onPress={() => navigate(-1)}
+        // onPress={() => navigate(-1)}
+        onPress={() => history.go(-1)}
       >
         <SvgIcon icon={<BackArrowIcon />} width="1em" height="1em" />
         <BackToSessionTxt>
@@ -63,23 +64,24 @@ const FullWidthGrid = styled.section`
 `;
 
 // TODO: sometimes has isSessionInProgress as true when it should be false, investigate
-export const SubjectDetails = () => {
-  const { id } = useParams<{ id?: string }>();
-  const parsedID = parseInt(id!);
 
-  const { ref } = useScrollRestoration(`subjectDetailsPageScroll${id}`, {
+type Props = {
+  subjId: number;
+};
+
+export const SubjectDetails = ({ subjId }: Props) => {
+  const { sessionInProgress: isSessionInProgress, sessionType } =
+    useAssignmentQueueStoreFacade();
+  const { ref } = useScrollRestoration(`subjectDetailsPageScroll${subjId}`, {
     debounceTime: 200,
     persist: "localStorage",
   });
-
-  const { sessionInProgress: isSessionInProgress, sessionType } =
-    useAssignmentQueueStoreFacade();
 
   const {
     isLoading: subjectLoading,
     data: subjectData,
     error: subjectErr,
-  } = useSubjectByID(parsedID);
+  } = useSubjectByID(subjId);
 
   // TODO: display loading skeleton for each component until all content on page is loaded
   if (subjectLoading) {

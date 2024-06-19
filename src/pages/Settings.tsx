@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserLogin } from "../hooks/user/useUserLogin";
 import GeneralUserSettings from "../components/GeneralUserSettings";
@@ -62,7 +62,7 @@ const ReleaseTxt = styled.p`
 `;
 
 // TODO: change to get defaults from API
-function Settings() {
+export function Settings() {
   const [isFeedbackModalShown, setIsFeedbackModalShown] = useState(false);
   const [isLogoutConfirmationShown, setIsLogoutConfirmationShown] =
     useState(false);
@@ -73,7 +73,7 @@ function Settings() {
 
   const removeAuth = () => {
     logout();
-    navigate("/authenticate");
+    navigate({ to: "/authenticate", replace: true });
   };
 
   return (
