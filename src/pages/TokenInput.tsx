@@ -92,7 +92,8 @@ const HelpContentParagraph = styled.p`
 
 // TODO: display error icon
 const ErrorTxt = styled.p`
-  margin-bottom: 0;
+  margin: 0;
+  margin-top: 5px;
 `;
 
 const HeadingAndLogoContainer = styled.div`
