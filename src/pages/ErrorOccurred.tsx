@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react";
-import {
-  isRouteErrorResponse,
-  useNavigate,
-  useRouteError,
-} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { copyToClipboard } from "../utils";
 import Emoji from "../components/Emoji";
 import Button from "../components/Button";
@@ -120,31 +116,13 @@ const FloatingButtonsContainer = styled.div`
   gap: 10px;
 `;
 
-function ErrorOccurred() {
-  const error = useRouteError();
+type Props = {
+  error: Error;
+};
+
+function ErrorOccurred({ error }: Props) {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState<string>("Unknown Error");
-  const [stackTrace, setStackTrace] = useState<string | undefined>();
   const [isErrReportModalOpen, setIsErrReportModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (isRouteErrorResponse(error)) {
-      // error is type `ErrorResponse`
-      setErrorMessage(
-        `Response error: ${error.data?.message || error.statusText}`
-      );
-    } else if (error instanceof Error) {
-      setErrorMessage(error.message);
-      setStackTrace(error.stack);
-    } else if (typeof error === "string") {
-      setErrorMessage(error);
-    } else {
-      console.error(error);
-      setErrorMessage(`Unknown error occurred: ${JSON.stringify(error)}`);
-    }
-
-    console.error(error);
-  }, [error]);
 
   return (
     <>
@@ -161,12 +139,11 @@ function ErrorOccurred() {
       <Content>
         <ErrorDetails>
           <ErrAndCopyBtnContainer>
-            <h3>{errorMessage}</h3>
+            <h3>{error.message}</h3>
             <CopyContentBtn
-              // className="base-button"
               onPress={() =>
                 copyToClipboard(
-                  `${APP_VERSION}\n${errorMessage}\n${stackTrace}`
+                  `${APP_VERSION}\n${error.message}\n${error.stack}`
                 )
               }
             >
@@ -178,7 +155,7 @@ function ErrorOccurred() {
             <h4>App Version</h4>
             <p>{APP_VERSION}</p>
             <h4>Stacktrace</h4>
-            {stackTrace && <p>{stackTrace}</p>}
+            {error.stack && <p>{error.stack}</p>}
           </StackTraceAppVersionContainer>
         </ErrorDetails>
         <DistressedCrabigatorContainer>
@@ -188,8 +165,8 @@ function ErrorOccurred() {
       <ErrReportModal
         isOpen={isErrReportModalOpen}
         setIsOpen={setIsErrReportModalOpen}
-        errMsg={errorMessage}
-        stackTrace={stackTrace}
+        errMsg={error.message}
+        stackTrace={error.stack}
       />
       <FloatingButtonsContainer>
         <FloatingButton
@@ -203,7 +180,7 @@ function ErrorOccurred() {
         <FloatingButton
           backgroundColor="var(--ion-color-tertiary)"
           color="black"
-          onPress={() => navigate("/", { replace: true })}
+          onPress={() => navigate({ to: "/", replace: true })}
         >
           <SvgIcon icon={<ColorHomeIcon />} width="1.5em" height="1.5em" />
           <BtnTxt>Home</BtnTxt>

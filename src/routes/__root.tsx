@@ -1,5 +1,6 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { AuthContext } from "../contexts/AuthContext";
+import ErrorOccurred from "../pages/ErrorOccurred";
 
 interface AuthenticatedCtx {
   auth: AuthContext;
@@ -7,6 +8,9 @@ interface AuthenticatedCtx {
 
 export const Route = createRootRouteWithContext<AuthenticatedCtx>()({
   component: Root,
+  errorComponent: ({ error }) => {
+    return <ErrorOccurred error={error} />;
+  },
 });
 
 function Root() {
