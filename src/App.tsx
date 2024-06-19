@@ -1,24 +1,17 @@
-import { useEffect } from "react";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
 import * as LogRocket from "logrocket";
 import * as Sentry from "@sentry/react";
 import { httpClientIntegration } from "@sentry/integrations";
-import {
-  createBrowserRouter,
-  createRoutesFromChildren,
-  matchRoutes,
-  RouterProvider,
-  useLocation,
-  useNavigationType,
-} from "react-router-dom";
 import { IonApp, setupIonicReact } from "@ionic/react";
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+
+import { routeTree } from "./routeTree.gen";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { baseUrlRegex, setAxiosHeaders } from "./api/ApiConfig";
-import { routes } from "./navigation/routes";
 import useAuthTokenStoreFacade from "./stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "./stores/useUserInfoStore/useUserInfoStore.facade";
 import { useUserSettingsStore } from "./stores/useUserSettingsStore/useUserSettingsStore";
@@ -85,13 +78,6 @@ if (import.meta.env.MODE !== "development" && import.meta.env.MODE !== "test") {
     tracePropagationTargets: [baseUrlRegex],
     environment: import.meta.env.MODE,
     integrations: [
-      Sentry.reactRouterV6BrowserTracingIntegration({
-        useEffect,
-        useLocation,
-        useNavigationType,
-        createRoutesFromChildren,
-        matchRoutes,
-      }),
       Sentry.replayIntegration({
         maskAllText: false,
         blockAllMedia: false,
@@ -133,14 +119,19 @@ const queryClient = new QueryClient({
   }),
 });
 
-const sentryCreateBrowserRouter =
-  Sentry.wrapCreateBrowserRouter(createBrowserRouter);
+// Create a new router instance
+const router = createRouter({ routeTree });
+
+// Register the router instance for type safety
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 const App: React.FC = () => {
   const { authToken } = useAuthTokenStoreFacade();
   const { userInfo } = useUserInfoStoreFacade();
-
-  const browserRouter = getBrowserRouter();
 
   // setting the auth token headers for all api requests
   setAxiosHeaders(authToken);
@@ -162,7 +153,7 @@ const App: React.FC = () => {
           <BottomSheetOpenProvider>
             <TabBarHeightProvider>
               <IonApp>
-                <RouterProvider router={browserRouter} />
+                <RouterProvider router={router} />
               </IonApp>
             </TabBarHeightProvider>
           </BottomSheetOpenProvider>
@@ -171,10 +162,6 @@ const App: React.FC = () => {
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
-};
-
-const getBrowserRouter = () => {
-  return sentryCreateBrowserRouter(routes);
 };
 
 export default App;
