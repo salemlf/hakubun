@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { SubjectDetails } from "../pages/SubjectDetails";
 
-export const Route = createFileRoute("/subjects/$subjId")({
+export const Route = createFileRoute("/_auth/subjects/$subjId")({
   component: SubjDetailsComponent,
   // TODO: redirect to the previous page if cannot parse the ID
   parseParams: (params) => {

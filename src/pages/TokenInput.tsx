@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import useUserSettingsStoreFacade from "../stores/useUserSettingsStore/useUserSettingsStore.facade";
-import { useUserLogin } from "../hooks/user/useUserLogin";
+import { useAuth } from "../hooks/useAuth";
 import { AccordionItemData } from "../types/MiscTypes";
 import LoadingDots from "../components/LoadingDots";
 import Button from "../components/Button";
@@ -206,11 +206,10 @@ const accordionItems: AccordionItemData[] = [
 // TODO: change so bg image is set for page content instead of page
 const TokenInput = () => {
   const navigate = useNavigate();
-  const { login } = useUserLogin();
+  const { login, isAuthLoading } = useAuth();
   const [hasError, setHasError] = useState(false);
   const [tokenPageLoading, setTokenPageLoading] = useState(false);
-  const { isAuthLoading, authToken, isAuthenticated } =
-    useAuthTokenStoreFacade();
+  const { authToken, isAuthenticated } = useAuthTokenStoreFacade();
   const { userInfo } = useUserInfoStoreFacade();
   const [bgImg, setBgImg] = useState<string>(WavesBgImgLight);
   const { prefersDarkModeTheme } = useUserSettingsStoreFacade();
@@ -243,6 +242,7 @@ const TokenInput = () => {
     }
   }, [userInfo]);
 
+  // TODO: change to useForm from react-hook-form
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -259,7 +259,7 @@ const TokenInput = () => {
 
   const setAuth = async (token: string) => {
     setTokenPageLoading(true);
-    let success = await login(token);
+    const success = await login(token);
 
     if (success) {
       console.log("Successfully logged in!");

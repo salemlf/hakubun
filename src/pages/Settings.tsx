@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import { useUserLogin } from "../hooks/user/useUserLogin";
+import { useAuth } from "../hooks/useAuth";
 import GeneralUserSettings from "../components/GeneralUserSettings";
 import LessonUserSettings from "../components/LessonUserSettings";
 import ReviewUserSettings from "../components/ReviewUserSettings/ReviewUserSettings";
@@ -66,7 +66,7 @@ export function Settings() {
   const [isFeedbackModalShown, setIsFeedbackModalShown] = useState(false);
   const [isLogoutConfirmationShown, setIsLogoutConfirmationShown] =
     useState(false);
-  const { logout } = useUserLogin();
+  const { logout } = useAuth();
   const { userInfo } = useUserInfoStoreFacade();
   const navigate = useNavigate();
   const username = userInfo?.username;

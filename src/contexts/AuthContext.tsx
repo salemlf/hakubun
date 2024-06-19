@@ -1,13 +1,29 @@
-import * as LogRocket from "logrocket";
+import { createContext, useCallback } from "react";
+import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import { useQueryClient } from "@tanstack/react-query";
-import { api, pagingApi } from "../../api/ApiConfig";
-import useUserInfoStoreFacade from "../../stores/useUserInfoStore/useUserInfoStore.facade";
-import useAuthTokenStoreFacade from "../../stores/useAuthTokenStore/useAuthTokenStore.facade";
-import { User } from "../../types/User";
+import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
+import { api, pagingApi } from "../api/ApiConfig";
+import LogRocket from "logrocket";
+import { User } from "../types/User";
 
-export const useUserLogin = () => {
+export interface AuthContext {
+  isAuthLoading: boolean;
+  isAuthenticated: boolean;
+  login: (username: string) => Promise<boolean>;
+  logout: () => void;
+}
+
+export const AuthContext = createContext<AuthContext | null>(null);
+
+type Props = {
+  children: React.ReactNode;
+};
+
+export function AuthProvider({ children }: Props) {
   const queryClient = useQueryClient();
   const {
+    isAuthenticated,
+    isAuthLoading,
     setIsAuthLoading,
     setIsAuthenticated,
     setAuthToken,
@@ -15,26 +31,27 @@ export const useUserLogin = () => {
   } = useAuthTokenStoreFacade();
   const { setUserInfo, reset: resetUserInfo } = useUserInfoStoreFacade();
 
-  const configureAxiosHeaders = (newToken: any) => {
+  const configureAxiosHeaders = (newToken: string) => {
     api.defaults.headers["Authorization"] = `Bearer ${newToken}`;
     pagingApi.defaults.headers["Authorization"] = `Bearer ${newToken}`;
   };
 
+  // TODO: type this response
   const getUser = () => {
     return api
       .get("user")
       .then((res: { data: any }) => res.data)
-      .catch((err: any) => console.log("Error getting user: ", err));
+      .catch((err) => console.log("Error getting user: ", JSON.stringify(err)));
   };
 
-  const login = async (token: string) => {
+  const login = useCallback(async (token: string) => {
     setAuthToken(token);
     configureAxiosHeaders(token);
     setIsAuthLoading(true);
 
     try {
-      let userData = await getUser();
-      let userInfo: User = userData.data;
+      const userData = await getUser();
+      const userInfo: User = userData.data;
 
       setUserInfo(userInfo);
 
@@ -54,7 +71,7 @@ export const useUserLogin = () => {
       setIsAuthLoading(false);
       return false;
     }
-  };
+  }, []);
 
   const logout = () => {
     setIsAuthLoading(true);
@@ -67,5 +84,11 @@ export const useUserLogin = () => {
     queryClient.removeQueries();
   };
 
-  return { login, logout };
-};
+  return (
+    <AuthContext.Provider
+      value={{ isAuthenticated, isAuthLoading, login, logout }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}

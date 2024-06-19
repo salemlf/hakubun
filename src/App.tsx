@@ -21,8 +21,10 @@ import {
 } from "./services/ApiQueryService/ApiQueryService";
 import { TabBarHeightProvider } from "./contexts/TabBarHeightContext";
 import { BottomSheetOpenProvider } from "./contexts/BottomSheetOpenContext";
-import { PersistentStore } from "./hooks/useHydration";
+import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { PersistentStore } from "./hooks/useHydration";
+import { useAuth } from "./hooks/useAuth";
 import { ToastDisplayProvider } from "./components/Toast/ToastDisplayProvider";
 import HydrationWrapper from "./components/HydrationWrapper";
 
@@ -120,7 +122,12 @@ const queryClient = new QueryClient({
 });
 
 // Create a new router instance
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  context: {
+    auth: undefined!,
+  },
+});
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
@@ -129,10 +136,11 @@ declare module "@tanstack/react-router" {
   }
 }
 
-const App: React.FC = () => {
-  const { authToken } = useAuthTokenStoreFacade();
+function InnerApp() {
+  const auth = useAuth();
   const { userInfo } = useUserInfoStoreFacade();
 
+  const { authToken } = useAuthTokenStoreFacade();
   // setting the auth token headers for all api requests
   setAxiosHeaders(authToken);
 
@@ -145,21 +153,27 @@ const App: React.FC = () => {
     Sentry.setUser({ username: `${userInfo.username}` });
   }
 
+  return <RouterProvider router={router} context={{ auth }} />;
+}
+
+const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastDisplayProvider />
       <HydrationWrapper store={useUserSettingsStore as PersistentStore}>
-        <ThemeProvider>
-          <BottomSheetOpenProvider>
-            <TabBarHeightProvider>
-              <IonApp>
-                <RouterProvider router={router} />
-              </IonApp>
-            </TabBarHeightProvider>
-          </BottomSheetOpenProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ToastDisplayProvider />
+          <ThemeProvider>
+            <BottomSheetOpenProvider>
+              <TabBarHeightProvider>
+                <IonApp>
+                  <InnerApp />
+                </IonApp>
+              </TabBarHeightProvider>
+            </BottomSheetOpenProvider>
+          </ThemeProvider>
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+        </AuthProvider>
       </HydrationWrapper>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 };

@@ -13,7 +13,6 @@ import {
 } from "../testing/mocks/data-generators/userGenerator";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import * as useUserLogin from "../hooks/user/useUserLogin";
 import Home from "./Home";
 import TokenInput from "./TokenInput";
 
@@ -46,10 +45,6 @@ test("Redirects to home page after entering token (logging in)", async () => {
   );
 
   const mockLogin = () => Promise.resolve(true);
-  vi.spyOn(useUserLogin, "useUserLogin").mockImplementation(() => ({
-    login: mockLogin,
-    logout: vi.fn(),
-  }));
 
   await expect(mockLogin()).resolves.not.toThrow();
   expect(await screen.findByTestId("home-heading")).toBeInTheDocument();
