@@ -63,7 +63,11 @@ function LessonCard({ lesson }: CardProps) {
         )}
         {(lesson.object == "vocabulary" ||
           lesson.object == "kana_vocabulary") && (
-          <VocabDetailTabs vocab={itemAsSubj} reviewType={lesson.review_type} />
+          <VocabDetailTabs
+            vocab={itemAsSubj}
+            reviewType={lesson.review_type}
+            selectFirstTab={true}
+          />
         )}
       </LessonContent>
     </>
