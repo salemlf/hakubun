@@ -43,7 +43,7 @@ const queueCardVariants = {
   submit: () => ({
     x: 500,
     transition: {
-      duration: 0.5,
+      duration: 0.3,
     },
   }),
   center: {
@@ -52,7 +52,7 @@ const queueCardVariants = {
     transition: {
       type: "spring",
       bounce: 0,
-      duration: 1,
+      duration: 0.3,
     },
   },
   retry: {
@@ -80,7 +80,7 @@ const queueCardVariants = {
     transition: {
       type: "spring",
       bounce: 0.2,
-      duration: 1,
+      duration: 0.5,
     },
   },
 };
