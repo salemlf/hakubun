@@ -102,13 +102,19 @@ const getTabsForVocab = (vocab: Subject, isKanaVocab: boolean) => {
 type Props = {
   vocab: Subject;
   reviewType: ReviewType;
+  selectFirstTab?: boolean;
 };
 
-function VocabDetailTabs({ vocab, reviewType }: Props) {
+function VocabDetailTabs({ vocab, reviewType, selectFirstTab = false }: Props) {
   const isKanaVocab = vocab.object === "kana_vocabulary";
+  let defaultTabKey = reviewType as string;
+  if (isKanaVocab) {
+    defaultTabKey = "meaning";
+  } else if (selectFirstTab) {
+    defaultTabKey = "breakdown";
+  }
   const tabData = getTabsForVocab(vocab, isKanaVocab);
 
-  const defaultTabKey = isKanaVocab ? "meaning" : (reviewType as string);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(defaultTabKey);
 
   return (
