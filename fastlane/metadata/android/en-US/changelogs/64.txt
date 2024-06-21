@@ -1,0 +1,8 @@
+Bug Fixes
+
+- First Tab Wasn't Selected for Vocab Lessons
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.5.3-beta
+
