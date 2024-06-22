@@ -44,7 +44,7 @@ function LessonSession() {
   }, []);
 
   const onStartLessonBtnClick = () => {
-    navigate({ to: "/lessons/quiz", replace: true });
+    navigate({ to: "/lessons/quiz", replace: true, ignoreBlocker: true });
     resetLessonPaginator();
   };
 

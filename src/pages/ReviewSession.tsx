@@ -205,7 +205,7 @@ function ReviewSession() {
   const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
     const reviewInfo = await submitReviewBatch(queueData);
     updateSubmitted(reviewInfo);
-    navigate({ to: "/reviews/summary", replace: true });
+    navigate({ to: "/reviews/summary", replace: true, ignoreBlocker: true });
   };
 
   const submitReviewBatch = (queueData: AssignmentQueueItem[]) => {
