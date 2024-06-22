@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
@@ -44,14 +44,10 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
 
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
-  const resetAssignmentQueue = useAssignmentQueueStore(
-    (state) => state.resetAll
-  );
+  const { setAssignmentQueueData, resetAll: resetAssignmentQueue } =
+    useAssignmentQueueStoreFacade();
   const { resetAll: resetAssignmentSubmit, setShouldBatchSubmit } =
     useAssignmentSubmitStoreFacade();
-  const setAssignmentQueueData = useAssignmentQueueStore(
-    (state) => state.setAssignmentQueueData
-  );
   const [isLoading, setIsLoading] = useState(true);
 
   const subjIDs = getSubjIDsFromAssignments(assignmentData);
