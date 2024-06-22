@@ -1,0 +1,8 @@
+Bug Fixes
+
+- Previous Card Ghosting on Retry and Advance Swipe
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.5.4-beta
+
