@@ -119,7 +119,7 @@ export const AssignmentQueueCard = ({
   const opacityRight = useTransform(dragX, [0, 100], [0, 1]);
   const rotate = useTransform(dragX, [-250, 0, 250], [-20, 0, 20]);
   const [shakeInputTrigger, setShakeInputTrigger] = useState(0);
-  const exitTimeMs = 600;
+  const exitTimeMs = 300;
 
   const cardEnterTimerId = useRef<number | null>(null);
   const cardExitTimerId = useRef<number | null>(null);
