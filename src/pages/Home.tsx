@@ -30,8 +30,6 @@ const LessonAndReviewButtonsContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-// TODO: modify so LevelProgressBar, RadicalsForLvlCard, and KanjiForLvlCard show loading skeletons if level is undefined
-// TODO: save previous level value and show animation/congrats when level increases
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number | undefined>();
