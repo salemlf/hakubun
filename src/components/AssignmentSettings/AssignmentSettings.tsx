@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAssignmentQueueStore } from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import useQueueStoreFacade from "../../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentSubmitStoreFacade from "../../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
 import { useAssignmentSettingsCtxStore } from "../../stores/useAssignmentSettingsCtxStore/useAssignmentSettingsCtxStore";
@@ -27,6 +27,8 @@ import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
 import Tabs from "../Tabs";
+import LoadingDots from "../LoadingDots";
+import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 
 export type AssignmentSettingsProps = {
   assignmentData: Assignment[];
@@ -44,25 +46,32 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
   const [selectedTabKey, setSelectedTabKey] = useState<string>("basic");
 
   const { resetAll: resetQueueStore } = useQueueStoreFacade();
-  const resetAssignmentQueue = useAssignmentQueueStore(
-    (state) => state.resetAll
-  );
+  const { setAssignmentQueueData, resetAll: resetAssignmentQueue } =
+    useAssignmentQueueStoreFacade();
   const { resetAll: resetAssignmentSubmit, setShouldBatchSubmit } =
     useAssignmentSubmitStoreFacade();
-  const setAssignmentQueueData = useAssignmentQueueStore(
-    (state) => state.setAssignmentQueueData
-  );
   const [isLoading, setIsLoading] = useState(true);
 
   const subjIDs = getSubjIDsFromAssignments(assignmentData);
   const queriesEnabled = subjIDs.length !== 0;
 
-  const { data: subjectsData, isLoading: subjectsLoading } = useSubjectsByIDs(
-    subjIDs,
-    queriesEnabled
-  );
-  const { data: studyMaterialsData, isLoading: studyMaterialsLoading } =
-    useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled);
+  const {
+    data: subjectsData,
+    isLoading: subjectsLoading,
+    error: subjectsDataErr,
+  } = useSubjectsByIDs(subjIDs, queriesEnabled);
+  const {
+    data: studyMaterialsData,
+    isLoading: studyMaterialsLoading,
+    error: studyMaterialsDataErr,
+  } = useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled);
+
+  // resetting states in case some weirdness occurred and there's a review session or lesson quiz in progress
+  useEffect(() => {
+    resetQueueStore();
+    resetAssignmentQueue();
+    resetAssignmentSubmit();
+  }, []);
 
   useEffect(() => {
     if (
@@ -73,8 +82,16 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
       studyMaterialsData !== undefined
     ) {
       setIsLoading(false);
+    } else {
+      setIsLoading(true);
     }
-  }, [subjectsLoading, studyMaterialsLoading]);
+  }, [
+    subjectsLoading,
+    studyMaterialsLoading,
+    subjIDs,
+    subjectsData,
+    studyMaterialsData,
+  ]);
 
   // needs to be string type for selector, so subject IDs will be converted to number on submit
   const [selectedAdvancedSubjIDs, setSelectedAdvancedSubjIDs] = useState<
@@ -163,7 +180,7 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
         toastType: "error",
         title: "No Subjects Found",
         content:
-          "Unabled to start session. No subjects were returned from the server, oh no!",
+          "Unable to start session. No subjects were returned from the server, oh no!",
         timeout: 10000,
       });
       return;
@@ -174,10 +191,6 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
         ? submitWithBasicSettings(subjectsData)
         : submitWithAdvancedSettings();
 
-    // ending in case some weirdness occurred and there's a review session or lesson quiz in progress
-    resetQueueStore();
-    resetAssignmentQueue();
-    resetAssignmentSubmit();
     setIsLoading(true);
 
     // getting data for assignment queue
@@ -206,9 +219,16 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
     }
   };
 
+  // TODO: display errors in less icky way
   return (
     <>
-      {!isLoading && (
+      {!subjectsLoading && subjectsDataErr && (
+        <p>{`Error loading subjects data: ${JSON.stringify(subjectsDataErr)}`}</p>
+      )}
+      {!studyMaterialsLoading && studyMaterialsDataErr && (
+        <p>{`Error loading study materials data: ${JSON.stringify(studyMaterialsDataErr)}`}</p>
+      )}
+      {!isLoading && !subjectsDataErr && !studyMaterialsDataErr && (
         <>
           <Tabs
             id="assignmentSettingsTabs"
@@ -253,6 +273,11 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
             buttonType={settingsType}
           />
         </>
+      )}
+      {isLoading && !subjectsDataErr && !studyMaterialsDataErr && (
+        <FixedCenterContainer>
+          <LoadingDots />
+        </FixedCenterContainer>
       )}
     </>
   );
