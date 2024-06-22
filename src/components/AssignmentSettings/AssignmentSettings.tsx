@@ -163,7 +163,7 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
         toastType: "error",
         title: "No Subjects Found",
         content:
-          "Unabled to start session. No subjects were returned from the server, oh no!",
+          "Unable to start session. No subjects were returned from the server, oh no!",
         timeout: 10000,
       });
       return;
