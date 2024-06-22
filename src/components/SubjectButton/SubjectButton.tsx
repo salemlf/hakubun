@@ -35,6 +35,7 @@ function SubjectButton({
       navigate({
         to: `/subjects/$subjId`,
         params: { subjId: subject.id },
+        ignoreBlocker: true,
       });
     }
   };
