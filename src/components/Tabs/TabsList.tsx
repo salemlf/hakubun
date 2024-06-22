@@ -21,6 +21,8 @@ const TabListStyled = styled(Tabs.List)<TabContainerStyles>`
   padding: 5px 12px;
   overflow-x: auto;
   isolation: isolate;
+  align-items: center;
+  overflow-y: hidden;
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
@@ -45,7 +47,7 @@ const TabStyled = styled(Tabs.Trigger)<TabStyledProps>`
   font-size: ${({ tabfontsize }) => tabfontsize};
   font-weight: 600;
 
-  margin: auto;
+  margin: 0 auto;
   position: relative;
   border-radius: 9999px;
   line-height: 1.25rem;
