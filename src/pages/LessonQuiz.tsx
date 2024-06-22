@@ -55,7 +55,7 @@ function LessonQuiz() {
   const submitAndRedirect = async (queueData: AssignmentQueueItem[]) => {
     const submittedLessonInfo = await submitLessonBatch(queueData);
     updateSubmitted(submittedLessonInfo);
-    navigate({ to: "/lessons/summary", replace: true });
+    navigate({ to: "/lessons/summary", replace: true, ignoreBlocker: true });
   };
 
   const submitLessonBatch = (queueData: AssignmentQueueItem[]) => {
