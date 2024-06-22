@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { useScrollRestoration } from "use-scroll-restoration";
 import { LEVELS } from "../constants";
+import { mergeRefs } from "../utils";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useTabBarHeight } from "../contexts/TabBarHeightContext";
 import { useStickyState } from "../hooks/useStickyState";
@@ -171,6 +173,11 @@ const SubjectTabs = ({
   setSelectedIndex,
 }: SubjectTabsProps) => {
   const tabListRef = useRef<HTMLDivElement | null>(null);
+  const { ref } = useScrollRestoration("subjectsTabsScroll", {
+    debounceTime: 200,
+    persist: "localStorage",
+  });
+
   const [tabElements, setTabElements] = useState<HTMLButtonElement[]>([]);
   useEffect(() => {
     if (tabElements.length === 0 && tabListRef.current) {
@@ -204,7 +211,7 @@ const SubjectTabs = ({
   }, [selectedIndex, tabListRef.current]);
 
   return (
-    <TabContainer ref={tabListRef}>
+    <TabContainer ref={mergeRefs(tabListRef, ref)}>
       {tabLabels.map((label) => {
         return (
           <PageTab
