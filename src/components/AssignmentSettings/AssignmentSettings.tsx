@@ -27,6 +27,8 @@ import BasicAssignmentSettings from "../BasicAssignmentSettings";
 import AdvancedAssignmentSettings from "../AdvancedAssignmentSettings";
 import StartSessionButton from "../StartSessionButton";
 import Tabs from "../Tabs";
+import LoadingDots from "../LoadingDots";
+import { FixedCenterContainer } from "../../styles/BaseStyledComponents";
 
 export type AssignmentSettingsProps = {
   assignmentData: Assignment[];
@@ -60,6 +62,13 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
   const { data: studyMaterialsData, isLoading: studyMaterialsLoading } =
     useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled);
 
+  // resetting states in case some weirdness occurred and there's a review session or lesson quiz in progress
+  useEffect(() => {
+    resetQueueStore();
+    resetAssignmentQueue();
+    resetAssignmentSubmit();
+  }, []);
+
   useEffect(() => {
     if (
       !subjectsLoading &&
@@ -69,8 +78,16 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
       studyMaterialsData !== undefined
     ) {
       setIsLoading(false);
+    } else {
+      setIsLoading(true);
     }
-  }, [subjectsLoading, studyMaterialsLoading]);
+  }, [
+    subjectsLoading,
+    studyMaterialsLoading,
+    subjIDs,
+    subjectsData,
+    studyMaterialsData,
+  ]);
 
   // needs to be string type for selector, so subject IDs will be converted to number on submit
   const [selectedAdvancedSubjIDs, setSelectedAdvancedSubjIDs] = useState<
@@ -170,10 +187,6 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
         ? submitWithBasicSettings(subjectsData)
         : submitWithAdvancedSettings();
 
-    // ending in case some weirdness occurred and there's a review session or lesson quiz in progress
-    resetQueueStore();
-    resetAssignmentQueue();
-    resetAssignmentSubmit();
     setIsLoading(true);
 
     // getting data for assignment queue
@@ -204,7 +217,7 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
 
   return (
     <>
-      {!isLoading && (
+      {!isLoading ? (
         <>
           <Tabs
             id="assignmentSettingsTabs"
@@ -249,6 +262,10 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
             buttonType={settingsType}
           />
         </>
+      ) : (
+        <FixedCenterContainer>
+          <LoadingDots />
+        </FixedCenterContainer>
       )}
     </>
   );
