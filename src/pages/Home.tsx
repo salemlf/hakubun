@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { IonSkeletonText } from "@ionic/react";
+import { useScrollRestoration } from "use-scroll-restoration";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useAuthTokenStore } from "../stores/useAuthTokenStore/useAuthTokenStore";
 import { useUserInfo } from "../hooks/user/useUserInfo";
@@ -29,12 +30,15 @@ const LessonAndReviewButtonsContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-// TODO: modify so LevelProgressBar, RadicalsForLvlCard, and KanjiForLvlCard show loading skeletons if level is undefined
-// TODO: save previous level value and show animation/congrats when level increases
 const Home = () => {
   const [homeLoading, setHomeLoading] = useState(false);
   const [level, setLevel] = useState<number | undefined>();
   const { setUserInfo, userInfo } = useUserInfoStoreFacade();
+
+  const { ref } = useScrollRestoration("homePageScroll", {
+    debounceTime: 200,
+    persist: "sessionStorage",
+  });
 
   useEffect(() => {
     setHomeLoading(true);
@@ -66,7 +70,7 @@ const Home = () => {
   return (
     <HydrationWrapper store={useAuthTokenStore as PersistentStore}>
       <HomeHeader></HomeHeader>
-      <HomePageContainer>
+      <HomePageContainer ref={ref}>
         {!homeLoading ? (
           <>
             <LessonAndReviewButtonsContainer>
