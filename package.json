@@ -49,6 +49,7 @@
     "sass": "^1.62.1",
     "styled-components": "^5.3.11",
     "type-fest": "^4.6.0",
+    "use-scroll-restoration": "^1.0.0",
     "usehooks-ts": "^3.0.2",
     "wanakana": "^5.1.0",
     "zustand": "^4.4.1"
