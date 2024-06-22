@@ -10,17 +10,23 @@ import { getPageIndex } from "../services/MiscService/MiscService";
 import SubjectsOnLvlTab from "../components/SubjectsOnLvlTab/SubjectsOnLvlTab";
 import LoadingDots from "../components/LoadingDots";
 import Paginator from "../components/Paginator";
-import { FixedCenterContainer, Header } from "../styles/BaseStyledComponents";
+import {
+  ContentWithTabBar,
+  FixedCenterContainer,
+  Header,
+} from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-type HeaderAndTabsContainerProps = {
+type SubjectsPageContainerProps = {
   $tabBarHeight: string;
 };
 
-const HeaderAndTabsContainer = styled.div<HeaderAndTabsContainerProps>`
-  display: grid;
-  grid-template-rows: auto 1fr;
-  height: 100%;
+const SubjectsPageContainer = styled(
+  ContentWithTabBar
+)<SubjectsPageContainerProps>`
+  overflow-y: auto;
+  min-height: 100dvh;
+  padding: 0;
   padding-bottom: ${({ $tabBarHeight }) => `calc(${$tabBarHeight} + 30px)`};
 `;
 
@@ -85,7 +91,7 @@ const SubjectsContent = ({ level, setLevel }: SubjectsContentProps) => {
   };
 
   return (
-    <HeaderAndTabsContainer $tabBarHeight={tabBarHeight}>
+    <>
       <SubjectsHeader bgcolor="var(--ion-color-primary-tint)">
         Level
         <SubjectTabs
@@ -94,14 +100,16 @@ const SubjectsContent = ({ level, setLevel }: SubjectsContentProps) => {
           setSelectedIndex={setPage}
         />
       </SubjectsHeader>
-      <Paginator
-        showNavigationButtons={false}
-        pageArr={levelPages}
-        currentPage={currentPage}
-        direction={direction}
-        setCurrentPage={setCurrentPage}
-      />
-    </HeaderAndTabsContainer>
+      <SubjectsPageContainer $tabBarHeight={tabBarHeight}>
+        <Paginator
+          showNavigationButtons={false}
+          pageArr={levelPages}
+          currentPage={currentPage}
+          direction={direction}
+          setCurrentPage={setCurrentPage}
+        />
+      </SubjectsPageContainer>
+    </>
   );
 };
 
