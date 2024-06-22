@@ -55,12 +55,16 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
   const subjIDs = getSubjIDsFromAssignments(assignmentData);
   const queriesEnabled = subjIDs.length !== 0;
 
-  const { data: subjectsData, isLoading: subjectsLoading } = useSubjectsByIDs(
-    subjIDs,
-    queriesEnabled
-  );
-  const { data: studyMaterialsData, isLoading: studyMaterialsLoading } =
-    useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled);
+  const {
+    data: subjectsData,
+    isLoading: subjectsLoading,
+    error: subjectsDataErr,
+  } = useSubjectsByIDs(subjIDs, queriesEnabled);
+  const {
+    data: studyMaterialsData,
+    isLoading: studyMaterialsLoading,
+    error: studyMaterialsDataErr,
+  } = useStudyMaterialsBySubjIDs(subjIDs, queriesEnabled);
 
   // resetting states in case some weirdness occurred and there's a review session or lesson quiz in progress
   useEffect(() => {
@@ -215,9 +219,16 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
     }
   };
 
+  // TODO: display errors in less icky way
   return (
     <>
-      {!isLoading ? (
+      {!subjectsLoading && subjectsDataErr && (
+        <p>{`Error loading subjects data: ${JSON.stringify(subjectsDataErr)}`}</p>
+      )}
+      {!studyMaterialsLoading && studyMaterialsDataErr && (
+        <p>{`Error loading study materials data: ${JSON.stringify(studyMaterialsDataErr)}`}</p>
+      )}
+      {!isLoading && !subjectsDataErr && !studyMaterialsDataErr && (
         <>
           <Tabs
             id="assignmentSettingsTabs"
@@ -262,7 +273,8 @@ function AssignmentSettings({ assignmentData }: AssignmentSettingsProps) {
             buttonType={settingsType}
           />
         </>
-      ) : (
+      )}
+      {isLoading && !subjectsDataErr && !studyMaterialsDataErr && (
         <FixedCenterContainer>
           <LoadingDots />
         </FixedCenterContainer>
