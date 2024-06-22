@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { IonSkeletonText } from "@ionic/react";
 import { AnimatePresence } from "framer-motion";
+import { useScrollRestoration } from "use-scroll-restoration";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { capitalizeWord } from "../services/MiscService/MiscService";
 import { useSubjectByID } from "../hooks/subjects/useSubjectByID";
@@ -66,6 +67,11 @@ export const SubjectDetails = () => {
   const { id } = useParams<{ id?: string }>();
   const parsedID = parseInt(id!);
 
+  const { ref } = useScrollRestoration(`subjectDetailsPageScroll${id}`, {
+    debounceTime: 200,
+    persist: "localStorage",
+  });
+
   const { sessionInProgress: isSessionInProgress, sessionType } =
     useAssignmentQueueStoreFacade();
 
@@ -98,7 +104,7 @@ export const SubjectDetails = () => {
       {subjectData && (
         <>
           <SubjectHeader subject={subjectData} />
-          <ContentWithTabBar data-testid="subject-details-page">
+          <ContentWithTabBar data-testid="subject-details-page" ref={ref}>
             <FullWidthGrid>
               <SubjectSummary subject={subjectData}></SubjectSummary>
               {subjectData.object == "radical" && (
