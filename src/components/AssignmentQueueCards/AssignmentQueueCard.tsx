@@ -227,7 +227,7 @@ export const AssignmentQueueCard = ({
   };
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent, info: PanInfo) => {
-    const xOffsetTrigger = 150;
+    const xOffsetTrigger = 135;
     const xMinOffset = 100;
     const xMinVelocity = 350;
     if (
