@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { IonSkeletonText } from "@ionic/react";
+import { useScrollRestoration } from "use-scroll-restoration";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
 import { useAuthTokenStore } from "../stores/useAuthTokenStore/useAuthTokenStore";
 import { useUserInfo } from "../hooks/user/useUserInfo";
@@ -36,6 +37,11 @@ const Home = () => {
   const [level, setLevel] = useState<number | undefined>();
   const { setUserInfo, userInfo } = useUserInfoStoreFacade();
 
+  const { ref } = useScrollRestoration("homePageScroll", {
+    debounceTime: 200,
+    persist: "sessionStorage",
+  });
+
   useEffect(() => {
     setHomeLoading(true);
     setUserDetails();
@@ -66,7 +72,7 @@ const Home = () => {
   return (
     <HydrationWrapper store={useAuthTokenStore as PersistentStore}>
       <HomeHeader></HomeHeader>
-      <HomePageContainer>
+      <HomePageContainer ref={ref}>
         {!homeLoading ? (
           <>
             <LessonAndReviewButtonsContainer>
