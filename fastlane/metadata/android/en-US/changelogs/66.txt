@@ -1,0 +1,20 @@
+Features/Enhancements
+
+- Partial Page Scroll Restoration Support
+	- Author: salemlf
+
+Bug Fixes
+
+- Tab List Y-Axis Overflow
+	- Author: salemlf
+- Assignment Settings Loading and Error Page State and "Do More Reviews" Button Fix
+	- Author: salemlf
+
+Styling
+
+- Tab List Y-Axis Overflow
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.6.0-beta
+
