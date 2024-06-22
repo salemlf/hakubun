@@ -1,8 +1,8 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { IonList } from "@ionic/react";
 import Fuse from "fuse.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDebounceValue } from "usehooks-ts";
+import { useScrollRestoration } from "use-scroll-restoration";
 import { flattenSearchResults } from "../services/MiscService/MiscService";
 import { useTabBarHeight } from "../contexts/TabBarHeightContext";
 import { useAllSubjects } from "../hooks/subjects/useAllSubjects";
@@ -18,15 +18,10 @@ import LogoExclamation from "../images/logo-exclamation.svg";
 import { ContentWithTabBar } from "../styles/BaseStyledComponents";
 import styled from "styled-components";
 
-type ContentProps = {
-  $tabBarHeight: string;
-};
-
-const Content = styled(ContentWithTabBar)<ContentProps>`
-  padding: 12px;
+const Content = styled(ContentWithTabBar)`
+  padding: 12px 10px;
   display: grid;
   grid-template-rows: auto 1fr;
-  padding-bottom: ${({ $tabBarHeight }) => `calc(${$tabBarHeight} + 20px)`};
   height: 100dvh;
 `;
 
@@ -42,6 +37,7 @@ const ClearButton = styled(Button)`
 `;
 
 const Form = styled.form`
+  margin: 0 5px;
   display: flex;
 
   &:focus-within,
@@ -70,12 +66,16 @@ const SearchBar = styled.input`
   border: none;
 `;
 
-// TODO: change from IonList
-const List = styled(IonList)`
-  --background: none;
-  background: none;
+type ListProps = {
+  $tabBarHeight: string;
+};
+
+const List = styled.ul<ListProps>`
+  max-height: 100dvh;
+  overflow-y: auto;
   margin: 0;
-  padding: 8px 0;
+  padding: 8px 5px;
+  padding-bottom: ${({ $tabBarHeight }) => `calc(${$tabBarHeight} + 20px)`};
 `;
 
 const LogoSearchOutcomeContainer = styled.div`
@@ -96,6 +96,10 @@ const crabigatorVariants = {
 };
 
 export const Search = () => {
+  const { ref } = useScrollRestoration("searchPageListScroll", {
+    debounceTime: 100,
+    persist: "localStorage",
+  });
   const [results, setResults] = useState<Fuse.FuseResult<unknown>[]>([]);
   const [query, setQuery] = useStickyState("", "search-page-query");
   const [debouncedQuery] = useDebounceValue(query, 1800);
@@ -144,7 +148,6 @@ export const Search = () => {
 
   return (
     <Content
-      $tabBarHeight={tabBarHeight}
       as={motion.main}
       style={
         showPlaceholder ? { alignItems: "center" } : { alignItems: "stretch" }
@@ -212,6 +215,8 @@ export const Search = () => {
               </LogoSearchOutcomeContainer>
             ) : (
               <List
+                ref={ref}
+                $tabBarHeight={tabBarHeight}
                 key="results-found"
                 as={motion.div}
                 layoutScroll
