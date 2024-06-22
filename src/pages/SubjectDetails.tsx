@@ -46,7 +46,6 @@ function BackToSessionBtn({ sessionType }: BackToSessionBtnProps) {
       <FloatingButton
         backgroundColor="var(--ion-color-tertiary)"
         color="black"
-        // onPress={() => navigate(-1)}
         onPress={() => history.go(-1)}
       >
         <SvgIcon icon={<BackArrowIcon />} width="1em" height="1em" />
