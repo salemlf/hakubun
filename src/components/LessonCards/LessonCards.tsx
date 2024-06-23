@@ -36,9 +36,6 @@ type CardProps = {
 // TODO: persist selected tab so doesn't reset when leaving page and coming back
 function LessonCard({ lesson }: CardProps) {
   let itemAsSubj = convertQueueItemsToSubjects([lesson])[0];
-  // const defaultTabKey = scrollToDefault
-  //   ? (reviewType as string)
-  //   : tabData[0].id;
 
   return (
     <>
