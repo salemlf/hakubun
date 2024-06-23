@@ -13,13 +13,14 @@ const blockUserLeavingPage = ({
   currentLocation,
   nextLocation,
 }: ShouldBlockParams) => {
-  // allowing user to view subjects pages during reviews and to review summary page
-  const subjDetailsRegex = new RegExp("/subjects/*");
   if (
-    subjDetailsRegex.test(nextLocation.pathname) ||
-    nextLocation.pathname === "/reviews/summary" ||
-    nextLocation.pathname === "/lessons/quiz" ||
-    nextLocation.pathname === "/lessons/summary"
+    // allowing user to view subjects pages during reviews and to review summary page
+    nextLocation.pathname.startsWith("/subjects") ||
+    nextLocation.pathname.endsWith("/session") ||
+    // Don't block redirection to / from summaries
+    currentLocation.pathname.endsWith("/summary") ||
+    nextLocation.pathname.endsWith("/summary") ||
+    nextLocation.pathname.endsWith("/quiz")
   ) {
     return false;
   }
