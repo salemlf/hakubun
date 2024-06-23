@@ -35,7 +35,7 @@ type CardProps = {
 
 // TODO: persist selected tab so doesn't reset when leaving page and coming back
 function LessonCard({ lesson }: CardProps) {
-  let itemAsSubj = convertQueueItemsToSubjects([lesson])[0];
+  const itemAsSubj = convertQueueItemsToSubjects([lesson])[0];
 
   return (
     <>
@@ -81,7 +81,7 @@ function LessonCards({ lessons, onStartLessonBtnClick }: Props) {
   const { currentLessonPage, currentLessonDir, setCurrentLessonPageAndDir } =
     useLessonPaginatorStoreFacade();
 
-  let isLastPage = currentLessonPage === lessonPages.length - 1;
+  const isLastPage = currentLessonPage === lessonPages.length - 1;
 
   return (
     <>
