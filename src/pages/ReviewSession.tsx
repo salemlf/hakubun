@@ -69,7 +69,7 @@ const WrappingUpTxt = styled.h4`
   color: white;
 `;
 
-const animationDuration = 1.5;
+const animationDuration = 1.0;
 const exitDuration = 0.5;
 
 const finishFlagBgVariants = {
