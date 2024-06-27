@@ -153,6 +153,7 @@ The app should then be available at http://localhost:5173/
 
 #### iOS and Android Simulators (with Hot Reload)
 
+Make sure to install Corvoda's required dependencies for [iOS](https://cordova.apache.org/docs/en/11.x/guide/platforms/ios/index.html)/[Android](https://cordova.apache.org/docs/en/11.x/guide/platforms/android/) before running the following commands.
 If below doesn't work, check that network URL after displayed after running `npm run start-exposed` matches the URL in the _capacitor.config.ts_ file
 
 Start server in one terminal:
@@ -186,6 +187,10 @@ You can then select the type of iOS device you'd like to use as a simulator
 
 ```bash
 npm run android-live-reload
+
+# If any errors occur, set the following environment variables and try again, or run the app using Android Studio
+export JAVA_HOME=/path/to/android-studio/jbr
+export ANDROID_SDK_ROOT=/path/to/Android/Sdk
 ```
 
 ##### To view debug info (inspect elements, view console output)
