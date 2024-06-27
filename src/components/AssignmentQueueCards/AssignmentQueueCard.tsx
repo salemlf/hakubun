@@ -236,8 +236,9 @@ export const AssignmentQueueCard = ({
     ) {
       attemptToAdvance();
     } else if (
-      info.offset.x < -xOffsetTrigger ||
-      (info.offset.x < -xMinOffset && info.velocity.x < -xMinVelocity)
+      isSubmittingAnswer &&
+      (info.offset.x < -xOffsetTrigger ||
+        (info.offset.x < -xMinOffset && info.velocity.x < -xMinVelocity))
     ) {
       retryTriggered();
     } else {
@@ -259,10 +260,12 @@ export const AssignmentQueueCard = ({
               rotate,
             }}
             drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
+            // Neatest way I found to only allow swiping to the right
+            // but if the user will try to swipe left they will see a very slight rotation
+            dragConstraints={{ left: isSubmittingAnswer ? 0 : 1, right: 0 }}
             onDragEnd={handleDragEnd}
             whileTap={{ cursor: "grabbing" }}
-            dragElastic={0.5}
+            dragElastic={{ left: isSubmittingAnswer ? 0.5 : 0, right: 0.5 }}
           >
             <AssignmentCharAndType
               currentReviewItem={currentReviewItem}
