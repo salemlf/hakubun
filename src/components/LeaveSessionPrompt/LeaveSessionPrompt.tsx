@@ -13,17 +13,12 @@ const blockUserLeavingPage = ({
   currentLocation,
   nextLocation,
 }: ShouldBlockParams) => {
-  // allowing user to view subjects pages during reviews and to review summary page
-  const subjDetailsRegex = new RegExp("/subjects/*");
-  if (
-    subjDetailsRegex.test(nextLocation.pathname) ||
-    nextLocation.pathname === "/reviews/summary" ||
-    nextLocation.pathname === "/lessons/quiz" ||
-    nextLocation.pathname === "/lessons/summary"
-  ) {
-    return false;
-  }
-  return true;
+  // Only try to block if moving from lessons / reviews directly to the home screen without wrapping up
+  return (
+    (currentLocation.pathname.endsWith("/session") ||
+      currentLocation.pathname == "/lessons/quiz") &&
+    nextLocation.pathname == "/"
+  );
 };
 
 type Props = Omit<
