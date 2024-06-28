@@ -1,21 +1,30 @@
-import { ReactElement } from "react";
+import { ReactElement, act } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { IonApp, setupIonicReact } from "@ionic/react";
+
 import {
-  createMemoryRouter,
-  RouteObject,
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouteComponent,
   RouterProvider,
-} from "react-router-dom";
+} from "@tanstack/react-router";
 import userEvent from "@testing-library/user-event";
+import { useUserSettingsStore } from "../stores/useUserSettingsStore/useUserSettingsStore";
+import { useAuthTokenStore } from "../stores/useAuthTokenStore/useAuthTokenStore";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import { AssignmentSettingsProvider } from "../contexts/AssignmentSettingsContext";
 import { BottomSheetOpenProvider } from "../contexts/BottomSheetOpenContext";
 import { TabBarHeightProvider } from "../contexts/TabBarHeightContext";
+import { AuthProvider } from "../contexts/AuthContext";
+import { PersistentStore } from "../hooks/useHydration";
 import { getSortOrderOptionById } from "../components/SortOrderOption/SortOrderOption.service";
 import { AssignmentSessionType } from "../types/AssignmentQueueTypes";
 import { BackToBackChoice } from "../components/BackToBackOption/BackToBackOption.types";
 import { ToastDisplayProvider } from "../components/Toast/ToastDisplayProvider";
+import HydrationWrapper from "../components/HydrationWrapper";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -62,14 +71,20 @@ const TestingApp = ({ children }: TestAppProps) => {
   const testQueryClient = createTestQueryClient();
   return (
     <QueryClientProvider client={testQueryClient}>
-      <ToastDisplayProvider />
-      <BottomSheetOpenProvider>
-        <TabBarHeightProvider>
-          <ThemeProvider>
-            <IonApp>{children}</IonApp>
-          </ThemeProvider>
-        </TabBarHeightProvider>
-      </BottomSheetOpenProvider>
+      <HydrationWrapper store={useUserSettingsStore as PersistentStore}>
+        <HydrationWrapper store={useAuthTokenStore as PersistentStore}>
+          <AuthProvider>
+            <ToastDisplayProvider />
+            <ThemeProvider>
+              <BottomSheetOpenProvider>
+                <TabBarHeightProvider>
+                  <IonApp>{children}</IonApp>
+                </TabBarHeightProvider>
+              </BottomSheetOpenProvider>
+            </ThemeProvider>
+          </AuthProvider>
+        </HydrationWrapper>
+      </HydrationWrapper>
     </QueryClientProvider>
   );
 };
@@ -79,59 +94,69 @@ const customRender = (
   options?: Omit<RenderOptions, "wrapper">
 ) => render(ui, { wrapper: TestingApp, ...options });
 
-interface RouteObj {
-  routeObj: RouteObject;
-  mockHome?: boolean;
-  defaultPath?: string;
-  routes?: RouteObject[];
-}
+export type TestRoute = {
+  path: string;
+  component: RouteComponent;
+};
 
-// cred to Miroslav Nikolov for original version, see article: https://webup.org/blog/how-to-avoid-mocking-in-react-router-v6-tests/
-const renderWithRouter = ({
-  routeObj,
-  routes = [],
-  mockHome = false,
-  defaultPath,
-}: RouteObj) => {
-  const intialEntry = defaultPath ?? "/";
+type CreateRoutesProps = {
+  routes: TestRoute[];
+  initialEntry?: string;
+};
 
-  routes = mockHome
-    ? [
-        {
-          element: (
-            <div>
-              <p>Home</p>
-            </div>
-          ),
-          path: "/",
-        },
-        ...routes,
-      ]
-    : routes;
+export const createTestRouter = async ({
+  routes,
+  initialEntry = "/",
+}: CreateRoutesProps) => {
+  const rootRoute = createRootRoute();
+  const generatedRoutes = routes.map((route) => {
+    return createRoute({
+      getParentRoute: () => rootRoute,
+      path: route.path,
+      component: route.component,
+    });
+  });
 
-  // memory router used so we can manually control history
-  const router = createMemoryRouter([{ ...routeObj }, ...routes], {
-    initialEntries: [intialEntry],
+  const memoryHistory = createMemoryHistory({
+    initialEntries: [initialEntry],
     initialIndex: 0,
   });
+  const routeTree = rootRoute.addChildren([...generatedRoutes]);
+
+  const router = await act(() =>
+    createRouter({
+      routeTree,
+      history: memoryHistory,
+      context: { auth: vi.fn() },
+    })
+  );
 
   const testQueryClient = createTestQueryClient();
 
   return {
-    router,
     user: userEvent.setup(),
     ...render(
       <QueryClientProvider client={testQueryClient}>
-        <ToastDisplayProvider />
-        <ThemeProvider>
-          <BottomSheetOpenProvider>
-            <TabBarHeightProvider>
-              <IonApp>
-                <RouterProvider router={router} />
-              </IonApp>
-            </TabBarHeightProvider>
-          </BottomSheetOpenProvider>
-        </ThemeProvider>
+        <HydrationWrapper store={useUserSettingsStore as PersistentStore}>
+          <HydrationWrapper store={useAuthTokenStore as PersistentStore}>
+            <AuthProvider>
+              <ToastDisplayProvider />
+              <ThemeProvider>
+                <BottomSheetOpenProvider>
+                  <TabBarHeightProvider>
+                    <IonApp>
+                      {/* TODO: change so not using "any" type */}
+                      <RouterProvider
+                        router={router as any}
+                        context={{ auth: vi.fn() }}
+                      />
+                    </IonApp>
+                  </TabBarHeightProvider>
+                </BottomSheetOpenProvider>
+              </ThemeProvider>
+            </AuthProvider>
+          </HydrationWrapper>
+        </HydrationWrapper>
       </QueryClientProvider>
     ),
   };
@@ -145,6 +170,7 @@ export const renderWithClient = (ui: React.ReactElement) => {
 
   return {
     ...result,
+    user: userEvent.setup(),
     rerender: (rerenderUi: React.ReactElement) =>
       rerender(
         <QueryClientProvider client={testQueryClient}>
@@ -154,7 +180,7 @@ export const renderWithClient = (ui: React.ReactElement) => {
   };
 };
 
-export const createWrapper = () => {
+export const createQueryWrapper = () => {
   const testQueryClient = createTestQueryClient();
   return ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={testQueryClient}>
@@ -182,4 +208,5 @@ export const createAssignmentSettingsWrapper = (
 };
 
 export * from "@testing-library/react";
-export { customRender as render, renderWithRouter };
+export { customRender as render };
+export { act };
