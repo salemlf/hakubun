@@ -1,14 +1,14 @@
 import {
-  renderWithRouter,
   screen,
   renderHook,
   act,
+  TestRoute,
+  createTestRouter,
 } from "../testing/test-utils";
 import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import useLessonPaginatorStoreFacade from "../stores/useLessonPaginatorStore/useLessonPaginatorStore.facade";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
-import Home from "./Home";
 import LessonSession from "./LessonSession";
 
 const mockAssignmentQueueLessons = generateRandomQueueItems({
@@ -17,8 +17,8 @@ const mockAssignmentQueueLessons = generateRandomQueueItems({
   queueProgressState: "not_started",
 });
 
-test("LessonSession renders", () => {
-  const { baseElement } = renderComponent(false);
+test("LessonSession renders", async () => {
+  const { baseElement } = await renderComponent(false);
   expect(baseElement).toBeDefined();
 });
 
@@ -52,15 +52,15 @@ describe("End session dialog", () => {
     mockQueueStore();
     mockAssignmentQueueStore();
     mockPaginatorStore();
-    const { user } = renderComponent(true);
+    const { user } = await renderComponent(true);
 
     await user.click(
-      screen.getByRole("button", {
+      await screen.findByRole("button", {
         name: /home page/i,
       })
     );
 
-    let dialog = await screen.findByRole("alertdialog", {
+    const dialog = await screen.findByRole("alertdialog", {
       name: /end lesson session\?/i,
     });
     expect(dialog).toBeInTheDocument();
@@ -71,10 +71,10 @@ describe("End session dialog", () => {
     mockAssignmentQueueStore();
     mockPaginatorStore();
 
-    const { user } = renderComponent(true);
+    const { user } = await renderComponent(true);
 
     await user.click(
-      screen.getByRole("button", {
+      await screen.findByRole("button", {
         name: /home page/i,
       })
     );
@@ -91,7 +91,7 @@ describe("End session dialog", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: /hakubun/i,
+        name: /mock home/i,
       })
     ).toBeVisible();
   });
@@ -101,7 +101,7 @@ describe("End session dialog", () => {
     mockAssignmentQueueStore();
     mockPaginatorStore();
 
-    const { user } = renderComponent(true);
+    const { user } = await renderComponent(true);
 
     // check that we're in the lesson session
     expect(
@@ -131,22 +131,31 @@ describe("End session dialog", () => {
   });
 });
 
-const renderComponent = (withHomeRoute: boolean) => {
+const renderComponent = async (withHomeRoute: boolean) => {
   const lessonSessionPath = "/lessons/session";
+  const lessonSessionRoute: TestRoute = {
+    component: () => <LessonSession />,
+    path: lessonSessionPath,
+  };
 
-  return renderWithRouter({
-    routeObj: {
-      path: lessonSessionPath,
-      element: <LessonSession />,
-    },
-    defaultPath: lessonSessionPath,
-    routes: withHomeRoute
-      ? [
-          {
-            path: "/",
-            element: <Home />,
-          },
-        ]
-      : [],
+  const homeRoute: TestRoute = {
+    path: "/",
+    component: () => (
+      <div>
+        <h1>Mock Home</h1>
+      </div>
+    ),
+  };
+
+  const routesToRender: TestRoute[] = [
+    lessonSessionRoute,
+    ...(withHomeRoute ? [homeRoute] : []),
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: lessonSessionPath,
+    });
   });
 };

@@ -1,16 +1,23 @@
-import { renderWithRouter, screen } from "../../testing/test-utils";
+import { act, renderWithClient, screen } from "../../testing/test-utils";
 import FloatingHomeButton from ".";
-import Home from "../../pages/Home";
 
-test("FloatingHomeButton renders", () => {
-  const { baseElement } = renderComponent();
+const mockUseNavigate = vi.fn();
+vi.mock("@tanstack/react-router", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("@tanstack/react-router")>();
+  return {
+    ...mod,
+    useNavigate: () => mockUseNavigate,
+  };
+});
+
+test("FloatingHomeButton renders", async () => {
+  const { baseElement } = await renderComponent();
   expect(baseElement).toBeDefined();
 });
 
 test("FloatingHomeButton redirects to home on click", async () => {
   // mocking the home page data since will redirect there
-
-  const { user } = renderComponent(true);
+  const { user } = await renderComponent();
 
   await user.click(
     screen.getByRole("button", {
@@ -18,23 +25,10 @@ test("FloatingHomeButton redirects to home on click", async () => {
     })
   );
 
-  expect(
-    await screen.findByRole("heading", {
-      name: /hakubun/i,
-    })
-  ).toBeVisible();
+  expect(mockUseNavigate).toHaveBeenCalledWith({ to: "/", replace: true });
 });
 
-const renderComponent = (withHome: boolean = false) => {
-  const routes = withHome ? [{ element: <Home />, path: "/" }] : [];
-
-  const initialPath = "/reviews/summary";
-  return renderWithRouter({
-    routeObj: {
-      element: <FloatingHomeButton />,
-      path: initialPath,
-    },
-    defaultPath: initialPath,
-    routes,
-  });
+const renderComponent = async () => {
+  // eslint-disable-next-line testing-library/no-unnecessary-act
+  return await act(() => renderWithClient(<FloatingHomeButton />));
 };

@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { useDarkMode } from "usehooks-ts";
-import { render, renderHook, createWrapper } from "../testing/test-utils";
+import { render, renderHook, createQueryWrapper } from "../testing/test-utils";
 import { useTheme } from "./ThemeContext";
 
 const MockThemeConsumer = () => {
@@ -10,7 +10,7 @@ const MockThemeConsumer = () => {
 
 test("ThemeContext uses default dark mode value", () => {
   const { result } = renderHook(() => useDarkMode(), {
-    wrapper: createWrapper(),
+    wrapper: createQueryWrapper(),
   });
 
   const defaultDarkMode = `${result.current.isDarkMode}`;

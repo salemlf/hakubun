@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { renderWithRouter } from "../../testing/test-utils";
+import { act, createTestRouter, TestRoute } from "../../testing/test-utils";
 import { PopoverSubjButton, PopoverSubjButtonProps } from "./PopoverSubjButton";
 import { generateSubjAssignmentPair } from "../../testing/mocks/data-generators/subjAssignmentPairGenerator";
 
@@ -8,7 +8,7 @@ const kanjiSubjAndAssignment = generateSubjAssignmentPair({
   level: 1,
 });
 
-test("PopoverSubjButton renders", () => {
+test("PopoverSubjButton renders", async () => {
   const MockButton = forwardRef(() => <button title="Test Button"></button>);
 
   const componentProps: PopoverSubjButtonProps = {
@@ -17,12 +17,23 @@ test("PopoverSubjButton renders", () => {
     assignment: kanjiSubjAndAssignment.assignment,
   };
 
-  const { baseElement } = renderComponent(componentProps);
+  const { baseElement } = await renderComponent(componentProps);
   expect(baseElement).toBeDefined();
 });
 
-const renderComponent = (props: PopoverSubjButtonProps) => {
-  return renderWithRouter({
-    routeObj: { element: <PopoverSubjButton {...props} />, path: "/" },
+const renderComponent = async (props: PopoverSubjButtonProps) => {
+  const popoverSubjPath = "/";
+  const routesToRender: TestRoute[] = [
+    {
+      component: () => <PopoverSubjButton {...props} />,
+      path: popoverSubjPath,
+    },
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: popoverSubjPath,
+    });
   });
 };

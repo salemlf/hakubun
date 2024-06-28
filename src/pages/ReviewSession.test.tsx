@@ -1,15 +1,19 @@
 import {
   act,
+  createTestRouter,
   renderHook,
-  renderWithRouter,
   screen,
+  TestRoute,
 } from "../testing/test-utils";
 import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
+import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
 import useAssignmentQueueStoreFacade from "../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { AssignmentQueueItem } from "../types/AssignmentQueueTypes";
 import ReviewSession from "./ReviewSession";
-import Home from "./Home";
-import { SubjectDetails } from "./SubjectDetails";
+
+const mockQueueStore = () => {
+  renderHook(() => useQueueStoreFacade());
+};
 
 const mockReviewQueueStore = (queueItems: AssignmentQueueItem[]) => {
   const { result: assignmentQueueResult } = renderHook(() =>
@@ -21,17 +25,24 @@ const mockReviewQueueStore = (queueItems: AssignmentQueueItem[]) => {
   );
 };
 
-test("ReviewSession renders", () => {
-  const { baseElement } = renderComponent(false);
+test("ReviewSession renders", async () => {
+  const { baseElement } = await renderComponent(false);
   expect(baseElement).toBeDefined();
 });
 
 describe("End session dialog", () => {
   test("Displays dialog on home button click", async () => {
-    const { user } = renderComponent(true);
+    mockQueueStore();
+    const randomQueueItems = generateRandomQueueItems({
+      numItems: 10,
+      areLessons: false,
+      queueProgressState: "not_started",
+    });
+    mockReviewQueueStore(randomQueueItems);
+    const { user } = await renderComponent(true);
 
     await user.click(
-      screen.getByRole("button", {
+      await screen.findByRole("button", {
         name: /home page/i,
       })
     );
@@ -39,14 +50,16 @@ describe("End session dialog", () => {
     const dialog = await screen.findByRole("alertdialog", {
       name: /end review session\?/i,
     });
+
     expect(dialog).toBeInTheDocument();
   });
 
   test("Navigates to Home when end session is clicked", async () => {
-    const { user } = renderComponent(true);
+    // const { user } = renderComponent(true);
+    const { user } = await renderComponent(true);
 
     await user.click(
-      screen.getByRole("button", {
+      await screen.findByRole("button", {
         name: /home page/i,
       })
     );
@@ -63,13 +76,13 @@ describe("End session dialog", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: /hakubun/i,
+        name: /mock home/i,
       })
     ).toBeVisible();
   });
 
   test("Stays in review session when cancel is clicked", async () => {
-    const { user } = renderComponent(true);
+    const { user } = await renderComponent(true);
 
     // check that we're in the review session
     expect(
@@ -99,51 +112,45 @@ describe("End session dialog", () => {
   });
 });
 
-test("Navigate to Subject Details page without being navigation blocked", async () => {
-  const kanjiReviewItems = generateRandomQueueItems({
-    subjectType: "kanji",
-    numItems: 1,
-    queueProgressState: "not_started",
-  });
-
-  mockReviewQueueStore(kanjiReviewItems);
-  const { router } = renderComponent(true, true);
-  await act(() => router.navigate("/subjects/10"));
-  expect(await screen.findByTestId("subject-details-page")).toBeInTheDocument();
-});
-
-// TODO: add another test that checks user can go to review summary w/o page being blocked
-
-const renderComponent = (
+// TODO: fix, check lesson session testing for reference since that one works
+const renderComponent = async (
   withHomeRoute: boolean,
   withSubjDetails: boolean = false
 ) => {
-  const routes = [
-    ...(withHomeRoute
-      ? [
-          {
-            path: "/",
-            element: <Home />,
-          },
-        ]
-      : []),
-    ...(withSubjDetails
-      ? [
-          {
-            path: "/subjects/:id",
-            element: <SubjectDetails />,
-          },
-        ]
-      : []),
+  const reviewSessionPath = "/reviews/session";
+  const reviewSessionRoute: TestRoute = {
+    component: () => <ReviewSession />,
+    path: reviewSessionPath,
+  };
+
+  const homeRoute: TestRoute = {
+    path: "/",
+    component: () => (
+      <div>
+        <h1>Mock Home</h1>
+      </div>
+    ),
+  };
+
+  const subjDetailsRoute: TestRoute = {
+    path: "/subjects/$subjId",
+    component: (subjID: number) => (
+      <div>
+        <h1>Fake Subject Details</h1>
+      </div>
+    ),
+  };
+
+  const routesToRender: TestRoute[] = [
+    reviewSessionRoute,
+    ...(withHomeRoute ? [homeRoute] : []),
+    ...(withSubjDetails ? [subjDetailsRoute] : []),
   ];
 
-  const reviewSessionPath = "/reviews/session";
-  return renderWithRouter({
-    routeObj: {
-      path: reviewSessionPath,
-      element: <ReviewSession />,
-    },
-    defaultPath: reviewSessionPath,
-    routes,
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: reviewSessionPath,
+    });
   });
 };

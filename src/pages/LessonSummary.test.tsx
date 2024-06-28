@@ -3,8 +3,9 @@ import { generateRandomQueueItems } from "../testing/mocks/data-generators/assig
 import {
   renderHook,
   act,
-  renderWithRouter,
   screen,
+  TestRoute,
+  createTestRouter,
 } from "../testing/test-utils";
 import LessonSummary from "./LessonSummary";
 
@@ -14,8 +15,8 @@ const mockAssignmentQueueItems = generateRandomQueueItems({
   queueProgressState: "not_started",
 });
 
-test("LessonSummary renders", () => {
-  const { baseElement } = renderComponent();
+test("LessonSummary renders", async () => {
+  const { baseElement } = await renderComponent();
   expect(baseElement).toBeDefined();
 });
 
@@ -37,7 +38,7 @@ test("Learned lessons displayed", async () => {
     }
   });
 
-  renderComponent();
+  await renderComponent();
 
   imageQueueItems.forEach(async (altTxt) => {
     expect(
@@ -51,14 +52,19 @@ test("Learned lessons displayed", async () => {
   });
 });
 
-const renderComponent = () => {
+const renderComponent = async () => {
   const lessonSummaryPath = "/lessons/summary";
-
-  return renderWithRouter({
-    routeObj: {
+  const routesToRender: TestRoute[] = [
+    {
+      component: () => <LessonSummary />,
       path: lessonSummaryPath,
-      element: <LessonSummary />,
     },
-    defaultPath: lessonSummaryPath,
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: lessonSummaryPath,
+    });
   });
 };

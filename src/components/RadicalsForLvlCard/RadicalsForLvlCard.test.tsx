@@ -1,6 +1,11 @@
 import { renderHook, screen, waitFor } from "@testing-library/react";
 import { HttpResponse, http, passthrough } from "msw";
-import { renderWithRouter, createWrapper } from "../../testing/test-utils";
+import {
+  createQueryWrapper,
+  act,
+  TestRoute,
+  createTestRouter,
+} from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import {
   SUBJECT_SUBJ_TYPES,
@@ -11,13 +16,11 @@ import {
 } from "../../testing/endpoints";
 import { useRadicalSubjectsForLvl } from "../../hooks/subjects/useRadicalSubjectsForLvl";
 import { useRadicalAssignmentsForLvl } from "../../hooks/assignments/useRadicalAssignmentsForLvl";
-import { SubjectDetails } from "../../pages/SubjectDetails";
 import RadicalsForLvlCard from ".";
 
 const mockLevel = 1;
-
-test("RadicalsForLvlCard renders", () => {
-  const { baseElement } = renderComponent(mockLevel);
+test("RadicalsForLvlCard renders", async () => {
+  const { baseElement } = await renderComponent(mockLevel);
   expect(baseElement).toBeDefined();
 });
 
@@ -43,12 +46,12 @@ test("Shows error text on API error and no cached data", async () => {
     })
   );
 
-  renderComponent(mockLevel, true);
+  await renderComponent(mockLevel, true);
 
   const { result: subjectsResult } = renderHook(
     () => useRadicalSubjectsForLvl(mockLevel),
     {
-      wrapper: createWrapper(),
+      wrapper: createQueryWrapper(),
     }
   );
 
@@ -62,7 +65,7 @@ test("Shows error text on API error and no cached data", async () => {
   const { result: assignmentsResult } = renderHook(
     () => useRadicalAssignmentsForLvl(mockLevel),
     {
-      wrapper: createWrapper(),
+      wrapper: createQueryWrapper(),
     }
   );
 
@@ -83,18 +86,34 @@ test.todo(
   async () => {}
 );
 
-const renderComponent = (
+const renderComponent = async (
   level: number,
   withSubjectDetails: boolean = false
 ) => {
-  const routes = withSubjectDetails
-    ? [{ element: <SubjectDetails />, path: "/subjects/:id" }]
-    : [];
-  return renderWithRouter({
-    routeObj: {
-      element: <RadicalsForLvlCard level={level} />,
-      path: "/",
-    },
-    routes,
+  const radicalsForLvlPath = "/";
+  const radicalsForLvlCardRoute: TestRoute = {
+    component: () => <RadicalsForLvlCard level={level} />,
+    path: radicalsForLvlPath,
+  };
+
+  const subjDetailsRoute: TestRoute = {
+    path: "/subjects/$subjId",
+    component: () => (
+      <div>
+        <h1>Mock Subject Details</h1>
+      </div>
+    ),
+  };
+
+  const routesToRender: TestRoute[] = [
+    radicalsForLvlCardRoute,
+    ...(withSubjectDetails ? [subjDetailsRoute] : []),
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: radicalsForLvlPath,
+    });
   });
 };
