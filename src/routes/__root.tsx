@@ -2,7 +2,7 @@ import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { AuthContext } from "../contexts/AuthContext";
 import ErrorOccurred from "../pages/ErrorOccurred";
 
-interface AuthenticatedCtx {
+export interface AuthenticatedCtx {
   auth: AuthContext;
 }
 
