@@ -1,17 +1,24 @@
-import { renderWithRouter } from "../testing/test-utils";
+import { act, createTestRouter, TestRoute } from "../testing/test-utils";
 import LessonSettings from "./LessonSettings";
 
-test("LesssonSettings renders", () => {
-  const { baseElement } = renderComponent();
+test("LesssonSettings renders", async () => {
+  const { baseElement } = await renderComponent();
   expect(baseElement).toBeDefined();
 });
 
-const renderComponent = () => {
-  return renderWithRouter({
-    routeObj: {
-      element: <LessonSettings />,
-      path: "/lessons/settings",
+const renderComponent = async () => {
+  const lessonSettingsPath = "/lessons/settings";
+  const routesToRender: TestRoute[] = [
+    {
+      component: () => <LessonSettings />,
+      path: lessonSettingsPath,
     },
-    routes: [],
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: lessonSettingsPath,
+    });
   });
 };

@@ -1,15 +1,24 @@
-import { renderWithRouter } from "../testing/test-utils";
+import { act, createTestRouter, TestRoute } from "../testing/test-utils";
 import { Search } from "./Search";
 
-test("Search renders", () => {
-  const { baseElement } = renderComponent();
+test("Search renders", async () => {
+  const { baseElement } = await renderComponent();
   expect(baseElement).toBeDefined();
 });
 
-const renderComponent = () => {
+const renderComponent = async () => {
   const searchPath = "/search";
-  return renderWithRouter({
-    routeObj: { element: <Search />, path: searchPath },
-    defaultPath: searchPath,
+  const routesToRender: TestRoute[] = [
+    {
+      component: () => <Search />,
+      path: searchPath,
+    },
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: searchPath,
+    });
   });
 };

@@ -1,16 +1,24 @@
-import { renderWithRouter } from "../../testing/test-utils";
+import { act, createTestRouter, TestRoute } from "../../testing/test-utils";
 import FloatingTabBar from ".";
 
-test("FloatingTabBar renders", () => {
-  const { baseElement } = renderComponent();
+test("FloatingTabBar renders", async () => {
+  const { baseElement } = await renderComponent();
   expect(baseElement).toBeDefined();
 });
 
-const renderComponent = () => {
-  return renderWithRouter({
-    routeObj: {
-      element: <FloatingTabBar />,
-      path: "/",
+const renderComponent = async () => {
+  const floatingTabBarPath = "/";
+  const routesToRender: TestRoute[] = [
+    {
+      component: () => <FloatingTabBar />,
+      path: floatingTabBarPath,
     },
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: floatingTabBarPath,
+    });
   });
 };

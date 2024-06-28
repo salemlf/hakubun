@@ -1,17 +1,24 @@
-import { renderWithRouter } from "../testing/test-utils";
+import { act, createTestRouter, TestRoute } from "../testing/test-utils";
 import { ReviewSettings } from "./ReviewSettings";
 
-test("ReviewSettings renders", () => {
-  const { baseElement } = renderComponent();
+test("ReviewSettings renders", async () => {
+  const { baseElement } = await renderComponent();
   expect(baseElement).toBeDefined();
 });
 
-const renderComponent = () => {
-  return renderWithRouter({
-    routeObj: {
-      element: <ReviewSettings />,
-      path: "/reviews/settings",
+const renderComponent = async () => {
+  const reviewSettingsPath = "/reviews/settings";
+  const routesToRender: TestRoute[] = [
+    {
+      component: () => <ReviewSettings />,
+      path: reviewSettingsPath,
     },
-    routes: [],
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: reviewSettingsPath,
+    });
   });
 };

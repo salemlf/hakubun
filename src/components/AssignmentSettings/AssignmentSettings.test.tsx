@@ -1,5 +1,5 @@
 import { HttpResponse, http, passthrough } from "msw";
-import { renderWithRouter } from "../../testing/test-utils";
+import { act, TestRoute, createTestRouter } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import AssignmentSettings from ".";
 import { AssignmentSettingsProps } from ".";
@@ -67,22 +67,29 @@ const mockStudyMaterialsResponse = (
   );
 };
 
-test("AssignmentSettings renders", () => {
+test("AssignmentSettings renders", async () => {
   mockSubjectsByIDsResponse(mockSubjCollection);
   mockStudyMaterialsResponse(studyMaterialCollectionForSubjs);
   const mockSettings: AssignmentSettingsProps = {
     assignmentData: assignmentsFromSubjCollection,
   };
-  const { baseElement } = renderComponent(mockSettings);
+  const { baseElement } = await renderComponent(mockSettings);
   expect(baseElement).toBeDefined();
 });
 
-const renderComponent = (settingProps: AssignmentSettingsProps) => {
-  return renderWithRouter({
-    routeObj: {
-      path: "/lessons/session",
-      element: <AssignmentSettings {...settingProps} />,
+const renderComponent = async (settingProps: AssignmentSettingsProps) => {
+  const assignmentSettingsPath = "/lessons/settings";
+  const routesToRender: TestRoute[] = [
+    {
+      component: () => <AssignmentSettings {...settingProps} />,
+      path: assignmentSettingsPath,
     },
-    mockHome: true,
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: assignmentSettingsPath,
+    });
   });
 };

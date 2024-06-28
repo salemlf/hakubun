@@ -1,6 +1,11 @@
 import { renderHook, screen, waitFor } from "@testing-library/react";
 import { HttpResponse, http, passthrough } from "msw";
-import { renderWithRouter, createWrapper } from "../../testing/test-utils";
+import {
+  createQueryWrapper,
+  act,
+  createTestRouter,
+  TestRoute,
+} from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import {
   SUBJECT_SUBJ_TYPES,
@@ -11,13 +16,12 @@ import {
 } from "../../testing/endpoints";
 import { useKanjiSubjectsForLvl } from "../../hooks/subjects/useKanjiSubjectsForLvl";
 import { useKanjiAssignmentsForLvl } from "../../hooks/assignments/useKanjiAssignmentsForLvl";
-import { SubjectDetails } from "../../pages/SubjectDetails";
 import KanjiForLvlCard from ".";
 
 const mockLevel = 1;
 
-test("KanjiForLvlCard renders", () => {
-  const { baseElement } = renderComponent(mockLevel);
+test("KanjiForLvlCard renders", async () => {
+  const { baseElement } = await renderComponent(mockLevel);
   expect(baseElement).toBeDefined();
 });
 
@@ -43,12 +47,12 @@ test("Shows error text on API error and no cached data", async () => {
     })
   );
 
-  renderComponent(mockLevel, true);
+  await renderComponent(mockLevel, true);
 
   const { result: subjectsResult } = renderHook(
     () => useKanjiSubjectsForLvl(mockLevel),
     {
-      wrapper: createWrapper(),
+      wrapper: createQueryWrapper(),
     }
   );
 
@@ -62,7 +66,7 @@ test("Shows error text on API error and no cached data", async () => {
   const { result: assignmentsResult } = renderHook(
     () => useKanjiAssignmentsForLvl(mockLevel),
     {
-      wrapper: createWrapper(),
+      wrapper: createQueryWrapper(),
     }
   );
 
@@ -83,18 +87,35 @@ test.todo(
   async () => {}
 );
 
-const renderComponent = (
+// TODO: create an pass in subjId prop
+const renderComponent = async (
   level: number,
   withSubjectDetails: boolean = false
 ) => {
-  const routes = withSubjectDetails
-    ? [{ element: <SubjectDetails />, path: "/subjects/:id" }]
-    : [];
-  return renderWithRouter({
-    routeObj: {
-      element: <KanjiForLvlCard level={level} />,
-      path: "/",
-    },
-    routes,
+  const kanjiForLvlPath = "/";
+  const kanjiForLvlRoute: TestRoute = {
+    component: () => <KanjiForLvlCard level={level} />,
+    path: kanjiForLvlPath,
+  };
+
+  const subjDetailsRoute: TestRoute = {
+    path: "/subjects/$subjId",
+    component: () => (
+      <div>
+        <h1>Mock Subject Details</h1>
+      </div>
+    ),
+  };
+
+  const routesToRender: TestRoute[] = [
+    kanjiForLvlRoute,
+    ...(withSubjectDetails ? [subjDetailsRoute] : []),
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: kanjiForLvlPath,
+    });
   });
 };

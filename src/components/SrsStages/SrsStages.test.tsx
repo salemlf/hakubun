@@ -1,6 +1,6 @@
 import { renderHook, screen, waitFor } from "@testing-library/react";
 import { HttpResponse, http, passthrough } from "msw";
-import { createWrapper, renderWithClient } from "../../testing/test-utils";
+import { createQueryWrapper, renderWithClient } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { SRS_STAGES, assignmentsEndpoint } from "../../testing/endpoints";
 import { SrsLevelName } from "../../types/MiscTypes";
@@ -14,7 +14,7 @@ test("SrsStages renders", () => {
 
 const ensureSrsQueryErrState = async (srsStage: SrsLevelName) => {
   const { result } = renderHook(() => useAssignmentsByStage(srsStage), {
-    wrapper: createWrapper(),
+    wrapper: createQueryWrapper(),
   });
 
   await waitFor(() => {

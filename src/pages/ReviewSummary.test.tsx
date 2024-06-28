@@ -1,8 +1,9 @@
 import {
   renderHook,
   act,
-  renderWithRouter,
   screen,
+  TestRoute,
+  createTestRouter,
 } from "../testing/test-utils";
 import { generateRandomQueueItems } from "../testing/mocks/data-generators/assignmentQueueGenerator";
 import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/useAssignmentSubmitStore.facade";
@@ -15,8 +16,8 @@ const mockAssignmentQueueItems = generateRandomQueueItems({
   queueProgressState: "completed",
 });
 
-test("ReviewSummary renders", () => {
-  const { baseElement } = renderComponent();
+test("ReviewSummary renders", async () => {
+  const { baseElement } = await renderComponent();
   expect(baseElement).toBeDefined();
 });
 
@@ -38,28 +39,34 @@ test("Reviewed assignments displayed", async () => {
     }
   });
 
-  renderComponent();
+  await renderComponent();
 
   imageQueueItems.forEach(async (altTxt) => {
     expect(
-      screen.getByRole("img", {
+      await screen.findByRole("img", {
         name: `${altTxt} image`,
       })
     ).toBeDefined();
   });
-  txtQueueItems.forEach((char) => {
-    expect(screen.getByText(`${char}`)).toBeDefined();
+
+  txtQueueItems.forEach(async (char) => {
+    expect(await screen.findByText(`${char}`)).toBeDefined();
   });
 });
 
-const renderComponent = () => {
+const renderComponent = async () => {
   const reviewSummaryPath = "/reviews/summary";
-
-  return renderWithRouter({
-    routeObj: {
-      element: <ReviewSummary />,
+  const routesToRender: TestRoute[] = [
+    {
+      component: () => <ReviewSummary />,
       path: reviewSummaryPath,
     },
-    defaultPath: reviewSummaryPath,
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: reviewSummaryPath,
+    });
   });
 };

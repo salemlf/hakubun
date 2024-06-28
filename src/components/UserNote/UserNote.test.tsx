@@ -1,8 +1,10 @@
 import {
-  createWrapper,
+  act,
+  createQueryWrapper,
+  createTestRouter,
   renderHook,
-  renderWithRouter,
   screen,
+  TestRoute,
   waitFor,
 } from "../../testing/test-utils";
 import { mockStudyMaterialsBySubjIDsResponse } from "../../testing/mocks/api-responses/study-materials-responses";
@@ -11,7 +13,6 @@ import { generateStudyMaterialCollectionFromSubjs } from "../../testing/mocks/da
 import { createCorrespondingSubject } from "../../testing/mocks/data-generators/assignmentGenerator";
 import { useStudyMaterialsBySubjID } from "../../hooks/study-materials/useStudyMaterialsBySubjID";
 import { Subject } from "../../types/Subject";
-import { SubjectDetails } from "../../pages/SubjectDetails";
 import UserNote, { Props } from "./UserNote";
 
 const mockKanjiLvl1Subj = generateSubject({ subjType: "kanji", level: 1 });
@@ -37,9 +38,8 @@ const mockStudyMaterialResponse = (
   );
 };
 
-test("UserNote renders", () => {
-  const { baseElement } = renderComponent({
-    withSubjectDetails: false,
+test("UserNote renders", async () => {
+  const { baseElement } = await renderComponent({
     subject: mockKanjiLvl1Subj,
     noteType: "meaning",
   });
@@ -48,8 +48,7 @@ test("UserNote renders", () => {
 
 test("Add meaning note modal appears on add click", async () => {
   mockStudyMaterialResponse(mockKanjiLvl1Subj, false, false);
-  const { user } = renderComponent({
-    withSubjectDetails: true,
+  const { user } = await renderComponent({
     subject: mockKanjiLvl1Subj,
     noteType: "meaning",
   });
@@ -57,13 +56,13 @@ test("Add meaning note modal appears on add click", async () => {
   const { result } = renderHook(
     () => useStudyMaterialsBySubjID(mockKanjiLvl1Subj.id),
     {
-      wrapper: createWrapper(),
+      wrapper: createQueryWrapper(),
     }
   );
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
   await user.click(
-    screen.getByRole("button", {
+    await screen.findByRole("button", {
       name: /add meaning note/i,
     })
   );
@@ -76,8 +75,7 @@ test("Add meaning note modal appears on add click", async () => {
 
 test("Add reading note modal appears on add click", async () => {
   mockStudyMaterialResponse(mockKanjiLvl1Subj, false, false);
-  const { user } = renderComponent({
-    withSubjectDetails: true,
+  const { user } = await renderComponent({
     subject: mockKanjiLvl1Subj,
     noteType: "reading",
   });
@@ -85,13 +83,13 @@ test("Add reading note modal appears on add click", async () => {
   const { result } = renderHook(
     () => useStudyMaterialsBySubjID(mockKanjiLvl1Subj.id),
     {
-      wrapper: createWrapper(),
+      wrapper: createQueryWrapper(),
     }
   );
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
   await user.click(
-    screen.getByRole("button", {
+    await screen.findByRole("button", {
       name: /add reading note/i,
     })
   );
@@ -104,8 +102,7 @@ test("Add reading note modal appears on add click", async () => {
 
 test("Edit note modal appears on edit click", async () => {
   mockStudyMaterialResponse(mockKanjiLvl1Subj, true, true);
-  const { user } = renderComponent({
-    withSubjectDetails: true,
+  const { user } = await renderComponent({
     subject: mockKanjiLvl1Subj,
     noteType: "meaning",
   });
@@ -113,13 +110,13 @@ test("Edit note modal appears on edit click", async () => {
   const { result } = renderHook(
     () => useStudyMaterialsBySubjID(mockKanjiLvl1Subj.id),
     {
-      wrapper: createWrapper(),
+      wrapper: createQueryWrapper(),
     }
   );
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
   await user.click(
-    screen.getByRole("button", {
+    await screen.findByRole("button", {
       name: /edit meaning note/i,
     })
   );
@@ -136,8 +133,7 @@ test("Delete note modal appears on edit click", async () => {
     level: 1,
   });
   mockStudyMaterialResponse(mockRadicalLvl1Subj, true, false);
-  const { user } = renderComponent({
-    withSubjectDetails: true,
+  const { user } = await renderComponent({
     subject: mockRadicalLvl1Subj,
     noteType: "meaning",
     isRadical: true,
@@ -146,14 +142,14 @@ test("Delete note modal appears on edit click", async () => {
   const { result } = renderHook(
     () => useStudyMaterialsBySubjID(mockRadicalLvl1Subj.id),
     {
-      wrapper: createWrapper(),
+      wrapper: createQueryWrapper(),
     }
   );
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
   console.log("🚀 ~ test ~ result.current.data:", result.current.data);
 
   await user.click(
-    screen.getByRole("button", {
+    await screen.findByRole("button", {
       name: /delete note/i,
     })
   );
@@ -165,22 +161,19 @@ test("Delete note modal appears on edit click", async () => {
   expect(deleteNoteModal).toBeInTheDocument();
 });
 
-type RenderComponentProps = Props & {
-  withSubjectDetails: boolean;
-};
-
-const renderComponent = ({
-  withSubjectDetails,
-  ...props
-}: RenderComponentProps) => {
-  const routes = withSubjectDetails
-    ? [{ element: <SubjectDetails />, path: "/subjects/:id" }]
-    : [];
-  return renderWithRouter({
-    routeObj: {
-      element: <UserNote {...props} />,
-      path: "/",
+const renderComponent = async ({ ...props }: Props) => {
+  const userNotePath = "/subjects/$subjId";
+  const routesToRender: TestRoute[] = [
+    {
+      component: () => <UserNote {...props} />,
+      path: userNotePath,
     },
-    routes,
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: userNotePath,
+    });
   });
 };

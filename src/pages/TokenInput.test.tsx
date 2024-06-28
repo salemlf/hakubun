@@ -1,9 +1,10 @@
 import { HttpResponse, http } from "msw";
 import {
-  renderWithRouter,
   screen,
   renderHook,
   act,
+  TestRoute,
+  createTestRouter,
 } from "../testing/test-utils";
 import { server } from "../testing/mocks/server";
 import { userEndpoint } from "../testing/endpoints";
@@ -13,14 +14,13 @@ import {
 } from "../testing/mocks/data-generators/userGenerator";
 import useAuthTokenStoreFacade from "../stores/useAuthTokenStore/useAuthTokenStore.facade";
 import useUserInfoStoreFacade from "../stores/useUserInfoStore/useUserInfoStore.facade";
-import Home from "./Home";
 import TokenInput from "./TokenInput";
 
 const mockUserLvl1 = generateUser({ level: 1 });
 const mockLvl1UserResponse = generateUserResponse({ level: 1 });
 
-test("TokenInput renders", () => {
-  const { baseElement } = renderComponent();
+test("TokenInput renders", async () => {
+  const { baseElement } = await renderComponent();
   expect(baseElement).toBeDefined();
 });
 
@@ -31,10 +31,10 @@ test("Redirects to home page after entering token (logging in)", async () => {
     })
   );
 
-  const { user } = renderComponent(true);
+  const { user } = await renderComponent(true);
   const fakeTokenValue = "my_fake_token";
 
-  const tokenInput = screen.getByTestId("token-input");
+  const tokenInput = await screen.findByTestId("token-input");
   await user.type(tokenInput, fakeTokenValue);
   expect(tokenInput).toHaveValue(fakeTokenValue);
 
@@ -67,27 +67,36 @@ test("Redirect to home page from token input page if user already authenticated"
   expect(authTokenResult.current.isAuthenticated).toEqual(false);
   act(() => authTokenResult.current.setIsAuthenticated(true));
 
-  renderComponent(true);
+  await renderComponent(true);
 
   expect(await screen.findByTestId("home-heading")).toBeInTheDocument();
 });
 
-const renderComponent = (withHomeRoute: boolean = false) => {
+const renderComponent = async (withHomeRoute: boolean = false) => {
   const tokenInputPath = "/authenticate";
+  const tokenInputRoute: TestRoute = {
+    component: () => <TokenInput />,
+    path: tokenInputPath,
+  };
 
-  return renderWithRouter({
-    routeObj: {
-      path: tokenInputPath,
-      element: <TokenInput />,
-    },
-    defaultPath: tokenInputPath,
-    routes: withHomeRoute
-      ? [
-          {
-            path: "/",
-            element: <Home />,
-          },
-        ]
-      : [],
+  const homeRoute: TestRoute = {
+    path: "/",
+    component: () => (
+      <div>
+        <h1 data-testid="home-heading">Mock Home</h1>
+      </div>
+    ),
+  };
+
+  const routesToRender: TestRoute[] = [
+    tokenInputRoute,
+    ...(withHomeRoute ? [homeRoute] : []),
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: tokenInputPath,
+    });
   });
 };

@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import {
   act,
   renderHook,
-  renderWithRouter,
+  renderWithClient,
   screen,
 } from "../../testing/test-utils";
 import {
@@ -87,20 +87,15 @@ const getCorrectAnswer = (queueItem: AssignmentQueueItem): string => {
   }
 };
 
-test("AssignmentQueueCards renders", () => {
+test("AssignmentQueueCards renders", async () => {
   const emptySubmitInfo: AssignmentSubmitInfo = {
     assignmentData: [],
     submitResponses: [],
     assignmentsWithErrs: [],
   };
   const callbackParams = mockCallbackParams(emptySubmitInfo);
-  const selectedSettingType = faker.helpers.arrayElement(settingTypes);
-  const componentProps = getComponentProps(selectedSettingType);
 
-  const { baseElement } = renderComponent(
-    callbackParams,
-    componentProps.currPath
-  );
+  const { baseElement } = await renderComponent(callbackParams);
   expect(baseElement).toBeDefined();
 });
 
@@ -129,7 +124,7 @@ test.todo("Correct review answer is marked as correct", async () => {
     assignmentsWithErrs: [],
   };
   const callbackParams = mockCallbackParams(queueSubmitInfo);
-  const { user } = renderComponent(callbackParams, componentProps.currPath);
+  const { user } = await renderComponent(callbackParams);
 
   const correctAnswer = getCorrectAnswer(queueItem);
   const answerInput = await screen.findByTestId("wanakana-input");
@@ -149,16 +144,7 @@ test.todo(
   "Warning toast is displayed when user enters a forbidden meaning answer"
 );
 
-const renderComponent = (
-  props: CardProps,
-  currPath: "/reviews/session" | "/lessons/quiz"
-) => {
-  return renderWithRouter({
-    routeObj: {
-      path: currPath,
-      element: <AssignmentQueueCards {...props} />,
-    },
-    defaultPath: currPath,
-    mockHome: true,
-  });
+const renderComponent = async (props: CardProps) => {
+  // eslint-disable-next-line testing-library/no-unnecessary-act
+  return await act(() => renderWithClient(<AssignmentQueueCards {...props} />));
 };

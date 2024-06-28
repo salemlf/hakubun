@@ -2,10 +2,11 @@ import { HttpResponse, http } from "msw";
 import {
   renderHook,
   act,
-  renderWithRouter,
-  createWrapper,
+  createQueryWrapper,
   screen,
   waitFor,
+  TestRoute,
+  createTestRouter,
 } from "../../testing/test-utils";
 import { server } from "../../testing/mocks/server";
 import { generateUserResponse } from "../../testing/mocks/data-generators/userGenerator";
@@ -21,13 +22,13 @@ server.use(
   })
 );
 
-test("HomeHeader renders", () => {
-  const { baseElement } = renderComponent();
+test("HomeHeader renders", async () => {
+  const { baseElement } = await renderComponent();
   expect(baseElement).toBeDefined();
 });
 
 test("App name is rendered to screen", async () => {
-  renderComponent();
+  await renderComponent();
 
   expect(await screen.findByText(/^Hakubun$/)).toBeInTheDocument();
 });
@@ -35,7 +36,7 @@ test("App name is rendered to screen", async () => {
 // TODO: change to wait for userInfo to be defined
 test("User level is rendered to screen", async () => {
   const { result } = renderHook(() => useUserInfoStoreFacade(), {
-    wrapper: createWrapper(),
+    wrapper: createQueryWrapper(),
   });
   await waitFor(() => expect(result.current.userInfo).toBe(undefined));
 
@@ -44,14 +45,26 @@ test("User level is rendered to screen", async () => {
   act(() => result.current.setUserInfo(userData));
   await waitFor(() => expect(result.current.userInfo).toBe(userData));
 
-  renderComponent();
+  await renderComponent();
   const userLvl = mockUserResponseLvl5.data.level;
   const levelTxt = await screen.findByTestId("level-num");
   expect(levelTxt).toHaveTextContent(`Level ${userLvl}`);
 });
 
-const renderComponent = () => {
-  return renderWithRouter({
-    routeObj: { path: "/", element: <HomeHeader /> },
+const renderComponent = async () => {
+  const homeHeaderPath = "/";
+
+  const routesToRender: TestRoute[] = [
+    {
+      component: () => <HomeHeader />,
+      path: homeHeaderPath,
+    },
+  ];
+
+  return await act(async () => {
+    return createTestRouter({
+      routes: routesToRender,
+      initialEntry: homeHeaderPath,
+    });
   });
 };
