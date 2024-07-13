@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useBlocker, useLocation } from "@tanstack/react-router";
+import useAssignmentQueueStoreFacade from "../../stores/useAssignmentQueueStore/useAssignmentQueueStore.facade";
 import { useIsBottomSheetOpen } from "../../contexts/BottomSheetOpenContext";
 import AlertModal, { AlertModalContentProps } from "../AlertModal";
 
@@ -8,7 +9,6 @@ type Props = Omit<
   "isOpen" | "cancelText" | "onCancelClick"
 >;
 
-// TODO: this dialog pops up twice, fix
 function LeaveSessionPrompt({
   modalID,
   title,
@@ -19,13 +19,16 @@ function LeaveSessionPrompt({
   onAddtlActionClick = () => {},
 }: Props) {
   const location = useLocation();
+  const { assignmentQueue } = useAssignmentQueueStoreFacade();
+  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
 
   const shouldBlock = useMemo(() => {
     return (
-      location.pathname.endsWith("session") ||
-      location.pathname.endsWith("quiz")
+      assignmentQueue.length > 0 &&
+      (location.pathname.endsWith("session") ||
+        location.pathname.endsWith("quiz"))
     );
-  }, [location.pathname]);
+  }, [location.pathname, assignmentQueue.length]);
 
   const {
     proceed: proceedNavigating,
@@ -35,7 +38,12 @@ function LeaveSessionPrompt({
     condition: shouldBlock,
   });
 
-  const { isBottomSheetOpen, setIsBottomSheetOpen } = useIsBottomSheetOpen();
+  // necessary to prevent dialog from popping up twice
+  useEffect(() => {
+    if (status === "blocked" && !shouldBlock) {
+      proceedNavigating();
+    }
+  }, [status]);
 
   useEffect(() => {
     if (status === "blocked" && isBottomSheetOpen) {
