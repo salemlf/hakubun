@@ -125,7 +125,6 @@ describe("End session dialog", () => {
   });
 });
 
-// TODO: fix, check lesson session testing for reference since that one works
 const renderComponent = async (
   withHomeRoute: boolean,
   withSubjDetails: boolean = false
