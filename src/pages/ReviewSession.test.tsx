@@ -55,7 +55,13 @@ describe("End session dialog", () => {
   });
 
   test("Navigates to Home when end session is clicked", async () => {
-    // const { user } = renderComponent(true);
+    mockQueueStore();
+    const randomQueueItems = generateRandomQueueItems({
+      numItems: 10,
+      areLessons: false,
+      queueProgressState: "not_started",
+    });
+    mockReviewQueueStore(randomQueueItems);
     const { user } = await renderComponent(true);
 
     await user.click(
@@ -82,6 +88,13 @@ describe("End session dialog", () => {
   });
 
   test("Stays in review session when cancel is clicked", async () => {
+    mockQueueStore();
+    const randomQueueItems = generateRandomQueueItems({
+      numItems: 10,
+      areLessons: false,
+      queueProgressState: "not_started",
+    });
+    mockReviewQueueStore(randomQueueItems);
     const { user } = await renderComponent(true);
 
     // check that we're in the review session
