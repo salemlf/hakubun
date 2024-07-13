@@ -107,5 +107,12 @@
   "description": "A Japanese study app for Wanikani",
   "msw": {
     "workerDirectory": "public"
+  },
+  "overrides": {
+    "@capacitor/assets": {
+      "@trapezedev/project": {
+        "npm-watch": "0.13.0"
+      }
+    }
   }
 }
