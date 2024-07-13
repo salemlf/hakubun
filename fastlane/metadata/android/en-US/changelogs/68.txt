@@ -1,0 +1,8 @@
+Bug Fixes
+
+- Can't Add Alternative Meaning
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.6.2-beta
+

@@ -167,8 +167,8 @@ export const getPopoverStyles = (messageType: PopoverMessageType) => {
 export const constructStudyMaterialData = ({
   subject_id,
   meaning_synonyms = [],
-  meaning_note = null,
-  reading_note = null,
+  meaning_note,
+  reading_note,
 }: StudyMaterialPostDataWithID) => {
   return {
     study_material: {

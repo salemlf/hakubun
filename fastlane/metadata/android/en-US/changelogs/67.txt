@@ -1,0 +1,8 @@
+Bug Fixes
+
+- "End Session/Quiz" Dialog Confirmation Appearing on Summary Pages
+	- Author: EricosEagle
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.6.1-beta
+
