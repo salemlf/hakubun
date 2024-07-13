@@ -131,7 +131,7 @@ describe("End session dialog", () => {
   });
 });
 
-const renderComponent = async (withHomeRoute: boolean) => {
+const renderComponent = async (withHomeRoute: boolean = false) => {
   const lessonSessionPath = "/lessons/session";
   const lessonSessionRoute: TestRoute = {
     component: () => <LessonSession />,
