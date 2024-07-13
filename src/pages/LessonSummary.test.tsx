@@ -52,13 +52,46 @@ test("Learned lessons displayed", async () => {
   });
 });
 
-const renderComponent = async () => {
+test("Can navigate to home page without being blocked", async () => {
+  const { result } = renderHook(() => useAssignmentSubmitStoreFacade());
+  expect(result.current.submittedAssignmentQueueItems).toEqual([]);
+  act(() => result.current.updateSubmittedQueueItems(mockAssignmentQueueItems));
+
+  const { user } = await renderComponent(true);
+
+  await user.click(
+    await screen.findByRole("button", {
+      name: /home/i,
+    })
+  );
+
+  expect(
+    await screen.findByRole("heading", {
+      name: /mock home/i,
+    })
+  ).toBeVisible();
+});
+
+const renderComponent = async (withHomeRoute: boolean = false) => {
   const lessonSummaryPath = "/lessons/summary";
+
+  const lessonSummaryRoute: TestRoute = {
+    component: () => <LessonSummary />,
+    path: lessonSummaryPath,
+  };
+
+  const homeRoute: TestRoute = {
+    path: "/",
+    component: () => (
+      <div>
+        <h1>Mock Home</h1>
+      </div>
+    ),
+  };
+
   const routesToRender: TestRoute[] = [
-    {
-      component: () => <LessonSummary />,
-      path: lessonSummaryPath,
-    },
+    lessonSummaryRoute,
+    ...(withHomeRoute ? [homeRoute] : []),
   ];
 
   return await act(async () => {
