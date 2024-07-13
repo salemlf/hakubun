@@ -46,7 +46,6 @@
     "react-aria": "^3.26.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
-    "react-router-dom": "^6.22.0",
     "react-snap-carousel": "^0.4.0",
     "react-string-replace": "^1.1.0",
     "sass": "^1.62.1",
