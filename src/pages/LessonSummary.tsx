@@ -1,4 +1,6 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import { groupDataByProperty } from "../utils";
 import { useAssignmentQueueStore } from "../stores/useAssignmentQueueStore/useAssignmentQueueStore";
 import useQueueStoreFacade from "../stores/useQueueStore/useQueueStore.facade";
@@ -6,13 +8,25 @@ import useAssignmentSubmitStoreFacade from "../stores/useAssignmentSubmitStore/u
 import { getCompletedAssignmentQueueData } from "../services/AssignmentQueueService/AssignmentQueueService";
 import { Subject } from "../types/Subject";
 import Card from "../components/Card/Card";
-import FloatingHomeButton from "../components/FloatingHomeButton/FloatingHomeButton";
 import SubjCharacterList from "../components/SubjCharacterList";
+import SvgIcon from "../components/SvgIcon";
 import {
   ContentWithTabBar,
   FullWidthGridDiv,
+  FloatingButton,
+  FloatingButtonContainer,
 } from "../styles/BaseStyledComponents";
+import ColorHomeIcon from "../images/home-color.svg?react";
+import LessonsIcon from "../images/lessons.svg?react";
+
 import styled from "styled-components";
+
+const ButtonsContainer = styled(FloatingButtonContainer)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+`;
 
 const LessonSummaryHeader = styled.header`
   background-color: var(--wanikani-lesson);
@@ -33,6 +47,15 @@ const Grid = styled(FullWidthGridDiv)`
 const WarningMsg = styled.p`
   margin: 10px 0;
   color: var(--text-color);
+`;
+
+const NavButton = styled(FloatingButton)`
+  justify-content: center;
+`;
+
+const BtnTxt = styled.p`
+  margin: 0;
+  text-transform: capitalize;
 `;
 
 const ErrorsContainer = styled.div`
@@ -70,8 +93,10 @@ type SubjectsGroupedByType = {
 };
 
 function LessonSummary() {
+  const navigate = useNavigate();
   const { submittedAssignmentQueueItems, submittedAssignmentsWithErrs } =
     useAssignmentSubmitStoreFacade();
+  const [showButtons, _] = useState(true);
 
   const itemErrors = submittedAssignmentsWithErrs.map((item) => item.error);
   const queueItemsThatHadErrors = submittedAssignmentsWithErrs.map(
@@ -181,7 +206,41 @@ function LessonSummary() {
             />
           </Card>
         </Grid>
-        <FloatingHomeButton />
+        <AnimatePresence>
+          {showButtons && (
+            <ButtonsContainer
+              distancefrombottom="35px"
+              transition={{ type: "spring", delay: 0.5, bounce: 0.25 }}
+              initial={{ scale: 0, opacity: 0, x: "-50%" }}
+              animate={{ scale: 1, opacity: 1 }}
+            >
+              <NavButton
+                backgroundColor="var(--ion-color-primary)"
+                color="black"
+                onPress={() => navigate("/lessons/settings", { replace: true })}
+              >
+                <SvgIcon
+                  icon={<LessonsIcon />}
+                  width="1.75em"
+                  height="1.75em"
+                />
+                <BtnTxt>Do More Lessons!</BtnTxt>
+              </NavButton>
+              <NavButton
+                backgroundColor="var(--ion-color-tertiary)"
+                color="black"
+                onPress={() => navigate("/", { replace: true })}
+              >
+                <SvgIcon
+                  icon={<ColorHomeIcon />}
+                  width="1.5em"
+                  height="1.5em"
+                />
+                <BtnTxt>Home</BtnTxt>
+              </NavButton>
+            </ButtonsContainer>
+          )}
+        </AnimatePresence>
       </ContentWithTabBar>
     </>
   );
