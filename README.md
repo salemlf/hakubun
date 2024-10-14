@@ -153,6 +153,7 @@ The app should then be available at http://localhost:5173/
 
 #### iOS and Android Simulators (with Hot Reload)
 
+Make sure to install Cordova's required dependencies for [iOS](https://cordova.apache.org/docs/en/10.x/guide/platforms/ios/)/[Android](https://cordova.apache.org/docs/en/10.x/guide/platforms/android/) if you have trouble running the simulators.
 If below doesn't work, check that network URL after displayed after running `npm run start-exposed` matches the URL in the _capacitor.config.ts_ file
 
 Start server in one terminal:
@@ -184,9 +185,28 @@ You can then select the type of iOS device you'd like to use as a simulator
 
 #### Android
 
+##### Android Studio
+
+The easiest way to run the app is using [Android Studio](https://developer.android.com/studio/index.html).
+Download and install it, and then make sure to install the [relevant SDKs](https://cordova.apache.org/docs/en/12.x/guide/platforms/android/index.html#android-studio).
+Finally, open up the `android/` folder using Android Studio, and [build and run](https://developer.android.com/studio/run/index.html) the program.
+
+##### CLI
+
+You can also run the app in an emulator via the CLI using the following command:
+
 ```bash
 npm run android-live-reload
 ```
+
+If any errors occur, try setting the following environment variables:
+
+```bash
+export JAVA_HOME=<PATH_TO_JAVA_HOME>
+export ANDROID_SDK_ROOT="~/Library/Android"
+```
+
+Where the `JAVA_HOME` value can be found relative to where the `javac` binary is stored.
 
 ##### To view debug info (inspect elements, view console output)
 
