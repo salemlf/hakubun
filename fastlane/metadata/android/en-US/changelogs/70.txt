@@ -1,0 +1,8 @@
+Bug Fixes
+
+- Pitch Accent SVG Rendering Improvement
+	- Author: salemlf
+
+
+Full changes available at https://github.com/salemlf/hakubun/releases/tag/v2.6.4-beta
+
