@@ -38,13 +38,7 @@ function PitchIllustration({ pitchForReading, children }: Props) {
   const [xCoordInfo, setXCoordInfo] = useState<XCoordInfo>();
   const textRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
-  const addEndingNode =
-    pitchForReading.pitch.length > 1 &&
-    pitchForReading.pitch[pitchForReading.pitch.length - 1].part.length > 1;
   const nodeRadius = 5;
-  const highY = 10;
-  const lowY = 40;
-  const height = 45;
   const strokeWidth = 2;
 
   const getTextWidthInPixels = (ref: HTMLSpanElement) =>
@@ -97,7 +91,7 @@ function PitchIllustration({ pitchForReading, children }: Props) {
 
       setXCoordInfo({ coords: xCoordinates, finalXStart, finalXEnd });
     }
-  }, [pitchForReading.pitch, pitchForReading.reading]);
+  }, [pitchForReading.pitch.length, pitchForReading.reading]);
 
   if (!xCoordInfo) {
     return (
@@ -112,107 +106,17 @@ function PitchIllustration({ pitchForReading, children }: Props) {
       </ReadingTxt>
     );
   }
-  const { finalXStart, finalXEnd } = xCoordInfo;
 
   return (
     <IllustrationAndTxt>
-      <svg
-        width="100%"
-        height={height}
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-        aria-describedby="pitchDiagramTitle"
-      >
-        <title id="pitchDiagramTitle">
-          pitch accent diagram for {pitchForReading.reading} vocab reading
-        </title>
-        {pitchForReading.pitch.map((pitchAccent, index) => {
-          const { coords } = xCoordInfo;
-          const { x1, x2 } = coords[index];
-
-          const y = pitchAccent.high ? highY : lowY;
-
-          return (
-            <React.Fragment key={index}>
-              {index < pitchForReading.pitch.length - 1 && (
-                <line
-                  x1={x1}
-                  y1={y - strokeWidth}
-                  x2={
-                    pitchForReading.pitch[index + 1].part === ""
-                      ? x2 - nodeRadius * 1.5 - strokeWidth * 2
-                      : x2
-                  }
-                  y2={
-                    pitchForReading.pitch[index + 1].high
-                      ? highY - strokeWidth * 2
-                      : lowY
-                  }
-                  {...(pitchForReading.pitch[index + 1].part === "" && {
-                    strokeDasharray: "1,4",
-                    strokeLinecap: "round",
-                  })}
-                  stroke="var(--text-color)"
-                  strokeWidth={`${strokeWidth}`}
-                />
-              )}
-
-              <circle
-                cx={x1}
-                cy={y - strokeWidth}
-                r={nodeRadius}
-                fill={
-                  pitchAccent.high
-                    ? "var(--ion-color-tertiary)"
-                    : "var(--ion-color-primary)"
-                }
-                stroke="var(--text-color)"
-                strokeWidth={`${strokeWidth}`}
-                aria-describedby={`pitchNode${index}`}
-              />
-              <title id={`pitchNode${index}`}>
-                {pitchAccent.high ? "High" : "Low"} pitch accent for{" "}
-                {pitchAccent.part === ""
-                  ? `end of ${pitchForReading.pitch[index - 1].part}`
-                  : `${pitchAccent.part}`}{" "}
-                part
-              </title>
-            </React.Fragment>
-          );
-        })}
-        {addEndingNode && (
-          <>
-            <line
-              x1={finalXStart + strokeWidth}
-              y1={
-                (pitchForReading.pitch[pitchForReading.pitch.length - 1].high
-                  ? highY
-                  : lowY) - strokeWidth
-              }
-              x2={finalXEnd}
-              y2={
-                (pitchForReading.pitch[pitchForReading.pitch.length - 1].high
-                  ? highY
-                  : lowY) - strokeWidth
-              }
-              stroke="var(--text-color)"
-              strokeWidth={`${strokeWidth}`}
-            />
-            <circle
-              cx={finalXEnd + nodeRadius}
-              cy={
-                (pitchForReading.pitch[pitchForReading.pitch.length - 1].high
-                  ? highY
-                  : lowY) - strokeWidth
-              }
-              r={nodeRadius}
-              fill="none"
-              stroke="var(--text-color)"
-              strokeWidth={`${strokeWidth}`}
-            />
-          </>
-        )}
-      </svg>
+      {textRefs.current.length && xCoordInfo && (
+        <PitchSvg
+          pitchForReading={pitchForReading}
+          coordInfo={xCoordInfo}
+          strokeWidth={strokeWidth}
+          nodeRadius={nodeRadius}
+        />
+      )}
       <ReadingTxtAndChildren>
         <ReadingTxt>
           {pitchForReading.pitch.map((pitchAccent, index) => {
@@ -228,5 +132,126 @@ function PitchIllustration({ pitchForReading, children }: Props) {
     </IllustrationAndTxt>
   );
 }
+
+type PitchSvgProps = {
+  pitchForReading: PitchForReading;
+  coordInfo: XCoordInfo;
+  strokeWidth: number;
+  nodeRadius: number;
+};
+
+const PitchSvg = ({
+  pitchForReading,
+  coordInfo,
+  strokeWidth,
+  nodeRadius,
+}: PitchSvgProps) => {
+  const addEndingNode =
+    pitchForReading.pitch.length > 1 &&
+    pitchForReading.pitch[pitchForReading.pitch.length - 1].part.length > 1;
+  const highY = 10;
+  const lowY = 40;
+  const height = 45;
+  const { coords, finalXStart, finalXEnd } = coordInfo;
+
+  return (
+    <svg
+      width="100%"
+      height={height}
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-describedby="pitchDiagramTitle"
+    >
+      <title id="pitchDiagramTitle">
+        pitch accent diagram for {pitchForReading.reading} vocab reading
+      </title>
+      {pitchForReading.pitch.map((pitchAccent, index) => {
+        const { x1, x2 } = coords[index];
+
+        const y = pitchAccent.high ? highY : lowY;
+
+        return (
+          <React.Fragment key={index}>
+            {index < pitchForReading.pitch.length - 1 && (
+              <line
+                x1={x1}
+                y1={y - strokeWidth}
+                x2={
+                  pitchForReading.pitch[index + 1].part === ""
+                    ? x2 - nodeRadius * 1.5 - strokeWidth * 2
+                    : x2
+                }
+                y2={
+                  pitchForReading.pitch[index + 1].high
+                    ? highY - strokeWidth * 2
+                    : lowY
+                }
+                {...(pitchForReading.pitch[index + 1].part === "" && {
+                  strokeDasharray: "1,4",
+                  strokeLinecap: "round",
+                })}
+                stroke="var(--text-color)"
+                strokeWidth={`${strokeWidth}`}
+              />
+            )}
+
+            <circle
+              cx={x1}
+              cy={y - strokeWidth}
+              r={nodeRadius}
+              fill={
+                pitchAccent.high
+                  ? "var(--ion-color-tertiary)"
+                  : "var(--ion-color-primary)"
+              }
+              stroke="var(--text-color)"
+              strokeWidth={`${strokeWidth}`}
+              aria-describedby={`pitchNode${index}`}
+            />
+            <title id={`pitchNode${index}`}>
+              {pitchAccent.high ? "High" : "Low"} pitch accent for{" "}
+              {pitchAccent.part === ""
+                ? `end of ${pitchForReading.pitch[index - 1].part}`
+                : `${pitchAccent.part}`}{" "}
+              part
+            </title>
+          </React.Fragment>
+        );
+      })}
+      {addEndingNode && (
+        <>
+          <line
+            x1={finalXStart + strokeWidth}
+            y1={
+              (pitchForReading.pitch[pitchForReading.pitch.length - 1].high
+                ? highY
+                : lowY) - strokeWidth
+            }
+            x2={finalXEnd}
+            y2={
+              (pitchForReading.pitch[pitchForReading.pitch.length - 1].high
+                ? highY
+                : lowY) - strokeWidth
+            }
+            stroke="var(--text-color)"
+            strokeWidth={`${strokeWidth}`}
+          />
+          <circle
+            cx={finalXEnd + nodeRadius}
+            cy={
+              (pitchForReading.pitch[pitchForReading.pitch.length - 1].high
+                ? highY
+                : lowY) - strokeWidth
+            }
+            r={nodeRadius}
+            fill="none"
+            stroke="var(--text-color)"
+            strokeWidth={`${strokeWidth}`}
+          />
+        </>
+      )}
+    </svg>
+  );
+};
 
 export default PitchIllustration;
