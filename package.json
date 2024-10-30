@@ -65,7 +65,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint-err-only": "eslint . --ext ts,tsx --report-unused-disable-directives --quiet",
     "tsc-check": "tsc --noEmit",
-    "android-live-reload": "NODE_ENV=dev npx cap copy android && NODE_ENV=dev npx cap sync android && NODE_ENV=dev npx cap run android",
+    "android-live-reload": "mkdir -p android/app/src/main/assets && NODE_ENV=dev npx cap copy android && NODE_ENV=dev npx cap sync android && NODE_ENV=dev npx cap run android",
     "ios-live-reload": "NODE_ENV=dev npx cap copy ios && NODE_ENV=dev npx cap sync ios && NODE_ENV=dev npx cap run ios"
   },
   "browserslist": [
