@@ -59,7 +59,7 @@ export const getKanjiReadings = (
 };
 
 export const getVocabReadings = (readings: SubjectReading[]) => {
-  return readings.sort((a, b) => (a.primary === true ? 1 : -1));
+  return readings.sort((a, b) => (a.primary ? -1 : b.primary ? 1 : 0));
 };
 
 export const isAssignmentLocked = (
